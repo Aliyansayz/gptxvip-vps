@@ -1,0 +1,16 @@
+{
+  "course": "Programming Fundamentals",
+  "chapter_title": "General Concepts",
+  "tags": ["General", "Programming", "Fundamentals", "Algorithms", "Data Structures", "System Design", "Databases", "Networking", "OS Concepts", "Security"],
+  "critical_concepts": [
+    {
+      "concept": "Event Loop",
+      "elaboration": "An architectural pattern in single-threaded asynchronous programming where the program continuously waits for and dispatches events or messages. Critical for non-blocking I/O operations."
+    },
+    {
+      "concept": "Design Patterns",
+      "elaboration": "Reusable solutions to commonly occurring problems in software design. Examples include Singleton, Observer, and Factory patterns."
+    }
+  ],
+  "interactive_questions": []
+}

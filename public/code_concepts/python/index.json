@@ -1,0 +1,481 @@
+{
+  "course": "Python Introduction",
+  "chapter_title": "Fundamentals & Advanced",
+  "tags": ["Python", "Interpreted", "Scripting", "Fundamentals", "Data Science", "Machine Learning", "GIL", "Concurrency", "Web", "Automation", "Dictionaries", "Locking", "SQLite"],
+  "critical_concepts": [
+    {
+      "concept": "Interpreted Language",
+      "componentId": "python_interpreted_visual",
+      "elaboration": "Python is an interpreted language. The source code is executed line by line by the Python interpreter without prior compilation to machine code.",
+      "visual_prompt": "Show a pipeline diagram: [Python Script] → [Interpreter] → [Real-time Execution]. Animate instructions being processed step-by-step."
+    },
+    {
+      "concept": "Dynamic Typing",
+      "componentId": "python_typing_visual",
+      "elaboration": "Python uses dynamic typing. Variable types are determined at runtime, and the same variable can hold different types of data over time.",
+      "visual_prompt": "Display a variable holding an integer, then smoothly transitioning to holding a string, highlighting how types are resolved safely at runtime."
+    },
+    {
+      "concept": "High-Performance Dictionaries",
+      "componentId": "python_dict_visual",
+      "elaboration": "Python dictionaries are hash tables optimizing average O(1) read/write lookups. Keys are randomized using hash functions, mapped to bucket arrays, and collisions are resolved via precise linear probing.",
+      "visual_prompt": "An interactive hash-cell block array illustrating key-to-index mapping and linear collision probing routing paths."
+    },
+    {
+      "concept": "Thread-Safe Messaging",
+      "componentId": "python_queue_visual",
+      "elaboration": "Python's queue.Queue implements a thread-safe FIFO conveyor system containing full synchronization locks. It blocks producer threads when full, blocks consumer threads when empty, and controls race conditions safely.",
+      "visual_prompt": "A flow pipeline animating transactions migrating from a Producer Thread to a thread-safe Queue and being fetched safely by a Consumer Worker."
+    },
+    {
+      "concept": "SQLite Storage Concurrency",
+      "componentId": "python_sqlite_visual",
+      "elaboration": "SQLite restricts simultaneous writes across dynamic threads. Managing contention requires thread locks (mutexes) or dedicated queue controllers to block concurrent writes and prevent 'OperationalError: database is locked'.",
+      "visual_prompt": "A multi-threaded transactional simulation demonstrating database block contention under simultaneous write commands."
+    }
+  ],
+  "interactive_questions": [
+    {
+      "type": "mcq",
+      "componentId": "python_basic_mcq_1",
+      "difficulty": "basic",
+      "concept_tested": "Syntax & Basics",
+      "title": "Printing to Console",
+      "question": "Which of the following statements is used to output text to the console in Python?",
+      "code_snippet": "",
+      "options": [
+        "console.log('Hello World')",
+        "echo 'Hello World'",
+        "print('Hello World')",
+        "printf('Hello World')"
+      ],
+      "correct_answer": 2,
+      "explanation": "In Python, the print() function is explicitly used to output text and variables to the standard output."
+    },
+    {
+      "type": "mcq",
+      "componentId": "python_dict_basic_opt",
+      "difficulty": "basic",
+      "concept_tested": "High-Performance Dictionaries",
+      "title": "Dictionary Lookup Basics",
+      "question": "Why are key lookups in a Python dictionary much faster than searching values inside a standard list?",
+      "code_snippet": "# List search (Linear check):\nprices_list = [['AAPL', 185], ['TSLA', 179]]\n\n# Dict search (Direct direct indexing):\nprices_dict = {'AAPL': 185, 'TSLA': 179}",
+      "options": [
+        "Dictionaries search elements sequentially from the first index.",
+        "Dictionaries convert keys into integer hash values to perform instant O(1) bucket lookups, whereas lists require slow O(N) sequential searches.",
+        "Python lists are compiled to machine code while dictionaries are interpreted.",
+        "Dictionaries allocate continuous disk arrays to write items directly."
+      ],
+      "correct_answer": 1,
+      "explanation": "Python dictionaries use a hash table structure. Keys are converted into hash values, matching specific array indices, permitting sub-microsecond instant checks regardless of dictionary size."
+    },
+    {
+      "type": "code_explainer_drag_drop",
+      "componentId": "python_dict_adv_explainer",
+      "difficulty": "intermediate",
+      "concept_tested": "High-Performance Dictionaries",
+      "title": "Advanced Dict Hashing and Probing",
+      "question": "Analyse how dictionaries manage custom keys and address collision resolutions via Linear Probing:",
+      "explanation": "When custom key classes are assigned in a dictionary, Python calls their custom __hash__ and __eq__ methods. If hashes collide, the interpreter searches consecutive entries to locate or place the key.",
+      "explanation_steps": [
+        {
+          "description": "We define a custom class. To serve as a dictionary key, it must implement hashing and equality methods to determine matches.",
+          "code": "class CryptoAsset:\n    def __init__(self, ticker):\n        self.ticker = ticker\n    def __hash__(self):\n        return hash(self.ticker)\n    def __eq__(self, other):\n        return isinstance(other, CryptoAsset) and self.ticker == other.ticker"
+        },
+        {
+          "description": "By declaring these methods, instances can be safely utilized as dictionary keys, executing hashing and resolving lookups without exceptions.",
+          "code": "portfolio = {CryptoAsset('BTC'): 1.5, CryptoAsset('ETH'): 12.0}"
+        }
+      ],
+      "snippets": [
+        {
+          "id": "dict_probing_1",
+          "title": "Hashing and Equality Rules",
+          "template": "class MarketIndex:\n    [[SLOT1]] __init__(self, label):\n        self.label = label\n    def [[SLOT2]](self):\n        return hash(self.label)\n    def [[SLOT3]](self, other):\n        return self.label == other.label",
+          "draggable_items": ["def", "__hash__", "__eq__", "hash", "equal"],
+          "correct_mappings": {
+            "SLOT1": "def",
+            "SLOT2": "__hash__",
+            "SLOT3": "__eq__"
+          },
+          "code_reasoning": "In Python, dictionary keys must be hashable and comparable. Implementing __hash__ permits the interpreter to calculate stable bucketing identifiers (O(1)), while __eq__ determines if collided keys are genuinely equivalent during probing checks.",
+          "correct_code": "class MarketIndex:\n    def __init__(self, label):\n        self.label = label\n    def __hash__(self):\n        return hash(self.label)\n    def __eq__(self, other):\n        return self.label == other.label"
+        },
+        {
+          "id": "dict_probing_2",
+          "title": "Fast Safe Dict Fallbacks",
+          "template": "order_book = {'tx_05': 140.50}\n# 1. Direct retrieval\nprice = order_book['tx_05']\n# 2. Safe fallback if key is absent\nfallback_price = order_book.[[SLOT1]]('tx_99', [[SLOT2]])",
+          "draggable_items": ["get", "None", "lookup", "pop", "Null"],
+          "correct_mappings": {
+            "SLOT1": "get",
+            "SLOT2": "None"
+          },
+          "code_reasoning": "Using order_book.get(key, default) safely queries elements without raising KeyError triggers. This approach avoids standard exception handling overhead, resolving lookup checks gracefully.",
+          "correct_code": "order_book = {'tx_05': 140.50}\n# 1. Direct retrieval\nprice = order_book['tx_05']\n# 2. Safe fallback if key is absent\nfallback_price = order_book.get('tx_99', None)"
+        }
+      ]
+    },
+    {
+      "type": "mcq",
+      "componentId": "python_queue_basic_opt",
+      "difficulty": "basic",
+      "concept_tested": "Thread-Safe Messaging",
+      "title": "Thread-Safe vs Unsynchronised Containers",
+      "question": "What primary threat arises when multiple concurrent threads concurrently append items to a standard Python list, and how does queue.Queue handle it?",
+      "code_snippet": "# UNSAFE: Shared list mutated by 10 threads\ntransactions = []\n\n# SAFE: Integrated lock synchronised conveyor\nimport queue\ntransactions_queue = queue.Queue(maxsize=5)",
+      "options": [
+        "A standard list crashes immediately with syntax compiling errors.",
+        "Standard lists lack locking synchronization. Unsynchronized appends suffer race conditions, leading to missing element insertions or memory faults. queue.Queue contains automatic internal locks that isolate thread writes.",
+        "Lists automatically allocate thread locks but only in production mode.",
+        "Standard lists are slower because they compile in real-time."
+      ],
+      "correct_answer": 1,
+      "explanation": "Standard dynamic arrays (like lists) are not thread-safe. Concurrent threads writing concurrently can overwrite shared boundary layouts. The queue.Queue container uses internal thread-safe locks (such as mutex re-entrants and condition variables) to synchronize entry access perfectly."
+    },
+    {
+      "type": "code_explainer_drag_drop",
+      "componentId": "python_messaging_adv_explainer",
+      "difficulty": "intermediate",
+      "concept_tested": "Thread-Safe Messaging",
+      "title": "Multi-threaded Queue Piping",
+      "question": "Analyse how Producer and Consumer pipelines safely communicate messages across thread boundaries using queue.Queue:",
+      "explanation": "Using queue.Queue ensures that threads work concurrently inside safe limits. Producers write tasks using .put(), while Consumers read tasks with .get() and signal completed operations.",
+      "explanation_steps": [
+        {
+          "description": "We establish a Queue object, specifying a maximum capacity constraint to throttle fast producers.",
+          "code": "import queue\ntask_belt = queue.Queue(maxsize=100)"
+        },
+        {
+          "description": "Producers deposit elements. If the queue is full, the put() command suspends the thread execution until a consumer frees up a slot.",
+          "code": "task_belt.put(new_transaction, block=True)"
+        },
+        {
+          "description": "Consumers fetch work, complete processing, and call task_done() to notify the parent scheduler of task resolution.",
+          "code": "job = task_belt.get()\ntask_belt.task_done()"
+        }
+      ],
+      "snippets": [
+        {
+          "id": "queue_threading_1",
+          "title": "Producer Message Injection",
+          "template": "import [[SLOT1]]\nimport threading\n\npipeline = queue.Queue(maxsize=5)\n\ndef sender():\n    for data in range(10):\n        pipeline.[[SLOT2]](f'Msg_{data}', [[SLOT3]]=True)",
+          "draggable_items": ["queue", "put", "block", "get", "with"],
+          "correct_mappings": {
+            "SLOT1": "queue",
+            "SLOT2": "put",
+            "SLOT3": "block"
+          },
+          "code_reasoning": "Importing queue introduces standard synchronized arrays. Thread-safely storing entries via .put() with block=True automatically blocks or suspends the thread once the capacity boundary of 5 is exceeded, preventing memory overflow.",
+          "correct_code": "import queue\nimport threading\n\npipeline = queue.Queue(maxsize=5)\n\ndef sender():\n    for data in range(10):\n        pipeline.put(f'Msg_{data}', block=True)"
+        },
+        {
+          "id": "queue_threading_2",
+          "title": "Consumer Loop Signaling",
+          "template": "def process_jobs():\n    while True:\n        item = pipeline.[[SLOT1]]()\n        # Process job...\n        pipeline.[[SLOT2]]()\n\nworker = threading.Thread(target=process_jobs)\nworker.daemon = [[SLOT3]]\nworker.start()",
+          "draggable_items": ["get", "task_done", "True", "False", "put"],
+          "correct_mappings": {
+            "SLOT1": "get",
+            "SLOT2": "task_done",
+            "SLOT3": "True"
+          },
+          "code_reasoning": "The worker background thread retrieves items via .get(). Marking .task_done() alerts the queue blocking/join trackers of step completeness. Setting .daemon = True guarantees the thread automatically terminates alongside main application shutdown.",
+          "correct_code": "def process_jobs():\n    while True:\n        item = pipeline.get()\n        # Process job...\n        pipeline.task_done()\n\nworker = threading.Thread(target=process_jobs)\nworker.daemon = True\nworker.start()"
+        }
+      ]
+    },
+    {
+      "type": "code_explainer_drag_drop",
+      "componentId": "python_sqlite_concurrency",
+      "difficulty": "intermediate",
+      "concept_tested": "SQLite Concurrency",
+      "title": "Concurrent SQLite Multi-threading",
+      "question": "Walkthrough multi-threaded writing limits in SQLite and implement safe threading locks to prevent write access contentions.",
+      "explanation": "By default, python sqlite3 connections enforce safety rules, blocking cross-thread access. To permit multi-threaded operations, we instantiate sqlite3.connect with check_same_thread=False, but must protect actual concurrent writes using a threading.Lock.",
+      "explanation_steps": [
+        {
+          "description": "Instantiate the shared sqlite3 database connection, turning off basic thread checks safely.",
+          "code": "import sqlite3\nconn = sqlite3.connect('market.db', check_same_thread=False)"
+        },
+        {
+          "description": "Execute queries within a synchronized threading.Lock context. This ensures that only one worker thread modifies the database connection block at a time, avoiding concurrency lock exceptions.",
+          "code": "with db_lock:\n    cursor = conn.cursor()\n    cursor.execute('INSERT INTO log VALUES (?, ?)', (time.time(), text))\n    conn.commit()"
+        }
+      ],
+      "snippets": [
+        {
+          "id": "sqlite_threading_15",
+          "title": "SQLite Multi-Thread Initialization",
+          "template": "import sqlite3\nimport threading\n\n# Safely permit cross thread execution checks\nconn = sqlite3.connect('trades.db', check_same_thread=[[SLOT1]])\n\n# Initialise safe lock guard\ndb_mutex = [[SLOT2]].[[SLOT3]]()",
+          "draggable_items": ["False", "threading", "Lock", "True", "Mutex"],
+          "correct_mappings": {
+            "SLOT1": "False",
+            "SLOT2": "threading",
+            "SLOT3": "Lock"
+          },
+          "code_reasoning": "SQLite database connections prevent cross-thread access defaults. Passing check_same_thread=False allows cross-thread query dispatching, while nesting transactions under a threading.Lock() mutex ensures writing operations proceed sequentially, shielding the system from lock error exceptions.",
+          "correct_code": "import sqlite3\nimport threading\n\n# Safely permit cross thread execution checks\nconn = sqlite3.connect('trades.db', check_same_thread=False)\n\n# Initialise safe lock guard\ndb_mutex = threading.Lock()"
+        },
+        {
+          "id": "sqlite_threading_25",
+          "title": "Synchronized Lock Writes",
+          "template": "def safe_write_transaction(query, parms):\n    # Protect connection from concurrent writing overlapping\n    [[SLOT1]] db_mutex:\n        cursor = conn.cursor()\n        cursor.execute(query, parms)\n        conn.[[SLOT2]]()\n\n# Enqueue query asynchronously \nt1 = threading.[[SLOT3]](target=safe_write_transaction, args=('INSERT INTO t MATCH 1', []))",
+          "draggable_items": ["with", "commit", "Thread", "lock", "close"],
+          "correct_mappings": {
+            "SLOT1": "with",
+            "SLOT2": "commit",
+            "SLOT3": "Thread"
+          },
+          "code_reasoning": "Using 'with db_mutex:' applies clean context-manager flow, locking transaction blocks during query executing and instantly committing the cursor writes before letting other thread instances gain concurrency tokens.",
+          "correct_code": "def safe_write_transaction(query, parms):\n    # Protect connection from concurrent writing overlapping\n    with db_mutex:\n        cursor = conn.cursor()\n        cursor.execute(query, parms)\n        conn.commit()\n\n# Enqueue query asynchronously \nt1 = threading.Thread(target=safe_write_transaction, args=('INSERT INTO t MATCH 1', []))"
+        }
+      ]
+    },
+    {
+      "type": "drag_and_drop",
+      "componentId": "python_dnd_list_comprehension",
+      "difficulty": "intermediate",
+      "concept_tested": "List Comprehensions",
+      "title": "List Comprehension Syntax",
+      "question": "Drag and drop to complete the list comprehension that squares all even numbers from 0 to 9.",
+      "template": "squares = [x**2 [[SLOT1]] x in range(10) [[SLOT2]] x % 2 == 0]",
+      "options": [
+        "for",
+        "if",
+        "while",
+        "else"
+      ],
+      "correct_answers": {
+        "SLOT1": "for",
+        "SLOT2": "if"
+      },
+      "explanation": "A list comprehension consists of brackets containing an expression followed by a for clause, then zero or more for or if clauses. The result will be a new list resulting from evaluating the expression in the context of the for and if clauses which follow it."
+    },
+    {
+      "type": "code_explainer_drag_drop",
+      "componentId": "python_threading_explainer",
+      "difficulty": "intermediate",
+      "concept_tested": "Basic Threading",
+      "title": "Basic Threading",
+      "question": "First, walkthrough the logic of python threading, then complete the snippets using drag-and-drop.",
+      "explanation": "The threading module allows you to write multithreaded concurrent programs in Python. Let's see how threads work.",
+      "explanation_steps": [
+        {
+          "description": "We import the 'threading' module to work with threads.",
+          "code": "import threading"
+        },
+        {
+          "description": "Then we define the target function that the thread will execute.",
+          "code": "def worker():\n    print('Worker thread running')"
+        },
+        {
+          "description": "We create a thread object, pass the function, and start it.",
+          "code": "t = threading.Thread(target=worker)\nt.start()\nt.join()"
+        }
+      ],
+      "snippets": [
+        {
+          "id": "snippet_1",
+          "title": "Thread Lifecycle",
+          "template": "import threading\n\n[[SLOT1]] worker():\n    print('Running')\n\nt1 = threading.[[SLOT2]](target=worker)\nt1.start()\nt1.[[SLOT3]]()",
+          "draggable_items": ["def", "Thread", "join", "run"],
+          "correct_mappings": {
+            "SLOT1": "def",
+            "SLOT2": "Thread",
+            "SLOT3": "join"
+          },
+          "code_reasoning": "Using 'def' blocks shapes the thread runtime task subroutine. Giving this worker routine to threading.Thread establishes the independent background worker pipeline, which starts running asynchronously with .start(), while .join() holds the parent main thread from terminating beforehand.",
+          "correct_code": "import threading\n\ndef worker():\n    print('Running')\n\nt1 = threading.Thread(target=worker)\nt1.start()\nt1.join()"
+        },
+        {
+          "id": "snippet_2",
+          "title": "Thread Safety with Locks",
+          "template": "lock = threading.[[SLOT1]]()\n\ndef safe_increment():\n    [[SLOT2]] lock:\n        counter += 1",
+          "draggable_items": ["with", "Lock", "try", "Mutex"],
+          "correct_mappings": {
+            "SLOT1": "Lock",
+            "SLOT2": "with"
+          },
+          "code_reasoning": "Instantiating threading.Lock() initializes a mutual exclusion primitive. The wrapper 'with lock:' operates as an automatic lock context acquire-and-release block, ensuring atomic mutations and eliminating trace data corruptions under high parallel iterations.",
+          "correct_code": "lock = threading.Lock()\n\ndef safe_increment():\n    with lock:\n        counter += 1"
+        }
+      ]
+    },
+    {
+      "type": "code_explainer_drag_drop",
+      "componentId": "python_lock_importance_explainer",
+      "difficulty": "intermediate",
+      "concept_tested": "Importance of Locks",
+      "title": "Importance of Lock Concept",
+      "question": "Explore the critical importance of Locks in preventing concurrent data race conditions.",
+      "explanation": "Threads share the same memory space. When multiple threads try to mutate the same variable concurrently, their read-modify-write operations can overlap. This is called a race condition and leads to data corruption. Locks (or Mutexes) solve this by ensuring only one thread can enter the critical section at a time.",
+      "explanation_steps": [
+        {
+          "description": "Consider a 'balance' of 100. Two threads simultaneously attempt to add 50. If they read the balance at the exact same moment, both read 100.",
+          "code": "# Thread A reads: balance = 100\n# Thread B reads: balance = 100"
+        },
+        {
+          "description": "They both calculate 100 + 50 = 150, and write back 150. Despite two 50 deposits, the final balance is 150 instead of 200. We lost data!",
+          "code": "# Thread A writes: balance = 150\n# Thread B writes: balance = 150  <-- Data corruption!"
+        },
+        {
+          "description": "By putting the mutation inside a Lock, we serialize access. Thread B must wait for Thread A to finish its read-modify-write cycle before B is allowed to read the balance.",
+          "code": "lock.acquire()\ntry:\n    # Only 1 thread can be here at a time\n    balance += 50\nfinally:\n    lock.release()"
+        }
+      ],
+      "snippets": [
+        {
+          "id": "lock_importance_snippet_1",
+          "title": "The Safe Increment",
+          "template": "import threading\n\nbalance = 100\nbalance_lock = threading.[[SLOT1]]()\n\ndef deposit(amount):\n    global balance\n    # Protect the sensitive mutation operation\n    [[SLOT2]] balance_lock:\n        balance += amount\n\n# Any thread reaching here must wait if the lock is held.",
+          "draggable_items": ["Lock", "with", "Mutex", "try", "acquire"],
+          "correct_mappings": {
+            "SLOT1": "Lock",
+            "SLOT2": "with"
+          },
+          "code_reasoning": "threading.Lock() prevents concurrent overlapping execution. The 'with' context manager is the recommended Python idiom; it safely acquires the lock and guarantees its release after the block finishes, preventing accidental infinite deadlocks.",
+          "correct_code": "import threading\n\nbalance = 100\nbalance_lock = threading.Lock()\n\ndef deposit(amount):\n    global balance\n    # Protect the sensitive mutation operation\n    with balance_lock:\n        balance += amount\n\n# Any thread reaching here must wait if the lock is held."
+        }
+      ]
+    },
+    {
+      "type": "code_explainer_drag_drop",
+      "componentId": "python_acid_atomicity",
+      "difficulty": "intermediate",
+      "concept_tested": "ACID - Atomicity",
+      "title": "Atomicity: All-or-Nothing",
+      "question": "Analyze how database transactions ensure Atomicity in Python using try-except transaction boundaries, and complete the code.",
+      "explanation": "Atomicity guarantees that all database updates within a transaction are completed successfully as a single cohesive unit. If any individual operation fails, the entire transaction is rolled back, leaving the database completely unchanged.",
+      "explanation_steps": [
+        {
+          "description": "Start by initiating a database transaction block.",
+          "code": "conn.execute('BEGIN TRANSACTION')"
+        },
+        {
+          "description": "Perform write operations, and run a commit if everything finishes without errors.",
+          "code": "conn.commit()"
+        },
+        {
+          "description": "If an exception is raised, execute a rollback to undo any partial changes, saving the database from an incomplete state.",
+          "code": "conn.rollback()"
+        }
+      ],
+      "snippets": [
+        {
+          "id": "acid_atom_1",
+          "title": "Atomic Funds Transfer",
+          "template": "import sqlite3\nconn = sqlite3.connect('bank.db')\ntry:\n    conn.execute('[[SLOT1]]')\n    # Deduct funds from sender\n    conn.execute('UPDATE accounts SET balance = balance - 100 WHERE id = 1')\n    # Add funds to receiver\n    conn.execute('UPDATE accounts SET balance = balance + 100 WHERE id = 2')\n    # Commit the changes\n    conn.[[SLOT2]]()\nexcept Exception:\n    # Error occurred: undo everything\n    conn.[[SLOT3]]()",
+          "draggable_items": ["BEGIN TRANSACTION", "commit", "rollback", "close", "START"],
+          "correct_mappings": {
+            "SLOT1": "BEGIN TRANSACTION",
+            "SLOT2": "commit",
+            "SLOT3": "rollback"
+          },
+          "code_reasoning": "Using transaction management boundaries ensures atomicity. Beginning a transaction groups multiple updates into one logical operation. If both complete successfully, conn.commit() is invoked. If an exception triggers anywhere before completion, conn.rollback() wipes all intermediate modifications instantly.",
+          "correct_code": "import sqlite3\nconn = sqlite3.connect('bank.db')\ntry:\n    conn.execute('BEGIN TRANSACTION')\n    # Deduct funds from sender\n    conn.execute('UPDATE accounts SET balance = balance - 100 WHERE id = 1')\n    # Add funds to receiver\n    conn.execute('UPDATE accounts SET balance = balance + 100 WHERE id = 2')\n    # Commit the changes\n    conn.commit()\nexcept Exception:\n    # Error occurred: undo everything\n    conn.rollback()"
+        }
+      ]
+    },
+    {
+      "type": "code_explainer_drag_drop",
+      "componentId": "python_acid_consistency",
+      "difficulty": "intermediate",
+      "concept_tested": "ACID - Consistency",
+      "title": "Consistency: Valid State Maintained",
+      "question": "Analyze how Python apps enforce data consistency rules during database transactions, and complete the code.",
+      "explanation": "Consistency ensures that any transaction brings the database from one valid state to another, maintaining all predefined integrity constraints, schemas, and custom rules (e.g., negative balances are banned).",
+      "explanation_steps": [
+        {
+          "description": "Query the table state before committing changes to check application level invariants.",
+          "code": "cursor.execute('SELECT balance FROM accounts WHERE id = 1')"
+        },
+        {
+          "description": "If the state violates system rules (e.g. balance is negative), raise an exception to trigger transaction rollback.",
+          "code": "if balance < 0:\n    raise ValueError('Insufficient funds')"
+        }
+      ],
+      "snippets": [
+        {
+          "id": "acid_const_1",
+          "title": "Consistency Rule Validation",
+          "template": "def process_withdrawal(conn, acct_id, amount):\n    cursor = conn.cursor()\n    try:\n        conn.execute('BEGIN TRANSACTION')\n        # Retrieve current balance\n        cursor.execute('SELECT balance FROM accounts WHERE id = ?', (acct_id,))\n        balance = cursor.fetchone()[[SLOT1]]\n        # Invariant Check: Prevent negative balance\n        if balance - amount < [[SLOT2]]:\n            [[SLOT3]] ValueError('Consistency breach: credit limit exceeded')\n        cursor.execute('UPDATE accounts SET balance = balance - ? WHERE id = ?', (amount, acct_id))\n        conn.commit()\n    except Exception as e:\n        conn.rollback()\n        print(f'Transaction cancelled: {e}')",
+          "draggable_items": ["[0]", "0", "raise", "tuple", "return"],
+          "correct_mappings": {
+            "SLOT1": "[0]",
+            "SLOT2": "0",
+            "SLOT3": "raise"
+          },
+          "code_reasoning": "To ensure database consistency, the application queries the database and performs programmatic validation checks on fields like balances or inventory quantities before writing changes. If an illegal state transition is detected (balance - amount < 0), raising an exception immediately prevents incorrect records from committing.",
+          "correct_code": "def process_withdrawal(conn, acct_id, amount):\n    cursor = conn.cursor()\n    try:\n        conn.execute('BEGIN TRANSACTION')\n        # Retrieve current balance\n        cursor.execute('SELECT balance FROM accounts WHERE id = ?', (acct_id,))\n        balance = cursor.fetchone()[0]\n        # Invariant Check: Prevent negative balance\n        if balance - amount < 0:\n            raise ValueError('Consistency breach: credit limit exceeded')\n        cursor.execute('UPDATE accounts SET balance = balance - ? WHERE id = ?', (amount, acct_id))\n        conn.commit()\n    except Exception as e:\n        conn.rollback()\n        print(f'Transaction cancelled: {e}')"
+        }
+      ]
+    },
+    {
+      "type": "code_explainer_drag_drop",
+      "componentId": "python_acid_isolation",
+      "difficulty": "intermediate",
+      "concept_tested": "ACID - Isolation",
+      "title": "Isolation: Separating Concurrent Operations",
+      "question": "Demonstrate database isolation properties in multi-threaded database systems, and complete the code.",
+      "explanation": "Isolation guarantees that concurrent execution of transactions leaves the database in the same state as if they were executed sequentially. Uncommitted writes from one transaction must remain invisible to other concurrent transaction processes.",
+      "explanation_steps": [
+        {
+          "description": "Start an immediate write transaction on connection 1, securing an exclusive lock.",
+          "code": "conn1.execute('BEGIN IMMEDIATE TRANSACTION')"
+        },
+        {
+          "description": "Connection 2 tries to read or write, but faces isolation barriers or busy locking conditions until Connection 1 commits.",
+          "code": "conn2.cursor().execute('SELECT qty FROM stock')"
+        }
+      ],
+      "snippets": [
+        {
+          "id": "acid_isol_1",
+          "title": "Dirty Read Prevention",
+          "template": "# Thread 1: updates row, holds locks\nconn1 = sqlite3.connect('shop.db')\nconn1.execute('BEGIN TRANSACTION')\nconn1.execute(\"UPDATE stock SET qty = 10 WHERE item = 'Laptop'\")\n\n# Thread 2: tries to view stock\nconn2 = sqlite3.connect('shop.db')\ncursor2 = conn2.cursor()\n# In isolation environments, Thread 2 sees old data\ncursor2.execute(\"SELECT qty FROM stock WHERE item = 'Laptop'\")\nqty_result = cursor2.[[SLOT1]]()[[SLOT2]]\n# Old quantity (not 10) is returned because Thread 1 did not [[SLOT3]] yet",
+          "draggable_items": ["fetchone", "[0]", "commit", "get", "rollback"],
+          "correct_mappings": {
+            "SLOT1": "fetchone",
+            "SLOT2": "[0]",
+            "SLOT3": "commit"
+          },
+          "code_reasoning": "Isolation prevents 'dirty reads'. Although Connection 1 writes a new quantity value (10), Connection 2 is insulated from that dirty state and will view the old baseline quantity until Connection 1 successfully invokes its commit.",
+          "correct_code": "# Thread 1: updates row, holds locks\nconn1 = sqlite3.connect('shop.db')\nconn1.execute('BEGIN TRANSACTION')\nconn1.execute(\"UPDATE stock SET qty = 10 WHERE item = 'Laptop'\")\n\n# Thread 2: tries to view stock\nconn2 = sqlite3.connect('shop.db')\ncursor2 = conn2.cursor()\n# In isolation environments, Thread 2 sees old data\ncursor2.execute(\"SELECT qty FROM stock WHERE item = 'Laptop'\")\nqty_result = cursor2.fetchone()[0]\n# Old quantity (not 10) is returned because Thread 1 did not commit yet"
+        }
+      ]
+    },
+    {
+      "type": "code_explainer_drag_drop",
+      "componentId": "python_acid_durability",
+      "difficulty": "intermediate",
+      "concept_tested": "ACID - Durability",
+      "title": "Durability: Surviving Crashes",
+      "question": "Configure SQLite journal settings to secure durability properties in Python, and complete the code.",
+      "explanation": "Durability ensures that once a transaction commits, it remains saved in non-volatile memory or storage, even in the event of a sudden power outage, system crash, or system failure. SQLite achieves this by writing transactions to write-ahead logs (WAL) or rollback journals and syncing them to the storage disk.",
+      "explanation_steps": [
+        {
+          "description": "Configure SQLite connection to use WAL (Write-Ahead Log) mode to boost concurrently writing speeds and durability.",
+          "code": "conn.execute('PRAGMA journal_mode = WAL')"
+        },
+        {
+          "description": "Instruct the backend engine to fully flush and synchronize cache pages physically to storage on commit.",
+          "code": "conn.execute('PRAGMA synchronous = NORMAL')"
+        }
+      ],
+      "snippets": [
+        {
+          "id": "acid_dur_1",
+          "title": "Configuring Durability Levels",
+          "template": "import sqlite3\nconn = sqlite3.connect('vault.db')\n\n# Enable Write-Ahead Log journal system\nconn.execute('PRAGMA [[SLOT1]] = WAL')\n\n# Ensure secure synchronization settings on every commit\nconn.execute('PRAGMA [[SLOT2]] = NORMAL')\n\n# Modifications committed below are legally written to [[SLOT3]]\nconn.execute(\"INSERT INTO gold_vault VALUES ('vault_A', 5000)\")\nconn.commit()",
+          "draggable_items": ["journal_mode", "synchronous", "disk", "RAM", "temp"],
+          "correct_mappings": {
+            "SLOT1": "journal_mode",
+            "SLOT2": "synchronous",
+            "SLOT3": "disk"
+          },
+          "code_reasoning": "Using WAL (Write-Ahead Logging) coupled with robust synchronous settings forces SQLite to flush transaction records directly onto the physical storage disk on commit. Even if the hardware loses power immediately after, the logs remain retrievable and unharmed on reboot.",
+          "correct_code": "import sqlite3\nconn = sqlite3.connect('vault.db')\n\n# Enable Write-Ahead Log journal system\nconn.execute('PRAGMA journal_mode = WAL')\n\n# Ensure secure synchronization settings on every commit\nconn.execute('PRAGMA synchronous = NORMAL')\n\n# Modifications committed below are legally written to disk\nconn.execute(\"INSERT INTO gold_vault VALUES ('vault_A', 5000)\")\nconn.commit()"
+        }
+      ]
+    }
+  ]
+}

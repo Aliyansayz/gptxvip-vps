@@ -1,0 +1,63 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="80" y1="60" x2="1120" y2="570" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#020617" />
+      <stop offset="0.5" stop-color="#0F172A" />
+      <stop offset="1" stop-color="#111827" />
+    </linearGradient>
+    <radialGradient id="glowA" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(260 170) rotate(29.7) scale(380 220)">
+      <stop stop-color="#22D3EE" stop-opacity="0.45" />
+      <stop offset="1" stop-color="#22D3EE" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="glowB" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(910 430) rotate(148.5) scale(360 220)">
+      <stop stop-color="#10B981" stop-opacity="0.35" />
+      <stop offset="1" stop-color="#10B981" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#22D3EE" />
+      <stop offset="1" stop-color="#34D399" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" rx="32" fill="url(#bg)" />
+  <rect x="24" y="24" width="1152" height="582" rx="28" stroke="rgba(148,163,184,0.18)" />
+  <ellipse cx="260" cy="170" rx="380" ry="220" fill="url(#glowA)" />
+  <ellipse cx="910" cy="430" rx="360" ry="220" fill="url(#glowB)" />
+
+  <g opacity="0.18">
+    <path d="M80 500H1120" stroke="#94A3B8" />
+    <path d="M80 430H1120" stroke="#94A3B8" />
+    <path d="M80 360H1120" stroke="#94A3B8" />
+    <path d="M80 290H1120" stroke="#94A3B8" />
+    <path d="M80 220H1120" stroke="#94A3B8" />
+    <path d="M80 150H1120" stroke="#94A3B8" />
+    <path d="M180 110V530" stroke="#94A3B8" />
+    <path d="M380 110V530" stroke="#94A3B8" />
+    <path d="M580 110V530" stroke="#94A3B8" />
+    <path d="M780 110V530" stroke="#94A3B8" />
+    <path d="M980 110V530" stroke="#94A3B8" />
+  </g>
+
+  <g opacity="0.95">
+    <path d="M110 425C170 420 205 355 265 340C325 325 355 390 420 382C510 371 545 215 635 208C720 201 750 325 825 336C898 347 955 273 1020 250C1056 237 1080 241 1090 244" stroke="url(#line)" stroke-width="8" stroke-linecap="round" />
+    <circle cx="265" cy="340" r="8" fill="#22D3EE" />
+    <circle cx="420" cy="382" r="8" fill="#67E8F9" />
+    <circle cx="635" cy="208" r="8" fill="#A5F3FC" />
+    <circle cx="825" cy="336" r="8" fill="#6EE7B7" />
+    <circle cx="1020" cy="250" r="8" fill="#34D399" />
+  </g>
+
+  <g>
+    <rect x="86" y="82" width="140" height="34" rx="17" fill="#082F49" />
+    <text x="156" y="104" text-anchor="middle" fill="#67E8F9" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">GPTX.VIP</text>
+
+    <text x="84" y="220" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="66" font-weight="800">Macroevent Trading</text>
+    <text x="84" y="296" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="66" font-weight="800">Simulation Engine</text>
+    <text x="84" y="360" fill="#CBD5E1" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="400">
+      Interactive execution labs, algorithm visuals, and
+    </text>
+    <text x="84" y="402" fill="#CBD5E1" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="400">
+      market microstructure learning tools in one experience.
+    </text>
+  </g>
+</svg>

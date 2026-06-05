@@ -1,0 +1,135 @@
+{
+  "course": "Programming Fundamentals",
+  "chapter_title": "C++ Basics",
+  "critical_concepts": [
+    {
+      "concept": "Compiled Language",
+      "elaboration": "C++ is a compiled programming language. The source code is converted into machine code using a compiler before execution.",
+      "visual_prompt": "Show a pipeline diagram: [C++ Source Code] → [Compiler] → [Machine Code] → [Program Execution]. Animate arrows flowing through the pipeline."
+    },
+    {
+      "concept": "Memory Management",
+      "elaboration": "C++ allows direct memory manipulation through pointers and manual allocation using new and delete.",
+      "visual_prompt": "Display a memory grid with blocks representing RAM. Show a pointer arrow referencing a memory cell. Animate allocation when 'new' is used and freeing when 'delete' is used."
+    },
+    {
+      "concept": "Object-Oriented Programming",
+      "elaboration": "C++ supports classes, objects, inheritance, polymorphism, encapsulation, and abstraction.",
+      "visual_prompt": "Display a class diagram: Class 'Car' at the top with properties and methods. Below it, show multiple object instances like Car1, Car2 inheriting structure."
+    }
+  ],
+  "interactive_questions": [
+    {
+      "componentId": "cpp_basic_q1",
+      "type": "mcq",
+      "concept_tested": "C++ Syntax",
+      "title": "Entry Point of a C++ Program",
+      "prompt": "Which function is the starting point of every C++ program?",
+      "visual_interactive_prompt": "Display a visual program flow diagram showing execution starting from a highlighted 'main()' block and flowing through the program.",
+      "answer": "main()",
+      "options": ["start()", "main()", "init()", "program()"],
+      "explanation": "Every C++ program begins execution from the main() function."
+    },
+    {
+      "componentId": "cpp_basic_q2",
+      "type": "mcq",
+      "concept_tested": "Input Output",
+      "title": "Output Statement",
+      "prompt": "Which C++ statement is used to print text to the console?",
+      "visual_interactive_prompt": "Show a console window visualization. Animate text appearing when the cout statement executes.",
+      "answer": "cout",
+      "options": ["cin", "cout", "print", "output"],
+      "explanation": "cout (from iostream) is used with the << operator to display output."
+    },
+    {
+      "componentId": "cpp_basic_q3",
+      "type": "mcq",
+      "concept_tested": "Header Files",
+      "title": "Standard Input Output Library",
+      "prompt": "Which header file is required for using cout and cin?",
+      "visual_interactive_prompt": "Show a program file including libraries. Highlight the #include <iostream> line and visually link it to input/output operations.",
+      "answer": "<iostream>",
+      "options": ["<stdio.h>", "<iostream>", "<conio.h>", "<math.h>"],
+      "explanation": "The iostream header provides the input/output stream objects like cin and cout."
+    },
+    {
+      "componentId": "cpp_basic_q4",
+      "type": "mcq",
+      "concept_tested": "Variables",
+      "title": "Integer Variable",
+      "prompt": "Which keyword is used to declare an integer variable in C++?",
+      "visual_interactive_prompt": "Show a variable container labeled 'int'. When a value is assigned, the container fills with the number.",
+      "answer": "int",
+      "options": ["integer", "int", "number", "float"],
+      "explanation": "The keyword int is used to declare integer variables."
+    },
+    {
+      "componentId": "cpp_basic_q5",
+      "type": "mcq",
+      "concept_tested": "Comments",
+      "title": "Single Line Comment",
+      "prompt": "Which symbol is used to write a single-line comment in C++?",
+      "visual_interactive_prompt": "Display a code editor where lines starting with // are grayed out to indicate they are ignored by the compiler.",
+      "answer": "//",
+      "options": ["#", "//", "/* */", "--"],
+      "explanation": "Double forward slashes // are used for single-line comments."
+    },
+    {
+      "componentId": "cpp_drag_1",
+      "type": "drag_and_drop",
+      "concept_tested": "Program Structure",
+      "title": "Arrange the C++ Program Structure",
+      "prompt": "Drag the following parts to create a valid C++ program structure.",
+      "visual_interactive_prompt": "Display draggable code blocks scattered on the screen. Students drag them into a vertical code editor layout to build a working C++ program.",
+      "draggable_items": [
+        "#include <iostream>",
+        "using namespace std;",
+        "int main()",
+        "{",
+        "cout << \"Hello World\";",
+        "return 0;",
+        "}"
+      ],
+      "correct_order": [
+        "#include <iostream>",
+        "using namespace std;",
+        "int main()",
+        "{",
+        "cout << \"Hello World\";",
+        "return 0;",
+        "}"
+      ],
+      "explanation": "A valid C++ program starts with headers, followed by namespace declaration, main function, program body, and return statement."
+    },
+    {
+      "componentId": "cpp_drag_2",
+      "type": "drag_and_drop",
+      "concept_tested": "Variable Declaration",
+      "title": "Match Variable Type with Example",
+      "prompt": "Drag each example to the correct variable type.",
+      "visual_interactive_prompt": "Show two columns: variable types on the left and example declarations on the right. Students drag examples to match the correct type container.",
+      "pairs": [
+        { "type": "int", "example": "int age = 20;" },
+        { "type": "float", "example": "float price = 10.5;" },
+        { "type": "char", "example": "char grade = 'A';" },
+        { "type": "bool", "example": "bool isPassed = true;" }
+      ],
+      "explanation": "Each variable type stores different forms of data in C++."
+    },
+    {
+      "componentId": "cpp_drag_3",
+      "type": "drag_and_drop",
+      "concept_tested": "Operators",
+      "title": "Match Operator with Function",
+      "prompt": "Drag each operator to its correct meaning.",
+      "visual_interactive_prompt": "Show operator symbols as draggable cards and math operation labels as drop targets. Animate the operation result when a correct match is made.",
+      "pairs": [
+        { "operator": "+", "meaning": "Addition" },
+        { "operator": "-", "meaning": "Subtraction" },
+        { "operator": "*", "meaning": "Multiplication" },
+        { "operator": "/", "meaning": "Division" }
+      ],
+      "explanation": "Arithmetic operators perform mathematical calculations in C++."
+    }
+  ]
+}
