@@ -6,6 +6,7 @@ import { supertrendRegimeSystem } from '../indicators/exclusive/supertrend_regim
 import { calculateSqueeze } from '../indicators/exclusive/squeeze_momentum';
 import { smoothedHeikinAshi } from '../indicators/heikin_ashi_smoothing';
 import { evaluatePipsDeltas } from './evaluateAssetPips';
+import { getCandlePatternsMultiple } from '../indicators/exclusive/candlePattern';
 
 export interface IndicatorRow {
   index: number;
@@ -132,6 +133,14 @@ export function getIndicatorsStateForDataset(
   const zScorePeriod = indicatorSettings.volatility?.zScorePeriod || 20;
   const zScoresResult = calculateVolatilityZScore(dataset, zScorePeriod);
 
+  // 11. Candle Patterns
+  const candlePatternsResult = getCandlePatternsMultiple(
+    dataset.map(d => d.open),
+    highs,
+    lows,
+    closes
+  );
+
   // Pull values for current timestamp and 4 lookbacks (total: 5)
   const startIndex = Math.min(currentIndex, dataset.length - 1);
   const endLookbackLimit = Math.max(0, startIndex - 4);
@@ -256,6 +265,18 @@ export function getIndicatorsStateForDataset(
         'Z-Score': isNaN(zScoresResult[i]) ? 'N/A' : zScoresResult[i].toFixed(2)
       }
     });
+
+    // Candle Patterns
+    if (candlePatternsResult && candlePatternsResult.patterns && candlePatternsResult.patterns[i]) {
+      activeIndicators.push({
+        name: 'Candle Patterns',
+        key: 'candle_patterns',
+        values: {
+          'Pattern': candlePatternsResult.patterns[i],
+          'Action Signal': candlePatternsResult.action_signal[i] || 'NONE'
+        }
+      });
+    }
 
     // Render Type / Style Mode
     activeIndicators.push({

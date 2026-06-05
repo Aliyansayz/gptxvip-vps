@@ -23,9 +23,9 @@ export const TradingPanelIndicatorLog: React.FC<TradingPanelIndicatorLogProps> =
   deltaIndex,
   config
 }) => {
-  const { 
-    indicatorSettings, 
-    tradingConfig, 
+  const {
+    indicatorSettings,
+    tradingConfig,
     heikinAshiSettings,
     isFeatureLogActive,
     setIsFeatureLogActive,
@@ -35,7 +35,7 @@ export const TradingPanelIndicatorLog: React.FC<TradingPanelIndicatorLogProps> =
     setFeatureLog,
     dataSettings
   } = useIndicatorsStore();
-  
+
   const [activeTab, setActiveTab] = useState<'alpha' | 'beta' | 'delta'>('alpha');
   const [expandedRowIndex, setExpandedRowIndex] = useState<number | null>(0); // Default expand the latest row
 
@@ -53,23 +53,23 @@ export const TradingPanelIndicatorLog: React.FC<TradingPanelIndicatorLogProps> =
     (dataSettings?.asset as string) || 'gold'
   );
 
-  const activeRows = activeTab === 'alpha' 
-    ? indicatorState.alphaRows 
-    : activeTab === 'beta' 
-    ? indicatorState.betaRows 
-    : indicatorState.deltaRows;
+  const activeRows = activeTab === 'alpha'
+    ? indicatorState.alphaRows
+    : activeTab === 'beta'
+      ? indicatorState.betaRows
+      : indicatorState.deltaRows;
 
-  const activeLabel = activeTab === 'alpha' 
-    ? 'Alpha Primary Base (Lowest Latency)' 
-    : activeTab === 'beta' 
-    ? 'Beta Aggregated Base' 
-    : 'Delta Multi-Interval Layer';
+  const activeLabel = activeTab === 'alpha'
+    ? 'Alpha Primary Base (Lowest Latency)'
+    : activeTab === 'beta'
+      ? 'Beta Aggregated Base'
+      : 'Delta Multi-Interval Layer';
 
-  const currentIndexLabel = activeTab === 'alpha' 
-    ? simulationIndex 
-    : activeTab === 'beta' 
-    ? betaIndex 
-    : deltaIndex;
+  const currentIndexLabel = activeTab === 'alpha'
+    ? simulationIndex
+    : activeTab === 'beta'
+      ? betaIndex
+      : deltaIndex;
 
   return (
     <div className="flex flex-col gap-4 text-zinc-300">
@@ -81,8 +81,8 @@ export const TradingPanelIndicatorLog: React.FC<TradingPanelIndicatorLogProps> =
         </div>
         <div className="flex items-center gap-4 flex-wrap">
           <label className="flex items-center gap-2 cursor-pointer select-none">
-            <input 
-              type="checkbox" 
+            <input
+              type="checkbox"
               id="isFeatureLogActive"
               checked={isFeatureLogActive}
               onChange={(e) => setIsFeatureLogActive(e.target.checked)}
@@ -91,8 +91,8 @@ export const TradingPanelIndicatorLog: React.FC<TradingPanelIndicatorLogProps> =
             <span className="text-xs text-zinc-300 font-medium select-none">Activate the Feature Log</span>
           </label>
           <label className="flex items-center gap-2 cursor-pointer select-none">
-            <input 
-              type="checkbox" 
+            <input
+              type="checkbox"
               id="isVisibilityLogActive"
               checked={isVisibilityLogActive}
               onChange={(e) => setIsVisibilityLogActive(e.target.checked)}
@@ -158,13 +158,12 @@ export const TradingPanelIndicatorLog: React.FC<TradingPanelIndicatorLogProps> =
       </div>
 
       {/* Summary Banner */}
-      <div className={`p-2.5 rounded-lg border text-[10.5px] leading-relaxed flex items-center justify-between bg-zinc-950/40 ${
-        activeTab === 'alpha' 
-          ? 'border-cyan-950 text-cyan-300/90' 
-          : activeTab === 'beta' 
-          ? 'border-purple-950 text-purple-300/90'
-          : 'border-emerald-950 text-emerald-300/90'
-      }`}>
+      <div className={`p-2.5 rounded-lg border text-[10.5px] leading-relaxed flex items-center justify-between bg-zinc-950/40 ${activeTab === 'alpha'
+          ? 'border-cyan-950 text-cyan-300/90'
+          : activeTab === 'beta'
+            ? 'border-purple-950 text-purple-300/90'
+            : 'border-emerald-950 text-emerald-300/90'
+        }`}>
         <div>
           <span className="font-bold uppercase tracking-wider mr-1">Active Stream:</span>
           {activeLabel} (Pointer Index: {currentIndexLabel})
@@ -211,6 +210,30 @@ export const TradingPanelIndicatorLog: React.FC<TradingPanelIndicatorLogProps> =
                       <span className="text-zinc-500">H:<span className="text-zinc-300">{row.high.toFixed(2)}</span></span>
                       <span className="text-zinc-500">L:<span className="text-zinc-300">{row.low.toFixed(2)}</span></span>
                       <span className="text-zinc-500">C:<span className="text-zinc-100 font-bold">{row.close.toFixed(2)}</span></span>
+                      {(() => {
+                        const candlePatternsInd = row.indicators?.find(ind => ind.key === 'candle_patterns');
+                        const patternText = candlePatternsInd?.values?.['Pattern'] || 'NONE';
+                        const actionSignal = candlePatternsInd?.values?.['Action Signal'] || 'NONE';
+                        const patternStr = String(patternText);
+                        const actionSignalStr = String(actionSignal);
+                        if (patternStr === 'NONE') return null;
+                        return (
+                          <div className="hidden md:flex items-center gap-1.5 text-[9.5px] font-mono border-l border-zinc-805 pl-3">
+                            <span className="text-zinc-550">Pattern:</span>
+                            <span className="font-bold text-amber-400 capitalize bg-amber-950/20 px-1.5 py-0.5 rounded border border-amber-900/30">
+                              {patternStr.toLowerCase().replace(/_/g, ' ')}
+                            </span>
+                            {actionSignalStr !== 'NONE' && (
+                              <span className={`px-1.5 py-0.5 rounded text-[8.5px] font-extrabold uppercase border ${actionSignalStr.toLowerCase().includes('bull')
+                                  ? 'bg-emerald-950/50 text-emerald-400 border-emerald-900/30'
+                                  : 'bg-rose-950/50 text-rose-400 border-rose-900/30'
+                                }`}>
+                                {actionSignal}
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })()}
                     </div>
                     {isExpanded ? <ChevronUp size={14} className="text-zinc-400" /> : <ChevronDown size={14} className="text-zinc-400" />}
                   </div>
@@ -242,7 +265,7 @@ export const TradingPanelIndicatorLog: React.FC<TradingPanelIndicatorLogProps> =
                               {isMainStrategy && (
                                 <span className="text-[8px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800/45">
                                   ACTIVE STRATEGY
-                                  </span>
+                                </span>
                               )}
                             </div>
                             <div className="flex flex-col gap-1">
