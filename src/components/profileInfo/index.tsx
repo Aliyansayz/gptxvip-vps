@@ -27,7 +27,34 @@ import { toast } from "sonner";
 const BIO_TEXT =
   "Highly adaptive and versatile professional. Done work mainly in Python programming and data science to build complex, high-performance applications. By leveraging advanced AI technologies, Aliyan has developed deep expertise across multiple domains, including visual UI/UX design, prompt engineering, and intelligent information summarization. Passionate about system engineering, technical writing, and travel blogging.";
 
-const EDUCATION_QUALIFICATIONS = [
+interface FocusGroup {
+  label: string;
+  items: string[];
+}
+
+interface EducationQualification {
+  id: string;
+  type: string;
+  title: string;
+  institution: string;
+  period: string;
+  status: string;
+  badge: string;
+  metricLabel: string;
+  metricValue: string;
+  description: string;
+  transcriptUrl?: string;
+  icon: React.ComponentType<{ className?: string }>;
+  colorClass: string;
+  bgGradient: string;
+  borderClass: string;
+  textClass: string;
+  glowColor: string;
+  progress: number;
+  focusGroups?: FocusGroup[];
+}
+
+const EDUCATION_QUALIFICATIONS: EducationQualification[] = [
   {
     id: "undergrad",
     type: "Undergraduate Degree",
@@ -36,6 +63,12 @@ const EDUCATION_QUALIFICATIONS = [
     period: "",
     status: "Completed",
     badge: "With Honors & Distinctions",
+    focusGroups: [
+      {
+        label: "Primary Focus",
+        items: ["Computer Science Degree"],
+      },
+    ],
     metricLabel: "Academic Performance",
     metricValue: "3.2 / 4.0 CGPA",
     description: "Comprehensive study covering computer science fundamentals, data structures, algorithms, databases, and software engineering principles.",
@@ -55,6 +88,12 @@ const EDUCATION_QUALIFICATIONS = [
     period: "2026 - Ongoing",
     status: "In Progress",
     badge: "2/4 Completed",
+    focusGroups: [
+      {
+        label: "Secondary Focus",
+        items: ["Cybersecurity MicroMaster"],
+      },
+    ],
     metricLabel: "Program Progress",
     metricValue: "50% Completed",
     description: "Advanced learning in systems security, network defense, cryptography, digital forensics, and cybersecurity risk management.",
@@ -75,6 +114,12 @@ const EDUCATION_QUALIFICATIONS = [
     period: "2025",
     status: "Completed",
     badge: "Transcript Verified",
+    focusGroups: [
+      {
+        label: "Enthusiasm",
+        items: ["Internet of Things", "Game Development"],
+      },
+    ],
     metricLabel: "Verification Status",
     metricValue: "Completed (2025)",
     description: "Focused on game architecture, tournament logistics, player ecosystems, publishing pipelines, and business strategies.",
@@ -106,6 +151,32 @@ const EDUCATION_QUALIFICATIONS = [
     textClass: "text-indigo-600 dark:text-indigo-400",
     glowColor: "rgba(99,102,241,0.15)",
     progress: 35,
+  },
+  {
+    id: "data-science-python",
+    type: "Professional Certificate",
+    title: "Data Science Python Specialization",
+    institution: "edX Platform",
+    period: "",
+    status: "Verified",
+    badge: "Credential Recorded",
+    focusGroups: [
+      {
+        label: "Primary Focus",
+        items: ["Data Science Python Specialization"],
+      },
+    ],
+    metricLabel: "Verification",
+    metricValue: "Verified",
+    description: "Python-centered data science training covering analysis, modeling, and practical applied workflows.",
+    transcriptUrl: "https://credentials.edx.org/records/programs/shared/b991e407d0824b33b2fc8e7566b0388c/",
+    icon: Code2,
+    colorClass: "amber",
+    bgGradient: "from-amber-500/10 via-amber-500/5 to-transparent",
+    borderClass: "border-amber-500/20 hover:border-amber-500/40 dark:border-amber-400/20 dark:hover:border-amber-400/40",
+    textClass: "text-amber-600 dark:text-amber-400",
+    glowColor: "rgba(245,158,11,0.15)",
+    progress: 100,
   },
 ];
 
@@ -354,6 +425,28 @@ export const ProfileInfo: React.FC<ProfileInfoProps> = ({ showYears = false }) =
                   <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed font-light">
                     {item.description}
                   </p>
+
+                  {item.focusGroups ? (
+                    <div className="space-y-3">
+                      {item.focusGroups.map((group) => (
+                        <div key={group.label} className="space-y-1.5">
+                          <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-zinc-400 dark:text-zinc-500">
+                            {group.label}
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            {group.items.map((focusItem) => (
+                              <span
+                                key={focusItem}
+                                className="px-3 py-1 rounded-full text-[11px] font-semibold bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 border border-zinc-200/60 dark:border-zinc-800/60"
+                              >
+                                {focusItem}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
 
                 {/* Progress, Metrics and Actions */}
