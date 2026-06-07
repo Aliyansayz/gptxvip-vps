@@ -179,7 +179,7 @@ export function evaluateTradeExits(
       const isPartialExitActive = config.partialTradeExitOnReversal || false;
       const partialPercentage = config.partialExitPercentage ?? 70;
 
-      if (isMainTrade && exitReason === 'SIGNAL_REVERSAL' && isPartialExitActive) {
+      if (isMainTrade && exitReason === 'SIGNAL_REVERSAL' && isPartialExitActive && !trade.hasPartialExited && (trade.size || 0) >= 0.01) {
         const exitSize = calculatePartialExitSize(trade.size || 0, partialPercentage);
         if (exitSize > 0) {
           const remainingSize = Number(((trade.size || 0) - exitSize).toFixed(2));
@@ -239,6 +239,7 @@ export function evaluateTradeExits(
             size: remainingSize,
             stopLoss: remainingStopLoss,
             latencyDelaySeconds,
+            hasPartialExited: true,
             infoStatus: `Partial Exit Active (Remaining ${remainingSize} lot)`
           };
 

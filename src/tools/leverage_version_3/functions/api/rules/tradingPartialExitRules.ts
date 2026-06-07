@@ -15,10 +15,10 @@ export function calculatePartialExitSize(totalSize: number, percentage: number):
   // Calculate raw exit size based on percentage
   const rawExitSize = totalSize * (percentage / 100);
 
-  // Perform ceiling to 2 decimals as specified by requirement
-  // For totalSize = 0.03, percentage = 70: rawExitSize = 0.021 -> ceiling to 0.03
-  // For totalSize = 0.02, percentage = 70: rawExitSize = 0.014 -> ceiling to 0.02
-  let exitSize = Math.ceil(rawExitSize * 100) / 100;
+  // Perform rounding to 2 decimals as specified by requirement
+  // For totalSize = 0.03, percentage = 70: rawExitSize = 0.021 -> round to 0.02
+  // For totalSize = 0.02, percentage = 70: rawExitSize = 0.014 -> round to 0.01
+  let exitSize = Math.round(rawExitSize * 100) / 100;
 
   // Ensure we keep at least 0.01 active if it was partially exited.
   if (exitSize >= totalSize) {

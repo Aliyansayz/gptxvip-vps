@@ -28,4 +28,5 @@ export interface Trade {
   infoStatus?: string;
   trailCount?: number;
   lastTrailIndex?: number;
+  hasPartialExited?: boolean;
 }
