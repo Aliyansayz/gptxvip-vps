@@ -176,7 +176,7 @@ export function evaluateTradeExits(
     if (shouldExit) {
       // Check if this is a MAIN trade & CLOSED BY SIGNAL_REVERSAL & partial exit is active
       const isMainTrade = !trade.tradeType || trade.tradeType === 'main trade';
-      const isPartialExitActive = config.partialTradeExitOnReversal ?? true;
+      const isPartialExitActive = config.partialTradeExitOnReversal || false;
       const partialPercentage = config.partialExitPercentage ?? 70;
 
       if (isMainTrade && exitReason === 'SIGNAL_REVERSAL' && isPartialExitActive) {

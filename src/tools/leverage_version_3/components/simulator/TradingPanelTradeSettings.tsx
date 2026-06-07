@@ -244,7 +244,7 @@ export const TradingPanelTradeSettings: React.FC = () => {
                 <label className="flex items-start gap-3 cursor-pointer mb-3">
                   <input
                     type="checkbox"
-                    checked={tradingConfig.partialTradeExitOnReversal ?? true}
+                    checked={tradingConfig.partialTradeExitOnReversal || false}
                     onChange={(e) => setTradingConfig(prev => ({
                       ...prev,
                       partialTradeExitOnReversal: e.target.checked
@@ -256,7 +256,7 @@ export const TradingPanelTradeSettings: React.FC = () => {
                     <div className="text-[10px] text-zinc-500 mt-1">If enabled, when a signal reversal occurs, only a percentage of the active lot size will be closed instead of the full position.</div>
                   </div>
                 </label>
-                {(tradingConfig.partialTradeExitOnReversal ?? true) && (
+                {(tradingConfig.partialTradeExitOnReversal || false) && (
                   <div>
                     <label className="block text-[10px] text-zinc-400 mb-1">Exit Percentage (%)</label>
                     <input
