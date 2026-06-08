@@ -30,11 +30,12 @@ export function createFeatureLogEntry(
   betaRows: IndicatorRow[],
   deltaRows: IndicatorRow[],
   presetName?: string,
-  outcome?: TradeOutcome | null
+  outcome?: TradeOutcome | null,
+  indicatorCheckedState?: Record<string, boolean>
 ): FeatureLogEntry {
-  const alphaMetrics = extractNormalizedMetrics(alphaRows, 'alpha');
-  const betaMetrics = extractNormalizedMetrics(betaRows, 'beta');
-  const deltaMetrics = extractNormalizedMetrics(deltaRows, 'delta');
+  const alphaMetrics = extractNormalizedMetrics(alphaRows, 'alpha', indicatorCheckedState);
+  const betaMetrics = extractNormalizedMetrics(betaRows, 'beta', indicatorCheckedState);
+  const deltaMetrics = extractNormalizedMetrics(deltaRows, 'delta', indicatorCheckedState);
 
   const resolvedOutcome = outcome || {
     exitPrice: trade.exitPrice,

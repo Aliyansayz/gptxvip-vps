@@ -16,12 +16,12 @@ export function determineFlipTradeSignal(
 
       // Feature B
       if (config.flipModeUseExitRuleAsEntry) {
-        return oppositeSide;
+         return oppositeSide;
       }
 
       // Feature A
       if (config.exitOnSignalReversal && !config.useDifferentSignalSystemOnExit) {
-        return oppositeSide;
+         return oppositeSide;
       }
     }
   }

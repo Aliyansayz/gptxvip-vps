@@ -5,7 +5,8 @@ import { pipsToPrice, priceToPips } from '../../functions/api/middleware/pipsTra
 import { evaluateDynamicPositionSize, autoAdjustMargin, autoAdjustPriceLiquidation } from '../../functions/api/position_sizing/leveragedDynamicPositionSize';
 import { AlertTriangle, Wand2, Info } from 'lucide-react';
 import { LEVERAGE_ARCHITECTURE_INFO } from '../../functions/api/leveragedAccount/leverageType';
-import { Ohlc, calculateATR } from '../../functions/api/indicators/baseline';
+import { Ohlc } from '../../functions/api/indicators/baseline';
+import { calculateATR } from '../../functions/api/indicators/integral/atr';
 
 export const TradingPanelLeverageSettings: React.FC<{ alphaData?: Ohlc[] }> = ({ alphaData }) => {
   const { leverageSettings, setLeverageSettings, dataSettings, tradingConfig, indicatorSettings } = useIndicatorsStore();

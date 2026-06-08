@@ -1,5 +1,5 @@
 import React from 'react';
-import { Ohlc, calculateSMA, calculateEMA, calculateStochastic, calculateSupertrend, calculateStopBandsSmooth, calculateADX, calculateATR } from '../../functions/api/indicators/baseline';
+import { Ohlc, calculateSMA, calculateEMA, calculateStochastic, calculateSupertrend, calculateStopBandsSmooth } from '../../functions/api/indicators/baseline';
 import { calculateLastNCandles } from '../../functions/api/indicators/lastNCandleLowHigh';
 import { manualPipsOffset, lowForLongAtrOffset, highForShortAtrOffset } from '../../functions/api/middleware/offsetWithATRInSl';
 import { priceToPips } from '../../functions/api/middleware/pipsTranslation';
@@ -7,9 +7,11 @@ import { calculateVolatilityZScore } from '../../functions/api/indicators/exclus
 import { linearRegressionSystem } from '../../functions/api/indicators/exclusive/linearRegression';
 import { calculateBollingerBands } from '../../functions/api/indicators/exclusive/bollingerBands';
 import { supertrendRegimeSystem } from '../../functions/api/indicators/exclusive/supertrend_regime';
-import { calculateSqueeze } from '../../functions/api/indicators/exclusive/squeeze_momentum';
-import { smoothedHeikinAshi } from '../../functions/api/indicators/heikin_ashi_smoothing';
-import { getCandlePatternsMultiple } from '../../functions/api/indicators/exclusive/candlePattern';
+import { calculateADX } from '../../functions/api/indicators/integral/adx';
+import { calculateATR } from '../../functions/api/indicators/integral/atr';
+import { calculateSqueeze } from '../../functions/api/indicators/integral/squeeze_momentum';
+import { smoothedHeikinAshi } from '../../functions/api/indicators/integral/heikin_ashi_smoothing';
+import { getCandlePatternsMultiple } from '../../functions/api/indicators/integral/candlePattern';
 import { Config } from './types';
 
 export function useComputedIndicators(
@@ -201,17 +203,20 @@ export function useComputedIndicators(
       result.stops = { lowerBand: finalLower, upperBand: finalUpper };
     }
 
-    // Volatility Filters
+    // Integral Indicators Always Computed
     const volData = getDataBySource(indicatorSettings.volatility?.dataSource || 'alpha');
-    if (tradingConfig.useADXFilter) {
-       result.adx = calculateADX(volData, indicatorSettings.volatility.adxPeriod);
-    }
-    if (tradingConfig.useSqueezeFilter) {
-       const volClose = volData.map(d => d.close);
-       const volHigh = volData.map(d => d.high);
-       const volLow = volData.map(d => d.low);
-       result.squeeze = calculateSqueeze(volClose, volHigh, volLow);
-    }
+    result.adx = calculateADX(volData, indicatorSettings.volatility?.adxPeriod || 14);
+    
+    const volClose = volData.map(d => d.close);
+    const volHigh = volData.map(d => d.high);
+    const volLow = volData.map(d => d.low);
+    result.squeeze = calculateSqueeze(volClose, volHigh, volLow);
+
+    const cpOpen = data.map(d => d.open);
+    const cpHigh = data.map(d => d.high);
+    const cpLow = data.map(d => d.low);
+    const cpClose = data.map(d => d.close);
+    result.candlestick_pattern_integral = getCandlePatternsMultiple(cpOpen, cpHigh, cpLow, cpClose); // Unconditional candle pattern
 
     const zScoreData = getDataBySource(indicatorSettings.volatilityRegime?.dataSource || 'alpha');
     const hasZScoreFilters = tradingConfig.exitAfterNCandlesMin || tradingConfig.exitAfterNMinutesMin || tradingConfig.exitAfterNSecondsMin;

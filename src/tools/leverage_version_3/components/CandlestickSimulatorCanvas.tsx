@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
-import { Ohlc, calculateSMA, calculateEMA, calculateStochastic, calculateSupertrend, calculateStopBandsSmooth, calculateADX } from '../functions/api/indicators/baseline';
+import { Ohlc, calculateSMA, calculateEMA, calculateStochastic, calculateSupertrend, calculateStopBandsSmooth } from '../functions/api/indicators/baseline';
+import { calculateADX } from '../functions/api/indicators/integral/adx';
+import { calculateATR } from '../functions/api/indicators/integral/atr';
 import { calculateVolatilityZScore } from '../functions/api/indicators/exclusive';
 import { linearRegressionSystem } from '../functions/api/indicators/exclusive/linearRegression';
-import { calculateSqueeze } from '../functions/api/indicators/exclusive/squeeze_momentum';
+import { calculateSqueeze } from '../functions/api/indicators/integral/squeeze_momentum';
 import { calculateBollingerBands } from '../functions/api/indicators/exclusive/bollingerBands';
 import { supertrendRegimeSystem } from '../functions/api/indicators/exclusive/supertrend_regime';
-import { smoothedHeikinAshi } from '../functions/api/indicators/heikin_ashi_smoothing';
+import { smoothedHeikinAshi } from '../functions/api/indicators/integral/heikin_ashi_smoothing';
 import { throttle } from 'lodash';
 import { Trade } from '../../types/trading';
 import { VisibilitySettings, useIndicatorsStore } from '../stores/indicators_store';

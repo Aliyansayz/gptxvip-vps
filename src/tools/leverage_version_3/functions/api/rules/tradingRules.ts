@@ -84,14 +84,14 @@ export function evaluateTradeEntries(
   squeezeStatus?: number,
   leverageConfig?: LeverageConfig,
   currentBalance?: number,
-  volRegimeScenario?: 'A' | 'B' | 'C' | 'D' | 'None',
+  volRegimeScenario?: 'A'|'B'|'C'|'D'|'None',
   assetName: string = 'gold',
   isFlipSignal: boolean = false
 ): Trade[] {
   // Leverage Check
   if (leverageConfig && leverageConfig.enabled && currentBalance !== undefined) {
     if (!isSufficientBalanceToOpenTrade(data[currentIndex].close, leverageConfig, currentBalance, assetName)) {
-      return []; // insufficient balance
+       return []; // insufficient balance
     }
   }
 
@@ -191,7 +191,7 @@ export function evaluateTradeExits(
 
           const pipMultiplier = config.pipMultiplier || 1;
           const pips = priceDiff / pipMultiplier;
-
+          
           let closedPnl = 0;
           if (leverageConfig && leverageConfig.enabled) {
             closedPnl = calculatePnL(trade.entryPrice, exitPrice, exitSize, trade.side);
@@ -222,16 +222,16 @@ export function evaluateTradeExits(
           // 2. Create remaining OPEN portion retaining same parameters (stop loss, etc.)
           let remainingStopLoss = trade.stopLoss;
           if (remainingStopLoss === undefined) {
-            if (config.useStopLoss && customStopLossValue) {
-              remainingStopLoss = trade.side === 'LONG' ? customStopLossValue.lower : customStopLossValue.upper;
-            } else if (config.stopLossPips !== undefined && config.stopLossPips > 0) {
-              const pipMultiplier = config.pipMultiplier || 1;
-              if (trade.side === 'LONG') {
-                remainingStopLoss = currentCandle.close - (config.stopLossPips * pipMultiplier);
-              } else {
-                remainingStopLoss = currentCandle.close + (config.stopLossPips * pipMultiplier);
-              }
-            }
+             if (config.useStopLoss && customStopLossValue) {
+               remainingStopLoss = trade.side === 'LONG' ? customStopLossValue.lower : customStopLossValue.upper;
+             } else if (config.stopLossPips !== undefined && config.stopLossPips > 0) {
+               const pipMultiplier = config.pipMultiplier || 1;
+               if (trade.side === 'LONG') {
+                 remainingStopLoss = currentCandle.close - (config.stopLossPips * pipMultiplier);
+               } else {
+                 remainingStopLoss = currentCandle.close + (config.stopLossPips * pipMultiplier);
+               }
+             }
           }
 
           const remainingTrade: Trade = {
@@ -259,7 +259,7 @@ export function evaluateTradeExits(
 
       const pipMultiplier = config.pipMultiplier || 1;
       const pips = priceDiff / pipMultiplier;
-
+      
       let pnl = 0;
       if (leverageConfig && leverageConfig.enabled) {
         pnl = calculatePnL(trade.entryPrice, exitPrice, trade.size || 1, trade.side);
@@ -377,12 +377,12 @@ export function evaluateTradeExits(
 
           const pipMultiplier = config.pipMultiplier || 1;
           const pips = priceDiff / pipMultiplier;
-
+          
           let exitReason = rootTrade.exitReason;
           if (pTrade.side !== rootTrade.side && exitReason === 'STOP_LOSS') {
-            exitReason = 'TAKE_PROFIT';
+             exitReason = 'TAKE_PROFIT';
           } else if (pTrade.side !== rootTrade.side && exitReason === 'TAKE_PROFIT') {
-            exitReason = 'STOP_LOSS';
+             exitReason = 'STOP_LOSS'; 
           }
 
           let pnl = 0;
@@ -403,7 +403,7 @@ export function evaluateTradeExits(
             exitPrice,
             exitTime: rootTrade.exitTime,
             exitIndex: rootTrade.exitIndex,
-            exitReason,
+            exitReason, 
             pnl,
             pips,
             balanceAfter: runningBalance,

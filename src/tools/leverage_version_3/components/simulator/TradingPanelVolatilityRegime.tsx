@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
-import { Ohlc, calculateATR } from '../../functions/api/indicators/baseline';
+import { Ohlc } from '../../functions/api/indicators/baseline';
+import { calculateATR } from '../../functions/api/indicators/integral/atr';
 import { linearRegressionSystem } from '../../functions/api/indicators/exclusive/linearRegression';
 import { trendDecayState } from '../../functions/api/indicators/exclusive/volatilityBehavior';
 import { useIndicatorsStore } from '../../stores/indicators_store';

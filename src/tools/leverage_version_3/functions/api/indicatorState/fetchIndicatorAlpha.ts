@@ -1,12 +1,15 @@
-import { Ohlc, calculateSMA, calculateEMA, calculateStochastic, calculateSupertrend, calculateStopBandsSmooth, calculateADX } from '../indicators/baseline';
+import { Ohlc, calculateSMA, calculateEMA, calculateStochastic, calculateSupertrend, calculateStopBandsSmooth } from '../indicators/baseline';
 import { calculateVolatilityZScore } from '../indicators/exclusive';
 import { linearRegressionSystem } from '../indicators/exclusive/linearRegression';
 import { calculateBollingerBands } from '../indicators/exclusive/bollingerBands';
 import { supertrendRegimeSystem } from '../indicators/exclusive/supertrend_regime';
-import { calculateSqueeze } from '../indicators/exclusive/squeeze_momentum';
-import { smoothedHeikinAshi } from '../indicators/heikin_ashi_smoothing';
+import { calculateADX } from '../indicators/integral/adx';
+import { calculateSqueeze } from '../indicators/integral/squeeze_momentum';
+import { smoothedHeikinAshi } from '../indicators/integral/heikin_ashi_smoothing';
+import { getCandlePatternsMultiple } from '../indicators/integral/candlePattern';
+import { calculateBodyWickRatio } from '../indicators/integral/body_wick_size_ratio';
+import { calculateRelativePriceAcceleration } from '../indicators/integral/relative_price_acceleration';
 import { evaluatePipsDeltas } from './evaluateAssetPips';
-import { getCandlePatternsMultiple } from '../indicators/exclusive/candlePattern';
 
 export interface IndicatorRow {
   index: number;
@@ -134,12 +137,17 @@ export function getIndicatorsStateForDataset(
   const zScoresResult = calculateVolatilityZScore(dataset, zScorePeriod);
 
   // 11. Candle Patterns
-  const candlePatternsResult = getCandlePatternsMultiple(
-    dataset.map(d => d.open),
-    highs,
-    lows,
-    closes
-  );
+  const opens = dataset.map(d => d.open);
+  let candlePatternsResult: any = null;
+  try {
+    candlePatternsResult = getCandlePatternsMultiple(opens, highs, lows, closes);
+  } catch (e) {
+    console.error("Candle pattern calculation error in getIndicatorsStateForDataset:", e);
+  }
+
+  // 12. Body Wick Size Ratio & Relative Price Acceleration
+  const bodyWickRatioResult = calculateBodyWickRatio(dataset);
+  const relPriceAccelResult = calculateRelativePriceAcceleration(dataset, 15);
 
   // Pull values for current timestamp and 4 lookbacks (total: 5)
   const startIndex = Math.min(currentIndex, dataset.length - 1);
@@ -267,14 +275,24 @@ export function getIndicatorsStateForDataset(
     });
 
     // Candle Patterns
-    if (candlePatternsResult && candlePatternsResult.patterns && candlePatternsResult.patterns[i]) {
+    if (candlePatternsResult && candlePatternsResult.patterns[i] !== undefined) {
+      const patternValues: Record<string, string | number> = {
+        'Pattern': candlePatternsResult.patterns[i] ? candlePatternsResult.patterns[i].split('|').join(', ').toUpperCase() : 'NONE',
+        'Action Signal': candlePatternsResult.action_signal[i] ? candlePatternsResult.action_signal[i].toUpperCase() : 'NONE'
+      };
+      
+      // Add each choice as its own column feature to be recorded (0 or 1)
+      if (candlePatternsResult.choicelist) {
+        candlePatternsResult.choicelist.forEach((choice: string) => {
+          const match = candlePatternsResult.patterns[i].includes(choice) ? 1 : 0;
+          patternValues[choice] = match;
+        });
+      }
+
       activeIndicators.push({
         name: 'Candle Patterns',
         key: 'candle_patterns',
-        values: {
-          'Pattern': candlePatternsResult.patterns[i],
-          'Action Signal': candlePatternsResult.action_signal[i] || 'NONE'
-        }
+        values: patternValues
       });
     }
 
@@ -286,6 +304,23 @@ export function getIndicatorsStateForDataset(
         'Style Mode': isHAEnabled ? 'Heikin Ashi (Smoothed)' : 'Standard Candlestick',
         'Enabled Source': isHAEnabled ? 'YES' : 'NO',
         'Visual Only': 'YES (No System Impact)'
+      }
+    });
+
+    // Body Wick Ratio & Price Acceleration
+    activeIndicators.push({
+      name: 'Body Wick Size Ratio',
+      key: 'body_wick_size_ratio',
+      values: {
+        'Ratio': isNaN(bodyWickRatioResult[i]) ? 'N/A' : bodyWickRatioResult[i]
+      }
+    });
+
+    activeIndicators.push({
+      name: 'Relative Price Acceleration (15)',
+      key: 'relative_price_acceleration',
+      values: {
+        'Acceleration %': isNaN(relPriceAccelResult[i]) ? 'N/A' : relPriceAccelResult[i]
       }
     });
 

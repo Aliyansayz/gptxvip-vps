@@ -17,7 +17,7 @@ export function processIndicatorBasedEntry(
   squeezeStatus?: number,
   leverageConfig?: LeverageConfig,
   currentBalance?: number,
-  volRegimeScenario?: 'A' | 'B' | 'C' | 'D' | 'None',
+  volRegimeScenario?: 'A'|'B'|'C'|'D'|'None',
   assetName: string = 'gold',
   isFlipSignal: boolean = false
 ): Trade[] {
@@ -34,7 +34,7 @@ export function processIndicatorBasedEntry(
   if (hasOpenTrade) return [];
 
   const currentCandle = data[currentIndex];
-
+  
   let stopLoss = undefined;
   let takeProfit = undefined;
 
@@ -76,7 +76,7 @@ export function processIndicatorBasedEntry(
   const count = config.mainTradeParams?.countToExecute || 1;
   const executionTypeStr = config.mainTradeParams?.executionType === 'market execution' ? 'MARKET_EXECUTION' : 'MARKET_EXECUTION';
   const trades: Trade[] = [];
-
+  
   let evaluatedPositionSize = leverageConfig ? leverageConfig.positionSize : 1;
   if (leverageConfig && leverageConfig.enabled) {
     if (leverageConfig.positionSizingType === 'dynamic_risk_per_pip' && currentBalance !== undefined) {
@@ -108,7 +108,7 @@ export function processIndicatorBasedEntry(
         const calcPips = priceToPips(priceMove, assetName, currentCandle.close);
         if (calcPips > 0) atrPips = calcPips;
       }
-
+      
       const riskPercentage = leverageConfig.dynamicRiskAtrPipsPercentage || 2;
       const evaluation = evaluateDynamicPositionSize(
         currentBalance,
@@ -146,41 +146,41 @@ export function processIndicatorBasedEntry(
       const hftScale = config.hftScaleFactor || 1;
       const hftSize = Math.max(0.01, Number((evaluatedPositionSize * hftScale).toFixed(2)));
       const hftSide = signal === 'LONG' ? 'SHORT' : 'LONG';
-
+      
       let hftStopLoss = undefined;
       let hftTakeProfit = undefined;
-
+      
       if (config.hftSyncStopLoss) {
-        if (stopLoss !== undefined) {
-          const priceDiff = Math.abs(currentCandle.close - stopLoss);
-          hftStopLoss = hftSide === 'LONG' ? (currentCandle.close - priceDiff) : (currentCandle.close + priceDiff);
-
-          if (config.useTakeProfit) {
-            const hftRisk = Math.abs(currentCandle.close - hftStopLoss);
-            hftTakeProfit = hftSide === 'LONG'
-              ? (currentCandle.close + hftRisk * config.rewardRiskRatio)
-              : (currentCandle.close - hftRisk * config.rewardRiskRatio);
-          }
-        }
+         if (stopLoss !== undefined) {
+           const priceDiff = Math.abs(currentCandle.close - stopLoss);
+           hftStopLoss = hftSide === 'LONG' ? (currentCandle.close - priceDiff) : (currentCandle.close + priceDiff);
+           
+           if (config.useTakeProfit) {
+             const hftRisk = Math.abs(currentCandle.close - hftStopLoss);
+             hftTakeProfit = hftSide === 'LONG' 
+               ? (currentCandle.close + hftRisk * config.rewardRiskRatio) 
+               : (currentCandle.close - hftRisk * config.rewardRiskRatio);
+           }
+         }
       } else {
-        const pipMultiplier = config.pipMultiplier || 1;
-        if (config.hftStopLossPips) {
-          hftStopLoss = hftSide === 'LONG'
-            ? currentCandle.close - (config.hftStopLossPips * pipMultiplier)
-            : currentCandle.close + (config.hftStopLossPips * pipMultiplier);
-        }
-
-        const rr = config.hftRewardRiskRatio || 1.5;
-        if (config.hftTakeProfitPips) {
-          hftTakeProfit = hftSide === 'LONG'
-            ? currentCandle.close + (config.hftTakeProfitPips * pipMultiplier)
-            : currentCandle.close - (config.hftTakeProfitPips * pipMultiplier);
-        } else if (config.hftStopLossPips) {
-          const hftRisk = config.hftStopLossPips * pipMultiplier;
-          hftTakeProfit = hftSide === 'LONG'
-            ? currentCandle.close + (hftRisk * rr)
-            : currentCandle.close - (hftRisk * rr);
-        }
+         const pipMultiplier = config.pipMultiplier || 1;
+         if (config.hftStopLossPips) {
+           hftStopLoss = hftSide === 'LONG' 
+             ? currentCandle.close - (config.hftStopLossPips * pipMultiplier) 
+             : currentCandle.close + (config.hftStopLossPips * pipMultiplier);
+         }
+         
+         const rr = config.hftRewardRiskRatio || 1.5;
+         if (config.hftTakeProfitPips) {
+           hftTakeProfit = hftSide === 'LONG'
+             ? currentCandle.close + (config.hftTakeProfitPips * pipMultiplier)
+             : currentCandle.close - (config.hftTakeProfitPips * pipMultiplier);
+         } else if (config.hftStopLossPips) {
+           const hftRisk = config.hftStopLossPips * pipMultiplier;
+           hftTakeProfit = hftSide === 'LONG'
+             ? currentCandle.close + (hftRisk * rr)
+             : currentCandle.close - (hftRisk * rr);
+         }
       }
 
       trades.push({

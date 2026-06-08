@@ -1,6 +1,6 @@
 import { Ohlc } from '../indicators/baseline';
 import { calculateVolatilityZScore } from '../indicators/exclusive';
-import { calculateSqueeze } from '../indicators/exclusive/squeeze_momentum';
+import { calculateSqueeze } from '../indicators/integral/squeeze_momentum';
 import { getVolatilityRegime } from '../indicators/exclusive/volatilityBehavior';
 
 export interface VolatilityState {

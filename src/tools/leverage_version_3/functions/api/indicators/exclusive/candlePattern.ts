@@ -6,6 +6,7 @@ export function getCandlePatternsMultiple(
 ): {
     action_signal: (string | null)[];
     patterns: string[];
+    choicelist: string[];
 } {
 
     const n = o.length;
@@ -342,6 +343,7 @@ export function getCandlePatternsMultiple(
 
     return {
         action_signal,
-        patterns
+        patterns,
+        choicelist
     };
 }

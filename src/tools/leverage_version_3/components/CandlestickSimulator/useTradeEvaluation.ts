@@ -4,6 +4,7 @@ import { Trade } from '../../../types/trading';
 import { evaluateTradeEntries, evaluateTradeExits } from '../../functions/api/rules/tradingRules';
 import { updateTrailSL } from '../../functions/api/middleware/updateTrailSL';
 import { evaluateRecurrentTradeEntries } from '../../functions/api/rules/tradingRecurrentTradeRules';
+import { determineFlipTradeSignal } from '../../functions/api/tradeState/flipMainTrade';
 import { checkLinearRegressionAdxEntryConditions } from '../../functions/api/indicators/exclusive/exclusive_entry_exit';
 import { calculateVolatilityScenario } from '../../functions/api/indicators/exclusive/volatilityBehavior';
 import { getEligibleRootAccount } from '../../functions/api/accountState/accountEligibleToTrade';
@@ -253,6 +254,13 @@ export function useTradeEvaluation(
       
       currentBalance += newlyClosedPnL;
 
+      let isFlipSignal = false;
+      const flipSignal = determineFlipTradeSignal(newlyClosedTrades, tradingConfig);
+      if (flipSignal) {
+        currentEntrySignal = flipSignal;
+        isFlipSignal = true;
+      }
+
       const generateParallelTrades = (baseTrades: Trade[]) => {
         const pTrades: Trade[] = [];
         baseTrades.forEach(t => {
@@ -276,7 +284,7 @@ export function useTradeEvaluation(
 
       let newTradesRaw: Trade[] = [];
       if (!tradingConfig.tradeBreaker) {
-        newTradesRaw = evaluateTradeEntries(simulationIndex, visibleData, currentEntrySignal, updatedTrades, tradingConfig, customStopLossValue, adxValue, squeezeStatus, leverageSettings, currentBalance, volRegimeScenario, assetName);
+        newTradesRaw = evaluateTradeEntries(simulationIndex, visibleData, currentEntrySignal, updatedTrades, tradingConfig, customStopLossValue, adxValue, squeezeStatus, leverageSettings, currentBalance, volRegimeScenario, assetName, isFlipSignal);
         if (newTradesRaw.length > 0) {
           newTradesRaw = newTradesRaw.map(t => ({ ...t, accountId: eligibleAccountId }));
           if (onLogCallback) {

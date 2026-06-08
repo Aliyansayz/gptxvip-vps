@@ -41,7 +41,8 @@ export function normalizeIndicatorIntoDataSource(
  */
 export function extractNormalizedMetrics(
   rows: IndicatorRow[],
-  source: 'alpha' | 'beta' | 'delta'
+  source: 'alpha' | 'beta' | 'delta',
+  indicatorCheckedState?: Record<string, boolean>
 ): Record<string, string | number> {
   const metrics: Record<string, string | number> = {};
 
@@ -51,6 +52,11 @@ export function extractNormalizedMetrics(
 
     row.indicators.forEach((ind) => {
       if (!ind || !ind.values) return;
+      
+      // If unchecked, exclude from feature log book
+      if (indicatorCheckedState && indicatorCheckedState[ind.key] === false) {
+        return;
+      }
 
       Object.entries(ind.values).forEach(([label, val]) => {
         const colName = normalizeIndicatorIntoDataSource(ind.key, label, source, lookbackIdx);
