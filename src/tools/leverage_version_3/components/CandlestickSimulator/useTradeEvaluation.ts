@@ -27,7 +27,10 @@ export function useTradeEvaluation(
   parallelAccounts: ParallelAccount[],
   assetName: string,
   serialTradingEnabled: boolean,
-  setTradingConfig?: any
+  setTradingConfig?: any,
+  betaData?: Ohlc[],
+  deltaData?: Ohlc[],
+  indicatorSettings?: any
 ) {
   let onLogCallback: any = undefined;
   try {
@@ -48,49 +51,93 @@ export function useTradeEvaluation(
 
     const ind = computedIndicators;
 
+    // Helper mapping alpha simulationIndex timestamp to relative index of beta or delta arrays
+    const getMappedIndex = (sourceStr: string | undefined): number => {
+      const source = sourceStr || 'alpha';
+      if (source === 'alpha') return simulationIndex;
+      if (!data[simulationIndex]) return simulationIndex;
+
+      const time = data[simulationIndex].time;
+      const dataset = source === 'beta' ? betaData : deltaData;
+
+      if (!dataset || dataset.length === 0) return 0;
+
+      let left = 0;
+      let right = dataset.length - 1;
+      let best = 0;
+      while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        if (dataset[mid].time <= time) {
+          best = mid;
+          left = mid + 1;
+        } else {
+          right = mid - 1;
+        }
+      }
+      return best;
+    };
+
+    const entryType = config.type;
+    const entryDataSource = tradingConfig.entrySignalSource || 'alpha';
+    const entryIndex = getMappedIndex(entryDataSource);
+
+    const exitType = tradingConfig.exitSignalSystemType || config.type;
+    const exitDataSource = tradingConfig.exitSignalSource || 'alpha';
+    const exitIndex = getMappedIndex(exitDataSource);
+
+    const volDataSource = indicatorSettings?.volatility?.dataSource || 'alpha';
+    const volIndex = getMappedIndex(volDataSource);
+
+    const zScoreDataSource = indicatorSettings?.volatilityRegime?.dataSource || 'alpha';
+    const zScoreIndex = getMappedIndex(zScoreDataSource);
+
+    const slDataSource = indicatorSettings?.stopLossIndicator?.dataSource || 'alpha';
+    const slIndex = getMappedIndex(slDataSource);
+
     // Evaluate Entry Signal
     if (config.type === 'ma_crossover' && ind.entrySignal?.fastLine) {
       const fastLine = ind.entrySignal.fastLine;
       const slowLine = ind.entrySignal.slowLine;
-      if (fastLine && slowLine && fastLine.length > simulationIndex) {
-        const lastFast = fastLine[simulationIndex];
-        const lastSlow = slowLine[simulationIndex];
-        const prevFast = fastLine[simulationIndex - 1];
-        const prevSlow = slowLine[simulationIndex - 1];
+      if (fastLine && slowLine && fastLine.length > entryIndex) {
+        const lastFast = fastLine[entryIndex];
+        const lastSlow = slowLine[entryIndex];
+        const prevFast = fastLine[Math.max(0, entryIndex - 1)];
+        const prevSlow = slowLine[Math.max(0, entryIndex - 1)];
         if (prevFast <= prevSlow && lastFast > lastSlow) currentEntrySignal = 'LONG';
         else if (prevFast >= prevSlow && lastFast < lastSlow) currentEntrySignal = 'SHORT';
       }
     } else if (config.type === 'supertrend' && ind.entrySignal?.supertrend) {
       const st = ind.entrySignal.supertrend;
-      if (st && st.length > simulationIndex) {
-        const lastSt = st[simulationIndex];
-        const prevSt = st[simulationIndex - 1];
+      if (st && st.length > entryIndex) {
+        const lastSt = st[entryIndex];
+        const prevSt = st[Math.max(0, entryIndex - 1)];
         if (prevSt.trend === 'down' && lastSt.trend === 'up') currentEntrySignal = 'LONG';
         else if (prevSt.trend === 'up' && lastSt.trend === 'down') currentEntrySignal = 'SHORT';
       }
     } else if (config.type === 'stochastic' && ind.entrySignal?.stochastic) {
       const stoch = ind.entrySignal.stochastic;
-      if (stoch && stoch.k.length > simulationIndex && stoch.d.length > simulationIndex) {
-        const lastK = stoch.k[simulationIndex];
-        const lastD = stoch.d[simulationIndex];
-        const prevK = stoch.k[simulationIndex - 1];
-        const prevD = stoch.d[simulationIndex - 1];
+      if (stoch && stoch.k.length > entryIndex && stoch.d.length > entryIndex) {
+        const lastK = stoch.k[entryIndex];
+        const lastD = stoch.d[entryIndex];
+        const prevK = stoch.k[Math.max(0, entryIndex - 1)];
+        const prevD = stoch.d[Math.max(0, entryIndex - 1)];
         if (prevK <= prevD && lastK > lastD) currentEntrySignal = 'LONG';
         else if (prevK >= prevD && lastK < lastD) currentEntrySignal = 'SHORT';
       }
     } else if (config.type === 'linear_regression' && ind.entrySignal?.lr) {
       const lr = ind.entrySignal.lr;
       const indicatorData = {
-        'SIM': { secondary: { lr_trend_secondary: lr.direction.slice(0, simulationIndex + 1), lr_volatality_s: lr.vol_regime.slice(0, simulationIndex + 1), lr_reversion_s: lr.reversion.slice(0, simulationIndex + 1) } }
+        'SIM': { secondary: { lr_trend_secondary: lr.direction.slice(0, entryIndex + 1), lr_volatality_s: lr.vol_regime.slice(0, entryIndex + 1), lr_reversion_s: lr.reversion.slice(0, entryIndex + 1) } }
       };
       const entry = checkLinearRegressionAdxEntryConditions(indicatorData, 'SIM');
       if (entry.status === 'long') currentEntrySignal = 'LONG';
       else if (entry.status === 'short') currentEntrySignal = 'SHORT';
     } else if (config.type === 'bollinger_bands' && ind.entrySignal?.bb) {
       const bb = ind.entrySignal.bb;
-      if (bb && bb.length > simulationIndex) {
-        const lastBb = bb[simulationIndex];
-        const lastCandle = data[simulationIndex];
+      if (bb && bb.length > entryIndex) {
+        const lastBb = bb[entryIndex];
+        const sourceData = entryDataSource === 'beta' && betaData ? betaData : entryDataSource === 'delta' && deltaData ? deltaData : data;
+        const lastCandle = sourceData[entryIndex];
         if (lastCandle && lastBb && !isNaN(lastBb.lower) && !isNaN(lastBb.upper)) {
           if (lastCandle.open < lastBb.lower && lastCandle.close > lastBb.lower) {
             currentEntrySignal = 'LONG';
@@ -101,73 +148,74 @@ export function useTradeEvaluation(
       }
     } else if (config.type === 'supertrend_regime' && ind.entrySignal?.supertrend_regime) {
       const sr = ind.entrySignal.supertrend_regime;
-      if (sr && sr.signal && sr.signal.length > simulationIndex) {
-        const lastSignal = sr.signal[simulationIndex];
-        const prevSignal = sr.signal[Math.max(0, simulationIndex - 1)];
+      if (sr && sr.signal && sr.signal.length > entryIndex) {
+        const lastSignal = sr.signal[entryIndex];
+        const prevSignal = sr.signal[Math.max(0, entryIndex - 1)];
         if (prevSignal <= 0 && lastSignal === 1) currentEntrySignal = 'LONG';
         else if (prevSignal >= 0 && lastSignal === -1) currentEntrySignal = 'SHORT';
       }
     } else if (config.type === 'heikin_ashi_smoothed' && ind.entrySignal?.heikin_ashi_smoothed) {
       const ha = ind.entrySignal.heikin_ashi_smoothed;
-      if (ha && ha.length > simulationIndex) {
-        const lastCandle = ha[simulationIndex];
-        const prevCandle = ha[Math.max(0, simulationIndex - 1)];
+      if (ha && ha.length > entryIndex) {
+        const lastCandle = ha[entryIndex];
+        const prevCandle = ha[Math.max(0, entryIndex - 1)];
         if (prevCandle.close <= prevCandle.open && lastCandle.close > lastCandle.open) currentEntrySignal = 'LONG';
         else if (prevCandle.close >= prevCandle.open && lastCandle.close < lastCandle.open) currentEntrySignal = 'SHORT';
       }
     } else if (config.type === 'candlestick_pattern' && ind.entrySignal?.candlestick_pattern) {
       const cp = ind.entrySignal.candlestick_pattern;
-      if (cp && cp.action_signal && cp.action_signal.length > simulationIndex) {
-        const action = cp.action_signal[simulationIndex];
+      if (cp && cp.action_signal && cp.action_signal.length > entryIndex) {
+        const action = cp.action_signal[entryIndex];
         if (action === 'bullish_action') currentEntrySignal = 'LONG';
         else if (action === 'bearish_action') currentEntrySignal = 'SHORT';
       }
     }
 
     // Evaluate Exit Signal
-    const exitType = ind.exitSignal?.type || config.type;
-    if (exitType === 'ma_crossover' && ind.exitSignal?.fastLine) {
+    const resolvedExitType = ind.exitSignal?.type || exitType;
+    if (resolvedExitType === 'ma_crossover' && ind.exitSignal?.fastLine) {
       const fastLine = ind.exitSignal.fastLine;
       const slowLine = ind.exitSignal.slowLine;
-      if (fastLine && slowLine && fastLine.length > simulationIndex) {
-        const lastFast = fastLine[simulationIndex];
-        const lastSlow = slowLine[simulationIndex];
-        const prevFast = fastLine[simulationIndex - 1];
-        const prevSlow = slowLine[simulationIndex - 1];
+      if (fastLine && slowLine && fastLine.length > exitIndex) {
+        const lastFast = fastLine[exitIndex];
+        const lastSlow = slowLine[exitIndex];
+        const prevFast = fastLine[Math.max(0, exitIndex - 1)];
+        const prevSlow = slowLine[Math.max(0, exitIndex - 1)];
         if (prevFast <= prevSlow && lastFast > lastSlow) currentExitSignal = 'LONG';
         else if (prevFast >= prevSlow && lastFast < lastSlow) currentExitSignal = 'SHORT';
       }
-    } else if (exitType === 'supertrend' && ind.exitSignal?.supertrend) {
+    } else if (resolvedExitType === 'supertrend' && ind.exitSignal?.supertrend) {
       const st = ind.exitSignal.supertrend;
-      if (st && st.length > simulationIndex) {
-        const lastSt = st[simulationIndex];
-        const prevSt = st[simulationIndex - 1];
+      if (st && st.length > exitIndex) {
+        const lastSt = st[exitIndex];
+        const prevSt = st[Math.max(0, exitIndex - 1)];
         if (prevSt.trend === 'down' && lastSt.trend === 'up') currentExitSignal = 'LONG';
         else if (prevSt.trend === 'up' && lastSt.trend === 'down') currentExitSignal = 'SHORT';
       }
-    } else if (exitType === 'stochastic' && ind.exitSignal?.stochastic) {
+    } else if (resolvedExitType === 'stochastic' && ind.exitSignal?.stochastic) {
       const stoch = ind.exitSignal.stochastic;
-      if (stoch && stoch.k.length > simulationIndex && stoch.d.length > simulationIndex) {
-        const lastK = stoch.k[simulationIndex];
-        const lastD = stoch.d[simulationIndex];
-        const prevK = stoch.k[simulationIndex - 1];
-        const prevD = stoch.d[simulationIndex - 1];
+      if (stoch && stoch.k.length > exitIndex && stoch.d.length > exitIndex) {
+        const lastK = stoch.k[exitIndex];
+        const lastD = stoch.d[exitIndex];
+        const prevK = stoch.k[Math.max(0, exitIndex - 1)];
+        const prevD = stoch.d[Math.max(0, exitIndex - 1)];
         if (prevK <= prevD && lastK > lastD) currentExitSignal = 'LONG';
         else if (prevK >= prevD && lastK < lastD) currentExitSignal = 'SHORT';
       }
-    } else if (exitType === 'linear_regression' && ind.exitSignal?.lr) {
+    } else if (resolvedExitType === 'linear_regression' && ind.exitSignal?.lr) {
       const lr = ind.exitSignal.lr;
       const indicatorData = {
-        'SIM': { secondary: { lr_trend_secondary: lr.direction.slice(0, simulationIndex + 1), lr_volatality_s: lr.vol_regime.slice(0, simulationIndex + 1), lr_reversion_s: lr.reversion.slice(0, simulationIndex + 1) } }
+        'SIM': { secondary: { lr_trend_secondary: lr.direction.slice(0, exitIndex + 1), lr_volatality_s: lr.vol_regime.slice(0, exitIndex + 1), lr_reversion_s: lr.reversion.slice(0, exitIndex + 1) } }
       };
       const entry = checkLinearRegressionAdxEntryConditions(indicatorData, 'SIM');
       if (entry.status === 'long') currentExitSignal = 'LONG';
       else if (entry.status === 'short') currentExitSignal = 'SHORT';
-    } else if (exitType === 'bollinger_bands' && ind.exitSignal?.bb) {
+    } else if (resolvedExitType === 'bollinger_bands' && ind.exitSignal?.bb) {
       const bb = ind.exitSignal.bb;
-      if (bb && bb.length > simulationIndex) {
-        const lastBb = bb[simulationIndex];
-        const lastCandle = data[simulationIndex];
+      if (bb && bb.length > exitIndex) {
+        const lastBb = bb[exitIndex];
+        const sourceData = exitDataSource === 'beta' && betaData ? betaData : exitDataSource === 'delta' && deltaData ? deltaData : data;
+        const lastCandle = sourceData[exitIndex];
         if (lastCandle && lastBb && !isNaN(lastBb.lower) && !isNaN(lastBb.upper)) {
           if (lastCandle.open < lastBb.lower && lastCandle.close > lastBb.lower) {
             currentExitSignal = 'LONG';
@@ -176,58 +224,58 @@ export function useTradeEvaluation(
           }
         }
       }
-    } else if (exitType === 'supertrend_regime' && ind.exitSignal?.supertrend_regime) {
+    } else if (resolvedExitType === 'supertrend_regime' && ind.exitSignal?.supertrend_regime) {
       const sr = ind.exitSignal.supertrend_regime;
-      if (sr && sr.signal && sr.signal.length > simulationIndex) {
-        const lastSignal = sr.signal[simulationIndex];
-        const prevSignal = sr.signal[Math.max(0, simulationIndex - 1)];
+      if (sr && sr.signal && sr.signal.length > exitIndex) {
+        const lastSignal = sr.signal[exitIndex];
+        const prevSignal = sr.signal[Math.max(0, exitIndex - 1)];
         if (prevSignal <= 0 && lastSignal === 1) currentExitSignal = 'LONG';
         else if (prevSignal >= 0 && lastSignal === -1) currentExitSignal = 'SHORT';
       }
-    } else if (exitType === 'heikin_ashi_smoothed' && ind.exitSignal?.heikin_ashi_smoothed) {
+    } else if (resolvedExitType === 'heikin_ashi_smoothed' && ind.exitSignal?.heikin_ashi_smoothed) {
       const ha = ind.exitSignal.heikin_ashi_smoothed;
-      if (ha && ha.length > simulationIndex) {
-        const lastCandle = ha[simulationIndex];
-        const prevCandle = ha[Math.max(0, simulationIndex - 1)];
+      if (ha && ha.length > exitIndex) {
+        const lastCandle = ha[exitIndex];
+        const prevCandle = ha[Math.max(0, exitIndex - 1)];
         if (prevCandle.close <= prevCandle.open && lastCandle.close > lastCandle.open) currentExitSignal = 'LONG';
         else if (prevCandle.close >= prevCandle.open && lastCandle.close < lastCandle.open) currentExitSignal = 'SHORT';
       }
-    } else if (exitType === 'candlestick_pattern' && ind.exitSignal?.candlestick_pattern) {
+    } else if (resolvedExitType === 'candlestick_pattern' && ind.exitSignal?.candlestick_pattern) {
       const cp = ind.exitSignal.candlestick_pattern;
-      if (cp && cp.action_signal && cp.action_signal.length > simulationIndex) {
-        const action = cp.action_signal[simulationIndex];
+      if (cp && cp.action_signal && cp.action_signal.length > exitIndex) {
+        const action = cp.action_signal[exitIndex];
         if (action === 'bullish_action') currentExitSignal = 'LONG';
         else if (action === 'bearish_action') currentExitSignal = 'SHORT';
       }
     }
 
     if (tradingConfig.useStopLoss && ind.stops) {
-       customStopLossValue = {
-         upper: ind.stops.upperBand[simulationIndex],
-         lower: ind.stops.lowerBand[simulationIndex]
-       };
+      customStopLossValue = {
+        upper: ind.stops.upperBand[slIndex],
+        lower: ind.stops.lowerBand[slIndex]
+      };
     }
 
     let adxValue: number | undefined = undefined;
     if (tradingConfig.useADXFilter && ind.adx) {
-      adxValue = ind.adx?.adx?.[simulationIndex];
+      adxValue = ind.adx?.adx?.[volIndex];
     }
 
     let squeezeStatus: number | undefined = undefined;
     if (tradingConfig.useSqueezeFilter && ind.squeeze) {
-      squeezeStatus = ind.squeeze.squeeze_status[simulationIndex];
+      squeezeStatus = ind.squeeze.squeeze_status[volIndex];
     }
 
     let zScoreValue: number | undefined = undefined;
     if (ind.zscores) {
-      zScoreValue = ind.zscores[simulationIndex];
+      zScoreValue = ind.zscores[zScoreIndex];
     }
 
     const visibleData = data.slice(0, simulationIndex + 1);
 
-    let volRegimeScenario: 'A'|'B'|'C'|'D'|'None' = 'None';
+    let volRegimeScenario: 'A' | 'B' | 'C' | 'D' | 'None' = 'None';
     if (tradingConfig.useVolRegimeScenarioA || tradingConfig.useVolRegimeScenarioC) {
-       volRegimeScenario = calculateVolatilityScenario(visibleData.map(d => d.close));
+      volRegimeScenario = calculateVolatilityScenario(visibleData.map(d => d.close));
     }
 
     setTrades(prevTrades => {
@@ -240,18 +288,18 @@ export function useTradeEvaluation(
 
       // Note: evaluateTradeExits does logic for PnL. It might use `currentBalance` but let's keep it computing correctly
       let updatedTrades = evaluateTradeExits(simulationIndex, visibleData, currentExitSignal, trailedTrades, tradingConfig, zScoreValue, leverageSettings, currentBalance, latencyDelaySeconds, customStopLossValue, onLogCallback);
-      
+
       const newlyClosedTrades = updatedTrades.filter(t => t.status === 'CLOSED' && prevTrades.find(pt => pt.id === t.id)?.status === 'OPEN');
       const newlyClosedPnL = newlyClosedTrades.filter(t => t.accountId === eligibleAccountId || (!t.accountId && eligibleAccountId === 'A1')).reduce((sum, t) => sum + (t.pnl || 0), 0);
-      
+
       if (newlyClosedTrades.length > 0 && onLogCallback) {
         newlyClosedTrades.forEach((t) => {
-           if (!t.accountId || t.accountId === 'A1') {
-             onLogCallback('INFO', 'TradeEngine', `Closed ${t.side} Trade [ID: ${t.id}] at ${t.exitPrice?.toFixed(5)} (Reason: ${t.exitReason}) PnL: ${t.pnl?.toFixed(2)}`);
-           }
+          if (!t.accountId || t.accountId === 'A1') {
+            onLogCallback('INFO', 'TradeEngine', `Closed ${t.side} Trade [ID: ${t.id}] at ${t.exitPrice?.toFixed(5)} (Reason: ${t.exitReason}) PnL: ${t.pnl?.toFixed(2)}`);
+          }
         });
       }
-      
+
       currentBalance += newlyClosedPnL;
 
       let isFlipSignal = false;
@@ -294,46 +342,46 @@ export function useTradeEvaluation(
           }
         }
       }
-      
+
       const newTrades = newTradesRaw.length > 0 ? [...newTradesRaw, ...generateParallelTrades(newTradesRaw)] : [];
       let nextTrades = newTrades.length > 0 ? [...updatedTrades, ...newTrades] : updatedTrades;
 
       if (tradingConfig.isRecurrentTradeActive && tradingConfig.recurrentTradeParams) {
         let latestTradeState = { trade: null, isLeveraged: !!leverageSettings.enabled, status: 'NEUTRAL', pnl: 0, pips: 0 } as any;
         if (nextTrades.length > 0) {
-           const rootTrades = nextTrades.filter(t => !t.accountId || t.accountId === 'A1' || t.accountId.startsWith('S'));
-           if (rootTrades.length > 0) {
-             const cCandle = data[simulationIndex];
-             const openRootTrades = rootTrades.filter(t => t.status === 'OPEN');
-             const sortedT = openRootTrades.length > 0
-               ? [...openRootTrades].sort((a,b) => b.entryTime - a.entryTime)
-               : [...rootTrades].sort((a,b) => b.entryTime - a.entryTime);
-             const lt = sortedT[0];
-             let ltStatus = 'NEUTRAL';
-             let ltPnl = lt.pnl || 0;
-             let ltPips = lt.pips || 0;
-             if (lt.status === 'OPEN') {
-                 const priceDiff = lt.side === 'LONG' ? cCandle.close - lt.entryPrice : lt.entryPrice - cCandle.close;
-                 
-                 const pipMult = tradingConfig.pipMultiplier || 1;
-                 ltPips = priceDiff / pipMult;
-  
-                 if (leverageSettings.enabled) {
-                   ltPnl = calculatePnL(lt.entryPrice, cCandle.close, lt.size || 1, lt.side as 'LONG' | 'SHORT');
-                 } else {
-                   ltPnl = priceDiff;
-                 }
-             }
-             if (ltPnl > 0) ltStatus = 'GAIN';
-             else if (ltPnl < 0) ltStatus = 'LOSS';
-             latestTradeState = { trade: lt, isLeveraged: !!leverageSettings.enabled, status: ltStatus, pnl: ltPnl, pips: ltPips };
-           }
+          const rootTrades = nextTrades.filter(t => !t.accountId || t.accountId === 'A1' || t.accountId.startsWith('S'));
+          if (rootTrades.length > 0) {
+            const cCandle = data[simulationIndex];
+            const openRootTrades = rootTrades.filter(t => t.status === 'OPEN');
+            const sortedT = openRootTrades.length > 0
+              ? [...openRootTrades].sort((a, b) => b.entryTime - a.entryTime)
+              : [...rootTrades].sort((a, b) => b.entryTime - a.entryTime);
+            const lt = sortedT[0];
+            let ltStatus = 'NEUTRAL';
+            let ltPnl = lt.pnl || 0;
+            let ltPips = lt.pips || 0;
+            if (lt.status === 'OPEN') {
+              const priceDiff = lt.side === 'LONG' ? cCandle.close - lt.entryPrice : lt.entryPrice - cCandle.close;
+
+              const pipMult = tradingConfig.pipMultiplier || 1;
+              ltPips = priceDiff / pipMult;
+
+              if (leverageSettings.enabled) {
+                ltPnl = calculatePnL(lt.entryPrice, cCandle.close, lt.size || 1, lt.side as 'LONG' | 'SHORT');
+              } else {
+                ltPnl = priceDiff;
+              }
+            }
+            if (ltPnl > 0) ltStatus = 'GAIN';
+            else if (ltPnl < 0) ltStatus = 'LOSS';
+            latestTradeState = { trade: lt, isLeveraged: !!leverageSettings.enabled, status: ltStatus, pnl: ltPnl, pips: ltPips };
+          }
         }
 
         const volState = {
-          zScore: { value: zScoreValue ?? null, source: 'alpha' },
-          squeezeStatus: { value: squeezeStatus ?? null, source: 'alpha' },
-          volatilityRegime: { value: ind.exitSignal?.lr?.vol_regime?.[simulationIndex] ?? null, source: 'alpha' }
+          zScore: { value: zScoreValue ?? null, source: indicatorSettings?.volatilityRegime?.dataSource || 'alpha' },
+          squeezeStatus: { value: squeezeStatus ?? null, source: indicatorSettings?.volatility?.dataSource || 'alpha' },
+          volatilityRegime: { value: ind.exitSignal?.lr?.vol_regime?.[exitIndex] ?? null, source: indicatorSettings?.[exitType]?.dataSource || 'alpha' }
         } as any;
 
         let recurrentTradesRaw: Trade[] = [];
@@ -370,5 +418,5 @@ export function useTradeEvaluation(
       return nextTrades;
     });
 
-  }, [simulationIndex, tradingEnabled, config, data, tradingConfig, computedIndicators, latencyDelaySeconds, leverageSettings, setTrades, parallelAccounts, assetName, serialTradingEnabled, setTradingConfig]);
+  }, [simulationIndex, tradingEnabled, config, data, tradingConfig, computedIndicators, latencyDelaySeconds, leverageSettings, setTrades, parallelAccounts, assetName, serialTradingEnabled, setTradingConfig, betaData, deltaData, indicatorSettings]);
 }

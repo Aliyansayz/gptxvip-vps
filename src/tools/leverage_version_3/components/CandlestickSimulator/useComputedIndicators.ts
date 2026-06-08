@@ -33,40 +33,51 @@ export function useComputedIndicators(
     if (data.length === 0) return null;
     const result: any = {};
 
+    const getParams = (settings: any, source: string, fallback: any) => {
+      if (!settings) return fallback;
+      if (settings.allowVariation) {
+        if (source === 'alpha' && settings.alphaParams) return { ...fallback, ...settings.alphaParams };
+        if (source === 'beta' && settings.betaParams) return { ...fallback, ...settings.betaParams };
+        if (source === 'delta' && settings.deltaParams) return { ...fallback, ...settings.deltaParams };
+      }
+      return fallback;
+    };
+
     // Entry signal indicators
-    const entryDataSource = indicatorSettings[config.type]?.dataSource || 'alpha';
+    const entryDataSource = tradingConfig.entrySignalSource || 'alpha';
     const entryData = getDataBySource(entryDataSource);
+    const entryConfig = getParams(indicatorSettings[config.type], entryDataSource, config);
     const entryClose = entryData.map(d => d.close);
     if (config.type === 'ma_crossover') {
       result.entrySignal = {
-        fastLine: calculateEMA(entryClose, config.fastMa || 9),
-        slowLine: calculateSMA(entryClose, config.slowMa || 21)
+        fastLine: calculateEMA(entryClose, entryConfig.fastMa || 9),
+        slowLine: calculateSMA(entryClose, entryConfig.slowMa || 21)
       };
     } else if (config.type === 'supertrend') {
       result.entrySignal = {
-        supertrend: calculateSupertrend(entryData, config.supertrendPeriod || 10, config.supertrendMultiplier || 3)
+        supertrend: calculateSupertrend(entryData, entryConfig.supertrendPeriod || 10, entryConfig.supertrendMultiplier || 3)
       };
     } else if (config.type === 'stochastic') {
       result.entrySignal = {
-        stochastic: calculateStochastic(entryData, config.stochK || 14, 3, config.stochD || 3)
+        stochastic: calculateStochastic(entryData, entryConfig.stochK || 14, 3, entryConfig.stochD || 3)
       };
     } else if (config.type === 'linear_regression') {
       result.entrySignal = {
-        lr: linearRegressionSystem(entryClose, config.lrSlopePeriod || 20, config.lrVolPeriod || 20, config.lrRegimePeriod || 30)
+        lr: linearRegressionSystem(entryClose, entryConfig.lrSlopePeriod || 20, entryConfig.lrVolPeriod || 20, entryConfig.lrRegimePeriod || 30)
       };
     } else if (config.type === 'bollinger_bands') {
       result.entrySignal = {
-        bb: calculateBollingerBands(entryData, config.bbPeriod || 20, config.bbStdDev || 2)
+        bb: calculateBollingerBands(entryData, entryConfig.bbPeriod || 20, entryConfig.bbStdDev || 2)
       };
     } else if (config.type === 'supertrend_regime') {
       const highs = entryData.map(d => d.high);
       const lows = entryData.map(d => d.low);
       result.entrySignal = {
         supertrend_regime: supertrendRegimeSystem(
-          highs, lows, entryClose, 
-          config.stPeriod || 10, config.atrMultiplier || 3, 
-          config.regimePeriod || 30, config.zPeriod || 20, 
-          config.zUpper || 1.5, config.zLower || -1.5
+          highs, lows, entryClose,
+          entryConfig.stPeriod || 10, entryConfig.atrMultiplier || 3,
+          entryConfig.regimePeriod || 30, entryConfig.zPeriod || 20,
+          entryConfig.zUpper || 1.5, entryConfig.zLower || -1.5
         )
       };
     } else if (config.type === 'heikin_ashi_smoothed') {
@@ -74,7 +85,7 @@ export function useComputedIndicators(
       const high = entryData.map(d => d.high);
       const low = entryData.map(d => d.low);
       result.entrySignal = {
-        heikin_ashi_smoothed: smoothedHeikinAshi(open, high, low, entryClose, config.haSmoothLen || 10)
+        heikin_ashi_smoothed: smoothedHeikinAshi(open, high, low, entryClose, entryConfig.haSmoothLen || 10)
       };
     } else if (config.type === 'candlestick_pattern') {
       const open = entryData.map(d => d.open);
@@ -86,16 +97,16 @@ export function useComputedIndicators(
     }
 
     // Exit signal indicators
-    const exitType = tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemType 
-      ? tradingConfig.exitSignalSystemType 
+    const exitType = tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemType
+      ? tradingConfig.exitSignalSystemType
       : config.type;
-      
-    const exitConfig = tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemParams
+
+    const exitDataSource = tradingConfig.exitSignalSource || 'alpha';
+    const exitData = getDataBySource(exitDataSource);
+    const baseExitConfig = tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemParams
       ? tradingConfig.exitSignalSystemParams
       : config;
-
-    const exitDataSource = indicatorSettings[exitType]?.dataSource || 'alpha';
-    const exitData = getDataBySource(exitDataSource);
+    const exitConfig = getParams(indicatorSettings[exitType], exitDataSource, baseExitConfig);
     const exitClose = exitData.map(d => d.close);
     if (exitType === 'ma_crossover') {
       result.exitSignal = {
@@ -162,10 +173,10 @@ export function useComputedIndicators(
       result.stops = calculateStopBandsSmooth(slData, indicatorSettings.stopLossIndicator?.period || 10, indicatorSettings.stopLossIndicator?.multiplier || 3.0, false, true);
     } else {
       const { lastNLow, lastNHigh } = calculateLastNCandles(slData, indicatorSettings.stopLossIndicator?.lastNPeriod || 5);
-      
+
       let finalLower = [...lastNLow];
       let finalUpper = [...lastNHigh];
-      
+
       const atrData = indicatorSettings.stopLossIndicator?.allowAtrOffset ? calculateATR(slData, indicatorSettings.stopLossIndicator?.period || 14) : null;
       const currentAsset = assetType || 'gold';
 
@@ -173,29 +184,29 @@ export function useComputedIndicators(
         let currentLower = finalLower[i];
         let currentUpper = finalUpper[i];
         const currentPrice = slData[i].close;
-        
+
         if (currentLower !== undefined) {
-           if (indicatorSettings.stopLossIndicator?.allowAtrOffset && atrData && atrData[i]) {
-              const atrPrice = atrData[i] * (indicatorSettings.stopLossIndicator?.atrOffsetMultiplier || 1.0);
-              const atrPips = priceToPips(atrPrice, currentAsset, currentPrice);
-              currentLower = lowForLongAtrOffset(currentLower, atrPips, currentAsset, currentPrice);
-           }
-           if (indicatorSettings.stopLossIndicator?.allowFixedOffset) {
-              const fixedPips = indicatorSettings.stopLossIndicator?.fixedOffsetPips || 0;
-              currentLower = manualPipsOffset(currentLower, fixedPips, currentAsset, currentPrice, true);
-           }
+          if (indicatorSettings.stopLossIndicator?.allowAtrOffset && atrData && atrData[i]) {
+            const atrPrice = atrData[i] * (indicatorSettings.stopLossIndicator?.atrOffsetMultiplier || 1.0);
+            const atrPips = priceToPips(atrPrice, currentAsset, currentPrice);
+            currentLower = lowForLongAtrOffset(currentLower, atrPips, currentAsset, currentPrice);
+          }
+          if (indicatorSettings.stopLossIndicator?.allowFixedOffset) {
+            const fixedPips = indicatorSettings.stopLossIndicator?.fixedOffsetPips || 0;
+            currentLower = manualPipsOffset(currentLower, fixedPips, currentAsset, currentPrice, true);
+          }
         }
 
         if (currentUpper !== undefined) {
-           if (indicatorSettings.stopLossIndicator?.allowAtrOffset && atrData && atrData[i]) {
-              const atrPrice = atrData[i] * (indicatorSettings.stopLossIndicator?.atrOffsetMultiplier || 1.0);
-              const atrPips = priceToPips(atrPrice, currentAsset, currentPrice);
-              currentUpper = highForShortAtrOffset(currentUpper, atrPips, currentAsset, currentPrice);
-           }
-           if (indicatorSettings.stopLossIndicator?.allowFixedOffset) {
-              const fixedPips = indicatorSettings.stopLossIndicator?.fixedOffsetPips || 0;
-              currentUpper = manualPipsOffset(currentUpper, fixedPips, currentAsset, currentPrice, false);
-           }
+          if (indicatorSettings.stopLossIndicator?.allowAtrOffset && atrData && atrData[i]) {
+            const atrPrice = atrData[i] * (indicatorSettings.stopLossIndicator?.atrOffsetMultiplier || 1.0);
+            const atrPips = priceToPips(atrPrice, currentAsset, currentPrice);
+            currentUpper = highForShortAtrOffset(currentUpper, atrPips, currentAsset, currentPrice);
+          }
+          if (indicatorSettings.stopLossIndicator?.allowFixedOffset) {
+            const fixedPips = indicatorSettings.stopLossIndicator?.fixedOffsetPips || 0;
+            currentUpper = manualPipsOffset(currentUpper, fixedPips, currentAsset, currentPrice, false);
+          }
         }
         finalLower[i] = currentLower;
         finalUpper[i] = currentUpper;
@@ -206,7 +217,7 @@ export function useComputedIndicators(
     // Integral Indicators Always Computed
     const volData = getDataBySource(indicatorSettings.volatility?.dataSource || 'alpha');
     result.adx = calculateADX(volData, indicatorSettings.volatility?.adxPeriod || 14);
-    
+
     const volClose = volData.map(d => d.close);
     const volHigh = volData.map(d => d.high);
     const volLow = volData.map(d => d.low);
@@ -221,7 +232,7 @@ export function useComputedIndicators(
     const zScoreData = getDataBySource(indicatorSettings.volatilityRegime?.dataSource || 'alpha');
     const hasZScoreFilters = tradingConfig.exitAfterNCandlesMin || tradingConfig.exitAfterNMinutesMin || tradingConfig.exitAfterNSecondsMin;
     if (hasZScoreFilters) {
-       result.zscores = calculateVolatilityZScore(zScoreData, indicatorSettings.volatility.zScorePeriod);
+      result.zscores = calculateVolatilityZScore(zScoreData, indicatorSettings.volatility.zScorePeriod);
     }
 
     return result;
