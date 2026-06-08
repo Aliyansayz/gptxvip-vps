@@ -74,9 +74,9 @@ export function useComputedIndicators(
       const lows = entryData.map(d => d.low);
       result.entrySignal = {
         supertrend_regime: supertrendRegimeSystem(
-          highs, lows, entryClose,
-          entryConfig.stPeriod || 10, entryConfig.atrMultiplier || 3,
-          entryConfig.regimePeriod || 30, entryConfig.zPeriod || 20,
+          highs, lows, entryClose, 
+          entryConfig.stPeriod || 10, entryConfig.atrMultiplier || 3, 
+          entryConfig.regimePeriod || 30, entryConfig.zPeriod || 20, 
           entryConfig.zUpper || 1.5, entryConfig.zLower || -1.5
         )
       };
@@ -97,10 +97,10 @@ export function useComputedIndicators(
     }
 
     // Exit signal indicators
-    const exitType = tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemType
-      ? tradingConfig.exitSignalSystemType
+    const exitType = tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemType 
+      ? tradingConfig.exitSignalSystemType 
       : config.type;
-
+      
     const exitDataSource = tradingConfig.exitSignalSource || 'alpha';
     const exitData = getDataBySource(exitDataSource);
     const baseExitConfig = tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemParams
@@ -173,10 +173,10 @@ export function useComputedIndicators(
       result.stops = calculateStopBandsSmooth(slData, indicatorSettings.stopLossIndicator?.period || 10, indicatorSettings.stopLossIndicator?.multiplier || 3.0, false, true);
     } else {
       const { lastNLow, lastNHigh } = calculateLastNCandles(slData, indicatorSettings.stopLossIndicator?.lastNPeriod || 5);
-
+      
       let finalLower = [...lastNLow];
       let finalUpper = [...lastNHigh];
-
+      
       const atrData = indicatorSettings.stopLossIndicator?.allowAtrOffset ? calculateATR(slData, indicatorSettings.stopLossIndicator?.period || 14) : null;
       const currentAsset = assetType || 'gold';
 
@@ -184,29 +184,29 @@ export function useComputedIndicators(
         let currentLower = finalLower[i];
         let currentUpper = finalUpper[i];
         const currentPrice = slData[i].close;
-
+        
         if (currentLower !== undefined) {
-          if (indicatorSettings.stopLossIndicator?.allowAtrOffset && atrData && atrData[i]) {
-            const atrPrice = atrData[i] * (indicatorSettings.stopLossIndicator?.atrOffsetMultiplier || 1.0);
-            const atrPips = priceToPips(atrPrice, currentAsset, currentPrice);
-            currentLower = lowForLongAtrOffset(currentLower, atrPips, currentAsset, currentPrice);
-          }
-          if (indicatorSettings.stopLossIndicator?.allowFixedOffset) {
-            const fixedPips = indicatorSettings.stopLossIndicator?.fixedOffsetPips || 0;
-            currentLower = manualPipsOffset(currentLower, fixedPips, currentAsset, currentPrice, true);
-          }
+           if (indicatorSettings.stopLossIndicator?.allowAtrOffset && atrData && atrData[i]) {
+              const atrPrice = atrData[i] * (indicatorSettings.stopLossIndicator?.atrOffsetMultiplier || 1.0);
+              const atrPips = priceToPips(atrPrice, currentAsset, currentPrice);
+              currentLower = lowForLongAtrOffset(currentLower, atrPips, currentAsset, currentPrice);
+           }
+           if (indicatorSettings.stopLossIndicator?.allowFixedOffset) {
+              const fixedPips = indicatorSettings.stopLossIndicator?.fixedOffsetPips || 0;
+              currentLower = manualPipsOffset(currentLower, fixedPips, currentAsset, currentPrice, true);
+           }
         }
 
         if (currentUpper !== undefined) {
-          if (indicatorSettings.stopLossIndicator?.allowAtrOffset && atrData && atrData[i]) {
-            const atrPrice = atrData[i] * (indicatorSettings.stopLossIndicator?.atrOffsetMultiplier || 1.0);
-            const atrPips = priceToPips(atrPrice, currentAsset, currentPrice);
-            currentUpper = highForShortAtrOffset(currentUpper, atrPips, currentAsset, currentPrice);
-          }
-          if (indicatorSettings.stopLossIndicator?.allowFixedOffset) {
-            const fixedPips = indicatorSettings.stopLossIndicator?.fixedOffsetPips || 0;
-            currentUpper = manualPipsOffset(currentUpper, fixedPips, currentAsset, currentPrice, false);
-          }
+           if (indicatorSettings.stopLossIndicator?.allowAtrOffset && atrData && atrData[i]) {
+              const atrPrice = atrData[i] * (indicatorSettings.stopLossIndicator?.atrOffsetMultiplier || 1.0);
+              const atrPips = priceToPips(atrPrice, currentAsset, currentPrice);
+              currentUpper = highForShortAtrOffset(currentUpper, atrPips, currentAsset, currentPrice);
+           }
+           if (indicatorSettings.stopLossIndicator?.allowFixedOffset) {
+              const fixedPips = indicatorSettings.stopLossIndicator?.fixedOffsetPips || 0;
+              currentUpper = manualPipsOffset(currentUpper, fixedPips, currentAsset, currentPrice, false);
+           }
         }
         finalLower[i] = currentLower;
         finalUpper[i] = currentUpper;
@@ -217,7 +217,7 @@ export function useComputedIndicators(
     // Integral Indicators Always Computed
     const volData = getDataBySource(indicatorSettings.volatility?.dataSource || 'alpha');
     result.adx = calculateADX(volData, indicatorSettings.volatility?.adxPeriod || 14);
-
+    
     const volClose = volData.map(d => d.close);
     const volHigh = volData.map(d => d.high);
     const volLow = volData.map(d => d.low);
@@ -232,7 +232,7 @@ export function useComputedIndicators(
     const zScoreData = getDataBySource(indicatorSettings.volatilityRegime?.dataSource || 'alpha');
     const hasZScoreFilters = tradingConfig.exitAfterNCandlesMin || tradingConfig.exitAfterNMinutesMin || tradingConfig.exitAfterNSecondsMin;
     if (hasZScoreFilters) {
-      result.zscores = calculateVolatilityZScore(zScoreData, indicatorSettings.volatility.zScorePeriod);
+       result.zscores = calculateVolatilityZScore(zScoreData, indicatorSettings.volatility.zScorePeriod);
     }
 
     return result;

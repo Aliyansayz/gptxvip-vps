@@ -24,6 +24,7 @@ import { AccountInfo } from '../simulator/AccountInfo';
 import { Download, Upload } from 'lucide-react';
 import { exportConfigUtility } from '../../functions/api/utility/exportConfigUtility';
 import { loadConfigUtility } from '../../functions/api/utility/loadConfigUtility';
+import { calculateTradeMetrics } from '../../functions/api/utility/metricsCalculator';
 import { CandlestickSimulatorProps } from './types';
 import { useSimulatorState } from './useSimulatorState';
 import { useComputedIndicators } from './useComputedIndicators';
@@ -59,18 +60,18 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
   const [tradingEnabled, setTradingEnabled] = useState(false);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
-  const {
-    tradingConfig,
-    setTradingConfig,
-    dataSettings,
+  const { 
+    tradingConfig, 
+    setTradingConfig, 
+    dataSettings, 
     setDataSettings,
-    leverageSettings,
-    setLeverageSettings,
-    indicatorSettings,
+    leverageSettings, 
+    setLeverageSettings, 
+    indicatorSettings, 
     setIndicatorSettings,
-    visibilitySettings,
+    visibilitySettings, 
     setVisibilitySettings,
-    parallelAccounts,
+    parallelAccounts, 
     setParallelAccounts,
     serialTradingEnabled,
     setSerialTradingEnabled,
@@ -223,8 +224,8 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
         serialTradingEnabled
       );
 
-      const combinedEquityGrowthPct = accountState.initialCombinedBalance > 0
-        ? ((accountState.combinedEquity - accountState.initialCombinedBalance) / accountState.initialCombinedBalance) * 100
+      const combinedEquityGrowthPct = accountState.initialCombinedBalance > 0 
+        ? ((accountState.combinedEquity - accountState.initialCombinedBalance) / accountState.initialCombinedBalance) * 100 
         : 0;
 
       if (shouldActivateTradeBreaker(combinedEquityGrowthPct, tradingConfig.autoTradeBreakerByEquityPct, tradingConfig.autoTradeBreakerEquityPctValue)) {
@@ -237,11 +238,11 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
       }
     }
   }, [
-    displayTrades,
-    data,
-    simulationIndex,
-    tradingConfig.autoTradeBreakerByEquityPct,
-    tradingConfig.tradeBreaker,
+    displayTrades, 
+    data, 
+    simulationIndex, 
+    tradingConfig.autoTradeBreakerByEquityPct, 
+    tradingConfig.tradeBreaker, 
     tradingConfig.autoTradeBreakerEquityPctValue,
     leverageSettings.balance,
     leverageSettings.enabled,
@@ -253,7 +254,7 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
   // Reactive ML Feature Logging Effect
   React.useEffect(() => {
     if (!isFeatureLogActive) return;
-
+    
     if (!trades || trades.length === 0) {
       if (featureLog.length > 0) {
         setFeatureLog([]); // Auto clear when simulation is reset and trades is emptied
@@ -286,16 +287,16 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
 
       const activePresetKey = currentAsset === 'Gold'
         ? (Object.keys(GOLD_ONLY_PRESETS) as GoldPresetName[]).find(
-          (key) => isPresetActive(GOLD_ONLY_PRESETS[key].params, params)
-        )
+            (key) => isPresetActive(GOLD_ONLY_PRESETS[key].params, params)
+          )
         : currentAsset === 'Nasdaq100'
           ? (Object.keys(NASDAQ100_PRESETS) as NasdaqPresetName[]).find(
-            (key) => isPresetActive(NASDAQ100_PRESETS[key].params, params)
-          )
+              (key) => isPresetActive(NASDAQ100_PRESETS[key].params, params)
+            )
           : currentAsset === 'Oil'
             ? (Object.keys(OIL_PRESETS) as OilPresetName[]).find(
-              (key) => isPresetActive(OIL_PRESETS[key].params, params)
-            )
+                (key) => isPresetActive(OIL_PRESETS[key].params, params)
+              )
             : undefined;
 
       const presetLabel = activePresetKey
@@ -377,16 +378,16 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
 
     const activePresetKey = currentAsset === 'Gold'
       ? (Object.keys(GOLD_ONLY_PRESETS) as GoldPresetName[]).find(
-        (key) => isPresetActive(GOLD_ONLY_PRESETS[key].params, params)
-      )
+          (key) => isPresetActive(GOLD_ONLY_PRESETS[key].params, params)
+        )
       : currentAsset === 'Nasdaq100'
         ? (Object.keys(NASDAQ100_PRESETS) as NasdaqPresetName[]).find(
-          (key) => isPresetActive(NASDAQ100_PRESETS[key].params, params)
-        )
+            (key) => isPresetActive(NASDAQ100_PRESETS[key].params, params)
+          )
         : currentAsset === 'Oil'
           ? (Object.keys(OIL_PRESETS) as OilPresetName[]).find(
-            (key) => isPresetActive(OIL_PRESETS[key].params, params)
-          )
+              (key) => isPresetActive(OIL_PRESETS[key].params, params)
+            )
           : undefined;
 
     const presetLabel = activePresetKey ? (currentAsset === 'Gold' ? GOLD_ONLY_PRESETS[activePresetKey as GoldPresetName].label : currentAsset === 'Nasdaq100' ? NASDAQ100_PRESETS[activePresetKey as NasdaqPresetName].label : OIL_PRESETS[activePresetKey as OilPresetName].label) : undefined;
@@ -406,7 +407,10 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
       historyBook[trade.entryTime] = trade;
     });
 
+    const finalMetrics = calculateTradeMetrics(displayTrades, leverageSettings.balance);
+
     const exportData = {
+      metrics: finalMetrics,
       trade_configs: tradingConfig,
       indicator_settings: {
         active_system_config: config,
@@ -458,7 +462,7 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
 
     try {
       const parsed = await loadConfigUtility(file);
-
+      
       if (parsed.trade_configs) setTradingConfig((prev: any) => ({ ...prev, ...parsed.trade_configs }));
       if (parsed.indicator_settings) {
         setIndicatorSettings((prev: any) => ({
@@ -472,22 +476,22 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
         }
       }
       if (parsed.trade_settings) {
-        setTradingConfig((prev: any) => ({ ...prev, ...parsed.trade_settings }));
-        if (typeof parsed.trade_settings.serialTradingEnabled !== 'undefined') {
-          setSerialTradingEnabled(parsed.trade_settings.serialTradingEnabled);
-        }
+          setTradingConfig((prev: any) => ({ ...prev, ...parsed.trade_settings }));
+          if (typeof parsed.trade_settings.serialTradingEnabled !== 'undefined') {
+            setSerialTradingEnabled(parsed.trade_settings.serialTradingEnabled);
+          }
       }
       if (parsed.data_layer_config && parsed.data_layer_config.data_settings) {
-        setDataSettings((prev: any) => ({ ...prev, ...parsed.data_layer_config.data_settings }));
+         setDataSettings((prev: any) => ({ ...prev, ...parsed.data_layer_config.data_settings }));
       }
       if (parsed.leverage_mode) {
-        setLeverageSettings((prev: any) => ({ ...prev, ...parsed.leverage_mode }));
+         setLeverageSettings((prev: any) => ({ ...prev, ...parsed.leverage_mode }));
       }
       if (parsed.account_settings) {
-        setParallelAccounts(parsed.account_settings);
+         setParallelAccounts(parsed.account_settings);
       }
       if (parsed.visibility) {
-        setVisibilitySettings((prev: any) => ({ ...prev, ...parsed.visibility }));
+         setVisibilitySettings((prev: any) => ({ ...prev, ...parsed.visibility }));
       }
     } catch (e) {
       console.error("Failed to load config", e);
@@ -498,7 +502,7 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
   return (
     <div className="w-full h-full flex flex-col min-h-0 gap-4">
       <div className="w-full shrink-0 flex flex-col bg-zinc-900/60 border border-zinc-800 shadow-inner rounded-xl overflow-hidden">
-        <SimulatorControls
+        <SimulatorControls 
           tradingEnabled={tradingEnabled}
           onTradingToggle={setTradingEnabled}
           isPlaying={isPlaying}
@@ -519,57 +523,57 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
           <div className="border-t border-zinc-800 bg-zinc-800/20 shrink-0">
             <div className="flex border-b border-zinc-800/50 flex-wrap overflow-hidden items-center justify-between">
               <div className="flex flex-wrap overflow-hidden">
-                <button onClick={() => setPanelTab('trading')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'trading' ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Trading & Controls</button>
-                <button onClick={() => setPanelTab('settings')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'settings' ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Trade Settings</button>
-                <button onClick={() => setPanelTab('leverage')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'leverage' ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Leverage Mode</button>
-                <button onClick={() => setPanelTab('account')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'account' ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Account Settings</button>
-                <button onClick={() => setPanelTab('visibility')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'visibility' ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Visibility</button>
-                <button onClick={() => setPanelTab('indicatorLog')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'indicatorLog' ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Indicator Log</button>
-                <button onClick={() => setPanelTab('hftMode')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'hftMode' ? 'text-emerald-400 border-b-2 border-emerald-400' : 'text-zinc-400 hover:text-zinc-200'}`}>HFT Mode</button>
-                <button onClick={() => setPanelTab('consoleLog')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'consoleLog' ? 'text-amber-400 border-b-2 border-amber-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Dev Console</button>
+                 <button onClick={() => setPanelTab('trading')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'trading' ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Trading & Controls</button>
+                 <button onClick={() => setPanelTab('settings')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'settings' ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Trade Settings</button>
+                 <button onClick={() => setPanelTab('leverage')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'leverage' ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Leverage Mode</button>
+                 <button onClick={() => setPanelTab('account')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'account' ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Account Settings</button>
+                 <button onClick={() => setPanelTab('visibility')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'visibility' ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Visibility</button>
+                 <button onClick={() => setPanelTab('indicatorLog')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'indicatorLog' ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Indicator Log</button>
+                 <button onClick={() => setPanelTab('hftMode')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'hftMode' ? 'text-emerald-400 border-b-2 border-emerald-400' : 'text-zinc-400 hover:text-zinc-200'}`}>HFT Mode</button>
+                 <button onClick={() => setPanelTab('consoleLog')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'consoleLog' ? 'text-amber-400 border-b-2 border-amber-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Dev Console</button>
               </div>
               <div className="flex items-center">
-                <input id="load-config-input" type="file" accept=".json" className="hidden" onChange={handleLoadConfig} />
-                <button
-                  onClick={() => document.getElementById('load-config-input')?.click()}
-                  className="mx-3 flex items-center gap-1.5 px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] font-bold uppercase tracking-wider rounded border border-zinc-700 transition-colors"
-                  title="Load backtest state from JSON"
-                >
-                  <Upload size={12} />
-                  Load Config
-                </button>
-                <button
-                  onClick={exportBacktestJSON}
-                  className="flex items-center gap-1.5 px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] font-bold uppercase tracking-wider rounded border border-zinc-700 transition-colors"
-                  title="Export complete backtest state to JSON"
-                >
-                  <Download size={12} />
-                  Export Config
-                </button>
+                 <input id="load-config-input" type="file" accept=".json" className="hidden" onChange={handleLoadConfig} />
+                 <button 
+                   onClick={() => document.getElementById('load-config-input')?.click()}
+                   className="mx-3 flex items-center gap-1.5 px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] font-bold uppercase tracking-wider rounded border border-zinc-700 transition-colors"
+                   title="Load backtest state from JSON"
+                 >
+                   <Upload size={12} />
+                   Load Config
+                 </button>
+                 <button 
+                   onClick={exportBacktestJSON}
+                   className="flex items-center gap-1.5 px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] font-bold uppercase tracking-wider rounded border border-zinc-700 transition-colors"
+                   title="Export complete backtest state to JSON"
+                 >
+                   <Download size={12} />
+                   Export Config
+                 </button>
               </div>
             </div>
             <div className="p-4">
               {panelTab === 'trading' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <TradingConfiguration
-                    config={tradingConfig}
-                    onChange={(c) => setTradingConfig((prev: any) => ({ ...prev, ...c }))}
-                    latestPrice={data[simulationIndex]?.close}
-                    stops={computedIndicators?.stops}
-                    assetType={dataSettings.asset as string}
-                    simulationIndex={simulationIndex}
-                  />
-                  <ManualControls
-                    hasActiveTrade={hasActiveTrade}
-                    isPlaying={isPlaying}
-                    tradeBreaker={tradingConfig.tradeBreaker}
-                    onTrade={handleManualTrade}
-                    onExit={handleManualExit}
-                    onReset={() => {
-                      handleReset(setSimulationIndex);
-
-                    }}
-                  />
+                   <TradingConfiguration 
+                     config={tradingConfig} 
+                     onChange={(c) => setTradingConfig((prev: any) => ({ ...prev, ...c }))} 
+                     latestPrice={data[simulationIndex]?.close}
+                     stops={computedIndicators?.stops}
+                     assetType={dataSettings.asset as string}
+                     simulationIndex={simulationIndex}
+                   />
+                   <ManualControls 
+                     hasActiveTrade={hasActiveTrade} 
+                     isPlaying={isPlaying} 
+                     tradeBreaker={tradingConfig.tradeBreaker}
+                     onTrade={handleManualTrade} 
+                     onExit={handleManualExit} 
+                     onReset={() => {
+                       handleReset(setSimulationIndex);
+                       
+                     }}
+                   />
                 </div>
               )}
               {panelTab === 'settings' && <TradingPanelTradeSettings />}
@@ -579,12 +583,12 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
               {panelTab === 'hftMode' && <TradingPanelHFTMode />}
               {panelTab === 'consoleLog' && <TradingPanelConsoleLog />}
               {panelTab === 'indicatorLog' && (
-                <TradingPanelIndicatorLog
-                  alphaData={data}
-                  betaData={betaData}
+                <TradingPanelIndicatorLog 
+                  alphaData={data} 
+                  betaData={betaData} 
                   deltaData={deltaData}
-                  simulationIndex={simulationIndex}
-                  betaIndex={betaIndex}
+                  simulationIndex={simulationIndex} 
+                  betaIndex={betaIndex} 
                   deltaIndex={deltaIndex}
                   config={stableConfig}
                 />
@@ -597,21 +601,21 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
       <div className="w-full flex-1 flex flex-col bg-zinc-900/60 border border-zinc-800 shadow-inner rounded-xl overflow-y-auto custom-scrollbar min-h-0">
         <div className={`relative w-full flex flex-col min-h-max`}>
           <div className="p-4 border-b border-zinc-800">
-            <TradingPanelVolatilityRegime
-              alphaData={data}
-              betaData={betaData}
-              deltaData={deltaData}
-              alphaIndex={simulationIndex}
-              betaIndex={betaIndex}
-              deltaIndex={deltaIndex}
-              alphaInterval={alphaInterval}
-              betaInterval={betaInterval}
-              deltaInterval={deltaInterval}
-            />
+             <TradingPanelVolatilityRegime 
+               alphaData={data}
+               betaData={betaData}
+               deltaData={deltaData}
+               alphaIndex={simulationIndex}
+               betaIndex={betaIndex}
+               deltaIndex={deltaIndex}
+               alphaInterval={alphaInterval}
+               betaInterval={betaInterval}
+               deltaInterval={deltaInterval}
+             />
           </div>
           {(dataSettings.showAlpha && visibilitySettings.alphaVisible) && (
             <div className="w-full h-[550px] relative shrink-0 flex flex-col">
-              <CandlestickSimulatorCanvas
+              <CandlestickSimulatorCanvas 
                 assetName={dataSettings.asset}
                 title={`Alpha Base - ${formatInterval(alphaInterval)}`}
                 data={data}
@@ -638,7 +642,7 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
           )}
           {(visibilitySettings.secondaryChartsVisible !== false && dataSettings.showBeta && visibilitySettings.betaVisible) && (
             <div className={`w-full h-[350px] relative shrink-0 flex flex-col ${(dataSettings.showAlpha && visibilitySettings.alphaVisible) ? 'border-t border-zinc-800' : ''}`}>
-              <CandlestickSimulatorCanvas
+              <CandlestickSimulatorCanvas 
                 assetName={dataSettings.asset}
                 title={`Beta Aggregate - ${formatInterval(betaInterval)}`}
                 data={betaData}
@@ -655,7 +659,7 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
           )}
           {(visibilitySettings.secondaryChartsVisible !== false && dataSettings.showDelta && visibilitySettings.deltaVisible) && (
             <div className={`w-full h-[350px] relative shrink-0 flex flex-col ${((dataSettings.showAlpha && visibilitySettings.alphaVisible) || (dataSettings.showBeta && visibilitySettings.betaVisible)) ? 'border-t border-zinc-800' : ''}`}>
-              <CandlestickSimulatorCanvas
+              <CandlestickSimulatorCanvas 
                 assetName={dataSettings.asset}
                 title={`Delta Layer - ${formatInterval(deltaInterval)}`}
                 data={deltaData}

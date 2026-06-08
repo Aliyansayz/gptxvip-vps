@@ -56,12 +56,12 @@ export function useTradeEvaluation(
       const source = sourceStr || 'alpha';
       if (source === 'alpha') return simulationIndex;
       if (!data[simulationIndex]) return simulationIndex;
-
+      
       const time = data[simulationIndex].time;
       const dataset = source === 'beta' ? betaData : deltaData;
-
+      
       if (!dataset || dataset.length === 0) return 0;
-
+      
       let left = 0;
       let right = dataset.length - 1;
       let best = 0;
@@ -250,10 +250,10 @@ export function useTradeEvaluation(
     }
 
     if (tradingConfig.useStopLoss && ind.stops) {
-      customStopLossValue = {
-        upper: ind.stops.upperBand[slIndex],
-        lower: ind.stops.lowerBand[slIndex]
-      };
+       customStopLossValue = {
+         upper: ind.stops.upperBand[slIndex],
+         lower: ind.stops.lowerBand[slIndex]
+       };
     }
 
     let adxValue: number | undefined = undefined;
@@ -273,9 +273,9 @@ export function useTradeEvaluation(
 
     const visibleData = data.slice(0, simulationIndex + 1);
 
-    let volRegimeScenario: 'A' | 'B' | 'C' | 'D' | 'None' = 'None';
+    let volRegimeScenario: 'A'|'B'|'C'|'D'|'None' = 'None';
     if (tradingConfig.useVolRegimeScenarioA || tradingConfig.useVolRegimeScenarioC) {
-      volRegimeScenario = calculateVolatilityScenario(visibleData.map(d => d.close));
+       volRegimeScenario = calculateVolatilityScenario(visibleData.map(d => d.close));
     }
 
     setTrades(prevTrades => {
@@ -288,18 +288,18 @@ export function useTradeEvaluation(
 
       // Note: evaluateTradeExits does logic for PnL. It might use `currentBalance` but let's keep it computing correctly
       let updatedTrades = evaluateTradeExits(simulationIndex, visibleData, currentExitSignal, trailedTrades, tradingConfig, zScoreValue, leverageSettings, currentBalance, latencyDelaySeconds, customStopLossValue, onLogCallback);
-
+      
       const newlyClosedTrades = updatedTrades.filter(t => t.status === 'CLOSED' && prevTrades.find(pt => pt.id === t.id)?.status === 'OPEN');
       const newlyClosedPnL = newlyClosedTrades.filter(t => t.accountId === eligibleAccountId || (!t.accountId && eligibleAccountId === 'A1')).reduce((sum, t) => sum + (t.pnl || 0), 0);
-
+      
       if (newlyClosedTrades.length > 0 && onLogCallback) {
         newlyClosedTrades.forEach((t) => {
-          if (!t.accountId || t.accountId === 'A1') {
-            onLogCallback('INFO', 'TradeEngine', `Closed ${t.side} Trade [ID: ${t.id}] at ${t.exitPrice?.toFixed(5)} (Reason: ${t.exitReason}) PnL: ${t.pnl?.toFixed(2)}`);
-          }
+           if (!t.accountId || t.accountId === 'A1') {
+             onLogCallback('INFO', 'TradeEngine', `Closed ${t.side} Trade [ID: ${t.id}] at ${t.exitPrice?.toFixed(5)} (Reason: ${t.exitReason}) PnL: ${t.pnl?.toFixed(2)}`);
+           }
         });
       }
-
+      
       currentBalance += newlyClosedPnL;
 
       let isFlipSignal = false;
@@ -342,40 +342,40 @@ export function useTradeEvaluation(
           }
         }
       }
-
+      
       const newTrades = newTradesRaw.length > 0 ? [...newTradesRaw, ...generateParallelTrades(newTradesRaw)] : [];
       let nextTrades = newTrades.length > 0 ? [...updatedTrades, ...newTrades] : updatedTrades;
 
       if (tradingConfig.isRecurrentTradeActive && tradingConfig.recurrentTradeParams) {
         let latestTradeState = { trade: null, isLeveraged: !!leverageSettings.enabled, status: 'NEUTRAL', pnl: 0, pips: 0 } as any;
         if (nextTrades.length > 0) {
-          const rootTrades = nextTrades.filter(t => !t.accountId || t.accountId === 'A1' || t.accountId.startsWith('S'));
-          if (rootTrades.length > 0) {
-            const cCandle = data[simulationIndex];
-            const openRootTrades = rootTrades.filter(t => t.status === 'OPEN');
-            const sortedT = openRootTrades.length > 0
-              ? [...openRootTrades].sort((a, b) => b.entryTime - a.entryTime)
-              : [...rootTrades].sort((a, b) => b.entryTime - a.entryTime);
-            const lt = sortedT[0];
-            let ltStatus = 'NEUTRAL';
-            let ltPnl = lt.pnl || 0;
-            let ltPips = lt.pips || 0;
-            if (lt.status === 'OPEN') {
-              const priceDiff = lt.side === 'LONG' ? cCandle.close - lt.entryPrice : lt.entryPrice - cCandle.close;
-
-              const pipMult = tradingConfig.pipMultiplier || 1;
-              ltPips = priceDiff / pipMult;
-
-              if (leverageSettings.enabled) {
-                ltPnl = calculatePnL(lt.entryPrice, cCandle.close, lt.size || 1, lt.side as 'LONG' | 'SHORT');
-              } else {
-                ltPnl = priceDiff;
-              }
-            }
-            if (ltPnl > 0) ltStatus = 'GAIN';
-            else if (ltPnl < 0) ltStatus = 'LOSS';
-            latestTradeState = { trade: lt, isLeveraged: !!leverageSettings.enabled, status: ltStatus, pnl: ltPnl, pips: ltPips };
-          }
+           const rootTrades = nextTrades.filter(t => !t.accountId || t.accountId === 'A1' || t.accountId.startsWith('S'));
+           if (rootTrades.length > 0) {
+             const cCandle = data[simulationIndex];
+             const openRootTrades = rootTrades.filter(t => t.status === 'OPEN');
+             const sortedT = openRootTrades.length > 0
+               ? [...openRootTrades].sort((a,b) => b.entryTime - a.entryTime)
+               : [...rootTrades].sort((a,b) => b.entryTime - a.entryTime);
+             const lt = sortedT[0];
+             let ltStatus = 'NEUTRAL';
+             let ltPnl = lt.pnl || 0;
+             let ltPips = lt.pips || 0;
+             if (lt.status === 'OPEN') {
+                 const priceDiff = lt.side === 'LONG' ? cCandle.close - lt.entryPrice : lt.entryPrice - cCandle.close;
+                 
+                 const pipMult = tradingConfig.pipMultiplier || 1;
+                 ltPips = priceDiff / pipMult;
+  
+                 if (leverageSettings.enabled) {
+                   ltPnl = calculatePnL(lt.entryPrice, cCandle.close, lt.size || 1, lt.side as 'LONG' | 'SHORT');
+                 } else {
+                   ltPnl = priceDiff;
+                 }
+             }
+             if (ltPnl > 0) ltStatus = 'GAIN';
+             else if (ltPnl < 0) ltStatus = 'LOSS';
+             latestTradeState = { trade: lt, isLeveraged: !!leverageSettings.enabled, status: ltStatus, pnl: ltPnl, pips: ltPips };
+           }
         }
 
         const volState = {

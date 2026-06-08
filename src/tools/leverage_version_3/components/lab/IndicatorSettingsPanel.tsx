@@ -28,7 +28,7 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
     if (sourceKey !== 'default') {
       sourceSettings = defaults[sourceKey] || defaults;
     }
-
+    
     const handleChange = (updates: any) => {
       if (sourceKey === 'default') {
         handleUpdate(activeTab as any, updates);
@@ -89,7 +89,7 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
       case 'divergence':
         return (
           <>
-            <label className="flex items-center gap-2 text-xs">
+             <label className="flex items-center gap-2 text-xs">
               <span className="w-16">Stoch %K:</span>
               <input type="number" min="1" max="100" value={sourceSettings?.stochK ?? defaults.stochK} onChange={e => handleChange({ stochK: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
@@ -207,7 +207,7 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
 
   return (
     <div className="w-full bg-zinc-800/10 border border-zinc-700/30 rounded-lg overflow-hidden mb-4 shrink-0">
-      <button
+      <button 
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between p-3 bg-zinc-800/20 hover:bg-zinc-700/30 transition-colors"
       >
@@ -230,7 +230,7 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
               <p className="text-xs text-cyan-400/80 leading-relaxed max-w-2xl">
                 {getIndicatorDescription(activeTab)}
               </p>
-
+              
               <div className="flex flex-col gap-4">
                 <div className="flex flex-wrap items-center gap-6 mb-2">
                   <label className="flex items-center gap-2 text-xs">
@@ -248,7 +248,7 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
                       {formatInterval((indicatorSettings[activeTab] as any)?.dataSource === 'beta' ? betaInterval : (indicatorSettings[activeTab] as any)?.dataSource === 'delta' ? deltaInterval : alphaInterval)}
                     </span>
                   </label>
-
+                  
                   <label className="flex items-center gap-2 text-xs cursor-pointer select-none border border-zinc-700/50 bg-zinc-900/30 px-2 py-1 rounded">
                     <input
                       type="checkbox"
@@ -259,7 +259,7 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
                     <span className="text-zinc-300">Variation of source parameters</span>
                   </label>
                 </div>
-
+                
                 <div className="flex flex-wrap items-center gap-6">
                   {renderInputs()}
                 </div>
