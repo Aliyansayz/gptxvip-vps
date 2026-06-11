@@ -24,6 +24,8 @@ export interface RecurrentTradeParameters {
   exitAfterNPips?: number;
   closeAlongsideMainTrade?: boolean;
   entryOnMainTradeTrail?: boolean;
+  entryOnCandlePattern?: boolean;
+  entryOnCandlePatternSource?: 'none' | 'any' | 'alpha' | 'beta' | 'delta';
 }
 
 export type TradeCategory = "main trade" | "recurrent trade" | "hft hedge trade";

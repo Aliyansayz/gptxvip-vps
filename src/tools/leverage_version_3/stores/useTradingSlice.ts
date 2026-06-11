@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { TradingRulesConfig } from '../functions/api/rules/tradingRules';
 import { ParallelAccount } from './indicators_store';
 import { loadState } from './utils/storage';
+import { defaultTimeFilterConfig } from '../functions/api/timeFilter/timeFilterManager';
+import { defaultStopLossModifierConfig } from '../functions/api/stopLossModifier/stopLossModifierConfig';
+import { defaultTakeProfitModifierConfig } from '../functions/api/takeProfitModifier/takeProfitModifierConfig';
 
 const STORAGE_KEY = 'leverage_trading_v1_settings';
 
@@ -42,7 +45,10 @@ const defaultTradingConfig: TradingRulesConfig = {
     countToExecute: 1,
     onlyExecuteIfLatestTradeInSurplus: true,
     entryOnMainTradeTrail: false
-  }
+  },
+  timeFilter: defaultTimeFilterConfig,
+  stopLossModifier: defaultStopLossModifierConfig,
+  takeProfitModifier: defaultTakeProfitModifierConfig
 };
 
 export function useTradingSlice() {

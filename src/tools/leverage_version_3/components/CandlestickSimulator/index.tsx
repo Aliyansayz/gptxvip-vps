@@ -19,6 +19,8 @@ import { TradingPanelVolatilityRegime } from '../simulator/TradingPanelVolatilit
 import { TradingPanelIndicatorLog } from '../simulator/TradingPanelIndicatorLog';
 import { TradingPanelHFTMode } from '../simulator/TradingPanelHFTMode';
 import { TradingPanelConsoleLog } from '../simulator/TradingPanelConsoleLog';
+import { TradingPanelTimeFilter } from '../simulator/TradingPanelTimeFilter';
+import { TradingPanelStopLossModifier } from '../simulator/TradingPanelStopLossModifier';
 import { AccountInfo } from '../simulator/AccountInfo';
 
 import { Download, Upload } from 'lucide-react';
@@ -56,7 +58,7 @@ const isPresetActive = (presetParams: OHLCSimulationParams, currentParams: OHLCS
 export * from './types';
 
 export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ config }) => {
-  const [panelTab, setPanelTab] = useState<'trading' | 'settings' | 'leverage' | 'account' | 'visibility' | 'indicatorLog' | 'hftMode' | 'consoleLog'>('trading');
+  const [panelTab, setPanelTab] = useState<'trading' | 'settings' | 'leverage' | 'account' | 'visibility' | 'indicatorLog' | 'hftMode' | 'consoleLog' | 'timeFilter' | 'stopLossModifier'>('trading');
   const [tradingEnabled, setTradingEnabled] = useState(false);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
@@ -530,6 +532,8 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
                  <button onClick={() => setPanelTab('visibility')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'visibility' ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Visibility</button>
                  <button onClick={() => setPanelTab('indicatorLog')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'indicatorLog' ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Indicator Log</button>
                  <button onClick={() => setPanelTab('hftMode')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'hftMode' ? 'text-emerald-400 border-b-2 border-emerald-400' : 'text-zinc-400 hover:text-zinc-200'}`}>HFT Mode</button>
+                 <button onClick={() => setPanelTab('timeFilter')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'timeFilter' ? 'text-pink-400 border-b-2 border-pink-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Time Filter</button>
+                 <button onClick={() => setPanelTab('stopLossModifier')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'stopLossModifier' ? 'text-purple-400 border-b-2 border-purple-400' : 'text-zinc-400 hover:text-zinc-200'}`}>SL Modifiers</button>
                  <button onClick={() => setPanelTab('consoleLog')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'consoleLog' ? 'text-amber-400 border-b-2 border-amber-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Dev Console</button>
               </div>
               <div className="flex items-center">
@@ -580,6 +584,8 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
               {panelTab === 'leverage' && <TradingPanelLeverageSettings alphaData={data} />}
               {panelTab === 'account' && <TradingPanelAccountSettings />}
               {panelTab === 'visibility' && <TradingPanelVisibility />}
+              {panelTab === 'timeFilter' && <TradingPanelTimeFilter />}
+              {panelTab === 'stopLossModifier' && <TradingPanelStopLossModifier />}
               {panelTab === 'hftMode' && <TradingPanelHFTMode />}
               {panelTab === 'consoleLog' && <TradingPanelConsoleLog />}
               {panelTab === 'indicatorLog' && (

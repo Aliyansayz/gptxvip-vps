@@ -341,6 +341,56 @@ export const TradingPanelTradeSettings: React.FC = () => {
               </div>
 
               <div className="pt-2 border-t border-zinc-800/50 mt-2">
+                <label className="block text-[10px] font-bold text-zinc-400 uppercase mb-2">Candle Pattern Based Entry</label>
+                <div className="flex flex-col gap-2">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input 
+                      type="checkbox"
+                      checked={tradingConfig.recurrentTradeParams?.entryOnCandlePattern || false}
+                      onChange={(e) => {
+                        setTradingConfig(prev => ({
+                          ...prev,
+                          recurrentTradeParams: {
+                            countToExecute: prev.recurrentTradeParams?.countToExecute || 1,
+                            ...prev.recurrentTradeParams,
+                            entryOnCandlePattern: e.target.checked
+                          }
+                        }));
+                      }}
+                      className="bg-zinc-800 border-zinc-700 text-purple-400 focus:ring-purple-400 rounded" 
+                    />
+                    <span className="text-xs text-zinc-200">Trigger on Pattern (Same Direction)</span>
+                  </label>
+                  
+                  {tradingConfig.recurrentTradeParams?.entryOnCandlePattern && (
+                    <div className="pl-6 border-l border-zinc-800">
+                      <label className="block text-[10px] text-zinc-500 mb-1">Observation Source Dataset</label>
+                      <select
+                        value={tradingConfig.recurrentTradeParams?.entryOnCandlePatternSource || 'none'}
+                        onChange={(e) => {
+                          setTradingConfig(prev => ({
+                            ...prev,
+                            recurrentTradeParams: {
+                              countToExecute: prev.recurrentTradeParams?.countToExecute || 1,
+                              ...prev.recurrentTradeParams,
+                              entryOnCandlePatternSource: e.target.value as any
+                            }
+                          }));
+                        }}
+                        className="w-full bg-zinc-800 border-zinc-700 rounded px-2 py-1 text-xs text-zinc-300 focus:outline-none focus:border-purple-400"
+                      >
+                        <option value="none">Disabled</option>
+                        <option value="any">Any (Across All Active Data Sources)</option>
+                        <option value="alpha">Alpha Base Dataset Only</option>
+                        <option value="beta">Beta Derived Dataset Only</option>
+                        <option value="delta">Delta Derived Dataset Only</option>
+                      </select>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-zinc-800/50 mt-2">
                 <label className="block text-[10px] font-bold text-zinc-400 uppercase mb-2">Time Entry</label>
                 
                 <div className="grid grid-cols-1 gap-3">

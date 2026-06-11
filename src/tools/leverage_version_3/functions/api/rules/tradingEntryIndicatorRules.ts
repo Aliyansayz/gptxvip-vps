@@ -5,6 +5,7 @@ import { isVolatilityEntryConditionMet } from './tradingVolatilityRules';
 import { LeverageConfig } from '../position_sizing/leveragedPositionSizeMetals';
 import { evaluateDynamicPositionSize, evaluateRiskPerPip } from '../position_sizing/leveragedDynamicPositionSize';
 import { priceToPips } from '../middleware/pipsTranslation';
+import { shouldAllowTradeByTimeFilter } from './timeFilterTradingRules';
 
 export function processIndicatorBasedEntry(
   currentIndex: number,
@@ -34,6 +35,11 @@ export function processIndicatorBasedEntry(
   if (hasOpenTrade) return [];
 
   const currentCandle = data[currentIndex];
+  
+  // Apply Time Filter
+  if (!shouldAllowTradeByTimeFilter(currentCandle.time, config.timeFilter)) {
+    return [];
+  }
   
   let stopLoss = undefined;
   let takeProfit = undefined;
@@ -137,6 +143,8 @@ export function processIndicatorBasedEntry(
       entryIndex: currentIndex,
       size: evaluatedPositionSize,
       status: 'OPEN',
+      initialStopLoss: stopLoss,
+      initialTakeProfit: takeProfit,
       stopLoss,
       takeProfit,
       executionType: executionTypeStr
@@ -192,6 +200,8 @@ export function processIndicatorBasedEntry(
         entryIndex: currentIndex,
         size: hftSize,
         status: 'OPEN',
+        initialStopLoss: hftStopLoss,
+        initialTakeProfit: hftTakeProfit,
         stopLoss: hftStopLoss,
         takeProfit: hftTakeProfit,
         executionType: executionTypeStr

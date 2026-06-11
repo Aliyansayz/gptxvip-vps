@@ -3,6 +3,9 @@ import { Trade, PositionSide } from '../../../../types/trading';
 import { MainTradeParameters, RecurrentTradeParameters, TradeCategory } from './tradeTypes';
 import { activeClassicSystems, ClassicSystemOption } from '../classicSystem/classicsystemController';
 import { calculatePartialExitSize } from './tradingPartialExitRules';
+import { TimeFilterConfig } from '../timeFilter/timeFilterManager';
+import { StopLossModifierConfig } from '../stopLossModifier/stopLossModifierConfig';
+import { TakeProfitModifierConfig } from '../takeProfitModifier/takeProfitModifierConfig';
 
 export interface TradingRulesConfig {
   entryOnSignal: boolean;
@@ -62,6 +65,9 @@ export interface TradingRulesConfig {
   betaAggregateFactor?: number;
   deltaAggregateSource?: 'alpha' | 'beta';
   deltaAggregateFactor?: number;
+  timeFilter?: TimeFilterConfig;
+  stopLossModifier?: StopLossModifierConfig;
+  takeProfitModifier?: TakeProfitModifierConfig;
 }
 
 import { LeverageConfig, calculateRequiredMargin } from '../position_sizing/leveragedPositionSizeMetals';

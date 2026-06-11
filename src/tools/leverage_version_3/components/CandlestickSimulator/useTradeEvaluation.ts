@@ -386,7 +386,12 @@ export function useTradeEvaluation(
 
         let recurrentTradesRaw: Trade[] = [];
         if (!tradingConfig.tradeBreaker) {
-          recurrentTradesRaw = evaluateRecurrentTradeEntries(simulationIndex, visibleData, nextTrades, tradingConfig, latestTradeState, volState, leverageSettings, currentBalance, assetName);
+          const multiSources = {
+            alpha: data.slice(0, simulationIndex + 1),
+            beta: betaData ? betaData.slice(0, simulationIndex + 1) : [],
+            delta: deltaData ? deltaData.slice(0, simulationIndex + 1) : []
+          };
+          recurrentTradesRaw = evaluateRecurrentTradeEntries(simulationIndex, visibleData, nextTrades, tradingConfig, latestTradeState, volState, leverageSettings, currentBalance, assetName, multiSources);
         }
         if (recurrentTradesRaw.length > 0) {
           if (onLogCallback) {

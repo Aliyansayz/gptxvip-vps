@@ -16,16 +16,42 @@ import { fetchMainTradeTrailEventCount } from '../tradeState/fetchMainTradeTrail
  * Defines whether a new recurrent trade should be spawned.
  */
 
+import { evaluateCandlePatternAcrossSources } from '../indicatorState/trackCandlePatternTracker';
+
 export function canOpenRecurrentTrade(
   referenceTrade: Trade,
   currentTimeMs: number,
   currentIndex: number,
   config: TradingRulesConfig,
   latestTradeState: LatestTradeState,
-  volatilityState?: VolatilityState
+  volatilityState?: VolatilityState,
+  multiSources?: { alpha: Ohlc[], beta: Ohlc[], delta: Ohlc[] }
 ): { canOpen: boolean; adjustedSecondsLimit: number; adjustedCandlesLimit: number; reason?: string } {
   if (!config.isRecurrentTradeActive || !config.recurrentTradeParams) {
     return { canOpen: false, adjustedSecondsLimit: 0, adjustedCandlesLimit: 0, reason: 'Recurrent trade inactive' };
+  }
+
+  // Candle Pattern Based Entry
+  let candlePatternMet = false;
+  let candlePatternReason = '';
+  if (
+    config.recurrentTradeParams.entryOnCandlePattern &&
+    config.recurrentTradeParams.entryOnCandlePatternSource &&
+    config.recurrentTradeParams.entryOnCandlePatternSource !== 'none' &&
+    multiSources
+  ) {
+    const parentTrade = referenceTrade; // We use main trade direction
+    const directionWanted = parentTrade.side; // Assuming referenceTrade has 'side' matching main trade
+    const res = evaluateCandlePatternAcrossSources(
+       multiSources,
+       config.recurrentTradeParams.entryOnCandlePatternSource,
+       directionWanted,
+       currentIndex
+    );
+    if (res) {
+       candlePatternMet = true;
+       candlePatternReason = `Candle Pattern: ${res.pattern} (Source: ${res.source})`;
+    }
   }
 
   // Pips based entry evaluation
@@ -74,20 +100,20 @@ export function canOpenRecurrentTrade(
   }
 
   // If no time/candle limitations are set and pips trigger is set, time counts as unmet to avoid instant execution
-  if (!adjustedSecondsLimit && !adjustedCandlesLimit && pipsTrigger > 0) {
+  if (!adjustedSecondsLimit && !adjustedCandlesLimit && (pipsTrigger > 0 || config.recurrentTradeParams.entryOnCandlePattern)) {
       timeMet = false;
       candlesMet = false;
   }
 
-  // Evaluate if either the Time/Candle limits are met OR Pips based limit is met.
-  const isTriggered = pipsMet || (timeMet && candlesMet);
+  // Evaluate if either the Time/Candle limits are met OR Pips based limit is met OR Candle Pattern met.
+  const isTriggered = pipsMet || (timeMet && candlesMet) || candlePatternMet;
 
   if (!isTriggered) {
-    return { canOpen: false, adjustedSecondsLimit, adjustedCandlesLimit, reason: 'Time/Candle delay not met, and Pips target not met' };
+    return { canOpen: false, adjustedSecondsLimit, adjustedCandlesLimit, reason: 'Time/Candle delay not met, Pips target not met, and no Candle Pattern' };
   }
 
   // 2. Only Execute if latest trade is in surplus (applies primarily to time-based spawns)
-  if (config.recurrentTradeParams.onlyExecuteIfLatestTradeInSurplus && !pipsMet) {
+  if (config.recurrentTradeParams.onlyExecuteIfLatestTradeInSurplus && !pipsMet && !candlePatternMet) {
     if (latestTradeState.status !== 'GAIN') {
       return { canOpen: false, adjustedSecondsLimit, adjustedCandlesLimit, reason: `Latest trade not in surplus (Current: ${latestTradeState.pips.toFixed(1)} pips)` };
     }
@@ -95,7 +121,9 @@ export function canOpenRecurrentTrade(
 
   // Determine a simple, clean, and helpful human trigger reason for the log book status
   let triggeredReason = '';
-  if (pipsMet) {
+  if (candlePatternMet) {
+    triggeredReason = candlePatternReason;
+  } else if (pipsMet) {
     triggeredReason = `Pips Favorite Trigger (+${latestTradeState.pips.toFixed(1)} pips >= +${pipsTrigger.toFixed(1)})`;
   } else {
     const reasonParts: string[] = [];
@@ -124,7 +152,8 @@ export function evaluateRecurrentTradeEntries(
   volatilityState?: VolatilityState,
   leverageConfig?: LeverageConfig,
   currentBalance?: number,
-  assetName: string = 'gold'
+  assetName: string = 'gold',
+  multiSources?: { alpha: Ohlc[], beta: Ohlc[], delta: Ohlc[] }
 ): Trade[] {
   if (!config.isRecurrentTradeActive || !config.recurrentTradeParams) {
     return [];
@@ -155,7 +184,7 @@ export function evaluateRecurrentTradeEntries(
   // The rule function takes `referenceTrade`. We'll pass the latest trade as the reference.
   const referenceTrade = latestTradeState.trade || parentTrade;
 
-  let canOpenResult = canOpenRecurrentTrade(referenceTrade, currentCandle.time, currentIndex, config, latestTradeState, volatilityState);
+  let canOpenResult = canOpenRecurrentTrade(referenceTrade, currentCandle.time, currentIndex, config, latestTradeState, volatilityState, multiSources);
   
   if (config.recurrentTradeParams.entryOnMainTradeTrail && parentTrade.lastTrailIndex === currentIndex) {
     const totalTrails = fetchMainTradeTrailEventCount(activeTrades);
@@ -323,6 +352,8 @@ export function evaluateRecurrentTradeEntries(
     entryIndex: currentIndex,
     size: evaluatedPositionSize,
     status: 'OPEN',
+    initialStopLoss: stopLoss,
+    initialTakeProfit: takeProfit,
     stopLoss,
     takeProfit,
     executionType: 'MARKET_EXECUTION',
