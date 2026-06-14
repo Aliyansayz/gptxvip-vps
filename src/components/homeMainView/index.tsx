@@ -27,7 +27,7 @@ export const HomeMainView: React.FC<HomeMainViewProps> = ({ candlestickData, onT
   const [selectedAsset, setSelectedAsset] = useState<AssetType>('Anonymous');
   const [selectedPreset, setSelectedPreset] = useState<string>('default');
 
-  const assetFilters: AssetType[] = ['Anonymous', 'Gold', 'Silver', 'Oil', 'Nasdaq100'];
+  const assetFilters: AssetType[] = ['Anonymous', 'Gold', 'Silver', 'Oil', 'Nasdaq100', 'USDJPY', 'GBPJPY', 'EURJPY', 'EURUSD', 'AUDUSD', 'USDCAD', 'EURCAD'];
 
   // Reset preset selection when switching assets
   useEffect(() => {
