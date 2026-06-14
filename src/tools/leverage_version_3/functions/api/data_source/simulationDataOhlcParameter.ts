@@ -73,6 +73,76 @@ export const DEFAULT_OHLC_PARAMS: Record<string, OHLCSimulationParams> = {
     side_ways_switch_prob: 0.15,
     trend_switch_prob: 0.10,
     basePrice: 42000
+  },
+  'USDJPY': {
+    drift: 0.00003,
+    volatility: 0.0048,
+    seed: 1101,
+    wick_factor: 0.70,
+    high_low_noise: 0.0023,
+    side_ways_switch_prob: 0.03,
+    trend_switch_prob: 0.24,
+    basePrice: 155
+  },
+  'GBPJPY': {
+    drift: 0.00014,
+    volatility: 0.0020,
+    seed: 2101,
+    wick_factor: 0.35,
+    high_low_noise: 0.0008,
+    side_ways_switch_prob: 0.06,
+    trend_switch_prob: 0.09,
+    basePrice: 200
+  },
+  'EURJPY': {
+    drift: 0.00012,
+    volatility: 0.0019,
+    seed: 1201,
+    wick_factor: 0.34,
+    high_low_noise: 0.0007,
+    side_ways_switch_prob: 0.06,
+    trend_switch_prob: 0.08,
+    basePrice: 170
+  },
+  'EURUSD': {
+    drift: 0.00003,
+    volatility: 0.0036,
+    seed: 1201,
+    wick_factor: 0.58,
+    high_low_noise: 0.0017,
+    side_ways_switch_prob: 0.03,
+    trend_switch_prob: 0.18,
+    basePrice: 1.085
+  },
+  'AUDUSD': {
+    drift: 0.00005,
+    volatility: 0.0031,
+    seed: 3101,
+    wick_factor: 0.56,
+    high_low_noise: 0.0015,
+    side_ways_switch_prob: 0.04,
+    trend_switch_prob: 0.18,
+    basePrice: 0.67
+  },
+  'USDCAD': {
+    drift: 0.00005,
+    volatility: 0.0038,
+    seed: 2101,
+    wick_factor: 0.62,
+    high_low_noise: 0.0019,
+    side_ways_switch_prob: 0.03,
+    trend_switch_prob: 0.20,
+    basePrice: 1.36
+  },
+  'EURCAD': {
+    drift: 0.00003,
+    volatility: 0.0020,
+    seed: 6606,
+    wick_factor: 0.34,
+    high_low_noise: 0.0008,
+    side_ways_switch_prob: 0.05,
+    trend_switch_prob: 0.11,
+    basePrice: 1.48
   }
 };
 

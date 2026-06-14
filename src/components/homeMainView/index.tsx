@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { motion } from 'motion/react';
 import { Play, Pause } from 'lucide-react';
 import { CandlestickWithLOB } from './CandlestickWithLOB';
@@ -28,19 +28,24 @@ export const HomeMainView: React.FC<HomeMainViewProps> = ({ candlestickData, onT
   const [selectedPreset, setSelectedPreset] = useState<string>('default');
 
   const assetFilters: AssetType[] = ['Anonymous', 'Gold', 'Silver', 'Oil', 'Nasdaq100'];
-  const customParams = selectedPreset === 'default'
-    ? undefined
-    : getPresetsForAsset(selectedAsset).find((preset) => preset.name === selectedPreset)?.params;
+
+  // Reset preset selection when switching assets
+  useEffect(() => {
+    setSelectedPreset('default');
+  }, [selectedAsset]);
+
+  // Derive simulation params based on asset and active preset
+  const customParams = useMemo(() => {
+    if (selectedPreset === 'default') return undefined;
+    const presets = getPresetsForAsset(selectedAsset);
+    return presets.find(p => p.name === selectedPreset)?.params;
+  }, [selectedAsset, selectedPreset]);
 
   useEffect(() => {
     return () => {
       if (onToggleUI) onToggleUI(true);
     };
   }, [onToggleUI]);
-
-  useEffect(() => {
-    setSelectedPreset('default');
-  }, [selectedAsset]);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     if (!onToggleUI) return;
@@ -274,12 +279,10 @@ export const HomeMainView: React.FC<HomeMainViewProps> = ({ candlestickData, onT
           {/* Footer Layout */}
           <div className="w-full py-12 border-t border-zinc-800 flex flex-col md:flex-row items-center justify-between font-mono text-xs text-zinc-500 uppercase tracking-widest gap-4">
              <div>&copy; 2026 GPTX.VIP INC.</div>
-             <div className="flex gap-4 flex-wrap items-center justify-center">
+             <div className="flex gap-4">
                 <span>DOCUMENTATION ENGINE</span>
                 <span>//</span>
                 <span>V1.0.4</span>
-                <span>//</span>
-                <span className="normal-case tracking-normal text-zinc-400">aliyan@gptx.vip</span>
              </div>
              <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>

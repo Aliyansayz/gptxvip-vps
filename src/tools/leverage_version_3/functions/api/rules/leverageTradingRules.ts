@@ -13,11 +13,16 @@ export function isSufficientBalanceToOpenTrade(
   if (!config.enabled) return true; // unlimited trades
 
   if (config.positionSizingType === 'dynamic_risk_per_pip') {
+    let riskVal = config.dynamicRiskPerPipValue || 1;
+    if (config.dynamicRiskPerPipType === 'percentage') {
+       const basePct = config.dynamicRiskPerPipPercentage || 1;
+       riskVal = currentBalance * (basePct / 100);
+    }
     const evaluation = evaluateRiskPerPip(
       currentBalance,
       currentPrice,
       config.leverage,
-      config.dynamicRiskPerPipValue || 1,
+      riskVal,
       undefined,
       assetName
     );

@@ -59,6 +59,11 @@ export interface IndicatorSettings {
     allowFixedOffset?: boolean;
     fixedOffsetPips?: number;
   };
+  trendStrength: BaseIndicatorSettings & {
+    slopePeriod: number;
+    volPeriod: number;
+    regimePeriod: number;
+  };
 }
 
 export interface DataSettingsConfig {
@@ -128,7 +133,7 @@ interface IndicatorsStoreContextType {
   setFeatureLog: React.Dispatch<React.SetStateAction<FeatureLogEntry[]>>;
   indicatorCheckedState: Record<string, boolean>;
   setIndicatorCheckedState: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
-  getIndicatorDescription: (type: keyof IndicatorSettings) => string;
+  getIndicatorDescription: (type: keyof IndicatorSettings | 'conjunction') => string;
   latestPrice?: number;
   setLatestPrice?: React.Dispatch<React.SetStateAction<number>>;
   currentStops?: { lowerBand: number[], upperBand: number[] } | null;

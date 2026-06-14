@@ -43,57 +43,90 @@ export function useComputedIndicators(
       return fallback;
     };
 
+    const computeSignalForType = (sysType: string, dataSource: string, config: any) => {
+      const sourceData = getDataBySource(dataSource);
+      const closePrices = sourceData.map(d => d.close);
+      const cfg = getParams(indicatorSettings[sysType], dataSource, config);
+
+      if (sysType === 'ma_crossover') {
+        return {
+          type: 'ma_crossover',
+          fastLine: calculateEMA(closePrices, cfg.fastMa || 9),
+          slowLine: calculateSMA(closePrices, cfg.slowMa || 21)
+        };
+      } else if (sysType === 'supertrend') {
+        return {
+          type: 'supertrend',
+          supertrend: calculateSupertrend(sourceData, cfg.supertrendPeriod || cfg.period || 10, cfg.supertrendMultiplier || cfg.multiplier || 3)
+        };
+      } else if (sysType === 'stochastic') {
+        return {
+          type: 'stochastic',
+          stochastic: calculateStochastic(sourceData, cfg.stochK || 14, 3, cfg.stochD || 3)
+        };
+      } else if (sysType === 'linear_regression') {
+        return {
+          type: 'linear_regression',
+          lr: linearRegressionSystem(closePrices, cfg.lrSlopePeriod || cfg.slopePeriod || 20, cfg.lrVolPeriod || cfg.volPeriod || 20, cfg.lrRegimePeriod || cfg.regimePeriod || 30)
+        };
+      } else if (sysType === 'bollinger_bands') {
+        return {
+          type: 'bollinger_bands',
+          bb: calculateBollingerBands(sourceData, cfg.bbPeriod || cfg.period || 20, cfg.bbStdDev || cfg.stdDev || 2)
+        };
+      } else if (sysType === 'supertrend_regime') {
+        const highs = sourceData.map(d => d.high);
+        const lows = sourceData.map(d => d.low);
+        return {
+          type: 'supertrend_regime',
+          supertrend_regime: supertrendRegimeSystem(
+            highs, lows, closePrices, 
+            cfg.stPeriod || 10, cfg.atrMultiplier || 3, 
+            cfg.regimePeriod || 30, cfg.zPeriod || 20, 
+            cfg.zUpper || 1.5, cfg.zLower || -1.5
+          )
+        };
+      } else if (sysType === 'heikin_ashi_smoothed') {
+        const open = sourceData.map(d => d.open);
+        const highs = sourceData.map(d => d.high);
+        const lows = sourceData.map(d => d.low);
+        return {
+          type: 'heikin_ashi_smoothed',
+          heikin_ashi_smoothed: smoothedHeikinAshi(open, highs, lows, closePrices, cfg.haSmoothLen || cfg.smoothLen || 10)
+        };
+      } else if (sysType === 'candlestick_pattern') {
+        const open = sourceData.map(d => d.open);
+        const highs = sourceData.map(d => d.high);
+        const lows = sourceData.map(d => d.low);
+        return {
+          type: 'candlestick_pattern',
+          candlestick_pattern: getCandlePatternsMultiple(open, highs, lows, closePrices)
+        };
+      }
+      return null;
+    };
+
     // Entry signal indicators
     const entryDataSource = tradingConfig.entrySignalSource || 'alpha';
-    const entryData = getDataBySource(entryDataSource);
-    const entryConfig = getParams(indicatorSettings[config.type], entryDataSource, config);
-    const entryClose = entryData.map(d => d.close);
-    if (config.type === 'ma_crossover') {
-      result.entrySignal = {
-        fastLine: calculateEMA(entryClose, entryConfig.fastMa || 9),
-        slowLine: calculateSMA(entryClose, entryConfig.slowMa || 21)
-      };
-    } else if (config.type === 'supertrend') {
-      result.entrySignal = {
-        supertrend: calculateSupertrend(entryData, entryConfig.supertrendPeriod || 10, entryConfig.supertrendMultiplier || 3)
-      };
-    } else if (config.type === 'stochastic') {
-      result.entrySignal = {
-        stochastic: calculateStochastic(entryData, entryConfig.stochK || 14, 3, entryConfig.stochD || 3)
-      };
-    } else if (config.type === 'linear_regression') {
-      result.entrySignal = {
-        lr: linearRegressionSystem(entryClose, entryConfig.lrSlopePeriod || 20, entryConfig.lrVolPeriod || 20, entryConfig.lrRegimePeriod || 30)
-      };
-    } else if (config.type === 'bollinger_bands') {
-      result.entrySignal = {
-        bb: calculateBollingerBands(entryData, entryConfig.bbPeriod || 20, entryConfig.bbStdDev || 2)
-      };
-    } else if (config.type === 'supertrend_regime') {
-      const highs = entryData.map(d => d.high);
-      const lows = entryData.map(d => d.low);
-      result.entrySignal = {
-        supertrend_regime: supertrendRegimeSystem(
-          highs, lows, entryClose, 
-          entryConfig.stPeriod || 10, entryConfig.atrMultiplier || 3, 
-          entryConfig.regimePeriod || 30, entryConfig.zPeriod || 20, 
-          entryConfig.zUpper || 1.5, entryConfig.zLower || -1.5
-        )
-      };
-    } else if (config.type === 'heikin_ashi_smoothed') {
-      const open = entryData.map(d => d.open);
-      const high = entryData.map(d => d.high);
-      const low = entryData.map(d => d.low);
-      result.entrySignal = {
-        heikin_ashi_smoothed: smoothedHeikinAshi(open, high, low, entryClose, entryConfig.haSmoothLen || 10)
-      };
-    } else if (config.type === 'candlestick_pattern') {
-      const open = entryData.map(d => d.open);
-      const high = entryData.map(d => d.high);
-      const low = entryData.map(d => d.low);
-      result.entrySignal = {
-        candlestick_pattern: getCandlePatternsMultiple(open, high, low, entryClose)
-      };
+    
+    if (tradingConfig.activeSystemMode === 'conjunction') {
+       result.entrySignal = {
+         type: 'conjunction',
+         conjunctionSignals: {}
+       };
+       (tradingConfig.activeConjunctionSystems || []).forEach((sysId: string) => {
+         const sysDataSource = indicatorSettings[sysId]?.dataSource || entryDataSource;
+         const sig = computeSignalForType(sysId, sysDataSource, config);
+         if (sig) {
+           result.entrySignal.conjunctionSignals[sysId] = sig;
+         }
+       });
+    } else {
+       const sysDataSource = indicatorSettings[config.type]?.dataSource || entryDataSource;
+       const computed = computeSignalForType(config.type, sysDataSource, config);
+       if (computed) {
+         result.entrySignal = computed;
+       }
     }
 
     // Exit signal indicators
@@ -102,68 +135,14 @@ export function useComputedIndicators(
       : config.type;
       
     const exitDataSource = tradingConfig.exitSignalSource || 'alpha';
-    const exitData = getDataBySource(exitDataSource);
     const baseExitConfig = tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemParams
       ? tradingConfig.exitSignalSystemParams
       : config;
-    const exitConfig = getParams(indicatorSettings[exitType], exitDataSource, baseExitConfig);
-    const exitClose = exitData.map(d => d.close);
-    if (exitType === 'ma_crossover') {
-      result.exitSignal = {
-        type: 'ma_crossover',
-        fastLine: calculateEMA(exitClose, exitConfig.fastMa || 9),
-        slowLine: calculateSMA(exitClose, exitConfig.slowMa || 21)
-      };
-    } else if (exitType === 'supertrend') {
-      result.exitSignal = {
-        type: 'supertrend',
-        supertrend: calculateSupertrend(exitData, exitConfig.supertrendPeriod || exitConfig.period || 10, exitConfig.supertrendMultiplier || exitConfig.multiplier || 3)
-      };
-    } else if (exitType === 'stochastic') {
-      result.exitSignal = {
-        type: 'stochastic',
-        stochastic: calculateStochastic(exitData, exitConfig.stochK || 14, 3, exitConfig.stochD || 3)
-      };
-    } else if (exitType === 'linear_regression') {
-      result.exitSignal = {
-        type: 'linear_regression',
-        lr: linearRegressionSystem(exitClose, exitConfig.lrSlopePeriod || exitConfig.slopePeriod || 20, exitConfig.lrVolPeriod || exitConfig.volPeriod || 20, exitConfig.lrRegimePeriod || exitConfig.regimePeriod || 30)
-      };
-    } else if (exitType === 'bollinger_bands') {
-      result.exitSignal = {
-        type: 'bollinger_bands',
-        bb: calculateBollingerBands(exitData, exitConfig.bbPeriod || exitConfig.period || 20, exitConfig.bbStdDev || exitConfig.stdDev || 2)
-      };
-    } else if (exitType === 'supertrend_regime') {
-      const exitHighs = exitData.map(d => d.high);
-      const exitLows = exitData.map(d => d.low);
-      result.exitSignal = {
-        type: 'supertrend_regime',
-        supertrend_regime: supertrendRegimeSystem(
-          exitHighs, exitLows, exitClose,
-          exitConfig.stPeriod || 10, exitConfig.atrMultiplier || 3,
-          exitConfig.regimePeriod || 30, exitConfig.zPeriod || 20,
-          exitConfig.zUpper || 1.5, exitConfig.zLower || -1.5
-        )
-      };
-    } else if (exitType === 'heikin_ashi_smoothed') {
-      const exitOpen = exitData.map(d => d.open);
-      const exitHighs = exitData.map(d => d.high);
-      const exitLows = exitData.map(d => d.low);
-      result.exitSignal = {
-        type: 'heikin_ashi_smoothed',
-        heikin_ashi_smoothed: smoothedHeikinAshi(exitOpen, exitHighs, exitLows, exitClose, exitConfig.haSmoothLen || exitConfig.smoothLen || 10)
-      };
-    } else if (exitType === 'candlestick_pattern') {
-      const exitOpen = exitData.map(d => d.open);
-      const exitHighs = exitData.map(d => d.high);
-      const exitLows = exitData.map(d => d.low);
-      result.exitSignal = {
-        type: 'candlestick_pattern',
-        candlestick_pattern: getCandlePatternsMultiple(exitOpen, exitHighs, exitLows, exitClose)
-      };
+      
+    const computedExit = computeSignalForType(exitType, exitDataSource, baseExitConfig);
+    if (computedExit) {
+      result.exitSignal = computedExit;
     }
-
 
     // Stop Loss Indicator
     const slData = getDataBySource(indicatorSettings.stopLossIndicator?.dataSource || 'alpha');

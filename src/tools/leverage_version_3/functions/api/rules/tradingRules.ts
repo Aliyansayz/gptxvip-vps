@@ -8,6 +8,8 @@ import { StopLossModifierConfig } from '../stopLossModifier/stopLossModifierConf
 import { TakeProfitModifierConfig } from '../takeProfitModifier/takeProfitModifierConfig';
 
 export interface TradingRulesConfig {
+  activeSystemMode?: 'classic' | 'conjunction';
+  activeConjunctionSystems?: string[];
   entryOnSignal: boolean;
   entrySignalSource?: 'alpha' | 'beta' | 'delta';
   flipModeActive?: boolean;

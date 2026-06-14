@@ -7,10 +7,15 @@ export interface LeverageConfig {
   currency: '$' | '€';
   positionSize: number; // in lots
   positionSizingType: 'fix' | 'dynamic_margin' | 'dynamic_risk_per_pip' | 'dynamic_risk_atr_pips';
+  adaptivePositionSizingMode?: 'none' | 'trend_based' | 'volatility_based'; // New adaptive modes
+  adaptiveMinPercentage?: number;
+  adaptiveMaxPercentage?: number;
   dynamicMarginType: 'percentage' | 'value';
   dynamicMarginPercentage: number;
   dynamicMarginValue: number;
   dynamicRiskPerPipValue?: number; // New property for dynamic_risk_per_pip
+  dynamicRiskPerPipPercentage?: number; // Risk percentage equivalent for per-pip
+  dynamicRiskPerPipType?: 'value' | 'percentage';
   dynamicRiskAtrPipsPercentage?: number; // Risk percentage of balance for ATR pips
   useExplicitLiquidationPips: boolean;
   explicitLiquidationPips: number;
@@ -27,10 +32,15 @@ export const DEFAULT_LEVERAGE_CONFIG: LeverageConfig = {
   currency: '$',
   positionSize: 0.01,
   positionSizingType: 'fix',
+  adaptivePositionSizingMode: 'none',
+  adaptiveMinPercentage: 0.5,
+  adaptiveMaxPercentage: 2.0,
   dynamicMarginType: 'percentage',
   dynamicMarginPercentage: 5,
   dynamicMarginValue: 100,
   dynamicRiskPerPipValue: 1,
+  dynamicRiskPerPipPercentage: 1,
+  dynamicRiskPerPipType: 'value',
   dynamicRiskAtrPipsPercentage: 2,
   useExplicitLiquidationPips: false,
   explicitLiquidationPips: 20,

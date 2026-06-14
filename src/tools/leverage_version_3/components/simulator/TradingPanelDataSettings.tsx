@@ -10,6 +10,13 @@ import { GOLD_ONLY_PRESETS, GoldPresetName, GOLD_PRESET_NAMES } from '../../func
 import { SILVER_PRESETS, SilverPresetName, listSilverPresetNames } from '../../functions/api/data_source/silverSimulationPresets';
 import { NASDAQ100_PRESETS, NasdaqPresetName, NASDAQ100_PRESET_NAMES } from '../../functions/api/data_source/nasdaq100SimulationPresets';
 import { OIL_PRESETS, OilPresetName, OIL_PRESET_NAMES } from '../../functions/api/data_source/oilSimulationPresets';
+import { USDJPY_PRESETS, USDJPYPresetName, listUSDJPYPresetNames } from '../../functions/api/data_source/usdjpySimulationPresets';
+import { GBPJPY_PRESETS, GBPJPYPresetName, listGBPJPYPresetNames } from '../../functions/api/data_source/gbpjpySimulationPresets';
+import { EURJPY_PRESETS, EURJPYPresetName, listEURJPYPresetNames } from '../../functions/api/data_source/eurjpySimulationPresets';
+import { EURUSD_PRESETS, EurUsdPresetName, listEurUsdPresetNames } from '../../functions/api/data_source/eurusdSimulationPresets';
+import { AUDUSD_PRESETS, AUDUSDPresetName, AUDUSD_PRESET_NAMES } from '../../functions/api/data_source/audusdSimulationPresets';
+import { USDCAD_PRESETS, USDCADPresetName, USDCAD_PRESET_NAMES } from '../../functions/api/data_source/usdcadSimulationPresets';
+import { EURCAD_PRESETS, EURCADPresetName, EURCAD_PRESET_NAMES } from '../../functions/api/data_source/eurcadSimulationPresets';
 import { Download, FileSpreadsheet, ChevronDown, ChevronUp, Database } from 'lucide-react';
 import { Ohlc } from '../../functions/api/indicators/baseline';
 import { saveDataIntoCsv } from '../../functions/api/utility/saveDataIntoCsv';
@@ -119,7 +126,35 @@ export const TradingPanelDataSettings: React.FC<TradingPanelDataSettingsProps> =
         ? (Object.keys(OIL_PRESETS) as OilPresetName[]).find(
             (key) => isPresetActive(OIL_PRESETS[key].params, params)
           )
-        : undefined;
+        : currentAsset === 'USDJPY'
+          ? (Object.keys(USDJPY_PRESETS) as USDJPYPresetName[]).find(
+              (key) => isPresetActive(USDJPY_PRESETS[key].params, params)
+            )
+          : currentAsset === 'GBPJPY'
+            ? (Object.keys(GBPJPY_PRESETS) as GBPJPYPresetName[]).find(
+                (key) => isPresetActive(GBPJPY_PRESETS[key].params, params)
+              )
+            : currentAsset === 'EURJPY'
+              ? (Object.keys(EURJPY_PRESETS) as EURJPYPresetName[]).find(
+                  (key) => isPresetActive(EURJPY_PRESETS[key].params, params)
+                )
+              : currentAsset === 'EURUSD'
+                ? (Object.keys(EURUSD_PRESETS) as EurUsdPresetName[]).find(
+                    (key) => isPresetActive(EURUSD_PRESETS[key].params, params)
+                  )
+                : currentAsset === 'AUDUSD'
+                  ? AUDUSD_PRESET_NAMES.find(
+                      (key) => isPresetActive(AUDUSD_PRESETS[key].params, params)
+                    )
+                  : currentAsset === 'USDCAD'
+                    ? USDCAD_PRESET_NAMES.find(
+                        (key) => isPresetActive(USDCAD_PRESETS[key].params, params)
+                      )
+                    : currentAsset === 'EURCAD'
+                      ? EURCAD_PRESET_NAMES.find(
+                          (key) => isPresetActive(EURCAD_PRESETS[key].params, params)
+                        )
+                      : undefined;
 
   const presetLabel = activePresetKey
     ? currentAsset === 'Gold'
@@ -128,7 +163,23 @@ export const TradingPanelDataSettings: React.FC<TradingPanelDataSettingsProps> =
         ? SILVER_PRESETS[activePresetKey as SilverPresetName].label
       : currentAsset === 'Nasdaq100'
         ? NASDAQ100_PRESETS[activePresetKey as NasdaqPresetName].label
-        : OIL_PRESETS[activePresetKey as OilPresetName].label
+      : currentAsset === 'Oil'
+        ? OIL_PRESETS[activePresetKey as OilPresetName].label
+      : currentAsset === 'USDJPY'
+        ? USDJPY_PRESETS[activePresetKey as USDJPYPresetName].label
+      : currentAsset === 'GBPJPY'
+        ? GBPJPY_PRESETS[activePresetKey as GBPJPYPresetName].label
+      : currentAsset === 'EURJPY'
+        ? EURJPY_PRESETS[activePresetKey as EURJPYPresetName].label
+      : currentAsset === 'EURUSD'
+        ? EURUSD_PRESETS[activePresetKey as EurUsdPresetName].label
+      : currentAsset === 'AUDUSD'
+        ? AUDUSD_PRESETS[activePresetKey as AUDUSDPresetName].label
+      : currentAsset === 'USDCAD'
+        ? USDCAD_PRESETS[activePresetKey as USDCADPresetName].label
+      : currentAsset === 'EURCAD'
+        ? EURCAD_PRESETS[activePresetKey as EURCADPresetName].label
+        : undefined
     : undefined;
 
   const handleAssetChange = (asset: AssetType) => {
@@ -270,6 +321,13 @@ export const TradingPanelDataSettings: React.FC<TradingPanelDataSettingsProps> =
                   else if (name === 'Ethereum') sym = 'ETH';
                   else if (name === 'Apple') sym = 'AAPL';
                   else if (name === 'Oil') sym = 'USOUSD';
+                  else if (name === 'USDJPY') sym = 'USDJPY';
+                  else if (name === 'GBPJPY') sym = 'GBPJPY';
+                  else if (name === 'EURJPY') sym = 'EURJPY';
+                  else if (name === 'EURUSD') sym = 'EURUSD';
+                  else if (name === 'AUDUSD') sym = 'AUDUSD';
+                  else if (name === 'USDCAD') sym = 'USDCAD';
+                  else if (name === 'EURCAD') sym = 'EURCAD';
 
                   setDataSettings(p => ({
                     ...p,
@@ -289,6 +347,13 @@ export const TradingPanelDataSettings: React.FC<TradingPanelDataSettingsProps> =
                 <option value="Bitcoin">Bitcoin (BTC)</option>
                 <option value="Ethereum">Ethereum (ETH)</option>
                 <option value="Apple">Apple Inc (AAPL)</option>
+                <option value="USDJPY">🇺🇸🇯🇵 USD/JPY</option>
+                <option value="GBPJPY">🇬🇧🇯🇵 GBP/JPY</option>
+                <option value="EURJPY">🇪🇺🇯🇵 EUR/JPY</option>
+                <option value="EURUSD">🇪🇺🇺🇸 EUR/USD</option>
+                <option value="AUDUSD">🇦🇺🇺🇸 AUD/USD</option>
+                <option value="USDCAD">🇺🇸🇨🇦 USD/CAD</option>
+                <option value="EURCAD">🇪🇺🇨🇦 EUR/CAD</option>
               </select>
             </div>
 
@@ -393,7 +458,7 @@ export const TradingPanelDataSettings: React.FC<TradingPanelDataSettingsProps> =
             <div className="flex flex-col gap-2">
               <span className="text-xs text-zinc-300 font-sans">Asset Selection</span>
               <AssetSlider 
-                assetFilters={['Anonymous', 'Gold', 'Silver', 'Oil', 'Nasdaq100']}
+                assetFilters={['Anonymous', 'Gold', 'Silver', 'Oil', 'Nasdaq100', 'USDJPY', 'GBPJPY', 'EURJPY', 'EURUSD', 'AUDUSD', 'USDCAD', 'EURCAD']}
                 value={dataSettings.asset as AssetType}
                 onChange={handleAssetChange}
               />
@@ -622,6 +687,335 @@ export const TradingPanelDataSettings: React.FC<TradingPanelDataSettingsProps> =
                         }`}
                       >
                         <span className={`text-[11px] font-bold tracking-tight ${isActive ? 'text-amber-400' : 'text-zinc-200 group-hover:text-amber-400 transition-colors'}`}>
+                          {preset.label}
+                        </span>
+                        <span className="text-[9px] text-zinc-400 font-normal leading-normal line-clamp-3">
+                          {preset.description}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {currentAsset === 'USDJPY' && (
+              <div className="flex flex-col gap-2 bg-red-500/5 border border-red-500/10 p-2.5 rounded-lg">
+                <span className="text-xs font-semibold text-red-500 flex items-center gap-1.5">
+                  🇺🇸🇯🇵 USD/JPY Presets
+                </span>
+                <p className="text-[10px] text-zinc-400">
+                  Select a recurring macro/session behavior preset for USD/JPY:
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-1">
+                  {listUSDJPYPresetNames().map((key) => {
+                    const preset = USDJPY_PRESETS[key];
+                    const isActive = isPresetActive(preset.params, params);
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => {
+                          setDataSettings((p) => {
+                            const ohlc = p.ohlcParams ? { ...p.ohlcParams } : { ...DEFAULT_OHLC_PARAMS };
+                            ohlc['USDJPY'] = {
+                              ...preset.params,
+                              basePrice: params.basePrice ?? 155
+                            };
+                            return {
+                              ...p,
+                              ohlcParams: ohlc
+                            };
+                          });
+                        }}
+                        className={`text-left p-2 rounded-lg border transition-all flex flex-col gap-1 min-h-[64px] group select-none cursor-pointer ${
+                          isActive
+                            ? 'bg-red-500/10 border-red-500/40 text-red-500 shadow-[0_0_12px_rgba(239,68,68,0.05)]'
+                            : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700/80 text-zinc-350'
+                        }`}
+                      >
+                        <span className={`text-[11px] font-bold tracking-tight ${isActive ? 'text-red-400' : 'text-zinc-200 group-hover:text-red-400 transition-colors'}`}>
+                          {preset.label}
+                        </span>
+                        <span className="text-[9px] text-zinc-400 font-normal leading-normal line-clamp-3">
+                          {preset.description}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {currentAsset === 'GBPJPY' && (
+              <div className="flex flex-col gap-2 bg-blue-500/5 border border-blue-500/10 p-2.5 rounded-lg">
+                <span className="text-xs font-semibold text-blue-500 flex items-center gap-1.5">
+                  🇬🇧🇯🇵 GBP/JPY Presets
+                </span>
+                <p className="text-[10px] text-zinc-400">
+                  Select a recurring macro/session behavior preset for GBP/JPY:
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-1">
+                  {listGBPJPYPresetNames().map((key) => {
+                    const preset = GBPJPY_PRESETS[key];
+                    const isActive = isPresetActive(preset.params, params);
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => {
+                          setDataSettings((p) => {
+                            const ohlc = p.ohlcParams ? { ...p.ohlcParams } : { ...DEFAULT_OHLC_PARAMS };
+                            ohlc['GBPJPY'] = {
+                              ...preset.params,
+                              basePrice: params.basePrice ?? 200
+                            };
+                            return {
+                              ...p,
+                              ohlcParams: ohlc
+                            };
+                          });
+                        }}
+                        className={`text-left p-2 rounded-lg border transition-all flex flex-col gap-1 min-h-[64px] group select-none cursor-pointer ${
+                          isActive
+                            ? 'bg-blue-500/10 border-blue-500/40 text-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.05)]'
+                            : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700/80 text-zinc-350'
+                        }`}
+                      >
+                        <span className={`text-[11px] font-bold tracking-tight ${isActive ? 'text-blue-400' : 'text-zinc-200 group-hover:text-blue-400 transition-colors'}`}>
+                          {preset.label}
+                        </span>
+                        <span className="text-[9px] text-zinc-400 font-normal leading-normal line-clamp-3">
+                          {preset.description}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {currentAsset === 'EURJPY' && (
+              <div className="flex flex-col gap-2 bg-indigo-500/5 border border-indigo-500/10 p-2.5 rounded-lg">
+                <span className="text-xs font-semibold text-indigo-500 flex items-center gap-1.5">
+                  🇪🇺🇯🇵 EUR/JPY Presets
+                </span>
+                <p className="text-[10px] text-zinc-400">
+                  Select a recurring macro/session behavior preset for EUR/JPY:
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-1">
+                  {listEURJPYPresetNames().map((key) => {
+                    const preset = EURJPY_PRESETS[key];
+                    const isActive = isPresetActive(preset.params, params);
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => {
+                          setDataSettings((p) => {
+                            const ohlc = p.ohlcParams ? { ...p.ohlcParams } : { ...DEFAULT_OHLC_PARAMS };
+                            ohlc['EURJPY'] = {
+                              ...preset.params,
+                              basePrice: params.basePrice ?? 170
+                            };
+                            return {
+                              ...p,
+                              ohlcParams: ohlc
+                            };
+                          });
+                        }}
+                        className={`text-left p-2 rounded-lg border transition-all flex flex-col gap-1 min-h-[64px] group select-none cursor-pointer ${
+                          isActive
+                            ? 'bg-indigo-500/10 border-indigo-500/40 text-indigo-500 shadow-[0_0_12px_rgba(99,102,241,0.05)]'
+                            : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700/80 text-zinc-350'
+                        }`}
+                      >
+                        <span className={`text-[11px] font-bold tracking-tight ${isActive ? 'text-indigo-400' : 'text-zinc-200 group-hover:text-indigo-400 transition-colors'}`}>
+                          {preset.label}
+                        </span>
+                        <span className="text-[9px] text-zinc-400 font-normal leading-normal line-clamp-3">
+                          {preset.description}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {currentAsset === 'EURUSD' && (
+              <div className="flex flex-col gap-2 bg-emerald-500/5 border border-emerald-500/10 p-2.5 rounded-lg">
+                <span className="text-xs font-semibold text-emerald-500 flex items-center gap-1.5">
+                  🇪🇺🇺🇸 EUR/USD Presets
+                </span>
+                <p className="text-[10px] text-zinc-400">
+                  Select a recurring macro/session behavior preset for EUR/USD:
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-1">
+                  {listEurUsdPresetNames().map((key) => {
+                    const preset = EURUSD_PRESETS[key];
+                    const isActive = isPresetActive(preset.params, params);
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => {
+                          setDataSettings((p) => {
+                            const ohlc = p.ohlcParams ? { ...p.ohlcParams } : { ...DEFAULT_OHLC_PARAMS };
+                            ohlc['EURUSD'] = {
+                              ...preset.params,
+                              basePrice: params.basePrice ?? 1.085
+                            };
+                            return {
+                              ...p,
+                              ohlcParams: ohlc
+                            };
+                          });
+                        }}
+                        className={`text-left p-2 rounded-lg border transition-all flex flex-col gap-1 min-h-[64px] group select-none cursor-pointer ${
+                          isActive
+                            ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.05)]'
+                            : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700/80 text-zinc-350'
+                        }`}
+                      >
+                        <span className={`text-[11px] font-bold tracking-tight ${isActive ? 'text-emerald-400' : 'text-zinc-200 group-hover:text-emerald-400 transition-colors'}`}>
+                          {preset.label}
+                        </span>
+                        <span className="text-[9px] text-zinc-400 font-normal leading-normal line-clamp-3">
+                          {preset.description}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {currentAsset === 'AUDUSD' && (
+              <div className="flex flex-col gap-2 bg-yellow-600/5 border border-yellow-600/10 p-2.5 rounded-lg">
+                <span className="text-xs font-semibold text-yellow-600 flex items-center gap-1.5">
+                  🇦🇺🇺🇸 AUD/USD Presets
+                </span>
+                <p className="text-[10px] text-zinc-400">
+                  Select a recurring macro/session behavior preset for AUD/USD:
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-1">
+                  {AUDUSD_PRESET_NAMES.map((key) => {
+                    const preset = AUDUSD_PRESETS[key];
+                    const isActive = isPresetActive(preset.params, params);
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => {
+                          setDataSettings((p) => {
+                            const ohlc = p.ohlcParams ? { ...p.ohlcParams } : { ...DEFAULT_OHLC_PARAMS };
+                            ohlc['AUDUSD'] = {
+                              ...preset.params,
+                              basePrice: params.basePrice ?? 0.67
+                            };
+                            return {
+                              ...p,
+                              ohlcParams: ohlc
+                            };
+                          });
+                        }}
+                        className={`text-left p-2 rounded-lg border transition-all flex flex-col gap-1 min-h-[64px] group select-none cursor-pointer ${
+                          isActive
+                            ? 'bg-yellow-600/10 border-yellow-600/40 text-yellow-600 shadow-[0_0_12px_rgba(202,138,4,0.05)]'
+                            : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700/80 text-zinc-350'
+                        }`}
+                      >
+                        <span className={`text-[11px] font-bold tracking-tight ${isActive ? 'text-yellow-500' : 'text-zinc-200 group-hover:text-yellow-500 transition-colors'}`}>
+                          {preset.label}
+                        </span>
+                        <span className="text-[9px] text-zinc-400 font-normal leading-normal line-clamp-3">
+                          {preset.description}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {currentAsset === 'USDCAD' && (
+              <div className="flex flex-col gap-2 bg-orange-600/5 border border-orange-600/10 p-2.5 rounded-lg">
+                <span className="text-xs font-semibold text-orange-600 flex items-center gap-1.5">
+                  🇺🇸🇨🇦 USD/CAD Presets
+                </span>
+                <p className="text-[10px] text-zinc-400">
+                  Select a recurring macro/session behavior preset for USD/CAD:
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-1">
+                  {USDCAD_PRESET_NAMES.map((key) => {
+                    const preset = USDCAD_PRESETS[key];
+                    const isActive = isPresetActive(preset.params, params);
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => {
+                          setDataSettings((p) => {
+                            const ohlc = p.ohlcParams ? { ...p.ohlcParams } : { ...DEFAULT_OHLC_PARAMS };
+                            ohlc['USDCAD'] = {
+                              ...preset.params,
+                              basePrice: params.basePrice ?? 1.36
+                            };
+                            return {
+                              ...p,
+                              ohlcParams: ohlc
+                            };
+                          });
+                        }}
+                        className={`text-left p-2 rounded-lg border transition-all flex flex-col gap-1 min-h-[64px] group select-none cursor-pointer ${
+                          isActive
+                            ? 'bg-orange-600/10 border-orange-600/40 text-orange-600 shadow-[0_0_12px_rgba(234,88,12,0.05)]'
+                            : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700/80 text-zinc-350'
+                        }`}
+                      >
+                        <span className={`text-[11px] font-bold tracking-tight ${isActive ? 'text-orange-500' : 'text-zinc-200 group-hover:text-orange-500 transition-colors'}`}>
+                          {preset.label}
+                        </span>
+                        <span className="text-[9px] text-zinc-400 font-normal leading-normal line-clamp-3">
+                          {preset.description}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {currentAsset === 'EURCAD' && (
+              <div className="flex flex-col gap-2 bg-pink-600/5 border border-pink-600/10 p-2.5 rounded-lg">
+                <span className="text-xs font-semibold text-pink-600 flex items-center gap-1.5">
+                  🇪🇺🇨🇦 EUR/CAD Presets
+                </span>
+                <p className="text-[10px] text-zinc-400">
+                  Select a recurring macro/session behavior preset for EUR/CAD:
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-1">
+                  {EURCAD_PRESET_NAMES.map((key) => {
+                    const preset = EURCAD_PRESETS[key];
+                    const isActive = isPresetActive(preset.params, params);
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => {
+                          setDataSettings((p) => {
+                            const ohlc = p.ohlcParams ? { ...p.ohlcParams } : { ...DEFAULT_OHLC_PARAMS };
+                            ohlc['EURCAD'] = {
+                              ...preset.params,
+                              basePrice: params.basePrice ?? 1.48
+                            };
+                            return {
+                              ...p,
+                              ohlcParams: ohlc
+                            };
+                          });
+                        }}
+                        className={`text-left p-2 rounded-lg border transition-all flex flex-col gap-1 min-h-[64px] group select-none cursor-pointer ${
+                          isActive
+                            ? 'bg-pink-600/10 border-pink-600/40 text-pink-500 shadow-[0_0_12px_rgba(219,39,119,0.05)]'
+                            : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700/80 text-zinc-350'
+                        }`}
+                      >
+                        <span className={`text-[11px] font-bold tracking-tight ${isActive ? 'text-pink-400' : 'text-zinc-200 group-hover:text-pink-400 transition-colors'}`}>
                           {preset.label}
                         </span>
                         <span className="text-[9px] text-zinc-400 font-normal leading-normal line-clamp-3">

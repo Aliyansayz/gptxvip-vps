@@ -1,6 +1,6 @@
 import { OHLCSimulationParams, Regime } from './asset_presets/types';
 
-export type AssetType = 'Anonymous' | 'Gold' | 'Silver' | 'Oil' | 'Nasdaq100';
+export type AssetType = 'Anonymous' | 'Gold' | 'Silver' | 'Oil' | 'Nasdaq100' | 'USDJPY' | 'GBPJPY' | 'EURJPY' | 'EURUSD' | 'AUDUSD' | 'USDCAD' | 'EURCAD';
 
 export interface AssetConfig {
   name: AssetType;
@@ -14,6 +14,13 @@ export const ASSETS_CONFIG: Record<AssetType, AssetConfig> = {
   'Silver': { name: 'Silver', basePrice: 75, volatility: 0.15 },
   'Oil': { name: 'Oil', basePrice: 85, volatility: 0.5 },
   'Nasdaq100': { name: 'Nasdaq100', basePrice: 20000, volatility: 20 },
+  'USDJPY': { name: 'USDJPY', basePrice: 155, volatility: 0.2 },
+  'GBPJPY': { name: 'GBPJPY', basePrice: 200, volatility: 0.2 },
+  'EURJPY': { name: 'EURJPY', basePrice: 170, volatility: 0.2 },
+  'EURUSD': { name: 'EURUSD', basePrice: 1.085, volatility: 0.05 },
+  'AUDUSD': { name: 'AUDUSD', basePrice: 0.67, volatility: 0.05 },
+  'USDCAD': { name: 'USDCAD', basePrice: 1.36, volatility: 0.05 },
+  'EURCAD': { name: 'EURCAD', basePrice: 1.48, volatility: 0.05 },
 };
 
 // Default high-fidelity simulation parameters used if no active preset is selected
@@ -67,6 +74,76 @@ export const DEFAULT_OHLC_PARAMS_LANDING: Record<AssetType, OHLCSimulationParams
     side_ways_switch_prob: 0.15,
     trend_switch_prob: 0.10,
     basePrice: 42000
+  },
+  'USDJPY': {
+    drift: 0.00003,
+    volatility: 0.0048,
+    seed: 1101,
+    wick_factor: 0.70,
+    high_low_noise: 0.0023,
+    side_ways_switch_prob: 0.03,
+    trend_switch_prob: 0.24,
+    basePrice: 155
+  },
+  'GBPJPY': {
+    drift: 0.00014,
+    volatility: 0.0020,
+    seed: 2101,
+    wick_factor: 0.35,
+    high_low_noise: 0.0008,
+    side_ways_switch_prob: 0.06,
+    trend_switch_prob: 0.09,
+    basePrice: 200
+  },
+  'EURJPY': {
+    drift: 0.00012,
+    volatility: 0.0019,
+    seed: 1201,
+    wick_factor: 0.34,
+    high_low_noise: 0.0007,
+    side_ways_switch_prob: 0.06,
+    trend_switch_prob: 0.08,
+    basePrice: 170
+  },
+  'EURUSD': {
+    drift: 0.00003,
+    volatility: 0.0036,
+    seed: 1201,
+    wick_factor: 0.58,
+    high_low_noise: 0.0017,
+    side_ways_switch_prob: 0.03,
+    trend_switch_prob: 0.18,
+    basePrice: 1.085
+  },
+  'AUDUSD': {
+    drift: 0.00005,
+    volatility: 0.0031,
+    seed: 3101,
+    wick_factor: 0.56,
+    high_low_noise: 0.0015,
+    side_ways_switch_prob: 0.04,
+    trend_switch_prob: 0.18,
+    basePrice: 0.67
+  },
+  'USDCAD': {
+    drift: 0.00005,
+    volatility: 0.0038,
+    seed: 2101,
+    wick_factor: 0.62,
+    high_low_noise: 0.0019,
+    side_ways_switch_prob: 0.03,
+    trend_switch_prob: 0.20,
+    basePrice: 1.36
+  },
+  'EURCAD': {
+    drift: 0.00003,
+    volatility: 0.0020,
+    seed: 6606,
+    wick_factor: 0.34,
+    high_low_noise: 0.0008,
+    side_ways_switch_prob: 0.05,
+    trend_switch_prob: 0.11,
+    basePrice: 1.48
   }
 };
 

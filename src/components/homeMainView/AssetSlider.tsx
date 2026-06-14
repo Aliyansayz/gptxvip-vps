@@ -28,6 +28,20 @@ const getAssetIcon = (type: AssetType) => {
       return <Droplet className="w-3.5 h-3.5 mr-1.5 text-amber-600" />;
     case 'Nasdaq100':
       return <BarChart2 className="w-3.5 h-3.5 mr-1.5 text-blue-500" />;
+    case 'USDJPY':
+      return <span className="mr-1.5 text-[14px]">🇺🇸🇯🇵</span>;
+    case 'GBPJPY':
+      return <span className="mr-1.5 text-[14px]">🇬🇧🇯🇵</span>;
+    case 'EURJPY':
+      return <span className="mr-1.5 text-[14px]">🇪🇺🇯🇵</span>;
+    case 'EURUSD':
+      return <span className="mr-1.5 text-[14px]">🇪🇺🇺🇸</span>;
+    case 'AUDUSD':
+      return <span className="mr-1.5 text-[14px]">🇦🇺🇺🇸</span>;
+    case 'USDCAD':
+      return <span className="mr-1.5 text-[14px]">🇺🇸🇨🇦</span>;
+    case 'EURCAD':
+      return <span className="mr-1.5 text-[14px]">🇪🇺🇨🇦</span>;
     case 'Anonymous':
     default:
       return <Ghost className="w-3.5 h-3.5 mr-1.5 text-cyan-500" />;

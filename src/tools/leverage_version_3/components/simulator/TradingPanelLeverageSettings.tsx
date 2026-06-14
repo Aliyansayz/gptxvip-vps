@@ -46,7 +46,11 @@ export const TradingPanelLeverageSettings: React.FC<{ alphaData?: Ohlc[] }> = ({
 
   const riskPerPipPreview = (() => {
     const priceOf1Pip = pipsToPrice(1, dataSettings.asset, mockPrice);
-    const risk = leverageSettings.dynamicRiskPerPipValue || 1;
+    let risk = leverageSettings.dynamicRiskPerPipValue || 1;
+    if (leverageSettings.dynamicRiskPerPipType === 'percentage') {
+       risk = leverageSettings.balance * ((leverageSettings.dynamicRiskPerPipPercentage || 1) / 100);
+    }
+
     const exactLotSize = risk / (priceOf1Pip * getContractSize(dataSettings.asset));
     let lotSize = Math.max(0, Math.floor(exactLotSize * 100) / 100);
     
@@ -370,9 +374,26 @@ export const TradingPanelLeverageSettings: React.FC<{ alphaData?: Ohlc[] }> = ({
               Allowed Risk Per Pip
               {riskPerPipPreview.warning && <AlertTriangle size={12} className="text-yellow-500" />}
             </span>
-            <div className="flex gap-2 items-center">
-              <div className="flex gap-2 items-center flex-1">
-                <span className="text-xs text-zinc-400 px-2">{leverageSettings.currency}</span>
+            <div className="flex gap-2 mb-1">
+              <select
+                value={leverageSettings.dynamicRiskPerPipType || 'value'}
+                onChange={(e) => setLeverageSettings(p => ({ ...p, dynamicRiskPerPipType: e.target.value as 'percentage' | 'value' }))}
+                className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-xs rounded-md px-2 py-1.5 focus:ring-cyan-500 focus:border-cyan-500 w-24"
+              >
+                <option value="percentage">% of Bal</option>
+                <option value="value">Fixed Amt</option>
+              </select>
+              {leverageSettings.dynamicRiskPerPipType === 'percentage' ? (
+                <input 
+                  type="number" 
+                  step="0.1"
+                  min="0.1"
+                  max="100"
+                  value={leverageSettings.dynamicRiskPerPipPercentage ?? 1} 
+                  onChange={(e) => setLeverageSettings(p => ({ ...p, dynamicRiskPerPipPercentage: Math.max(0.1, parseFloat(e.target.value) || 0) }))} 
+                  className={`bg-zinc-900 border ${riskPerPipPreview.warning ? 'border-yellow-500/50' : 'border-zinc-700'} text-zinc-300 text-xs rounded-md px-2 py-1.5 focus:ring-cyan-500 focus:border-cyan-500 flex-1`}
+                />
+              ) : (
                 <input 
                   type="number" 
                   step="0.01"
@@ -381,8 +402,7 @@ export const TradingPanelLeverageSettings: React.FC<{ alphaData?: Ohlc[] }> = ({
                   onChange={(e) => setLeverageSettings(p => ({ ...p, dynamicRiskPerPipValue: Math.max(0, parseFloat(e.target.value) || 0) }))} 
                   className={`bg-zinc-900 border ${riskPerPipPreview.warning ? 'border-yellow-500/50' : 'border-zinc-700'} text-zinc-300 text-xs rounded-md px-2 py-1.5 focus:ring-cyan-500 focus:border-cyan-500 flex-1`}
                 />
-              </div>
-              <span className="text-[10px] text-zinc-500 uppercase">/ per Pip loss</span>
+              )}
             </div>
             {riskPerPipPreview.warning && <span className="text-[10px] text-yellow-500">{riskPerPipPreview.warning}</span>}
           </div>
@@ -437,6 +457,68 @@ export const TradingPanelLeverageSettings: React.FC<{ alphaData?: Ohlc[] }> = ({
             )}
             
             {riskAtrPipsPreview.warning && <span className="text-[10px] text-yellow-500">{riskAtrPipsPreview.warning}</span>}
+          </div>
+        )}
+
+        {(isDynamicRisk || isDynamicRiskAtr) && (
+          <div className="flex flex-col gap-2 md:col-span-2 border-t border-zinc-800 pt-3">
+            <span className="text-[10px] uppercase text-zinc-400 font-bold">Adaptive Position Sizing Basis</span>
+            <div className="flex items-center gap-2">
+              <select
+                value={leverageSettings.adaptivePositionSizingMode || 'none'}
+                onChange={(e) => setLeverageSettings(p => ({ ...p, adaptivePositionSizingMode: e.target.value as any }))}
+                className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-xs rounded-md px-2 py-1.5 focus:ring-cyan-500 focus:border-cyan-500 w-full"
+              >
+                <option value="none">Disabled</option>
+                <option value="trend_based">Trend Strength Basis</option>
+                <option value="volatility_based">Volatility Basis</option>
+              </select>
+            </div>
+            
+            {(leverageSettings.adaptivePositionSizingMode && leverageSettings.adaptivePositionSizingMode !== 'none') && (
+              <div className="grid grid-cols-2 gap-4 mt-1 bg-zinc-800/30 p-2 rounded border border-zinc-800">
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] text-zinc-500 uppercase font-semibold">Min Percentage Evaluator</span>
+                  <div className="flex items-center gap-2">
+                    <input 
+                      type="number" 
+                      step="0.1" 
+                      min="0.1" 
+                      value={leverageSettings.adaptiveMinPercentage ?? 0.5} 
+                      onChange={(e) => setLeverageSettings(p => ({ ...p, adaptiveMinPercentage: Math.max(0.1, parseFloat(e.target.value) || 0) }))} 
+                      className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-xs rounded px-2 py-1 w-full"
+                    />
+                    <span className="text-xs text-zinc-500">%</span>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] text-zinc-500 uppercase font-semibold">Max Percentage Evaluator</span>
+                  <div className="flex items-center gap-2">
+                    <input 
+                      type="number" 
+                      step="0.1" 
+                      min="0.1" 
+                      value={leverageSettings.adaptiveMaxPercentage ?? 2.0} 
+                      onChange={(e) => setLeverageSettings(p => ({ ...p, adaptiveMaxPercentage: Math.max(0.1, parseFloat(e.target.value) || 0) }))} 
+                      className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-xs rounded px-2 py-1 w-full"
+                    />
+                    <span className="text-xs text-zinc-500">%</span>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {(leverageSettings.adaptivePositionSizingMode && leverageSettings.adaptivePositionSizingMode !== 'none') && (
+              <div className="flex gap-2 items-start bg-indigo-900/10 border border-indigo-800/30 p-2 rounded-md mt-1">
+                <Info className="text-indigo-500 w-3 h-3 mt-0.5 shrink-0" />
+                <div className="flex flex-col">
+                  <span className="text-[10px] text-indigo-400 font-semibold">Adaptive Evaluation Enabled</span>
+                  <span className="text-[10px] text-zinc-400 leading-tight mt-1">
+                    The {isDynamicRisk ? "Risk Per Pip %" : "Risk %"} will be dynamically calculated between the Min and Max boundary using the specified {leverageSettings.adaptivePositionSizingMode === 'trend_based' ? 'Trend Strength' : 'Volatility'} in realtime prior to executing the trade.
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         )}
 

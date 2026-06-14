@@ -36,6 +36,12 @@ const defaultIndicatorSettings: IndicatorSettings = {
     atrOffsetMultiplier: 1.0,
     allowFixedOffset: false,
     fixedOffsetPips: 10
+  },
+  trendStrength: {
+    slopePeriod: 20,
+    volPeriod: 20,
+    regimePeriod: 30,
+    dataSource: 'alpha'
   }
 };
 
@@ -46,7 +52,10 @@ export function useIndicatorSlice() {
     localStorage.setItem(`${STORAGE_KEY}_indicator`, JSON.stringify(indicatorSettings));
   }, [indicatorSettings]);
 
-  const getIndicatorDescription = (type: keyof IndicatorSettings) => {
+  const getIndicatorDescription = (type: keyof IndicatorSettings | 'conjunction') => {
+    if (type === 'conjunction') {
+      return `Simulates the Conjunction System which requires perfect alignment across multiple classic systems to trigger entry logic. Select multiple subsystems in the Configuration Panel to observe correlated behavior.`;
+    }
     switch (type) {
       case 'ma_crossover':
         return `Simulates a fast EMA (${indicatorSettings.ma_crossover.fastMa} periods) crossing over a slow SMA (${indicatorSettings.ma_crossover.slowMa} periods). Bullish signals are green, Bearish are red.`;

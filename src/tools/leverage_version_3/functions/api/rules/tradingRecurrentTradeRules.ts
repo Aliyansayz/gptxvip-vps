@@ -10,6 +10,7 @@ import { priceToPips } from '../middleware/pipsTranslation';
 import { calculateRecurrentPositionSize } from '../position_sizing/recurrentPositionSizing';
 import { isSufficientBalanceToOpenTrade } from './leverageTradingRules';
 import { fetchMainTradeTrailEventCount } from '../tradeState/fetchMainTradeTrailEventCount';
+import { evaluateAdaptiveRiskPercentage } from '../position_sizing/adaptivePositionSizing';
 
 /**
  * Recurrent Trades Logic:
@@ -256,11 +257,20 @@ export function evaluateRecurrentTradeEntries(
 
   if (leverageConfig && leverageConfig.enabled) {
     if (leverageConfig.positionSizingType === 'dynamic_risk_per_pip' && currentBalance !== undefined) {
+      let riskVal = leverageConfig.dynamicRiskPerPipValue || 1;
+      if (leverageConfig.dynamicRiskPerPipType === 'percentage') {
+        let basePct = leverageConfig.dynamicRiskPerPipPercentage || 1;
+        // Adaptive override
+        const historicalData = data.slice(0, currentIndex + 1);
+        basePct = evaluateAdaptiveRiskPercentage(basePct, leverageConfig, historicalData);
+        riskVal = currentBalance * (basePct / 100);
+      }
+
       const evaluation = evaluateRiskPerPip(
         currentBalance,
         currentCandle.close,
         leverageConfig.leverage,
-        leverageConfig.dynamicRiskPerPipValue || 1,
+        riskVal,
         undefined,
         assetName
       );
@@ -285,13 +295,16 @@ export function evaluateRecurrentTradeEntries(
         if (calcPips > 0) atrPips = calcPips;
       }
       
-      const riskPercentage = leverageConfig.dynamicRiskAtrPipsPercentage || 2;
+      let basePct = leverageConfig.dynamicRiskAtrPipsPercentage || 2;
+      const historicalData = data.slice(0, currentIndex + 1);
+      basePct = evaluateAdaptiveRiskPercentage(basePct, leverageConfig, historicalData);
+
       const evaluation = evaluateDynamicPositionSize(
         currentBalance,
         currentCandle.close,
         leverageConfig.leverage,
         'percentage',
-        riskPercentage,
+        basePct,
         atrPips,
         undefined,
         assetName

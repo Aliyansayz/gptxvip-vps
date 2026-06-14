@@ -16,12 +16,6 @@ export const HeroHeader: React.FC<{ onInitializeEngine?: () => void }> = ({ onIn
       {/* Vignette Layer */}
       <div className="absolute inset-0 bg-[radial-gradient(circle,transparent_30%,rgba(9,9,11,0.95)_100%)] z-[15] pointer-events-none" />
 
-      <div className="absolute top-6 right-6 z-20">
-        <span className="font-mono text-[10px] md:text-xs uppercase tracking-[0.3em] text-cyan-300">
-          aliyan@gptx.vip
-        </span>
-      </div>
-
       {/* Content */}
       <div className="relative z-20 text-center px-6 py-32 flex flex-col items-center w-full max-w-5xl mx-auto">
           

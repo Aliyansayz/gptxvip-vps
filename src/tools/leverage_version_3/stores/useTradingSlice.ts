@@ -46,6 +46,8 @@ const defaultTradingConfig: TradingRulesConfig = {
     onlyExecuteIfLatestTradeInSurplus: true,
     entryOnMainTradeTrail: false
   },
+  activeSystemMode: 'classic',
+  activeConjunctionSystems: ['stochastic_alpha', 'ma_crossover_alpha', 'supertrend_alpha'],
   timeFilter: defaultTimeFilterConfig,
   stopLossModifier: defaultStopLossModifierConfig,
   takeProfitModifier: defaultTakeProfitModifierConfig

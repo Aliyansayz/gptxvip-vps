@@ -4,6 +4,7 @@ import { useIndicatorsStore } from '../../stores/indicators_store';
 import { getBaseInterval, formatInterval } from '../../functions/api/rules/dataSourceRules';
 import { activeClassicSystems, ClassicSystemOption } from '../../functions/api/classicSystem/classicsystemController';
 import { getLongAtrStopLossPrice, getLongAtrStopLossDifferenceInPips } from '../../functions/api/middleware/translateLongSLPriceIntoPips';
+import { getBaseSystemId } from '../../functions/api/conjunctionSystem/selfReplicationLabelManage';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 
 interface TradingConfigurationProps {
@@ -33,7 +34,57 @@ export const TradingConfiguration: React.FC<TradingConfigurationProps> = ({ conf
 
   return (
     <div className="flex flex-col gap-3">
-      <span className="text-xs font-semibold text-cyan-600 uppercase tracking-wider">Trading Config</span>
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-semibold text-cyan-600 uppercase tracking-wider">Trading Config</span>
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] text-zinc-400 font-bold uppercase">Active System Mode:</span>
+          <select 
+            value={config.activeSystemMode || 'classic'} 
+            onChange={(e) => updateConfig({ activeSystemMode: e.target.value as any })}
+            className="bg-zinc-800 border border-zinc-700 text-zinc-300 text-xs rounded px-2 py-0.5 focus:ring-cyan-500 focus:border-cyan-500 font-semibold"
+          >
+            <option value="classic">Classic System</option>
+            <option value="conjunction">Conjunction System</option>
+          </select>
+        </div>
+      </div>
+      
+      {config.activeSystemMode === 'conjunction' && (
+        <div className="bg-purple-900/20 border border-purple-500/30 rounded p-3 mb-2 flex flex-col gap-2">
+          <span className="text-[10px] font-bold text-purple-400 uppercase">Conjunction System Configuration</span>
+          <span className="text-[10px] text-zinc-400">Select up to 3 systems to use in conjunction when they align in the same direction.</span>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-1">
+            {activeClassicSystems.map(sys => {
+              const isActive = (config.activeConjunctionSystems || []).some(id => getBaseSystemId(id) === sys.id);
+              return (
+                <label key={sys.id} className="flex items-center gap-2 text-[10px] text-zinc-300 select-none cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    className="rounded bg-zinc-800 border-zinc-700 text-purple-500 focus:ring-purple-500 ring-offset-zinc-900" 
+                    checked={isActive} 
+                    onChange={(e) => {
+                      let current = [...(config.activeConjunctionSystems || [])];
+                      if (e.target.checked) {
+                        if (current.length < 3) {
+                          current.push(`${sys.id}_alpha`);
+                        } else {
+                          // Already have 3, ignore or replace
+                          return;
+                        }
+                      } else {
+                        current = current.filter(id => getBaseSystemId(id) !== sys.id);
+                      }
+                      updateConfig({ activeConjunctionSystems: current });
+                    }} 
+                  />
+                  {sys.name}
+                </label>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-2">
         <div className="flex flex-col gap-1">
           <label className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">
@@ -43,16 +94,22 @@ export const TradingConfiguration: React.FC<TradingConfigurationProps> = ({ conf
           {config.entryOnSignal && (
             <div className="flex items-center gap-2 ml-6 text-xs text-zinc-400">
               <span>Source:</span>
-              <select 
-                value={config.entrySignalSource || 'alpha'}
-                onChange={(e) => updateConfig({ entrySignalSource: e.target.value as any })}
-                className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1 min-w-[60px]"
-              >
-                <option value="alpha">Alpha</option>
-                <option value="beta">Beta</option>
-                <option value="delta">Delta</option>
-              </select>
-              <span className="text-cyan-500 font-bold ml-1">{formatInterval(currentEntrySourceInterval)}</span>
+              {config.activeSystemMode === 'conjunction' ? (
+                 <span className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1">N/A, see system panel</span>
+              ) : (
+                <>
+                  <select 
+                    value={config.entrySignalSource || 'alpha'}
+                    onChange={(e) => updateConfig({ entrySignalSource: e.target.value as any })}
+                    className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1 min-w-[60px]"
+                  >
+                    <option value="alpha">Alpha</option>
+                    <option value="beta">Beta</option>
+                    <option value="delta">Delta</option>
+                  </select>
+                  <span className="text-cyan-500 font-bold ml-1">{formatInterval(currentEntrySourceInterval)}</span>
+                </>
+              )}
             </div>
           )}
         </div>

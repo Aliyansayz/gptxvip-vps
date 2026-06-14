@@ -16,6 +16,7 @@ import { TradingPanelAccountSettings } from '../simulator/TradingPanelAccountSet
 import { TradingPanelTradeSettings } from '../simulator/TradingPanelTradeSettings';
 import { TradingPanelVisibility } from '../simulator/TradingPanelVisibility';
 import { TradingPanelVolatilityRegime } from '../simulator/TradingPanelVolatilityRegime';
+import { TradingPanelTrendStrength } from '../simulator/TradingPanelTrendStrength';
 import { TradingPanelIndicatorLog } from '../simulator/TradingPanelIndicatorLog';
 import { TradingPanelHFTMode } from '../simulator/TradingPanelHFTMode';
 import { TradingPanelConsoleLog } from '../simulator/TradingPanelConsoleLog';
@@ -606,8 +607,20 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
 
       <div className="w-full flex-1 flex flex-col bg-zinc-900/60 border border-zinc-800 shadow-inner rounded-xl overflow-y-auto custom-scrollbar min-h-0">
         <div className={`relative w-full flex flex-col min-h-max`}>
-          <div className="p-4 border-b border-zinc-800">
+          <div className="p-4 border-b border-zinc-800 flex flex-col gap-4">
              <TradingPanelVolatilityRegime 
+               alphaData={data}
+               betaData={betaData}
+               deltaData={deltaData}
+               alphaIndex={simulationIndex}
+               betaIndex={betaIndex}
+               deltaIndex={deltaIndex}
+               alphaInterval={alphaInterval}
+               betaInterval={betaInterval}
+               deltaInterval={deltaInterval}
+             />
+             <div className="h-px w-full bg-zinc-800/50" />
+             <TradingPanelTrendStrength 
                alphaData={data}
                betaData={betaData}
                deltaData={deltaData}

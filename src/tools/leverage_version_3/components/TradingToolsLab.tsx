@@ -19,9 +19,10 @@ import { StopLossIndicatorSettingsPanel } from "./lab/StopLossIndicatorSettingsP
 import { SmoothingIndicatorPanel } from "./lab/SmoothingIndicatorPanel";
 import { ExitSignalRuleSettingsPanel } from "./lab/ExitSignalRuleSettingsPanel";
 import { TradingPanelDataSettings } from "./simulator/TradingPanelDataSettings";
+import { ConjunctionSimulation } from "./ConjunctionSimulation";
 
 export const TradingToolsLab: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ToolTab>("linear_regression");
+  const [activeTab, setActiveTab] = useState<ToolTab>("stochastic");
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -67,6 +68,7 @@ export const TradingToolsLab: React.FC = () => {
                  {activeTab === 'supertrend_regime' && <SupertrendRegimeSimulation />}
                  {activeTab === 'heikin_ashi_smoothed' && <HeikinAshiSmoothedSimulation />}
                  {activeTab === 'candlestick_pattern' && <CandlestickPatternSimulation />}
+                 {activeTab === 'conjunction' && <ConjunctionSimulation />}
               </div>
             </motion.div>
           </AnimatePresence>

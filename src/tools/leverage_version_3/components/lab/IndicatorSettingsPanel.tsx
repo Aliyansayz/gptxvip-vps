@@ -4,10 +4,12 @@ import { Settings2, ChevronDown, ChevronUp } from 'lucide-react';
 import { useIndicatorsStore, IndicatorSettings } from '../../stores/indicators_store';
 import { ToolTab } from './LabNavigation';
 import { getBaseInterval, formatInterval } from '../../functions/api/rules/dataSourceRules';
+import { getBaseSystemId, getSystemLabelForDisplay, newNamesAfterReplication } from '../../functions/api/conjunctionSystem/selfReplicationLabelManage';
+import { isReplicationPossible } from '../../functions/api/conjunctionSystem/selfReplicationFeature';
 
 export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activeTab }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { indicatorSettings, setIndicatorSettings, getIndicatorDescription, dataSettings } = useIndicatorsStore();
+  const { indicatorSettings, setIndicatorSettings, getIndicatorDescription, dataSettings, tradingConfig, setTradingConfig } = useIndicatorsStore();
 
   const alphaInterval = getBaseInterval(dataSettings.simulationMode);
   const betaInterval = alphaInterval * dataSettings.betaAggregateFactor;
@@ -23,7 +25,7 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
     }));
   };
 
-  const renderNestedInputs = (sourceKey: 'alphaParams' | 'betaParams' | 'deltaParams' | 'default', defaults: any) => {
+  const renderNestedInputs = (tabId: string, sourceKey: 'alphaParams' | 'betaParams' | 'deltaParams' | 'default', defaults: any) => {
     let sourceSettings = defaults;
     if (sourceKey !== 'default') {
       sourceSettings = defaults[sourceKey] || defaults;
@@ -31,13 +33,14 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
     
     const handleChange = (updates: any) => {
       if (sourceKey === 'default') {
-        handleUpdate(activeTab as any, updates);
+        handleUpdate(tabId as any, updates);
       } else {
-        handleUpdate(activeTab as any, { [sourceKey]: { ...defaults[sourceKey], ...updates } });
+        handleUpdate(tabId as any, { [sourceKey]: { ...defaults[sourceKey], ...updates } });
       }
     };
 
-    switch (activeTab) {
+    const baseId = getBaseSystemId(tabId);
+    switch (baseId) {
       case 'heikin_ashi_smoothed':
         return (
           <>
@@ -167,27 +170,32 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
     }
   };
 
-  const renderInputs = () => {
-    const currentSettings = indicatorSettings[activeTab as keyof IndicatorSettings] as any;
+  const renderInputs = (tabId: string) => {
+    const baseId = getBaseSystemId(tabId);
+    let currentSettings = indicatorSettings[tabId as keyof IndicatorSettings] as any;
+    if (!currentSettings) {
+        currentSettings = indicatorSettings[baseId as keyof IndicatorSettings] as any;
+    }
+    
     const allowVariation = currentSettings?.allowVariation || false;
 
     if (!allowVariation) {
-      return renderNestedInputs('default', currentSettings);
+      return renderNestedInputs(tabId, 'default', currentSettings);
     }
 
     return (
       <div className="flex flex-col gap-4 w-full">
         <div className="bg-zinc-900/30 p-3 rounded-lg border border-zinc-700/50">
           <div className="text-xs font-semibold text-cyan-500 mb-2">Alpha Layer Parameters</div>
-          <div className="flex flex-wrap items-center gap-4">{renderNestedInputs('alphaParams', currentSettings)}</div>
+          <div className="flex flex-wrap items-center gap-4">{renderNestedInputs(tabId, 'alphaParams', currentSettings)}</div>
         </div>
         <div className="bg-zinc-900/30 p-3 rounded-lg border border-zinc-700/50">
           <div className="text-xs font-semibold text-purple-500 mb-2">Beta Aggregate Parameters</div>
-          <div className="flex flex-wrap items-center gap-4">{renderNestedInputs('betaParams', currentSettings)}</div>
+          <div className="flex flex-wrap items-center gap-4">{renderNestedInputs(tabId, 'betaParams', currentSettings)}</div>
         </div>
         <div className="bg-zinc-900/30 p-3 rounded-lg border border-zinc-700/50">
           <div className="text-xs font-semibold text-emerald-500 mb-2">Delta Layer Parameters</div>
-          <div className="flex flex-wrap items-center gap-4">{renderNestedInputs('deltaParams', currentSettings)}</div>
+          <div className="flex flex-wrap items-center gap-4">{renderNestedInputs(tabId, 'deltaParams', currentSettings)}</div>
         </div>
       </div>
     );
@@ -202,7 +210,8 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
     bollinger_bands: 'Bollinger Bands Reversion',
     supertrend_regime: 'Hybrid Supertrend Regime',
     heikin_ashi_smoothed: 'Smoothed Heikin Ashi',
-    candlestick_pattern: 'Candlestick Pattern'
+    candlestick_pattern: 'Candlestick Pattern',
+    conjunction: 'Conjunction System'
   };
 
   return (
@@ -228,16 +237,16 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
           >
             <div className="p-4 border-t border-zinc-700/30 text-zinc-300 space-y-4">
               <p className="text-xs text-cyan-400/80 leading-relaxed max-w-2xl">
-                {getIndicatorDescription(activeTab)}
+                {getIndicatorDescription(activeTab as any)}
               </p>
               
               <div className="flex flex-col gap-4">
                 <div className="flex flex-wrap items-center gap-6 mb-2">
                   <label className="flex items-center gap-2 text-xs">
-                    <span className="text-zinc-400">Strategy Config Source:</span>
+                    <span className="text-amber-400 font-semibold uppercase">Entry Signal Data Source:</span>
                     <select
-                      value={(indicatorSettings[activeTab] as any)?.dataSource || 'alpha'}
-                      onChange={(e) => handleUpdate(activeTab, { dataSource: e.target.value as any })}
+                      value={tradingConfig.entrySignalSource || 'alpha'}
+                      onChange={(e) => setTradingConfig(prev => ({ ...prev, entrySignalSource: e.target.value as any }))}
                       className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300"
                     >
                       <option value="alpha">Alpha Base</option>
@@ -245,24 +254,111 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
                       <option value="delta">Delta Layer</option>
                     </select>
                     <span className="text-cyan-500 font-bold ml-1">
-                      {formatInterval((indicatorSettings[activeTab] as any)?.dataSource === 'beta' ? betaInterval : (indicatorSettings[activeTab] as any)?.dataSource === 'delta' ? deltaInterval : alphaInterval)}
+                      {formatInterval(tradingConfig.entrySignalSource === 'beta' ? betaInterval : tradingConfig.entrySignalSource === 'delta' ? deltaInterval : alphaInterval)}
                     </span>
                   </label>
-                  
-                  <label className="flex items-center gap-2 text-xs cursor-pointer select-none border border-zinc-700/50 bg-zinc-900/30 px-2 py-1 rounded">
-                    <input
-                      type="checkbox"
-                      checked={(indicatorSettings[activeTab] as any)?.allowVariation || false}
-                      onChange={(e) => handleUpdate(activeTab, { allowVariation: e.target.checked })}
-                      className="accent-cyan-500 rounded bg-zinc-800 border-zinc-700"
-                    />
-                    <span className="text-zinc-300">Variation of source parameters</span>
-                  </label>
                 </div>
-                
-                <div className="flex flex-wrap items-center gap-6">
-                  {renderInputs()}
-                </div>
+
+                {activeTab === 'conjunction' ? (
+                  <div className="flex flex-col gap-6 w-full">
+                    <div className="text-xs text-purple-300/80 mb-2">
+                      {(tradingConfig.activeConjunctionSystems || []).length === 0 ? 
+                        "No systems selected. Please select up to 3 systems in Configuration Panel." : 
+                        `Using ${tradingConfig.activeConjunctionSystems?.length} system(s) in conjunction.`}
+                    </div>
+                    {(tradingConfig.activeConjunctionSystems || []).map((sysId: string) => {
+                      const baseId = getBaseSystemId(sysId);
+                      return (
+                      <div key={sysId} className="border border-purple-500/30 bg-purple-900/5 p-4 rounded-lg">
+                        <div className="flex justify-between items-center mb-3">
+                          <div className="text-sm font-bold text-purple-400 uppercase tracking-wider">
+                            {getSystemLabelForDisplay(titleMap[baseId as ToolTab] || baseId, sysId)}
+                          </div>
+                          {isReplicationPossible(baseId, tradingConfig.activeConjunctionSystems || []) && (
+                            <button 
+                              onClick={() => {
+                                const newName = newNamesAfterReplication(baseId, tradingConfig.activeConjunctionSystems || []);
+                                if (newName) {
+                                  setTradingConfig(prev => ({
+                                    ...prev,
+                                    activeConjunctionSystems: [...(prev.activeConjunctionSystems || []), newName]
+                                  }));
+                                }
+                              }}
+                              className="px-2 py-1 bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 text-[10px] rounded border border-purple-500/30 font-bold uppercase tracking-wider"
+                            >
+                              Replicate
+                            </button>
+                          )}
+                        </div>
+                        <div className="flex flex-wrap items-center gap-6 mb-4">
+                          <label className="flex items-center gap-2 text-xs">
+                            <span className="text-zinc-400">Strategy Config Source:</span>
+                            <select
+                              value={(indicatorSettings[sysId as keyof IndicatorSettings] as any)?.dataSource || 'alpha'}
+                              onChange={(e) => handleUpdate(sysId as keyof IndicatorSettings, { dataSource: e.target.value as any })}
+                              className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300"
+                            >
+                              <option value="alpha">Alpha Base</option>
+                              <option value="beta">Beta Aggregate</option>
+                              <option value="delta">Delta Layer</option>
+                            </select>
+                            <span className="text-cyan-500 font-bold ml-1">
+                              {formatInterval((indicatorSettings[sysId as keyof IndicatorSettings] as any)?.dataSource === 'beta' ? betaInterval : (indicatorSettings[sysId as keyof IndicatorSettings] as any)?.dataSource === 'delta' ? deltaInterval : alphaInterval)}
+                            </span>
+                          </label>
+                          <label className="flex items-center gap-2 text-xs cursor-pointer select-none border border-zinc-700/50 bg-zinc-900/30 px-2 py-1 rounded">
+                            <input
+                              type="checkbox"
+                              checked={(indicatorSettings[sysId as keyof IndicatorSettings] as any)?.allowVariation || false}
+                              onChange={(e) => handleUpdate(sysId as keyof IndicatorSettings, { allowVariation: e.target.checked })}
+                              className="accent-cyan-500 rounded bg-zinc-800 border-zinc-700"
+                            />
+                            <span className="text-zinc-300">Variation of source parameters</span>
+                          </label>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-6">
+                          {renderInputs(sysId)}
+                        </div>
+                      </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex flex-wrap items-center gap-6 mb-2">
+                      <label className="flex items-center gap-2 text-xs">
+                        <span className="text-zinc-400">Strategy Config Source:</span>
+                        <select
+                          value={(indicatorSettings[activeTab as keyof IndicatorSettings] as any)?.dataSource || 'alpha'}
+                          onChange={(e) => handleUpdate(activeTab as keyof IndicatorSettings, { dataSource: e.target.value as any })}
+                          className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300"
+                        >
+                          <option value="alpha">Alpha Base</option>
+                          <option value="beta">Beta Aggregate</option>
+                          <option value="delta">Delta Layer</option>
+                        </select>
+                        <span className="text-cyan-500 font-bold ml-1">
+                          {formatInterval((indicatorSettings[activeTab as keyof IndicatorSettings] as any)?.dataSource === 'beta' ? betaInterval : (indicatorSettings[activeTab as keyof IndicatorSettings] as any)?.dataSource === 'delta' ? deltaInterval : alphaInterval)}
+                        </span>
+                      </label>
+                      
+                      <label className="flex items-center gap-2 text-xs cursor-pointer select-none border border-zinc-700/50 bg-zinc-900/30 px-2 py-1 rounded">
+                        <input
+                          type="checkbox"
+                          checked={(indicatorSettings[activeTab as keyof IndicatorSettings] as any)?.allowVariation || false}
+                          onChange={(e) => handleUpdate(activeTab as keyof IndicatorSettings, { allowVariation: e.target.checked })}
+                          className="accent-cyan-500 rounded bg-zinc-800 border-zinc-700"
+                        />
+                        <span className="text-zinc-300">Variation of source parameters</span>
+                      </label>
+                    </div>
+                    
+                    <div className="flex flex-wrap items-center gap-6">
+                      {renderInputs(activeTab as string)}
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </motion.div>

@@ -9,6 +9,7 @@ import { checkLinearRegressionAdxEntryConditions } from '../../functions/api/ind
 import { calculateVolatilityScenario } from '../../functions/api/indicators/exclusive/volatilityBehavior';
 import { getEligibleRootAccount } from '../../functions/api/accountState/accountEligibleToTrade';
 import { shouldActivateTradeBreaker } from '../../functions/api/tradeBreaker/tradeBreakerByEquity';
+import { evaluateConjunctionSystem } from '../../functions/api/conjunctionSystem';
 import { Config } from './types';
 import { ParallelAccount, useIndicatorsStore } from '../../stores/indicators_store';
 import { calculatePnL } from '../../functions/api/position_sizing/leveragedPositionSizeMetals';
@@ -94,160 +95,112 @@ export function useTradeEvaluation(
     const slDataSource = indicatorSettings?.stopLossIndicator?.dataSource || 'alpha';
     const slIndex = getMappedIndex(slDataSource);
 
-    // Evaluate Entry Signal
-    if (config.type === 'ma_crossover' && ind.entrySignal?.fastLine) {
-      const fastLine = ind.entrySignal.fastLine;
-      const slowLine = ind.entrySignal.slowLine;
-      if (fastLine && slowLine && fastLine.length > entryIndex) {
-        const lastFast = fastLine[entryIndex];
-        const lastSlow = slowLine[entryIndex];
-        const prevFast = fastLine[Math.max(0, entryIndex - 1)];
-        const prevSlow = slowLine[Math.max(0, entryIndex - 1)];
-        if (prevFast <= prevSlow && lastFast > lastSlow) currentEntrySignal = 'LONG';
-        else if (prevFast >= prevSlow && lastFast < lastSlow) currentEntrySignal = 'SHORT';
-      }
-    } else if (config.type === 'supertrend' && ind.entrySignal?.supertrend) {
-      const st = ind.entrySignal.supertrend;
-      if (st && st.length > entryIndex) {
-        const lastSt = st[entryIndex];
-        const prevSt = st[Math.max(0, entryIndex - 1)];
-        if (prevSt.trend === 'down' && lastSt.trend === 'up') currentEntrySignal = 'LONG';
-        else if (prevSt.trend === 'up' && lastSt.trend === 'down') currentEntrySignal = 'SHORT';
-      }
-    } else if (config.type === 'stochastic' && ind.entrySignal?.stochastic) {
-      const stoch = ind.entrySignal.stochastic;
-      if (stoch && stoch.k.length > entryIndex && stoch.d.length > entryIndex) {
-        const lastK = stoch.k[entryIndex];
-        const lastD = stoch.d[entryIndex];
-        const prevK = stoch.k[Math.max(0, entryIndex - 1)];
-        const prevD = stoch.d[Math.max(0, entryIndex - 1)];
-        if (prevK <= prevD && lastK > lastD) currentEntrySignal = 'LONG';
-        else if (prevK >= prevD && lastK < lastD) currentEntrySignal = 'SHORT';
-      }
-    } else if (config.type === 'linear_regression' && ind.entrySignal?.lr) {
-      const lr = ind.entrySignal.lr;
-      const indicatorData = {
-        'SIM': { secondary: { lr_trend_secondary: lr.direction.slice(0, entryIndex + 1), lr_volatality_s: lr.vol_regime.slice(0, entryIndex + 1), lr_reversion_s: lr.reversion.slice(0, entryIndex + 1) } }
-      };
-      const entry = checkLinearRegressionAdxEntryConditions(indicatorData, 'SIM');
-      if (entry.status === 'long') currentEntrySignal = 'LONG';
-      else if (entry.status === 'short') currentEntrySignal = 'SHORT';
-    } else if (config.type === 'bollinger_bands' && ind.entrySignal?.bb) {
-      const bb = ind.entrySignal.bb;
-      if (bb && bb.length > entryIndex) {
-        const lastBb = bb[entryIndex];
-        const sourceData = entryDataSource === 'beta' && betaData ? betaData : entryDataSource === 'delta' && deltaData ? deltaData : data;
-        const lastCandle = sourceData[entryIndex];
-        if (lastCandle && lastBb && !isNaN(lastBb.lower) && !isNaN(lastBb.upper)) {
-          if (lastCandle.open < lastBb.lower && lastCandle.close > lastBb.lower) {
-            currentEntrySignal = 'LONG';
-          } else if (lastCandle.open > lastBb.upper && lastCandle.close < lastBb.upper) {
-            currentEntrySignal = 'SHORT';
+    const getSignalForComputed = (sysType: string, computedSig: any, idx: number, sourceData: Ohlc[]) => {
+      let signal: 'LONG' | 'SHORT' | null = null;
+      if (sysType === 'ma_crossover' && computedSig?.fastLine) {
+        const fastLine = computedSig.fastLine;
+        const slowLine = computedSig.slowLine;
+        if (fastLine && slowLine && fastLine.length > idx) {
+          const lastFast = fastLine[idx];
+          const lastSlow = slowLine[idx];
+          const prevFast = fastLine[Math.max(0, idx - 1)];
+          const prevSlow = slowLine[Math.max(0, idx - 1)];
+          if (prevFast <= prevSlow && lastFast > lastSlow) signal = 'LONG';
+          else if (prevFast >= prevSlow && lastFast < lastSlow) signal = 'SHORT';
+        }
+      } else if (sysType === 'supertrend' && computedSig?.supertrend) {
+        const st = computedSig.supertrend;
+        if (st && st.length > idx) {
+          const lastSt = st[idx];
+          const prevSt = st[Math.max(0, idx - 1)];
+          if (prevSt.trend === 'down' && lastSt.trend === 'up') signal = 'LONG';
+          else if (prevSt.trend === 'up' && lastSt.trend === 'down') signal = 'SHORT';
+        }
+      } else if (sysType === 'stochastic' && computedSig?.stochastic) {
+        const stoch = computedSig.stochastic;
+        if (stoch && stoch.k.length > idx && stoch.d.length > idx) {
+          const lastK = stoch.k[idx];
+          const lastD = stoch.d[idx];
+          const prevK = stoch.k[Math.max(0, idx - 1)];
+          const prevD = stoch.d[Math.max(0, idx - 1)];
+          if (prevK <= prevD && lastK > lastD) signal = 'LONG';
+          else if (prevK >= prevD && lastK < lastD) signal = 'SHORT';
+        }
+      } else if (sysType === 'linear_regression' && computedSig?.lr) {
+        const lr = computedSig.lr;
+        const indicatorData = {
+          'SIM': { secondary: { lr_trend_secondary: lr.direction.slice(0, idx + 1), lr_volatality_s: lr.vol_regime.slice(0, idx + 1), lr_reversion_s: lr.reversion.slice(0, idx + 1) } }
+        };
+        const entry = checkLinearRegressionAdxEntryConditions(indicatorData, 'SIM');
+        if (entry.status === 'long') signal = 'LONG';
+        else if (entry.status === 'short') signal = 'SHORT';
+      } else if (sysType === 'bollinger_bands' && computedSig?.bb) {
+        const bb = computedSig.bb;
+        if (bb && bb.length > idx) {
+          const lastBb = bb[idx];
+          const lastCandle = sourceData[idx];
+          if (lastCandle && lastBb && !isNaN(lastBb.lower) && !isNaN(lastBb.upper)) {
+            if (lastCandle.open < lastBb.lower && lastCandle.close > lastBb.lower) {
+              signal = 'LONG';
+            } else if (lastCandle.open > lastBb.upper && lastCandle.close < lastBb.upper) {
+              signal = 'SHORT';
+            }
           }
         }
+      } else if (sysType === 'supertrend_regime' && computedSig?.supertrend_regime) {
+        const sr = computedSig.supertrend_regime;
+        if (sr && sr.signal && sr.signal.length > idx) {
+          const lastSignal = sr.signal[idx];
+          const prevSignal = sr.signal[Math.max(0, idx - 1)];
+          if (prevSignal <= 0 && lastSignal === 1) signal = 'LONG';
+          else if (prevSignal >= 0 && lastSignal === -1) signal = 'SHORT';
+        }
+      } else if (sysType === 'heikin_ashi_smoothed' && computedSig?.heikin_ashi_smoothed) {
+        const ha = computedSig.heikin_ashi_smoothed;
+        if (ha && ha.length > idx) {
+          const lastCandle = ha[idx];
+          const prevCandle = ha[Math.max(0, idx - 1)];
+          if (prevCandle.close <= prevCandle.open && lastCandle.close > lastCandle.open) signal = 'LONG';
+          else if (prevCandle.close >= prevCandle.open && lastCandle.close < lastCandle.open) signal = 'SHORT';
+        }
+      } else if (sysType === 'candlestick_pattern' && computedSig?.candlestick_pattern) {
+        const cp = computedSig.candlestick_pattern;
+        if (cp && cp.action_signal && cp.action_signal.length > idx) {
+          const action = cp.action_signal[idx];
+          if (action === 'bullish_action') signal = 'LONG';
+          else if (action === 'bearish_action') signal = 'SHORT';
+        }
       }
-    } else if (config.type === 'supertrend_regime' && ind.entrySignal?.supertrend_regime) {
-      const sr = ind.entrySignal.supertrend_regime;
-      if (sr && sr.signal && sr.signal.length > entryIndex) {
-        const lastSignal = sr.signal[entryIndex];
-        const prevSignal = sr.signal[Math.max(0, entryIndex - 1)];
-        if (prevSignal <= 0 && lastSignal === 1) currentEntrySignal = 'LONG';
-        else if (prevSignal >= 0 && lastSignal === -1) currentEntrySignal = 'SHORT';
-      }
-    } else if (config.type === 'heikin_ashi_smoothed' && ind.entrySignal?.heikin_ashi_smoothed) {
-      const ha = ind.entrySignal.heikin_ashi_smoothed;
-      if (ha && ha.length > entryIndex) {
-        const lastCandle = ha[entryIndex];
-        const prevCandle = ha[Math.max(0, entryIndex - 1)];
-        if (prevCandle.close <= prevCandle.open && lastCandle.close > lastCandle.open) currentEntrySignal = 'LONG';
-        else if (prevCandle.close >= prevCandle.open && lastCandle.close < lastCandle.open) currentEntrySignal = 'SHORT';
-      }
-    } else if (config.type === 'candlestick_pattern' && ind.entrySignal?.candlestick_pattern) {
-      const cp = ind.entrySignal.candlestick_pattern;
-      if (cp && cp.action_signal && cp.action_signal.length > entryIndex) {
-        const action = cp.action_signal[entryIndex];
-        if (action === 'bullish_action') currentEntrySignal = 'LONG';
-        else if (action === 'bearish_action') currentEntrySignal = 'SHORT';
-      }
+      return signal;
+    };
+
+    const getDataBySource = (source: string) => {
+      if (source === 'beta' && betaData) return betaData;
+      if (source === 'delta' && deltaData) return deltaData;
+      return data;
+    };
+
+    // Evaluate Entry Signal
+    if (tradingConfig.activeSystemMode === 'conjunction' && ind.entrySignal?.type === 'conjunction') {
+      const activeSystems = tradingConfig.activeConjunctionSystems || [];
+      const signals = activeSystems.map((sysId: string) => {
+         const comp = ind.entrySignal.conjunctionSignals[sysId];
+         const sysDataSource = indicatorSettings[sysId]?.dataSource || entryDataSource;
+         const sysIndex = getMappedIndex(sysDataSource);
+         return getSignalForComputed(sysId, comp, sysIndex, getDataBySource(sysDataSource));
+      });
+      currentEntrySignal = evaluateConjunctionSystem(signals);
+    } else {
+      const sysDataSource = indicatorSettings[config.type]?.dataSource || entryDataSource;
+      const sysIndex = getMappedIndex(sysDataSource);
+      currentEntrySignal = getSignalForComputed(config.type, ind.entrySignal, sysIndex, getDataBySource(sysDataSource));
     }
 
     // Evaluate Exit Signal
     const resolvedExitType = ind.exitSignal?.type || exitType;
-    if (resolvedExitType === 'ma_crossover' && ind.exitSignal?.fastLine) {
-      const fastLine = ind.exitSignal.fastLine;
-      const slowLine = ind.exitSignal.slowLine;
-      if (fastLine && slowLine && fastLine.length > exitIndex) {
-        const lastFast = fastLine[exitIndex];
-        const lastSlow = slowLine[exitIndex];
-        const prevFast = fastLine[Math.max(0, exitIndex - 1)];
-        const prevSlow = slowLine[Math.max(0, exitIndex - 1)];
-        if (prevFast <= prevSlow && lastFast > lastSlow) currentExitSignal = 'LONG';
-        else if (prevFast >= prevSlow && lastFast < lastSlow) currentExitSignal = 'SHORT';
-      }
-    } else if (resolvedExitType === 'supertrend' && ind.exitSignal?.supertrend) {
-      const st = ind.exitSignal.supertrend;
-      if (st && st.length > exitIndex) {
-        const lastSt = st[exitIndex];
-        const prevSt = st[Math.max(0, exitIndex - 1)];
-        if (prevSt.trend === 'down' && lastSt.trend === 'up') currentExitSignal = 'LONG';
-        else if (prevSt.trend === 'up' && lastSt.trend === 'down') currentExitSignal = 'SHORT';
-      }
-    } else if (resolvedExitType === 'stochastic' && ind.exitSignal?.stochastic) {
-      const stoch = ind.exitSignal.stochastic;
-      if (stoch && stoch.k.length > exitIndex && stoch.d.length > exitIndex) {
-        const lastK = stoch.k[exitIndex];
-        const lastD = stoch.d[exitIndex];
-        const prevK = stoch.k[Math.max(0, exitIndex - 1)];
-        const prevD = stoch.d[Math.max(0, exitIndex - 1)];
-        if (prevK <= prevD && lastK > lastD) currentExitSignal = 'LONG';
-        else if (prevK >= prevD && lastK < lastD) currentExitSignal = 'SHORT';
-      }
-    } else if (resolvedExitType === 'linear_regression' && ind.exitSignal?.lr) {
-      const lr = ind.exitSignal.lr;
-      const indicatorData = {
-        'SIM': { secondary: { lr_trend_secondary: lr.direction.slice(0, exitIndex + 1), lr_volatality_s: lr.vol_regime.slice(0, exitIndex + 1), lr_reversion_s: lr.reversion.slice(0, exitIndex + 1) } }
-      };
-      const entry = checkLinearRegressionAdxEntryConditions(indicatorData, 'SIM');
-      if (entry.status === 'long') currentExitSignal = 'LONG';
-      else if (entry.status === 'short') currentExitSignal = 'SHORT';
-    } else if (resolvedExitType === 'bollinger_bands' && ind.exitSignal?.bb) {
-      const bb = ind.exitSignal.bb;
-      if (bb && bb.length > exitIndex) {
-        const lastBb = bb[exitIndex];
-        const sourceData = exitDataSource === 'beta' && betaData ? betaData : exitDataSource === 'delta' && deltaData ? deltaData : data;
-        const lastCandle = sourceData[exitIndex];
-        if (lastCandle && lastBb && !isNaN(lastBb.lower) && !isNaN(lastBb.upper)) {
-          if (lastCandle.open < lastBb.lower && lastCandle.close > lastBb.lower) {
-            currentExitSignal = 'LONG';
-          } else if (lastCandle.open > lastBb.upper && lastCandle.close < lastBb.upper) {
-            currentExitSignal = 'SHORT';
-          }
-        }
-      }
-    } else if (resolvedExitType === 'supertrend_regime' && ind.exitSignal?.supertrend_regime) {
-      const sr = ind.exitSignal.supertrend_regime;
-      if (sr && sr.signal && sr.signal.length > exitIndex) {
-        const lastSignal = sr.signal[exitIndex];
-        const prevSignal = sr.signal[Math.max(0, exitIndex - 1)];
-        if (prevSignal <= 0 && lastSignal === 1) currentExitSignal = 'LONG';
-        else if (prevSignal >= 0 && lastSignal === -1) currentExitSignal = 'SHORT';
-      }
-    } else if (resolvedExitType === 'heikin_ashi_smoothed' && ind.exitSignal?.heikin_ashi_smoothed) {
-      const ha = ind.exitSignal.heikin_ashi_smoothed;
-      if (ha && ha.length > exitIndex) {
-        const lastCandle = ha[exitIndex];
-        const prevCandle = ha[Math.max(0, exitIndex - 1)];
-        if (prevCandle.close <= prevCandle.open && lastCandle.close > lastCandle.open) currentExitSignal = 'LONG';
-        else if (prevCandle.close >= prevCandle.open && lastCandle.close < lastCandle.open) currentExitSignal = 'SHORT';
-      }
-    } else if (resolvedExitType === 'candlestick_pattern' && ind.exitSignal?.candlestick_pattern) {
-      const cp = ind.exitSignal.candlestick_pattern;
-      if (cp && cp.action_signal && cp.action_signal.length > exitIndex) {
-        const action = cp.action_signal[exitIndex];
-        if (action === 'bullish_action') currentExitSignal = 'LONG';
-        else if (action === 'bearish_action') currentExitSignal = 'SHORT';
-      }
-    }
+    const sysExitDataSource = indicatorSettings[resolvedExitType]?.dataSource || exitDataSource;
+    const sysExitIndex = getMappedIndex(sysExitDataSource);
+    currentExitSignal = getSignalForComputed(resolvedExitType, ind.exitSignal, sysExitIndex, getDataBySource(sysExitDataSource));
 
     if (tradingConfig.useStopLoss && ind.stops) {
        customStopLossValue = {

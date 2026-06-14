@@ -6,6 +6,7 @@ import { LeverageConfig } from '../position_sizing/leveragedPositionSizeMetals';
 import { evaluateDynamicPositionSize, evaluateRiskPerPip } from '../position_sizing/leveragedDynamicPositionSize';
 import { priceToPips } from '../middleware/pipsTranslation';
 import { shouldAllowTradeByTimeFilter } from './timeFilterTradingRules';
+import { evaluateAdaptiveRiskPercentage } from '../position_sizing/adaptivePositionSizing';
 
 export function processIndicatorBasedEntry(
   currentIndex: number,
@@ -86,11 +87,23 @@ export function processIndicatorBasedEntry(
   let evaluatedPositionSize = leverageConfig ? leverageConfig.positionSize : 1;
   if (leverageConfig && leverageConfig.enabled) {
     if (leverageConfig.positionSizingType === 'dynamic_risk_per_pip' && currentBalance !== undefined) {
+      let riskVal = leverageConfig.dynamicRiskPerPipValue || 1;
+      
+      if (leverageConfig.dynamicRiskPerPipType === 'percentage') {
+        let basePct = leverageConfig.dynamicRiskPerPipPercentage || 1;
+        // Adaptive override
+        const historicalData = data.slice(0, currentIndex + 1);
+        basePct = evaluateAdaptiveRiskPercentage(basePct, leverageConfig, historicalData);
+        riskVal = currentBalance * (basePct / 100);
+      } else {
+        // Evaluate adaptive logic could also scale `value` if we really wanted to, but the requirement specifically calls for percentage ranges applying to Risk/Pip and Risk ATR.
+      }
+
       const evaluation = evaluateRiskPerPip(
         currentBalance,
         currentCandle.close,
         leverageConfig.leverage,
-        leverageConfig.dynamicRiskPerPipValue || 1,
+        riskVal,
         undefined,
         assetName
       );
@@ -115,13 +128,16 @@ export function processIndicatorBasedEntry(
         if (calcPips > 0) atrPips = calcPips;
       }
       
-      const riskPercentage = leverageConfig.dynamicRiskAtrPipsPercentage || 2;
+      let basePct = leverageConfig.dynamicRiskAtrPipsPercentage || 2;
+      const historicalData = data.slice(0, currentIndex + 1);
+      basePct = evaluateAdaptiveRiskPercentage(basePct, leverageConfig, historicalData);
+
       const evaluation = evaluateDynamicPositionSize(
         currentBalance,
         currentCandle.close,
         leverageConfig.leverage,
         'percentage',
-        riskPercentage,
+        basePct,
         atrPips,
         undefined,
         assetName
