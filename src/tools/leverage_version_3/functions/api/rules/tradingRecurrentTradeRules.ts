@@ -11,6 +11,7 @@ import { calculateRecurrentPositionSize } from '../position_sizing/recurrentPosi
 import { isSufficientBalanceToOpenTrade } from './leverageTradingRules';
 import { fetchMainTradeTrailEventCount } from '../tradeState/fetchMainTradeTrailEventCount';
 import { evaluateAdaptiveRiskPercentage } from '../position_sizing/adaptivePositionSizing';
+import { evaluateRecurrentTradeConditionsState, evaluateRecurrentTradeReversalTriggers } from '../indicatorStatus/recurrentTradeConditions';
 
 /**
  * Recurrent Trades Logic:
@@ -52,6 +53,25 @@ export function canOpenRecurrentTrade(
     if (res) {
        candlePatternMet = true;
        candlePatternReason = `Candle Pattern: ${res.pattern} (Source: ${res.source})`;
+    }
+  }
+
+  // Trend Revert or Candles Revert Based Entry
+  let trendRevertMet = false;
+  let candlesRevertMet = false;
+  if (
+    multiSources &&
+    multiSources.alpha &&
+    (config.recurrentTradeParams.entryOnTrendRevert || config.recurrentTradeParams.entryOnCandlesRevert)
+  ) {
+    const parentTrade = referenceTrade;
+    const directionWanted = parentTrade.side;
+    const res = evaluateRecurrentTradeReversalTriggers(multiSources.alpha, directionWanted);
+    if (config.recurrentTradeParams.entryOnTrendRevert && res.trendStrengthRevert) {
+      trendRevertMet = true;
+    }
+    if (config.recurrentTradeParams.entryOnCandlesRevert && res.candlesRevert) {
+      candlesRevertMet = true;
     }
   }
 
@@ -100,23 +120,60 @@ export function canOpenRecurrentTrade(
     }
   }
 
-  // If no time/candle limitations are set and pips trigger is set, time counts as unmet to avoid instant execution
-  if (!adjustedSecondsLimit && !adjustedCandlesLimit && (pipsTrigger > 0 || config.recurrentTradeParams.entryOnCandlePattern)) {
+  // If no time/candle limitations are set and triggers are set, time/candles count as unmet to avoid instant execution
+  if (!adjustedSecondsLimit && !adjustedCandlesLimit && (pipsTrigger > 0 || config.recurrentTradeParams.entryOnCandlePattern || config.recurrentTradeParams.entryOnTrendRevert || config.recurrentTradeParams.entryOnCandlesRevert)) {
       timeMet = false;
       candlesMet = false;
   }
 
-  // Evaluate if either the Time/Candle limits are met OR Pips based limit is met OR Candle Pattern met.
-  const isTriggered = pipsMet || (timeMet && candlesMet) || candlePatternMet;
+  // Evaluate if any limits are met OR any triggers are met
+  const isTriggered = pipsMet || (timeMet && candlesMet) || candlePatternMet || trendRevertMet || candlesRevertMet;
 
   if (!isTriggered) {
-    return { canOpen: false, adjustedSecondsLimit, adjustedCandlesLimit, reason: 'Time/Candle delay not met, Pips target not met, and no Candle Pattern' };
+    return { canOpen: false, adjustedSecondsLimit, adjustedCandlesLimit, reason: 'Delay not met, Pips not met, and no Candle Pattern/Trend/Candle Reversal trigger hit' };
   }
 
   // 2. Only Execute if latest trade is in surplus (applies primarily to time-based spawns)
-  if (config.recurrentTradeParams.onlyExecuteIfLatestTradeInSurplus && !pipsMet && !candlePatternMet) {
+  if (config.recurrentTradeParams.onlyExecuteIfLatestTradeInSurplus && !pipsMet && !candlePatternMet && !trendRevertMet && !candlesRevertMet) {
     if (latestTradeState.status !== 'GAIN') {
       return { canOpen: false, adjustedSecondsLimit, adjustedCandlesLimit, reason: `Latest trade not in surplus (Current: ${latestTradeState.pips.toFixed(1)} pips)` };
+    }
+  }
+
+  // Additional parallel indicator checks
+  if (multiSources && multiSources.alpha) {
+    const parentDirection = referenceTrade.side;
+    
+    const hasAnyActiveFilter = 
+      config.recurrentTradeParams.onlyExecuteIfSqueezeMomentumValid ||
+      (config.recurrentTradeParams.adxFilterThreshold !== undefined && config.recurrentTradeParams.adxFilterThreshold > 0) ||
+      config.recurrentTradeParams.onlyExecuteIfTrendStrengthFavorable ||
+      config.recurrentTradeParams.onlyExecuteIfHeikinAshiFavorable;
+
+    if (hasAnyActiveFilter) {
+      const {
+        isSqueezeValid,
+        isAdxValid,
+        isTrendStrengthFavorable,
+        isHeikinAshiFavorable
+      } = evaluateRecurrentTradeConditionsState(
+        multiSources.alpha,
+        parentDirection,
+        config.recurrentTradeParams.adxFilterThreshold ?? 18
+      );
+
+      if (config.recurrentTradeParams.onlyExecuteIfSqueezeMomentumValid && !isSqueezeValid) {
+        return { canOpen: false, adjustedSecondsLimit, adjustedCandlesLimit, reason: `Squeeze Momentum is not valid (firing/expansion)` };
+      }
+      if (config.recurrentTradeParams.adxFilterThreshold !== undefined && config.recurrentTradeParams.adxFilterThreshold > 0 && !isAdxValid) {
+        return { canOpen: false, adjustedSecondsLimit, adjustedCandlesLimit, reason: `ADX is below threshold (${config.recurrentTradeParams.adxFilterThreshold})` };
+      }
+      if (config.recurrentTradeParams.onlyExecuteIfTrendStrengthFavorable && !isTrendStrengthFavorable) {
+         return { canOpen: false, adjustedSecondsLimit, adjustedCandlesLimit, reason: `Trend Strength is not favorable to ${parentDirection}` };
+      }
+      if (config.recurrentTradeParams.onlyExecuteIfHeikinAshiFavorable && !isHeikinAshiFavorable) {
+         return { canOpen: false, adjustedSecondsLimit, adjustedCandlesLimit, reason: `Heikin Ashi is not favorable to ${parentDirection}` };
+      }
     }
   }
 
@@ -124,6 +181,10 @@ export function canOpenRecurrentTrade(
   let triggeredReason = '';
   if (candlePatternMet) {
     triggeredReason = candlePatternReason;
+  } else if (trendRevertMet) {
+    triggeredReason = 'Trend Strength Revert (Opposite -> Main with Strong Strength)';
+  } else if (candlesRevertMet) {
+    triggeredReason = 'Smoothing Candles Revert (Opposite -> Main)';
   } else if (pipsMet) {
     triggeredReason = `Pips Favorite Trigger (+${latestTradeState.pips.toFixed(1)} pips >= +${pipsTrigger.toFixed(1)})`;
   } else {

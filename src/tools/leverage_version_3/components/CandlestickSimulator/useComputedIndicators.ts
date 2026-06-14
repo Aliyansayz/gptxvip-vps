@@ -43,10 +43,11 @@ export function useComputedIndicators(
       return fallback;
     };
 
-    const computeSignalForType = (sysType: string, dataSource: string, config: any) => {
+    const computeSignalForType = (sysType: string, configKey: string, dataSource: string, config: any) => {
       const sourceData = getDataBySource(dataSource);
       const closePrices = sourceData.map(d => d.close);
-      const cfg = getParams(indicatorSettings[sysType], dataSource, config);
+      const baseCfgObj = indicatorSettings[configKey as keyof typeof indicatorSettings] || indicatorSettings[sysType as keyof typeof indicatorSettings];
+      const cfg = getParams(baseCfgObj, dataSource, config);
 
       if (sysType === 'ma_crossover') {
         return {
@@ -115,15 +116,16 @@ export function useComputedIndicators(
          conjunctionSignals: {}
        };
        (tradingConfig.activeConjunctionSystems || []).forEach((sysId: string) => {
-         const sysDataSource = indicatorSettings[sysId]?.dataSource || entryDataSource;
-         const sig = computeSignalForType(sysId, sysDataSource, config);
+         const baseId = sysId.replace('_alpha', '').replace('_beta', '').replace('_delta', '');
+         const sysEntrySource = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[sysId as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
+         const sig = computeSignalForType(baseId, sysId, sysEntrySource, config);
          if (sig) {
            result.entrySignal.conjunctionSignals[sysId] = sig;
          }
        });
     } else {
-       const sysDataSource = indicatorSettings[config.type]?.dataSource || entryDataSource;
-       const computed = computeSignalForType(config.type, sysDataSource, config);
+       const sysEntrySource = (indicatorSettings[config.type as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[config.type as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
+       const computed = computeSignalForType(config.type, config.type, sysEntrySource, config);
        if (computed) {
          result.entrySignal = computed;
        }
@@ -139,7 +141,7 @@ export function useComputedIndicators(
       ? tradingConfig.exitSignalSystemParams
       : config;
       
-    const computedExit = computeSignalForType(exitType, exitDataSource, baseExitConfig);
+    const computedExit = computeSignalForType(exitType, exitType, exitDataSource, baseExitConfig);
     if (computedExit) {
       result.exitSignal = computedExit;
     }

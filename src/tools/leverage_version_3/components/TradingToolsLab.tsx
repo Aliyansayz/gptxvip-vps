@@ -15,6 +15,7 @@ import { LabStatus } from "./lab/LabStatus";
 import { IndicatorSettingsPanel } from "./lab/IndicatorSettingsPanel";
 import { VolatilitySettingsPanel } from "./lab/VolatilitySettingsPanel";
 import { VolatilityRegimeSettingsPanel } from "./lab/VolatilityRegimeSettingsPanel";
+import { TrendStrengthSettingsPanel } from "./lab/TrendStrengthSettingsPanel";
 import { StopLossIndicatorSettingsPanel } from "./lab/StopLossIndicatorSettingsPanel";
 import { SmoothingIndicatorPanel } from "./lab/SmoothingIndicatorPanel";
 import { ExitSignalRuleSettingsPanel } from "./lab/ExitSignalRuleSettingsPanel";
@@ -46,6 +47,7 @@ export const TradingToolsLab: React.FC = () => {
           <IndicatorSettingsPanel activeTab={activeTab} />
           <VolatilitySettingsPanel />
           <VolatilityRegimeSettingsPanel />
+          <TrendStrengthSettingsPanel />
           <StopLossIndicatorSettingsPanel />
           <SmoothingIndicatorPanel />
           <ExitSignalRuleSettingsPanel />

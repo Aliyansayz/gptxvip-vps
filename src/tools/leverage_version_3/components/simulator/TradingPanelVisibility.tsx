@@ -67,6 +67,33 @@ export const TradingPanelVisibility: React.FC = () => {
             />
             Show Secondary Charts
           </label>
+          <label className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">
+            <input 
+              type="checkbox" 
+              className="rounded bg-zinc-800 border-zinc-700 text-zinc-400 focus:ring-cyan-500" 
+              checked={visibilitySettings.trendStrengthVisible} 
+              onChange={e => updateSettings({ trendStrengthVisible: e.target.checked })} 
+            />
+            Show Trend Strength Pane
+          </label>
+          <label className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">
+            <input 
+              type="checkbox" 
+              className="rounded bg-zinc-800 border-zinc-700 text-zinc-400 focus:ring-cyan-500" 
+              checked={visibilitySettings.volatilityRegimeMonitorVisible} 
+              onChange={e => updateSettings({ volatilityRegimeMonitorVisible: e.target.checked })} 
+            />
+            Show Volatility Regime Monitor Pane
+          </label>
+          <label className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">
+            <input 
+              type="checkbox" 
+              className="rounded bg-zinc-800 border-zinc-700 text-zinc-400 focus:ring-cyan-500" 
+              checked={visibilitySettings.atrValueBoxVisible} 
+              onChange={e => updateSettings({ atrValueBoxVisible: e.target.checked })} 
+            />
+            Show ATR Value Box
+          </label>
         </div>
       </div>
 

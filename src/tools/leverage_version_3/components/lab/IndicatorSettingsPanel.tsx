@@ -46,7 +46,7 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
           <>
             <label className="flex items-center gap-2 text-xs">
               <span className="w-20">Smooth Len:</span>
-              <input type="number" min="1" max="50" value={sourceSettings?.smoothLen ?? defaults.smoothLen ?? 10} onChange={e => handleChange({ smoothLen: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+              <input type="number" min="1" max="50" value={sourceSettings?.smoothLen || defaults.smoothLen || 10} onChange={e => handleChange({ smoothLen: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
           </>
         );
@@ -55,11 +55,11 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
           <>
             <label className="flex items-center gap-2 text-xs">
               <span className="w-16">Fast MA:</span>
-              <input type="number" min="1" max="100" value={sourceSettings?.fastMa ?? defaults.fastMa} onChange={e => handleChange({ fastMa: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+              <input type="number" min="1" max="100" value={sourceSettings?.fastMa || defaults.fastMa || 1} onChange={e => handleChange({ fastMa: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
             <label className="flex items-center gap-2 text-xs">
               <span className="w-16">Slow MA:</span>
-              <input type="number" min="1" max="200" value={sourceSettings?.slowMa ?? defaults.slowMa} onChange={e => handleChange({ slowMa: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+              <input type="number" min="1" max="200" value={sourceSettings?.slowMa || defaults.slowMa || 1} onChange={e => handleChange({ slowMa: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
           </>
         );
@@ -68,11 +68,11 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
           <>
             <label className="flex items-center gap-2 text-xs">
               <span className="w-16">Stoch %K:</span>
-              <input type="number" min="1" max="100" value={sourceSettings?.stochK ?? defaults.stochK} onChange={e => handleChange({ stochK: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+              <input type="number" min="1" max="100" value={sourceSettings?.stochK || defaults.stochK || 1} onChange={e => handleChange({ stochK: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
             <label className="flex items-center gap-2 text-xs">
               <span className="w-16">Stoch %D:</span>
-              <input type="number" min="1" max="50" value={sourceSettings?.stochD ?? defaults.stochD} onChange={e => handleChange({ stochD: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+              <input type="number" min="1" max="50" value={sourceSettings?.stochD || defaults.stochD || 1} onChange={e => handleChange({ stochD: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
           </>
         );
@@ -81,11 +81,11 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
           <>
             <label className="flex items-center gap-2 text-xs">
               <span className="w-16">Period:</span>
-              <input type="number" min="1" max="100" value={sourceSettings?.period ?? defaults.period} onChange={e => handleChange({ period: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+              <input type="number" min="1" max="100" value={sourceSettings?.period || defaults.period || 1} onChange={e => handleChange({ period: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
             <label className="flex items-center gap-2 text-xs">
               <span className="w-16">Multiplier:</span>
-              <input type="number" min="0.1" max="10" step="0.1" value={sourceSettings?.multiplier ?? defaults.multiplier} onChange={e => handleChange({ multiplier: parseFloat(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+              <input type="number" min="0.1" max="10" step="0.1" value={sourceSettings?.multiplier || defaults.multiplier || 1} onChange={e => handleChange({ multiplier: parseFloat(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
           </>
         );
@@ -94,11 +94,11 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
           <>
              <label className="flex items-center gap-2 text-xs">
               <span className="w-16">Stoch %K:</span>
-              <input type="number" min="1" max="100" value={sourceSettings?.stochK ?? defaults.stochK} onChange={e => handleChange({ stochK: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+              <input type="number" min="1" max="100" value={sourceSettings?.stochK || defaults.stochK || 1} onChange={e => handleChange({ stochK: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
             <label className="flex items-center gap-2 text-xs">
               <span className="w-16">Stoch %D:</span>
-              <input type="number" min="1" max="50" value={sourceSettings?.stochD ?? defaults.stochD} onChange={e => handleChange({ stochD: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+              <input type="number" min="1" max="50" value={sourceSettings?.stochD || defaults.stochD || 1} onChange={e => handleChange({ stochD: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
           </>
         );
@@ -107,15 +107,15 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
           <>
             <label className="flex items-center gap-2 text-xs">
               <span className="w-20">Slope Period:</span>
-              <input type="number" min="1" max="100" value={sourceSettings?.slopePeriod ?? defaults.slopePeriod} onChange={e => handleChange({ slopePeriod: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+              <input type="number" min="1" max="100" value={sourceSettings?.slopePeriod || defaults.slopePeriod || 1} onChange={e => handleChange({ slopePeriod: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
             <label className="flex items-center gap-2 text-xs">
               <span className="w-20">Vol Period:</span>
-              <input type="number" min="1" max="100" value={sourceSettings?.volPeriod ?? defaults.volPeriod} onChange={e => handleChange({ volPeriod: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+              <input type="number" min="1" max="100" value={sourceSettings?.volPeriod || defaults.volPeriod || 1} onChange={e => handleChange({ volPeriod: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
             <label className="flex items-center gap-2 text-xs">
               <span className="w-20">Regime Period:</span>
-              <input type="number" min="1" max="200" value={sourceSettings?.regimePeriod ?? defaults.regimePeriod} onChange={e => handleChange({ regimePeriod: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+              <input type="number" min="1" max="200" value={sourceSettings?.regimePeriod || defaults.regimePeriod || 1} onChange={e => handleChange({ regimePeriod: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
           </>
         );
@@ -124,11 +124,11 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
           <>
             <label className="flex items-center gap-2 text-xs">
               <span className="w-20">Period:</span>
-              <input type="number" min="1" max="100" value={sourceSettings?.period ?? defaults.period ?? 20} onChange={e => handleChange({ period: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+              <input type="number" min="1" max="100" value={sourceSettings?.period || defaults.period || 20} onChange={e => handleChange({ period: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
             <label className="flex items-center gap-2 text-xs">
               <span className="w-20">Std Dev:</span>
-              <input type="number" min="0.1" max="5" step="0.1" value={sourceSettings?.stdDev ?? defaults.stdDev ?? 2} onChange={e => handleChange({ stdDev: parseFloat(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+              <input type="number" min="0.1" max="5" step="0.1" value={sourceSettings?.stdDev || defaults.stdDev || 2} onChange={e => handleChange({ stdDev: parseFloat(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
           </>
         );
@@ -138,29 +138,29 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
             <div className="flex flex-wrap items-center gap-4">
               <label className="flex items-center gap-2 text-xs">
                 <span className="w-20 col-span-1">ST Period:</span>
-                <input type="number" min="1" max="100" value={sourceSettings?.stPeriod ?? defaults.stPeriod ?? 10} onChange={e => handleChange({ stPeriod: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+                <input type="number" min="1" max="100" value={sourceSettings?.stPeriod || defaults.stPeriod || 10} onChange={e => handleChange({ stPeriod: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
               </label>
               <label className="flex items-center gap-2 text-xs">
                 <span className="w-20">ATR Mult:</span>
-                <input type="number" min="0.1" max="10" step="0.1" value={sourceSettings?.atrMultiplier ?? defaults.atrMultiplier ?? 3} onChange={e => handleChange({ atrMultiplier: parseFloat(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+                <input type="number" min="0.1" max="10" step="0.1" value={sourceSettings?.atrMultiplier || defaults.atrMultiplier || 3} onChange={e => handleChange({ atrMultiplier: parseFloat(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
               </label>
               <label className="flex items-center gap-2 text-xs">
                 <span className="w-20">Regime Per:</span>
-                <input type="number" min="1" max="200" value={sourceSettings?.regimePeriod ?? defaults.regimePeriod ?? 30} onChange={e => handleChange({ regimePeriod: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+                <input type="number" min="1" max="200" value={sourceSettings?.regimePeriod || defaults.regimePeriod || 30} onChange={e => handleChange({ regimePeriod: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
               </label>
               <label className="flex items-center gap-2 text-xs">
                 <span className="w-20">Z Period:</span>
-                <input type="number" min="1" max="200" value={sourceSettings?.zPeriod ?? defaults.zPeriod ?? 20} onChange={e => handleChange({ zPeriod: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+                <input type="number" min="1" max="200" value={sourceSettings?.zPeriod || defaults.zPeriod || 20} onChange={e => handleChange({ zPeriod: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
               </label>
             </div>
             <div className="flex flex-wrap items-center gap-4">
               <label className="flex items-center gap-2 text-xs">
                 <span className="w-20">Z Upper:</span>
-                <input type="number" min="0.1" max="10" step="0.1" value={sourceSettings?.zUpper ?? defaults.zUpper ?? 1.5} onChange={e => handleChange({ zUpper: parseFloat(e.target.value) || 1.5 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+                <input type="number" min="0.1" max="10" step="0.1" value={sourceSettings?.zUpper || defaults.zUpper || 1.5} onChange={e => handleChange({ zUpper: parseFloat(e.target.value) || 1.5 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
               </label>
               <label className="flex items-center gap-2 text-xs">
                 <span className="w-20">Z Lower:</span>
-                <input type="number" min="-10" max="-0.1" step="0.1" value={sourceSettings?.zLower ?? defaults.zLower ?? -1.5} onChange={e => handleChange({ zLower: parseFloat(e.target.value) || -1.5 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+                <input type="number" min="-10" max="-0.1" step="0.1" value={sourceSettings?.zLower || defaults.zLower || -1.5} onChange={e => handleChange({ zLower: parseFloat(e.target.value) || -1.5 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
               </label>
             </div>
           </div>
@@ -241,23 +241,25 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
               </p>
               
               <div className="flex flex-col gap-4">
-                <div className="flex flex-wrap items-center gap-6 mb-2">
-                  <label className="flex items-center gap-2 text-xs">
-                    <span className="text-amber-400 font-semibold uppercase">Entry Signal Data Source:</span>
-                    <select
-                      value={tradingConfig.entrySignalSource || 'alpha'}
-                      onChange={(e) => setTradingConfig(prev => ({ ...prev, entrySignalSource: e.target.value as any }))}
-                      className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300"
-                    >
-                      <option value="alpha">Alpha Base</option>
-                      <option value="beta">Beta Aggregate</option>
-                      <option value="delta">Delta Layer</option>
-                    </select>
-                    <span className="text-cyan-500 font-bold ml-1">
-                      {formatInterval(tradingConfig.entrySignalSource === 'beta' ? betaInterval : tradingConfig.entrySignalSource === 'delta' ? deltaInterval : alphaInterval)}
-                    </span>
-                  </label>
-                </div>
+                {activeTab !== 'conjunction' && (
+                  <div className="flex flex-wrap items-center gap-6 mb-2">
+                    <label className="flex items-center gap-2 text-xs">
+                      <span className="text-amber-400 font-semibold uppercase">General Entry Signal Data Source:</span>
+                      <select
+                        value={tradingConfig.entrySignalSource || 'alpha'}
+                        onChange={(e) => setTradingConfig(prev => ({ ...prev, entrySignalSource: e.target.value as any }))}
+                        className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300"
+                      >
+                        <option value="alpha">Alpha Base</option>
+                        <option value="beta">Beta Aggregate</option>
+                        <option value="delta">Delta Layer</option>
+                      </select>
+                      <span className="text-cyan-500 font-bold ml-1">
+                        {formatInterval(tradingConfig.entrySignalSource === 'beta' ? betaInterval : tradingConfig.entrySignalSource === 'delta' ? deltaInterval : alphaInterval)}
+                      </span>
+                    </label>
+                  </div>
+                )}
 
                 {activeTab === 'conjunction' ? (
                   <div className="flex flex-col gap-6 w-full">
@@ -269,8 +271,22 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
                     {(tradingConfig.activeConjunctionSystems || []).map((sysId: string) => {
                       const baseId = getBaseSystemId(sysId);
                       return (
-                      <div key={sysId} className="border border-purple-500/30 bg-purple-900/5 p-4 rounded-lg">
-                        <div className="flex justify-between items-center mb-3">
+                      <div key={sysId} className="border border-purple-500/30 bg-purple-900/5 p-4 rounded-lg relative">
+                        <div className="absolute top-2 right-2">
+                          <button 
+                            onClick={() => {
+                              setTradingConfig(prev => ({
+                                ...prev,
+                                activeConjunctionSystems: (prev.activeConjunctionSystems || []).filter(id => id !== sysId)
+                              }));
+                            }}
+                            className="p-1 text-zinc-500 hover:text-red-400 hover:bg-red-400/10 rounded transition-colors"
+                            title="Remove this strategy"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                          </button>
+                        </div>
+                        <div className="flex justify-between items-center mb-3 pr-6">
                           <div className="text-sm font-bold text-purple-400 uppercase tracking-wider">
                             {getSystemLabelForDisplay(titleMap[baseId as ToolTab] || baseId, sysId)}
                           </div>
@@ -292,6 +308,22 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
                           )}
                         </div>
                         <div className="flex flex-wrap items-center gap-6 mb-4">
+                           <label className="flex items-center gap-2 text-xs">
+                             <span className="text-amber-400 font-semibold uppercase">Entry Signal Source:</span>
+                             <select
+                               value={(indicatorSettings[sysId as keyof IndicatorSettings] as any)?.entrySignalSource || 'alpha'}
+                               onChange={(e) => handleUpdate(sysId as keyof IndicatorSettings, { entrySignalSource: e.target.value as any })}
+                               className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300"
+                             >
+                               <option value="alpha">Alpha Base</option>
+                               <option value="beta">Beta Aggregate</option>
+                               <option value="delta">Delta Layer</option>
+                             </select>
+                             <span className="text-cyan-500 font-bold ml-1">
+                               {formatInterval((indicatorSettings[sysId as keyof IndicatorSettings] as any)?.entrySignalSource === 'beta' ? betaInterval : (indicatorSettings[sysId as keyof IndicatorSettings] as any)?.entrySignalSource === 'delta' ? deltaInterval : alphaInterval)}
+                             </span>
+                           </label>
+                           
                           <label className="flex items-center gap-2 text-xs">
                             <span className="text-zinc-400">Strategy Config Source:</span>
                             <select

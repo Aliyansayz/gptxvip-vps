@@ -13,6 +13,14 @@ interface LabNavigationProps {
 export const LabNavigation: React.FC<LabNavigationProps> = ({ activeTab, onTabChange }) => {
   const { tradingConfig, setTradingConfig } = useIndicatorsStore();
   const activeMode = tradingConfig.activeSystemMode || 'classic';
+  const [lastClassicTab, setLastClassicTab] = React.useState<ToolTab>('stochastic');
+
+  // Track the last classic tab when it changes
+  React.useEffect(() => {
+    if (activeTab !== 'conjunction') {
+      setLastClassicTab(activeTab);
+    }
+  }, [activeTab]);
 
   const tabs: { id: ToolTab; label: string; icon: React.ReactNode }[] = [
     { id: 'ma_crossover', label: 'MA Crossover', icon: <Crosshair className="w-3 h-3" /> },
@@ -37,51 +45,47 @@ export const LabNavigation: React.FC<LabNavigationProps> = ({ activeTab, onTabCh
       ...prev,
       activeSystemMode: 'classic'
     }));
-    onTabChange('stochastic');
+    onTabChange(lastClassicTab);
     toast.success("Classic Mode Activated", {
-      description: "Default classic system 'stochastic crossing' (Stochastic Momentum) is now active."
+      description: "Returned to the explicit system selection mode."
     });
   };
 
-  const handleSelectConjunction = (forceRandom = false) => {
-    const hasPreselected = tradingConfig.activeConjunctionSystems && tradingConfig.activeConjunctionSystems.length > 0;
-    
-    let selected = tradingConfig.activeConjunctionSystems || [];
-    
-    if (forceRandom || !hasPreselected) {
-      const available = [
-        'ma_crossover',
-        'stochastic',
-        'supertrend',
-        'divergence',
-        'linear_regression',
-        'bollinger_bands',
-        'supertrend_regime',
-        'heikin_ashi_smoothed',
-        'candlestick_pattern'
-      ];
-      
-      // Shuffle and pick 3 unique systems
-      const shuffled = [...available].sort(() => 0.5 - Math.random());
-      selected = shuffled.slice(0, 3).map(id => `${id}_alpha`);
-    }
-
+  const handleSelectConjunction = () => {
     setTradingConfig(prev => ({
       ...prev,
-      activeSystemMode: 'conjunction',
-      activeConjunctionSystems: selected
+      activeSystemMode: 'conjunction'
     }));
 
     onTabChange('conjunction');
 
-    const formattedNames = selected.map(id => {
-      const clean = id.replace('_alpha', '').replace('_beta', '').replace('_delta', '');
-      return tabs.find(t => t.id === clean)?.label || clean.toUpperCase();
+    toast.success("Conjunction Mode Activated", {
+      description: "Select up to 3 systems from the selector below."
     });
+  };
 
-    toast.success(forceRandom ? "Conjunction Re-Selected" : "Conjunction Mode Activated", {
-      description: `Selected systems: ${formattedNames.join(' + ')}`
-    });
+  const toggleConjunctionSystem = (sysId: string) => {
+    const current = tradingConfig.activeConjunctionSystems || [];
+    const baseId = sysId + '_alpha';
+    const isActive = current.includes(baseId);
+    
+    if (isActive) {
+      setTradingConfig(prev => ({
+        ...prev,
+        activeConjunctionSystems: current.filter(id => id !== baseId)
+      }));
+    } else {
+      if (current.length < 3) {
+        setTradingConfig(prev => ({
+          ...prev,
+          activeConjunctionSystems: [...current, baseId]
+        }));
+      } else {
+        toast.error("Maximum 3 systems allowed", {
+          description: "Deselect a system first to add another."
+        });
+      }
+    }
   };
 
   return (
@@ -114,7 +118,7 @@ export const LabNavigation: React.FC<LabNavigationProps> = ({ activeTab, onTabCh
           {/* Conjunction System Mode button */}
           <button
             id="conjunction-system-mode-btn"
-            onClick={() => handleSelectConjunction(false)}
+            onClick={handleSelectConjunction}
             className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
               activeMode === 'conjunction'
                 ? 'bg-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.4)] border border-purple-400/20'
@@ -158,27 +162,32 @@ export const LabNavigation: React.FC<LabNavigationProps> = ({ activeTab, onTabCh
       ) : (
         <div className="flex flex-col gap-2 animate-fade-in">
           <div className="text-[10px] text-purple-400 font-bold uppercase tracking-widest px-1 flex items-center justify-between">
-            <span>Selected Conjunction Base System Dashboard</span>
-            <button
-              onClick={() => handleSelectConjunction(true)}
-              className="px-2 py-0.5 rounded border border-purple-500/20 bg-purple-950/20 hover:bg-purple-900/30 text-[9px] text-purple-300 font-extrabold flex items-center gap-1 transition-all pointer-events-auto cursor-pointer"
-            >
-              <Shuffle className="w-2.5 h-2.5" />
-              Re-Select Random (3)
-            </button>
+            <span>Conjunction Systems Selector (Select up to 3)</span>
+            <span className="text-purple-300 font-medium">Selected: {(tradingConfig.activeConjunctionSystems || []).length}/3</span>
           </div>
-          <div className="flex gap-2 p-1 rounded-xl border shrink-0 bg-purple-950/20 border-purple-800/20 w-fit items-center">
-            <button
-              onClick={() => onTabChange('conjunction')}
-              className={`px-5 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${
-                activeTab === 'conjunction'
-                  ? 'bg-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)] bg-purple-500'
-                  : 'text-purple-400 hover:text-purple-300'
-              }`}
-            >
-              <Activity className="w-3 h-3 animate-pulse" />
-              Conjunction simulation overview
-            </button>
+          <div className="flex flex-col gap-2 w-full animate-fade-in">
+            {chunkedTabs.map((rowTabs, rowIndex) => (
+              <div key={rowIndex} className="flex gap-1 p-1 rounded-xl border shrink-0 bg-purple-950/20 border-purple-800/30 w-fit items-center">
+                {rowTabs.map((tab) => {
+                  if (tab.id === 'conjunction') return null;
+                  const isActive = (tradingConfig.activeConjunctionSystems || []).some(sys => sys.replace('_alpha', '').replace('_beta', '').replace('_delta', '') === tab.id);
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => toggleConjunctionSystem(tab.id)}
+                      className={`px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${
+                        isActive
+                          ? 'bg-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)] bg-purple-500'
+                          : 'text-purple-400 hover:text-purple-300'
+                      }`}
+                    >
+                      {tab.icon}
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
+            ))}
           </div>
         </div>
       )}

@@ -15,6 +15,10 @@ export interface RecurrentTradeParameters {
   entryAfterNCandlesMax?: number;
   entryOnPipsFavor?: number;
   onlyExecuteIfLatestTradeInSurplus?: boolean;
+  onlyExecuteIfSqueezeMomentumValid?: boolean;
+  adxFilterThreshold?: number;
+  onlyExecuteIfTrendStrengthFavorable?: boolean;
+  onlyExecuteIfHeikinAshiFavorable?: boolean;
   exitAfterNSeconds?: number;
   exitAfterNSecondsMin?: number;
   exitAfterNSecondsMax?: number;
@@ -26,6 +30,11 @@ export interface RecurrentTradeParameters {
   entryOnMainTradeTrail?: boolean;
   entryOnCandlePattern?: boolean;
   entryOnCandlePatternSource?: 'none' | 'any' | 'alpha' | 'beta' | 'delta';
+  entryOnTrendRevert?: boolean;
+  entryOnCandlesRevert?: boolean;
+  closeAllRecurrentOnPartialExit?: boolean;
+  closePctRecurrentOnPartialExitActive?: boolean;
+  closePctRecurrentPercentage?: number;
 }
 
 export type TradeCategory = "main trade" | "recurrent trade" | "hft hedge trade";

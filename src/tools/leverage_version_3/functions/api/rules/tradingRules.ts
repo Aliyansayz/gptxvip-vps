@@ -345,6 +345,66 @@ export function evaluateTradeExits(
         }
         return trade;
       });
+    } else {
+      // Main trade is still open. Check if a partial exit occurred just now on this candle
+      const didPartialExitOccur = finalRootTrades.some(t => 
+        t.status === 'CLOSED' && 
+        t.infoStatus && 
+        t.infoStatus.startsWith('Partial Exit Reversal')
+      );
+
+      if (didPartialExitOccur) {
+        const activeRecurrentTrades = finalRootTrades.filter(trade => trade.status === 'OPEN' && trade.tradeType === 'recurrent trade');
+        
+        let numToClose = 0;
+        if (config.recurrentTradeParams?.closeAllRecurrentOnPartialExit) {
+          numToClose = activeRecurrentTrades.length;
+        } else if (config.recurrentTradeParams?.closePctRecurrentOnPartialExitActive) {
+          const pct = config.recurrentTradeParams?.closePctRecurrentPercentage ?? 50;
+          numToClose = Math.max(0, Math.min(activeRecurrentTrades.length, Math.round(activeRecurrentTrades.length * (pct / 100))));
+        }
+
+        if (numToClose > 0) {
+          const tradesToCloseIds = new Set(
+            activeRecurrentTrades.slice(0, numToClose).map(t => t.id)
+          );
+
+          finalRootTrades = finalRootTrades.map(trade => {
+            if (tradesToCloseIds.has(trade.id) && trade.status === 'OPEN') {
+              const exitPrice = currentCandle.close;
+              const priceDiff = trade.side === 'LONG'
+                ? exitPrice - trade.entryPrice
+                : trade.entryPrice - exitPrice;
+              const pipMultiplier = config.pipMultiplier || 1;
+              const pips = priceDiff / pipMultiplier;
+              let pnl = 0;
+              if (leverageConfig && leverageConfig.enabled) {
+                pnl = calculatePnL(trade.entryPrice, exitPrice, trade.size || 1, trade.side);
+              } else {
+                pnl = priceDiff;
+              }
+              if (runningBalance !== undefined) {
+                runningBalance += pnl;
+              }
+              const updatedBalance = runningBalance;
+              return {
+                ...trade,
+                status: 'CLOSED' as 'CLOSED',
+                exitPrice,
+                exitTime: currentCandle.time,
+                exitIndex: currentIndex,
+                exitReason: 'TIME_LIMIT',
+                pnl,
+                pips,
+                balanceAfter: updatedBalance,
+                latencyDelaySeconds,
+                infoStatus: `Closed Alongside Main Trade (On Partial Main Close)`
+              };
+            }
+            return trade;
+          });
+        }
+      }
     }
   }
 

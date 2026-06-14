@@ -619,18 +619,22 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
                betaInterval={betaInterval}
                deltaInterval={deltaInterval}
              />
-             <div className="h-px w-full bg-zinc-800/50" />
-             <TradingPanelTrendStrength 
-               alphaData={data}
-               betaData={betaData}
-               deltaData={deltaData}
-               alphaIndex={simulationIndex}
-               betaIndex={betaIndex}
-               deltaIndex={deltaIndex}
-               alphaInterval={alphaInterval}
-               betaInterval={betaInterval}
-               deltaInterval={deltaInterval}
-             />
+             {visibilitySettings.trendStrengthVisible && (
+               <>
+                 <div className="h-px w-full bg-zinc-800/50" />
+                 <TradingPanelTrendStrength 
+                   alphaData={data}
+                   betaData={betaData}
+                   deltaData={deltaData}
+                   alphaIndex={simulationIndex}
+                   betaIndex={betaIndex}
+                   deltaIndex={deltaIndex}
+                   alphaInterval={alphaInterval}
+                   betaInterval={betaInterval}
+                   deltaInterval={deltaInterval}
+                 />
+               </>
+             )}
           </div>
           {(dataSettings.showAlpha && visibilitySettings.alphaVisible) && (
             <div className="w-full h-[550px] relative shrink-0 flex flex-col">

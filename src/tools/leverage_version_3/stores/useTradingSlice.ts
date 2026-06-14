@@ -44,7 +44,12 @@ const defaultTradingConfig: TradingRulesConfig = {
   recurrentTradeParams: {
     countToExecute: 1,
     onlyExecuteIfLatestTradeInSurplus: true,
-    entryOnMainTradeTrail: false
+    entryOnMainTradeTrail: false,
+    closeAllRecurrentOnPartialExit: false,
+    closePctRecurrentOnPartialExitActive: false,
+    closePctRecurrentPercentage: 50,
+    entryOnTrendRevert: false,
+    entryOnCandlesRevert: false
   },
   activeSystemMode: 'classic',
   activeConjunctionSystems: ['stochastic_alpha', 'ma_crossover_alpha', 'supertrend_alpha'],

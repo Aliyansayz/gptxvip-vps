@@ -15,6 +15,8 @@ import { ParallelAccount, useIndicatorsStore } from '../../stores/indicators_sto
 import { calculatePnL } from '../../functions/api/position_sizing/leveragedPositionSizeMetals';
 
 // NOTE: calculatePnL module is dynamically required below due to leveraging.
+const getBaseSystemId = (id: string) => id.replace('_alpha', '').replace('_beta', '').replace('_delta', '');
+
 export function useTradeEvaluation(
   simulationIndex: number,
   tradingEnabled: boolean,
@@ -185,15 +187,15 @@ export function useTradeEvaluation(
       const activeSystems = tradingConfig.activeConjunctionSystems || [];
       const signals = activeSystems.map((sysId: string) => {
          const comp = ind.entrySignal.conjunctionSignals[sysId];
-         const sysDataSource = indicatorSettings[sysId]?.dataSource || entryDataSource;
-         const sysIndex = getMappedIndex(sysDataSource);
-         return getSignalForComputed(sysId, comp, sysIndex, getDataBySource(sysDataSource));
+         const sysEntrySource = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[sysId as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
+         const sysIndex = getMappedIndex(sysEntrySource);
+         return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysEntrySource));
       });
       currentEntrySignal = evaluateConjunctionSystem(signals);
     } else {
-      const sysDataSource = indicatorSettings[config.type]?.dataSource || entryDataSource;
-      const sysIndex = getMappedIndex(sysDataSource);
-      currentEntrySignal = getSignalForComputed(config.type, ind.entrySignal, sysIndex, getDataBySource(sysDataSource));
+      const sysEntrySource = (indicatorSettings[config.type as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[config.type as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
+      const sysIndex = getMappedIndex(sysEntrySource);
+      currentEntrySignal = getSignalForComputed(config.type, ind.entrySignal, sysIndex, getDataBySource(sysEntrySource));
     }
 
     // Evaluate Exit Signal

@@ -26,6 +26,7 @@ export type StrategyDataSource = 'alpha' | 'beta' | 'delta';
 
 export interface BaseIndicatorSettings {
   dataSource: StrategyDataSource;
+  entrySignalSource?: StrategyDataSource;
   allowVariation?: boolean;
 }
 
@@ -95,6 +96,9 @@ export interface VisibilitySettings {
   mainIndicatorVisible: boolean;
   subplotsVisible: boolean;
   secondaryChartsVisible: boolean;
+  trendStrengthVisible?: boolean;
+  volatilityRegimeMonitorVisible?: boolean;
+  atrValueBoxVisible?: boolean;
   candleUpColor: string;
   candleDownColor: string;
   wickUpColor: string;
