@@ -1,9 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { HeroCandlestickChart } from './HeroCandlestickChart';
 
+const WORDS = ['ENABLE', 'OPTIMIZE', 'VISUALIZE'];
+
 export const HeroHeader: React.FC<{ onInitializeEngine?: () => void }> = ({ onInitializeEngine }) => {
+  const [wordIndex, setWordIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWordIndex((prev) => (prev + 1) % WORDS.length);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="relative w-[100vw] ml-[calc(-50vw+50%)] min-h-[700px] flex items-center justify-center bg-zinc-950 overflow-hidden border-y border-zinc-800/50 mb-12 shadow-[0_0_50px_rgba(34,211,238,0.1)]">
+      <style>
+        {`
+          .rotating-text {
+            font-size: inherit;
+            line-height: 1.2;
+            display: inline-block;
+          }
+          .window {
+            display: inline-block;
+            vertical-align: bottom;
+            perspective: 1200px;
+          }
+        `}
+      </style>
+
       {/* Background Chart Layer */}
       <HeroCandlestickChart />
 
@@ -19,9 +46,25 @@ export const HeroHeader: React.FC<{ onInitializeEngine?: () => void }> = ({ onIn
       {/* Content */}
       <div className="relative z-20 text-center px-6 py-32 flex flex-col items-center w-full max-w-5xl mx-auto">
           
-          <h1 className="text-5xl sm:text-7xl md:text-8xl font-black mb-10 tracking-tighter leading-[0.9]">
-              <span className="text-white opacity-95">VISUALIZE THE</span><br/>
-              <span className="neon-text-gradient bg-clip-text text-transparent">ALGORITHM</span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-8 tracking-tight leading-none text-center">
+              <span className="inline-flex items-center justify-center gap-x-2 text-white/95">
+                <span className="rotating-text window relative inline-block h-[1.2em] overflow-hidden align-bottom text-left min-w-[150px] sm:min-w-[200px] md:min-w-[260px]">
+                  <AnimatePresence mode="popLayout">
+                    <motion.span
+                      key={WORDS[wordIndex]}
+                      initial={{ y: '100%', opacity: 0 }}
+                      animate={{ y: '0%', opacity: 1 }}
+                      exit={{ y: '-100%', opacity: 0 }}
+                      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                      className="absolute left-0 right-0 text-cyan-400 font-black block select-none"
+                    >
+                      {WORDS[wordIndex]}
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
+                <span>THE</span>
+              </span>
+              <span className="neon-text-gradient bg-clip-text text-transparent text-5xl sm:text-6xl md:text-7xl font-black block mt-1">ALGORITHM</span>
           </h1>
 
           <p className="text-base md:text-xl text-zinc-300 mb-14 max-w-3xl mx-auto font-light leading-relaxed tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
