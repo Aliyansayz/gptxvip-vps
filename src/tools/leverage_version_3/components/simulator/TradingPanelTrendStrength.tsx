@@ -109,6 +109,11 @@ export const TradingPanelTrendStrength: React.FC<TradingPanelTrendStrengthProps>
                 TF: <span className="ml-1 text-white">{formatInterval(indicatorSettings.trendStrength.dataSource === 'beta' ? betaInterval : indicatorSettings.trendStrength.dataSource === 'delta' ? deltaInterval : alphaInterval)}</span>
               </span>
             </div>
+            {/* Direct & Indirect calculation information */}
+            <div className="text-[9px] text-zinc-500 font-mono mt-0.5 max-w-xs leading-normal">
+              Direct: Linear Regression Slope over <span className="text-zinc-400 font-semibold">{slopePeriod} periods</span>.<br />
+              Indirect: Volatility & Z-Score values from <span className="text-zinc-400 font-semibold">{indicatorSettings.trendStrength.dataSource || 'alpha'} stream</span> close prices.
+            </div>
           </div>
           
           <span className="text-[10px] bg-zinc-800/80 text-zinc-300 font-mono px-2 py-1 rounded border border-zinc-700/50 flex items-center gap-2">

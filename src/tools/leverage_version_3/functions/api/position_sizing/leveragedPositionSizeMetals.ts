@@ -20,9 +20,13 @@ export interface LeverageConfig {
   useExplicitLiquidationPips: boolean;
   explicitLiquidationPips: number;
   leverage: number;
-  recurrentPositionSizingMode?: 'WEIGHT_FACTOR' | 'FLOATING_GAIN_PERCENTAGE' | 'DYNAMIC_RISK_ATR_PIPS';
+  recurrentPositionSizingMode?: 'WEIGHT_FACTOR' | 'FLOATING_GAIN_PERCENTAGE' | 'DYNAMIC_RISK_ATR_PIPS' | 'DYNAMIC_RISK_PER_PIP';
   recurrentTradeWeightFactor?: number;
   recurrentFloatingGainPercentage?: number;
+  recurrentRiskPerPipType?: 'value' | 'percentage';
+  recurrentRiskPerPipValue?: number;
+  recurrentRiskPerPipPercentage?: number;
+  recurrentRiskAtrPipsPercentage?: number;
   leverageType?: LeverageType;
 }
 
@@ -48,6 +52,10 @@ export const DEFAULT_LEVERAGE_CONFIG: LeverageConfig = {
   recurrentPositionSizingMode: 'WEIGHT_FACTOR',
   recurrentTradeWeightFactor: 0.33,
   recurrentFloatingGainPercentage: 20,
+  recurrentRiskPerPipType: 'value',
+  recurrentRiskPerPipValue: 1,
+  recurrentRiskPerPipPercentage: 1,
+  recurrentRiskAtrPipsPercentage: 2,
   leverageType: DEFAULT_LEVERAGE_TYPE,
 };
 

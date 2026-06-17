@@ -12,10 +12,20 @@ export function isVolatilityEntryConditionMet(
   config: TradingRulesConfig,
   adxValue?: number,
   squeezeStatus?: number,
-  volRegimeScenario?: 'A'|'B'|'C'|'D'|'None'
+  volRegimeScenario?: 'A'|'B'|'C'|'D'|'None',
+  slopePersistenceValue?: number,
+  trendEfficiencyValue?: number
 ): boolean {
   if (config.useADXFilter && adxValue !== undefined && config.adxThreshold !== undefined) {
     if (adxValue < config.adxThreshold) return false;
+  }
+
+  if (config.useSlopePersistenceFilter && slopePersistenceValue !== undefined && config.slopePersistenceThreshold !== undefined) {
+    if (slopePersistenceValue < config.slopePersistenceThreshold) return false;
+  }
+
+  if (config.useTrendEfficiencyFilter && trendEfficiencyValue !== undefined && config.trendEfficiencyThreshold !== undefined) {
+    if (trendEfficiencyValue < config.trendEfficiencyThreshold) return false;
   }
 
   if (config.useSqueezeFilter && squeezeStatus !== undefined) {

@@ -1,5 +1,5 @@
 import { Ohlc } from '../indicators/baseline';
-import { getCandlePatternsMultiple } from '../indicators/integral/candlePattern';
+import { getCandlePatternsMultiple } from '../indicators/exclusive/candlePattern';
 
 export interface MultiSourceOhlc {
   alpha: Ohlc[];
@@ -17,7 +17,8 @@ export function evaluateCandlePatternAcrossSources(
   sources: MultiSourceOhlc,
   sourceWanted: 'alpha' | 'beta' | 'delta' | 'any',
   directionWanted: 'LONG' | 'SHORT',
-  alphaIndex: number
+  alphaIndex: number,
+  allowedPatterns?: Record<string, boolean>
 ): CandlePatternResult | null {
   
   const evaluateSource = (name: 'alpha' | 'beta' | 'delta', dataset: Ohlc[]): CandlePatternResult | null => {
@@ -57,7 +58,7 @@ export function evaluateCandlePatternAcrossSources(
     const l = slice.map(d => d.low);
     const c = slice.map(d => d.close);
     
-    const { action_signal, patterns } = getCandlePatternsMultiple(o, h, l, c);
+    const { action_signal, patterns } = getCandlePatternsMultiple(o, h, l, c, allowedPatterns);
     
     const currentAction = action_signal[action_signal.length - 1];
     const currentPattern = patterns[patterns.length - 1];

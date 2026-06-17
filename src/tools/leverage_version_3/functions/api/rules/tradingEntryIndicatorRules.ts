@@ -21,13 +21,15 @@ export function processIndicatorBasedEntry(
   currentBalance?: number,
   volRegimeScenario?: 'A'|'B'|'C'|'D'|'None',
   assetName: string = 'gold',
-  isFlipSignal: boolean = false
+  isFlipSignal: boolean = false,
+  slopePersistenceValue?: number,
+  trendEfficiencyValue?: number
 ): Trade[] {
   if (!signal) return [];
   if (!config.entryOnSignal && !isFlipSignal) return [];
 
-  // Volatility Filters (ADX, Squeeze, Regime)
-  if (!isVolatilityEntryConditionMet(config, adxValue, squeezeStatus, volRegimeScenario)) {
+  // Volatility Filters (ADX, Squeeze, Regime, Slope Persistence, Trend Efficiency)
+  if (!isVolatilityEntryConditionMet(config, adxValue, squeezeStatus, volRegimeScenario, slopePersistenceValue, trendEfficiencyValue)) {
     return [];
   }
 

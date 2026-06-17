@@ -2,7 +2,8 @@ export function getCandlePatternsMultiple(
     o: number[],
     h: number[],
     l: number[],
-    c: number[]
+    c: number[],
+    allowedPatterns?: Record<string, boolean>
 ): {
     action_signal: (string | null)[];
     patterns: string[];
@@ -303,7 +304,15 @@ export function getCandlePatternsMultiple(
 
         for (let j = 0; j < condlist.length; j++) {
             if (condlist[j][i]) {
-                matched.push(choicelist[j]);
+                const patternName = choicelist[j];
+                const allowed = isPatternAllowed(patternName, i, {
+                    body_size: body_size[i],
+                    candle_range: candle_range[i],
+                    ha_body: ha_body[i]
+                }, allowedPatterns);
+                if (allowed) {
+                    matched.push(patternName);
+                }
             }
         }
 
@@ -347,3 +356,85 @@ export function getCandlePatternsMultiple(
         choicelist
     };
 }
+
+
+
+
+// =====================================================
+// PATTERN GATEKEEPER (HELPER)
+// =====================================================
+function isPatternAllowed(
+    patternName: string,
+    i: number,
+    context?: {
+        body_size?: number;
+        candle_range?: number;
+        ha_body?: number;
+    },
+    allowedPatterns?: Record<string, boolean>
+): boolean {
+
+    // -----------------------------
+    // Master enable/disable switch
+    // -----------------------------
+    const enabledPatterns: Record<string, boolean> = {
+        bullish_marubozu: true,
+        bearish_marubozu: true,
+        bullish_hammer: true,
+        bullish_inverted_hammer: true,
+        bullish_engulfing: true,
+        bearish_engulfing: true,
+        bullish_harami: true,
+        bearish_harami: true,
+        bullish_piercing: true,
+        bearish_dark_cloud: true,
+
+        ha_strong_bullish: true,
+        ha_strong_bearish: true,
+        ha_momentum_run: true,
+        ha_exhaustion: true,
+
+        doji_bullish_reversal: true,
+        doji_bearish_reversal: true,
+        doji_neutral: true,
+        ...(allowedPatterns || {})
+    };
+
+    // 1. Hard switch
+    if (enabledPatterns[patternName] === false) {
+        return false;
+    }
+
+    // 2. Example contextual filters (optional logic layer)
+
+    // Reject weak HA patterns
+    if (patternName.includes("ha_strong")) {
+        if (context?.ha_body !== undefined && context.ha_body < 0.1) {
+            return false;
+        }
+    }
+
+    // Reject tiny candles for momentum patterns
+    if (patternName.includes("marubozu")) {
+        if (context?.candle_range !== undefined &&
+            context?.body_size !== undefined &&
+            context.body_size < context.candle_range * 0.6
+        ) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
+
+
+
+
+
+
+
+
+
+

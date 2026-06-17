@@ -165,6 +165,87 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
             </div>
           </div>
         );
+      case 'candlestick_pattern':
+        {
+          const patterns = [
+            { id: "bullish_marubozu", label: "Bullish Marubozu" },
+            { id: "bearish_marubozu", label: "Bearish Marubozu" },
+            { id: "bullish_hammer", label: "Bullish Hammer" },
+            { id: "bullish_inverted_hammer", label: "Bullish Inverted Hammer" },
+            { id: "bullish_engulfing", label: "Bullish Engulfing" },
+            { id: "bearish_engulfing", label: "Bearish Engulfing" },
+            { id: "bullish_harami", label: "Bullish Harami" },
+            { id: "bearish_harami", label: "Bearish Harami" },
+            { id: "bullish_piercing", label: "Bullish Piercing" },
+            { id: "bearish_dark_cloud", label: "Bearish Dark Cloud" },
+            { id: "ha_strong_bullish", label: "HA Strong Bullish" },
+            { id: "ha_strong_bearish", label: "HA Strong Bearish" },
+            { id: "ha_momentum_run", label: "HA Momentum Run" },
+            { id: "ha_exhaustion", label: "HA Exhaustion" },
+            { id: "doji_bullish_reversal", label: "Doji Bullish Reversal" },
+            { id: "doji_bearish_reversal", label: "Doji Bearish Reversal" },
+            { id: "doji_neutral", label: "Doji Neutral" }
+          ];
+
+          const allowed = sourceSettings?.allowedPatterns || {};
+
+          const togglePattern = (pId: string) => {
+            const currentVal = allowed[pId] !== false; // by default true
+            const updated = {
+              ...allowed,
+              [pId]: !currentVal
+            };
+            handleChange({ allowedPatterns: updated });
+          };
+
+          const setAll = (status: boolean) => {
+            const updated: Record<string, boolean> = {};
+            patterns.forEach(p => {
+              updated[p.id] = status;
+            });
+            handleChange({ allowedPatterns: updated });
+          };
+
+          return (
+            <div className="flex flex-col gap-3 w-full">
+              <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
+                <span className="text-xs font-semibold text-zinc-400 font-mono">Allowed Candlestick Patterns:</span>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setAll(true)}
+                    className="px-2 py-0.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] rounded border border-zinc-700 cursor-pointer font-bold uppercase transition"
+                  >
+                    Select All
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setAll(false)}
+                    className="px-2 py-0.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] rounded border border-zinc-700 cursor-pointer font-bold uppercase transition"
+                  >
+                    Clear All
+                  </button>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                {patterns.map(p => {
+                  const checked = allowed[p.id] !== false;
+                  return (
+                    <label key={p.id} className="flex items-center gap-2 text-xs text-zinc-300 hover:text-zinc-200 cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => togglePattern(p.id)}
+                        className="accent-cyan-500 rounded bg-zinc-850 border-zinc-700 focus:ring-cyan-500"
+                      />
+                      <span>{p.label}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        }
       default:
         return null;
     }

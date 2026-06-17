@@ -27,7 +27,8 @@ export function canOpenRecurrentTrade(
   config: TradingRulesConfig,
   latestTradeState: LatestTradeState,
   volatilityState?: VolatilityState,
-  multiSources?: { alpha: Ohlc[], beta: Ohlc[], delta: Ohlc[] }
+  multiSources?: { alpha: Ohlc[], beta: Ohlc[], delta: Ohlc[] },
+  allowedPatterns?: Record<string, boolean>
 ): { canOpen: boolean; adjustedSecondsLimit: number; adjustedCandlesLimit: number; reason?: string } {
   if (!config.isRecurrentTradeActive || !config.recurrentTradeParams) {
     return { canOpen: false, adjustedSecondsLimit: 0, adjustedCandlesLimit: 0, reason: 'Recurrent trade inactive' };
@@ -48,7 +49,8 @@ export function canOpenRecurrentTrade(
        multiSources,
        config.recurrentTradeParams.entryOnCandlePatternSource,
        directionWanted,
-       currentIndex
+       currentIndex,
+       allowedPatterns
     );
     if (res) {
        candlePatternMet = true;
@@ -215,7 +217,8 @@ export function evaluateRecurrentTradeEntries(
   leverageConfig?: LeverageConfig,
   currentBalance?: number,
   assetName: string = 'gold',
-  multiSources?: { alpha: Ohlc[], beta: Ohlc[], delta: Ohlc[] }
+  multiSources?: { alpha: Ohlc[], beta: Ohlc[], delta: Ohlc[] },
+  allowedPatterns?: Record<string, boolean>
 ): Trade[] {
   if (!config.isRecurrentTradeActive || !config.recurrentTradeParams) {
     return [];
@@ -246,7 +249,7 @@ export function evaluateRecurrentTradeEntries(
   // The rule function takes `referenceTrade`. We'll pass the latest trade as the reference.
   const referenceTrade = latestTradeState.trade || parentTrade;
 
-  let canOpenResult = canOpenRecurrentTrade(referenceTrade, currentCandle.time, currentIndex, config, latestTradeState, volatilityState, multiSources);
+  let canOpenResult = canOpenRecurrentTrade(referenceTrade, currentCandle.time, currentIndex, config, latestTradeState, volatilityState, multiSources, allowedPatterns);
   
   if (config.recurrentTradeParams.entryOnMainTradeTrail && parentTrade.lastTrailIndex === currentIndex) {
     const totalTrails = fetchMainTradeTrailEventCount(activeTrades);
@@ -384,7 +387,7 @@ export function evaluateRecurrentTradeEntries(
         if (calcPips > 0) atrPips = calcPips;
       }
       
-      const riskPercentage = leverageConfig.dynamicRiskAtrPipsPercentage || 2;
+      const riskPercentage = leverageConfig.recurrentRiskAtrPipsPercentage !== undefined ? leverageConfig.recurrentRiskAtrPipsPercentage : (leverageConfig.dynamicRiskAtrPipsPercentage || 2);
       const evaluation = evaluateDynamicPositionSize(
         currentBalance,
         currentCandle.close,
@@ -392,6 +395,22 @@ export function evaluateRecurrentTradeEntries(
         'percentage',
         riskPercentage,
         atrPips,
+        undefined,
+        assetName
+      );
+      evaluatedPositionSize = Math.max(0.01, evaluation.possibleLotSize);
+    } else if (leverageConfig.recurrentPositionSizingMode === 'DYNAMIC_RISK_PER_PIP' && currentBalance !== undefined) {
+      let riskVal = leverageConfig.recurrentRiskPerPipValue !== undefined ? leverageConfig.recurrentRiskPerPipValue : (leverageConfig.dynamicRiskPerPipValue || 1);
+      const type = leverageConfig.recurrentRiskPerPipType || 'value';
+      if (type === 'percentage') {
+        const basePct = leverageConfig.recurrentRiskPerPipPercentage !== undefined ? leverageConfig.recurrentRiskPerPipPercentage : (leverageConfig.dynamicRiskPerPipPercentage || 1);
+        riskVal = currentBalance * (basePct / 100);
+      }
+      const evaluation = evaluateRiskPerPip(
+        currentBalance,
+        currentCandle.close,
+        leverageConfig.leverage,
+        riskVal,
         undefined,
         assetName
       );

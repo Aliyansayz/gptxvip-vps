@@ -11,9 +11,10 @@ import { calculateADX } from '../../functions/api/indicators/integral/adx';
 import { calculateATR } from '../../functions/api/indicators/integral/atr';
 import { calculateSqueeze } from '../../functions/api/indicators/integral/squeeze_momentum';
 import { smoothedHeikinAshi } from '../../functions/api/indicators/integral/heikin_ashi_smoothing';
-import { getCandlePatternsMultiple } from '../../functions/api/indicators/integral/candlePattern';
+import { getCandlePatternsMultiple } from '../../functions/api/indicators/exclusive/candlePattern';
 import { Config } from './types';
 import { getTrailSlIndicator } from '../../functions/api/middleware/trailSlIndicatorVersion';
+import { rollingRegressionSlope, slopePersistenceFast, trendEfficiencyFast } from '../../functions/api/indicators/trendStrength/trendStrength';
 
 const getBaseSystemId = (id: string) => id.replace('_alpha', '').replace('_beta', '').replace('_delta', '');
 
@@ -131,7 +132,7 @@ export function useComputedIndicators(
         const lows = sourceData.map(d => d.low);
         return {
           type: 'candlestick_pattern',
-          candlestick_pattern: getCandlePatternsMultiple(open, highs, lows, closePrices)
+          candlestick_pattern: getCandlePatternsMultiple(open, highs, lows, closePrices, indicatorSettings?.candlestick_pattern?.allowedPatterns)
         };
       }
       return null;
@@ -272,6 +273,19 @@ export function useComputedIndicators(
     const volData = getDataBySource(indicatorSettings.volatility?.dataSource || 'alpha');
     result.adx = calculateADX(volData, indicatorSettings.volatility?.adxPeriod || 14);
     
+    // Trend Strength derived indicators: Slope Persistence & Trend Efficiency
+    const tsData = getDataBySource(indicatorSettings.trendStrength?.dataSource || 'alpha');
+    if (tsData && tsData.length > 0) {
+      const tsCloses = tsData.map(d => d.close);
+      const tsSlopePeriod = indicatorSettings.trendStrength?.slopePeriod || 20;
+      const tsSlope = rollingRegressionSlope(tsCloses, tsSlopePeriod);
+      result.slopePersistence = slopePersistenceFast(tsSlope, tsSlopePeriod);
+      result.trendEfficiency = trendEfficiencyFast(tsCloses, tsSlopePeriod);
+    } else {
+      result.slopePersistence = [];
+      result.trendEfficiency = [];
+    }
+    
     const volClose = volData.map(d => d.close);
     const volHigh = volData.map(d => d.high);
     const volLow = volData.map(d => d.low);
@@ -281,7 +295,7 @@ export function useComputedIndicators(
     const cpHigh = data.map(d => d.high);
     const cpLow = data.map(d => d.low);
     const cpClose = data.map(d => d.close);
-    result.candlestick_pattern_integral = getCandlePatternsMultiple(cpOpen, cpHigh, cpLow, cpClose); // Unconditional candle pattern
+    result.candlestick_pattern_integral = getCandlePatternsMultiple(cpOpen, cpHigh, cpLow, cpClose, indicatorSettings?.candlestick_pattern?.allowedPatterns); // Unconditional candle pattern
 
     const zScoreData = getDataBySource(indicatorSettings.volatilityRegime?.dataSource || 'alpha');
     const hasZScoreFilters = tradingConfig.exitAfterNCandlesMin || tradingConfig.exitAfterNMinutesMin || tradingConfig.exitAfterNSecondsMin;

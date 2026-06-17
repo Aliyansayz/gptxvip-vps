@@ -159,3 +159,95 @@ export function linearRegressionSystem(
         volatility: volSeries
     };
 }
+
+
+
+export function slopePersistenceFast(
+  slope: number[],
+  lookback: number = 20
+): number[] {
+  const n = slope.length;
+  const signs = slope.map(v => Math.sign(v));
+
+  const result = new Array(n).fill(0);
+
+  let positiveCount = 0;
+  let negativeCount = 0;
+
+  for (let i = 0; i < n; i++) {
+    const incoming = signs[i];
+
+    // add new element
+    if (incoming > 0) positiveCount++;
+    else if (incoming < 0) negativeCount++;
+
+    // remove old element (window slide)
+    if (i >= lookback) {
+      const outgoing = signs[i - lookback];
+      if (outgoing > 0) positiveCount--;
+      else if (outgoing < 0) negativeCount--;
+    }
+
+    // compute only when window is "full"
+    if (i >= lookback - 1) {
+      result[i] = Math.max(positiveCount, negativeCount) / lookback;
+    }
+  }
+
+  return result;
+}
+
+// Output:
+
+// 1.0 = all slopes same direction
+// 0.8 = 80% same direction
+// 0.5 = random chop
+
+
+
+
+
+
+
+
+
+export function trendEfficiencyFast(
+  close: number[],
+  lookback: number = 20
+): (number | null)[] {
+  const n = close.length;
+  const result: (number | null)[] = new Array(n).fill(null);
+
+  let absDiffSum = 0;
+
+  for (let i = 0; i < n; i++) {
+    if (i > 0) {
+      const diff = Math.abs(close[i] - close[i - 1]);
+      absDiffSum += diff;
+
+      // subtract outgoing diff from window
+      if (i >= lookback) {
+        absDiffSum -= Math.abs(close[i - lookback + 1] - close[i - lookback]);
+      }
+    }
+
+    if (i >= lookback - 1) {
+      const start = close[i - lookback + 1];
+      const end = close[i];
+      const netMove = Math.abs(end - start);
+
+      result[i] = absDiffSum > 0 ? netMove / absDiffSum : 0;
+    }
+  }
+
+  return result;
+}
+
+// Efficiency	Market State
+// 0.80-1.00	Strong trend
+// 0.60-0.80	Tradable trend
+// 0.40-0.60	Mixed
+// 0.20-0.40	Choppy
+// 0.00-0.20	Whipsaw / Noise
+
+

@@ -10,6 +10,7 @@ import { getCandlePatternsMultiple } from '../indicators/integral/candlePattern'
 import { calculateBodyWickRatio } from '../indicators/integral/body_wick_size_ratio';
 import { calculateRelativePriceAcceleration } from '../indicators/integral/relative_price_acceleration';
 import { evaluatePipsDeltas } from './evaluateAssetPips';
+import { rollingRegressionSlope, slopePersistenceFast, trendEfficiencyFast } from '../indicators/trendStrength/trendStrength';
 
 export interface IndicatorRow {
   index: number;
@@ -149,6 +150,12 @@ export function getIndicatorsStateForDataset(
   const bodyWickRatioResult = calculateBodyWickRatio(dataset);
   const relPriceAccelResult = calculateRelativePriceAcceleration(dataset, 15);
 
+  // 13. Trend Strength (Slope Persistence & Trend Efficiency)
+  const tsSlopePeriod = indicatorSettings.trendStrength?.slopePeriod || 20;
+  const tsSlope = rollingRegressionSlope(closes, tsSlopePeriod);
+  const slopePersistenceResult = slopePersistenceFast(tsSlope, tsSlopePeriod);
+  const trendEfficiencyResult = trendEfficiencyFast(closes, tsSlopePeriod);
+
   // Pull values for current timestamp and 4 lookbacks (total: 5)
   const startIndex = Math.min(currentIndex, dataset.length - 1);
   const endLookbackLimit = Math.max(0, startIndex - 4);
@@ -271,6 +278,18 @@ export function getIndicatorsStateForDataset(
       key: 'zscores',
       values: {
         'Z-Score': isNaN(zScoresResult[i]) ? 'N/A' : zScoresResult[i].toFixed(2)
+      }
+    });
+
+    // Trend Strength
+    activeIndicators.push({
+      name: 'Trend Strength (Slope & Efficiency)',
+      key: 'trend_strength',
+      values: {
+        'Slope Persistence': (slopePersistenceResult[i] === undefined || slopePersistenceResult[i] === null || isNaN(slopePersistenceResult[i])) ? 'N/A' : slopePersistenceResult[i].toFixed(4),
+        'Trend Efficiency': (trendEfficiencyResult[i] === undefined || trendEfficiencyResult[i] === null || isNaN(trendEfficiencyResult[i])) ? 'N/A' : trendEfficiencyResult[i].toFixed(4),
+        'S.P. Status': (slopePersistenceResult[i] >= (tradingConfig?.slopePersistenceThreshold ?? 0.7)) ? 'PERSISTENT' : 'CHOPPY',
+        'T.E. Status': (trendEfficiencyResult[i] !== null && trendEfficiencyResult[i] !== undefined && trendEfficiencyResult[i] >= (tradingConfig?.trendEfficiencyThreshold ?? 0.6)) ? 'EFFICIENT' : 'INEFFICIENT'
       }
     });
 

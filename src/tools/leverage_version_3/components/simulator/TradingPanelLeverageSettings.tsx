@@ -632,9 +632,16 @@ export const TradingPanelLeverageSettings: React.FC<{ alphaData?: Ohlc[] }> = ({
             <button
               onClick={() => setLeverageSettings(p => ({ ...p, recurrentPositionSizingMode: 'DYNAMIC_RISK_ATR_PIPS' }))}
               className={`flex-1 px-2 py-1.5 text-[10px] font-semibold uppercase rounded-sm transition-all ${leverageSettings.recurrentPositionSizingMode === 'DYNAMIC_RISK_ATR_PIPS' ? 'bg-purple-600 text-white shadow shadow-purple-900/50' : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800'}`}
-              title="Risk by ATR Pips (Uses Main Trade ATR Risk Settings)"
+              title="Risk by ATR Pips (Uses custom/independent ATR Risk Settings)"
             >
               Risk ATR Pips
+            </button>
+            <button
+              onClick={() => setLeverageSettings(p => ({ ...p, recurrentPositionSizingMode: 'DYNAMIC_RISK_PER_PIP' }))}
+              className={`flex-1 px-2 py-1.5 text-[10px] font-semibold uppercase rounded-sm transition-all ${leverageSettings.recurrentPositionSizingMode === 'DYNAMIC_RISK_PER_PIP' ? 'bg-indigo-600 text-white shadow shadow-indigo-900/50' : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800'}`}
+              title="Risk Per Pip (Decoupled from main trade size settings)"
+            >
+              Risk / Pip
             </button>
           </div>
           
@@ -655,16 +662,61 @@ export const TradingPanelLeverageSettings: React.FC<{ alphaData?: Ohlc[] }> = ({
               <p className="text-[10px] text-zinc-500 leading-tight">By default 0.33x means the recurrent trade lot size is around 1/3rd of the main trade's lot size.</p>
             </div>
           ) : leverageSettings.recurrentPositionSizingMode === 'DYNAMIC_RISK_ATR_PIPS' ? (
-            <div className="flex flex-col gap-2 mt-2 bg-purple-900/10 border border-purple-800/30 p-2 rounded-md">
-                <div className="flex items-start gap-2">
-                  <Info className="text-purple-500 w-3 h-3 mt-0.5 shrink-0" />
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[10px] text-purple-400 font-semibold">Uses Main Trade ATR Risk Configuration</span>
-                    <span className="text-[10px] text-zinc-400 leading-tight">
-                      This will use the same Max Tolerable Loss ({leverageSettings.dynamicRiskAtrPipsPercentage ?? 2}%) and Mock/Custom ATR Pips configuration evaluated for the Main Trade at the exact moment the Recurrent signal appears. 
-                    </span>
-                  </div>
-                </div>
+            <div className="flex flex-col gap-2 mt-2 bg-purple-900/10 border border-purple-800/30 p-2.5 rounded-md">
+              <span className="text-[10px] uppercase text-purple-400 font-bold font-mono">Recurrent ATR Tolerable Loss</span>
+              <div className="flex gap-2 items-center">
+                <input 
+                  type="number" 
+                  step="0.5"
+                  min="0.1"
+                  max="100"
+                  value={leverageSettings.recurrentRiskAtrPipsPercentage !== undefined ? leverageSettings.recurrentRiskAtrPipsPercentage : (leverageSettings.dynamicRiskAtrPipsPercentage ?? 2)} 
+                  onChange={(e) => setLeverageSettings(p => ({ ...p, recurrentRiskAtrPipsPercentage: Math.max(0.1, parseFloat(e.target.value) || 0) }))} 
+                  className="bg-zinc-900 border border-purple-700/50 text-zinc-300 text-xs rounded-md px-2 py-1.5 focus:ring-purple-500 focus:border-purple-500 flex-1"
+                />
+                <span className="text-[10px] text-zinc-500 uppercase shrink-0 w-32">% of Balance</span>
+              </div>
+              <p className="text-[10px] text-zinc-500 leading-tight">
+                Define an independent risk percentage limit (e.g. 2% or 1%) for recurrent trades, calculated dynamically from current balance and Stop Loss ATR distance.
+              </p>
+            </div>
+          ) : leverageSettings.recurrentPositionSizingMode === 'DYNAMIC_RISK_PER_PIP' ? (
+            <div className="flex flex-col gap-2 mt-2 bg-indigo-900/10 border border-indigo-800/30 p-2.5 rounded-md">
+              <span className="text-[10px] uppercase text-indigo-400 font-bold font-mono">Recurrent Allowed Risk Per Pip</span>
+              <div className="flex gap-2 mb-1">
+                <select
+                  value={leverageSettings.recurrentRiskPerPipType || 'value'}
+                  onChange={(e) => setLeverageSettings(p => ({ ...p, recurrentRiskPerPipType: e.target.value as 'percentage' | 'value' }))}
+                  className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-xs rounded-md px-2 py-1.5 focus:ring-indigo-500 focus:border-indigo-500 w-24"
+                >
+                  <option value="percentage">% of Bal</option>
+                  <option value="value">Fixed Amt</option>
+                </select>
+                
+                {(leverageSettings.recurrentRiskPerPipType || 'value') === 'percentage' ? (
+                  <input 
+                    type="number" 
+                    step="0.1"
+                    min="0.1"
+                    max="100"
+                    value={leverageSettings.recurrentRiskPerPipPercentage !== undefined ? leverageSettings.recurrentRiskPerPipPercentage : (leverageSettings.dynamicRiskPerPipPercentage ?? 1)} 
+                    onChange={(e) => setLeverageSettings(p => ({ ...p, recurrentRiskPerPipPercentage: Math.max(0.1, parseFloat(e.target.value) || 0) }))} 
+                    className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-xs rounded-md px-2 py-1.5 focus:ring-indigo-500 focus:border-indigo-500 flex-1"
+                  />
+                ) : (
+                  <input 
+                    type="number" 
+                    step="0.01"
+                    min="0"
+                    value={leverageSettings.recurrentRiskPerPipValue !== undefined ? leverageSettings.recurrentRiskPerPipValue : (leverageSettings.dynamicRiskPerPipValue ?? 1)} 
+                    onChange={(e) => setLeverageSettings(p => ({ ...p, recurrentRiskPerPipValue: Math.max(0, parseFloat(e.target.value) || 0) }))} 
+                    className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-xs rounded-md px-2 py-1.5 focus:ring-indigo-500 focus:border-indigo-500 flex-1"
+                  />
+                )}
+              </div>
+              <p className="text-[10px] text-zinc-500 leading-tight">
+                Set specific risk parameters per price change unit (pip) for recurrent trades, decoupled from the main trade size settings.
+              </p>
             </div>
           ) : (
             <div className="flex flex-col gap-2 mt-2">

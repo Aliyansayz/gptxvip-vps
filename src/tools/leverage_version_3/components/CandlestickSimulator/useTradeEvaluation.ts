@@ -97,6 +97,9 @@ export function useTradeEvaluation(
     const slDataSource = indicatorSettings?.stopLossIndicator?.dataSource || 'alpha';
     const slIndex = getMappedIndex(slDataSource);
 
+    const tsDataSource = indicatorSettings?.trendStrength?.dataSource || 'alpha';
+    const tsIndex = getMappedIndex(tsDataSource);
+
     const getSignalForComputed = (sysType: string, computedSig: any, idx: number, sourceData: Ohlc[]) => {
       let signal: 'LONG' | 'SHORT' | null = null;
       if (sysType === 'ma_crossover' && computedSig?.fastLine) {
@@ -228,6 +231,16 @@ export function useTradeEvaluation(
       adxValue = ind.adx?.adx?.[volIndex];
     }
 
+    let slopePersistenceValue: number | undefined = undefined;
+    if (tradingConfig.useSlopePersistenceFilter && ind.slopePersistence) {
+      slopePersistenceValue = ind.slopePersistence[tsIndex];
+    }
+
+    let trendEfficiencyValue: number | undefined = undefined;
+    if (tradingConfig.useTrendEfficiencyFilter && ind.trendEfficiency) {
+      trendEfficiencyValue = ind.trendEfficiency[tsIndex] ?? undefined;
+    }
+
     let squeezeStatus: number | undefined = undefined;
     if (tradingConfig.useSqueezeFilter && ind.squeeze) {
       squeezeStatus = ind.squeeze.squeeze_status[volIndex];
@@ -299,7 +312,23 @@ export function useTradeEvaluation(
 
       let newTradesRaw: Trade[] = [];
       if (!tradingConfig.tradeBreaker) {
-        newTradesRaw = evaluateTradeEntries(simulationIndex, visibleData, currentEntrySignal, updatedTrades, tradingConfig, customStopLossValue, adxValue, squeezeStatus, leverageSettings, currentBalance, volRegimeScenario, assetName, isFlipSignal);
+        newTradesRaw = evaluateTradeEntries(
+          simulationIndex,
+          visibleData,
+          currentEntrySignal,
+          updatedTrades,
+          tradingConfig,
+          customStopLossValue,
+          adxValue,
+          squeezeStatus,
+          leverageSettings,
+          currentBalance,
+          volRegimeScenario,
+          assetName,
+          isFlipSignal,
+          slopePersistenceValue,
+          trendEfficiencyValue
+        );
         if (newTradesRaw.length > 0) {
           newTradesRaw = newTradesRaw.map(t => ({ ...t, accountId: eligibleAccountId }));
           if (onLogCallback) {
@@ -358,7 +387,19 @@ export function useTradeEvaluation(
             beta: betaData ? betaData.slice(0, simulationIndex + 1) : [],
             delta: deltaData ? deltaData.slice(0, simulationIndex + 1) : []
           };
-          recurrentTradesRaw = evaluateRecurrentTradeEntries(simulationIndex, visibleData, nextTrades, tradingConfig, latestTradeState, volState, leverageSettings, currentBalance, assetName, multiSources);
+          recurrentTradesRaw = evaluateRecurrentTradeEntries(
+            simulationIndex,
+            visibleData,
+            nextTrades,
+            tradingConfig,
+            latestTradeState,
+            volState,
+            leverageSettings,
+            currentBalance,
+            assetName,
+            multiSources,
+            indicatorSettings?.candlestick_pattern?.allowedPatterns
+          );
         }
         if (recurrentTradesRaw.length > 0) {
           if (onLogCallback) {

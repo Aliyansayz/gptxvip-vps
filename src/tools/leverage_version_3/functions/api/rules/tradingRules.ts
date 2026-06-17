@@ -52,6 +52,10 @@ export interface TradingRulesConfig {
   exitConjunctionParams?: Record<string, Record<string, number>>;
   useADXFilter?: boolean;
   adxThreshold?: number;
+  useSlopePersistenceFilter?: boolean;
+  slopePersistenceThreshold?: number;
+  useTrendEfficiencyFilter?: boolean;
+  trendEfficiencyThreshold?: number;
   useSqueezeFilter?: boolean;
   useVolRegimeScenarioA?: boolean;
   useVolRegimeScenarioC?: boolean;
@@ -100,7 +104,9 @@ export function evaluateTradeEntries(
   currentBalance?: number,
   volRegimeScenario?: 'A'|'B'|'C'|'D'|'None',
   assetName: string = 'gold',
-  isFlipSignal: boolean = false
+  isFlipSignal: boolean = false,
+  slopePersistenceValue?: number,
+  trendEfficiencyValue?: number
 ): Trade[] {
   // Leverage Check
   if (leverageConfig && leverageConfig.enabled && currentBalance !== undefined) {
@@ -123,7 +129,9 @@ export function evaluateTradeEntries(
     currentBalance,
     volRegimeScenario,
     assetName,
-    isFlipSignal
+    isFlipSignal,
+    slopePersistenceValue,
+    trendEfficiencyValue
   );
 }
 

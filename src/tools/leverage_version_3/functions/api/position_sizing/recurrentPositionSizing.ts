@@ -2,7 +2,7 @@ import { evaluateAccountFloatingValue } from '../accountState/evaluateAccountFlo
 import { LeverageConfig, getContractSize } from './leveragedPositionSizeMetals';
 import { Trade } from '../../../../types/trading';
 
-export type RecurrentPositionSizingMode = 'WEIGHT_FACTOR' | 'FLOATING_GAIN_PERCENTAGE' | 'DYNAMIC_RISK_ATR_PIPS';
+export type RecurrentPositionSizingMode = 'WEIGHT_FACTOR' | 'FLOATING_GAIN_PERCENTAGE' | 'DYNAMIC_RISK_ATR_PIPS' | 'DYNAMIC_RISK_PER_PIP';
 
 export function calculateRecurrentPositionSize(
   mainTradeSize: number,

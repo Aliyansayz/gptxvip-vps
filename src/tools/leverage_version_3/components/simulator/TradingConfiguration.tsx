@@ -319,6 +319,46 @@ export const TradingConfiguration: React.FC<TradingConfigurationProps> = ({ conf
                 className="w-12 bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5" 
               />
             </label>
+
+            <label className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">
+              <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 text-zinc-400 focus:ring-cyan-500" checked={!!config.useSlopePersistenceFilter} onChange={e => updateConfig({ useSlopePersistenceFilter: e.target.checked })} />
+              Slope Persistence
+            </label>
+            <label className={`flex items-center gap-2 text-xs text-zinc-300 ${!config.useSlopePersistenceFilter ? 'opacity-50' : ''}`}>
+              <span>Threshold:</span>
+              <input 
+                type="number" 
+                step="0.05"
+                min="0" max="1.0" 
+                value={config.slopePersistenceThreshold !== undefined ? config.slopePersistenceThreshold : 0.7} 
+                disabled={!config.useSlopePersistenceFilter}
+                onChange={e => {
+                  const val = parseFloat(e.target.value);
+                  updateConfig({ slopePersistenceThreshold: isNaN(val) ? 0.7 : val });
+                }} 
+                className="w-14 bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5" 
+              />
+            </label>
+
+            <label className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">
+              <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 text-zinc-400 focus:ring-cyan-500" checked={!!config.useTrendEfficiencyFilter} onChange={e => updateConfig({ useTrendEfficiencyFilter: e.target.checked })} />
+              Trend Efficiency
+            </label>
+            <label className={`flex items-center gap-2 text-xs text-zinc-300 ${!config.useTrendEfficiencyFilter ? 'opacity-50' : ''}`}>
+              <span>Threshold:</span>
+              <input 
+                type="number" 
+                step="0.05"
+                min="0" max="1.0" 
+                value={config.trendEfficiencyThreshold !== undefined ? config.trendEfficiencyThreshold : 0.6} 
+                disabled={!config.useTrendEfficiencyFilter}
+                onChange={e => {
+                  const val = parseFloat(e.target.value);
+                  updateConfig({ trendEfficiencyThreshold: isNaN(val) ? 0.6 : val });
+                }} 
+                className="w-14 bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5" 
+              />
+            </label>
             
             <label className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">
               <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 text-zinc-400 focus:ring-cyan-500" checked={config.useSqueezeFilter} onChange={e => updateConfig({ useSqueezeFilter: e.target.checked })} />
@@ -326,26 +366,53 @@ export const TradingConfiguration: React.FC<TradingConfigurationProps> = ({ conf
             </label>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-zinc-300">
-            <span className="text-[10px] text-zinc-400 font-medium">Volatility Data Source:</span>
-            <select
-              value={indicatorSettings.volatility.dataSource}
-              onChange={e => setIndicatorSettings(prev => ({
-                ...prev,
-                volatility: {
-                  ...prev.volatility,
-                  dataSource: e.target.value as any
-                }
-              }))}
-              className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5 focus:ring-cyan-500 focus:border-cyan-500 min-w-[70px]"
-            >
-              <option value="alpha">Alpha</option>
-              <option value="beta">Beta</option>
-              <option value="delta">Delta</option>
-            </select>
-            <span className="text-cyan-500 font-bold text-[10px]">
-              ({formatInterval(indicatorSettings.volatility.dataSource === 'beta' ? betaInterval : indicatorSettings.volatility.dataSource === 'delta' ? deltaInterval : alphaInterval)})
-            </span>
+          <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-300">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] text-zinc-400 font-medium whitespace-nowrap">Volatility Data Source:</span>
+              <select
+                value={indicatorSettings.volatility.dataSource}
+                onChange={e => setIndicatorSettings(prev => ({
+                  ...prev,
+                  volatility: {
+                    ...prev.volatility,
+                    dataSource: e.target.value as any
+                  }
+                }))}
+                className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5 focus:ring-cyan-500 focus:border-cyan-500 min-w-[70px]"
+              >
+                <option value="alpha">Alpha</option>
+                <option value="beta">Beta</option>
+                <option value="delta">Delta</option>
+              </select>
+              <span className="text-cyan-500 font-bold text-[10px]">
+                ({formatInterval(indicatorSettings.volatility.dataSource === 'beta' ? betaInterval : indicatorSettings.volatility.dataSource === 'delta' ? deltaInterval : alphaInterval)})
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2 border-l border-zinc-700/50 pl-4">
+              <span className="text-[10px] text-zinc-400 font-medium whitespace-nowrap">Trend Strength (Slope/Efficiency) Source:</span>
+              <select
+                value={indicatorSettings.trendStrength?.dataSource || 'alpha'}
+                onChange={e => setIndicatorSettings(prev => ({
+                  ...prev,
+                  trendStrength: {
+                    ...prev.trendStrength,
+                    dataSource: e.target.value as any
+                  }
+                }))}
+                className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5 focus:ring-cyan-500 focus:border-cyan-500 min-w-[70px]"
+              >
+                <option value="alpha">Alpha</option>
+                <option value="beta">Beta</option>
+                <option value="delta">Delta</option>
+              </select>
+              <span className="text-cyan-500 font-bold text-[10px]">
+                ({formatInterval((indicatorSettings.trendStrength?.dataSource || 'alpha') === 'beta' ? betaInterval : (indicatorSettings.trendStrength?.dataSource || 'alpha') === 'delta' ? deltaInterval : alphaInterval)})
+              </span>
+              <span className="text-zinc-500 text-[10px] ml-1">
+                (Slope Period: {indicatorSettings.trendStrength?.slopePeriod || 20})
+              </span>
+            </div>
           </div>
         </div>
 
