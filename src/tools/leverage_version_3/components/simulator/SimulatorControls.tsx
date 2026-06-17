@@ -14,6 +14,8 @@ interface SimulatorControlsProps {
   onTogglePanel: () => void;
   playbackSpeedMs: number;
   setPlaybackSpeedMs: (ms: number) => void;
+  onLoadConfig: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onExportConfig: () => void;
 }
 
 export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
@@ -28,7 +30,9 @@ export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
   isPanelOpen,
   onTogglePanel,
   playbackSpeedMs,
-  setPlaybackSpeedMs
+  setPlaybackSpeedMs,
+  onLoadConfig,
+  onExportConfig
 }) => {
   return (
     <div className="p-4 border-b border-zinc-800 flex flex-wrap gap-4 justify-between items-center bg-zinc-800/40 shrink-0">
@@ -60,6 +64,23 @@ export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
       </div>
 
       <div className="flex items-center gap-4">
+        <div className="flex items-center">
+           <input id="load-config-input-external" type="file" accept=".json" className="hidden" onChange={onLoadConfig} />
+           <button 
+             onClick={() => document.getElementById('load-config-input-external')?.click()}
+             className="mx-2 flex items-center gap-1.5 px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] font-bold uppercase tracking-wider rounded border border-zinc-700 transition-colors"
+             title="Load backtest state from JSON"
+           >
+             Load Config
+           </button>
+           <button 
+             onClick={onExportConfig}
+             className="mr-2 flex items-center gap-1.5 px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] font-bold uppercase tracking-wider rounded border border-zinc-700 transition-colors"
+             title="Export complete backtest state to JSON"
+           >
+             Export Config
+           </button>
+        </div>
         <div className="flex items-center gap-2">
           <span className="text-[10px] text-zinc-400 whitespace-nowrap hidden sm:block">Speed: {playbackSpeedMs}ms</span>
           <input 

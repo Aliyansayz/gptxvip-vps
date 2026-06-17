@@ -236,7 +236,7 @@ export const TradingConfiguration: React.FC<TradingConfigurationProps> = ({ conf
         </label>
         <label className={`flex items-center gap-2 text-xs text-zinc-300 md:col-span-2 mt-1 ${(!config.useTakeProfit || !config.useStopLoss) ? 'opacity-50' : ''}`}>
           <span className="whitespace-nowrap w-24">Risk/Reward:</span>
-          <input type="range" min="0.5" max="3" step="0.5" value={config.rewardRiskRatio} disabled={!config.useTakeProfit || !config.useStopLoss} onChange={e => updateConfig({ rewardRiskRatio: parseFloat(e.target.value) })} className="flex-1 accent-cyan-500" />
+          <input type="range" min="0.5" max="6" step="0.5" value={config.rewardRiskRatio} disabled={!config.useTakeProfit || !config.useStopLoss} onChange={e => updateConfig({ rewardRiskRatio: parseFloat(e.target.value) })} className="flex-1 accent-cyan-500" />
           <span className="w-8 text-right font-medium">{config.rewardRiskRatio}:1</span>
         </label>
 
@@ -384,6 +384,27 @@ export const TradingConfiguration: React.FC<TradingConfigurationProps> = ({ conf
                 />
               </div>
             )}
+
+            <div className="mt-1 border-t border-zinc-800/50 pt-2 flex flex-col gap-2">
+              <label className="flex items-center gap-2 text-xs text-red-300/80 select-none cursor-pointer">
+                <input type="checkbox" className="rounded bg-zinc-900 border-zinc-700 text-red-500 focus:ring-red-500" checked={!!config.autoTradeBreakerByCount} onChange={e => updateConfig({ autoTradeBreakerByCount: e.target.checked })} />
+                Auto Enable Trade Breaker by Closed Trade Count (N)
+              </label>
+              {config.autoTradeBreakerByCount && (
+                <div className="flex items-center gap-2 pl-6">
+                  <span className="text-[10px] text-zinc-400">Closed Trade Count Threshold (N):</span>
+                  <input
+                    type="number"
+                    min={1}
+                    step={1}
+                    value={config.autoTradeBreakerCountValue !== undefined ? config.autoTradeBreakerCountValue : 200}
+                    onChange={e => updateConfig({ autoTradeBreakerCountValue: parseInt(e.target.value) || 0 })}
+                    className="w-20 bg-zinc-900 border border-zinc-700 text-zinc-300 text-xs rounded px-2 py-1 focus:ring-cyan-500 focus:border-cyan-500"
+                    placeholder="e.g. 200"
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

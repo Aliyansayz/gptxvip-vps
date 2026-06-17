@@ -5,7 +5,7 @@ import { getBaseInterval, formatInterval } from '../../functions/api/rules/dataS
 import { AssetSlider } from '../../../../components/homeMainView/AssetSlider';
 import { AssetType } from '../../../../components/homeMainView/simulatedDataGenerator';
 import { CsvFileInputMode } from '../../functions/api/data_source/csvFileInputmode';
-import { OHLCSimulationParams, DEFAULT_OHLC_PARAMS } from '../../functions/api/data_source/simulationDataOhlcParameter';
+import { OHLCSimulationParams, DEFAULT_OHLC_PARAMS, generateOHLC } from '../../functions/api/data_source/simulationDataOhlcParameter';
 import { GOLD_ONLY_PRESETS, GoldPresetName, GOLD_PRESET_NAMES } from '../../functions/api/data_source/goldPresetAdjustments';
 import { SILVER_PRESETS, SilverPresetName, listSilverPresetNames } from '../../functions/api/data_source/silverSimulationPresets';
 import { NASDAQ100_PRESETS, NasdaqPresetName, NASDAQ100_PRESET_NAMES } from '../../functions/api/data_source/nasdaq100SimulationPresets';
@@ -20,6 +20,7 @@ import { EURCAD_PRESETS, EURCADPresetName, EURCAD_PRESET_NAMES } from '../../fun
 import { Download, FileSpreadsheet, ChevronDown, ChevronUp, Database } from 'lucide-react';
 import { Ohlc } from '../../functions/api/indicators/baseline';
 import { saveDataIntoCsv } from '../../functions/api/utility/saveDataIntoCsv';
+import { aggregateData } from '../CandlestickSimulator/types';
 
 interface TradingPanelDataSettingsProps {
   alphaData?: Ohlc[];
@@ -101,6 +102,67 @@ export const TradingPanelDataSettings: React.FC<TradingPanelDataSettingsProps> =
 }) => {
   const { dataSettings, setDataSettings } = useIndicatorsStore();
   const [showSimParams, setShowSimParams] = useState(false);
+
+  // Dynamically resolve active streams from props, high-performance global app cache, or on-the-fly seed generation
+  const resolveStreams = () => {
+    let finalAlpha = [...(alphaData || [])];
+    let finalBeta = [...(betaData || [])];
+    let finalDelta = [...(deltaData || [])];
+
+    // 1. Recover from the global high-performance active simulation cache
+    if (typeof window !== 'undefined' && (window as any).__activeSimulationStreams) {
+      const liveCache = (window as any).__activeSimulationStreams;
+      if (finalAlpha.length === 0 && liveCache.alphaData && liveCache.alphaData.length > 0) {
+        finalAlpha = liveCache.alphaData;
+      }
+      if (finalBeta.length === 0 && liveCache.betaData && liveCache.betaData.length > 0) {
+        finalBeta = liveCache.betaData;
+      }
+      if (finalDelta.length === 0 && liveCache.deltaData && liveCache.deltaData.length > 0) {
+        finalDelta = liveCache.deltaData;
+      }
+    }
+
+    // 2. Fallback to generating a fresh stream compliant with the user's active configurations
+    if (finalAlpha.length === 0) {
+      try {
+        const parts = dataSettings.simulationMode?.split('_') || ['Gold', '5s'];
+        const currentAsset = dataSettings.asset as string || 'Gold';
+        const ohlcParams = dataSettings.ohlcParams || DEFAULT_OHLC_PARAMS;
+        const params = ohlcParams[currentAsset] || DEFAULT_OHLC_PARAMS[currentAsset] || DEFAULT_OHLC_PARAMS['Anonymous'];
+        const startPrice = params.basePrice || 1000;
+
+        let stepMs = 5000;
+        if (parts.length === 2) {
+          const timeStr = parts[1];
+          if (timeStr.endsWith('s')) stepMs = parseInt(timeStr.replace('s', '')) * 1000 || 5000;
+          if (timeStr.endsWith('m')) stepMs = (parseInt(timeStr.replace('m', '')) * 60) * 1000 || 60000;
+          if (timeStr.endsWith('h')) stepMs = (parseInt(timeStr.replace('h', '')) * 3600) * 1000 || 3600000;
+        }
+
+        const generatedAlpha = generateOHLC(startPrice, 1000, params, stepMs);
+        finalAlpha = generatedAlpha;
+
+        finalBeta = aggregateData(generatedAlpha, dataSettings.betaAggregateFactor || 1);
+
+        const deltaBase = dataSettings.deltaAggregateSource === 'beta' ? finalBeta : generatedAlpha;
+        finalDelta = aggregateData(deltaBase, dataSettings.deltaAggregateFactor || 1);
+      } catch (err) {
+        console.error("Failed to generate fallback OHLC stream for CSV saver:", err);
+      }
+    }
+
+    return {
+      alpha: finalAlpha,
+      beta: finalBeta,
+      delta: finalDelta
+    };
+  };
+
+  const resolved = resolveStreams();
+  const activeAlpha = resolved.alpha;
+  const activeBeta = resolved.beta;
+  const activeDelta = resolved.delta;
 
   const alphaInterval = getBaseInterval(dataSettings.simulationMode);
   const betaInterval = alphaInterval * dataSettings.betaAggregateFactor;
@@ -1245,12 +1307,12 @@ export const TradingPanelDataSettings: React.FC<TradingPanelDataSettingsProps> =
                 Asset: {currentAsset} | Timeframe: {formatInterval(alphaInterval)} | Preset: {presetLabel || 'None'}
               </span>
               <span className="text-[9px] text-zinc-500 font-mono">
-                {alphaData.length > 0 ? `${alphaData.length} candle records active` : 'No records generated'}
+                {activeAlpha.length > 0 ? `${activeAlpha.length} candle records active` : 'No records generated'}
               </span>
             </div>
             <button
-              onClick={() => saveDataIntoCsv(alphaData, currentAsset, 'alpha', formatInterval(alphaInterval), presetLabel)}
-              disabled={alphaData.length === 0}
+              onClick={() => saveDataIntoCsv(activeAlpha, currentAsset, 'alpha', formatInterval(alphaInterval), presetLabel)}
+              disabled={activeAlpha.length === 0}
               className="flex items-center gap-1 px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider bg-cyan-950 hover:bg-cyan-900 text-cyan-400 disabled:opacity-45 disabled:pointer-events-none rounded duration-150 border border-cyan-800/40"
             >
               <Download size={13} />
@@ -1269,12 +1331,12 @@ export const TradingPanelDataSettings: React.FC<TradingPanelDataSettingsProps> =
                 Asset: {currentAsset} | Timeframe: {formatInterval(betaInterval)} (Aggr: {dataSettings.betaAggregateFactor}x)
               </span>
               <span className="text-[9px] text-zinc-500 font-mono">
-                {betaData.length > 0 ? `${betaData.length} candle records aggregated` : 'Aggregation not enabled'}
+                {activeBeta.length > 0 ? `${activeBeta.length} candle records aggregated` : 'Aggregation not enabled'}
               </span>
             </div>
             <button
-              onClick={() => saveDataIntoCsv(betaData, currentAsset, 'beta', formatInterval(betaInterval), presetLabel)}
-              disabled={!dataSettings.showBeta || betaData.length === 0}
+              onClick={() => saveDataIntoCsv(activeBeta, currentAsset, 'beta', formatInterval(betaInterval), presetLabel)}
+              disabled={!dataSettings.showBeta || activeBeta.length === 0}
               className="flex items-center gap-1 px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider bg-purple-950 hover:bg-purple-900 text-purple-400 disabled:opacity-45 disabled:pointer-events-none rounded duration-150 border border-purple-800/40"
             >
               <Download size={13} />
@@ -1293,12 +1355,12 @@ export const TradingPanelDataSettings: React.FC<TradingPanelDataSettingsProps> =
                 Asset: {currentAsset} | Timeframe: {formatInterval(deltaInterval)} (Aggr: {dataSettings.deltaAggregateFactor}x of {dataSettings.deltaAggregateSource})
               </span>
               <span className="text-[9px] text-zinc-500 font-mono">
-                {deltaData.length > 0 ? `${deltaData.length} candle records aggregated` : 'Layer not enabled'}
+                {activeDelta.length > 0 ? `${activeDelta.length} candle records aggregated` : 'Layer not enabled'}
               </span>
             </div>
             <button
-              onClick={() => saveDataIntoCsv(deltaData, currentAsset, 'delta', formatInterval(deltaInterval), presetLabel)}
-              disabled={!dataSettings.showDelta || deltaData.length === 0}
+              onClick={() => saveDataIntoCsv(activeDelta, currentAsset, 'delta', formatInterval(deltaInterval), presetLabel)}
+              disabled={!dataSettings.showDelta || activeDelta.length === 0}
               className="flex items-center gap-1 px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider bg-emerald-950 hover:bg-emerald-900 text-emerald-400 disabled:opacity-45 disabled:pointer-events-none rounded duration-150 border border-emerald-800/40"
             >
               <Download size={13} />

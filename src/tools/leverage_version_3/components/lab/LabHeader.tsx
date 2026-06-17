@@ -1,12 +1,14 @@
 import React from 'react';
-import { Maximize2, Minimize2 } from 'lucide-react';
+import { MonitorPlay } from 'lucide-react';
 
 interface LabHeaderProps {
-  isExpanded: boolean;
-  onToggleExpand: () => void;
+  isExpanded?: boolean;
+  onToggleExpand?: () => void;
+  isParallelModeActive?: boolean;
+  onToggleParallelMode?: () => void;
 }
 
-export const LabHeader: React.FC<LabHeaderProps> = ({ isExpanded, onToggleExpand }) => {
+export const LabHeader: React.FC<LabHeaderProps> = ({ isParallelModeActive, onToggleParallelMode }) => {
   return (
     <div className="flex items-start md:items-center justify-between mb-4 flex-col md:flex-row gap-4">
       <div>
@@ -21,22 +23,21 @@ export const LabHeader: React.FC<LabHeaderProps> = ({ isExpanded, onToggleExpand
           Build and interact with high-performance trading indicators and custom backtesting rules. Observe signal generation routines and engine execution accuracy on simulated tick data. <strong className="text-cyan-400">Execution Pipeline:</strong> The simulations run locally in the browser's JavaScript runtime, emulating a tick-by-tick event loop typical in Algorithmic engines. Note how signal generation and Stop Loss checks trigger synchronously with price propagation.
         </p>
       </div>
-      <button
-        onClick={onToggleExpand}
-        className="flex items-center gap-2 px-4 py-2 rounded border text-xs uppercase tracking-widest font-bold transition-all bg-cyan-500/10 border-cyan-400/30 text-cyan-400 hover:bg-cyan-500/20"
-      >
-        {isExpanded ? (
-          <>
-            <Minimize2 className="w-4 h-4" />
-            <span>Exit Full View</span>
-          </>
-        ) : (
-          <>
-            <Maximize2 className="w-4 h-4" />
-            <span>Full View</span>
-          </>
+      <div className="flex items-center gap-2">
+        {onToggleParallelMode && (
+          <button
+            onClick={onToggleParallelMode}
+            className={`flex items-center gap-2 px-4 py-2 rounded border text-xs uppercase tracking-widest font-bold transition-all ${
+              isParallelModeActive 
+                ? 'bg-emerald-500/20 border-emerald-400 text-emerald-400' 
+                : 'bg-emerald-500/10 border-emerald-400/30 text-emerald-400 hover:bg-emerald-500/20'
+            }`}
+          >
+            <MonitorPlay className="w-4 h-4" />
+            <span>{isParallelModeActive ? 'Exit Parallel Mode' : 'Parallel Mode'}</span>
+          </button>
         )}
-      </button>
+      </div>
     </div>
   );
 };

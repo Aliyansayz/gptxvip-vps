@@ -274,6 +274,17 @@ export function useSimulatorState(
     : Math.max(1, deltaAggregateFactor);
   const deltaIndex = Math.floor(simulationIndex / deltaFactorForIndex);
 
+  // Cache streams globally for safe decoupeld panel access (e.g., CSV saving)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      (window as any).__activeSimulationStreams = {
+        alphaData: data,
+        betaData,
+        deltaData
+      };
+    }
+  }, [data, betaData, deltaData]);
+
   return {
     data,
     betaData,

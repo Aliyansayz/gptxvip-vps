@@ -18,22 +18,27 @@ import { VolatilityRegimeSettingsPanel } from "./lab/VolatilityRegimeSettingsPan
 import { TrendStrengthSettingsPanel } from "./lab/TrendStrengthSettingsPanel";
 import { StopLossIndicatorSettingsPanel } from "./lab/StopLossIndicatorSettingsPanel";
 import { SmoothingIndicatorPanel } from "./lab/SmoothingIndicatorPanel";
-import { ExitSignalRuleSettingsPanel } from "./lab/ExitSignalRuleSettingsPanel";
+import { ExitSignalRuleSettingsPanel } from "./lab/ExitSignalRule/ExitSignalRuleSettingsPanel";
 import { TradingPanelDataSettings } from "./simulator/TradingPanelDataSettings";
 import { ConjunctionSimulation } from "./ConjunctionSimulation";
+import { CollapsiblePresetMenu } from "./lab/CollapsiblePresetMenu";
 
-export const TradingToolsLab: React.FC = () => {
+export interface TradingToolsLabProps {
+  isParallelModeActive?: boolean;
+  onToggleParallelMode?: () => void;
+}
+
+export const TradingToolsLab: React.FC<TradingToolsLabProps> = ({ isParallelModeActive, onToggleParallelMode }) => {
   const [activeTab, setActiveTab] = useState<ToolTab>("stochastic");
-  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className={`flex flex-col gap-6 w-full ${isExpanded ? 'fixed inset-0 z-50 p-6 md:p-12 pb-24 bg-zinc-950 text-zinc-50 overflow-y-auto' : 'h-full p-6 bg-zinc-900 border border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.4)] rounded-xl overflow-hidden backdrop-blur-sm z-20 relative text-zinc-50'} font-mono transition-all duration-300`}>
-      {isExpanded && <div className="absolute inset-0 opacity-5 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-zinc-500 via-zinc-900 to-transparent pointer-events-none" />}
+    <div className="flex flex-col w-full h-full bg-zinc-950 text-zinc-50 font-mono overflow-y-auto">
+      <div className="absolute inset-0 opacity-5 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-zinc-500 via-zinc-900 to-transparent pointer-events-none" />
       
-      <div className={isExpanded ? 'relative z-10 w-full max-w-[1800px] mx-auto min-h-full flex flex-col' : 'flex-1 flex flex-col min-h-0 w-full'}>
+      <div className="relative z-10 w-full min-h-full flex flex-col pt-4">
         <LabHeader 
-          isExpanded={isExpanded} 
-          onToggleExpand={() => setIsExpanded(!isExpanded)} 
+          isParallelModeActive={isParallelModeActive}
+          onToggleParallelMode={onToggleParallelMode}
         />
         
         <LabStatus />
@@ -43,15 +48,16 @@ export const TradingToolsLab: React.FC = () => {
           onTabChange={setActiveTab} 
         />
 
-        <div className="w-full flex-1 flex flex-col pt-2 pb-6 min-h-0">
+        <div className="w-full flex-1 flex flex-col pt-2 pb-6 min-h-0 px-6 md:px-12">
           <IndicatorSettingsPanel activeTab={activeTab} />
           <VolatilitySettingsPanel />
           <VolatilityRegimeSettingsPanel />
           <TrendStrengthSettingsPanel />
           <StopLossIndicatorSettingsPanel />
           <SmoothingIndicatorPanel />
-          <ExitSignalRuleSettingsPanel />
+          <ExitSignalRuleSettingsPanel entrySystemType={activeTab} />
           <TradingPanelDataSettings />
+          <CollapsiblePresetMenu />
           <AnimatePresence mode="wait">
             <motion.div 
               key={activeTab}

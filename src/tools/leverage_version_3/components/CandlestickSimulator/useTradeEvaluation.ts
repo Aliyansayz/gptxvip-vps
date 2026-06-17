@@ -199,10 +199,22 @@ export function useTradeEvaluation(
     }
 
     // Evaluate Exit Signal
-    const resolvedExitType = ind.exitSignal?.type || exitType;
-    const sysExitDataSource = indicatorSettings[resolvedExitType]?.dataSource || exitDataSource;
-    const sysExitIndex = getMappedIndex(sysExitDataSource);
-    currentExitSignal = getSignalForComputed(resolvedExitType, ind.exitSignal, sysExitIndex, getDataBySource(sysExitDataSource));
+    if (tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemMode === 'conjunction' && ind.exitSignal?.type === 'conjunction') {
+      const activeExitSystems = tradingConfig.exitActiveConjunctionSystems || [];
+      const signals = activeExitSystems.map((sysId: string) => {
+         const comp = ind.exitSignal.conjunctionSignals[sysId];
+         const cfg = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any) || {};
+         const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
+         const sysIndex = getMappedIndex(sysExitSource);
+         return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysExitSource));
+      });
+      currentExitSignal = evaluateConjunctionSystem(signals);
+    } else {
+      const resolvedExitType = ind.exitSignal?.type || exitType;
+      const sysExitDataSource = indicatorSettings[resolvedExitType]?.dataSource || exitDataSource;
+      const sysExitIndex = getMappedIndex(sysExitDataSource);
+      currentExitSignal = getSignalForComputed(resolvedExitType, ind.exitSignal, sysExitIndex, getDataBySource(sysExitDataSource));
+    }
 
     if (tradingConfig.useStopLoss && ind.stops) {
        customStopLossValue = {
@@ -239,7 +251,7 @@ export function useTradeEvaluation(
       let closedPnL = prevTrades.filter(t => t.status === 'CLOSED' && (t.accountId === eligibleAccountId || (!t.accountId && eligibleAccountId === 'A1'))).reduce((sum, t) => sum + (t.pnl || 0), 0);
       let currentBalance = leverageSettings.balance + closedPnL;
 
-      const trailedTrades = updateTrailSL(prevTrades, simulationIndex, visibleData, tradingConfig, ind.stops);
+      const trailedTrades = updateTrailSL(prevTrades, simulationIndex, visibleData, tradingConfig, ind.trailStops || ind.stops);
 
       // Note: evaluateTradeExits does logic for PnL. It might use `currentBalance` but let's keep it computing correctly
       let updatedTrades = evaluateTradeExits(simulationIndex, visibleData, currentExitSignal, trailedTrades, tradingConfig, zScoreValue, leverageSettings, currentBalance, latencyDelaySeconds, customStopLossValue, onLogCallback);

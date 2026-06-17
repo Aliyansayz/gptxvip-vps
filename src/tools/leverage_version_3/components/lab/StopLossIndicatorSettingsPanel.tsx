@@ -209,6 +209,145 @@ export const StopLossIndicatorSettingsPanel: React.FC = () => {
                   </div>
                 </div>
               )}
+
+              {/* Divider & Trailing SL Variant */}
+              <div className="border-t border-zinc-700/30 pt-4">
+                <label className="flex items-center gap-2.5 text-xs text-zinc-300 cursor-pointer font-medium hover:text-cyan-400 transition-colors">
+                  <input 
+                    type="checkbox" 
+                    checked={indicatorSettings.stopLossIndicator.allowDifferentTrailSlIndicator || false}
+                    onChange={e => handleUpdate({ allowDifferentTrailSlIndicator: e.target.checked })}
+                    className="rounded bg-zinc-900 border-zinc-700 text-cyan-500 focus:ring-cyan-500 w-4 h-4"
+                  />
+                  Allow different variant of stop loss indicator for stop loss trail
+                </label>
+              </div>
+
+              {indicatorSettings.stopLossIndicator.allowDifferentTrailSlIndicator && (
+                <div className="bg-zinc-900/40 border border-zinc-805/50 rounded-lg p-4 space-y-4 overflow-hidden">
+                  <h4 className="text-xs font-semibold text-emerald-400 uppercase tracking-wider font-mono">
+                    Trailing Stop Loss Indicator Configuration
+                  </h4>
+
+                  <div className="flex flex-wrap items-center gap-6">
+                    <label className="flex items-center gap-2 text-xs">
+                      <span className="w-24 text-zinc-400">Indicator Type:</span>
+                      <select
+                        value={indicatorSettings.stopLossIndicator.trailType || 'atr_bands'}
+                        onChange={e => handleUpdate({ trailType: e.target.value as any })}
+                        className="w-32 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300"
+                      >
+                        <option value="atr_bands">Smooth ATR Bands</option>
+                        <option value="last_n_candles">Last N Candle Low / High</option>
+                      </select>
+                    </label>
+
+                    <label className="flex items-center gap-2 text-xs">
+                      <span className="w-24 text-zinc-400">Data Source:</span>
+                      <select
+                        value={indicatorSettings.stopLossIndicator.trailDataSource || 'alpha'}
+                        onChange={e => handleUpdate({ trailDataSource: e.target.value as any })}
+                        className="w-24 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300"
+                      >
+                        <option value="alpha">Alpha</option>
+                        <option value="beta">Beta</option>
+                        <option value="delta">Delta</option>
+                      </select>
+                      <span className="text-emerald-500 font-bold ml-1">
+                        {formatInterval(
+                          (indicatorSettings.stopLossIndicator.trailDataSource || 'alpha') === 'beta' 
+                            ? betaInterval 
+                            : (indicatorSettings.stopLossIndicator.trailDataSource || 'alpha') === 'delta' 
+                              ? deltaInterval 
+                              : alphaInterval
+                        )}
+                      </span>
+                    </label>
+                  </div>
+
+                  {/* Render conditional inputs for Trail config */}
+                  {(indicatorSettings.stopLossIndicator.trailType || 'atr_bands') === 'atr_bands' && (
+                    <div className="flex flex-wrap items-center gap-6">
+                      <label className="flex items-center gap-2 text-xs">
+                        <span className="w-24 text-zinc-400">ATR Period:</span>
+                        <input 
+                          type="number" min="1" max="1000" 
+                          value={indicatorSettings.stopLossIndicator.trailPeriod ?? 14} 
+                          onChange={e => handleUpdate({ trailPeriod: parseInt(e.target.value) || 1 })} 
+                          className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" 
+                        />
+                      </label>
+                      
+                      <label className="flex items-center gap-2 text-xs">
+                        <span className="w-24 text-zinc-400">Multiplier:</span>
+                        <input 
+                          type="number" step="0.1"
+                          value={indicatorSettings.stopLossIndicator.trailMultiplier ?? 2.0} 
+                          onChange={e => handleUpdate({ trailMultiplier: parseFloat(e.target.value) || 0 })} 
+                          className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" 
+                        />
+                      </label>
+                    </div>
+                  )}
+
+                  {(indicatorSettings.stopLossIndicator.trailType || 'atr_bands') === 'last_n_candles' && (
+                    <div className="flex flex-wrap items-center gap-6">
+                      <label className="flex items-center gap-2 text-xs">
+                        <span className="w-24 text-zinc-400">Last N Period:</span>
+                        <input 
+                          type="number" min="1" max="1000" 
+                          value={indicatorSettings.stopLossIndicator.trailLastNPeriod ?? 5} 
+                          onChange={e => handleUpdate({ trailLastNPeriod: parseInt(e.target.value) || 1 })} 
+                          className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" 
+                        />
+                      </label>
+
+                      <div className="flex items-center gap-4">
+                        <label className="flex items-center gap-2 text-xs cursor-pointer text-zinc-300">
+                          <input 
+                            type="checkbox" 
+                            checked={indicatorSettings.stopLossIndicator.trailAllowAtrOffset || false}
+                            onChange={e => handleUpdate({ trailAllowAtrOffset: e.target.checked })}
+                            className="rounded bg-zinc-800 border-zinc-700 text-emerald-500 focus:ring-emerald-500"
+                          />
+                          Allow ATR Offset
+                        </label>
+                        {indicatorSettings.stopLossIndicator.trailAllowAtrOffset && (
+                           <label className="flex items-center gap-2 text-xs">
+                             <span className="text-zinc-400">Multiplier:</span>
+                             <input 
+                               type="number" step="0.1"
+                               value={indicatorSettings.stopLossIndicator.trailAtrOffsetMultiplier ?? 1.0} 
+                               onChange={e => handleUpdate({ trailAtrOffsetMultiplier: parseFloat(e.target.value) || 1.0 })} 
+                               className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" 
+                             />
+                           </label>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-4">
+                        <label className="flex items-center gap-2 text-xs cursor-pointer text-zinc-300">
+                          <input 
+                            type="checkbox" 
+                            checked={indicatorSettings.stopLossIndicator.trailAllowFixedOffset || false}
+                            onChange={e => handleUpdate({ trailAllowFixedOffset: e.target.checked })}
+                            className="rounded bg-zinc-800 border-zinc-700 text-emerald-500 focus:ring-emerald-500"
+                          />
+                          Fixed Offset (Pips)
+                        </label>
+                        {indicatorSettings.stopLossIndicator.trailAllowFixedOffset && (
+                           <input 
+                             type="number" step="1"
+                             value={indicatorSettings.stopLossIndicator.trailFixedOffsetPips ?? 10} 
+                             onChange={e => handleUpdate({ trailFixedOffsetPips: isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) })} 
+                             className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" 
+                           />
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </motion.div>
         )}

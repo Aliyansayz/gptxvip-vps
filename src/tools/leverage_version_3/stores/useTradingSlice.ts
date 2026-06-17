@@ -23,6 +23,8 @@ const defaultTradingConfig: TradingRulesConfig = {
   useVolatilityRegimeSlTrailing: false,
   volatilityRegimePeriod: 30,
   trailRecurrentTradesWithAtr: false,
+  autoTradeBreakerByCount: false,
+  autoTradeBreakerCountValue: 200,
   useTakeProfit: true,
   rewardRiskRatio: 1.5,
   exitAfterNCandles: 0,

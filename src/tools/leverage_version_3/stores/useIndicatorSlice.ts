@@ -35,7 +35,17 @@ const defaultIndicatorSettings: IndicatorSettings = {
     allowAtrOffset: false,
     atrOffsetMultiplier: 1.0,
     allowFixedOffset: false,
-    fixedOffsetPips: 10
+    fixedOffsetPips: 10,
+    allowDifferentTrailSlIndicator: false,
+    trailPeriod: 14,
+    trailMultiplier: 2.0,
+    trailType: 'atr_bands',
+    trailLastNPeriod: 5,
+    trailAllowAtrOffset: false,
+    trailAtrOffsetMultiplier: 1.0,
+    trailAllowFixedOffset: false,
+    trailFixedOffsetPips: 10,
+    trailDataSource: 'alpha'
   },
   trendStrength: {
     slopePeriod: 20,

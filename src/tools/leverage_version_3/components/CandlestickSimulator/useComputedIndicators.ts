@@ -13,6 +13,9 @@ import { calculateSqueeze } from '../../functions/api/indicators/integral/squeez
 import { smoothedHeikinAshi } from '../../functions/api/indicators/integral/heikin_ashi_smoothing';
 import { getCandlePatternsMultiple } from '../../functions/api/indicators/integral/candlePattern';
 import { Config } from './types';
+import { getTrailSlIndicator } from '../../functions/api/middleware/trailSlIndicatorVersion';
+
+const getBaseSystemId = (id: string) => id.replace('_alpha', '').replace('_beta', '').replace('_delta', '');
 
 export function useComputedIndicators(
   data: Ohlc[],
@@ -47,7 +50,10 @@ export function useComputedIndicators(
       const sourceData = getDataBySource(dataSource);
       const closePrices = sourceData.map(d => d.close);
       const baseCfgObj = indicatorSettings[configKey as keyof typeof indicatorSettings] || indicatorSettings[sysType as keyof typeof indicatorSettings];
-      const cfg = getParams(baseCfgObj, dataSource, config);
+      
+      // Merge base configuration parameters with the specific custom configuration passed in
+      const mergedObj = { ...baseCfgObj, ...config };
+      const cfg = getParams(mergedObj, dataSource, mergedObj);
 
       if (sysType === 'ma_crossover') {
         return {
@@ -56,44 +62,68 @@ export function useComputedIndicators(
           slowLine: calculateSMA(closePrices, cfg.slowMa || 21)
         };
       } else if (sysType === 'supertrend') {
+        const superPeriod = cfg.supertrendPeriod || cfg.period || cfg.atrPeriod || 10;
+        const superMultiplier = cfg.supertrendMultiplier || cfg.multiplier || 3;
         return {
           type: 'supertrend',
-          supertrend: calculateSupertrend(sourceData, cfg.supertrendPeriod || cfg.period || 10, cfg.supertrendMultiplier || cfg.multiplier || 3)
+          supertrend: calculateSupertrend(sourceData, superPeriod, superMultiplier)
         };
       } else if (sysType === 'stochastic') {
+        const stochK = cfg.stochK || cfg.kPeriod || 14;
+        const stochD = cfg.stochD || cfg.dPeriod || 3;
         return {
           type: 'stochastic',
-          stochastic: calculateStochastic(sourceData, cfg.stochK || 14, 3, cfg.stochD || 3)
+          stochastic: calculateStochastic(sourceData, stochK, 3, stochD)
         };
       } else if (sysType === 'linear_regression') {
+        const lrSlope = cfg.lrSlopePeriod || cfg.slopePeriod || cfg.period || 20;
+        const lrVol = cfg.lrVolPeriod || cfg.volPeriod || cfg.channelWidth || 20;
+        const lrRegime = cfg.lrRegimePeriod || cfg.regimePeriod || 30;
         return {
           type: 'linear_regression',
-          lr: linearRegressionSystem(closePrices, cfg.lrSlopePeriod || cfg.slopePeriod || 20, cfg.lrVolPeriod || cfg.volPeriod || 20, cfg.lrRegimePeriod || cfg.regimePeriod || 30)
+          lr: linearRegressionSystem(closePrices, lrSlope, lrVol, lrRegime)
         };
       } else if (sysType === 'bollinger_bands') {
+        const bbPeriod = cfg.bbPeriod || cfg.period || 20;
+        const bbStdDev = cfg.bbStdDev || cfg.stdDev || 2;
         return {
           type: 'bollinger_bands',
-          bb: calculateBollingerBands(sourceData, cfg.bbPeriod || cfg.period || 20, cfg.bbStdDev || cfg.stdDev || 2)
+          bb: calculateBollingerBands(sourceData, bbPeriod, bbStdDev)
         };
       } else if (sysType === 'supertrend_regime') {
         const highs = sourceData.map(d => d.high);
         const lows = sourceData.map(d => d.low);
+        const stPeriod = cfg.stPeriod || 10;
+        const atrMultiplier = cfg.atrMultiplier || 3;
+        const regimePeriod = cfg.regimePeriod || 30;
+        const zPeriod = cfg.zPeriod || 20;
+        const zUpper = cfg.zUpper || 1.5;
+        const zLower = cfg.zLower || -1.5;
         return {
           type: 'supertrend_regime',
           supertrend_regime: supertrendRegimeSystem(
             highs, lows, closePrices, 
-            cfg.stPeriod || 10, cfg.atrMultiplier || 3, 
-            cfg.regimePeriod || 30, cfg.zPeriod || 20, 
-            cfg.zUpper || 1.5, cfg.zLower || -1.5
+            stPeriod, atrMultiplier, 
+            regimePeriod, zPeriod, 
+            zUpper, zLower
           )
         };
       } else if (sysType === 'heikin_ashi_smoothed') {
         const open = sourceData.map(d => d.open);
         const highs = sourceData.map(d => d.high);
         const lows = sourceData.map(d => d.low);
+        const smoothLen = cfg.haSmoothLen || cfg.smoothLen || 10;
         return {
           type: 'heikin_ashi_smoothed',
-          heikin_ashi_smoothed: smoothedHeikinAshi(open, highs, lows, closePrices, cfg.haSmoothLen || cfg.smoothLen || 10)
+          heikin_ashi_smoothed: smoothedHeikinAshi(open, highs, lows, closePrices, smoothLen)
+        };
+      } else if (sysType === 'divergence') {
+        const divLookback = cfg.lookback || cfg.stochK || 14;
+        const divRsiPeriod = cfg.rsiPeriod || cfg.stochD || 14;
+        // Divergence uses stochastic internally under some conditions
+        return {
+          type: 'divergence',
+          stochastic: calculateStochastic(sourceData, divLookback, 3, divRsiPeriod)
         };
       } else if (sysType === 'candlestick_pattern') {
         const open = sourceData.map(d => d.open);
@@ -132,68 +162,111 @@ export function useComputedIndicators(
     }
 
     // Exit signal indicators
-    const exitType = tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemType 
-      ? tradingConfig.exitSignalSystemType 
-      : config.type;
-      
-    const exitDataSource = tradingConfig.exitSignalSource || 'alpha';
-    const baseExitConfig = tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemParams
-      ? tradingConfig.exitSignalSystemParams
-      : config;
-      
-    const computedExit = computeSignalForType(exitType, exitType, exitDataSource, baseExitConfig);
-    if (computedExit) {
-      result.exitSignal = computedExit;
-    }
+    if (tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemMode === 'conjunction') {
+       result.exitSignal = {
+         type: 'conjunction',
+         conjunctionSignals: {}
+       };
+       (tradingConfig.exitActiveConjunctionSystems || []).forEach(sysId => {
+         const baseId = getBaseSystemId(sysId);
+         
+         // Use explicit custom parameters if toggled, otherwise sync with entry indicator settings
+         const isExplicit = !!tradingConfig.exitUseExplicitParams;
+         const cfg = isExplicit 
+           ? (tradingConfig.exitConjunctionParams?.[sysId] || {}) 
+           : ((indicatorSettings as any)[sysId] || {});
 
-    // Stop Loss Indicator
-    const slData = getDataBySource(indicatorSettings.stopLossIndicator?.dataSource || 'alpha');
-    const slType = indicatorSettings.stopLossIndicator?.type || 'atr_bands';
-
-    if (slType === 'atr_bands') {
-      result.stops = calculateStopBandsSmooth(slData, indicatorSettings.stopLossIndicator?.period || 10, indicatorSettings.stopLossIndicator?.multiplier || 3.0, false, true);
+         const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
+         const sig = computeSignalForType(sysId, baseId, sysExitSource, cfg);
+         if (sig) {
+           result.exitSignal.conjunctionSignals[sysId] = sig;
+         }
+       });
     } else {
-      const { lastNLow, lastNHigh } = calculateLastNCandles(slData, indicatorSettings.stopLossIndicator?.lastNPeriod || 5);
-      
-      let finalLower = [...lastNLow];
-      let finalUpper = [...lastNHigh];
-      
-      const atrData = indicatorSettings.stopLossIndicator?.allowAtrOffset ? calculateATR(slData, indicatorSettings.stopLossIndicator?.period || 14) : null;
-      const currentAsset = assetType || 'gold';
-
-      for (let i = 0; i < slData.length; i++) {
-        let currentLower = finalLower[i];
-        let currentUpper = finalUpper[i];
-        const currentPrice = slData[i].close;
+      const exitType = tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemType 
+        ? tradingConfig.exitSignalSystemType 
+        : config.type;
         
-        if (currentLower !== undefined) {
-           if (indicatorSettings.stopLossIndicator?.allowAtrOffset && atrData && atrData[i]) {
-              const atrPrice = atrData[i] * (indicatorSettings.stopLossIndicator?.atrOffsetMultiplier || 1.0);
-              const atrPips = priceToPips(atrPrice, currentAsset, currentPrice);
-              currentLower = lowForLongAtrOffset(currentLower, atrPips, currentAsset, currentPrice);
-           }
-           if (indicatorSettings.stopLossIndicator?.allowFixedOffset) {
-              const fixedPips = indicatorSettings.stopLossIndicator?.fixedOffsetPips || 0;
-              currentLower = manualPipsOffset(currentLower, fixedPips, currentAsset, currentPrice, true);
-           }
+      const exitDataSource = tradingConfig.exitSignalSource || 'alpha';
+      
+      let baseExitConfig: any = {};
+      if (tradingConfig.useDifferentSignalSystemOnExit) {
+        if (exitType === config.type) {
+          // If different exit system is enabled BUT the selected exit model matches the entry system model, we always sync!
+          baseExitConfig = config;
+        } else if (tradingConfig.exitUseExplicitParams) {
+          baseExitConfig = tradingConfig.exitSignalSystemParams || {};
+        } else {
+          // Sync with the entry system indicator settings
+          baseExitConfig = (indicatorSettings as any)[exitType] || {};
         }
-
-        if (currentUpper !== undefined) {
-           if (indicatorSettings.stopLossIndicator?.allowAtrOffset && atrData && atrData[i]) {
-              const atrPrice = atrData[i] * (indicatorSettings.stopLossIndicator?.atrOffsetMultiplier || 1.0);
-              const atrPips = priceToPips(atrPrice, currentAsset, currentPrice);
-              currentUpper = highForShortAtrOffset(currentUpper, atrPips, currentAsset, currentPrice);
-           }
-           if (indicatorSettings.stopLossIndicator?.allowFixedOffset) {
-              const fixedPips = indicatorSettings.stopLossIndicator?.fixedOffsetPips || 0;
-              currentUpper = manualPipsOffset(currentUpper, fixedPips, currentAsset, currentPrice, false);
-           }
-        }
-        finalLower[i] = currentLower;
-        finalUpper[i] = currentUpper;
+      } else {
+        baseExitConfig = config;
       }
-      result.stops = { lowerBand: finalLower, upperBand: finalUpper };
+        
+      const computedExit = computeSignalForType(exitType, exitType, exitDataSource, baseExitConfig);
+      if (computedExit) {
+        result.exitSignal = computedExit;
+      }
     }
+
+    // Stop Loss Indicator Helper
+    const calculateStopsForConfig = (slConfig: any) => {
+      if (!slConfig) return null;
+      const slData = getDataBySource(slConfig.dataSource || 'alpha');
+      const slType = slConfig.type || 'atr_bands';
+
+      if (slType === 'atr_bands') {
+        return calculateStopBandsSmooth(slData, slConfig.period || 10, slConfig.multiplier || 3.0, false, true);
+      } else {
+        const { lastNLow, lastNHigh } = calculateLastNCandles(slData, slConfig.lastNPeriod || 5);
+        
+        let finalLower = [...lastNLow];
+        let finalUpper = [...lastNHigh];
+        
+        const atrData = slConfig.allowAtrOffset ? calculateATR(slData, slConfig.period || 14) : null;
+        const currentAsset = assetType || 'gold';
+
+        for (let i = 0; i < slData.length; i++) {
+          let currentLower = finalLower[i];
+          let currentUpper = finalUpper[i];
+          const currentPrice = slData[i].close;
+          
+          if (currentLower !== undefined) {
+             if (slConfig.allowAtrOffset && atrData && atrData[i]) {
+                const atrPrice = atrData[i] * (slConfig.atrOffsetMultiplier || 1.0);
+                const atrPips = priceToPips(atrPrice, currentAsset, currentPrice);
+                currentLower = lowForLongAtrOffset(currentLower, atrPips, currentAsset, currentPrice);
+             }
+             if (slConfig.allowFixedOffset) {
+                const fixedPips = slConfig.fixedOffsetPips || 0;
+                currentLower = manualPipsOffset(currentLower, fixedPips, currentAsset, currentPrice, true);
+             }
+          }
+
+          if (currentUpper !== undefined) {
+             if (slConfig.allowAtrOffset && atrData && atrData[i]) {
+                const atrPrice = atrData[i] * (slConfig.atrOffsetMultiplier || 1.0);
+                const atrPips = priceToPips(atrPrice, currentAsset, currentPrice);
+                currentUpper = highForShortAtrOffset(currentUpper, atrPips, currentAsset, currentPrice);
+             }
+             if (slConfig.allowFixedOffset) {
+                const fixedPips = slConfig.fixedOffsetPips || 0;
+                currentUpper = manualPipsOffset(currentUpper, fixedPips, currentAsset, currentPrice, false);
+             }
+          }
+          finalLower[i] = currentLower;
+          finalUpper[i] = currentUpper;
+        }
+        return { lowerBand: finalLower, upperBand: finalUpper };
+      }
+    };
+
+    result.stops = calculateStopsForConfig(indicatorSettings.stopLossIndicator);
+
+    // Replicated version for Trailing SL if enabled
+    const trailSlConfig = getTrailSlIndicator(indicatorSettings.stopLossIndicator);
+    result.trailStops = calculateStopsForConfig(trailSlConfig);
 
     // Integral Indicators Always Computed
     const volData = getDataBySource(indicatorSettings.volatility?.dataSource || 'alpha');

@@ -27,6 +27,7 @@ export type StrategyDataSource = 'alpha' | 'beta' | 'delta';
 export interface BaseIndicatorSettings {
   dataSource: StrategyDataSource;
   entrySignalSource?: StrategyDataSource;
+  exitSignalSource?: StrategyDataSource;
   allowVariation?: boolean;
 }
 
@@ -59,6 +60,16 @@ export interface IndicatorSettings {
     atrOffsetMultiplier?: number;
     allowFixedOffset?: boolean;
     fixedOffsetPips?: number;
+    allowDifferentTrailSlIndicator?: boolean;
+    trailPeriod?: number;
+    trailMultiplier?: number;
+    trailType?: 'atr_bands' | 'last_n_candles';
+    trailLastNPeriod?: number;
+    trailAllowAtrOffset?: boolean;
+    trailAtrOffsetMultiplier?: number;
+    trailAllowFixedOffset?: boolean;
+    trailFixedOffsetPips?: number;
+    trailDataSource?: 'alpha' | 'beta' | 'delta';
   };
   trendStrength: BaseIndicatorSettings & {
     slopePeriod: number;

@@ -110,7 +110,7 @@ export const TradingPanelHFTMode: React.FC = () => {
                       <input 
                         type="range" 
                         min="0.5" 
-                        max="5" 
+                        max="6" 
                         step="0.1"
                         value={tradingConfig.hftRewardRiskRatio || 1.5}
                         onChange={(e) => updateConfig({ hftRewardRiskRatio: parseFloat(e.target.value) })}

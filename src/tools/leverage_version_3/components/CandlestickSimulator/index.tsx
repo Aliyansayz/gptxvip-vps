@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useIndicatorsStore } from '../../stores/indicators_store';
 import { getBaseInterval, formatInterval, getLowestActiveIntervalDelay } from '../../functions/api/rules/dataSourceRules';
 import { collectAllAccountInfo } from '../../functions/api/middleware/collectAllAccountInfo';
-import { shouldActivateTradeBreaker } from '../../functions/api/tradeBreaker/tradeBreakerByEquity';
+import { shouldActivateTradeBreaker, checkCountBasedTradeBreaker, getHistoryBookTradeCount } from '../../functions/api/tradeBreaker/tradeBreakerByEquity';
 
 const TradeLogBook = React.lazy(() => import('../TradeLogBook').then(module => ({ default: module.TradeLogBook })));
 const FeatureLogBook = React.lazy(() => import('../FeatureLogBook').then(module => ({ default: module.FeatureLogBook })));
@@ -214,9 +214,11 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
   );
 
   React.useEffect(() => {
-    if (!tradingConfig.autoTradeBreakerByEquityPct || tradingConfig.tradeBreaker) return;
+    if (tradingConfig.tradeBreaker) return;
 
-    if (displayTrades.length > 0 && data[simulationIndex]) {
+    let activate = false;
+
+    if (tradingConfig.autoTradeBreakerByEquityPct && displayTrades.length > 0 && data[simulationIndex]) {
       const currentPrice = data[simulationIndex].close;
       const accountState = collectAllAccountInfo(
         displayTrades,
@@ -232,19 +234,31 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
         : 0;
 
       if (shouldActivateTradeBreaker(combinedEquityGrowthPct, tradingConfig.autoTradeBreakerByEquityPct, tradingConfig.autoTradeBreakerEquityPctValue)) {
-        setTimeout(() => {
-          setTradingConfig((prev: any) => {
-            if (prev.tradeBreaker) return prev;
-            return { ...prev, tradeBreaker: true };
-          });
-        }, 0);
+        activate = true;
       }
+    }
+
+    if (tradingConfig.autoTradeBreakerByCount) {
+      if (checkCountBasedTradeBreaker(displayTrades, tradingConfig.autoTradeBreakerByCount, tradingConfig.autoTradeBreakerCountValue)) {
+        activate = true;
+      }
+    }
+
+    if (activate) {
+      setTimeout(() => {
+        setTradingConfig((prev: any) => {
+          if (prev.tradeBreaker) return prev;
+          return { ...prev, tradeBreaker: true };
+        });
+      }, 0);
     }
   }, [
     displayTrades, 
     data, 
     simulationIndex, 
     tradingConfig.autoTradeBreakerByEquityPct, 
+    tradingConfig.autoTradeBreakerByCount,
+    tradingConfig.autoTradeBreakerCountValue,
     tradingConfig.tradeBreaker, 
     tradingConfig.autoTradeBreakerEquityPctValue,
     leverageSettings.balance,
@@ -453,7 +467,8 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
         finalCombinedEquity: accountState.combinedEquity,
         equityGrowthPct: accountState.initialCombinedBalance > 0 ? ((accountState.combinedEquity - accountState.initialCombinedBalance) / accountState.initialCombinedBalance) * 100 : 0
       },
-      trade_history_book: historyBook
+      trade_history_book: historyBook,
+      indicator_trade_presets: JSON.parse(sessionStorage.getItem('leveragetrading_v3_presets') || '[]')
     };
 
     exportConfigUtility(exportData, currentAsset);
@@ -496,6 +511,23 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
       if (parsed.visibility) {
          setVisibilitySettings((prev: any) => ({ ...prev, ...parsed.visibility }));
       }
+      if (parsed.indicator_trade_presets) {
+         const existingPresetsStr = sessionStorage.getItem('leveragetrading_v3_presets');
+         const existingPresets = existingPresetsStr ? JSON.parse(existingPresetsStr) : [];
+         
+         const newPresets = parsed.indicator_trade_presets;
+         // merge or overwrite, for now just append new ones if not present
+         const merged = [...existingPresets];
+         for (const np of newPresets) {
+             if (!merged.find(p => p.id === np.id)) {
+                 merged.push(np);
+             }
+         }
+         sessionStorage.setItem('leveragetrading_v3_presets', JSON.stringify(merged));
+         
+         // Trigger an event so the CollapsiblePresetMenu can reload
+         window.dispatchEvent(new Event('leveragetrading:presets:updated'));
+      }
     } catch (e) {
       console.error("Failed to load config", e);
       alert("Failed to load configuration JSON");
@@ -520,6 +552,8 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
           onTogglePanel={() => setIsPanelOpen(!isPanelOpen)}
           playbackSpeedMs={playbackSpeedMs}
           setPlaybackSpeedMs={setPlaybackSpeedMs}
+          onLoadConfig={handleLoadConfig}
+          onExportConfig={exportBacktestJSON}
         />
 
         {isPanelOpen && (
@@ -536,25 +570,6 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
                  <button onClick={() => setPanelTab('timeFilter')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'timeFilter' ? 'text-pink-400 border-b-2 border-pink-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Time Filter</button>
                  <button onClick={() => setPanelTab('stopLossModifier')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'stopLossModifier' ? 'text-purple-400 border-b-2 border-purple-400' : 'text-zinc-400 hover:text-zinc-200'}`}>SL Modifiers</button>
                  <button onClick={() => setPanelTab('consoleLog')} className={`px-4 py-2 text-xs font-semibold ${panelTab === 'consoleLog' ? 'text-amber-400 border-b-2 border-amber-400' : 'text-zinc-400 hover:text-zinc-200'}`}>Dev Console</button>
-              </div>
-              <div className="flex items-center">
-                 <input id="load-config-input" type="file" accept=".json" className="hidden" onChange={handleLoadConfig} />
-                 <button 
-                   onClick={() => document.getElementById('load-config-input')?.click()}
-                   className="mx-3 flex items-center gap-1.5 px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] font-bold uppercase tracking-wider rounded border border-zinc-700 transition-colors"
-                   title="Load backtest state from JSON"
-                 >
-                   <Upload size={12} />
-                   Load Config
-                 </button>
-                 <button 
-                   onClick={exportBacktestJSON}
-                   className="flex items-center gap-1.5 px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] font-bold uppercase tracking-wider rounded border border-zinc-700 transition-colors"
-                   title="Export complete backtest state to JSON"
-                 >
-                   <Download size={12} />
-                   Export Config
-                 </button>
               </div>
             </div>
             <div className="p-4">

@@ -44,8 +44,12 @@ export interface TradingRulesConfig {
   exitAfterNSecondsMax?: number;
   pipMultiplier?: number;
   useDifferentSignalSystemOnExit?: boolean;
+  exitSignalSystemMode?: 'classic' | 'conjunction';
+  exitActiveConjunctionSystems?: string[];
   exitSignalSystemType?: 'ma_crossover' | 'stochastic' | 'supertrend' | 'divergence' | 'linear_regression' | 'bollinger_bands' | 'supertrend_regime' | 'heikin_ashi_smoothed' | 'candlestick_pattern';
   exitSignalSystemParams?: Record<string, number>;
+  exitUseExplicitParams?: boolean;
+  exitConjunctionParams?: Record<string, Record<string, number>>;
   useADXFilter?: boolean;
   adxThreshold?: number;
   useSqueezeFilter?: boolean;
@@ -61,6 +65,8 @@ export interface TradingRulesConfig {
   tradeBreaker?: boolean;
   autoTradeBreakerByEquityPct?: boolean;
   autoTradeBreakerEquityPctValue?: number;
+  autoTradeBreakerByCount?: boolean;
+  autoTradeBreakerCountValue?: number;
   partialTradeExitOnReversal?: boolean;
   partialExitPercentage?: number;
   // added for time limit mappings
