@@ -26,14 +26,15 @@ export const LabHeader: React.FC<LabHeaderProps> = ({ isParallelModeActive, onTo
       <div className="flex items-center gap-2">
         {onToggleParallelMode && (
           <button
+            id="parallel-mode-toggle-btn"
             onClick={onToggleParallelMode}
-            className={`flex items-center gap-2 px-4 py-2 rounded border text-xs uppercase tracking-widest font-bold transition-all ${
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg border text-xs uppercase tracking-widest font-black transition-all cursor-pointer shadow-lg duration-300 hover:scale-[1.02] active:scale-[0.98] ${
               isParallelModeActive 
-                ? 'bg-emerald-500/20 border-emerald-400 text-emerald-400' 
-                : 'bg-emerald-500/10 border-emerald-400/30 text-emerald-400 hover:bg-emerald-500/20'
+                ? 'bg-gradient-to-r from-teal-500/20 to-emerald-500/20 border-teal-400 text-teal-300 hover:shadow-[0_0_15px_rgba(45,212,191,0.4)]' 
+                : 'bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border-emerald-400/30 text-emerald-400 hover:border-emerald-400/80 hover:shadow-[0_0_15px_rgba(52,211,153,0.35)]'
             }`}
           >
-            <MonitorPlay className="w-4 h-4" />
+            <MonitorPlay className="w-4 h-4 animate-pulse text-emerald-400" />
             <span>{isParallelModeActive ? 'Exit Parallel Mode' : 'Parallel Mode'}</span>
           </button>
         )}

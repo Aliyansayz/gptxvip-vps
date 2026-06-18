@@ -22,6 +22,7 @@ import { ExitSignalRuleSettingsPanel } from "./lab/ExitSignalRule/ExitSignalRule
 import { TradingPanelDataSettings } from "./simulator/TradingPanelDataSettings";
 import { ConjunctionSimulation } from "./ConjunctionSimulation";
 import { CollapsiblePresetMenu } from "./lab/CollapsiblePresetMenu";
+import { MultiInstanceDashboard } from "./MultiInstanceDashboard";
 
 export interface TradingToolsLabProps {
   isParallelModeActive?: boolean;
@@ -30,6 +31,17 @@ export interface TradingToolsLabProps {
 
 export const TradingToolsLab: React.FC<TradingToolsLabProps> = ({ isParallelModeActive, onToggleParallelMode }) => {
   const [activeTab, setActiveTab] = useState<ToolTab>("stochastic");
+  const [localParallel, setLocalParallel] = useState(false);
+
+  // If onToggleParallelMode is not provided from parent, and localParallel is true,
+  // we render the MultiInstanceDashboard locally which will in turn render 
+  // instances of this component with the active mode props.
+  if (!onToggleParallelMode && localParallel) {
+    return <MultiInstanceDashboard onExitParallelMode={() => setLocalParallel(false)} />;
+  }
+
+  const handleToggleParallel = onToggleParallelMode || (() => setLocalParallel(true));
+  const isParallelActive = isParallelModeActive !== undefined ? isParallelModeActive : localParallel;
 
   return (
     <div className="flex flex-col w-full h-full bg-zinc-950 text-zinc-50 font-mono overflow-y-auto">
@@ -37,8 +49,8 @@ export const TradingToolsLab: React.FC<TradingToolsLabProps> = ({ isParallelMode
       
       <div className="relative z-10 w-full min-h-full flex flex-col pt-4">
         <LabHeader 
-          isParallelModeActive={isParallelModeActive}
-          onToggleParallelMode={onToggleParallelMode}
+          isParallelModeActive={isParallelActive}
+          onToggleParallelMode={handleToggleParallel}
         />
         
         <LabStatus />
