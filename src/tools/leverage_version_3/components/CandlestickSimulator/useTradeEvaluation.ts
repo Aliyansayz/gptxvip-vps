@@ -10,6 +10,7 @@ import { calculateVolatilityScenario } from '../../functions/api/indicators/excl
 import { getEligibleRootAccount } from '../../functions/api/accountState/accountEligibleToTrade';
 import { shouldActivateTradeBreaker } from '../../functions/api/tradeBreaker/tradeBreakerByEquity';
 import { evaluateConjunctionSystem } from '../../functions/api/conjunctionSystem';
+import { evaluateDisjunctionSystem } from '../../functions/api/disjunctionSystem';
 import { Config } from './types';
 import { ParallelAccount, useIndicatorsStore } from '../../stores/indicators_store';
 import { calculatePnL } from '../../functions/api/position_sizing/leveragedPositionSizeMetals';
@@ -195,6 +196,15 @@ export function useTradeEvaluation(
          return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysEntrySource));
       });
       currentEntrySignal = evaluateConjunctionSystem(signals);
+    } else if (tradingConfig.activeSystemMode === 'disjunction' && ind.entrySignal?.type === 'disjunction') {
+      const activeSystems = tradingConfig.activeDisjunctionSystems || [];
+      const signals = activeSystems.map((sysId: string) => {
+         const comp = ind.entrySignal.disjunctionSignals[sysId];
+         const sysEntrySource = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[sysId as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
+         const sysIndex = getMappedIndex(sysEntrySource);
+         return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysEntrySource));
+      });
+      currentEntrySignal = evaluateDisjunctionSystem(signals);
     } else {
       const sysEntrySource = (indicatorSettings[config.type as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[config.type as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
       const sysIndex = getMappedIndex(sysEntrySource);
@@ -212,6 +222,16 @@ export function useTradeEvaluation(
          return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysExitSource));
       });
       currentExitSignal = evaluateConjunctionSystem(signals);
+    } else if (tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemMode === 'disjunction' && ind.exitSignal?.type === 'disjunction') {
+      const activeExitSystems = tradingConfig.exitActiveDisjunctionSystems || [];
+      const signals = activeExitSystems.map((sysId: string) => {
+         const comp = ind.exitSignal.disjunctionSignals[sysId];
+         const cfg = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any) || {};
+         const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
+         const sysIndex = getMappedIndex(sysExitSource);
+         return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysExitSource));
+      });
+      currentExitSignal = evaluateDisjunctionSystem(signals);
     } else {
       const resolvedExitType = ind.exitSignal?.type || exitType;
       const sysExitDataSource = indicatorSettings[resolvedExitType]?.dataSource || exitDataSource;
@@ -239,6 +259,11 @@ export function useTradeEvaluation(
     let trendEfficiencyValue: number | undefined = undefined;
     if (tradingConfig.useTrendEfficiencyFilter && ind.trendEfficiency) {
       trendEfficiencyValue = ind.trendEfficiency[tsIndex] ?? undefined;
+    }
+
+    let wickEfficiencyValue: number | undefined = undefined;
+    if (tradingConfig.useWickEfficiencyFilter && ind.wickEfficiency) {
+      wickEfficiencyValue = ind.wickEfficiency[tsIndex] ?? undefined;
     }
 
     let squeezeStatus: number | undefined = undefined;
@@ -327,10 +352,22 @@ export function useTradeEvaluation(
           assetName,
           isFlipSignal,
           slopePersistenceValue,
-          trendEfficiencyValue
+          trendEfficiencyValue,
+          wickEfficiencyValue
         );
         if (newTradesRaw.length > 0) {
-          newTradesRaw = newTradesRaw.map(t => ({ ...t, accountId: eligibleAccountId }));
+          const resolvedEntrySystem = tradingConfig.activeSystemMode === 'conjunction' 
+            ? (tradingConfig.activeConjunctionSystems || []).join(' AND ')
+            : tradingConfig.activeSystemMode === 'disjunction'
+            ? (tradingConfig.activeDisjunctionSystems || []).join(' OR ')
+            : config.type;
+
+          newTradesRaw = newTradesRaw.map(t => ({ 
+            ...t, 
+            accountId: eligibleAccountId,
+            entrySystem: resolvedEntrySystem,
+            systemMode: tradingConfig.activeSystemMode || 'classic'
+          }));
           if (onLogCallback) {
             newTradesRaw.forEach((t) => {
               onLogCallback('SUCCESS', 'TradeEngine', `Executed Main ${t.side} Entry [ID: ${t.id}] at ${t.entryPrice.toFixed(5)}`);
@@ -402,6 +439,17 @@ export function useTradeEvaluation(
           );
         }
         if (recurrentTradesRaw.length > 0) {
+          const resolvedEntrySystem = tradingConfig.activeSystemMode === 'conjunction' 
+            ? (tradingConfig.activeConjunctionSystems || []).join(' AND ')
+            : tradingConfig.activeSystemMode === 'disjunction'
+            ? (tradingConfig.activeDisjunctionSystems || []).join(' OR ')
+            : config.type;
+
+          recurrentTradesRaw = recurrentTradesRaw.map(t => ({
+            ...t,
+            entrySystem: resolvedEntrySystem,
+            systemMode: tradingConfig.activeSystemMode || 'classic'
+          }));
           if (onLogCallback) {
             recurrentTradesRaw.forEach((t) => {
               onLogCallback('SUCCESS', 'TradeEngine', `Executed Recurrent ${t.side} Entry [ID: ${t.id}] at ${t.entryPrice.toFixed(5)}`);

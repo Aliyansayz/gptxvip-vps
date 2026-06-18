@@ -19,7 +19,7 @@ export const FeatureLogBook: React.FC = () => {
   }
 
   // Identify all dynamic indicator column keys
-  const metadataKeys = ['trade_id', 'type_of_trade', 'asset', 'trade_action', 'timestamp', 'preset_name'];
+  const metadataKeys = ['trade_id', 'type_of_trade', 'asset', 'trade_action', 'timestamp', 'preset_name', 'entry_system', 'system_mode'];
   const allKeys = Array.from(new Set(featureLog.flatMap(entry => Object.keys(entry))));
   const indicatorKeys = allKeys.filter(k => !metadataKeys.includes(k)).sort();
 
@@ -113,6 +113,8 @@ export const FeatureLogBook: React.FC = () => {
                 ) : (
                   <th className="px-4 py-3 font-bold border-r border-zinc-850 text-center">Asset</th>
                 )}
+                <th className="px-4 py-3 font-bold border-r border-zinc-850 text-center text-purple-400">System Mode</th>
+                <th className="px-4 py-3 font-bold border-r border-zinc-850 text-center text-purple-400">Entry System</th>
                 
                 {/* Dynamically mapped indicator columns */}
                 {indicatorKeys.map(key => {
@@ -151,6 +153,12 @@ export const FeatureLogBook: React.FC = () => {
                         {entry.asset}
                       </td>
                     )}
+                    <td className="px-4 py-2.5 text-center border-r border-zinc-850 font-black uppercase text-purple-400">
+                      {entry.system_mode || 'classic'}
+                    </td>
+                    <td className="px-4 py-2.5 text-center border-r border-zinc-850 font-black text-[9px] uppercase text-purple-300 max-w-[150px] truncate" title={entry.entry_system}>
+                      {entry.entry_system}
+                    </td>
 
                     {/* Mapped dynamic columns */}
                     {indicatorKeys.map(key => {

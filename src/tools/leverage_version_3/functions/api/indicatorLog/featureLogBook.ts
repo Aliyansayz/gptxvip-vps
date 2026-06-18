@@ -17,6 +17,8 @@ export interface FeatureLogEntry {
   realized_pips?: number;
   exit_reason?: string;
   outcome?: 'WIN' | 'LOSS' | 'NEUTRAL';
+  entry_system?: string;
+  system_mode?: string;
   [indicatorKey: string]: string | number | undefined;
 }
 
@@ -71,6 +73,8 @@ export function createFeatureLogEntry(
     realized_pips: Number(realizedPips.toFixed(2)),
     exit_reason: resolvedOutcome.exitReason,
     outcome: resolvedOutcome.isWin ? 'WIN' : (resolvedOutcome.pnl !== undefined && resolvedOutcome.pnl < 0 ? 'LOSS' : 'NEUTRAL'),
+    entry_system: trade.entrySystem,
+    system_mode: trade.systemMode,
     ...alphaMetrics,
     ...betaMetrics,
     ...deltaMetrics

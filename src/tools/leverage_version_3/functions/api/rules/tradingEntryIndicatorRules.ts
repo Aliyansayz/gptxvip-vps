@@ -23,13 +23,14 @@ export function processIndicatorBasedEntry(
   assetName: string = 'gold',
   isFlipSignal: boolean = false,
   slopePersistenceValue?: number,
-  trendEfficiencyValue?: number
+  trendEfficiencyValue?: number,
+  wickEfficiencyValue?: number
 ): Trade[] {
   if (!signal) return [];
   if (!config.entryOnSignal && !isFlipSignal) return [];
 
-  // Volatility Filters (ADX, Squeeze, Regime, Slope Persistence, Trend Efficiency)
-  if (!isVolatilityEntryConditionMet(config, adxValue, squeezeStatus, volRegimeScenario, slopePersistenceValue, trendEfficiencyValue)) {
+  // Volatility Filters (ADX, Squeeze, Regime, Slope Persistence, Trend Efficiency, Wick Efficiency)
+  if (!isVolatilityEntryConditionMet(config, adxValue, squeezeStatus, volRegimeScenario, slopePersistenceValue, trendEfficiencyValue, wickEfficiencyValue)) {
     return [];
   }
 

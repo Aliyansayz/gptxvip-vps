@@ -90,6 +90,10 @@ export const ExitSignalRuleSettingsPanel: React.FC<ExitSignalRuleSettingsPanelPr
                          onClick={() => handleUpdate({ exitSignalSystemMode: 'conjunction' })}
                          className={`px-3 py-1.5 rounded text-[10px] font-bold uppercase transition-colors tracking-widest ${tradingConfig.exitSignalSystemMode === 'conjunction' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 border border-transparent'}`}
                       >Conjunction System Mode</button>
+                      <button 
+                         onClick={() => handleUpdate({ exitSignalSystemMode: 'disjunction' })}
+                         className={`px-3 py-1.5 rounded text-[10px] font-bold uppercase transition-colors tracking-widest ${tradingConfig.exitSignalSystemMode === 'disjunction' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 border border-transparent'}`}
+                      >Disjunction System Mode</button>
                     </div>
 
                     {tradingConfig.exitSignalSystemMode === 'classic' && (
@@ -293,6 +297,127 @@ export const ExitSignalRuleSettingsPanel: React.FC<ExitSignalRuleSettingsPanelPr
                                                   ...tradingConfig.exitConjunctionParams,
                                                   [val]: {
                                                     ...(tradingConfig.exitConjunctionParams?.[val] || {}),
+                                                    [paramKey]: typedVal
+                                                  }
+                                                }
+                                              });
+                                            }}
+                                            className="bg-zinc-900 border border-zinc-800/80 rounded px-2 py-1 text-zinc-200 focus:border-rose-500/40 focus:outline-none w-full"
+                                          />
+                                        </label>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {tradingConfig.exitSignalSystemMode === 'disjunction' && (
+                      <div className="flex flex-col gap-3">
+                        {/* Parameter sourcing choice for disjunction */}
+                        <div className="flex flex-col gap-2 bg-zinc-900/40 p-3 rounded-lg border border-zinc-800">
+                          <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Disjunction Parameters Sourcing</span>
+                          <div className="flex flex-col sm:flex-row gap-3 mt-1">
+                            <button 
+                              type="button"
+                              onClick={() => handleUpdate({ exitUseExplicitParams: false })}
+                              className={`flex-1 py-2 px-3 rounded text-[10px] font-bold uppercase tracking-wider border flex items-center justify-center gap-2 transition-all ${!tradingConfig.exitUseExplicitParams ? 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30' : 'bg-zinc-900/50 text-zinc-500 border-zinc-800/80 hover:text-zinc-300'}`}
+                            >
+                              <div className={`w-2 h-2 rounded-full ${!tradingConfig.exitUseExplicitParams ? 'bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.6)]' : 'bg-zinc-700'}`} />
+                              Sync with Entry Values
+                            </button>
+                            <button 
+                              type="button"
+                              onClick={() => handleUpdate({ exitUseExplicitParams: true })}
+                              className={`flex-1 py-2 px-3 rounded text-[10px] font-bold uppercase tracking-wider border flex items-center justify-center gap-2 transition-all ${tradingConfig.exitUseExplicitParams ? 'bg-rose-500/15 text-rose-400 border-rose-500/30' : 'bg-zinc-900/50 text-zinc-500 border-zinc-800/80 hover:text-zinc-300'}`}
+                            >
+                              <div className={`w-2 h-2 rounded-full ${tradingConfig.exitUseExplicitParams ? 'bg-rose-400 shadow-[0_0_8px_rgba(244,63,94,0.6)]' : 'bg-zinc-700'}`} />
+                              Explicit Parameters
+                            </button>
+                          </div>
+                        </div>
+
+                        <span className="text-[10px] text-zinc-400 font-bold uppercase mb-1">Select Any Number of Systems:</span>
+                        {Array.from({ length: (tradingConfig.exitActiveDisjunctionSystems || []).length + 1 }).map((_, index) => {
+                          const currentSystems = tradingConfig.exitActiveDisjunctionSystems || [];
+                          const val = currentSystems[index] || '';
+                          const baseId = getBaseId(val);
+                          return (
+                            <div key={index} className="flex flex-col gap-2 p-2 border border-orange-800/50 rounded bg-orange-900/10">
+                              <label className="flex items-center gap-3 text-xs">
+                                <span className="w-24 text-zinc-400">System #{index + 1}:</span>
+                                <select 
+                                  value={val}
+                                  onChange={(e) => {
+                                    const newVal = e.target.value;
+                                    let newSystems = [...currentSystems];
+                                    if (newVal === '') {
+                                      newSystems.splice(index, 1);
+                                    } else {
+                                      newSystems[index] = newVal;
+                                    }
+                                    // Clean up array
+                                    newSystems = newSystems.filter(v => v !== '');
+                                    handleUpdate({ exitActiveDisjunctionSystems: newSystems });
+                                  }}
+                                  className="bg-zinc-900/80 border border-zinc-700/50 rounded px-2 py-1.5 text-zinc-200 w-48 focus:border-rose-500/50 focus:outline-none"
+                                >
+                                  <option value="">-- None --</option>
+                                  <optgroup label="Classic Systems">
+                                    {activeClassicSystems.map(system => (
+                                      <option key={system.id} value={system.id}>{system.name}</option>
+                                    ))}
+                                  </optgroup>
+                                </select>
+                              </label>
+                              {val && (
+                                <label className="flex items-center gap-3 text-xs">
+                                  <span className="w-24 text-zinc-400">Data Source:</span>
+                                  <select 
+                                    value={(indicatorSettings[val as keyof IndicatorSettings] as any)?.exitSignalSource || 'alpha'}
+                                    onChange={(e) => {
+                                      setIndicatorSettings(prev => ({
+                                        ...prev,
+                                        [val]: {
+                                          ...(prev as any)[val],
+                                          exitSignalSource: e.target.value
+                                        }
+                                      }));
+                                    }}
+                                    className="bg-zinc-900/80 border border-zinc-700/50 rounded px-2 py-1.5 text-zinc-200 w-48 focus:border-rose-500/50 focus:outline-none"
+                                  >
+                                    <option value="alpha">Alpha Base</option>
+                                    <option value="beta">Beta Aggregate</option>
+                                    <option value="delta">Delta Layer</option>
+                                  </select>
+                                </label>
+                              )}
+
+                              {/* Custom Explicit parameters for this disjunction system */}
+                              {val && tradingConfig.exitUseExplicitParams && (
+                                <div className="mt-2 pl-3 border-l-2 border-orange-500/25 space-y-2 animate-fade-in">
+                                  <div className="text-[10px] font-bold text-orange-400">Custom Parameters ({activeClassicSystems.find(s => s.id === baseId)?.name})</div>
+                                  <div className="grid grid-cols-2 gap-3 bg-zinc-950/20 p-2 border border-zinc-800/40 rounded">
+                                    {Object.keys(activeClassicSystems.find(s => s.id === baseId)?.defaultNumericalInputs || {}).map((paramKey) => {
+                                      const baseSys = activeClassicSystems.find(s => s.id === baseId);
+                                      const currentVal = tradingConfig.exitDisjunctionParams?.[val]?.[paramKey] ?? baseSys?.defaultNumericalInputs[paramKey] ?? 0;
+                                      return (
+                                        <label key={paramKey} className="flex flex-col gap-1 text-[11px]">
+                                          <span className="text-zinc-400 capitalize">{paramKey.replace(/([A-Z])/g, ' $1').trim()}</span>
+                                          <input 
+                                            type="number"
+                                            value={currentVal}
+                                            onChange={(e) => {
+                                              const typedVal = parseFloat(e.target.value) || 0;
+                                              handleUpdate({
+                                                exitDisjunctionParams: {
+                                                  ...tradingConfig.exitDisjunctionParams,
+                                                  [val]: {
+                                                    ...(tradingConfig.exitDisjunctionParams?.[val] || {}),
                                                     [paramKey]: typedVal
                                                   }
                                                 }

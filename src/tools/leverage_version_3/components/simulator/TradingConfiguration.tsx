@@ -5,7 +5,7 @@ import { getBaseInterval, formatInterval } from '../../functions/api/rules/dataS
 import { activeClassicSystems, ClassicSystemOption } from '../../functions/api/classicSystem/classicsystemController';
 import { getLongAtrStopLossPrice, getLongAtrStopLossDifferenceInPips } from '../../functions/api/middleware/translateLongSLPriceIntoPips';
 import { getBaseSystemId } from '../../functions/api/conjunctionSystem/selfReplicationLabelManage';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { ChevronDown, ChevronRight, Info } from 'lucide-react';
 
 interface TradingConfigurationProps {
   config: TradingRulesConfig;
@@ -303,67 +303,101 @@ export const TradingConfiguration: React.FC<TradingConfigurationProps> = ({ conf
         </div>
 
         <div className="md:col-span-2 border-t border-zinc-700/30 pt-2 mt-1 flex flex-col gap-2">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <label className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">
-              <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 text-zinc-400 focus:ring-cyan-500" checked={config.useADXFilter} onChange={e => updateConfig({ useADXFilter: e.target.checked })} />
-              Filter by ADX
-            </label>
-            <label className={`flex items-center gap-2 text-xs text-zinc-300 ${!config.useADXFilter ? 'opacity-50' : ''}`}>
-              <span>Threshold:</span>
-              <input 
-                type="number" 
-                min="0" max="100" 
-                value={config.adxThreshold} 
-                disabled={!config.useADXFilter}
-                onChange={e => updateConfig({ adxThreshold: parseInt(e.target.value) || 0 })} 
-                className="w-12 bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5" 
-              />
-            </label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="flex flex-col gap-1.5 p-2 bg-zinc-800/20 rounded border border-zinc-700/50">
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 text-xs text-zinc-300 select-none font-medium">
+                  ADX Filter
+                </label>
+                <div title="Average Directional Index (Trend strength). >25 typically means trending." className="text-zinc-500 hover:text-cyan-400 cursor-help transition-colors"><Info size={14} /></div>
+              </div>
+              <div className="flex flex-col gap-2 pl-2">
+                <label className={`flex items-center gap-2 text-[10px] text-zinc-300 ${!config.useADXFilter ? 'opacity-60' : ''}`}>
+                  <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 focus:ring-cyan-500" checked={!!config.useADXFilter} onChange={e => updateConfig({ useADXFilter: e.target.checked })} />
+                  <span className="w-16">Threshold (≥)</span>
+                  <input type="number" min="0" max="100" value={config.adxThreshold !== undefined ? config.adxThreshold : 20} disabled={!config.useADXFilter} onChange={e => updateConfig({ adxThreshold: parseInt(e.target.value) || 0 })} className="w-12 bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5" />
+                </label>
+                <label className={`flex items-center gap-2 text-[10px] text-zinc-300 ${!config.useADXRange ? 'opacity-60' : ''}`}>
+                  <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 focus:ring-cyan-500" checked={!!config.useADXRange} onChange={e => updateConfig({ useADXRange: e.target.checked })} />
+                  <span className="w-16">Range</span>
+                  <input type="number" min="0" max="100" placeholder="Min" value={config.adxMin !== undefined ? config.adxMin : 20} disabled={!config.useADXRange} onChange={e => updateConfig({ adxMin: parseInt(e.target.value) || 0 })} className="w-12 bg-zinc-900 border border-zinc-700 text-[10px] rounded px-1.5 py-0.5" />
+                  <input type="number" min="0" max="100" placeholder="Max" value={config.adxMax !== undefined ? config.adxMax : 50} disabled={!config.useADXRange} onChange={e => updateConfig({ adxMax: parseInt(e.target.value) || 0 })} className="w-12 bg-zinc-900 border border-zinc-700 text-[10px] rounded px-1.5 py-0.5" />
+                </label>
+              </div>
+            </div>
 
-            <label className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">
-              <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 text-zinc-400 focus:ring-cyan-500" checked={!!config.useSlopePersistenceFilter} onChange={e => updateConfig({ useSlopePersistenceFilter: e.target.checked })} />
-              Slope Persistence
-            </label>
-            <label className={`flex items-center gap-2 text-xs text-zinc-300 ${!config.useSlopePersistenceFilter ? 'opacity-50' : ''}`}>
-              <span>Threshold:</span>
-              <input 
-                type="number" 
-                step="0.05"
-                min="0" max="1.0" 
-                value={config.slopePersistenceThreshold !== undefined ? config.slopePersistenceThreshold : 0.7} 
-                disabled={!config.useSlopePersistenceFilter}
-                onChange={e => {
-                  const val = parseFloat(e.target.value);
-                  updateConfig({ slopePersistenceThreshold: isNaN(val) ? 0.7 : val });
-                }} 
-                className="w-14 bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5" 
-              />
-            </label>
+            <div className="flex flex-col gap-1.5 p-2 bg-zinc-800/20 rounded border border-zinc-700/50">
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 text-xs text-zinc-300 select-none font-medium">
+                  Slope Persistence
+                </label>
+                <div title="1.0 = All slopes same direction&#10;0.8 = 80% same direction&#10;0.5 = Random chop" className="text-zinc-500 hover:text-cyan-400 cursor-help transition-colors"><Info size={14} /></div>
+              </div>
+              <div className="flex flex-col gap-2 pl-2">
+                <label className={`flex items-center gap-2 text-[10px] text-zinc-300 ${!config.useSlopePersistenceFilter ? 'opacity-60' : ''}`}>
+                  <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 focus:ring-cyan-500" checked={!!config.useSlopePersistenceFilter} onChange={e => updateConfig({ useSlopePersistenceFilter: e.target.checked })} />
+                  <span className="w-16">Threshold (≥)</span>
+                  <input type="number" step="0.05" min="0" max="1.0" value={config.slopePersistenceThreshold !== undefined ? config.slopePersistenceThreshold : 0.7} disabled={!config.useSlopePersistenceFilter} onChange={e => { const val = parseFloat(e.target.value); updateConfig({ slopePersistenceThreshold: isNaN(val) ? 0.7 : val }); }} className="w-14 bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5" />
+                </label>
+                <label className={`flex items-center gap-2 text-[10px] text-zinc-300 ${!config.useSlopePersistenceRange ? 'opacity-60' : ''}`}>
+                  <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 focus:ring-cyan-500" checked={!!config.useSlopePersistenceRange} onChange={e => updateConfig({ useSlopePersistenceRange: e.target.checked })} />
+                  <span className="w-16">Range</span>
+                  <input type="number" step="0.05" min="0" max="1.0" placeholder="Min" value={config.slopePersistenceMin !== undefined ? config.slopePersistenceMin : 0.5} disabled={!config.useSlopePersistenceRange} onChange={e => { const val = parseFloat(e.target.value); updateConfig({ slopePersistenceMin: isNaN(val) ? 0.5 : val }); }} className="w-14 bg-zinc-900 border border-zinc-700 text-[10px] rounded px-1.5 py-0.5" />
+                  <input type="number" step="0.05" min="0" max="1.0" placeholder="Max" value={config.slopePersistenceMax !== undefined ? config.slopePersistenceMax : 1.0} disabled={!config.useSlopePersistenceRange} onChange={e => { const val = parseFloat(e.target.value); updateConfig({ slopePersistenceMax: isNaN(val) ? 1.0 : val }); }} className="w-14 bg-zinc-900 border border-zinc-700 text-[10px] rounded px-1.5 py-0.5" />
+                </label>
+              </div>
+            </div>
 
-            <label className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">
-              <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 text-zinc-400 focus:ring-cyan-500" checked={!!config.useTrendEfficiencyFilter} onChange={e => updateConfig({ useTrendEfficiencyFilter: e.target.checked })} />
-              Trend Efficiency
-            </label>
-            <label className={`flex items-center gap-2 text-xs text-zinc-300 ${!config.useTrendEfficiencyFilter ? 'opacity-50' : ''}`}>
-              <span>Threshold:</span>
-              <input 
-                type="number" 
-                step="0.05"
-                min="0" max="1.0" 
-                value={config.trendEfficiencyThreshold !== undefined ? config.trendEfficiencyThreshold : 0.6} 
-                disabled={!config.useTrendEfficiencyFilter}
-                onChange={e => {
-                  const val = parseFloat(e.target.value);
-                  updateConfig({ trendEfficiencyThreshold: isNaN(val) ? 0.6 : val });
-                }} 
-                className="w-14 bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5" 
-              />
-            </label>
+            <div className="flex flex-col gap-1.5 p-2 bg-zinc-800/20 rounded border border-zinc-700/50">
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 text-xs text-zinc-300 select-none font-medium">
+                  Trend Efficiency
+                </label>
+                <div title="0.80-1.00: Strong trend&#10;0.60-0.80: Tradable trend&#10;0.40-0.60: Mixed&#10;0.20-0.40: Choppy&#10;0.00-0.20: Whipsaw/Noise" className="text-zinc-500 hover:text-cyan-400 cursor-help transition-colors"><Info size={14} /></div>
+              </div>
+              <div className="flex flex-col gap-2 pl-2">
+                <label className={`flex items-center gap-2 text-[10px] text-zinc-300 ${!config.useTrendEfficiencyFilter ? 'opacity-60' : ''}`}>
+                  <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 focus:ring-cyan-500" checked={!!config.useTrendEfficiencyFilter} onChange={e => updateConfig({ useTrendEfficiencyFilter: e.target.checked })} />
+                  <span className="w-16">Threshold (≥)</span>
+                  <input type="number" step="0.05" min="0" max="1.0" value={config.trendEfficiencyThreshold !== undefined ? config.trendEfficiencyThreshold : 0.6} disabled={!config.useTrendEfficiencyFilter} onChange={e => { const val = parseFloat(e.target.value); updateConfig({ trendEfficiencyThreshold: isNaN(val) ? 0.6 : val }); }} className="w-14 bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5" />
+                </label>
+                <label className={`flex items-center gap-2 text-[10px] text-zinc-300 ${!config.useTrendEfficiencyRange ? 'opacity-60' : ''}`}>
+                  <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 focus:ring-cyan-500" checked={!!config.useTrendEfficiencyRange} onChange={e => updateConfig({ useTrendEfficiencyRange: e.target.checked })} />
+                  <span className="w-16">Range</span>
+                  <input type="number" step="0.05" min="0" max="1.0" placeholder="Min" value={config.trendEfficiencyMin !== undefined ? config.trendEfficiencyMin : 0.4} disabled={!config.useTrendEfficiencyRange} onChange={e => { const val = parseFloat(e.target.value); updateConfig({ trendEfficiencyMin: isNaN(val) ? 0.4 : val }); }} className="w-14 bg-zinc-900 border border-zinc-700 text-[10px] rounded px-1.5 py-0.5" />
+                  <input type="number" step="0.05" min="0" max="1.0" placeholder="Max" value={config.trendEfficiencyMax !== undefined ? config.trendEfficiencyMax : 1.0} disabled={!config.useTrendEfficiencyRange} onChange={e => { const val = parseFloat(e.target.value); updateConfig({ trendEfficiencyMax: isNaN(val) ? 1.0 : val }); }} className="w-14 bg-zinc-900 border border-zinc-700 text-[10px] rounded px-1.5 py-0.5" />
+                </label>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5 p-2 bg-zinc-800/20 rounded border border-zinc-700/50">
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 text-xs text-zinc-300 select-none font-medium">
+                  Wick Efficiency
+                </label>
+                <div title="1.0 → Perfect directional candle (no wick noise)&#10;0.0 → Pure indecision candle (all wick, no body)" className="text-zinc-500 hover:text-cyan-400 cursor-help transition-colors"><Info size={14} /></div>
+              </div>
+              <div className="flex flex-col gap-2 pl-2">
+                <label className={`flex items-center gap-2 text-[10px] text-zinc-300 ${!config.useWickEfficiencyFilter ? 'opacity-60' : ''}`}>
+                  <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 focus:ring-cyan-500" checked={!!config.useWickEfficiencyFilter} onChange={e => updateConfig({ useWickEfficiencyFilter: e.target.checked })} />
+                  <span className="w-16">Threshold (≥)</span>
+                  <input type="number" step="0.05" min="0" max="1.0" value={config.wickEfficiencyThreshold !== undefined ? config.wickEfficiencyThreshold : 0.55} disabled={!config.useWickEfficiencyFilter} onChange={e => { const val = parseFloat(e.target.value); updateConfig({ wickEfficiencyThreshold: isNaN(val) ? 0.55 : val }); }} className="w-14 bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5" />
+                </label>
+                <label className={`flex items-center gap-2 text-[10px] text-zinc-300 ${!config.useWickEfficiencyRange ? 'opacity-60' : ''}`}>
+                  <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 focus:ring-cyan-500" checked={!!config.useWickEfficiencyRange} onChange={e => updateConfig({ useWickEfficiencyRange: e.target.checked })} />
+                  <span className="w-16">Range</span>
+                  <input type="number" step="0.05" min="0" max="1.0" placeholder="Min" value={config.wickEfficiencyMin !== undefined ? config.wickEfficiencyMin : 0.3} disabled={!config.useWickEfficiencyRange} onChange={e => { const val = parseFloat(e.target.value); updateConfig({ wickEfficiencyMin: isNaN(val) ? 0.3 : val }); }} className="w-14 bg-zinc-900 border border-zinc-700 text-[10px] rounded px-1.5 py-0.5" />
+                  <input type="number" step="0.05" min="0" max="1.0" placeholder="Max" value={config.wickEfficiencyMax !== undefined ? config.wickEfficiencyMax : 1.0} disabled={!config.useWickEfficiencyRange} onChange={e => { const val = parseFloat(e.target.value); updateConfig({ wickEfficiencyMax: isNaN(val) ? 1.0 : val }); }} className="w-14 bg-zinc-900 border border-zinc-700 text-[10px] rounded px-1.5 py-0.5" />
+                </label>
+              </div>
+            </div>
             
-            <label className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">
-              <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 text-zinc-400 focus:ring-cyan-500" checked={config.useSqueezeFilter} onChange={e => updateConfig({ useSqueezeFilter: e.target.checked })} />
-              Filter by Squeeze Momentum
-            </label>
+            <div className="flex flex-col gap-1.5 p-2 bg-zinc-800/20 rounded border border-zinc-700/50">
+               <label className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">
+                 <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 focus:ring-cyan-500" checked={!!config.useSqueezeFilter} onChange={e => updateConfig({ useSqueezeFilter: e.target.checked })} />
+                 Filter by Squeeze Momentum
+               </label>
+            </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-300">

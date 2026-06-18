@@ -15,6 +15,7 @@ import { getCandlePatternsMultiple } from '../../functions/api/indicators/exclus
 import { Config } from './types';
 import { getTrailSlIndicator } from '../../functions/api/middleware/trailSlIndicatorVersion';
 import { rollingRegressionSlope, slopePersistenceFast, trendEfficiencyFast } from '../../functions/api/indicators/trendStrength/trendStrength';
+import { smoothedWickEfficiencyFast } from '../../functions/api/indicators/trendStrength/wickEfficiency';
 
 const getBaseSystemId = (id: string) => id.replace('_alpha', '').replace('_beta', '').replace('_delta', '');
 
@@ -154,6 +155,19 @@ export function useComputedIndicators(
            result.entrySignal.conjunctionSignals[sysId] = sig;
          }
        });
+    } else if (tradingConfig.activeSystemMode === 'disjunction') {
+       result.entrySignal = {
+         type: 'disjunction',
+         disjunctionSignals: {}
+       };
+       (tradingConfig.activeDisjunctionSystems || []).forEach((sysId: string) => {
+         const baseId = sysId.replace('_alpha', '').replace('_beta', '').replace('_delta', '');
+         const sysEntrySource = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[sysId as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
+         const sig = computeSignalForType(baseId, sysId, sysEntrySource, config);
+         if (sig) {
+           result.entrySignal.disjunctionSignals[sysId] = sig;
+         }
+       });
     } else {
        const sysEntrySource = (indicatorSettings[config.type as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[config.type as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
        const computed = computeSignalForType(config.type, config.type, sysEntrySource, config);
@@ -181,6 +195,26 @@ export function useComputedIndicators(
          const sig = computeSignalForType(sysId, baseId, sysExitSource, cfg);
          if (sig) {
            result.exitSignal.conjunctionSignals[sysId] = sig;
+         }
+       });
+    } else if (tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemMode === 'disjunction') {
+       result.exitSignal = {
+         type: 'disjunction',
+         disjunctionSignals: {}
+       };
+       (tradingConfig.exitActiveDisjunctionSystems || []).forEach(sysId => {
+         const baseId = getBaseSystemId(sysId);
+         
+         // Use explicit custom parameters if toggled, otherwise sync with entry indicator settings
+         const isExplicit = !!tradingConfig.exitUseExplicitParams;
+         const cfg = isExplicit 
+           ? (tradingConfig.exitDisjunctionParams?.[sysId] || {}) 
+           : ((indicatorSettings as any)[sysId] || {});
+
+         const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
+         const sig = computeSignalForType(sysId, baseId, sysExitSource, cfg);
+         if (sig) {
+           result.exitSignal.disjunctionSignals[sysId] = sig;
          }
        });
     } else {
@@ -273,17 +307,22 @@ export function useComputedIndicators(
     const volData = getDataBySource(indicatorSettings.volatility?.dataSource || 'alpha');
     result.adx = calculateADX(volData, indicatorSettings.volatility?.adxPeriod || 14);
     
-    // Trend Strength derived indicators: Slope Persistence & Trend Efficiency
+    // Trend Strength derived indicators: Slope Persistence & Trend Efficiency & Wick Efficiency
     const tsData = getDataBySource(indicatorSettings.trendStrength?.dataSource || 'alpha');
     if (tsData && tsData.length > 0) {
+      const tsOpens = tsData.map(d => d.open);
+      const tsHighs = tsData.map(d => d.high);
+      const tsLows = tsData.map(d => d.low);
       const tsCloses = tsData.map(d => d.close);
       const tsSlopePeriod = indicatorSettings.trendStrength?.slopePeriod || 20;
       const tsSlope = rollingRegressionSlope(tsCloses, tsSlopePeriod);
       result.slopePersistence = slopePersistenceFast(tsSlope, tsSlopePeriod);
       result.trendEfficiency = trendEfficiencyFast(tsCloses, tsSlopePeriod);
+      result.wickEfficiency = smoothedWickEfficiencyFast(tsOpens, tsHighs, tsLows, tsCloses, tsSlopePeriod);
     } else {
       result.slopePersistence = [];
       result.trendEfficiency = [];
+      result.wickEfficiency = [];
     }
     
     const volClose = volData.map(d => d.close);

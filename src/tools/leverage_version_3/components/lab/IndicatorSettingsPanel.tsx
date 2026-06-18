@@ -292,7 +292,8 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
     supertrend_regime: 'Hybrid Supertrend Regime',
     heikin_ashi_smoothed: 'Smoothed Heikin Ashi',
     candlestick_pattern: 'Candlestick Pattern',
-    conjunction: 'Conjunction System'
+    conjunction: 'Conjunction System',
+    disjunction: 'Disjunction System'
   };
 
   return (
@@ -322,7 +323,7 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
               </p>
               
               <div className="flex flex-col gap-4">
-                {activeTab !== 'conjunction' && (
+                {activeTab !== 'conjunction' && activeTab !== 'disjunction' && (
                   <div className="flex flex-wrap items-center gap-6 mb-2">
                     <label className="flex items-center gap-2 text-xs">
                       <span className="text-amber-400 font-semibold uppercase">General Entry Signal Data Source:</span>
@@ -383,6 +384,101 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
                                 }
                               }}
                               className="px-2 py-1 bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 text-[10px] rounded border border-purple-500/30 font-bold uppercase tracking-wider"
+                            >
+                              Replicate
+                            </button>
+                          )}
+                        </div>
+                        <div className="flex flex-wrap items-center gap-6 mb-4">
+                           <label className="flex items-center gap-2 text-xs">
+                             <span className="text-amber-400 font-semibold uppercase">Entry Signal Source:</span>
+                             <select
+                               value={(indicatorSettings[sysId as keyof IndicatorSettings] as any)?.entrySignalSource || 'alpha'}
+                               onChange={(e) => handleUpdate(sysId as keyof IndicatorSettings, { entrySignalSource: e.target.value as any })}
+                               className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300"
+                             >
+                               <option value="alpha">Alpha Base</option>
+                               <option value="beta">Beta Aggregate</option>
+                               <option value="delta">Delta Layer</option>
+                             </select>
+                             <span className="text-cyan-500 font-bold ml-1">
+                               {formatInterval((indicatorSettings[sysId as keyof IndicatorSettings] as any)?.entrySignalSource === 'beta' ? betaInterval : (indicatorSettings[sysId as keyof IndicatorSettings] as any)?.entrySignalSource === 'delta' ? deltaInterval : alphaInterval)}
+                             </span>
+                           </label>
+                           
+                          <label className="flex items-center gap-2 text-xs">
+                            <span className="text-zinc-400">Strategy Config Source:</span>
+                            <select
+                              value={(indicatorSettings[sysId as keyof IndicatorSettings] as any)?.dataSource || 'alpha'}
+                              onChange={(e) => handleUpdate(sysId as keyof IndicatorSettings, { dataSource: e.target.value as any })}
+                              className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300"
+                            >
+                              <option value="alpha">Alpha Base</option>
+                              <option value="beta">Beta Aggregate</option>
+                              <option value="delta">Delta Layer</option>
+                            </select>
+                            <span className="text-cyan-500 font-bold ml-1">
+                              {formatInterval((indicatorSettings[sysId as keyof IndicatorSettings] as any)?.dataSource === 'beta' ? betaInterval : (indicatorSettings[sysId as keyof IndicatorSettings] as any)?.dataSource === 'delta' ? deltaInterval : alphaInterval)}
+                            </span>
+                          </label>
+                          <label className="flex items-center gap-2 text-xs cursor-pointer select-none border border-zinc-700/50 bg-zinc-900/30 px-2 py-1 rounded">
+                            <input
+                              type="checkbox"
+                              checked={(indicatorSettings[sysId as keyof IndicatorSettings] as any)?.allowVariation || false}
+                              onChange={(e) => handleUpdate(sysId as keyof IndicatorSettings, { allowVariation: e.target.checked })}
+                              className="accent-cyan-500 rounded bg-zinc-800 border-zinc-700"
+                            />
+                            <span className="text-zinc-300">Variation of source parameters</span>
+                          </label>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-6">
+                          {renderInputs(sysId)}
+                        </div>
+                      </div>
+                      );
+                    })}
+                  </div>
+                ) : activeTab === 'disjunction' ? (
+                  <div className="flex flex-col gap-6 w-full">
+                    <div className="text-xs text-orange-300/80 mb-2">
+                      {(tradingConfig.activeDisjunctionSystems || []).length === 0 ? 
+                        "No systems selected. Please select systems in Configuration Panel." : 
+                        `Using ${(tradingConfig.activeDisjunctionSystems || []).length} system(s) in disjunction.`}
+                    </div>
+                    {(tradingConfig.activeDisjunctionSystems || []).map((sysId: string) => {
+                      const baseId = getBaseSystemId(sysId);
+                      return (
+                      <div key={sysId} className="border border-orange-500/30 bg-orange-900/5 p-4 rounded-lg relative">
+                        <div className="absolute top-2 right-2">
+                          <button 
+                            onClick={() => {
+                              setTradingConfig(prev => ({
+                                ...prev,
+                                activeDisjunctionSystems: (prev.activeDisjunctionSystems || []).filter(id => id !== sysId)
+                              }));
+                            }}
+                            className="p-1 text-zinc-500 hover:text-red-400 hover:bg-red-400/10 rounded transition-colors"
+                            title="Remove this strategy"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                          </button>
+                        </div>
+                        <div className="flex justify-between items-center mb-3 pr-6">
+                          <div className="text-sm font-bold text-orange-400 uppercase tracking-wider">
+                            {getSystemLabelForDisplay(titleMap[baseId as ToolTab] || baseId, sysId)}
+                          </div>
+                          {isReplicationPossible(baseId, tradingConfig.activeDisjunctionSystems || []) && (
+                            <button 
+                              onClick={() => {
+                                const newName = newNamesAfterReplication(baseId, tradingConfig.activeDisjunctionSystems || []);
+                                if (newName) {
+                                  setTradingConfig(prev => ({
+                                    ...prev,
+                                    activeDisjunctionSystems: [...(prev.activeDisjunctionSystems || []), newName]
+                                  }));
+                                }
+                              }}
+                              className="px-2 py-1 bg-orange-600/20 hover:bg-orange-600/40 text-orange-300 text-[10px] rounded border border-orange-500/30 font-bold uppercase tracking-wider"
                             >
                               Replicate
                             </button>

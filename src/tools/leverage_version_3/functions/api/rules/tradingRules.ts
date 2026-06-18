@@ -8,8 +8,9 @@ import { StopLossModifierConfig } from '../stopLossModifier/stopLossModifierConf
 import { TakeProfitModifierConfig } from '../takeProfitModifier/takeProfitModifierConfig';
 
 export interface TradingRulesConfig {
-  activeSystemMode?: 'classic' | 'conjunction';
+  activeSystemMode?: 'classic' | 'conjunction' | 'disjunction';
   activeConjunctionSystems?: string[];
+  activeDisjunctionSystems?: string[];
   entryOnSignal: boolean;
   entrySignalSource?: 'alpha' | 'beta' | 'delta';
   flipModeActive?: boolean;
@@ -44,18 +45,34 @@ export interface TradingRulesConfig {
   exitAfterNSecondsMax?: number;
   pipMultiplier?: number;
   useDifferentSignalSystemOnExit?: boolean;
-  exitSignalSystemMode?: 'classic' | 'conjunction';
+  exitSignalSystemMode?: 'classic' | 'conjunction' | 'disjunction';
   exitActiveConjunctionSystems?: string[];
+  exitActiveDisjunctionSystems?: string[];
   exitSignalSystemType?: 'ma_crossover' | 'stochastic' | 'supertrend' | 'divergence' | 'linear_regression' | 'bollinger_bands' | 'supertrend_regime' | 'heikin_ashi_smoothed' | 'candlestick_pattern';
   exitSignalSystemParams?: Record<string, number>;
   exitUseExplicitParams?: boolean;
   exitConjunctionParams?: Record<string, Record<string, number>>;
+  exitDisjunctionParams?: Record<string, Record<string, number>>;
   useADXFilter?: boolean;
   adxThreshold?: number;
+  useADXRange?: boolean;
+  adxMin?: number;
+  adxMax?: number;
   useSlopePersistenceFilter?: boolean;
   slopePersistenceThreshold?: number;
+  useSlopePersistenceRange?: boolean;
+  slopePersistenceMin?: number;
+  slopePersistenceMax?: number;
   useTrendEfficiencyFilter?: boolean;
   trendEfficiencyThreshold?: number;
+  useTrendEfficiencyRange?: boolean;
+  trendEfficiencyMin?: number;
+  trendEfficiencyMax?: number;
+  useWickEfficiencyFilter?: boolean;
+  wickEfficiencyThreshold?: number;
+  useWickEfficiencyRange?: boolean;
+  wickEfficiencyMin?: number;
+  wickEfficiencyMax?: number;
   useSqueezeFilter?: boolean;
   useVolRegimeScenarioA?: boolean;
   useVolRegimeScenarioC?: boolean;
@@ -106,7 +123,8 @@ export function evaluateTradeEntries(
   assetName: string = 'gold',
   isFlipSignal: boolean = false,
   slopePersistenceValue?: number,
-  trendEfficiencyValue?: number
+  trendEfficiencyValue?: number,
+  wickEfficiencyValue?: number
 ): Trade[] {
   // Leverage Check
   if (leverageConfig && leverageConfig.enabled && currentBalance !== undefined) {
@@ -131,7 +149,8 @@ export function evaluateTradeEntries(
     assetName,
     isFlipSignal,
     slopePersistenceValue,
-    trendEfficiencyValue
+    trendEfficiencyValue,
+    wickEfficiencyValue
   );
 }
 

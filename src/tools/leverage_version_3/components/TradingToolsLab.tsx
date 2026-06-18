@@ -21,6 +21,7 @@ import { SmoothingIndicatorPanel } from "./lab/SmoothingIndicatorPanel";
 import { ExitSignalRuleSettingsPanel } from "./lab/ExitSignalRule/ExitSignalRuleSettingsPanel";
 import { TradingPanelDataSettings } from "./simulator/TradingPanelDataSettings";
 import { ConjunctionSimulation } from "./ConjunctionSimulation";
+import { DisjunctionSimulation } from "./DisjunctionSimulation";
 import { CollapsiblePresetMenu } from "./lab/CollapsiblePresetMenu";
 import { MultiInstanceDashboard } from "./MultiInstanceDashboard";
 
@@ -89,6 +90,7 @@ export const TradingToolsLab: React.FC<TradingToolsLabProps> = ({ isParallelMode
                  {activeTab === 'heikin_ashi_smoothed' && <HeikinAshiSmoothedSimulation />}
                  {activeTab === 'candlestick_pattern' && <CandlestickPatternSimulation />}
                  {activeTab === 'conjunction' && <ConjunctionSimulation />}
+                 {activeTab === 'disjunction' && <DisjunctionSimulation />}
               </div>
             </motion.div>
           </AnimatePresence>

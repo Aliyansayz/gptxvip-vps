@@ -43,6 +43,8 @@ const defaultTradingConfig: TradingRulesConfig = {
   slopePersistenceThreshold: 0.7,
   useTrendEfficiencyFilter: false,
   trendEfficiencyThreshold: 0.6,
+  useWickEfficiencyFilter: false,
+  wickEfficiencyThreshold: 0.55,
   useSqueezeFilter: false,
   stopLossPips: 0,
   takeProfitPips: 0,

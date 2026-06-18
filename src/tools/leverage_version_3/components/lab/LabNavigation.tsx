@@ -3,7 +3,7 @@ import { Crosshair, Activity, Radar, BarChart2, Layers, Shuffle } from 'lucide-r
 import { useIndicatorsStore } from '../../stores/indicators_store';
 import { toast } from 'sonner';
 
-export type ToolTab = "ma_crossover" | "stochastic" | "supertrend" | "divergence" | "linear_regression" | "bollinger_bands" | "supertrend_regime" | "heikin_ashi_smoothed" | "candlestick_pattern" | "conjunction";
+export type ToolTab = "ma_crossover" | "stochastic" | "supertrend" | "divergence" | "linear_regression" | "bollinger_bands" | "supertrend_regime" | "heikin_ashi_smoothed" | "candlestick_pattern" | "conjunction" | "disjunction";
 
 interface LabNavigationProps {
   activeTab: ToolTab;
@@ -64,6 +64,19 @@ export const LabNavigation: React.FC<LabNavigationProps> = ({ activeTab, onTabCh
     });
   };
 
+  const handleSelectDisjunction = () => {
+    setTradingConfig(prev => ({
+      ...prev,
+      activeSystemMode: 'disjunction'
+    }));
+
+    onTabChange('disjunction');
+
+    toast.success("Disjunction Mode Activated", {
+      description: "Select any number of systems to act with OR logic."
+    });
+  };
+
   const toggleConjunctionSystem = (sysId: string) => {
     const current = tradingConfig.activeConjunctionSystems || [];
     const baseId = sysId + '_alpha';
@@ -85,6 +98,24 @@ export const LabNavigation: React.FC<LabNavigationProps> = ({ activeTab, onTabCh
           description: "Deselect a system first to add another."
         });
       }
+    }
+  };
+
+  const toggleDisjunctionSystem = (sysId: string) => {
+    const current = tradingConfig.activeDisjunctionSystems || [];
+    const baseId = sysId + '_alpha';
+    const isActive = current.includes(baseId);
+    
+    if (isActive) {
+      setTradingConfig(prev => ({
+        ...prev,
+        activeDisjunctionSystems: current.filter(id => id !== baseId)
+      }));
+    } else {
+      setTradingConfig(prev => ({
+        ...prev,
+        activeDisjunctionSystems: [...current, baseId]
+      }));
     }
   };
 
@@ -128,6 +159,20 @@ export const LabNavigation: React.FC<LabNavigationProps> = ({ activeTab, onTabCh
             <Shuffle className="w-3 h-3" />
             Conjunction System Mode
           </button>
+
+          {/* Disjunction System Mode button */}
+          <button
+            id="disjunction-system-mode-btn"
+            onClick={handleSelectDisjunction}
+            className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
+              activeMode === 'disjunction'
+                ? 'bg-orange-500 text-white shadow-[0_0_15px_rgba(249,115,22,0.4)] border border-orange-400/20'
+                : 'text-zinc-400 hover:text-zinc-200 bg-zinc-900/40 hover:bg-zinc-800 border border-zinc-800'
+            }`}
+          >
+            <Shuffle className="w-3 h-3" />
+            Disjunction System Mode
+          </button>
         </div>
       </div>
 
@@ -139,27 +184,30 @@ export const LabNavigation: React.FC<LabNavigationProps> = ({ activeTab, onTabCh
           <div className="flex flex-col gap-2 w-full animate-fade-in">
             {chunkedTabs.map((rowTabs, rowIndex) => (
               <div key={rowIndex} className="flex gap-1 p-1 rounded-xl border shrink-0 bg-zinc-800/50 border-zinc-800 w-fit items-center">
-                {rowTabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => {
-                      onTabChange(tab.id);
-                    }}
-                    className={`px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${
-                      activeTab === tab.id
-                        ? 'bg-cyan-400 text-black shadow-[0_0_15px_rgba(34,211,238,0.4)] font-extrabold'
-                        : 'text-zinc-400 hover:text-zinc-300'
-                    }`}
-                  >
-                    {tab.icon}
-                    {tab.label}
-                  </button>
-                ))}
+                {rowTabs.map((tab) => {
+                  if (tab.id === 'conjunction' || tab.id === 'disjunction') return null;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => {
+                        onTabChange(tab.id);
+                      }}
+                      className={`px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${
+                        activeTab === tab.id
+                          ? 'bg-cyan-400 text-black shadow-[0_0_15px_rgba(34,211,238,0.4)] font-extrabold'
+                          : 'text-zinc-400 hover:text-zinc-300'
+                      }`}
+                    >
+                      {tab.icon}
+                      {tab.label}
+                    </button>
+                  );
+                })}
               </div>
             ))}
           </div>
         </div>
-      ) : (
+      ) : activeMode === 'conjunction' ? (
         <div className="flex flex-col gap-2 animate-fade-in">
           <div className="text-[10px] text-purple-400 font-bold uppercase tracking-widest px-1 flex items-center justify-between">
             <span>Conjunction Systems Selector (Select up to 3)</span>
@@ -169,7 +217,7 @@ export const LabNavigation: React.FC<LabNavigationProps> = ({ activeTab, onTabCh
             {chunkedTabs.map((rowTabs, rowIndex) => (
               <div key={rowIndex} className="flex gap-1 p-1 rounded-xl border shrink-0 bg-purple-950/20 border-purple-800/30 w-fit items-center">
                 {rowTabs.map((tab) => {
-                  if (tab.id === 'conjunction') return null;
+                  if (tab.id === 'conjunction' || tab.id === 'disjunction') return null;
                   const isActive = (tradingConfig.activeConjunctionSystems || []).some(sys => sys.replace('_alpha', '').replace('_beta', '').replace('_delta', '') === tab.id);
                   return (
                     <button
@@ -179,6 +227,37 @@ export const LabNavigation: React.FC<LabNavigationProps> = ({ activeTab, onTabCh
                         isActive
                           ? 'bg-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)] bg-purple-500'
                           : 'text-purple-400 hover:text-purple-300'
+                      }`}
+                    >
+                      {tab.icon}
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2 animate-fade-in">
+          <div className="text-[10px] text-orange-400 font-bold uppercase tracking-widest px-1 flex items-center justify-between">
+            <span>Disjunction Systems Selector (Select any number)</span>
+            <span className="text-orange-300 font-medium">Selected: {(tradingConfig.activeDisjunctionSystems || []).length}</span>
+          </div>
+          <div className="flex flex-col gap-2 w-full animate-fade-in">
+            {chunkedTabs.map((rowTabs, rowIndex) => (
+              <div key={rowIndex} className="flex gap-1 p-1 rounded-xl border shrink-0 bg-orange-950/20 border-orange-800/30 w-fit items-center">
+                {rowTabs.map((tab) => {
+                  if (tab.id === 'conjunction' || tab.id === 'disjunction') return null;
+                  const isActive = (tradingConfig.activeDisjunctionSystems || []).some(sys => sys.replace('_alpha', '').replace('_beta', '').replace('_delta', '') === tab.id);
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => toggleDisjunctionSystem(tab.id)}
+                      className={`px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${
+                        isActive
+                          ? 'bg-orange-500 text-white shadow-[0_0_15px_rgba(249,115,22,0.5)] bg-orange-500'
+                          : 'text-orange-400 hover:text-orange-300'
                       }`}
                     >
                       {tab.icon}
