@@ -7,6 +7,7 @@ import { evaluateDynamicPositionSize, evaluateRiskPerPip } from '../position_siz
 import { priceToPips } from '../middleware/pipsTranslation';
 import { shouldAllowTradeByTimeFilter } from './timeFilterTradingRules';
 import { evaluateAdaptiveRiskPercentage } from '../position_sizing/adaptivePositionSizing';
+import { isTradeRestricted } from './tradeRestriction';
 
 export function processIndicatorBasedEntry(
   currentIndex: number,
@@ -28,6 +29,10 @@ export function processIndicatorBasedEntry(
 ): Trade[] {
   if (!signal) return [];
   if (!config.entryOnSignal && !isFlipSignal) return [];
+
+  if (isTradeRestricted(config, signal === 'LONG' ? 'long' : 'short')) {
+    return [];
+  }
 
   // Volatility Filters (ADX, Squeeze, Regime, Slope Persistence, Trend Efficiency, Wick Efficiency)
   if (!isVolatilityEntryConditionMet(config, adxValue, squeezeStatus, volRegimeScenario, slopePersistenceValue, trendEfficiencyValue, wickEfficiencyValue)) {

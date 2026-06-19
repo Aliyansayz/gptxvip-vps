@@ -228,6 +228,38 @@ export const TradingPanelTradeSettings: React.FC = () => {
               </div>
             </div>
 
+            <div className="bg-zinc-900/50 p-4 border border-zinc-800 rounded-lg h-min">
+              <h4 className="text-sm font-semibold text-cyan-500 mb-4 uppercase tracking-wider">Trade Restrict Feature</h4>
+              
+              <div className="flex flex-col gap-4">
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    checked={tradingConfig.restrictLongTrades || false}
+                    onChange={(e) => setTradingConfig(prev => ({ ...prev, restrictLongTrades: e.target.checked }))}
+                    className="mt-1 bg-zinc-800 border-zinc-700 text-cyan-500 focus:ring-cyan-500 rounded" 
+                  />
+                  <div>
+                    <div className="text-xs font-bold text-zinc-200">Restrict Long Trades</div>
+                    <div className="text-[10px] text-zinc-400 mt-1">If checked, will not execute any long trades.</div>
+                  </div>
+                </label>
+
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    checked={tradingConfig.restrictShortTrades || false}
+                    onChange={(e) => setTradingConfig(prev => ({ ...prev, restrictShortTrades: e.target.checked }))}
+                    className="mt-1 bg-zinc-800 border-zinc-700 text-cyan-500 focus:ring-cyan-500 rounded" 
+                  />
+                  <div>
+                    <div className="text-xs font-bold text-zinc-200">Restrict Short Trades</div>
+                    <div className="text-[10px] text-zinc-400 mt-1">If checked, will not execute any short trades.</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
             <div className="bg-zinc-900/50 p-4 border border-zinc-800 rounded-lg flex flex-col gap-6">
               <div>
                 <h4 className="text-sm font-semibold text-cyan-500 mb-4 uppercase tracking-wider">Main Trade Parameters</h4>

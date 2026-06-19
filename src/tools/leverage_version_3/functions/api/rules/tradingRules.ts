@@ -26,6 +26,8 @@ export interface TradingRulesConfig {
   hftExitAfterNPips?: number;
   hftExitAfterNCandles?: number;
   hftExitCandlesSource?: 'alpha' | 'beta' | 'delta';
+  restrictLongTrades?: boolean;
+  restrictShortTrades?: boolean;
   mainTradeParams?: MainTradeParameters;
   recurrentTradeParams?: RecurrentTradeParameters;
   exitOnSignalReversal: boolean;

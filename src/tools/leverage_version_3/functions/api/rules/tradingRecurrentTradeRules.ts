@@ -12,6 +12,7 @@ import { isSufficientBalanceToOpenTrade } from './leverageTradingRules';
 import { fetchMainTradeTrailEventCount } from '../tradeState/fetchMainTradeTrailEventCount';
 import { evaluateAdaptiveRiskPercentage } from '../position_sizing/adaptivePositionSizing';
 import { evaluateRecurrentTradeConditionsState, evaluateRecurrentTradeReversalTriggers } from '../indicatorStatus/recurrentTradeConditions';
+import { isTradeRestricted } from './tradeRestriction';
 
 /**
  * Recurrent Trades Logic:
@@ -294,6 +295,10 @@ export function evaluateRecurrentTradeEntries(
 
   // Open recurrent trade in the SAME direction as main trade
   const signal = parentTrade.side;
+  
+  if (isTradeRestricted(config, signal === 'LONG' ? 'long' : 'short')) {
+    return [];
+  }
   
   let stopLoss = undefined;
   let takeProfit = undefined;
