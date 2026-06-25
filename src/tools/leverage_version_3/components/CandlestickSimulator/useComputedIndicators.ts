@@ -71,7 +71,7 @@ export function useComputedIndicators(
         const superPeriod = cfg.supertrendPeriod || cfg.period || cfg.atrPeriod || 10;
         const superMultiplier = cfg.supertrendMultiplier || cfg.multiplier || 3;
         const st = calculateSupertrend(sourceData, superPeriod, superMultiplier);
-        const direction = st.map(s => s.trend === 'up' ? 1 : (s.trend === 'down' ? -1 : 0));
+        const direction = st.trend.map(t => t === 1 ? 1 : (t === -1 ? -1 : 0));
         return {
           type: 'supertrend',
           supertrend: st,
@@ -138,7 +138,7 @@ export function useComputedIndicators(
         const lows = sourceData.map(d => d.low);
         const smoothLen = cfg.haSmoothLen || cfg.smoothLen || 10;
         const ha = smoothedHeikinAshi(open, highs, lows, closePrices, smoothLen);
-        const direction = ha.map(h => h.close > h.open ? 1 : (h.close < h.open ? -1 : 0));
+        const direction = ha.direction;
         return {
           type: 'heikin_ashi_smoothed',
           heikin_ashi_smoothed: ha,

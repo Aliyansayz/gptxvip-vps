@@ -116,11 +116,11 @@ export function useTradeEvaluation(
         }
       } else if (sysType === 'supertrend' && computedSig?.supertrend) {
         const st = computedSig.supertrend;
-        if (st && st.length > idx) {
-          const lastSt = st[idx];
-          const prevSt = st[Math.max(0, idx - 1)];
-          if (prevSt.trend === 'down' && lastSt.trend === 'up') signal = 'LONG';
-          else if (prevSt.trend === 'up' && lastSt.trend === 'down') signal = 'SHORT';
+        if (st && st.trend && st.trend.length > idx) {
+          const lastSt = st.trend[idx];
+          const prevSt = st.trend[Math.max(0, idx - 1)];
+          if (prevSt === -1 && lastSt === 1) signal = 'LONG';
+          else if (prevSt === 1 && lastSt === -1) signal = 'SHORT';
         }
       } else if ((sysType === 'stochastic' || sysType === 'divergence') && computedSig?.stochastic) {
         const stoch = computedSig.stochastic;
@@ -163,11 +163,13 @@ export function useTradeEvaluation(
         }
       } else if (sysType === 'heikin_ashi_smoothed' && computedSig?.heikin_ashi_smoothed) {
         const ha = computedSig.heikin_ashi_smoothed;
-        if (ha && ha.length > idx) {
-          const lastCandle = ha[idx];
-          const prevCandle = ha[Math.max(0, idx - 1)];
-          if (prevCandle.close <= prevCandle.open && lastCandle.close > lastCandle.open) signal = 'LONG';
-          else if (prevCandle.close >= prevCandle.open && lastCandle.close < lastCandle.open) signal = 'SHORT';
+        if (ha && ha.haClose && ha.haClose.length > idx) {
+          const lastClose = ha.haClose[idx];
+          const lastOpen = ha.haOpen[idx];
+          const prevClose = ha.haClose[Math.max(0, idx - 1)];
+          const prevOpen = ha.haOpen[Math.max(0, idx - 1)];
+          if (prevClose <= prevOpen && lastClose > lastOpen) signal = 'LONG';
+          else if (prevClose >= prevOpen && lastClose < lastOpen) signal = 'SHORT';
         }
       } else if (sysType === 'candlestick_pattern' && computedSig?.candlestick_pattern) {
         const cp = computedSig.candlestick_pattern;
@@ -191,9 +193,9 @@ export function useTradeEvaluation(
         }
       } else if (sysType === 'supertrend' && computedSig?.supertrend) {
         const st = computedSig.supertrend;
-        if (st && st.length > idx) {
-          if (st[idx].trend === 'up') trend = 'LONG';
-          else if (st[idx].trend === 'down') trend = 'SHORT';
+        if (st && st.trend && st.trend.length > idx) {
+          if (st.trend[idx] === 1) trend = 'LONG';
+          else if (st.trend[idx] === -1) trend = 'SHORT';
         }
       } else if ((sysType === 'stochastic' || sysType === 'divergence') && computedSig?.stochastic) {
         const stoch = computedSig.stochastic;
@@ -225,9 +227,9 @@ export function useTradeEvaluation(
         }
       } else if (sysType === 'heikin_ashi_smoothed' && computedSig?.heikin_ashi_smoothed) {
         const ha = computedSig.heikin_ashi_smoothed;
-        if (ha && ha.length > idx) {
-           if (ha[idx].close > ha[idx].open) trend = 'LONG';
-           else if (ha[idx].close < ha[idx].open) trend = 'SHORT';
+        if (ha && ha.haClose && ha.haClose.length > idx) {
+           if (ha.haClose[idx] > ha.haOpen[idx]) trend = 'LONG';
+           else if (ha.haClose[idx] < ha.haOpen[idx]) trend = 'SHORT';
         }
       } else if (sysType === 'candlestick_pattern' && computedSig?.candlestick_pattern) {
         const cp = computedSig.candlestick_pattern;

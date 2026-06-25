@@ -105,13 +105,6 @@ export const MonitorLogPanel: React.FC<MonitorLogPanelProps> = ({ activeTab }) =
                   </span>
                 </div>
               )}
-              
-              {tradingConfig.exitOnVolatilityRegimeChange && (
-                <div className="bg-zinc-800/30 p-2 rounded border border-zinc-700/30 flex justify-between items-center">
-                  <span className="text-zinc-300">Regime Change</span>
-                  <span className="text-rose-400 bg-rose-950/50 px-2 py-0.5 rounded text-[10px]">Active ({indicatorSettings.volatilityRegime.dataSource})</span>
-                </div>
-              )}
             </div>
           </div>
         </div>
