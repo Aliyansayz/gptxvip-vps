@@ -150,23 +150,59 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
     }
   }, [data, simulationIndex, setLatestPrice]);
 
+  const lastSyncRef = React.useRef<{
+    dataLength: number;
+    lastTime: number;
+    configKey: string;
+    settingsKey: string;
+    asset: string;
+  } | null>(null);
+
   React.useEffect(() => {
-    if (setCurrentStops) {
-      setCurrentStops(computedIndicators?.stops || null);
+    if (!computedIndicators) return;
+
+    const dataLength = data.length;
+    const lastTime = dataLength > 0 ? data[dataLength - 1].time : 0;
+    const settingsKey = JSON.stringify(indicatorSettings);
+    const asset = dataSettings.asset as string;
+
+    const needsSync = !lastSyncRef.current ||
+      lastSyncRef.current.dataLength !== dataLength ||
+      lastSyncRef.current.lastTime !== lastTime ||
+      lastSyncRef.current.configKey !== configKey ||
+      lastSyncRef.current.settingsKey !== settingsKey ||
+      lastSyncRef.current.asset !== asset;
+
+    if (needsSync) {
+      if (setComputedIndicatorsGlobal) {
+        setComputedIndicatorsGlobal(computedIndicators);
+      }
+      if (setCurrentStops) {
+        setCurrentStops(computedIndicators.stops || null);
+      }
+      lastSyncRef.current = {
+        dataLength,
+        lastTime,
+        configKey,
+        settingsKey,
+        asset
+      };
     }
-  }, [computedIndicators?.stops, setCurrentStops]);
+  }, [
+    computedIndicators,
+    data,
+    configKey,
+    indicatorSettings,
+    dataSettings.asset,
+    setComputedIndicatorsGlobal,
+    setCurrentStops
+  ]);
 
   React.useEffect(() => {
     if (setSimulationIndexGlobal) {
       setSimulationIndexGlobal(simulationIndex);
     }
   }, [simulationIndex, setSimulationIndexGlobal]);
-
-  React.useEffect(() => {
-    if (setComputedIndicatorsGlobal) {
-      setComputedIndicatorsGlobal(computedIndicators);
-    }
-  }, [computedIndicators, setComputedIndicatorsGlobal]);
 
   const {
     trades,
