@@ -179,7 +179,8 @@ export function getIndicatorsStateForDataset(
       values: {
         'Fast EMA': isNaN(fastEma[i]) ? 'N/A' : fastEma[i].toFixed(2),
         'Slow SMA': isNaN(slowSma[i]) ? 'N/A' : slowSma[i].toFixed(2),
-        'Cross Ratio': (fastEma[i] && slowSma[i]) ? (fastEma[i] - slowSma[i]).toFixed(2) : 'N/A'
+        'Cross Ratio': (fastEma[i] && slowSma[i]) ? (fastEma[i] - slowSma[i]).toFixed(2) : 'N/A',
+        'Direction': (!isNaN(fastEma[i]) && !isNaN(slowSma[i])) ? (fastEma[i] > slowSma[i] ? 1 : (fastEma[i] < slowSma[i] ? -1 : 0)) : 0
       }
     });
 
@@ -189,7 +190,8 @@ export function getIndicatorsStateForDataset(
       key: 'stochastic',
       values: {
         'K %': isNaN(stochResult.k[i]) ? 'N/A' : stochResult.k[i].toFixed(2),
-        'D %': isNaN(stochResult.d[i]) ? 'N/A' : stochResult.d[i].toFixed(2)
+        'D %': isNaN(stochResult.d[i]) ? 'N/A' : stochResult.d[i].toFixed(2),
+        'Direction': (!isNaN(stochResult.k[i]) && !isNaN(stochResult.d[i])) ? (stochResult.k[i] > stochResult.d[i] ? 1 : (stochResult.k[i] < stochResult.d[i] ? -1 : 0)) : 0
       }
     });
 
@@ -200,20 +202,23 @@ export function getIndicatorsStateForDataset(
         key: 'supertrend',
         values: {
           'Value': isNaN(supertrendResult.supertrend[i]) ? 'N/A' : supertrendResult.supertrend[i].toFixed(2),
-          'Trend': supertrendResult.trend[i] === 1 ? 'BULLISH' : 'BEARISH'
+          'Trend': supertrendResult.trend[i] === 1 ? 'BULLISH' : 'BEARISH',
+          'Direction': supertrendResult.trend[i] === 1 ? 1 : -1
         }
       });
     }
 
     // Bollinger Bands
     if (bbResult && bbResult[i]) {
+      const middle = bbResult[i].basis;
       activeIndicators.push({
         name: 'Bollinger Bands',
         key: 'bollinger_bands',
         values: {
           'Upper Band': isNaN(bbResult[i].upper) ? 'N/A' : bbResult[i].upper.toFixed(2),
           'Middle Band': isNaN(bbResult[i].basis) ? 'N/A' : bbResult[i].basis.toFixed(2),
-          'Lower Band': isNaN(bbResult[i].lower) ? 'N/A' : bbResult[i].lower.toFixed(2)
+          'Lower Band': isNaN(bbResult[i].lower) ? 'N/A' : bbResult[i].lower.toFixed(2),
+          'Direction': ohlcItem.close !== undefined && !isNaN(middle) ? (ohlcItem.close > middle ? 1 : (ohlcItem.close < middle ? -1 : 0)) : 0
         }
       });
     }
@@ -226,7 +231,8 @@ export function getIndicatorsStateForDataset(
         values: {
           'Slope': isNaN(lrResult.trend_strength[i]) ? 'N/A' : lrResult.trend_strength[i].toFixed(4),
           'Volatility': isNaN(lrResult.volatility[i]) ? 'N/A' : lrResult.volatility[i].toFixed(4),
-          'Regime (Z-Score)': isNaN(lrResult.vol_regime[i]) ? 'N/A' : lrResult.vol_regime[i].toFixed(2)
+          'Regime (Z-Score)': isNaN(lrResult.vol_regime[i]) ? 'N/A' : lrResult.vol_regime[i].toFixed(2),
+          'Direction': lrResult.direction && lrResult.direction[i] !== undefined ? lrResult.direction[i] : 0
         }
       });
     }
@@ -238,7 +244,8 @@ export function getIndicatorsStateForDataset(
         key: 'supertrend_regime',
         values: {
           'ST Value': isNaN(supertrendRegimeResult.supertrend[i]) ? 'N/A' : supertrendRegimeResult.supertrend[i].toFixed(2),
-          'Regime': supertrendRegimeResult.vol_regime[i] === 1 ? 'HIGH VOL' : 'NORMAL'
+          'Regime': supertrendRegimeResult.vol_regime[i] === 1 ? 'HIGH VOL' : 'NORMAL',
+          'Direction': supertrendRegimeResult.signal && supertrendRegimeResult.signal[i] !== undefined ? supertrendRegimeResult.signal[i] : 0
         }
       });
     }
@@ -301,7 +308,8 @@ export function getIndicatorsStateForDataset(
     if (candlePatternsResult && candlePatternsResult.patterns[i] !== undefined) {
       const patternValues: Record<string, string | number> = {
         'Pattern': candlePatternsResult.patterns[i] ? candlePatternsResult.patterns[i].split('|').join(', ').toUpperCase() : 'NONE',
-        'Action Signal': candlePatternsResult.action_signal[i] ? candlePatternsResult.action_signal[i].toUpperCase() : 'NONE'
+        'Action Signal': candlePatternsResult.action_signal[i] ? candlePatternsResult.action_signal[i].toUpperCase() : 'NONE',
+        'Direction': candlePatternsResult.action_signal[i] === 'bullish_action' ? 1 : (candlePatternsResult.action_signal[i] === 'bearish_action' ? -1 : 0)
       };
       
       // Add each choice as its own column feature to be recorded (0 or 1)
@@ -358,6 +366,7 @@ export function getIndicatorsStateForDataset(
           'HA Low': isNaN(haResult.haLow[i]) ? 'N/A' : haResult.haLow[i].toFixed(2),
           'HA Close': isNaN(haResult.haClose[i]) ? 'N/A' : haResult.haClose[i].toFixed(2),
           'HA Color Direction': haResult.direction[i] === 1 ? 'BULLISH (UP)' : haResult.direction[i] === -1 ? 'BEARISH (DOWN)' : 'NEUTRAL',
+          'Direction': haResult.direction && haResult.direction[i] !== undefined ? haResult.direction[i] : 0,
           'Smooth Len': smoothLen
         }
       });

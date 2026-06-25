@@ -23,6 +23,7 @@ import { TradingPanelDataSettings } from "./simulator/TradingPanelDataSettings";
 import { ConjunctionSimulation } from "./ConjunctionSimulation";
 import { DisjunctionSimulation } from "./DisjunctionSimulation";
 import { CollapsiblePresetMenu } from "./lab/CollapsiblePresetMenu";
+import { MonitorLogPanel } from "./lab/MonitorLogPanel";
 import { MultiInstanceDashboard } from "./MultiInstanceDashboard";
 
 export interface TradingToolsLabProps {
@@ -71,6 +72,7 @@ export const TradingToolsLab: React.FC<TradingToolsLabProps> = ({ isParallelMode
           <ExitSignalRuleSettingsPanel entrySystemType={activeTab} />
           <TradingPanelDataSettings />
           <CollapsiblePresetMenu />
+          <MonitorLogPanel activeTab={activeTab} />
           <AnimatePresence mode="wait">
             <motion.div 
               key={activeTab}

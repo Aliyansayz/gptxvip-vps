@@ -58,39 +58,58 @@ export function useComputedIndicators(
       const cfg = getParams(mergedObj, dataSource, mergedObj);
 
       if (sysType === 'ma_crossover') {
+        const fastLine = calculateEMA(closePrices, cfg.fastMa || 9);
+        const slowLine = calculateSMA(closePrices, cfg.slowMa || 21);
+        const direction = fastLine.map((f, i) => f > slowLine[i] ? 1 : (f < slowLine[i] ? -1 : 0));
         return {
           type: 'ma_crossover',
-          fastLine: calculateEMA(closePrices, cfg.fastMa || 9),
-          slowLine: calculateSMA(closePrices, cfg.slowMa || 21)
+          fastLine,
+          slowLine,
+          direction
         };
       } else if (sysType === 'supertrend') {
         const superPeriod = cfg.supertrendPeriod || cfg.period || cfg.atrPeriod || 10;
         const superMultiplier = cfg.supertrendMultiplier || cfg.multiplier || 3;
+        const st = calculateSupertrend(sourceData, superPeriod, superMultiplier);
+        const direction = st.map(s => s.trend === 'up' ? 1 : (s.trend === 'down' ? -1 : 0));
         return {
           type: 'supertrend',
-          supertrend: calculateSupertrend(sourceData, superPeriod, superMultiplier)
+          supertrend: st,
+          direction
         };
       } else if (sysType === 'stochastic') {
         const stochK = cfg.stochK || cfg.kPeriod || 14;
         const stochD = cfg.stochD || cfg.dPeriod || 3;
+        const stoch = calculateStochastic(sourceData, stochK, 3, stochD);
+        const direction = stoch.k.map((k, i) => k > stoch.d[i] ? 1 : (k < stoch.d[i] ? -1 : 0));
         return {
           type: 'stochastic',
-          stochastic: calculateStochastic(sourceData, stochK, 3, stochD)
+          stochastic: stoch,
+          direction
         };
       } else if (sysType === 'linear_regression') {
         const lrSlope = cfg.lrSlopePeriod || cfg.slopePeriod || cfg.period || 20;
         const lrVol = cfg.lrVolPeriod || cfg.volPeriod || cfg.channelWidth || 20;
         const lrRegime = cfg.lrRegimePeriod || cfg.regimePeriod || 30;
+        const lr = linearRegressionSystem(closePrices, lrSlope, lrVol, lrRegime);
+        const direction = lr.direction;
         return {
           type: 'linear_regression',
-          lr: linearRegressionSystem(closePrices, lrSlope, lrVol, lrRegime)
+          lr,
+          direction
         };
       } else if (sysType === 'bollinger_bands') {
         const bbPeriod = cfg.bbPeriod || cfg.period || 20;
         const bbStdDev = cfg.bbStdDev || cfg.stdDev || 2;
+        const bb = calculateBollingerBands(sourceData, bbPeriod, bbStdDev);
+        const direction = bb.map((b, i) => {
+          const middle = (b.upper + b.lower) / 2;
+          return sourceData[i].close > middle ? 1 : (sourceData[i].close < middle ? -1 : 0);
+        });
         return {
           type: 'bollinger_bands',
-          bb: calculateBollingerBands(sourceData, bbPeriod, bbStdDev)
+          bb,
+          direction
         };
       } else if (sysType === 'supertrend_regime') {
         const highs = sourceData.map(d => d.high);
@@ -101,39 +120,51 @@ export function useComputedIndicators(
         const zPeriod = cfg.zPeriod || 20;
         const zUpper = cfg.zUpper || 1.5;
         const zLower = cfg.zLower || -1.5;
-        return {
-          type: 'supertrend_regime',
-          supertrend_regime: supertrendRegimeSystem(
+        const sr = supertrendRegimeSystem(
             highs, lows, closePrices, 
             stPeriod, atrMultiplier, 
             regimePeriod, zPeriod, 
             zUpper, zLower
-          )
+        );
+        const direction = sr.signal;
+        return {
+          type: 'supertrend_regime',
+          supertrend_regime: sr,
+          direction
         };
       } else if (sysType === 'heikin_ashi_smoothed') {
         const open = sourceData.map(d => d.open);
         const highs = sourceData.map(d => d.high);
         const lows = sourceData.map(d => d.low);
         const smoothLen = cfg.haSmoothLen || cfg.smoothLen || 10;
+        const ha = smoothedHeikinAshi(open, highs, lows, closePrices, smoothLen);
+        const direction = ha.map(h => h.close > h.open ? 1 : (h.close < h.open ? -1 : 0));
         return {
           type: 'heikin_ashi_smoothed',
-          heikin_ashi_smoothed: smoothedHeikinAshi(open, highs, lows, closePrices, smoothLen)
+          heikin_ashi_smoothed: ha,
+          direction
         };
       } else if (sysType === 'divergence') {
         const divLookback = cfg.lookback || cfg.stochK || 14;
         const divRsiPeriod = cfg.rsiPeriod || cfg.stochD || 14;
         // Divergence uses stochastic internally under some conditions
+        const stoch = calculateStochastic(sourceData, divLookback, 3, divRsiPeriod);
+        const direction = stoch.k.map((k, i) => k > stoch.d[i] ? 1 : (k < stoch.d[i] ? -1 : 0));
         return {
           type: 'divergence',
-          stochastic: calculateStochastic(sourceData, divLookback, 3, divRsiPeriod)
+          stochastic: stoch,
+          direction
         };
       } else if (sysType === 'candlestick_pattern') {
         const open = sourceData.map(d => d.open);
         const highs = sourceData.map(d => d.high);
         const lows = sourceData.map(d => d.low);
+        const cp = getCandlePatternsMultiple(open, highs, lows, closePrices, indicatorSettings?.candlestick_pattern?.allowedPatterns);
+        const direction = cp.action_signal.map(a => a === 'bullish_action' ? 1 : (a === 'bearish_action' ? -1 : 0));
         return {
           type: 'candlestick_pattern',
-          candlestick_pattern: getCandlePatternsMultiple(open, highs, lows, closePrices, indicatorSettings?.candlestick_pattern?.allowedPatterns)
+          candlestick_pattern: cp,
+          direction
         };
       }
       return null;

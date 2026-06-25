@@ -122,7 +122,7 @@ export function useTradeEvaluation(
           if (prevSt.trend === 'down' && lastSt.trend === 'up') signal = 'LONG';
           else if (prevSt.trend === 'up' && lastSt.trend === 'down') signal = 'SHORT';
         }
-      } else if (sysType === 'stochastic' && computedSig?.stochastic) {
+      } else if ((sysType === 'stochastic' || sysType === 'divergence') && computedSig?.stochastic) {
         const stoch = computedSig.stochastic;
         if (stoch && stoch.k.length > idx && stoch.d.length > idx) {
           const lastK = stoch.k[idx];
@@ -180,6 +180,66 @@ export function useTradeEvaluation(
       return signal;
     };
 
+    const getTrendForComputed = (sysType: string, computedSig: any, idx: number, sourceData: Ohlc[]) => {
+      let trend: 'LONG' | 'SHORT' | null = null;
+      if (sysType === 'ma_crossover' && computedSig?.fastLine) {
+        const fastLine = computedSig.fastLine;
+        const slowLine = computedSig.slowLine;
+        if (fastLine && slowLine && fastLine.length > idx) {
+          if (fastLine[idx] > slowLine[idx]) trend = 'LONG';
+          else if (fastLine[idx] < slowLine[idx]) trend = 'SHORT';
+        }
+      } else if (sysType === 'supertrend' && computedSig?.supertrend) {
+        const st = computedSig.supertrend;
+        if (st && st.length > idx) {
+          if (st[idx].trend === 'up') trend = 'LONG';
+          else if (st[idx].trend === 'down') trend = 'SHORT';
+        }
+      } else if ((sysType === 'stochastic' || sysType === 'divergence') && computedSig?.stochastic) {
+        const stoch = computedSig.stochastic;
+        if (stoch && stoch.k.length > idx && stoch.d.length > idx) {
+          if (stoch.k[idx] > stoch.d[idx]) trend = 'LONG';
+          else if (stoch.k[idx] < stoch.d[idx]) trend = 'SHORT';
+        }
+      } else if (sysType === 'linear_regression' && computedSig?.lr) {
+         const lr = computedSig.lr;
+         if (lr && lr.direction && lr.direction.length > idx) {
+             const dir = lr.direction[idx];
+             if (dir === 1) trend = 'LONG';
+             else if (dir === -1) trend = 'SHORT';
+         }
+      } else if (sysType === 'bollinger_bands' && computedSig?.bb) {
+         const bb = computedSig.bb;
+         const lastCandle = sourceData[idx];
+         if (bb && bb.length > idx && lastCandle) {
+             const lastBb = bb[idx];
+             const middle = (lastBb.upper + lastBb.lower) / 2;
+             if (lastCandle.close > middle) trend = 'LONG';
+             else if (lastCandle.close < middle) trend = 'SHORT';
+         }
+      } else if (sysType === 'supertrend_regime' && computedSig?.supertrend_regime) {
+        const sr = computedSig.supertrend_regime;
+        if (sr && sr.signal && sr.signal.length > idx) {
+           if (sr.signal[idx] === 1) trend = 'LONG';
+           else if (sr.signal[idx] === -1) trend = 'SHORT';
+        }
+      } else if (sysType === 'heikin_ashi_smoothed' && computedSig?.heikin_ashi_smoothed) {
+        const ha = computedSig.heikin_ashi_smoothed;
+        if (ha && ha.length > idx) {
+           if (ha[idx].close > ha[idx].open) trend = 'LONG';
+           else if (ha[idx].close < ha[idx].open) trend = 'SHORT';
+        }
+      } else if (sysType === 'candlestick_pattern' && computedSig?.candlestick_pattern) {
+        const cp = computedSig.candlestick_pattern;
+        if (cp && cp.action_signal && cp.action_signal.length > idx) {
+          const action = cp.action_signal[idx];
+          if (action === 'bullish_action') trend = 'LONG';
+          else if (action === 'bearish_action') trend = 'SHORT';
+        }
+      }
+      return trend;
+    };
+
     const getDataBySource = (source: string) => {
       if (source === 'beta' && betaData) return betaData;
       if (source === 'delta' && deltaData) return deltaData;
@@ -195,7 +255,19 @@ export function useTradeEvaluation(
          const sysIndex = getMappedIndex(sysEntrySource);
          return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysEntrySource));
       });
-      currentEntrySignal = evaluateConjunctionSystem(signals);
+      const trends = activeSystems.map((sysId: string) => {
+         const comp = ind.entrySignal.conjunctionSignals[sysId];
+         const sysEntrySource = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[sysId as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
+         const sysIndex = getMappedIndex(sysEntrySource);
+         return getTrendForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysEntrySource));
+      });
+      let trigSignal: 'LONG' | 'SHORT' | null = null;
+      if (signals.some(s => s === 'LONG') && trends.every(t => t === 'LONG')) {
+          trigSignal = 'LONG';
+      } else if (signals.some(s => s === 'SHORT') && trends.every(t => t === 'SHORT')) {
+          trigSignal = 'SHORT';
+      }
+      currentEntrySignal = trigSignal;
     } else if (tradingConfig.activeSystemMode === 'disjunction' && ind.entrySignal?.type === 'disjunction') {
       const activeSystems = tradingConfig.activeDisjunctionSystems || [];
       const signals = activeSystems.map((sysId: string) => {
@@ -204,7 +276,9 @@ export function useTradeEvaluation(
          const sysIndex = getMappedIndex(sysEntrySource);
          return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysEntrySource));
       });
-      currentEntrySignal = evaluateDisjunctionSystem(signals);
+      if (signals.some(s => s === 'LONG')) currentEntrySignal = 'LONG';
+      else if (signals.some(s => s === 'SHORT')) currentEntrySignal = 'SHORT';
+      else currentEntrySignal = null;
     } else {
       const sysEntrySource = (indicatorSettings[config.type as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[config.type as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
       const sysIndex = getMappedIndex(sysEntrySource);
@@ -221,7 +295,20 @@ export function useTradeEvaluation(
          const sysIndex = getMappedIndex(sysExitSource);
          return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysExitSource));
       });
-      currentExitSignal = evaluateConjunctionSystem(signals);
+      const trends = activeExitSystems.map((sysId: string) => {
+         const comp = ind.exitSignal.conjunctionSignals[sysId];
+         const cfg = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any) || {};
+         const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
+         const sysIndex = getMappedIndex(sysExitSource);
+         return getTrendForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysExitSource));
+      });
+      let trigSignal: 'LONG' | 'SHORT' | null = null;
+      if (signals.some(s => s === 'LONG') && trends.every(t => t === 'LONG')) {
+          trigSignal = 'LONG';
+      } else if (signals.some(s => s === 'SHORT') && trends.every(t => t === 'SHORT')) {
+          trigSignal = 'SHORT';
+      }
+      currentExitSignal = trigSignal;
     } else if (tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemMode === 'disjunction' && ind.exitSignal?.type === 'disjunction') {
       const activeExitSystems = tradingConfig.exitActiveDisjunctionSystems || [];
       const signals = activeExitSystems.map((sysId: string) => {
@@ -231,7 +318,9 @@ export function useTradeEvaluation(
          const sysIndex = getMappedIndex(sysExitSource);
          return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysExitSource));
       });
-      currentExitSignal = evaluateDisjunctionSystem(signals);
+      if (signals.some(s => s === 'LONG')) currentExitSignal = 'LONG';
+      else if (signals.some(s => s === 'SHORT')) currentExitSignal = 'SHORT';
+      else currentExitSignal = null;
     } else {
       const resolvedExitType = ind.exitSignal?.type || exitType;
       const sysExitDataSource = indicatorSettings[resolvedExitType]?.dataSource || exitDataSource;
