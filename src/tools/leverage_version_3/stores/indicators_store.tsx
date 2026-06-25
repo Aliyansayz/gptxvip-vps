@@ -155,6 +155,8 @@ interface IndicatorsStoreContextType {
   setCurrentStops?: React.Dispatch<React.SetStateAction<{ lowerBand: number[], upperBand: number[] } | null>>;
   simulationIndex?: number;
   setSimulationIndexGlobal?: React.Dispatch<React.SetStateAction<number>>;
+  computedIndicatorsGlobal?: any;
+  setComputedIndicatorsGlobal?: React.Dispatch<React.SetStateAction<any>>;
   systemDeployLog?: any;
 }
 

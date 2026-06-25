@@ -126,7 +126,9 @@ export function evaluateTradeEntries(
   isFlipSignal: boolean = false,
   slopePersistenceValue?: number,
   trendEfficiencyValue?: number,
-  wickEfficiencyValue?: number
+  wickEfficiencyValue?: number,
+  serialTradingEnabled?: boolean,
+  eligibleAccountId?: string
 ): Trade[] {
   // Leverage Check
   if (leverageConfig && leverageConfig.enabled && currentBalance !== undefined) {
@@ -152,7 +154,9 @@ export function evaluateTradeEntries(
     isFlipSignal,
     slopePersistenceValue,
     trendEfficiencyValue,
-    wickEfficiencyValue
+    wickEfficiencyValue,
+    serialTradingEnabled,
+    eligibleAccountId
   );
 }
 
@@ -176,7 +180,7 @@ export function evaluateTradeExits(
   const activeSignal = config.exitOnSignalReversal ? signal : null;
 
   // Step 1: Evaluate A1 (root) trades
-  const rootTrades = activeTrades.filter(t => !t.accountId || t.accountId === 'A1');
+  const rootTrades = activeTrades.filter(t => !t.accountId || t.accountId === 'A1' || t.accountId.startsWith('S'));
   const evaluatedRootTrades: Trade[] = [];
 
   for (const trade of rootTrades) {
@@ -454,7 +458,7 @@ export function evaluateTradeExits(
     rootTradesMap.set(t.id, list);
   });
 
-  const parallelTrades = activeTrades.filter(t => t.accountId && t.accountId !== 'A1');
+  const parallelTrades = activeTrades.filter(t => t.accountId && t.accountId !== 'A1' && !t.accountId.startsWith('S'));
   const evaluatedParallelTrades: Trade[] = [];
 
   for (const pTrade of parallelTrades) {

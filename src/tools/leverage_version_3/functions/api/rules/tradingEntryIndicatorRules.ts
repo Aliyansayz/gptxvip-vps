@@ -8,6 +8,9 @@ import { priceToPips } from '../middleware/pipsTranslation';
 import { shouldAllowTradeByTimeFilter } from './timeFilterTradingRules';
 import { evaluateAdaptiveRiskPercentage } from '../position_sizing/adaptivePositionSizing';
 import { isTradeRestricted } from './tradeRestriction';
+import { hasOpenTradeSingleAccount } from './singleAccountTradingRules';
+import { hasOpenTradeSerialAccount } from './serialAccountTradingRules';
+import { hasOpenTradeParallelAccount } from './parallelAccountTradingRules';
 
 export function processIndicatorBasedEntry(
   currentIndex: number,
@@ -25,7 +28,9 @@ export function processIndicatorBasedEntry(
   isFlipSignal: boolean = false,
   slopePersistenceValue?: number,
   trendEfficiencyValue?: number,
-  wickEfficiencyValue?: number
+  wickEfficiencyValue?: number,
+  serialTradingEnabled?: boolean,
+  eligibleAccountId?: string
 ): Trade[] {
   if (!signal) return [];
   if (!config.entryOnSignal && !isFlipSignal) return [];
@@ -39,8 +44,20 @@ export function processIndicatorBasedEntry(
     return [];
   }
 
-  // Check if we already have an open trade
-  const hasOpenTrade = activeTrades.some(t => t.status === 'OPEN');
+  // Check if we already have an open trade based on the active account mode
+  let hasOpenTrade = false;
+  if (serialTradingEnabled) {
+    hasOpenTrade = hasOpenTradeSerialAccount(activeTrades, eligibleAccountId || 'A1');
+  } else {
+    // Parallel Mode or Single Account Mode
+    const isParallelModeActive = activeTrades.some(t => t.accountId && t.accountId !== 'A1' && !t.accountId.startsWith('S'));
+    if (isParallelModeActive) {
+      hasOpenTrade = hasOpenTradeParallelAccount(activeTrades);
+    } else {
+      hasOpenTrade = hasOpenTradeSingleAccount(activeTrades);
+    }
+  }
+
   if (hasOpenTrade) return [];
 
   const currentCandle = data[currentIndex];

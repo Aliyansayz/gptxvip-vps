@@ -11,6 +11,7 @@ export function useFeatureLogSlice() {
   const [latestPrice, setLatestPrice] = useState<number>(0);
   const [currentStops, setCurrentStops] = useState<{ lowerBand: number[], upperBand: number[] } | null>(null);
   const [simulationIndex, setSimulationIndexGlobal] = useState<number>(0);
+  const [computedIndicatorsGlobal, setComputedIndicatorsGlobal] = useState<any>(null);
 
   // Task C: Check/Uncheck indicators
   const [indicatorCheckedState, setIndicatorCheckedState] = useState<Record<string, boolean>>(() => loadState(`${STORAGE_KEY}_indicator_checked_state`, {}));
@@ -38,6 +39,7 @@ export function useFeatureLogSlice() {
     latestPrice, setLatestPrice,
     currentStops, setCurrentStops,
     simulationIndex, setSimulationIndexGlobal,
+    computedIndicatorsGlobal, setComputedIndicatorsGlobal,
     indicatorCheckedState, setIndicatorCheckedState
   };
 }

@@ -446,7 +446,9 @@ export function useTradeEvaluation(
           isFlipSignal,
           slopePersistenceValue,
           trendEfficiencyValue,
-          wickEfficiencyValue
+          wickEfficiencyValue,
+          serialTradingEnabled,
+          eligibleAccountId
         );
         if (newTradesRaw.length > 0) {
           const resolvedEntrySystem = tradingConfig.activeSystemMode === 'conjunction' 

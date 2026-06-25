@@ -87,6 +87,7 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
     setLatestPrice,
     setCurrentStops,
     setSimulationIndexGlobal,
+    setComputedIndicatorsGlobal,
     indicatorCheckedState
   } = useIndicatorsStore();
   const simulationMode = dataSettings.simulationMode;
@@ -161,6 +162,12 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
     }
   }, [simulationIndex, setSimulationIndexGlobal]);
 
+  React.useEffect(() => {
+    if (setComputedIndicatorsGlobal) {
+      setComputedIndicatorsGlobal(computedIndicators);
+    }
+  }, [computedIndicators, setComputedIndicatorsGlobal]);
+
   const {
     trades,
     setTrades,
@@ -180,7 +187,8 @@ export const CandlestickSimulator: React.FC<CandlestickSimulatorProps> = ({ conf
     latencyDelaySeconds,
     simulationMode,
     parallelAccounts,
-    dataSettings.asset
+    dataSettings.asset,
+    serialTradingEnabled
   );
 
   // Combine aggregate factors into trading config so rules can read them

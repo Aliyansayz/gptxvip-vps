@@ -5,6 +5,10 @@ import { evaluateTradeEntries } from '../../functions/api/rules/tradingRules';
 import { syncTradeState } from '../../functions/api/trade_log_book/syncTradeState';
 import { ParallelAccount } from '../../stores/indicators_store';
 import { calculatePnL } from '../../functions/api/position_sizing/leveragedPositionSizeMetals';
+import { hasOpenTradeSingleAccount } from '../../functions/api/rules/singleAccountTradingRules';
+import { hasOpenTradeSerialAccount } from '../../functions/api/rules/serialAccountTradingRules';
+import { hasOpenTradeParallelAccount } from '../../functions/api/rules/parallelAccountTradingRules';
+import { getEligibleRootAccount } from '../../functions/api/accountState/accountEligibleToTrade';
 
 export function useTradeManagement(
   data: Ohlc[],
@@ -16,7 +20,8 @@ export function useTradeManagement(
   latencyDelaySeconds: number,
   simulationMode: string,
   parallelAccounts: ParallelAccount[],
-  asset: string = 'Gold'
+  asset: string = 'Gold',
+  serialTradingEnabled: boolean = false
 ) {
   const [trades, setTrades] = useState<Trade[]>([]);
 
@@ -33,13 +38,46 @@ export function useTradeManagement(
     }
 
     setTrades(prev => {
-      let activeTrade = prev.find(t => t.status === 'OPEN' && (!t.accountId || t.accountId === 'A1'));
-      if (activeTrade) return prev; 
+      const currentPrice = data[simulationIndex]?.close || 0;
+      const eligibleAccountId = getEligibleRootAccount(prev, leverageSettings.balance, leverageSettings, currentPrice, asset, serialTradingEnabled);
+
+      let hasOpenTrade = false;
+      if (serialTradingEnabled) {
+        hasOpenTrade = hasOpenTradeSerialAccount(prev, eligibleAccountId);
+      } else {
+        const isParallelModeActive = prev.some(t => t.accountId && t.accountId !== 'A1' && !t.accountId.startsWith('S'));
+        if (isParallelModeActive) {
+          hasOpenTrade = hasOpenTradeParallelAccount(prev);
+        } else {
+          hasOpenTrade = hasOpenTradeSingleAccount(prev);
+        }
+      }
+
+      if (hasOpenTrade) return prev; 
       
       let closedPnL = prev.filter(t => t.status === 'CLOSED').reduce((sum, t) => sum + (t.pnl || 0), 0);
       let currentBalance = leverageSettings.balance + closedPnL;
 
-      const newTradesRaw = evaluateTradeEntries(simulationIndex, data.slice(0, simulationIndex + 1), side, prev, { ...tradingConfig, entryOnSignal: true }, customStopLossValue, undefined, undefined, leverageSettings, currentBalance, 'None');
+      const newTradesRaw = evaluateTradeEntries(
+        simulationIndex, 
+        data.slice(0, simulationIndex + 1), 
+        side, 
+        prev, 
+        { ...tradingConfig, entryOnSignal: true }, 
+        customStopLossValue, 
+        undefined, 
+        undefined, 
+        leverageSettings, 
+        currentBalance, 
+        'None',
+        asset,
+        false,
+        undefined,
+        undefined,
+        undefined,
+        serialTradingEnabled,
+        eligibleAccountId
+      );
       
       const generateParallelTrades = (baseTrades: Trade[]) => {
         const pTrades: Trade[] = [];
