@@ -88,8 +88,22 @@ const TradeRow = React.memo<{trade: Trade, currentPrice?: number, leverageSettin
       </div>
     </td>
     <td className="px-4 py-3 font-mono text-zinc-300 text-xs">
-      <div>IN: {trade.entryPrice.toFixed(2)}</div>
-      <div>OUT: {trade.exitPrice?.toFixed(2) || (currentPrice !== undefined ? currentPrice.toFixed(2) : '-')}</div>
+      <div className="flex flex-col gap-0.5">
+        <div className="flex items-center gap-1.5">
+          <span>IN: {trade.entryPrice.toFixed(2)}</span>
+          <span className="text-[9px] text-zinc-500 bg-zinc-800/50 px-1 rounded truncate max-w-[80px]" title={trade.executionType || 'Market'}>
+            {trade.executionType || 'Market'}
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span>OUT: {trade.exitPrice?.toFixed(2) || (currentPrice !== undefined ? currentPrice.toFixed(2) : '-')}</span>
+          {trade.status === 'CLOSED' && trade.exitReason && (
+            <span className="text-[9px] text-zinc-500 bg-zinc-800/50 px-1 rounded truncate max-w-[80px]" title={trade.exitReason}>
+              {trade.exitReason}
+            </span>
+          )}
+        </div>
+      </div>
     </td>
     <td className="px-4 py-3 font-mono text-zinc-300 text-xs">
       {trade.size.toFixed(2)} lot

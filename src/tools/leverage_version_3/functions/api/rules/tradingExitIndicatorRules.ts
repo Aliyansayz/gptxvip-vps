@@ -10,20 +10,22 @@ export function checkIndicatorBasedExitConditions(
 ): { shouldExit: boolean, exitReason?: Trade['exitReason'], exitPrice?: number } {
   
   // Check Stop Loss
-  if (config.useStopLoss && trade.stopLoss !== undefined) {
+  const isStopLossActive = config.useStopLoss || (config.stopLossPips !== undefined && config.stopLossPips > 0);
+  if (isStopLossActive && trade.stopLoss !== undefined) {
     if (trade.side === 'LONG' && currentCandle.low <= trade.stopLoss) {
-      return { shouldExit: true, exitReason: 'STOP_LOSS', exitPrice: trade.stopLoss };
+      return { shouldExit: true, exitReason: 'STOP_LOSS', exitPrice: Math.max(0, trade.stopLoss) };
     } else if (trade.side === 'SHORT' && currentCandle.high >= trade.stopLoss) {
-      return { shouldExit: true, exitReason: 'STOP_LOSS', exitPrice: trade.stopLoss };
+      return { shouldExit: true, exitReason: 'STOP_LOSS', exitPrice: Math.max(0, trade.stopLoss) };
     }
   }
 
   // Check Take Profit
-  if (config.useTakeProfit && trade.takeProfit !== undefined) {
-      if (trade.side === 'LONG' && currentCandle.high >= trade.takeProfit) {
-      return { shouldExit: true, exitReason: 'TAKE_PROFIT', exitPrice: trade.takeProfit };
+  const isTakeProfitActive = config.useTakeProfit || (config.takeProfitPips !== undefined && config.takeProfitPips > 0);
+  if (isTakeProfitActive && trade.takeProfit !== undefined) {
+    if (trade.side === 'LONG' && currentCandle.high >= trade.takeProfit) {
+      return { shouldExit: true, exitReason: 'TAKE_PROFIT', exitPrice: Math.max(0, trade.takeProfit) };
     } else if (trade.side === 'SHORT' && currentCandle.low <= trade.takeProfit) {
-      return { shouldExit: true, exitReason: 'TAKE_PROFIT', exitPrice: trade.takeProfit };
+      return { shouldExit: true, exitReason: 'TAKE_PROFIT', exitPrice: Math.max(0, trade.takeProfit) };
     }
   }
 

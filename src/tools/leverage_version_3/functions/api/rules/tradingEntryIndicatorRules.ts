@@ -55,16 +55,16 @@ export function processIndicatorBasedEntry(
 
   if (config.useStopLoss && customStopLossValue) {
     if (signal === 'LONG') {
-      stopLoss = customStopLossValue.lower;
+      stopLoss = Math.max(0, customStopLossValue.lower);
       if (config.useTakeProfit) {
         const risk = currentCandle.close - stopLoss;
-        takeProfit = currentCandle.close + (risk * config.rewardRiskRatio);
+        takeProfit = Math.max(0, currentCandle.close + (risk * config.rewardRiskRatio));
       }
     } else {
-      stopLoss = customStopLossValue.upper;
+      stopLoss = Math.max(0, customStopLossValue.upper);
       if (config.useTakeProfit) {
         const risk = stopLoss - currentCandle.close;
-        takeProfit = currentCandle.close - (risk * config.rewardRiskRatio);
+        takeProfit = Math.max(0, currentCandle.close - (risk * config.rewardRiskRatio));
       }
     }
   } else {
@@ -72,18 +72,18 @@ export function processIndicatorBasedEntry(
     if (config.stopLossPips !== undefined && config.stopLossPips > 0) {
       const pipMultiplier = config.pipMultiplier || 1;
       if (signal === 'LONG') {
-        stopLoss = currentCandle.close - (config.stopLossPips * pipMultiplier);
+        stopLoss = Math.max(0, currentCandle.close - (config.stopLossPips * pipMultiplier));
       } else {
-        stopLoss = currentCandle.close + (config.stopLossPips * pipMultiplier);
+        stopLoss = Math.max(0, currentCandle.close + (config.stopLossPips * pipMultiplier));
       }
     }
 
     if (config.takeProfitPips !== undefined && config.takeProfitPips > 0) {
       const pipMultiplier = config.pipMultiplier || 1;
       if (signal === 'LONG') {
-        takeProfit = currentCandle.close + (config.takeProfitPips * pipMultiplier);
+        takeProfit = Math.max(0, currentCandle.close + (config.takeProfitPips * pipMultiplier));
       } else {
-        takeProfit = currentCandle.close - (config.takeProfitPips * pipMultiplier);
+        takeProfit = Math.max(0, currentCandle.close - (config.takeProfitPips * pipMultiplier));
       }
     }
   }
@@ -185,33 +185,33 @@ export function processIndicatorBasedEntry(
       if (config.hftSyncStopLoss) {
          if (stopLoss !== undefined) {
            const priceDiff = Math.abs(currentCandle.close - stopLoss);
-           hftStopLoss = hftSide === 'LONG' ? (currentCandle.close - priceDiff) : (currentCandle.close + priceDiff);
+           hftStopLoss = Math.max(0, hftSide === 'LONG' ? (currentCandle.close - priceDiff) : (currentCandle.close + priceDiff));
            
            if (config.useTakeProfit) {
              const hftRisk = Math.abs(currentCandle.close - hftStopLoss);
-             hftTakeProfit = hftSide === 'LONG' 
+             hftTakeProfit = Math.max(0, hftSide === 'LONG' 
                ? (currentCandle.close + hftRisk * config.rewardRiskRatio) 
-               : (currentCandle.close - hftRisk * config.rewardRiskRatio);
+               : (currentCandle.close - hftRisk * config.rewardRiskRatio));
            }
          }
       } else {
          const pipMultiplier = config.pipMultiplier || 1;
          if (config.hftStopLossPips) {
-           hftStopLoss = hftSide === 'LONG' 
+           hftStopLoss = Math.max(0, hftSide === 'LONG' 
              ? currentCandle.close - (config.hftStopLossPips * pipMultiplier) 
-             : currentCandle.close + (config.hftStopLossPips * pipMultiplier);
+             : currentCandle.close + (config.hftStopLossPips * pipMultiplier));
          }
          
          const rr = config.hftRewardRiskRatio || 1.5;
          if (config.hftTakeProfitPips) {
-           hftTakeProfit = hftSide === 'LONG'
+           hftTakeProfit = Math.max(0, hftSide === 'LONG'
              ? currentCandle.close + (config.hftTakeProfitPips * pipMultiplier)
-             : currentCandle.close - (config.hftTakeProfitPips * pipMultiplier);
+             : currentCandle.close - (config.hftTakeProfitPips * pipMultiplier));
          } else if (config.hftStopLossPips) {
            const hftRisk = config.hftStopLossPips * pipMultiplier;
-           hftTakeProfit = hftSide === 'LONG'
+           hftTakeProfit = Math.max(0, hftSide === 'LONG'
              ? currentCandle.close + (hftRisk * rr)
-             : currentCandle.close - (hftRisk * rr);
+             : currentCandle.close - (hftRisk * rr));
          }
       }
 

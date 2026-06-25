@@ -172,6 +172,9 @@ export function evaluateTradeExits(
   const currentCandle = data[currentIndex];
   let runningBalance = currentBalance;
 
+  // Override signal to null if exitOnSignalReversal is disabled to prevent any unexpected exits
+  const activeSignal = config.exitOnSignalReversal ? signal : null;
+
   // Step 1: Evaluate A1 (root) trades
   const rootTrades = activeTrades.filter(t => !t.accountId || t.accountId === 'A1');
   const evaluatedRootTrades: Trade[] = [];
@@ -206,7 +209,7 @@ export function evaluateTradeExits(
 
     // 2. Indicator / Price target based exits
     if (!shouldExit) {
-      const indicatorExitCondition = checkIndicatorBasedExitConditions(trade, currentCandle, signal, config);
+      const indicatorExitCondition = checkIndicatorBasedExitConditions(trade, currentCandle, activeSignal, config);
       if (indicatorExitCondition.shouldExit) {
         shouldExit = true;
         exitReason = indicatorExitCondition.exitReason;

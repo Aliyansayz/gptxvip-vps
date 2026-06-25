@@ -267,6 +267,25 @@ export const TradingConfiguration: React.FC<TradingConfigurationProps> = ({ conf
           </label>
           <span className="text-[10px] text-zinc-500">Fixed pips override ATR bounds when set.</span>
         </div>
+
+        <div id="pips-based-exit-container" className="md:col-span-2 border-t border-zinc-700/30 pt-2 mt-1 flex flex-col gap-1.5">
+          <span id="pips-based-exit-title" className="text-[10px] text-cyan-400 font-bold uppercase tracking-wider">Pips Based Exit</span>
+          <div id="pips-based-exit-fields" className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <label id="pips-based-exit-label" className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">
+              <span>Exit after N Pips:</span>
+              <input 
+                id="pips-based-exit-input"
+                type="number" 
+                min="0"
+                placeholder="0 = off"
+                value={config.exitAfterNPips || ''} 
+                onChange={e => updateConfig({ exitAfterNPips: parseInt(e.target.value) || 0 })} 
+                className="w-20 bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5 focus:outline-none focus:border-cyan-500" 
+              />
+            </label>
+            <span id="pips-based-exit-description" className="text-[10px] text-zinc-500">Exit the main trade strictly after N pips of profit. 0 means disabled.</span>
+          </div>
+        </div>
         
         <div className="md:col-span-2 bg-zinc-900/40 p-2 rounded border border-zinc-700/30">
           <p className="text-[10px] text-cyan-400/80 mb-2 font-medium uppercase tracking-wider">Dynamic Time Limits (Z-Score Scaled)</p>

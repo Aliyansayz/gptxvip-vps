@@ -288,7 +288,9 @@ export function useTradeEvaluation(
     }
 
     // Evaluate Exit Signal
-    if (tradingConfig.useDifferentSignalSystemOnExit && tradingConfig.exitSignalSystemMode === 'conjunction' && ind.exitSignal?.type === 'conjunction') {
+    if (!tradingConfig.useDifferentSignalSystemOnExit) {
+      currentExitSignal = currentEntrySignal;
+    } else if (tradingConfig.exitSignalSystemMode === 'conjunction' && ind.exitSignal?.type === 'conjunction') {
       const activeExitSystems = tradingConfig.exitActiveConjunctionSystems || [];
       const signals = activeExitSystems.map((sysId: string) => {
          const comp = ind.exitSignal.conjunctionSignals[sysId];
