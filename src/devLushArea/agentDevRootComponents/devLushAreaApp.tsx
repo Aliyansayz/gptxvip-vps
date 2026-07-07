@@ -174,6 +174,24 @@ const App: React.FC<AppProps> = ({ onExit }) => {
                 <div className={`flex flex-col h-screen overflow-hidden bg-background text-foreground font-sans ${theme}`}>
                 <Toaster richColors theme={theme} position="top-center" />
                 
+                <Navbar
+                    isAppLocked={isAppLocked}
+                    onToggleLockMode={() => setIsAppLocked(!isAppLocked)}
+                    theme={theme}
+                    onToggleTheme={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+                    studyEnergy={studyEnergy}
+                    isInfiniteEnergy={isInfiniteEnergy}
+                    onToggleInfiniteEnergy={() => setIsInfiniteEnergy(!isInfiniteEnergy)}
+                    energyLockoutTime={energyLockoutTime}
+                    currentView={currentView}
+                    onViewChange={(view: any) => setCurrentView(view)}
+                    focusMode={focusMode}
+                    onToggleFocusMode={() => setFocusMode(!focusMode)}
+                    showAiAssistant={showAiAssistant}
+                    onToggleAiAssistant={() => setShowAiAssistant(!showAiAssistant)}
+                    onExit={onExit}
+                />
+
                 <main className="flex-1 overflow-hidden relative">
 
 

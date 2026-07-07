@@ -8,10 +8,10 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ theme, currentView }) => {
     const isHome = currentView === 'home';
-    
+
     // Elegant, minimal background styling
-    const footerBg = isHome 
-        ? 'bg-black/30 border-t border-white/5 text-white/70 backdrop-blur-xl' 
+    const footerBg = isHome
+        ? 'bg-black/30 border-t border-white/5 text-white/70 backdrop-blur-xl'
         : 'bg-background/80 border-t border-border/40 text-muted-foreground backdrop-blur-md';
 
     const textHighlight = isHome ? 'text-white/90' : 'text-foreground/90';
@@ -20,17 +20,17 @@ const Footer: React.FC<FooterProps> = ({ theme, currentView }) => {
     return (
         <footer className={`w-full py-10 px-6 mt-auto z-40 transition-colors duration-300 ${footerBg}`}>
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center md:items-start gap-8">
-                
+
                 {/* Brand / Copy */}
                 <div className="flex flex-col items-center md:items-start gap-3 md:w-1/3">
                     <div className="flex items-center gap-2">
-                        <span className={`font-heading text-2xl font-medium tracking-wide ${textHighlight}`}>MedCush</span>
+                        <span className={`font-heading text-2xl font-medium tracking-wide ${textHighlight}`}>DevLush</span>
                     </div>
                     <p className="text-sm font-light leading-relaxed text-center md:text-left opacity-80 max-w-xs">
                         Elevating medical and biological learning through interactive simulations and elegant design.
                     </p>
                     <span className="text-xs tracking-wider opacity-60 mt-2 flex items-center gap-1.5">
-                        &copy; {new Date().getFullYear()} MedCush <span className="w-1 h-1 rounded-full bg-current opacity-50"></span> Crafted with <Heart className="w-3 h-3 mx-0.5" />
+                        &copy; {new Date().getFullYear()} DevLush <span className="w-1 h-1 rounded-full bg-current opacity-50"></span> Crafted with <Heart className="w-3 h-3 mx-0.5" />
                     </span>
                 </div>
 
@@ -63,7 +63,7 @@ const Footer: React.FC<FooterProps> = ({ theme, currentView }) => {
                         </a>
                     </div>
                 </div>
-                
+
             </div>
         </footer>
     );

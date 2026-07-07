@@ -176,15 +176,6 @@ const Navbar: React.FC<NavbarProps> = ({
     return (
         <nav className="absolute top-0 left-0 w-full z-50 bg-transparent p-2 flex justify-between items-center">
             <div className="flex items-center gap-3 ml-2">
-                {onExit && (
-                    <button 
-                        onClick={onExit}
-                        className="px-3 py-1 bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 hover:bg-red-500 hover:text-white dark:hover:bg-red-600 dark:hover:text-white rounded-md text-sm font-semibold transition-all shadow-sm"
-                        title="Exit DevLush Workspace"
-                    >
-                        Exit
-                    </button>
-                )}
                 <h1 className={`text-xl font-heading tracking-wider ${titleColor}`}>{getTitle()}</h1>
             </div>
 
@@ -217,7 +208,15 @@ const Navbar: React.FC<NavbarProps> = ({
                     <button onClick={() => onViewChange('articles')} className={`${baseButtonClass} ${getButtonStyle('articles')}`}>
                         Articles
                     </button>
-
+                    {onExit && (
+                        <button 
+                            onClick={onExit}
+                            className="px-3 py-1.5 bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 hover:bg-red-500 hover:text-white dark:hover:bg-red-600 dark:hover:text-white rounded-md text-sm font-semibold transition-all shadow-sm ml-1"
+                            title="Exit DevLush Workspace"
+                        >
+                            Exit
+                        </button>
+                    )}
                 </div>
             </div>
 
