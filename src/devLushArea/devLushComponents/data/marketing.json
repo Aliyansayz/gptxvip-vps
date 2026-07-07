@@ -1,0 +1,131 @@
+[
+  {
+    "id": "marketing-campaign-agent",
+    "title": "Campaign Optimization Agent",
+    "course": "Marketing Agents",
+    "chapter_title": "Campaign Optimization Agent",
+    "labComponentId": "marketing-campaign-agent",
+    "critical_concepts": [
+      {
+        "concept": "A/B Testing Automation",
+        "elaboration": "Automatically testing different ad creatives and shifting budget to the best performers."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "marketing-campaign-agent",
+        "type": "interactive-visual",
+        "title": "Campaign Optimization",
+        "prompt": "An agent that manages marketing spend and creatives.",
+        "question": "What is the primary role of a Campaign Optimization Agent?",
+        "options": [
+          "A. To manually design logos.",
+          "B. To automatically test ad variants, analyze engagement metrics, and reallocate budget.",
+          "C. To process payroll.",
+          "D. To scan code for vulnerabilities."
+        ],
+        "answer": "B. To automatically test ad variants, analyze engagement metrics, and reallocate budget.",
+        "explanation": "Marketing agents use data-driven feedback loops to identify high-performing ad variants and dynamically adjust spending.",
+        "theory_explanation": "Campaign Optimization Agents leverage real-time analytics to automate A/B testing and optimize ROI across ad channels.",
+        "real_world_analogy": "Like a media buyer who works 24/7, constantly adjusting the budget based on which ads are getting the most clicks.",
+        "visual_element": "activity"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "campaign",
+      "persona",
+      "ab-testing",
+      "segmentation",
+      "ad-spend"
+    ]
+  },
+  {
+    "id": "marketing-content-agent",
+    "title": "Personalized Content Agent",
+    "course": "Marketing Agents",
+    "chapter_title": "Personalized Content Agent",
+    "labComponentId": "marketing-content-agent",
+    "critical_concepts": [
+      {
+        "concept": "Hyper-Personalization",
+        "elaboration": "Crafting unique marketing messages tailored to individual user preferences and history."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "marketing-content-agent",
+        "type": "interactive-visual",
+        "title": "Content Personalization",
+        "prompt": "An agent that drafts customized marketing copy.",
+        "question": "How does a Personalized Content Agent improve campaign performance?",
+        "options": [
+          "A. By sending the exact same email to everyone.",
+          "B. By decreasing the frequency of emails.",
+          "C. By generating unique, highly relevant copy for each user segment or individual.",
+          "D. By purchasing more ad space."
+        ],
+        "answer": "C. By generating unique, highly relevant copy for each user segment or individual.",
+        "explanation": "Personalization increases engagement by ensuring the content resonates with the specific interests and needs of the recipient.",
+        "theory_explanation": "These agents use LLMs to adapt tone, messaging, and offers based on a user's unique profile and past interactions.",
+        "real_world_analogy": "Like a personal shopper writing a custom note to each of their clients with specific recommendations.",
+        "visual_element": "activity"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "campaign",
+      "persona",
+      "ab-testing",
+      "segmentation",
+      "ad-spend"
+    ]
+  },
+  {
+    "id": "marketing-persona-agent",
+    "title": "Persona Generation Agent",
+    "course": "Marketing Agents",
+    "chapter_title": "Persona Generation Agent",
+    "labComponentId": "marketing-persona-agent",
+    "critical_concepts": [
+      {
+        "concept": "Dynamic Persona Modeling",
+        "elaboration": "Generating and updating customer personas dynamically based on behavioral data."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "marketing-persona-agent",
+        "type": "interactive-visual",
+        "title": "Persona Modeling",
+        "prompt": "An agent that creates and updates customer personas.",
+        "question": "What is the key advantage of using a Persona Generation Agent?",
+        "options": [
+          "A. It creates static profiles once a year.",
+          "B. It dynamically updates user segments based on real-time behavior and feedback.",
+          "C. It writes the code for the marketing website.",
+          "D. It replaces the customer support team."
+        ],
+        "answer": "B. It dynamically updates user segments based on real-time behavior and feedback.",
+        "explanation": "These agents continuously analyze incoming data to refine and update target audience personas, ensuring marketing strategies stay relevant.",
+        "theory_explanation": "Persona Generation Agents synthesize vast amounts of user interaction data to create realistic, evolving models of target customers.",
+        "real_world_analogy": "Like a market researcher who constantly updates their understanding of the customer as new trends emerge.",
+        "visual_element": "activity"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "campaign",
+      "persona",
+      "ab-testing",
+      "segmentation",
+      "ad-spend"
+    ]
+  }
+]

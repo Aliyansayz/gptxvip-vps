@@ -1,0 +1,281 @@
+[
+  {
+    "course": "Accounting Agents",
+    "chapter_title": "Algorithmic Ledger Auditing",
+    "labComponentId": "accounting-agents",
+    "critical_concepts": [
+      {
+        "concept": "Benford's Law",
+        "elaboration": "Mathematical distribution of first digits in organic transactions."
+      },
+      {
+        "concept": "Numerical Integrity",
+        "elaboration": "Preventing LLM math hallucinations via Python tool execution."
+      },
+      {
+        "concept": "Decimal Alignment",
+        "elaboration": "Using fixed-point representation instead of imprecise binary floats."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "audit-ledger-1",
+        "concept_tested": "Benford's Law Digits Anomalies",
+        "type": "interactive-visual",
+        "title": "Case 1: Benford's Law Distribution Audits",
+        "prompt": "Observe the first-digit frequencies calculated across all quarter journal ledger records.",
+        "question": "Under Benford's Law, which pattern suggests potential fabricated transactions or human tampering?",
+        "options": [
+          "A. Leading digits following a clean logarithmic decay curve peaking at 1.",
+          "B. A sudden, highly abnormal spike in the frequency of specific leading digits (e.g. digit 4).",
+          "C. Leading digits having completely uniform frequencies across all transactions."
+        ],
+        "answer": "B. A sudden, highly abnormal spike in the frequency of specific leading digits (e.g. digit 4).",
+        "explanation": "Human-fabricated receipts or fraud entries often over-use specific digits (e.g., $4,500), causing measurable spikes that deviate from Benford's natural log curve.",
+        "theory": {
+          "title": "Benford's Law in Fraud Audits",
+          "content": "Benford's Law dictates that in naturally occurring numerical data, the digit 1 appears as the leading significant digit ~30% of the time, decaying logarithmically to 9 (~4.6%). Abnormal deviations suggest human manipulation.",
+          "analogy": "A natural forest has trees of random heights, but a fake plastic forest has identical tree measurements.",
+          "application": "Run continuous statistical anomaly scans on journal ledgers using Chi-Square tests to isolate abnormal digit frequencies."
+        },
+        "nature": "weakness",
+        "tags": [
+          "business"
+        ],
+        "logs": [
+          {
+            "timestamp": "13:42:00",
+            "level": "info",
+            "message": "Scanning 5,204 ledger entries for digit frequency..."
+          },
+          {
+            "timestamp": "13:42:02",
+            "level": "warn",
+            "message": "Calculated chi-square statistic: 15.4 (Critical threshold: 12.0)"
+          },
+          {
+            "timestamp": "13:42:03",
+            "level": "warn",
+            "message": "Spike detected in leading digit '4' (Expected: ~9.7%, Observed: 18.2%)"
+          },
+          {
+            "timestamp": "13:42:04",
+            "level": "success",
+            "message": "Anomalous transaction IDs logged for executive audit."
+          }
+        ]
+      },
+      {
+        "componentId": "audit-ledger-2",
+        "concept_tested": "Precise Financial Reconciliation",
+        "type": "simulation",
+        "title": "Case 2: Semantic Hallucinations & Sum Reconciliation",
+        "prompt": "Observe an LLM agent attempting to reconcile transactions by summing up string values inside text receipts.",
+        "question": "What is the primary risk of relying entirely on standard LLM token generation for summing financial balances?",
+        "options": [
+          "A. The LLM might round floating decimal numbers or introduce slight text-prediction addition errors.",
+          "B. The LLM will run out of context tokens and forget the balance sheets.",
+          "C. The LLM will convert dollars into foreign currencies automatically."
+        ],
+        "answer": "A. The LLM might round floating decimal numbers or introduce slight text-prediction addition errors.",
+        "explanation": "LLM text prediction is probabilistic and poor at precise float math. Accounting agents must trigger deterministic tools (like Python execution) for mathematical operations.",
+        "theory": {
+          "title": "Precise Financial Reconciliation",
+          "content": "LLMs are text generators, not algebraic calculators. To guarantee bookkeeper compliance, agents must utilize tool-use calls (Function Calling) to calculate exact decimal metrics.",
+          "analogy": "Asking a poet to calculate tax returns instead of using an spreadsheet application.",
+          "application": "Structure agent workflows to parse transaction balances into floats, and sum them using Decimal libraries in a separate runtime."
+        },
+        "nature": "weakness",
+        "tags": [
+          "business"
+        ],
+        "logs": [
+          {
+            "timestamp": "13:43:00",
+            "level": "info",
+            "message": "Initializing bookkeeping reconciliation check..."
+          },
+          {
+            "timestamp": "13:43:01",
+            "level": "warn",
+            "message": "LLM string summation predicted total: $1,432,590.85"
+          },
+          {
+            "timestamp": "13:43:02",
+            "level": "error",
+            "message": "Python Decimal solver computed actual total: $1,432,590.35"
+          },
+          {
+            "timestamp": "13:43:03",
+            "level": "success",
+            "message": "Discrepancy of $0.50 flagged. Verification loop corrected."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "finance",
+      "audit",
+      "fraud",
+      "compliance",
+      "ledger",
+      "reconciliation"
+    ]
+  },
+  {
+    "course": "Accounting Agents",
+    "chapter_title": "Automated Tax Compliance Agents",
+    "labComponentId": "accounting-tax-compliance",
+    "critical_concepts": [
+      {
+        "concept": "Regulatory Mapping",
+        "elaboration": "Translating natural language tax codes into structured, queryable rule engines."
+      },
+      {
+        "concept": "Deterministic Rulesets",
+        "elaboration": "Ensuring AI doesn't hallucinate tax rates by offloading logic to verified tables."
+      },
+      {
+        "concept": "Jurisdiction Resolution",
+        "elaboration": "Identifying state, county, and local tax requirements based on geospatial data points."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "tax-compliance-1",
+        "concept_tested": "Deterministic Verification",
+        "type": "analysis",
+        "title": "Case 1: AI vs. Verified Tax Rules",
+        "prompt": "An agent is analyzing an invoice for a software subscription sold in California. The agent needs to determine the applicable sales tax rate.",
+        "question": "What is the most secure architecture for an AI agent to determine the correct tax rate?",
+        "options": [
+          "A. Ask the LLM to predict the California sales tax based on its pre-trained knowledge base.",
+          "B. Have the agent parse the location data and query a deterministic tax rate API.",
+          "C. Prompt the LLM to search the web for 'Current California software tax rate' and extract the percentage."
+        ],
+        "answer": "B. Have the agent parse the location data and query a deterministic tax rate API.",
+        "explanation": "LLMs hallucinate and their pre-trained data can be outdated. The AI should only be used to extract the necessary parameters (location, product type) to query a deterministic, regularly updated tax API.",
+        "theory": {
+          "title": "Deterministic Rulesets in Tax AI",
+          "content": "Tax liabilities demand precision. AI agents shouldn't calculate taxes internally. Instead, they should act as orchestrators: extracting structured data from unstructured invoices, and passing that data to determinisitic, rule-based tax engines via function calling.",
+          "analogy": "The AI is the mailroom clerk sorting the package based on address, but the actual calculation is done by the automated postage scale.",
+          "application": "Use function calling / tool use to bridge the gap between unstructured document understanding and structured tax APIs."
+        },
+        "nature": "defense",
+        "tags": [
+          "business"
+        ],
+        "logs": [
+          {
+            "timestamp": "14:10:00",
+            "level": "info",
+            "message": "Extracting vendor and destination state from PDF invoice..."
+          },
+          {
+            "timestamp": "14:10:02",
+            "level": "info",
+            "message": "Destination state identified: California. Product category: SaaS."
+          },
+          {
+            "timestamp": "14:10:03",
+            "level": "success",
+            "message": "Invoked Tax_Rate_API(state='CA', category='SaaS'). Rate returned: 0.00% (exempt)."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "finance",
+      "audit",
+      "fraud",
+      "compliance",
+      "ledger",
+      "reconciliation"
+    ]
+  },
+  {
+    "course": "Accounting Agents",
+    "chapter_title": "Expense Management AI",
+    "labComponentId": "accounting-expense-reconciliation",
+    "critical_concepts": [
+      {
+        "concept": "Receipt Parsing",
+        "elaboration": "Using multimodal vision models to extract line items from crumpled or faded receipts."
+      },
+      {
+        "concept": "Policy Engine Integration",
+        "elaboration": "Checking extracted expense data against company spending policies dynamically."
+      },
+      {
+        "concept": "Vendor Categorization",
+        "elaboration": "Automatically assigning general ledger (GL) codes based on vendor semantic analysis."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "expense-recon-1",
+        "concept_tested": "Multimodal Policy Enforcement",
+        "type": "analysis",
+        "title": "Case 1: Multimodal Expense Auditing",
+        "prompt": "An employee uploads a photo of a dinner receipt from a business trip. The receipt includes a $45 steak and a $15 alcoholic beverage.",
+        "question": "How should the AI agent handle this expense claim if the company policy explicitly denies reimbursement for alcohol?",
+        "options": [
+          "A. Reject the entire receipt automatically and notify the employee.",
+          "B. Approve the receipt since it's a single restaurant bill and the total is under $100.",
+          "C. Extract line items, flag the alcohol, automatically deduct $15, and approve the remaining $45."
+        ],
+        "answer": "C. Extract line items, flag the alcohol, automatically deduct $15, and approve the remaining $45.",
+        "explanation": "Modern AI expense agents don't just look at the total amount. They use vision models to extract line items, map them against company policies, and perform automated deductions for non-compliant items, reducing manual HR review.",
+        "theory": {
+          "title": "Policy Engine Integration",
+          "content": "Expense AI operates as a semantic filter. It translates the visual data of a receipt into a structured JSON array of line items, then runs those items through a deterministic policy engine (e.g., 'If category == alcohol, reject').",
+          "analogy": "It's like a bouncer at a club checking IDs individually, rather than just looking at the group as a whole.",
+          "application": "Implement multimodal LLMs (like GPT-4V or Gemini Pro Vision) to parse receipts into structured schemas, followed by deterministic validation logic."
+        },
+        "nature": "defense",
+        "tags": [
+          "business"
+        ],
+        "logs": [
+          {
+            "timestamp": "09:15:22",
+            "level": "info",
+            "message": "Processing receipt image upload: receipt_045.jpg"
+          },
+          {
+            "timestamp": "09:15:24",
+            "level": "info",
+            "message": "Extracted line items: [Steak: $45.00], [Beer: $15.00], [Tax: $4.20]"
+          },
+          {
+            "timestamp": "09:15:25",
+            "level": "warn",
+            "message": "Policy violation detected: Category 'Alcohol' is non-reimbursable."
+          },
+          {
+            "timestamp": "09:15:26",
+            "level": "success",
+            "message": "Expense partially approved. Reimbursable total calculated: $49.20."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "finance",
+      "audit",
+      "fraud",
+      "compliance",
+      "ledger",
+      "reconciliation"
+    ]
+  }
+]

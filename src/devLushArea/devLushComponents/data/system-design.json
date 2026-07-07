@@ -1,0 +1,191 @@
+[
+  {
+    "id": "database-sharding-replication",
+    "title": "System Design: Database Sharding & Replication",
+    "course": "System Design & Distributed Systems",
+    "chapter_title": "Database Sharding & Replication",
+    "labComponentId": "database-sharding-replication",
+    "interactive_questions": [
+      {
+        "componentId": "database-sharding-replication",
+        "type": "interactive-visual",
+        "title": "Database Sharding & Replication",
+        "prompt": "Distribute incoming data across shards based on a sharding key, and observe leader-follower failover behavior when a primary node fails.",
+        "question": "Which sharding strategy is generally best for uniform data distribution?",
+        "options": [
+          "A. Range-based Sharding",
+          "B. Hash-based Sharding",
+          "C. Directory-based Sharding",
+          "D. Geographic Sharding"
+        ],
+        "answer": "B. Hash-based Sharding",
+        "explanation": "Hash-based sharding applies a hash function to the sharding key, ensuring a uniform distribution of data across shards and minimizing hot spots.",
+        "theory_explanation": "Database sharding is the process of splitting a large database into smaller, more manageable pieces called shards. Each shard holds a subset of the data. Replication involves copying data from a primary node to one or more follower nodes to ensure high availability. If the primary fails, a follower can be promoted to leader.",
+        "real_world_analogy": "Imagine a huge library. Instead of one massive building, you split it into branches by genre (sharding). Then, each branch has a backup warehouse with a copy of its books (replication). If a branch burns down, the warehouse opens to the public (failover)."
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "distributed-systems",
+      "scalability",
+      "sharding",
+      "event-driven"
+    ]
+  },
+  {
+    "id": "event-driven-architecture",
+    "title": "System Design: Event-Driven Architectures",
+    "course": "System Design & Distributed Systems",
+    "chapter_title": "Event-Driven Architectures",
+    "labComponentId": "event-driven-architecture",
+    "interactive_questions": [
+      {
+        "componentId": "event-driven-architecture",
+        "type": "interactive-visual",
+        "title": "Event-Driven Architectures",
+        "prompt": "Simulate message publishing to topics, visualize consumer groups processing partitions, and handle consumer failure and rebalancing.",
+        "question": "In a partitioned message broker (like Kafka), what ensures messages for a specific entity are processed in order?",
+        "options": [
+          "A. Publishing without a key",
+          "B. Publishing with a consistent routing key",
+          "C. Using multiple consumers in a group for the same partition",
+          "D. Setting the consumer fetch rate to 1"
+        ],
+        "answer": "B. Publishing with a consistent routing key",
+        "explanation": "Publishing messages with the same routing key ensures they are routed to the same partition, guaranteeing order for that key.",
+        "theory_explanation": "Event-driven architecture (EDA) promotes asynchronous communication using events. A message broker stores and distributes these events. Topics are often divided into partitions for scalability. Consumer groups read from topics, where each partition is assigned to exactly one consumer within the group. When consumers join or leave, partitions are rebalanced among the group.",
+        "real_world_analogy": "Think of a busy restaurant kitchen. Waiters drop orders (events) onto a ticket rail (broker). Several chefs (consumers) pick up tickets to cook. If you want the appetizer and main course for Table 5 cooked in order, you clip them together (routing key) so the same chef handles both."
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "distributed-systems",
+      "scalability",
+      "sharding",
+      "event-driven"
+    ]
+  },
+  {
+    "id": "load-balancing-algorithms",
+    "title": "System Design: Load Balancing",
+    "course": "System Design & Distributed Systems",
+    "chapter_title": "Load Balancing",
+    "labComponentId": "load-balancing-algorithms",
+    "interactive_questions": [
+      {
+        "componentId": "load-balancing-algorithms",
+        "type": "interactive-visual",
+        "title": "Load Balancing Algorithms",
+        "prompt": "Distribute incoming traffic across servers using different algorithms (Round Robin, Least Connections, IP Hash) and observe server load.",
+        "question": "Which load balancing algorithm is best when servers have varying capacities and request processing times are unpredictable?",
+        "options": [
+          "A. Round Robin",
+          "B. Least Connections",
+          "C. IP Hash",
+          "D. Random"
+        ],
+        "answer": "B. Least Connections",
+        "explanation": "Least Connections dynamically routes traffic to the server with the fewest active connections, handling varying capacities and unpredictable request times effectively.",
+        "theory_explanation": "Load balancing distributes network traffic across multiple servers. Algorithms include Round Robin (sequential distribution), Least Connections (sends to least busy server), and IP Hash (sticky sessions based on client IP). This ensures high availability and reliability.",
+        "real_world_analogy": "Imagine checkout lines at a grocery store. Round Robin is like sending the next customer to checkout 1, then 2, then 3. Least Connections is like a customer choosing the shortest line."
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "distributed-systems",
+      "scalability",
+      "sharding",
+      "event-driven"
+    ]
+  },
+  {
+    "id": "rate-limiting-strategies",
+    "title": "System Design: Rate Limiting",
+    "course": "System Design & Distributed Systems",
+    "chapter_title": "Rate Limiting",
+    "labComponentId": "rate-limiting-strategies",
+    "interactive_questions": [
+      {
+        "componentId": "rate-limiting-strategies",
+        "type": "interactive-visual",
+        "title": "Rate Limiting Strategies",
+        "prompt": "Test different rate limiting algorithms (Token Bucket, Leaky Bucket, Fixed Window) to observe how they handle request spikes.",
+        "question": "Which rate limiting algorithm allows for sudden bursts of traffic while maintaining a steady long-term rate?",
+        "options": [
+          "A. Fixed Window Counter",
+          "B. Sliding Window Log",
+          "C. Token Bucket",
+          "D. Leaky Bucket"
+        ],
+        "answer": "C. Token Bucket",
+        "explanation": "Token Bucket allows bursts of requests up to the bucket's capacity, while refilling tokens at a constant rate.",
+        "theory_explanation": "Rate limiting restricts the number of requests a client can make to an API within a specified time frame. Common algorithms include Token Bucket (allows bursts), Leaky Bucket (smooths out traffic), and Fixed/Sliding Window counters. This protects services from overload and DDoS attacks.",
+        "real_world_analogy": "Imagine a theme park ride with a queue. The operator lets 10 people in every minute. If 50 people show up at once, only the first 10 get in, and the rest must wait or are turned away."
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "distributed-systems",
+      "scalability",
+      "sharding",
+      "event-driven"
+    ]
+  },
+  {
+    "id": "mp_system_design_overview",
+    "title": "System Design Overview",
+    "labComponentId": "mp_system_design_overview",
+    "course": "System Design & Distributed Systems",
+    "chapter_title": "Distributed Systems",
+    "critical_concepts": [
+      {
+        "concept": "What is System Design?",
+        "elaboration": "System Design is the process of defining the architecture, modules, interfaces, and data for a system to satisfy specified requirements. In distributed systems, it focuses on scalability, reliability, and performance."
+      },
+      {
+        "concept": "Key Trade-offs in Distributed Systems",
+        "elaboration": "Designing distributed systems involves balancing trade-offs, such as consistency vs. availability (CAP theorem), latency vs. throughput, and data partitioning strategies (sharding, replication) to handle massive scale."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "mp_system_design_overview",
+        "tags": [
+          "System Design",
+          "Distributed Systems",
+          "Architecture",
+          "Scalability",
+          "Reliability"
+        ],
+        "concept_tested": "Fundamentals of Distributed Systems Design",
+        "title": "System Design: Overview",
+        "prompt": "Explore the fundamental concepts of designing large-scale, highly available distributed systems.",
+        "interaction": "A static overview page introducing core system design concepts, database sharding, and event-driven architectures.",
+        "question": "Review the concepts below.",
+        "answer": null
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "distributed-systems",
+      "scalability",
+      "sharding",
+      "event-driven"
+    ]
+  }
+]

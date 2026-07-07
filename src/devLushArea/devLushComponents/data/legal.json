@@ -1,0 +1,344 @@
+[
+  {
+    "course": "Legal & Compliance Agents",
+    "chapter_title": "Contract Analysis & Regulatory Compliance",
+    "labComponentId": "legal-agents",
+    "critical_concepts": [
+      {
+        "concept": "Contract Analysis",
+        "elaboration": "Agents that ingest 100-page enterprise contracts, flag non-standard clauses, and highlight potential liabilities based on a company's legal playbook."
+      },
+      {
+        "concept": "Regulatory Compliance",
+        "elaboration": "Agents that continuously monitor changing local and international laws and alert businesses if their current policies or products become non-compliant."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "legal-contract-analysis",
+        "concept_tested": "Contract Analysis",
+        "type": "visual_element",
+        "title": "Case 1: Autonomous Contract Review",
+        "prompt": "An enterprise legal agent ingests a 150-page vendor agreement. It rapidly flags a non-standard 'indemnification' clause that deviates from the company's approved legal playbook and highlights the potential financial liability.",
+        "question": "What is the primary advantage of using an autonomous agent for contract analysis over manual review?",
+        "options": [
+          "A. Agents can entirely replace the need for corporate lawyers.",
+          "B. Agents drastically reduce the time needed to review lengthy documents while consistently applying complex playbook rules to surface hidden liabilities.",
+          "C. Agents automatically sign contracts on behalf of the company to speed up procurement."
+        ],
+        "answer": "B. Agents drastically reduce the time needed to review lengthy documents while consistently applying complex playbook rules to surface hidden liabilities.",
+        "explanation": "Contract review agents excel at processing massive volumes of text against predefined legal playbooks, highlighting deviations (like unusual indemnification or termination clauses) for human lawyers to focus their expertise on, rather than spending hours reading boilerplate text.",
+        "theory": {
+          "title": "Playbook-Driven Legal Parsing",
+          "content": "Legal documents are dense and highly structured. Agents use Natural Language Processing to extract key entities and obligations, comparing them against a corporate 'playbook'—a set of acceptable legal parameters. Any deviation is flagged with a risk score.",
+          "analogy": "A metal detector scanning a haystack for needles (risky clauses), so the lawyer only has to inspect the needles instead of shifting through all the hay (boilerplate text).",
+          "application": "Implement agents to pre-screen all incoming NDAs and vendor agreements, automatically redlining unacceptable terms before human counsel even opens the document."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "business",
+          "security"
+        ],
+        "logs": [
+          {
+            "timestamp": "08:15:00",
+            "level": "info",
+            "message": "Ingesting 150-page Vendor Agreement (PDF)..."
+          },
+          {
+            "timestamp": "08:15:10",
+            "level": "info",
+            "message": "Parsing entities and comparing against Corporate Playbook V3."
+          },
+          {
+            "timestamp": "08:15:25",
+            "level": "warn",
+            "message": "Flag: Section 4.2 (Indemnification) deviates from standard caps."
+          },
+          {
+            "timestamp": "08:15:30",
+            "level": "success",
+            "message": "Review complete. Redlined draft generated for counsel review."
+          }
+        ]
+      },
+      {
+        "componentId": "legal-regulatory-compliance",
+        "concept_tested": "Regulatory Compliance",
+        "type": "visual_element",
+        "title": "Case 2: Continuous Regulatory Monitoring",
+        "prompt": "A compliance agent continuously monitors a feed of international data privacy laws. When a new privacy regulation is passed in a European jurisdiction, the agent cross-references it with the company's current data retention policies and flags a non-compliance risk.",
+        "question": "How do regulatory compliance agents help global businesses manage legal risk?",
+        "options": [
+          "A. By bribing foreign officials to ignore compliance violations.",
+          "B. By automatically changing the company's core business model without human input.",
+          "C. By providing continuous, proactive monitoring of shifting legal landscapes and immediately identifying gaps in current corporate policies."
+        ],
+        "answer": "C. By providing continuous, proactive monitoring of shifting legal landscapes and immediately identifying gaps in current corporate policies.",
+        "explanation": "Global regulations change constantly. Agents can track legislative updates across hundreds of jurisdictions simultaneously and map those changes to internal policies, alerting risk officers to potential non-compliance before fines occur.",
+        "theory": {
+          "title": "Dynamic Compliance Mapping",
+          "content": "Regulatory agents operate by ingesting legislative feeds (like federal registers or parliamentary proceedings) and using semantic similarity to map new legal requirements against the company's documented policies and procedures, highlighting gaps.",
+          "analogy": "A radar system that constantly scans the horizon for incoming storms (new regulations) and automatically checks if your house's windows are open (policy gaps).",
+          "application": "Deploy monitoring agents for GDPR, CCPA, and HIPAA compliance that alert the legal team when legislative changes threaten current data architecture."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "business"
+        ],
+        "logs": [
+          {
+            "timestamp": "14:00:00",
+            "level": "info",
+            "message": "Scanning global legislative feeds for Data Privacy updates..."
+          },
+          {
+            "timestamp": "14:05:00",
+            "level": "info",
+            "message": "New regulation detected: EU AI Act preliminary requirements."
+          },
+          {
+            "timestamp": "14:06:00",
+            "level": "info",
+            "message": "Mapping requirements to internal policy: 'Data Retention Guideline V2'."
+          },
+          {
+            "timestamp": "14:10:00",
+            "level": "warn",
+            "message": "Compliance Gap Identified: Section 3 (User Opt-out) lacks required 24hr SLA."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "business",
+      "security",
+      "devlush",
+      "agents",
+      "ai",
+      "compliance",
+      "contracts",
+      "regulatory",
+      "liabilities",
+      "vendor-agreements"
+    ]
+  },
+  {
+    "course": "Legal & Compliance Agents",
+    "chapter_title": "IP Clause Standardization",
+    "labComponentId": "legal-ip-protection",
+    "critical_concepts": [
+      {
+        "concept": "Intellectual Property Guard",
+        "elaboration": "Advanced legal agents use generative AI to rewrite non-compliant clauses into compliant ones, based on the company's approved boilerplate language. This shifts the agent from a purely diagnostic tool to an active participant in contract drafting."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "legal-ip-protection",
+        "concept_tested": "Intellectual Property Guard",
+        "type": "visual_element",
+        "title": "Case 3: IP Clause Standardization",
+        "prompt": "An agent parses a statement of work (SOW) from a software consultancy. It detects that the 'Intellectual Property' clause assigns joint ownership of custom code, whereas the playbook strictly requires a 'Work Made for Hire' doctrine.",
+        "question": "What is the agent's most valuable action upon discovering the non-compliant IP clause?",
+        "options": [
+          "A. Rejecting the vendor entirely and blocking communication.",
+          "B. Automatically rewriting the clause to match the required 'Work Made for Hire' template and flagging it for attorney approval.",
+          "C. Assuming the joint ownership is acceptable because it's a standard consultancy practice."
+        ],
+        "answer": "B. Automatically rewriting the clause to match the required 'Work Made for Hire' template and flagging it for attorney approval.",
+        "explanation": "Legal agents can not only detect deviations but also perform first-pass redlining by suggesting the company's standard language (like 'Work Made for Hire') as a replacement. This accelerates negotiations by preparing the counter-offer.",
+        "theory": {
+          "title": "Automated Redlining & Clause Suggestion",
+          "content": "Advanced legal agents use generative AI to rewrite non-compliant clauses into compliant ones, based on the company's approved boilerplate language. This shifts the agent from a purely diagnostic tool to an active participant in contract drafting.",
+          "analogy": "An auto-correct feature for legal jargon that fixes a typo by replacing it with the dictionary-approved spelling.",
+          "application": "Use agents to automatically insert standard non-solicitation or IP ownership clauses whenever a draft contract omits or alters them."
+        },
+        "nature": "opportunity",
+        "tags": [
+          "business"
+        ],
+        "logs": [
+          {
+            "timestamp": "10:30:00",
+            "level": "info",
+            "message": "Analyzing Statement of Work (SOW) #445."
+          },
+          {
+            "timestamp": "10:30:15",
+            "level": "warn",
+            "message": "IP Clause Mismatch: 'Joint Ownership' detected."
+          },
+          {
+            "timestamp": "10:30:18",
+            "level": "info",
+            "message": "Generating redline: Replacing with 'Work Made for Hire' template."
+          },
+          {
+            "timestamp": "10:30:20",
+            "level": "success",
+            "message": "Draft saved. Ready for human counsel approval."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "business",
+      "security",
+      "devlush",
+      "agents",
+      "ai",
+      "compliance",
+      "contracts",
+      "regulatory",
+      "liabilities",
+      "vendor-agreements"
+    ]
+  },
+  {
+    "course": "Legal & Compliance Agents",
+    "chapter_title": "Uncapped Liability Detection",
+    "labComponentId": "legal-liability-cap",
+    "critical_concepts": [
+      {
+        "concept": "Liability Risk Analysis",
+        "elaboration": "One of the most powerful capabilities of an AI legal agent is recognizing omissions. By comparing a document to a complete template or playbook, the agent identifies when standard protective clauses (like damage caps or arbitration requirements) are missing or improperly scoped."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "legal-liability-cap",
+        "concept_tested": "Liability Risk Analysis",
+        "type": "visual_element",
+        "title": "Case 5: Uncapped Liability Detection",
+        "prompt": "An agent reviewing a Master Service Agreement (MSA) notices that the limitation of liability section excludes 'indirect damages', meaning the company could be liable for millions in lost profits if a breach occurs.",
+        "question": "Why is the agent's ability to detect subtle omissions (like the lack of a liability cap) critical for enterprise security?",
+        "options": [
+          "A. Because missing words or excluded clauses are often harder for tired humans to spot than explicitly stated risks.",
+          "B. Because the agent can automatically delete the entire contract if it finds a risk.",
+          "C. Because it proves that human lawyers are no longer necessary."
+        ],
+        "answer": "A. Because missing words or excluded clauses are often harder for tired humans to spot than explicitly stated risks.",
+        "explanation": "Human reviewers can suffer from fatigue and miss what *isn't* there (like a missing cap on indirect damages). Agents don't get tired and will consistently flag the absence of required protective language, preventing catastrophic financial exposure.",
+        "theory": {
+          "title": "Absence Detection in Legal Parsing",
+          "content": "One of the most powerful capabilities of an AI legal agent is recognizing omissions. By comparing a document to a complete template or playbook, the agent identifies when standard protective clauses (like damage caps or arbitration requirements) are missing or improperly scoped.",
+          "analogy": "A security system that alerts you not only when someone breaks a window, but also when you forgot to lock the door in the first place.",
+          "application": "Configure agents to explicitly scan for the presence and adequacy of Limitation of Liability, Indemnification, and Force Majeure clauses."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "business",
+          "security"
+        ],
+        "logs": [
+          {
+            "timestamp": "11:00:00",
+            "level": "info",
+            "message": "Analyzing Limitation of Liability section (Section 8)."
+          },
+          {
+            "timestamp": "11:00:05",
+            "level": "info",
+            "message": "Cross-referencing with Playbook requirement: 'Cap at fees paid in 12 months'."
+          },
+          {
+            "timestamp": "11:00:10",
+            "level": "warn",
+            "message": "CRITICAL: No exclusion for consequential/indirect damages found."
+          },
+          {
+            "timestamp": "11:00:15",
+            "level": "success",
+            "message": "Flagged for immediate review. Suggested text inserted as comment."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "business",
+      "security",
+      "devlush",
+      "agents",
+      "ai",
+      "compliance",
+      "contracts",
+      "regulatory",
+      "liabilities",
+      "vendor-agreements"
+    ]
+  },
+  {
+    "course": "Legal & Compliance Agents",
+    "chapter_title": "Accelerated Due Diligence",
+    "labComponentId": "legal-mna-due-diligence",
+    "critical_concepts": [
+      {
+        "concept": "M&A Due Diligence",
+        "elaboration": "Agents can scale their processing capabilities to analyze thousands of documents simultaneously. They extract key metadata (parties, dates, values) and specific provisions across the corpus, outputting structured data (like CSVs or dashboards) for risk assessment."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "legal-mna-due-diligence",
+        "concept_tested": "M&A Due Diligence",
+        "type": "visual_element",
+        "title": "Case 4: Accelerated Due Diligence",
+        "prompt": "During an acquisition, a company needs to review 10,000 contracts in a target company's data room. The legal agent processes the entire batch over a weekend, generating a risk matrix of all change-of-control provisions and uncapped liabilities.",
+        "question": "How does the legal agent transform the M&A due diligence process?",
+        "options": [
+          "A. By reducing the timeline from months to days, providing a comprehensive risk landscape before human review begins.",
+          "B. By making decisions on whether the acquisition should proceed.",
+          "C. By legally binding the acquiring company to all 10,000 contracts automatically."
+        ],
+        "answer": "A. By reducing the timeline from months to days, providing a comprehensive risk landscape before human review begins.",
+        "explanation": "In M&A, reviewing thousands of contracts manually is the primary bottleneck. Agents can ingest entire data rooms, extract critical data points (like change-of-control clauses), and summarize the legal risk profile, allowing lawyers to focus on strategy rather than discovery.",
+        "theory": {
+          "title": "Bulk Ingestion and Data Room Analysis",
+          "content": "Agents can scale their processing capabilities to analyze thousands of documents simultaneously. They extract key metadata (parties, dates, values) and specific provisions across the corpus, outputting structured data (like CSVs or dashboards) for risk assessment.",
+          "analogy": "Using a drone to survey an entire forest for diseased trees, rather than walking through the forest and inspecting every single one.",
+          "application": "Deploy agents during M&A due diligence to create a consolidated database of all assignability and change-of-control clauses in the target's contracts."
+        },
+        "nature": "opportunity",
+        "tags": [
+          "business",
+          "finance"
+        ],
+        "logs": [
+          {
+            "timestamp": "Friday 18:00:00",
+            "level": "info",
+            "message": "Connecting to VDR (Virtual Data Room). 10,245 documents detected."
+          },
+          {
+            "timestamp": "Saturday 04:30:00",
+            "level": "info",
+            "message": "Parsing ongoing. 50% complete. Extracting 'Change of Control' clauses."
+          },
+          {
+            "timestamp": "Sunday 12:45:00",
+            "level": "warn",
+            "message": "High Risk: 42 vendor contracts require consent for assignment."
+          },
+          {
+            "timestamp": "Sunday 20:00:00",
+            "level": "success",
+            "message": "Analysis complete. Risk matrix dashboard generated for M&A team."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "business",
+      "security",
+      "devlush",
+      "agents",
+      "ai",
+      "compliance",
+      "contracts",
+      "regulatory",
+      "liabilities",
+      "vendor-agreements"
+    ]
+  }
+]

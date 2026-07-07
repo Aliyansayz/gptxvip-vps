@@ -501,5 +501,10 @@ export const sidebarItems = [
       { id: "project-journey", label: "Project Journey" },
     ],
   },
+  {
+    id: "dev-labs-workspace",
+    label: "Dev Labs and Agent Workspace",
+    icon: Zap,
+  },
   { id: "overview", label: "Strategy Overview", icon: BarChart3 },
 ];

@@ -1,0 +1,19 @@
+skills:
+  "Nmap Integration":
+    what_is_it: "A powerful open-source tool for network discovery and security auditing."
+    what_it_provides: "Provides port scanning, OS detection, and network mapping capabilities."
+  "Nuclei Scanner":
+    what_is_it: "A fast and customizable vulnerability scanner based on simple YAML-based DSL."
+    what_it_provides: "Provides targeted scanning for known CVEs and misconfigurations across applications."
+  "Burp Suite API":
+    what_is_it: "An integrated platform for performing security testing of web applications."
+    what_it_provides: "Provides intercepting proxy, vulnerability scanning, and deep application analysis."
+  "SQLmap":
+    what_is_it: "An open-source penetration testing tool that automates detecting SQL injection flaws."
+    what_it_provides: "Provides automated database takeover, data exfiltration, and SQLi exploitation."
+  "Dirsearch":
+    what_is_it: "A simple command-line tool designed to brute force directories and files in web servers."
+    what_it_provides: "Provides rapid path discovery and hidden file exposure through customizable wordlists."
+  "Waybackurls":
+    what_is_it: "A tool that fetches known URLs from the Wayback Machine for a given domain."
+    what_it_provides: "Provides historical endpoint discovery and reconnaissance for expanded attack surfaces."

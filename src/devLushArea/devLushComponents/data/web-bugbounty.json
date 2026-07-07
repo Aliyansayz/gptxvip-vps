@@ -1,0 +1,786 @@
+[
+  {
+    "course": "Web Bug Bounty",
+    "chapter_title": "CORS Misconfiguration",
+    "labComponentId": "web-bugbounty-cors",
+    "critical_concepts": [],
+    "interactive_questions": [],
+    "tags": [
+      "security",
+      "cors",
+      "devlush",
+      "agents",
+      "ai",
+      "vulnerability",
+      "web-security",
+      "ethical-hacking",
+      "idor",
+      "exploit"
+    ]
+  },
+  {
+    "course": "Web Bug Bounty",
+    "chapter_title": "Cross-Site Scripting (XSS)",
+    "labComponentId": "web-bugbounty-xss",
+    "critical_concepts": [
+      {
+        "concept": "Reflected XSS",
+        "elaboration": "Malicious script is embedded in a link and executed immediately when the victim clicks it."
+      },
+      {
+        "concept": "Stored XSS",
+        "elaboration": "Malicious script is saved on the server (e.g. in a comment) and executed when users view the page."
+      },
+      {
+        "concept": "DOM-Based XSS",
+        "elaboration": "Vulnerability exists in the client-side code rather than the server-side code."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "xss-case-1",
+        "concept_tested": "Reflected XSS",
+        "type": "interactive-visual",
+        "title": "Case 1: The Search Bar Reflection",
+        "prompt": "A researcher notices that searching for `<script>alert('XSS')</script>` on an application's search page causes a JavaScript alert popup to appear when the search results page loads.",
+        "question": "Which of the following is true regarding this vulnerability?",
+        "options": [
+          "A. The application is properly sanitizing the input.",
+          "B. It's a Reflected XSS, requiring the victim to click a specially crafted link.",
+          "C. It's a Stored XSS, affecting all users who visit the site.",
+          "D. The database is compromised by SQL Injection."
+        ],
+        "answer": "B. It's a Reflected XSS, requiring the victim to click a specially crafted link.",
+        "explanation": "Because the payload is reflected directly back in the response from the search parameter (and not stored), it is Reflected XSS. An attacker must trick a victim into clicking a link containing the payload.",
+        "theory": {
+          "title": "Reflected XSS",
+          "content": "Reflected Cross-Site Scripting (XSS) occurs when an application receives data in an HTTP request and includes that data within the immediate HTTP response in an unsafe way. The attacker must induce the victim to make the malicious request, typically by sending a link. When the victim clicks the link, the payload executes in their browser, allowing the attacker to steal cookies, hijack sessions, or perform actions on behalf of the user.",
+          "analogy": "Like handing a parrot a bad word to say immediately back to the next person who walks in the room.",
+          "application": "Always sanitize and contextually encode user input before reflecting it back into the DOM or HTML response."
+        },
+        "nature": "weakness",
+        "tags": [
+          "security",
+          "xss",
+          "developer"
+        ],
+        "logs": [
+          {
+            "timestamp": "10:15:02",
+            "level": "info",
+            "message": "User submits search query: <script>alert('XSS')</script>"
+          },
+          {
+            "timestamp": "10:15:03",
+            "level": "warn",
+            "message": "Application echoes query without HTML encoding."
+          },
+          {
+            "timestamp": "10:15:04",
+            "level": "error",
+            "message": "Browser executes injected JavaScript payload."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "security",
+      "developer",
+      "vulnerability",
+      "devlush",
+      "agents",
+      "ai",
+      "web-security",
+      "ethical-hacking",
+      "idor",
+      "exploit"
+    ]
+  },
+  {
+    "course": "Web Bug Bounty",
+    "chapter_title": "Cross-Site Request Forgery (CSRF)",
+    "labComponentId": "web-bugbounty-csrf",
+    "critical_concepts": [],
+    "interactive_questions": [],
+    "tags": [
+      "security",
+      "csrf",
+      "devlush",
+      "agents",
+      "ai",
+      "vulnerability",
+      "web-security",
+      "ethical-hacking",
+      "idor",
+      "exploit"
+    ]
+  },
+  {
+    "course": "Web Bug Bounty",
+    "chapter_title": "Insecure Direct Object Reference (IDOR)",
+    "labComponentId": "web-bugbounty-idor",
+    "critical_concepts": [],
+    "interactive_questions": [],
+    "tags": [
+      "security",
+      "idor",
+      "devlush",
+      "agents",
+      "ai",
+      "vulnerability",
+      "web-security",
+      "ethical-hacking",
+      "exploit"
+    ]
+  },
+  {
+    "course": "Web Bug Bounty",
+    "chapter_title": "Path Traversal (LFI)",
+    "labComponentId": "web-bugbounty-lfi",
+    "critical_concepts": [],
+    "interactive_questions": [],
+    "tags": [
+      "security",
+      "lfi",
+      "devlush",
+      "agents",
+      "ai",
+      "vulnerability",
+      "web-security",
+      "ethical-hacking",
+      "idor",
+      "exploit"
+    ]
+  },
+  {
+    "course": "Web Bug Bounty",
+    "chapter_title": "Server-Side Request Forgery (SSRF)",
+    "labComponentId": "web-bugbounty-ssrf",
+    "critical_concepts": [
+      {
+        "concept": "Internal Network Scanning",
+        "elaboration": "Using a vulnerable server to scan its own internal network."
+      },
+      {
+        "concept": "Cloud Metadata Exfiltration",
+        "elaboration": "Accessing cloud provider metadata APIs (e.g., AWS 169.254.169.254) to steal IAM credentials."
+      },
+      {
+        "concept": "Blind SSRF",
+        "elaboration": "An SSRF where the response is not returned to the attacker, but out-of-band interactions can be observed."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "ssrf-case-1",
+        "concept_tested": "Cloud Metadata Exfiltration",
+        "type": "interactive-visual",
+        "title": "Case 1: The Image Exporter",
+        "prompt": "An application has a feature to fetch an image from a user-provided URL and display it. An attacker submits the URL `http://169.254.169.254/latest/meta-data/iam/security-credentials/`.",
+        "question": "What is the attacker likely trying to achieve?",
+        "options": [
+          "A. They are trying to find an image hosted on that IP.",
+          "B. They are attempting to steal temporary Cloud IAM credentials assigned to the server.",
+          "C. They are trying to cause a Denial of Service (DoS) by requesting a loopback address.",
+          "D. They are attempting to exploit a buffer overflow in the image parser."
+        ],
+        "answer": "B. They are attempting to steal temporary Cloud IAM credentials assigned to the server.",
+        "explanation": "169.254.169.254 is a well-known link-local address used by cloud providers (like AWS, Azure, GCP) to serve instance metadata. Accessing this endpoint can leak highly sensitive IAM roles attached to the instance.",
+        "theory": {
+          "title": "SSRF and Cloud Environments",
+          "content": "Server-Side Request Forgery (SSRF) allows an attacker to induce the server-side application to make HTTP requests to an arbitrary domain of the attacker's choosing. In modern cloud environments, SSRF is particularly devastating because it can be used to query the internal metadata endpoints, potentially leading to total infrastructure compromise if the machine has high-privilege IAM roles attached.",
+          "analogy": "Calling a company switchboard and convincing the operator to dial an internal, highly classified extension on your behalf, bypassing external firewalls.",
+          "application": "Implement strict allowlists for URL fetching, disable following redirects, and require IMDSv2 (metadata v2) which requires specific headers."
+        },
+        "nature": "weakness",
+        "tags": [
+          "security",
+          "ssrf",
+          "cloud"
+        ],
+        "logs": [
+          {
+            "timestamp": "09:12:30",
+            "level": "info",
+            "message": "User requested URL fetch: http://169.254.169.254/latest/meta-data/"
+          },
+          {
+            "timestamp": "09:12:31",
+            "level": "warn",
+            "message": "Server made HTTP request to internal link-local address."
+          },
+          {
+            "timestamp": "09:12:32",
+            "level": "error",
+            "message": "Sensitive IAM credentials returned in response payload."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "security",
+      "developer",
+      "cloud",
+      "devlush",
+      "agents",
+      "ai",
+      "vulnerability",
+      "web-security",
+      "ethical-hacking",
+      "idor",
+      "exploit"
+    ]
+  },
+  {
+    "course": "Web Bug Bounty",
+    "chapter_title": "SQL Injection (SQLi)",
+    "labComponentId": "web-bugbounty-sqli",
+    "critical_concepts": [
+      {
+        "concept": "In-Band SQLi",
+        "elaboration": "Data is extracted using the same channel that is used to inject the SQL code."
+      },
+      {
+        "concept": "Blind SQLi",
+        "elaboration": "The application does not return data, but behaves differently based on true/false queries."
+      },
+      {
+        "concept": "Prepared Statements",
+        "elaboration": "The primary defense against SQLi, separating data from the query structure."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "sqli-case-1",
+        "concept_tested": "Authentication Bypass",
+        "type": "interactive-visual",
+        "title": "Case 1: The Classic Bypass",
+        "prompt": "An attacker enters `admin' OR 1=1 --` into the username field of a login form and submits it.",
+        "question": "What is the intended result of this payload?",
+        "options": [
+          "A. To crash the database server.",
+          "B. To bypass the password check and log in as 'admin'.",
+          "C. To extract all user passwords from the database.",
+          "D. To change the admin password."
+        ],
+        "answer": "B. To bypass the password check and log in as 'admin'.",
+        "explanation": "The payload modifies the SQL query to `SELECT * FROM users WHERE username = 'admin' OR 1=1 -- AND password = '...'`. The `1=1` is always true, and the `--` comments out the password check, granting access.",
+        "theory": {
+          "title": "Authentication Bypass via SQLi",
+          "content": "SQL Injection occurs when user input is unsafely concatenated directly into a database query. By injecting SQL control characters (like quotes) and logic (like OR 1=1), an attacker can alter the intended logic of the query. In authentication scenarios, this can allow logging in without a valid password.",
+          "analogy": "A trickster tells the bouncer, 'Let me in, my name is Alice, OR it's a sunny day (ignore anything else).' Since it is sunny, the bouncer lets them in regardless of their name.",
+          "application": "Never concatenate user input directly into SQL strings. Always use parameterized queries or an ORM."
+        },
+        "nature": "weakness",
+        "tags": [
+          "security",
+          "sqli"
+        ],
+        "logs": [
+          {
+            "timestamp": "14:00:12",
+            "level": "info",
+            "message": "Login attempt with username: admin' OR 1=1 --"
+          },
+          {
+            "timestamp": "14:00:13",
+            "level": "error",
+            "message": "Query constructed: SELECT * FROM users WHERE user='admin' OR 1=1 --'"
+          },
+          {
+            "timestamp": "14:00:14",
+            "level": "warn",
+            "message": "Authentication successful without valid password."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "security",
+      "developer",
+      "database",
+      "devlush",
+      "agents",
+      "ai",
+      "vulnerability",
+      "web-security",
+      "ethical-hacking",
+      "idor",
+      "exploit"
+    ]
+  },
+  {
+    "course": "Web Bug Bounty",
+    "chapter_title": "Business Lens: Risk Prioritization",
+    "labComponentId": "web-bugbounty-business-lens",
+    "critical_concepts": [
+      {
+        "concept": "Business Impact",
+        "elaboration": "Assess how vulnerabilities affect confidentiality, integrity, and availability."
+      },
+      {
+        "concept": "Responsible Disclosure",
+        "elaboration": "Report vulnerabilities clearly with reproducible evidence."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "business-lens-risk",
+        "type": "interactive-visual",
+        "title": "Business Lens: Risk Prioritization",
+        "prompt": "Bug bounty programs reward impact, not just technical complexity. You found a complex XSS that requires 10 steps of user interaction, and a simple IDOR that leaks all customer PII without interaction.",
+        "question": "What usually determines the severity of a bug bounty report?",
+        "options": [
+          "A. The length and detail of the technical writeup.",
+          "B. The demonstrated business impact of the vulnerability.",
+          "C. The technical complexity and novelty of the exploit."
+        ],
+        "answer": "B. The demonstrated business impact of the vulnerability.",
+        "explanation": "Bug bounty programs prioritize business impact (data loss, financial theft) over technical novelty.",
+        "theory_explanation": "In bug bounty programs, technical complexity does not equal business risk. A simple Insecure Direct Object Reference (IDOR) that exposes millions of customer financial records is vastly more critical than a highly complex, theoretical cross-site scripting (XSS) vulnerability that requires extreme user interaction. Risk prioritization must always evaluate the direct impact on confidentiality, integrity, and availability (CIA), factoring in regulatory fines, brand reputation damage, and immediate financial loss.",
+        "real_world_analogy": "A bank manager isn't worried about someone picking the lock on the employee bathroom; they are terrified of the front door being left wide open. Impact dictates priority."
+      }
+    ],
+    "tags": [
+      "business",
+      "devlush",
+      "agents",
+      "ai",
+      "vulnerability",
+      "web-security",
+      "ethical-hacking",
+      "idor",
+      "exploit"
+    ]
+  },
+  {
+    "course": "Web Bug Bounty",
+    "chapter_title": "Developer Lens: Secure Web Application Design",
+    "labComponentId": "web-bugbounty-developer-lens",
+    "critical_concepts": [
+      {
+        "concept": "Input Validation",
+        "elaboration": "Validate all user input using allowlists before processing."
+      },
+      {
+        "concept": "Parameterized Queries",
+        "elaboration": "Prevent SQL Injection by separating code from user-controlled data."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "vulnerability-patcher",
+        "type": "interactive",
+        "title": "Interactive Patcher: SQL Injection",
+        "prompt": "Secure coding practices significantly reduce common web vulnerabilities targeted in bug bounty programs.",
+        "question": "What is the safest way to prevent SQL Injection?",
+        "answer": "Use parameterized queries (prepared statements) instead of concatenating user input.",
+        "theory_explanation": "Secure web application design is rooted in the principle of 'never trust client-side data'. All input must be strictly validated against allowlists at the server level before being processed. Furthermore, developers must separate code execution from data storage using parameterized queries and Object-Relational Mapping (ORM) tools. This structural separation mathematically prevents injection vulnerabilities, such as SQL Injection (SQLi) and Cross-Site Scripting (XSS), by ensuring user input is treated strictly as literal data, never as executable commands.",
+        "real_world_analogy": "A post office sorting machine that uses rigid, predefined templates for envelopes. If someone tries to mail a live grenade or a suspiciously shaped package, the template physically blocks it from entering the system."
+      }
+    ],
+    "tags": [
+      "developer",
+      "devlush",
+      "agents",
+      "ai",
+      "vulnerability",
+      "web-security",
+      "ethical-hacking",
+      "idor",
+      "exploit"
+    ]
+  },
+  {
+    "course": "Web Bug Bounty",
+    "chapter_title": "Foundations of Web Bug Bounty Hunting",
+    "labComponentId": "web-bugbounty-foundations",
+    "critical_concepts": [
+      {
+        "concept": "Attack Surface Discovery",
+        "elaboration": "Map endpoints, APIs, parameters, and exposed assets before testing."
+      },
+      {
+        "concept": "IDOR",
+        "elaboration": "Improper authorization allows access to unauthorized resources."
+      },
+      {
+        "concept": "SQL Injection",
+        "elaboration": "Improper query construction enables unintended database operations."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "web-case-1",
+        "concept_tested": "Attack Surface Discovery",
+        "type": "interactive-visual",
+        "title": "Case 1: Hidden Administrative Endpoint",
+        "prompt": "A security researcher observes JavaScript files referencing '/api/v2/admin/export'. The endpoint is not linked anywhere in the application's interface.",
+        "question": "What should be the researcher's next step?",
+        "options": [
+          "A. Verify whether the endpoint is accessible and properly protected.",
+          "B. Ignore the endpoint because it is hidden from the UI.",
+          "C. Immediately report it as critical without testing."
+        ],
+        "answer": "A. Verify whether the endpoint is accessible and properly protected.",
+        "explanation": "Attack surface mapping involves identifying hidden functionality and validating its security controls before assessing impact.",
+        "theory": {
+          "title": "Attack Surface Discovery",
+          "content": "Attack surface discovery is the foundational phase of web bug bounty hunting. It involves enumerating the digital footprint of an application beyond its visible user interface. Researchers analyze JavaScript bundles, discover unlinked API routes, and map the application's underlying architecture. Finding a hidden administrative endpoint is critical, but it only becomes a vulnerability if the endpoint lacks proper authentication and authorization controls, allowing unauthorized entities to execute privileged actions.",
+          "analogy": "Discovering a hidden, unmarked service elevator in the back alley of a high-security casino. Finding it isn't the crime; discovering that the elevator doesn't require a keycard to reach the vault floor is the vulnerability.",
+          "application": "Review JavaScript files, API documentation, archived URLs, and HTTP responses for hidden functionality."
+        },
+        "nature": "feature",
+        "tags": [
+          "security"
+        ],
+        "logs": [
+          {
+            "timestamp": "10:15:02",
+            "level": "info",
+            "message": "Downloading JavaScript bundle..."
+          },
+          {
+            "timestamp": "10:15:07",
+            "level": "info",
+            "message": "Discovered endpoint '/api/v2/admin/export'."
+          },
+          {
+            "timestamp": "10:15:10",
+            "level": "success",
+            "message": "Endpoint added to testing scope."
+          }
+        ]
+      },
+      {
+        "componentId": "web-case-2",
+        "concept_tested": "Authorization Testing",
+        "type": "interactive-visual",
+        "title": "Case 2: Unauthorized Resource Access",
+        "prompt": "A user changes an account identifier in an API request and receives another customer's invoice.",
+        "question": "Which vulnerability best describes this issue?",
+        "options": [
+          "A. Cross-Site Scripting (XSS)",
+          "B. Insecure Direct Object Reference (IDOR)",
+          "C. Clickjacking"
+        ],
+        "answer": "B. Insecure Direct Object Reference (IDOR)",
+        "explanation": "The application failed to verify whether the authenticated user was authorized to access the requested resource.",
+        "theory": {
+          "title": "Authorization Validation",
+          "content": "Insecure Direct Object Reference (IDOR) is a catastrophic authorization failure where an application relies entirely on client-provided input (such as a database ID in a URL or API payload) to access a resource, without verifying that the currently authenticated user possesses the privileges to view or modify that specific resource. Robust mitigation requires implementing server-side access control matrixes that validate ownership on every single data retrieval request.",
+          "analogy": "A coat check attendant who blindly hands over a diamond necklace just because someone handed them a piece of paper with the number '42' written on it in crayon, without checking if that person actually owns coat #42.",
+          "application": "Test horizontal and vertical privilege boundaries throughout authenticated functionality."
+        },
+        "nature": "weakness",
+        "tags": [
+          "security"
+        ],
+        "logs": [
+          {
+            "timestamp": "14:41:10",
+            "level": "info",
+            "message": "Authenticated as standard user."
+          },
+          {
+            "timestamp": "14:41:15",
+            "level": "warn",
+            "message": "Modified account identifier from 1052 to 1053."
+          },
+          {
+            "timestamp": "14:41:18",
+            "level": "error",
+            "message": "Received another customer's invoice."
+          },
+          {
+            "timestamp": "14:41:22",
+            "level": "success",
+            "message": "Authorization flaw confirmed."
+          }
+        ]
+      },
+      {
+        "componentId": "web-case-3",
+        "concept_tested": "Cross-Site Scripting (XSS)",
+        "type": "interactive-visual",
+        "title": "Case 3: Interactive XSS Sandbox",
+        "prompt": "Test XSS payloads in a vulnerable input field to observe reflection.",
+        "question": "What is the primary risk of Stored XSS?",
+        "options": [
+          "A. Executing scripts in the victim's browser.",
+          "B. Shutting down the database.",
+          "C. Overloading the server."
+        ],
+        "answer": "A. Executing scripts in the victim's browser.",
+        "explanation": "XSS vulnerabilities allow attackers to inject malicious scripts into webpages viewed by other users.",
+        "theory": {
+          "title": "Cross-Site Scripting (XSS)",
+          "content": "XSS occurs when an application includes untrusted data in a web page without proper validation or escaping. This allows an attacker to execute malicious scripts in the victim's browser.",
+          "analogy": "Slipping a fake instruction manual into a board game box. When other players open it, they follow your malicious rules.",
+          "application": "Always sanitize and escape user input before rendering it in the browser."
+        },
+        "nature": "weakness",
+        "tags": [
+          "security"
+        ]
+      },
+      {
+        "componentId": "web-case-4",
+        "concept_tested": "Cross-Site Request Forgery (CSRF)",
+        "type": "interactive-visual",
+        "title": "Case 4: Interactive CSRF Sandbox",
+        "prompt": "Observe how an attacker can forge requests on behalf of an authenticated victim.",
+        "question": "What is the most effective defense against CSRF?",
+        "options": [
+          "A. IP Whitelisting.",
+          "B. Anti-CSRF Tokens.",
+          "C. Input Sanitization."
+        ],
+        "answer": "B. Anti-CSRF Tokens.",
+        "explanation": "Anti-CSRF tokens ensure that the request originated from the legitimate application and not a malicious third-party site.",
+        "theory": {
+          "title": "Cross-Site Request Forgery (CSRF)",
+          "content": "CSRF forces an end user to execute unwanted actions on a web application in which they're currently authenticated.",
+          "analogy": "Tricking someone into signing a blank check by hiding it under a document they meant to sign.",
+          "application": "Implement unpredictable, user-specific anti-CSRF tokens for all state-changing requests."
+        },
+        "nature": "weakness",
+        "tags": [
+          "security"
+        ]
+      },
+      {
+        "componentId": "web-case-5",
+        "concept_tested": "Authentication Flaws",
+        "type": "interactive-visual",
+        "title": "Case 5: Auth Flaws & Token Manipulation",
+        "prompt": "Manipulate a JWT payload to escalate privileges from a standard user to an admin.",
+        "question": "Why is manipulating the JWT payload possible but typically ineffective?",
+        "options": [
+          "A. The payload is encrypted.",
+          "B. The signature validation fails.",
+          "C. The token expires immediately."
+        ],
+        "answer": "B. The signature validation fails.",
+        "explanation": "While the payload is only base64 encoded and can be manipulated, the signature is cryptographically generated. Altering the payload invalidates the signature, causing the server to reject it.",
+        "theory": {
+          "title": "Authentication Flaws & JWTs",
+          "content": "Authentication flaws occur when applications incorrectly implement session management or token validation. If a backend fails to verify a JWT's signature, attackers can arbitrarily elevate their privileges.",
+          "analogy": "Forging a VIP pass with crayons. It only works if the bouncer doesn't bother checking the official hologram seal.",
+          "application": "Always cryptographically verify JWT signatures using strong, secret keys on the backend."
+        },
+        "nature": "weakness",
+        "tags": [
+          "security"
+        ]
+      },
+      {
+        "componentId": "web-case-6",
+        "concept_tested": "Server-Side Code Execution (RCE)",
+        "type": "interactive-visual",
+        "title": "Case 6: Interactive RCE Sandbox",
+        "prompt": "Exploit a vulnerable ping utility by injecting shell commands.",
+        "question": "What allows command injection in this scenario?",
+        "options": [
+          "A. The server uses an outdated version of ping.",
+          "B. Unsanitized user input is concatenated directly into a system shell command.",
+          "C. The application does not require authentication."
+        ],
+        "answer": "B. Unsanitized user input is concatenated directly into a system shell command.",
+        "explanation": "If a backend uses functions like exec() or system() and concatenates user input without sanitization, an attacker can use shell metacharacters (like ;, &, ||) to execute arbitrary commands.",
+        "theory": {
+          "title": "Remote Code Execution (RCE)",
+          "content": "RCE is one of the most critical vulnerabilities. It allows an attacker to execute arbitrary system commands on the host server, often leading to full system compromise.",
+          "analogy": "Asking a robot to 'Bring me coffee, and also hand me the keys to the safe'. If the robot doesn't separate the commands, it does both.",
+          "application": "Avoid calling OS commands directly. If unavoidable, use parameterized execution (like execFile) and strictly validate input against an allowlist."
+        },
+        "nature": "weakness",
+        "tags": [
+          "security"
+        ]
+      },
+      {
+        "componentId": "web-case-7",
+        "concept_tested": "Server-Side Request Forgery (SSRF)",
+        "type": "interactive-visual",
+        "title": "Case 7: Interactive SSRF Sandbox",
+        "prompt": "Use the webhook tester to force the server to make requests to internal resources.",
+        "question": "Why is SSRF particularly dangerous in cloud environments?",
+        "options": [
+          "A. Cloud servers are usually slower.",
+          "B. Attackers can access the cloud provider's billing portal.",
+          "C. Attackers can access instance metadata APIs to steal temporary IAM credentials."
+        ],
+        "answer": "C. Attackers can access instance metadata APIs to steal temporary IAM credentials.",
+        "explanation": "In AWS/GCP/Azure, virtual machines often have a local metadata service (e.g., at 169.254.169.254) that grants access to the instance's IAM roles and access keys. SSRF can be used to read these keys.",
+        "theory": {
+          "title": "Server-Side Request Forgery (SSRF)",
+          "content": "SSRF occurs when a web application fetches a remote resource without validating the user-supplied URL. It allows attackers to pivot through the vulnerable server to attack internal systems behind the firewall.",
+          "analogy": "Asking the bank teller (who is already inside the vault area) to reach into the vault and hand you whatever is in box #4.",
+          "application": "Validate URLs against a strict allowlist. Use network-level controls (egress filtering) to block server access to internal IP ranges (like 127.0.0.1, 10.x.x.x, 169.254.169.254)."
+        },
+        "nature": "weakness",
+        "tags": [
+          "security"
+        ]
+      },
+      {
+        "componentId": "web-case-8",
+        "concept_tested": "Local File Inclusion (LFI)",
+        "type": "interactive-visual",
+        "title": "Case 8: Interactive LFI Sandbox",
+        "prompt": "Manipulate the file path parameter to read sensitive files outside the intended directory.",
+        "question": "Which payload commonly indicates a directory traversal attempt?",
+        "options": [
+          "A. <script>alert(1)</script>",
+          "B. ../../../../../etc/passwd",
+          "C. ' OR 1=1--"
+        ],
+        "answer": "B. ../../../../../etc/passwd",
+        "explanation": "The '../' sequence (dot-dot-slash) tells the file system to move up one directory. Repeating it allows escaping the web root and accessing base system files.",
+        "theory": {
+          "title": "Local File Inclusion (LFI)",
+          "content": "LFI vulnerabilities occur when an application includes a file based on user input without proper sanitization. This allows attackers to read sensitive files (like configuration files containing passwords or /etc/passwd) and sometimes achieve code execution.",
+          "analogy": "Telling the librarian you want the book titled 'Go back three rooms, open the manager's desk, and read the red ledger'.",
+          "application": "Never pass raw user input to filesystem APIs. Use indirect object references (e.g., mapping IDs to files) or strictly enforce that the resolved path is within the intended base directory."
+        },
+        "nature": "weakness",
+        "tags": [
+          "security"
+        ]
+      },
+      {
+        "componentId": "web-case-9",
+        "concept_tested": "XML External Entity Processing (XXE)",
+        "type": "interactive-visual",
+        "title": "Case 9: Interactive XXE Sandbox",
+        "prompt": "Exploit a poorly configured XML parser to read local files.",
+        "question": "What is the root cause of XXE vulnerabilities?",
+        "options": [
+          "A. Using outdated XML libraries.",
+          "B. Parsing XML data containing references to external entities without restricting them.",
+          "C. Failing to encrypt XML payloads over the network."
+        ],
+        "answer": "B. Parsing XML data containing references to external entities without restricting them.",
+        "explanation": "If the XML parser is configured to resolve external entities (like DTDs pointing to file://), attackers can force it to read files and embed the contents in the response.",
+        "theory": {
+          "title": "XML External Entity (XXE)",
+          "content": "XXE occurs when weakly configured XML parsers process XML input containing a reference to an external entity. It can lead to the disclosure of confidential data, denial of service, Server Side Request Forgery (SSRF), and port scanning.",
+          "analogy": "Sending an invoice that says 'My address is [insert the secret document from the boss's desk here]'. If the automated reader blindly fills it in and sends it back to you, you get the secret document.",
+          "application": "Disable external entity and DTD processing in all XML parsers in your application."
+        },
+        "nature": "weakness",
+        "tags": [
+          "security"
+        ]
+      },
+      {
+        "componentId": "web-case-10",
+        "concept_tested": "DNS Vulnerabilities",
+        "type": "interactive-visual",
+        "title": "Case 10: Interactive DNS Sandbox",
+        "prompt": "Attempt a Zone Transfer (AXFR) to map the internal network topology.",
+        "question": "What is the primary risk of an exposed DNS Zone Transfer (AXFR)?",
+        "options": [
+          "A. It allows attackers to modify the DNS records.",
+          "B. It exposes the entire list of subdomains, revealing internal assets and hidden infrastructure.",
+          "C. It causes a Denial of Service (DoS) against the DNS server."
+        ],
+        "answer": "B. It exposes the entire list of subdomains, revealing internal assets and hidden infrastructure.",
+        "explanation": "AXFR is designed for replicating DNS databases between name servers. If left open to the public, an attacker can download the entire zone file, immediately learning about all subdomains (e.g., secret-db, vpn, dev, internal).",
+        "theory": {
+          "title": "DNS Zone Transfers (AXFR)",
+          "content": "A DNS zone transfer is a mechanism to replicate DNS records across servers. When misconfigured, a server might allow any anonymous user to request a full zone transfer, providing a complete map of the organization's infrastructure.",
+          "analogy": "Asking a company's front desk for a list of every employee's name, desk location, and unlisted direct phone number. If they give it to you, you know exactly who to target.",
+          "application": "Restrict AXFR queries strictly to the IP addresses of trusted secondary name servers."
+        },
+        "nature": "weakness",
+        "tags": [
+          "security"
+        ]
+      },
+      {
+        "componentId": "web-case-11",
+        "concept_tested": "WHOIS Vulnerabilities",
+        "type": "interactive-visual",
+        "title": "Case 11: Interactive WHOIS Sandbox",
+        "prompt": "Use the WHOIS lookup tool to find overly permissive data exposure.",
+        "question": "How do attackers primarily abuse exposed WHOIS information?",
+        "options": [
+          "A. To directly exploit the web server's software.",
+          "B. To conduct highly targeted social engineering and phishing attacks against employees.",
+          "C. To bypass the web application firewall (WAF)."
+        ],
+        "answer": "B. To conduct highly targeted social engineering and phishing attacks against employees.",
+        "explanation": "WHOIS data often contains names, phone numbers, and direct email addresses of IT and administrative staff. Attackers use this PII to craft convincing phishing emails or conduct vishing (voice phishing) to compromise accounts.",
+        "theory": {
+          "title": "WHOIS Data Exposure (OSINT)",
+          "content": "WHOIS is a public database containing domain registration details. Prior to GDPR and the widespread adoption of WHOIS privacy services, it was common for personal cell phone numbers and home addresses of domain owners to be publicly accessible.",
+          "analogy": "Publishing the personal cell phone numbers and home addresses of your security guards in the local newspaper.",
+          "application": "Always enable WHOIS Privacy Protection (often called Domain Privacy) through your domain registrar."
+        },
+        "nature": "weakness",
+        "tags": [
+          "security"
+        ]
+      }
+    ],
+    "tags": [
+      "developer",
+      "business",
+      "security",
+      "devlush",
+      "agents",
+      "ai",
+      "vulnerability",
+      "web-security",
+      "ethical-hacking",
+      "idor",
+      "exploit"
+    ]
+  },
+  {
+    "course": "Web Bug Bounty",
+    "chapter_title": "Security Lens: Finding High-Impact Vulnerabilities",
+    "labComponentId": "web-bugbounty-security-lens",
+    "critical_concepts": [
+      {
+        "concept": "Attack Surface Mapping",
+        "elaboration": "Identify hidden endpoints, parameters, APIs, and exposed services."
+      },
+      {
+        "concept": "Authorization Testing",
+        "elaboration": "Verify that every request properly enforces permissions."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "security-lens-attack-surface",
+        "type": "interactive-visual",
+        "title": "Security Lens: Attack Surface & IDOR",
+        "prompt": "Most critical bug bounty findings come from understanding application attack surfaces rather than blindly fuzzing. You are analyzing an API endpoint: POST /api/v1/user/profile/update?id=9283",
+        "question": "Which vulnerability commonly allows access to another user's data by changing an identifier?",
+        "options": [
+          "A. Cross-Site Scripting (XSS)",
+          "B. Insecure Direct Object Reference (IDOR)",
+          "C. SQL Injection (SQLi)"
+        ],
+        "answer": "B. Insecure Direct Object Reference (IDOR)",
+        "explanation": "IDOR occurs when an application provides direct access to objects based on user-supplied input without proper authorization checks.",
+        "theory_explanation": "High-impact bug hunting requires a shift from automated vulnerability scanning to deep, manual logical analysis. While scanners can find low-hanging fruit like missing headers or outdated libraries, they fundamentally lack the contextual awareness to identify complex business logic flaws, multi-step authorization bypasses, or chained exploits. Top-tier researchers achieve high-impact findings by thoroughly understanding the application's state machine, manipulating API sequences, and identifying systemic architectural failures.",
+        "real_world_analogy": "A burglar alarm might detect a smashed window, but it takes a master thief to realize that they can simply pose as the pizza delivery guy, legally walk through the front door, and ask the receptionist to unlock the vault."
+      }
+    ],
+    "tags": [
+      "security",
+      "devlush",
+      "agents",
+      "ai",
+      "vulnerability",
+      "web-security",
+      "ethical-hacking",
+      "idor",
+      "exploit"
+    ]
+  }
+]

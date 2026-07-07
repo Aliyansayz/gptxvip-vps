@@ -13,6 +13,7 @@ import { CodeConceptsView } from "./components/codeConceptsTopics/codeConceptsVi
 import { HomeMainView } from "./components/homeMainView";
 import { ProfileInfo } from "./components/profileInfo";
 import { TradingToolsView } from "./views/TradingToolsView";
+import DevLushApp from "./devLushArea/agentDevRootComponents/devLushAreaApp";
 
 import { Toaster } from 'sonner';
 
@@ -32,6 +33,7 @@ export default function App() {
     | "trading-tools"
     | "archive-tools"
     | "profile"
+    | "dev-labs-workspace"
   >("home");
   const [activeSubTab, setActiveSubTab] = useState<string>("liquidity-depth");
   const [activeCodeCategory, setActiveCodeCategory] = useState<string>("general");
@@ -47,47 +49,51 @@ export default function App() {
   return (
     <>
       <Toaster position="top-center" />
-      <MainLayout
-        activeTab={activeTab}
-        activeSubTab={activeSubTab}
-        setActiveTab={setActiveTab}
-        setActiveSubTab={setActiveSubTab}
-        activeCodeCategory={activeCodeCategory}
-        setActiveCodeCategory={setActiveCodeCategory}
-        showUI={showUI}
-      >
-        {activeTab === "home" && (
-          <HomeMainView 
-            candlestickData={candlestickData} 
-            onToggleUI={setShowUI} 
-            onInitializeEngine={() => {
-              setActiveTab("trading-tools");
-              setActiveSubTab("leverage-view-v3");
-            }}
-          />
-        )}
-        {activeTab === "trade-type" && (
-          <TradeTypeView
-            silverCandlestickData={silverCandlestickData}
-            chart2Data={chart2Data}
-            candlestickData={candlestickData}
-          />
-        )}
-        {activeTab === "cointegration" && <CointegrationView />}
-        {activeTab === "key-terms" && <KeyTermsView />}
-        {activeTab === "map" && <MapView activeSubTab={activeSubTab} />}
-        {activeTab === "overview" && <OverviewView />}
-        {(activeTab === "trading-tools" || activeTab === "archive-tools") && <TradingToolsView activeSubTab={activeSubTab} />}
-        {activeTab === "profile" && <ProfileInfo />}
-        {activeTab === "code-concepts" && (
-          <CodeConceptsView 
-            activeCategory={activeCodeCategory as any} 
-            setActiveCategory={setActiveCodeCategory as any}
-            onToggleUI={setShowUI}
-            onExitSearch={() => setActiveTab("home")}
-          />
-        )}
-      </MainLayout>
+      {activeTab === "dev-labs-workspace" ? (
+        <DevLushApp onExit={() => setActiveTab("home")} />
+      ) : (
+        <MainLayout
+          activeTab={activeTab}
+          activeSubTab={activeSubTab}
+          setActiveTab={setActiveTab}
+          setActiveSubTab={setActiveSubTab}
+          activeCodeCategory={activeCodeCategory}
+          setActiveCodeCategory={setActiveCodeCategory}
+          showUI={showUI}
+        >
+          {activeTab === "home" && (
+            <HomeMainView 
+              candlestickData={candlestickData} 
+              onToggleUI={setShowUI} 
+              onInitializeEngine={() => {
+                setActiveTab("trading-tools");
+                setActiveSubTab("leverage-view-v3");
+              }}
+            />
+          )}
+          {activeTab === "trade-type" && (
+            <TradeTypeView
+              silverCandlestickData={silverCandlestickData}
+              chart2Data={chart2Data}
+              candlestickData={candlestickData}
+            />
+          )}
+          {activeTab === "cointegration" && <CointegrationView />}
+          {activeTab === "key-terms" && <KeyTermsView />}
+          {activeTab === "map" && <MapView activeSubTab={activeSubTab} />}
+          {activeTab === "overview" && <OverviewView />}
+          {(activeTab === "trading-tools" || activeTab === "archive-tools") && <TradingToolsView activeSubTab={activeSubTab} />}
+          {activeTab === "profile" && <ProfileInfo />}
+          {activeTab === "code-concepts" && (
+            <CodeConceptsView 
+              activeCategory={activeCodeCategory as any} 
+              setActiveCategory={setActiveCodeCategory as any}
+              onToggleUI={setShowUI}
+              onExitSearch={() => setActiveTab("home")}
+            />
+          )}
+        </MainLayout>
+      )}
     </>
   );
 }

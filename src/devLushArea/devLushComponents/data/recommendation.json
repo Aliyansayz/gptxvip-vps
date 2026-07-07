@@ -1,0 +1,258 @@
+[
+  {
+    "course": "Recommendation Agents",
+    "chapter_title": "Personalized Data Memory & Recommendations",
+    "labComponentId": "recommendation-agents",
+    "critical_concepts": [
+      {
+        "concept": "Memory-Augmented Personalization",
+        "elaboration": "Agents that utilize long-term memory of a user's past interactions, preferences, and personal context to generate hyper-personalized and relevant recommendations."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "recommendation-agent-memory",
+        "concept_tested": "Memory-Augmented Personalization",
+        "type": "visual_element",
+        "title": "Case 1: Context-Aware Recommendation",
+        "prompt": "A user asks for a book recommendation. The recommendation agent accesses its memory context and notes that the user previously enjoyed hard sci-fi, specifically authors like Isaac Asimov, but recently mentioned feeling burnt out and wanting something lighter but still space-related.",
+        "question": "How does the agent's memory capability enhance the recommendation over a standard algorithmic suggestion?",
+        "options": [
+          "A. The agent recommends the top-selling hard sci-fi book currently trending on Amazon.",
+          "B. The agent synthesizes past preferences (space-related) with current emotional context (burnt out, lighter tone) to suggest a comedic space opera like 'The Hitchhiker's Guide to the Galaxy'.",
+          "C. The agent ignores the burnout and recommends a 1000-page dense theoretical physics manual."
+        ],
+        "answer": "B. The agent synthesizes past preferences (space-related) with current emotional context (burnt out, lighter tone) to suggest a comedic space opera like 'The Hitchhiker's Guide to the Galaxy'.",
+        "explanation": "Standard recommendation algorithms often rely purely on past interaction data (e.g., 'you bought this, so you might like this'). Memory-augmented agents can synthesize long-term preferences with immediate, nuanced emotional or situational context provided by the user.",
+        "theory": {
+          "title": "Contextual Memory in Recommender Systems",
+          "content": "Agents equipped with vector databases for memory can store structured and unstructured data about a user over time. When a prompt is given, the agent queries this memory to build a rich context window, allowing the LLM to generate recommendations that account for contradictions, evolving tastes, and specific constraints.",
+          "analogy": "A good local bookstore owner who remembers what you bought last year, but also listens when you say you're going on a relaxing beach vacation today.",
+          "application": "Implement RAG (Retrieval-Augmented Generation) pipelines where user profiles, past chat histories, and explicitly stated preferences form the memory context for the generative model."
+        },
+        "nature": "opportunity",
+        "tags": [
+          "business",
+          "personalization"
+        ],
+        "logs": [
+          {
+            "timestamp": "10:00:00",
+            "level": "info",
+            "message": "User query received: 'Recommend a book to read.'"
+          },
+          {
+            "timestamp": "10:00:01",
+            "level": "info",
+            "message": "Querying user memory context..."
+          },
+          {
+            "timestamp": "10:00:03",
+            "level": "info",
+            "message": "Memory retrieved: Past preference -> Hard Sci-Fi. Recent context -> 'Burnt out, needs lighter tone'."
+          },
+          {
+            "timestamp": "10:00:05",
+            "level": "success",
+            "message": "Recommendation generated: 'The Hitchhiker's Guide to the Galaxy' (Space Opera / Comedy)."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "business",
+      "personalization",
+      "devlush",
+      "agents",
+      "ai",
+      "algorithms",
+      "user-data",
+      "suggestions"
+    ]
+  },
+  {
+    "course": "Recommendation Agents",
+    "chapter_title": "Expense Tracking & Financial Recommendations",
+    "labComponentId": "recommendation-expense-tracking",
+    "critical_concepts": [
+      {
+        "concept": "Proactive Expense Optimization",
+        "elaboration": "Agents that analyze transaction history to proactively recommend budget optimizations and detect anomalous spending patterns."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "recommendation-expense-analysis",
+        "concept_tested": "Proactive Expense Optimization",
+        "type": "visual_element",
+        "title": "Case 1: Subscription Redundancy Detection",
+        "prompt": "An expense tracking agent scans a user's recent bank statements and identifies recurring monthly charges for three different music streaming services. It flags this to the user and suggests consolidating to a single service to save $25/month.",
+        "question": "What is the primary benefit of the agent's proactive recommendation in this scenario?",
+        "options": [
+          "A. The agent automatically cancels all subscriptions without asking.",
+          "B. The agent identifies redundant spending patterns that a human might overlook and provides a concrete, actionable financial optimization.",
+          "C. The agent recommends upgrading to premium tiers for all three services."
+        ],
+        "answer": "B. The agent identifies redundant spending patterns that a human might overlook and provides a concrete, actionable financial optimization.",
+        "explanation": "Expense tracking agents excel at pattern recognition across large datasets (like bank statements). By finding redundant subscriptions and calculating the potential savings, the agent acts as a proactive financial advisor.",
+        "theory": {
+          "title": "Pattern Recognition in Financial Data",
+          "content": "Financial recommendation agents use clustering and categorization algorithms to group transactions. When multiple recurring transactions fall into the same category (e.g., 'Streaming Audio'), the agent can flag this redundancy and prompt the user with consolidation recommendations.",
+          "analogy": "A financial advisor reviewing your monthly bills and pointing out you're paying for three different gym memberships.",
+          "application": "Implement categorization models to classify ledger data, and rules-based logic on top of those categories to suggest optimizations."
+        },
+        "nature": "opportunity",
+        "tags": [
+          "finance",
+          "personalization"
+        ],
+        "logs": [
+          {
+            "timestamp": "09:00:00",
+            "level": "info",
+            "message": "Ingesting last 90 days of transaction data..."
+          },
+          {
+            "timestamp": "09:00:05",
+            "level": "info",
+            "message": "Categorizing recurring expenses..."
+          },
+          {
+            "timestamp": "09:00:12",
+            "level": "warn",
+            "message": "Redundancy Detected: 'Spotify', 'Apple Music', 'Tidal' (Category: Streaming Audio)."
+          },
+          {
+            "timestamp": "09:00:15",
+            "level": "success",
+            "message": "Recommendation generated: Cancel 2 of 3 services for estimated $25/mo savings."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "finance",
+      "personalization",
+      "devlush",
+      "agents",
+      "ai",
+      "algorithms",
+      "user-data",
+      "suggestions"
+    ]
+  },
+  {
+    "course": "Recommendation Agents",
+    "chapter_title": "Expense Tracking & Financial Recommendations Pain Points In Typescript Part 1",
+    "labComponentId": "recommendation-expense-typescript-1",
+    "critical_concepts": [
+      {
+        "concept": "TypeScript Safety in Financial Data",
+        "elaboration": "Building expense tracking agents in TypeScript requires strict type definitions and integer-based math to prevent floating point errors during budget analysis."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "recommendation-expense-ts-typing",
+        "concept_tested": "Floating Point Precision",
+        "type": "visual_element",
+        "title": "Case 1: Handling Currency in TS",
+        "prompt": "You are building an expense tracking agent in TypeScript. You need to calculate the total monthly savings recommendation. The agent calculates: 0.1 + 0.2, which incorrectly returns 0.30000000000000004.",
+        "question": "What is the most robust approach in TypeScript to handle financial values and avoid these precision issues?",
+        "options": [
+          "A. Use the standard `number` type and round the final result.",
+          "B. Represent financial values in the smallest currency unit (e.g., cents) using integers.",
+          "C. Convert numbers to strings during all intermediate math operations."
+        ],
+        "answer": "B. Represent financial values in the smallest currency unit (e.g., cents) using integers.",
+        "explanation": "Using integers for the smallest currency unit avoids the precision issues inherent in floating-point arithmetic. This is the industry standard for financial applications.",
+        "theory": {
+          "title": "Handling Currency in TypeScript",
+          "content": "JavaScript and TypeScript use IEEE 754 double-precision floats for all numbers. This can lead to precision errors in financial calculations. The standard industry practice is to store monetary values in the lowest denomination (e.g., cents) as integers and only format to decimals for display.",
+          "analogy": "Instead of counting dollars and fractions of dollars, you count every single penny.",
+          "application": "Define a strictly typed `Cents` alias or interface that enforces integers, or use a specialized library to handle currency arithmetic safely."
+        },
+        "nature": "vulnerability",
+        "tags": [
+          "finance",
+          "typescript"
+        ],
+        "logs": [
+          {
+            "timestamp": "12:00:00",
+            "level": "info",
+            "message": "Initializing expense calculator agent in TS..."
+          },
+          {
+            "timestamp": "12:00:01",
+            "level": "warn",
+            "message": "Warning: Floating point precision error detected: 0.1 + 0.2 = 0.30000000000000004"
+          },
+          {
+            "timestamp": "12:00:03",
+            "level": "info",
+            "message": "Refactoring data model to use integer base units (cents)..."
+          },
+          {
+            "timestamp": "12:00:05",
+            "level": "success",
+            "message": "Type-safe calculation successful: 10 + 20 = 30 cents ($0.30)"
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "finance",
+      "typescript",
+      "devlush",
+      "agents",
+      "ai",
+      "personalization",
+      "algorithms",
+      "user-data",
+      "suggestions"
+    ]
+  },
+  {
+    "id": "recommendation-semantic-memory-activity",
+    "title": "Semantic Memory in Recommendation",
+    "course": "Recommendation Agents",
+    "chapter_title": "Semantic Memory Implementation",
+    "labComponentId": "recommendation-semantic-memory-activity",
+    "critical_concepts": [
+      {
+        "concept": "Vector Search",
+        "elaboration": "Converting products to high-dimensional vectors for semantic similarity matching."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "recommendation-semantic-memory-activity",
+        "type": "interactive-visual",
+        "title": "Semantic Memory Implementation",
+        "prompt": "An e-commerce platform uses a vector database to power its semantic product search and recommendation system.",
+        "question": "What is the primary method used to find the closest conceptual match in a vector database?",
+        "options": [
+          "A. Exact keyword matching",
+          "B. Mathematical distance (e.g., Cosine Similarity)",
+          "C. SQL LIKE queries",
+          "D. Regular Expressions"
+        ],
+        "answer": "B. Mathematical distance (e.g., Cosine Similarity)",
+        "explanation": "Vector databases calculate the mathematical distance between high-dimensional vector representations to find semantic matches.",
+        "theory_explanation": "When text is converted into vectors via embeddings, semantic similarity is determined by calculating the distance between these vectors in the high-dimensional space.",
+        "real_world_analogy": "Like finding points on a map that are closest to your current location.",
+        "visual_element": "network"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "personalization",
+      "algorithms",
+      "user-data",
+      "suggestions"
+    ]
+  }
+]

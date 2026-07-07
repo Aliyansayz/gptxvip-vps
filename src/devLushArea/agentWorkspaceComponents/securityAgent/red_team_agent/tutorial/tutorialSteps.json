@@ -1,0 +1,29 @@
+{
+  "steps": [
+    {
+      "title": "Welcome to the Red Team Simulator",
+      "content": "This agent acts as an automated adversary, continually testing your defenses by simulating sophisticated, multi-stage cyberattacks.",
+      "position": "center"
+    },
+    {
+      "title": "Vulnerability Chaining",
+      "content": "Unlike standard scanners that report isolated bugs, the Red Team Agent chains low-severity issues together to demonstrate high-impact compromises.",
+      "position": "center"
+    },
+    {
+      "title": "Lateral Movement & Pivot",
+      "content": "Watch the agent attempt to move laterally across your network, escalating privileges and seeking out high-value assets just like a real Advanced Persistent Threat (APT).",
+      "position": "center"
+    },
+    {
+      "title": "Explore the Arsenal",
+      "content": "Check out the Tools View to see the offensive security arsenal the agent employs, from Nmap and Amass to Metasploit and BloodHound.",
+      "position": "center"
+    },
+    {
+      "title": "Defense Validation",
+      "content": "Use the resulting Attack Paths to validate your defensive posture and ensure your SIEM and EDR solutions are properly tuned to detect these behaviors.",
+      "position": "center"
+    }
+  ]
+}

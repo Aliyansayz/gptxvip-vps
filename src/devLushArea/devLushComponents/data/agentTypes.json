@@ -1,0 +1,904 @@
+[
+  {
+    "id": "agent-archival-storage",
+    "title": "The Archival Storage",
+    "course": "Agent Types",
+    "chapter_title": "The Archival Storage",
+    "labComponentId": "agent-archival-storage",
+    "critical_concepts": [
+      {
+        "concept": "Semantic Memory",
+        "elaboration": "The system's objective worldview backed by knowledge graphs and vector databases."
+      },
+      {
+        "concept": "Episodic Memory",
+        "elaboration": "The system's personalized history recording chronological episodes of user interactions."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "agent-archival-storage",
+        "type": "interactive-visual",
+        "title": "Semantic vs Episodic Memory",
+        "prompt": "Understand the difference between semantic and episodic memory.",
+        "question": "Which type of memory records the chronological 'episodes' of user interactions?",
+        "options": [
+          "A. Semantic Memory",
+          "B. Episodic Memory",
+          "C. Parametric Memory",
+          "D. InContext Memory"
+        ],
+        "answer": "B. Episodic Memory",
+        "explanation": "Episodic memory records specific interactions, enabling the AI to recall past conversations and preferences.",
+        "theory_explanation": "Episodic memory acts as the personalized history, while semantic memory stores objective facts independent of personal experience.",
+        "real_world_analogy": "Semantic is knowing facts like 'Paris is the capital of France'. Episodic is remembering your trip to Paris last year.",
+        "visual_element": "database"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "orchestration",
+      "patterns",
+      "coordination"
+    ]
+  },
+  {
+    "id": "agent-execution-layer",
+    "title": "The Execution & Action Layer",
+    "course": "Agent Types",
+    "chapter_title": "The Execution & Action Layer",
+    "labComponentId": "agent-execution-layer",
+    "critical_concepts": [
+      {
+        "concept": "External Memory",
+        "elaboration": "Structured integrations with external databases or APIs."
+      },
+      {
+        "concept": "Procedural Memory",
+        "elaboration": "Internalized instruction patterns, system prompts, and execution workflows."
+      },
+      {
+        "concept": "Prospective Memory",
+        "elaboration": "Manages scheduled actions, event listeners, and timers."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "agent-execution-layer",
+        "type": "interactive-visual",
+        "title": "Procedural Memory",
+        "prompt": "Explore how the Execution & Action Layer manages instructions.",
+        "question": "What is the primary function of Procedural Memory in an AI agent?",
+        "options": [
+          "A. To store factual knowledge using vector databases.",
+          "B. To hold the immediate prompt and conversation history.",
+          "C. To contain the internalized instruction patterns and execution workflows (like ReAct).",
+          "D. To manage scheduled actions and timers."
+        ],
+        "answer": "C. To contain the internalized instruction patterns and execution workflows (like ReAct).",
+        "explanation": "Procedural memory acts as the 'muscle memory' of the AI, teaching it how to use tools, route tasks, or format outputs.",
+        "theory_explanation": "The Execution layer comprises External, Procedural, and Prospective memory to perform and schedule actions based on structured data and workflows.",
+        "real_world_analogy": "Like riding a bicycle—a procedure you know how to perform automatically once learned.",
+        "visual_element": "cog"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "orchestration",
+      "patterns",
+      "coordination"
+    ]
+  },
+  {
+    "id": "agent-innate-layer",
+    "title": "The Innate Layer",
+    "course": "Agent Types",
+    "chapter_title": "The Innate Layer",
+    "labComponentId": "agent-innate-layer",
+    "critical_concepts": [
+      {
+        "concept": "Parametric Memory",
+        "elaboration": "The bedrock instincts and baseline knowledge baked directly into neural network weights."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "agent-innate-layer",
+        "type": "interactive-visual",
+        "title": "Parametric Memory",
+        "prompt": "Understand the bedrock of an AI agent's memory.",
+        "question": "What defines parametric memory in an AI model?",
+        "options": [
+          "A. Memory stored in external vector databases.",
+          "B. Transient memory bounded by the context window.",
+          "C. The fundamental reasoning and linguistic understanding baked into the neural network's weights during pre-training.",
+          "D. Sequential logs of user interactions."
+        ],
+        "answer": "C. The fundamental reasoning and linguistic understanding baked into the neural network's weights during pre-training.",
+        "explanation": "Parametric memory is static during runtime and represents the core knowledge the model acquired during training.",
+        "theory_explanation": "Parametric Memory: This is the bedrock. It represents the 'instincts' and baseline knowledge baked directly into the neural network's weights during pre-training.",
+        "real_world_analogy": "Like human instincts or deeply ingrained reflexes that don't need active recall.",
+        "visual_element": "brain"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "orchestration",
+      "patterns",
+      "coordination"
+    ]
+  },
+  {
+    "id": "agent-overview-activity",
+    "title": "Agent Types Overview",
+    "course": "Agent and its Types",
+    "chapter_title": "Overview",
+    "labComponentId": "agent-overview-activity",
+    "critical_concepts": [
+      {
+        "concept": "Agentic Architecture",
+        "elaboration": "Agents perceive their environment, make decisions using an LLM, and take actions using tools."
+      },
+      {
+        "concept": "Autonomy Level",
+        "elaboration": "Ranges from simple prompt-response to complex multi-step workflows with minimal human intervention."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "agent-overview-activity",
+        "type": "interactive-visual",
+        "title": "Agent Types & Architectures Overview",
+        "prompt": "Explore the different types of agents, their architectures, and how they operate.",
+        "question": "Which architecture is best suited for breaking down a complex task and delegating it to specialized sub-agents?",
+        "options": [
+          "A. ReAct Pattern",
+          "B. Orchestrator-Worker",
+          "C. Sequential Chaining",
+          "D. Evaluator-Optimizer"
+        ],
+        "answer": "B. Orchestrator-Worker",
+        "explanation": "The Orchestrator-Worker pattern involves a central orchestrator that breaks down tasks and delegates them to specialized workers, making it ideal for complex, multi-step tasks that require different expertise.",
+        "theory_explanation": "An AI Agent is a system that can perceive its environment, make decisions, and take actions to achieve a specific goal. Agent architectures define how these agents are structured and how they communicate with each other.",
+        "real_world_analogy": "Think of agent architectures like different management structures in a company. ReAct is a solo employee problem-solving. Orchestrator-Worker is a manager delegating to specialists. Sequential Chaining is an assembly line.",
+        "visual_element": "agent"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "orchestration",
+      "patterns",
+      "coordination"
+    ]
+  },
+  {
+    "id": "agent-working-state",
+    "title": "The Working State",
+    "course": "Agent Types",
+    "chapter_title": "The Working State",
+    "labComponentId": "agent-working-state",
+    "critical_concepts": [
+      {
+        "concept": "InContext Memory",
+        "elaboration": "The working memory bounded by the context window limit."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "agent-working-state",
+        "type": "interactive-visual",
+        "title": "InContext Memory",
+        "prompt": "Understand the working state of an AI agent.",
+        "question": "What characterizes InContext Memory?",
+        "options": [
+          "A. It permanently stores information across all users.",
+          "B. It functions as the AI's 'working memory' and is wiped once the session ends or context clears.",
+          "C. It connects to SQL databases.",
+          "D. It represents knowledge baked into neural weights."
+        ],
+        "answer": "B. It functions as the AI's 'working memory' and is wiped once the session ends or context clears.",
+        "explanation": "InContext memory holds the immediate prompt, conversation history, and transient reasoning required for the immediate task within the token limit.",
+        "theory_explanation": "InContext Memory: Functioning as the AI's 'working memory,' this is bounded by the context window limit (e.g., 128k or 1M tokens).",
+        "real_world_analogy": "Like a person's short-term working memory while solving a math problem.",
+        "visual_element": "activity"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "orchestration",
+      "patterns",
+      "coordination"
+    ]
+  },
+  {
+    "course": "Agent and its Types",
+    "chapter_title": "Async Orchestration",
+    "labComponentId": "agent-types-async-orchestration",
+    "critical_concepts": [
+      {
+        "concept": "Concurrent Execution",
+        "elaboration": "Independent agents execute simultaneously to reduce latency."
+      },
+      {
+        "concept": "Result Combination",
+        "elaboration": "An orchestrator waits for all concurrent results before combining them."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "visual-agent-async",
+        "type": "interactive-visual",
+        "title": "Async Orchestration Simulation",
+        "prompt": "Launch the workflow to see independent agents executing concurrently to gather e-commerce data before compiling the dashboard.",
+        "question": "Why use Async Orchestration over standard Orchestrator → Workers?",
+        "options": [
+          "When subtasks depend on each other heavily",
+          "When subtasks don't depend on each other and speed is critical",
+          "When you want to increase latency",
+          "When there is no orchestrator available"
+        ],
+        "answer": "When subtasks don't depend on each other and speed is critical",
+        "explanation": "Async Orchestration involves launching multiple agents simultaneously to handle independent tasks, drastically reducing overall latency.",
+        "architecture": {
+          "type": "async",
+          "nodes": [
+            {
+              "id": "scheduler",
+              "label": "Scheduler",
+              "role": "orchestrator"
+            },
+            {
+              "id": "p1",
+              "label": "Price Agent",
+              "role": "worker"
+            },
+            {
+              "id": "p2",
+              "label": "Review Agent",
+              "role": "worker"
+            },
+            {
+              "id": "p3",
+              "label": "Inventory Agent",
+              "role": "worker"
+            },
+            {
+              "id": "p4",
+              "label": "Shipping Agent",
+              "role": "worker"
+            },
+            {
+              "id": "dash",
+              "label": "Business Dashboard",
+              "role": "final"
+            }
+          ]
+        },
+        "theory": {
+          "title": "Async Orchestration Pattern",
+          "content": "<p>Independent agents execute concurrently to reduce latency. An orchestrator waits for all results before combining them.</p>",
+          "analogy": "A restaurant kitchen where one chef cooks the steak, another makes the salad, and another prepares the dessert, all at the same time.",
+          "application": "An E-commerce Product Monitor that fetches Price, Reviews, Inventory, and Shipping times concurrently to quickly load a dashboard."
+        },
+        "visual_element": "orchestrator"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "orchestration",
+      "patterns",
+      "coordination"
+    ]
+  },
+  {
+    "course": "Agent and its Types",
+    "chapter_title": "Coordination as a Layer",
+    "labComponentId": "agent-types-coordination-layer",
+    "critical_concepts": [
+      {
+        "concept": "Architectural Layer",
+        "elaboration": "Coordination acts as infrastructure, handling routing, memory, permissions, scheduling, and events."
+      },
+      {
+        "concept": "Scalability and Resilience",
+        "elaboration": "Necessary for large-scale, fault-tolerant multi-agent systems."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "visual-agent-layer",
+        "type": "interactive-visual",
+        "title": "Coordination Layer Simulation",
+        "prompt": "Observe how the central infrastructure layer manages routing, memory, and permissions for the SOC agents.",
+        "question": "What is the primary benefit of Coordination as a Layer?",
+        "options": [
+          "It removes the need for agents entirely",
+          "It provides the infrastructure needed to keep hundreds of agents working together reliably",
+          "It ensures only one agent works at a time",
+          "It acts as a simple database without logic"
+        ],
+        "answer": "It provides the infrastructure needed to keep hundreds of agents working together reliably",
+        "explanation": "A Coordination Layer abstracts routing, state management, and permissions into infrastructure, enabling massive scale and resilience for multi-agent systems.",
+        "architecture": {
+          "type": "layer",
+          "nodes": [
+            {
+              "id": "layer",
+              "label": "Coordination Infrastructure (Memory, Queue, Auth)",
+              "role": "layer"
+            },
+            {
+              "id": "r1",
+              "label": "Recon Agent",
+              "role": "worker"
+            },
+            {
+              "id": "r2",
+              "label": "Scanner Agent",
+              "role": "worker"
+            },
+            {
+              "id": "r3",
+              "label": "Threat Agent",
+              "role": "worker"
+            },
+            {
+              "id": "r4",
+              "label": "Response Agent",
+              "role": "worker"
+            }
+          ]
+        },
+        "theory": {
+          "title": "Coordination Layer Pattern",
+          "content": "<p>Coordination becomes an architectural layer responsible for routing, memory, permissions, scheduling, retries, event handling, and communication between agents.</p>",
+          "analogy": "The traffic light system and road networks of a city that enable thousands of independent drivers to navigate safely without talking to each other.",
+          "application": "An Autonomous Cybersecurity SOC where a central layer manages the state and events for Recon, Scanner, Threat, and Response agents."
+        },
+        "visual_element": "orchestrator"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "orchestration",
+      "patterns",
+      "coordination"
+    ]
+  },
+  {
+    "id": "agent-evaluator-optimizer",
+    "title": "Agent Workflows: Evaluator-Optimizer",
+    "course": "Agent and its Types",
+    "chapter_title": "Evaluator-Optimizer",
+    "labComponentId": "agent-evaluator-optimizer",
+    "critical_concepts": [
+      {
+        "concept": "Iterative Refinement",
+        "elaboration": "A continuous loop of generating content and critiquing it to approach a high-quality final result."
+      },
+      {
+        "concept": "Cost-Quality Tradeoff",
+        "elaboration": "While output quality increases, token consumption and latency scale linearly with iterations."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "agent-evaluator-optimizer",
+        "type": "interactive-visual",
+        "title": "Evaluator-Optimizer Loop",
+        "prompt": "Visualize the Generate <-> Critique loop where a generator creates a draft and an evaluator provides feedback for refinement.",
+        "question": "What is the golden rule for introducing complex agent workflows like the Evaluator-Optimizer loop?",
+        "options": [
+          "A. Always use an Evaluator-Optimizer loop for every LLM call.",
+          "B. Start with no workflow and only introduce these patterns when an agent visibly fails under simpler conditions.",
+          "C. Use loops primarily to reduce token consumption.",
+          "D. Evaluator loops should only be used when latency is not a concern."
+        ],
+        "answer": "B. Start with no workflow and only introduce these patterns when an agent visibly fails under simpler conditions.",
+        "explanation": "Complex workflows introduce latency, token costs, and engineering overhead. They should only be adopted when simpler, single-agent zero-shot or few-shot approaches are insufficient.",
+        "theory_explanation": "The Evaluator-Optimizer pattern is a loop where a Generator creates a response and an Evaluator critiques it against a rubric. This repeats until the Evaluator approves or a max limit is reached. It is best for high-stakes tasks, strict coding specs, or sensitive communications. The cost is increased token consumption and longer iteration time. The Golden Rule: Start with no workflow. Only introduce these patterns when an agent visibly fails under simpler conditions.",
+        "real_world_analogy": "A writer and an editor. The writer drafts a chapter (Generate), and the editor sends it back with red ink (Critique). The writer revises and resubmits, repeating until the editor gives the green light.",
+        "visual_element": "evaluator"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "orchestration",
+      "patterns",
+      "coordination"
+    ]
+  },
+  {
+    "course": "Agent and its Types",
+    "chapter_title": "Handoffs",
+    "labComponentId": "agent-types-handoffs",
+    "critical_concepts": [
+      {
+        "concept": "Sequential Workflow",
+        "elaboration": "Tasks are passed sequentially from one expert agent to another."
+      },
+      {
+        "concept": "Task Ownership Transfer",
+        "elaboration": "Each agent completely transfers ownership of the task to the next specialist when their part is done."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "visual-agent-handoffs",
+        "type": "interactive-visual",
+        "title": "Handoffs Simulation",
+        "prompt": "Watch how the customer support request is passed sequentially from General Support to Authentication, and finally to the Loan Agent.",
+        "question": "When is the Handoffs pattern best used?",
+        "options": [
+          "When all agents must run at the same time",
+          "When responsibility moves sequentially from one expert to another",
+          "When there is no clear workflow",
+          "When only one general agent is needed"
+        ],
+        "answer": "When responsibility moves sequentially from one expert to another",
+        "explanation": "The Handoff pattern involves agents completely transferring state and ownership of a task to the next specialized agent in a sequential chain.",
+        "architecture": {
+          "type": "handoff",
+          "nodes": [
+            {
+              "id": "user",
+              "label": "Customer",
+              "role": "input"
+            },
+            {
+              "id": "a1",
+              "label": "General Support",
+              "role": "worker"
+            },
+            {
+              "id": "a2",
+              "label": "Auth Agent",
+              "role": "worker"
+            },
+            {
+              "id": "a3",
+              "label": "Banking Agent",
+              "role": "worker"
+            },
+            {
+              "id": "a4",
+              "label": "Loan Agent",
+              "role": "final"
+            }
+          ]
+        },
+        "theory": {
+          "title": "Handoffs Pattern",
+          "content": "<p>Each agent completely transfers ownership of the task to another specialist agent when appropriate, passing the full context along.</p>",
+          "analogy": "A patient moving from the Receptionist to the Triage Nurse, and finally to the Specialist Doctor.",
+          "application": "In Bank Customer Support, a user goes from General Support → Auth Agent → Banking Agent → Loan Agent."
+        },
+        "visual_element": "handoff"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "orchestration",
+      "patterns",
+      "coordination"
+    ]
+  },
+  {
+    "id": "agent-human-in-the-loop",
+    "title": "Agent Safety: Human-in-the-Loop",
+    "course": "Agent and its Types",
+    "chapter_title": "Human-in-the-Loop (HITL)",
+    "labComponentId": "agent-human-in-the-loop",
+    "critical_concepts": [
+      {
+        "concept": "Execution Gating",
+        "elaboration": "Pausing automated workflows to require explicit human authorization before executing high-risk actions."
+      },
+      {
+        "concept": "Trust and Safety",
+        "elaboration": "Ensures that AI systems remain accountable and align with human intentions in critical environments."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "agent-human-in-the-loop",
+        "type": "interactive-visual",
+        "title": "Human-in-the-Loop Workflow",
+        "prompt": "Simulate an agent proposing a high-risk action (e.g., executing a financial transaction or deleting a database) and requiring human approval to proceed.",
+        "question": "Why is a Human-in-the-Loop (HITL) architecture crucial for autonomous agents in enterprise environments?",
+        "options": [
+          "A. It makes the agent run faster.",
+          "B. It prevents the agent from making API calls.",
+          "C. It mitigates risk by requiring human validation for high-stakes or irreversible actions.",
+          "D. It eliminates the need for the agent to use reasoning."
+        ],
+        "answer": "C. It mitigates risk by requiring human validation for high-stakes or irreversible actions.",
+        "explanation": "HITL adds a necessary safety boundary. Agents can plan and prepare actions, but a human must authorize the execution of sensitive or destructive operations.",
+        "theory_explanation": "Human-in-the-Loop (HITL) is a design pattern where an autonomous agent pauses its execution flow to request human approval, feedback, or additional information before proceeding. This is critical for high-stakes actions like sending emails to clients, making financial trades, or altering production infrastructure. The agent does the heavy lifting of planning and formatting the request, but the human retains final authority.",
+        "real_world_analogy": "Think of an autonomous agent as an intern preparing a contract. The intern (agent) gathers all the details, drafts the document, and prepares the envelope. However, before they can actually drop it in the mail, they must place it on their manager's (human) desk for a signature.",
+        "visual_element": "human"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "orchestration",
+      "patterns",
+      "coordination"
+    ]
+  },
+  {
+    "id": "agent-memory-architectures",
+    "title": "Agent Architectures: Memory Systems",
+    "course": "Agent and its Types",
+    "chapter_title": "Memory Systems (RAG)",
+    "labComponentId": "agent-memory-architectures",
+    "critical_concepts": [
+      {
+        "concept": "Context Window Limits",
+        "elaboration": "Short-term memory is bounded by the LLM's token limit, requiring strategies to compress or page data."
+      },
+      {
+        "concept": "Retrieval-Augmented Generation (RAG)",
+        "elaboration": "Using vector databases as long-term memory to fetch relevant semantic context on-demand."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "agent-memory-architectures",
+        "type": "interactive-visual",
+        "title": "Short-term vs Long-term Memory",
+        "prompt": "Visualize how an agent accesses short-term memory (conversation history) vs long-term memory (Vector DB via RAG).",
+        "question": "When building an agent that needs to recall facts from thousands of company documents, which approach is most scalable?",
+        "options": [
+          "A. Including all documents in the system prompt (Short-term memory).",
+          "B. Hardcoding the facts into the agent's logic.",
+          "C. Using Retrieval-Augmented Generation (RAG) with a Vector Database (Long-term memory).",
+          "D. Training a new foundation model from scratch."
+        ],
+        "answer": "C. Using Retrieval-Augmented Generation (RAG) with a Vector Database (Long-term memory).",
+        "explanation": "RAG with a Vector DB allows the agent to search and retrieve only the relevant chunks of information on demand, bypassing context window limitations and reducing costs.",
+        "theory_explanation": "LLM Agents utilize two primary types of memory. Short-term memory is the immediate context window, holding the current conversation history and recent tool outputs. Long-term memory is typically implemented using Vector Databases and Retrieval-Augmented Generation (RAG). When the agent needs historical or vast factual data, it queries the Vector DB for semantic matches, retrieves the relevant chunks, and injects them into its short-term memory to synthesize an answer.",
+        "real_world_analogy": "Short-term memory is like your working memory or the papers on your desk right now. Long-term memory is like a massive filing cabinet in another room. You can't keep everything on your desk, so you go to the filing cabinet, pull out exactly what you need, and bring it back to your desk to work on it.",
+        "visual_element": "memory"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "orchestration",
+      "patterns",
+      "coordination"
+    ]
+  },
+  {
+    "course": "Agent and its Types",
+    "chapter_title": "Orchestrator → Workers",
+    "labComponentId": "agent-types-orchestrator",
+    "critical_concepts": [
+      {
+        "concept": "Orchestrator Agent",
+        "elaboration": "Decomposes complex tasks, delegates to workers, collects outputs, and resolves conflicts."
+      },
+      {
+        "concept": "Worker Agents",
+        "elaboration": "Handle specific subtasks assigned by the orchestrator."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "visual-agent-orchestrator",
+        "type": "interactive-visual",
+        "title": "Orchestrator → Workers Simulation",
+        "prompt": "Observe how the Orchestrator Agent breaks down the Insurance Claim into subtasks for the Image, Policy, and Fraud agents, then synthesizes the results.",
+        "question": "What is the primary role of an Orchestrator Agent?",
+        "options": [
+          "Executes tasks independently",
+          "Coordinates and delegates to workers",
+          "Acts as a database layer",
+          "Only provides input data"
+        ],
+        "answer": "Coordinates and delegates to workers",
+        "explanation": "It plans, delegates tasks to workers, and combines their results into a final answer.",
+        "architecture": {
+          "type": "orchestrator",
+          "nodes": [
+            {
+              "id": "user",
+              "label": "Customer",
+              "role": "input"
+            },
+            {
+              "id": "orch",
+              "label": "Orchestrator Agent",
+              "role": "orchestrator"
+            },
+            {
+              "id": "w1",
+              "label": "Image Agent",
+              "role": "worker"
+            },
+            {
+              "id": "w2",
+              "label": "Policy Agent",
+              "role": "worker"
+            },
+            {
+              "id": "w3",
+              "label": "Fraud Agent",
+              "role": "worker"
+            },
+            {
+              "id": "decision",
+              "label": "Decision Agent",
+              "role": "final"
+            }
+          ]
+        },
+        "theory": {
+          "title": "Orchestrator Pattern",
+          "content": "<p>A <strong>central orchestrator agent</strong> decomposes a complex task into smaller subtasks, delegates them to worker agents, collects their outputs, resolves conflicts, and produces the final result.</p>",
+          "analogy": "A Project Manager breaking down a client deliverable into design, engineering, and QA tasks.",
+          "application": "In Insurance Claim Processing, an orchestrator directs image agents, policy agents, and fraud agents to assess a claim."
+        },
+        "visual_element": "orchestrator"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "orchestration",
+      "patterns",
+      "coordination"
+    ]
+  },
+  {
+    "id": "agent-parallel-fanout",
+    "title": "Agent Workflows: Parallel (Fan-out + Aggregate)",
+    "course": "Agent and its Types",
+    "chapter_title": "Parallel (Fan-out)",
+    "labComponentId": "agent-parallel-fanout",
+    "critical_concepts": [
+      {
+        "concept": "Concurrent Execution",
+        "elaboration": "Splitting tasks across multiple agents simultaneously to dramatically reduce overall latency."
+      },
+      {
+        "concept": "Aggregation and Merging",
+        "elaboration": "Consolidating divergent outputs back into a cohesive, structured response."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "agent-parallel-fanout",
+        "type": "interactive-visual",
+        "title": "Parallel (Fan-out + Aggregate)",
+        "prompt": "Simulate a fan-out workflow where a main task is split into independent subtasks, executed simultaneously, and then aggregated.",
+        "question": "When should you AVOID using a Parallel (Fan-out + Aggregate) workflow?",
+        "options": [
+          "A. When analyzing multiple independent documents.",
+          "B. When evaluating a response across multiple distinct dimensions.",
+          "C. When agents need to build upon one another's work (hard dependencies).",
+          "D. When you want to minimize overall latency."
+        ],
+        "answer": "C. When agents need to build upon one another's work (hard dependencies).",
+        "explanation": "Parallel workflows are only suitable for independent tasks. If one task depends on the output of another, they cannot run simultaneously.",
+        "theory_explanation": "Parallel (Fan-out + Aggregate) is best for independent subtasks that can run simultaneously. It reduces latency compared to sequential processing but increases peak API usage and adds complexity in the aggregation step. Start with no workflow—only introduce patterns when a single agent fails.",
+        "real_world_analogy": "A newsroom editor assigning three different reporters to cover three different angles of a story simultaneously (politics, economics, local impact), and then combining their reports into a front-page spread.",
+        "visual_element": "parallel"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "orchestration",
+      "patterns",
+      "coordination"
+    ]
+  },
+  {
+    "id": "agent-react-pattern",
+    "title": "Agent Patterns: ReAct (Reason & Act)",
+    "course": "Agent and its Types",
+    "chapter_title": "ReAct Pattern",
+    "labComponentId": "agent-react-pattern",
+    "critical_concepts": [
+      {
+        "concept": "Reasoning and Acting",
+        "elaboration": "Interleaving explicit reasoning steps ('Thoughts') with environmental interactions ('Actions')."
+      },
+      {
+        "concept": "Dynamic Adaptation",
+        "elaboration": "The agent updates its internal plan continuously based on the 'Observations' it receives from tools."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "agent-react-pattern",
+        "type": "interactive-visual",
+        "title": "ReAct (Reason & Act) Loop",
+        "prompt": "Simulate the ReAct loop by providing an observation, letting the agent reason, and deciding the next action.",
+        "question": "What is the primary advantage of the ReAct pattern compared to standard prompting?",
+        "options": [
+          "A. It reduces the token count of the prompt.",
+          "B. It allows the model to dynamically gather information and adjust its plan based on external observations.",
+          "C. It prevents the model from needing external tools.",
+          "D. It guarantees a deterministic output for every run."
+        ],
+        "answer": "B. It allows the model to dynamically gather information and adjust its plan based on external observations.",
+        "explanation": "ReAct interleaves reasoning and acting, allowing the model to use tools to observe the environment, learn new facts, and update its reasoning path accordingly.",
+        "theory_explanation": "ReAct (Reasoning and Acting) is a paradigm that synergizes reasoning and acting in LLMs. Instead of generating a final answer immediately, the agent generates a 'Thought' (reasoning step), executes an 'Action' (tool call), and receives an 'Observation' (tool output). This loop continues until the agent has enough information to provide a final answer.",
+        "real_world_analogy": "Imagine a detective solving a crime. They don't just guess the culprit immediately (standard prompt). They first think about what evidence they need (Reasoning), interrogate a suspect or check cameras (Action), learn new facts (Observation), and then form a new theory (Reasoning) until the case is solved.",
+        "visual_element": "react"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "orchestration",
+      "patterns",
+      "coordination"
+    ]
+  },
+  {
+    "id": "agent-sequential-chaining",
+    "title": "Agent Workflows: Sequential (Chaining)",
+    "course": "Agent and its Types",
+    "chapter_title": "Sequential Chaining",
+    "labComponentId": "agent-sequential-chaining",
+    "critical_concepts": [
+      {
+        "concept": "Hard Dependencies",
+        "elaboration": "A linear workflow where each agent strictly requires the output of the preceding step to begin."
+      },
+      {
+        "concept": "Additive Latency",
+        "elaboration": "Total execution time equals the sum of all individual steps, making this pattern slow for long chains."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "agent-sequential-chaining",
+        "type": "interactive-visual",
+        "title": "Sequential Chaining Workflow",
+        "prompt": "Simulate a sequential chaining workflow where Step B requires Step A's output, and Step C requires Step B's output.",
+        "question": "What is the primary drawback or 'cost' of using a Sequential (Chaining) workflow?",
+        "options": [
+          "A. High token consumption due to parallel execution.",
+          "B. Increased latency, as total time is additive across all steps.",
+          "C. Inability to pass data between agents.",
+          "D. Extremely high API rate limits."
+        ],
+        "answer": "B. Increased latency, as total time is additive across all steps.",
+        "explanation": "Because each step must wait for the previous one to finish, the total execution time is the sum of all step times, resulting in higher latency.",
+        "theory_explanation": "Sequential (Chaining) is best for linear processes where tasks have hard dependencies (e.g., Draft -> Review -> Polish). Each agent in the chain uses the output of the previous agent as its input. Avoid forcing a sequence when a single agent could complete the task, as it adds unnecessary complexity and latency.",
+        "real_world_analogy": "An assembly line in a factory. The car chassis must be built before the engine is installed, and the engine must be installed before the hood is painted. Each worker waits for the previous one to finish.",
+        "visual_element": "sequential"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "orchestration",
+      "patterns",
+      "coordination"
+    ]
+  },
+  {
+    "course": "Agent and its Types",
+    "chapter_title": "Specialist Teams",
+    "labComponentId": "agent-types-specialist-teams",
+    "critical_concepts": [
+      {
+        "concept": "Collaborative Experts",
+        "elaboration": "Multiple specialized agents collaborate under a coordinator."
+      },
+      {
+        "concept": "Permanent Specialty",
+        "elaboration": "Each agent is responsible for a specific business capability permanently."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "visual-agent-specialist",
+        "type": "interactive-visual",
+        "title": "Specialist Teams Simulation",
+        "prompt": "See how the Coordinator assigns specific tasks to the Recon, Scanner, Analyzer, and Reporter agents based on their fixed specialties.",
+        "question": "What is the key characteristic of Specialist Teams?",
+        "options": [
+          "Agents are generic and handle all tasks",
+          "A fixed team of permanent experts collaborates on a workflow repeatedly",
+          "Agents randomly select tasks from a queue",
+          "There is no coordinator involved"
+        ],
+        "answer": "A fixed team of permanent experts collaborates on a workflow repeatedly",
+        "explanation": "Specialist Teams consist of multiple agents with fixed domain expertise collaborating under a coordinator to execute a complex but repeatable workflow.",
+        "architecture": {
+          "type": "team",
+          "nodes": [
+            {
+              "id": "coord",
+              "label": "Coordinator",
+              "role": "orchestrator"
+            },
+            {
+              "id": "s1",
+              "label": "Recon Agent",
+              "role": "worker"
+            },
+            {
+              "id": "s2",
+              "label": "Scanner Agent",
+              "role": "worker"
+            },
+            {
+              "id": "s3",
+              "label": "Analyzer Agent",
+              "role": "worker"
+            },
+            {
+              "id": "s4",
+              "label": "Reporter Agent",
+              "role": "worker"
+            }
+          ]
+        },
+        "theory": {
+          "title": "Specialist Teams Pattern",
+          "content": "<p>Multiple specialized agents collaborate under a coordinator, each responsible for a specific business capability. This ensures domain mastery within the workflow.</p>",
+          "analogy": "A construction crew where the foreman directs the electrician, plumber, and carpenter when their specific skills are needed.",
+          "application": "A Bug Bounty Platform where the coordinator orchestrates Recon, Scanner, Analyzer, and Reporter agents."
+        },
+        "visual_element": "worker"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "orchestration",
+      "patterns",
+      "coordination"
+    ]
+  }
+]

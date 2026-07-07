@@ -1,0 +1,19 @@
+[
+  {
+    "target": ".dfir-dashboard-header",
+    "content": "Welcome to the Incident Response (DFIR) Agent Dashboard. Here you monitor ongoing incidents and active threats.",
+    "disableBeacon": true
+  },
+  {
+    "target": ".dfir-incident-queue",
+    "content": "This queue displays newly ingested alerts from the SIEM, awaiting automated or manual forensic analysis."
+  },
+  {
+    "target": ".dfir-sidebar-tools",
+    "content": "The tools panel gives the agent access to Memory Dumps, Packet Captures (PCAPs), and automated Containment strategies."
+  },
+  {
+    "target": ".theory-wiki-trigger",
+    "content": "Access the Theory Wiki to learn about specific IoCs, Malware Families, and Containment tactics at any time."
+  }
+]

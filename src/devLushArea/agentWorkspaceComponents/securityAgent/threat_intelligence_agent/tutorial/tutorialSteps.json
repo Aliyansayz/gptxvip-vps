@@ -1,0 +1,19 @@
+[
+  {
+    "target": ".threat-intel-dashboard-header",
+    "content": "Welcome to the Threat Intelligence Agent Dashboard. This is your command center for global threat monitoring.",
+    "disableBeacon": true
+  },
+  {
+    "target": ".threat-intel-feed",
+    "content": "This feed displays real-time intelligence scraped from dark web forums, CVE databases, and security advisories."
+  },
+  {
+    "target": ".threat-intel-sidebar-tools",
+    "content": "Explore the capabilities used to gather and contextualize threat data in the tools section."
+  },
+  {
+    "target": ".theory-wiki-trigger",
+    "content": "Access the Theory Wiki anytime to learn about Threat Intelligence frameworks like MITRE ATT&CK and OSINT."
+  }
+]

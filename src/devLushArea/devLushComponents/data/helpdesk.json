@@ -1,0 +1,80 @@
+[
+  {
+    "course": "IT Helpdesk & Internal Support",
+    "chapter_title": "Automated Troubleshooting & Provisioning",
+    "labComponentId": "helpdesk-agents",
+    "critical_concepts": [
+      {
+        "concept": "Automated Troubleshooting",
+        "elaboration": "An agent that intercepts IT support tickets, connects to internal systems to check employee permissions, resets passwords, or provisions software licenses without human intervention."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "helpdesk-automation",
+        "concept_tested": "Automated Troubleshooting",
+        "type": "visual_element",
+        "title": "Case 1: Zero-Touch Ticket Resolution",
+        "prompt": "An employee submits a ticket requesting access to 'Figma Pro'. The IT helpdesk agent reads the ticket, checks the employee's role in the HR system (Workday), verifies the department has available budget, and autonomously provisions the license via the Figma API, closing the ticket in 30 seconds.",
+        "question": "What is the primary operational impact of deploying IT helpdesk agents for routine requests?",
+        "options": [
+          "A. It forces employees to solve their own IT problems manually.",
+          "B. It dramatically reduces mean time to resolution (MTTR) and frees up human IT staff to focus on complex infrastructure issues rather than repetitive provisioning tasks.",
+          "C. It increases the cost of IT operations by requiring expensive API calls."
+        ],
+        "answer": "B. It dramatically reduces mean time to resolution (MTTR) and frees up human IT staff to focus on complex infrastructure issues rather than repetitive provisioning tasks.",
+        "explanation": "Routine tasks like password resets and software provisioning make up a massive percentage of IT tickets. Autonomous agents resolve these instantly via API integrations, providing a better employee experience and allowing human engineers to focus on higher-value work.",
+        "theory": {
+          "title": "API-Driven IT Service Management (ITSM)",
+          "content": "Internal support agents act as middleware between the ticketing system (e.g., Jira, ServiceNow) and the enterprise's identity and SaaS management platforms. By parsing the natural language intent of a ticket and validating business rules, they can safely execute privileged API actions.",
+          "analogy": "An automated toll booth that checks your pass and opens the gate instantly, rather than waiting for a human attendant to manually verify your credentials.",
+          "application": "Deploy helpdesk agents that intercept 'Access Request' tickets, validate organizational charts via HR APIs, and trigger Okta or Azure AD provisioning workflows."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "business",
+          "developer"
+        ],
+        "logs": [
+          {
+            "timestamp": "11:20:00",
+            "level": "info",
+            "message": "New Ticket (TKT-902): 'Need Figma Pro access for new design project'."
+          },
+          {
+            "timestamp": "11:20:05",
+            "level": "info",
+            "message": "Verifying user context: Role 'Product Designer' confirmed in Workday."
+          },
+          {
+            "timestamp": "11:20:10",
+            "level": "info",
+            "message": "Checking license inventory... 14 seats available."
+          },
+          {
+            "timestamp": "11:20:15",
+            "level": "success",
+            "message": "Provisioning license via Figma API. Action successful."
+          },
+          {
+            "timestamp": "11:20:20",
+            "level": "success",
+            "message": "Ticket TKT-902 closed. User notified via Slack."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "business",
+      "developer",
+      "devlush",
+      "agents",
+      "ai",
+      "it-support",
+      "internal",
+      "provisioning",
+      "zero-touch",
+      "ticketing"
+    ]
+  }
+]

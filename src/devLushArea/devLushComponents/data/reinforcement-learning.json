@@ -1,0 +1,165 @@
+[
+  {
+    "id": "mp_rl_overview",
+    "title": "Reinforcement Learning Overview",
+    "labComponentId": "mp_rl_overview",
+    "course": "Reinforcement Learning",
+    "chapter_title": "Reinforcement Learning in Physics",
+    "critical_concepts": [
+      {
+        "concept": "What is Reinforcement Learning?",
+        "elaboration": "Reinforcement Learning (RL) is a field of machine learning where an 'agent' learns to make optimal decisions by interacting with an 'environment'. It learns through trial and error, guided by a system of rewards and penalties."
+      },
+      {
+        "concept": "The Agent-Environment Loop",
+        "elaboration": "The core of RL is a loop: 1) The agent observes the current state of the environment. 2) It takes an action. 3) The environment transitions to a new state and gives the agent a reward. 4) The agent uses this reward to update its strategy (policy) to maximize future rewards."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "mp_rl_overview",
+        "tags": [
+          "Reinforcement Learning",
+          "AI",
+          "Physics",
+          "Agent",
+          "Environment"
+        ],
+        "concept_tested": "Applications of Reinforcement Learning in Physics",
+        "title": "Reinforcement Learning: Overview",
+        "prompt": "Explore how computational agents learn to master complex physical tasks through trial, error, and reward.",
+        "interaction": "A static overview page explaining the core concepts of Reinforcement Learning and its application in physics simulations.",
+        "question": "Review the concepts below.",
+        "answer": null
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "rl",
+      "simulation",
+      "reward",
+      "trial-and-error",
+      "environment"
+    ]
+  },
+  {
+    "id": "mp_rl_pendulum",
+    "title": "Inverted Pendulum",
+    "labComponentId": "mp_rl_pendulum",
+    "course": "Reinforcement Learning",
+    "chapter_title": "Inverted Pendulum",
+    "critical_concepts": [
+      {
+        "concept": "Control Theory",
+        "elaboration": "Balancing an inverted pendulum is a classic problem in control theory and reinforcement learning."
+      },
+      {
+        "concept": "Reward Strategy",
+        "elaboration": "The agent receives a positive reward for keeping the pole upright and a penalty if it falls."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "mp_rl_pendulum",
+        "tags": [
+          "Reinforcement Learning",
+          "Control Theory",
+          "Inverted Pendulum"
+        ],
+        "concept_tested": "Understanding the Inverted Pendulum problem.",
+        "title": "Inverted Pendulum",
+        "prompt": "The agent must learn to balance the pole by moving the cart left and right.",
+        "interaction": "A simulation of an inverted pendulum.",
+        "question": "What is the agent trying to achieve in this simulation?",
+        "options": [
+          "Keep the cart still",
+          "Balance the pole",
+          "Make the pole fall over"
+        ],
+        "answer": "Balance the pole",
+        "explanation": "The primary goal is to apply forces to keep the pendulum balanced upright.",
+        "wrong_answer_feedback": [
+          {
+            "option": "Keep the cart still",
+            "feedback": "If the cart stays still, the pendulum will fall."
+          },
+          {
+            "option": "Make the pole fall over",
+            "feedback": "This is exactly what we want to prevent."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "rl",
+      "simulation",
+      "reward",
+      "trial-and-error",
+      "environment"
+    ]
+  },
+  {
+    "id": "mp_rl_projectile",
+    "title": "Projectile Learner",
+    "labComponentId": "mp_rl_projectile",
+    "course": "Reinforcement Learning",
+    "chapter_title": "Projectile Learner",
+    "critical_concepts": [
+      {
+        "concept": "Exploration vs Exploitation",
+        "elaboration": "The agent balances trying new random angles (exploration) with refining the best angle found so far (exploitation)."
+      },
+      {
+        "concept": "Reward Maximization",
+        "elaboration": "The agent updates its policy based on how close the projectile lands to the target."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "mp_rl_projectile",
+        "tags": [
+          "Reinforcement Learning",
+          "Physics",
+          "Projectile Motion"
+        ],
+        "concept_tested": "Learning optimal angles for projectile motion.",
+        "title": "Projectile Learner",
+        "prompt": "Watch the agent learn the optimal launch angle to hit a target through trial and error.",
+        "interaction": "A visualization of an agent exploring different launch angles.",
+        "question": "What happens to the exploration noise as the agent learns?",
+        "options": [
+          "It increases",
+          "It stays the same",
+          "It decreases"
+        ],
+        "answer": "It decreases",
+        "explanation": "As the agent finds better angles, it explores less and exploits the best known strategy more.",
+        "wrong_answer_feedback": [
+          {
+            "option": "It increases",
+            "feedback": "If exploration increases, the agent wouldn't converge on a good solution."
+          },
+          {
+            "option": "It stays the same",
+            "feedback": "The code explicitly decreases the exploration noise over time."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "rl",
+      "simulation",
+      "reward",
+      "trial-and-error",
+      "environment"
+    ]
+  }
+]

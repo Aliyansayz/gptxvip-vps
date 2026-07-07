@@ -1,0 +1,19 @@
+[
+  {
+    "target": ".cloud-posture-dashboard-header",
+    "content": "Welcome to the Cloud Security Posture Agent Dashboard. Here you monitor your multi-cloud environment against security baselines.",
+    "disableBeacon": true
+  },
+  {
+    "target": ".cloud-posture-feed",
+    "content": "This feed shows real-time misconfigurations detected across your AWS, GCP, or Azure environments."
+  },
+  {
+    "target": ".cloud-posture-sidebar-tools",
+    "content": "Explore the automated auditing, drift detection, and remediation tools deployed by this agent."
+  },
+  {
+    "target": ".theory-wiki-trigger",
+    "content": "Access the Theory Wiki to learn about Cloud IAM, Infrastructure as Code, and CIS Benchmarks."
+  }
+]

@@ -1,0 +1,126 @@
+[
+  {
+    "course": "Software Engineering (DevTools) Agents",
+    "chapter_title": "Autonomous Code Review & QA",
+    "labComponentId": "devtools-agents",
+    "critical_concepts": [
+      {
+        "concept": "Autonomous Code Reviewers",
+        "elaboration": "Agents that review pull requests not just for syntax, but for architectural consistency, security vulnerabilities, and performance bottlenecks."
+      },
+      {
+        "concept": "QA & Testing Agents",
+        "elaboration": "Agents that read product requirements, write comprehensive unit and end-to-end test suites, and autonomously execute them."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "devtools-code-review",
+        "concept_tested": "Autonomous Code Reviewers",
+        "type": "visual_element",
+        "title": "Case 1: Architectural Code Analysis",
+        "prompt": "An AI code reviewer agent analyzes a pull request. Instead of just checking formatting, it flags that the new database queries bypass the application's caching layer, which violates the established architectural patterns.",
+        "question": "What distinguishes an advanced autonomous code reviewer from traditional static analysis (linting) tools?",
+        "options": [
+          "A. Autonomous agents format code faster than linters.",
+          "B. Traditional linters can only run locally, while agents run in the cloud.",
+          "C. Autonomous agents can understand architectural intent and business logic consistency, whereas linters only check syntax rules."
+        ],
+        "answer": "C. Autonomous agents can understand architectural intent and business logic consistency, whereas linters only check syntax rules.",
+        "explanation": "While linters check against rigid, predefined syntactic rules, advanced AI reviewers can comprehend the broader context of the codebase, identifying subtle architectural regressions or semantic logic errors that pass syntax checks.",
+        "theory": {
+          "title": "Semantic PR Validation",
+          "content": "Modern software engineering leverages agents to act as senior peer reviewers. These agents parse the entirety of the project structure, recognizing patterns like caching strategies or security boundaries, and flag PRs that technically compile but violate system design principles.",
+          "analogy": "A spell-checker (linter) ensures all words are spelled correctly, but an editor (autonomous agent) ensures the story makes sense and follows the established plot.",
+          "application": "Integrate an AI agent into the CI/CD pipeline to analyze diffs against the project's 'architecture.md' documentation before allowing merges."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "developer"
+        ],
+        "logs": [
+          {
+            "timestamp": "09:01:10",
+            "level": "info",
+            "message": "PR #402 created. Initiating autonomous review..."
+          },
+          {
+            "timestamp": "09:01:12",
+            "level": "info",
+            "message": "Syntax check passed. Proceeding to semantic analysis."
+          },
+          {
+            "timestamp": "09:01:18",
+            "level": "warn",
+            "message": "Architectural regression detected: Direct database access found bypassing 'RedisCacheService'."
+          },
+          {
+            "timestamp": "09:01:20",
+            "level": "warn",
+            "message": "Review failed. Requesting changes with suggested caching implementation."
+          }
+        ]
+      },
+      {
+        "componentId": "devtools-qa-testing",
+        "concept_tested": "QA & Testing Agents",
+        "type": "visual_element",
+        "title": "Case 2: Requirements-Driven Test Generation",
+        "prompt": "A QA agent reads a newly merged product requirement document (PRD) for a shopping cart feature. It automatically generates and executes unit tests for price calculation, discount application, and edge cases.",
+        "question": "How do QA agents shift the testing paradigm in agile development?",
+        "options": [
+          "A. By eliminating the need for any developers on the team.",
+          "B. By translating human-readable product requirements directly into executable test suites, ensuring complete test coverage before code is even written.",
+          "C. By manually clicking through the user interface on a physical device."
+        ],
+        "answer": "B. By translating human-readable product requirements directly into executable test suites, ensuring complete test coverage before code is even written.",
+        "explanation": "QA agents can bridge the gap between product management and engineering by synthesizing executable test code (like Jest or Cypress scripts) directly from textual requirements, enforcing Test-Driven Development (TDD) automatically.",
+        "theory": {
+          "title": "Autonomous TDD (Test-Driven Development)",
+          "content": "Writing comprehensive test suites is notoriously time-consuming and prone to human oversight. QA agents parse business requirements, identify edge cases, and programmatically generate the testing scaffolding, freeing human engineers to focus on implementing the core logic to pass those tests.",
+          "analogy": "A teacher (QA Agent) writing the exam questions based on the syllabus (PRD) before the students (Engineers) even begin studying the material.",
+          "application": "Configure an agent to subscribe to JIRA ticket creations, outputting comprehensive test files to the repository whenever a feature spec is finalized."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "developer",
+          "business"
+        ],
+        "logs": [
+          {
+            "timestamp": "14:30:00",
+            "level": "info",
+            "message": "New PRD detected: 'Discount Code Validation'."
+          },
+          {
+            "timestamp": "14:30:05",
+            "level": "info",
+            "message": "Extracting business rules: Expired codes, stacked discounts, case-sensitivity."
+          },
+          {
+            "timestamp": "14:30:15",
+            "level": "success",
+            "message": "Generated 24 Jest unit tests and 4 Cypress E2E flows."
+          },
+          {
+            "timestamp": "14:30:20",
+            "level": "info",
+            "message": "Test suite committed to branch 'test/discount-validation'."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "developer",
+      "business",
+      "devlush",
+      "agents",
+      "ai",
+      "software-engineering",
+      "code-review",
+      "qa",
+      "testing",
+      "architecture"
+    ]
+  }
+]

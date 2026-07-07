@@ -1,0 +1,131 @@
+[
+  {
+    "id": "episodic-memory-activity",
+    "title": "Episodic Memory",
+    "course": "Agent Memories",
+    "chapter_title": "Episodic Memory",
+    "labComponentId": "episodic-memory-activity",
+    "critical_concepts": [
+      {
+        "concept": "Interaction History",
+        "elaboration": "Stores sequential logs of past events to personalize future interactions."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "episodic-memory-activity",
+        "type": "interactive-visual",
+        "title": "Episodic Memory Mechanics",
+        "prompt": "Illustrates personalized, long-term interaction history.",
+        "question": "What is the key difference between semantic and episodic memory?",
+        "options": [
+          "A. Semantic memory is short-term, episodic is long-term.",
+          "B. Episodic memory stores specific chronological events, while semantic stores general facts.",
+          "C. Episodic memory uses vector databases, semantic uses SQL.",
+          "D. There is no difference."
+        ],
+        "answer": "B. Episodic memory stores specific chronological events, while semantic stores general facts.",
+        "explanation": "Episodic memory is tied to specific times and experiences (the 'episodes' of an agent's interactions), whereas semantic memory is factual knowledge divorced from when it was learned.",
+        "theory_explanation": "By maintaining an episodic memory, agents can build relationships with users and remember context over long periods of time.",
+        "real_world_analogy": "Like remembering your specific conversation with a friend at a coffee shop last Tuesday (episodic), versus knowing that coffee contains caffeine (semantic).",
+        "visual_element": "history"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "memory",
+      "context",
+      "retention",
+      "semantic",
+      "episodic"
+    ]
+  },
+  {
+    "id": "in-context-memory-activity",
+    "title": "In-Context Memory",
+    "course": "Agent Memories",
+    "chapter_title": "In-Context Memory",
+    "labComponentId": "in-context-memory-activity",
+    "critical_concepts": [
+      {
+        "concept": "Context Window Limits",
+        "elaboration": "LLMs have a fixed token limit for what they can hold in immediate memory."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "in-context-memory-activity",
+        "type": "interactive-visual",
+        "title": "In-Context Memory Use Cases",
+        "prompt": "Explains the LLM context window limits and use-cases.",
+        "question": "What is the primary limitation of in-context memory?",
+        "options": [
+          "A. It cannot store facts.",
+          "B. It has a strict token limit causing older information to be forgotten.",
+          "C. It requires external vector databases.",
+          "D. It is only useful for coding tasks."
+        ],
+        "answer": "B. It has a strict token limit causing older information to be forgotten.",
+        "explanation": "In-context memory relies on the LLM's context window, which has a hard token limit. Once exceeded, older information falls out of context.",
+        "theory_explanation": "In-context memory is the immediate memory space of the LLM. It's fast and readily available but severely limited by token size constraints.",
+        "real_world_analogy": "Like a person's working memory trying to hold a phone number. If too many numbers are added, the first ones are forgotten.",
+        "visual_element": "brain"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "memory",
+      "context",
+      "retention",
+      "semantic",
+      "episodic"
+    ]
+  },
+  {
+    "id": "semantic-memory-activity",
+    "title": "Semantic Memory",
+    "course": "Agent Memories",
+    "chapter_title": "Semantic Memory",
+    "labComponentId": "semantic-memory-activity",
+    "critical_concepts": [
+      {
+        "concept": "Knowledge Graphs & Vector DBs",
+        "elaboration": "Stores general knowledge, facts, and organizational documents for retrieval."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "semantic-memory-activity",
+        "type": "interactive-visual",
+        "title": "Semantic Memory Mechanics",
+        "prompt": "Details knowledge graphs and vector database interactions.",
+        "question": "Which technology is primarily used to implement semantic memory for unstructured text?",
+        "options": [
+          "A. Relational Databases",
+          "B. LocalStorage",
+          "C. Vector Databases",
+          "D. Redis Cache"
+        ],
+        "answer": "C. Vector Databases",
+        "explanation": "Vector databases are optimized for similarity searches, making them ideal for retrieving relevant semantic concepts from unstructured text.",
+        "theory_explanation": "Semantic memory acts as an external knowledge base that agents can query to fetch factual information beyond their pre-trained weights.",
+        "real_world_analogy": "Like an encyclopedia or a company wiki that an employee consults before answering a technical question.",
+        "visual_element": "network"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "memory",
+      "context",
+      "retention",
+      "semantic",
+      "episodic"
+    ]
+  }
+]

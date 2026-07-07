@@ -336,7 +336,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
             onSectionChange={(id) => handleSubItemClick(activeTab, id)}
           />
           <div className={
-            activeTab === "home"
+            activeTab === "home" || activeTab === "dev-labs-workspace"
               ? "w-full h-full overflow-hidden"
               : activeTab === "map" && activeSubTab === "project-journey" 
               ? "w-full h-full overflow-hidden" 
@@ -435,6 +435,18 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                       >
                         <ChevronRight className="w-3 h-3 text-zinc-300 dark:text-zinc-700 group-hover:text-emerald-500 transition-colors" />
                         Owner Profile
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        onClick={() => {
+                          setActiveTab("dev-labs-workspace");
+                          setActiveSubTab("");
+                        }}
+                        className="hover:text-emerald-500 transition-colors flex items-center gap-2 group"
+                      >
+                        <ChevronRight className="w-3 h-3 text-zinc-300 dark:text-zinc-700 group-hover:text-emerald-500 transition-colors" />
+                        DevLushArea
                       </button>
                     </li>
                   </ul>

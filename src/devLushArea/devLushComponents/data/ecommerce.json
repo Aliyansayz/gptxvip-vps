@@ -1,0 +1,1055 @@
+[
+  {
+    "course": "Ecommerce Agents",
+    "chapter_title": "Business Lens: Price Matching & Protection",
+    "labComponentId": "ecommerce-agents-business-lens",
+    "tags": [
+      "business",
+      "devlush",
+      "agents",
+      "ai",
+      "marketplace",
+      "pricing",
+      "procurement",
+      "competition",
+      "retail"
+    ],
+    "critical_concepts": [
+      {
+        "concept": "Price Collision",
+        "elaboration": "Competitor agents undercutting each other to zero."
+      },
+      {
+        "concept": "Double-Sell Protection",
+        "elaboration": "Strict order fulfillment validation before payment."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "visual-business-lens",
+        "type": "interactive-visual",
+        "title": "Business Lens: Algorithmic Price Matching",
+        "prompt": "Observe what happens when two automated pricing agents continuously undercut each other without a margin floor.",
+        "question": "What is the primary business risk of unchecked automated pricing agents?",
+        "options": [
+          "Agents will stop working and require manual restarts",
+          "Agents will endlessly undercut each other, destroying profit margins",
+          "Agents will increase prices infinitely",
+          "Customers will not be able to see the products"
+        ],
+        "answer": "Agents will endlessly undercut each other, destroying profit margins",
+        "explanation": "Without strict programmatic margin floors, automated pricing loops can recursively undercut competitor prices down to zero.",
+        "architecture": {
+          "type": "business-lens",
+          "nodes": [
+            {
+              "id": "agentA",
+              "label": "Our Pricing Agent",
+              "role": "worker"
+            },
+            {
+              "id": "agentB",
+              "label": "Competitor Agent",
+              "role": "worker"
+            },
+            {
+              "id": "db",
+              "label": "Marketplace Database",
+              "role": "database"
+            }
+          ]
+        },
+        "theory": {
+          "title": "Automated Margin Safeguards",
+          "content": "<p>Using bounded rate limiters and margin floors to protect automated pricing agents from pricing matching down to zero. Strict order fulfillment validation ensures inventory allocations are completely locked before payment.</p>",
+          "analogy": "A thermostat that has a built-in emergency limit preventing it from heating a room past 85 degrees, no matter how cold the outside air gets.",
+          "application": "Hardcode strict pricing limits and minimum profit percentages in the transaction backend, completely independent of the repricing agent's model context."
+        }
+      }
+    ]
+  },
+  {
+    "course": "Ecommerce Agents",
+    "chapter_title": "Developer Lens: Concurrency & Mutex",
+    "labComponentId": "ecommerce-agents-developer-lens",
+    "tags": [
+      "developer",
+      "devlush",
+      "agents",
+      "ai",
+      "marketplace",
+      "pricing",
+      "procurement",
+      "competition",
+      "retail"
+    ],
+    "critical_concepts": [
+      {
+        "concept": "Concurrency",
+        "elaboration": "Micro-second synchronization and thread-safety."
+      },
+      {
+        "concept": "Mutex Locks",
+        "elaboration": "Preventing state overwrites in async loops."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "visual-developer-lens",
+        "type": "interactive-visual",
+        "title": "Developer Lens: Concurrency & Mutex",
+        "prompt": "Observe how Mutex locks serialize access to shared memory, preventing asynchronous state overwrites.",
+        "question": "What is the primary purpose of a Mutex lock in asynchronous execution?",
+        "options": [
+          "To speed up database query performance",
+          "To guarantee mutual exclusion, ensuring only one process mutates shared state at a time",
+          "To permanently freeze all agent activities",
+          "To encrypt data in transit"
+        ],
+        "answer": "To guarantee mutual exclusion, ensuring only one process mutates shared state at a time",
+        "explanation": "A Mutex (Mutual Exclusion) lock guarantees that when state mutation spans across async wait states, no other process can read or write to that shared state until the lock is released.",
+        "architecture": {
+          "type": "developer-lens",
+          "nodes": [
+            {
+              "id": "p1",
+              "label": "Process A",
+              "role": "worker"
+            },
+            {
+              "id": "p2",
+              "label": "Process B",
+              "role": "worker"
+            },
+            {
+              "id": "mutex",
+              "label": "Mutex Lock",
+              "role": "layer"
+            },
+            {
+              "id": "state",
+              "label": "Shared State",
+              "role": "database"
+            }
+          ]
+        },
+        "theory": {
+          "title": "In-Memory Promise Serialization",
+          "content": "<p>Guaranteeing mutual exclusion in Node.js event-loop threads when state mutation spans across async wait states. Prevents asynchronous state overwrites where two non-blocking processes read from a common object before either has written, resulting in lost updates.</p>",
+          "analogy": "A bathroom with only one key. Only the person with the key can enter; others must wait in line until the key is returned.",
+          "application": "Using async-mutex and Python asyncio locks to synchronize concurrent read-writes to shared stateful memory."
+        }
+      }
+    ]
+  },
+  {
+    "course": "Ecommerce Agents",
+    "chapter_title": "Predictive Forecasting & Retention",
+    "labComponentId": "ecommerce-agents-forecasting",
+    "critical_concepts": [
+      {
+        "concept": "Predictive Intelligence",
+        "elaboration": "Anticipating demand spikes to optimize inventory and gain a first-mover advantage."
+      },
+      {
+        "concept": "Automated Retention",
+        "elaboration": "Turning post-purchase interactions and returns into revenue recovery opportunities."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "ecom-business-2",
+        "concept_tested": "Predictive Forecasting",
+        "type": "analysis",
+        "title": "Case 5: Predictive Inventory & Trend Forecasting",
+        "prompt": "An agent continuously ingests global trends, social media sentiment, and historical sales data to predict future demand anomalies.",
+        "question": "What is the primary business advantage of utilizing AI for predictive inventory forecasting?",
+        "options": [
+          "A. Reducing stockouts and dead stock while gaining a first-mover advantage on emerging micro-trends.",
+          "B. Eliminating the need for warehouses entirely.",
+          "C. Automatically purchasing unlimited inventory regardless of cost."
+        ],
+        "answer": "A. Reducing stockouts and dead stock while gaining a first-mover advantage on emerging micro-trends.",
+        "explanation": "By anticipating demand spikes before they happen, capital allocation is optimized and inventory waste is minimized.",
+        "theory": {
+          "title": "Predictive Intelligence",
+          "content": "AI models can detect subtle patterns across vast datasets (sentiment, weather, historical sales) to accurately predict demand curves. This allows proactive supply chain management.",
+          "analogy": "A radar system that detects incoming weather patterns days before they arrive, allowing you to stock umbrellas exactly when needed.",
+          "application": "Integrate predictive models with procurement APIs to automatically adjust reorder points based on real-time trend velocity."
+        },
+        "nature": "feature",
+        "tags": [
+          "business"
+        ],
+        "logs": [
+          {
+            "timestamp": "14:20:00",
+            "level": "info",
+            "message": "Ingesting social sentiment streams..."
+          },
+          {
+            "timestamp": "14:20:02",
+            "level": "warn",
+            "message": "Anomaly detected: 400% spike in mentions for 'Ceramic Match Strikers'."
+          },
+          {
+            "timestamp": "14:20:05",
+            "level": "success",
+            "message": "Inventory reorder point adjusted automatically to prevent stockout."
+          }
+        ]
+      },
+      {
+        "componentId": "ecom-business-3",
+        "concept_tested": "Lifecycle Retention",
+        "type": "analysis",
+        "title": "Case 6: Automated Post-Purchase Retention",
+        "prompt": "An agent dedicated to the customer lifecycle after checkout handles proactive shipping updates and intelligent return deflections.",
+        "question": "How does a post-purchase AI agent directly impact Customer Lifetime Value (CLV)?",
+        "options": [
+          "A. By ignoring customer complaints and automatically issuing refunds.",
+          "B. By lowering support costs and turning potential churn events (like returns) into exchange opportunities via personalized offers.",
+          "C. By forcing customers to pay for premium support tiers."
+        ],
+        "answer": "B. By lowering support costs and turning potential churn events (like returns) into exchange opportunities via personalized offers.",
+        "explanation": "Proactive resolution of WISMO (Where Is My Order?) queries and intelligent return handling preserves revenue and fosters loyalty.",
+        "theory": {
+          "title": "Automated Retention",
+          "content": "The customer journey doesn't end at checkout. AI agents manage the post-purchase experience by providing real-time contextual updates and intelligently negotiating returns into exchanges, recovering otherwise lost revenue.",
+          "analogy": "A dedicated concierge who ensures your hotel stay is perfect even after you've checked in, turning minor issues into moments of delight.",
+          "application": "Deploy agents in the support pipeline to intercept return requests with dynamic discount offers for alternative products."
+        },
+        "nature": "feature",
+        "tags": [
+          "business"
+        ],
+        "logs": [
+          {
+            "timestamp": "14:25:00",
+            "level": "info",
+            "message": "Return request initiated for Order #4421 (Reason: Size too small)."
+          },
+          {
+            "timestamp": "14:25:02",
+            "level": "info",
+            "message": "Checking inventory for Size M..."
+          },
+          {
+            "timestamp": "14:25:03",
+            "level": "success",
+            "message": "Instant exchange offer generated with 10% bonus credit. Customer accepted."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "business",
+      "devlush",
+      "agents",
+      "ai",
+      "marketplace",
+      "pricing",
+      "procurement",
+      "competition",
+      "retail"
+    ]
+  },
+  {
+    "course": "Ecommerce Agents",
+    "chapter_title": "Dynamic Content & Localization",
+    "labComponentId": "ecommerce-agents-localization",
+    "critical_concepts": [
+      {
+        "concept": "Dynamic Localization",
+        "elaboration": "Automatically adjusting SEO and product descriptions for global relevance."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "ecom-business-4",
+        "concept_tested": "Dynamic SEO Localization",
+        "type": "analysis",
+        "title": "Case 7: Dynamic Content & SEO Localization",
+        "prompt": "An AI agent dynamically rewrites product descriptions, landing pages, and metadata to align with real-time SEO trends and hyper-local nuances.",
+        "question": "What is the key benefit of deploying an AI agent for dynamic localization?",
+        "options": [
+          "A. Expanding global reach and organic traffic growth without the overhead of manual translation and copywriting teams.",
+          "B. Automatically purchasing ad space on global search engines.",
+          "C. Replacing the entire marketing department with a single script."
+        ],
+        "answer": "A. Expanding global reach and organic traffic growth without the overhead of manual translation and copywriting teams.",
+        "explanation": "AI can continuously optimize thousands of product pages to capture long-tail search queries across multiple languages and cultural contexts.",
+        "theory": {
+          "title": "Dynamic Localization",
+          "content": "Static content limits global reach. AI agents can dynamically adjust tone, colloquialisms, and SEO keywords based on the visitor's location and trending search terms, ensuring maximum relevance.",
+          "analogy": "A chameleon billboard that changes its language and cultural references depending on who is driving past.",
+          "application": "Use LLMs integrated with the CMS to auto-generate localized variants of product pages and A/B test them continuously."
+        },
+        "nature": "feature",
+        "tags": [
+          "business"
+        ],
+        "logs": [
+          {
+            "timestamp": "14:30:00",
+            "level": "info",
+            "message": "Detecting traffic surge from Tokyo..."
+          },
+          {
+            "timestamp": "14:30:02",
+            "level": "info",
+            "message": "Translating and culturally adapting 45 product listings..."
+          },
+          {
+            "timestamp": "14:30:05",
+            "level": "success",
+            "message": "Localization complete. Organic search visibility in region increased by 18%."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "business",
+      "devlush",
+      "agents",
+      "ai",
+      "marketplace",
+      "pricing",
+      "procurement",
+      "competition",
+      "retail"
+    ]
+  },
+  {
+    "course": "Ecommerce Agents",
+    "chapter_title": "Using Agent Synchronization In Python",
+    "labComponentId": "ecommerce-agents-python",
+    "critical_concepts": [
+      {
+        "concept": "asyncio.Lock",
+        "elaboration": "Serializing asynchronous operations within a single Python process."
+      },
+      {
+        "concept": "Redis Distributed Locks",
+        "elaboration": "Using Redlock or setnx to synchronize agents across multiple Node/Python clusters."
+      },
+      {
+        "concept": "Deadlock Avoidance",
+        "elaboration": "Configuring strict timeouts and acquisition limits on dynamic locks."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "ecom-py-1",
+        "concept_tested": "asyncio.Lock Pattern",
+        "type": "interactive",
+        "title": "Case 1: Python Co-routine Synchronization",
+        "prompt": "Multiple asyncio-driven procurement agents are competing to process inventory. Without locking, they yield control on await expressions, causing race conditions.",
+        "question": "How is a lock correctly used in Python asyncio to prevent concurrent modification of shared memory?",
+        "options": [
+          "A. By using \"async with lock:\" to automatically acquire and release the lock around the critical section.",
+          "B. By calling \"lock.acquire()\" without a try/finally block, letting Python release it automatically.",
+          "C. By wrapping the entire application in a \"with lock:\" blocking context manager."
+        ],
+        "answer": "A. By using \"async with lock:\" to automatically acquire and release the lock around the critical section.",
+        "explanation": "The \"async with lock:\" context manager in Python handles asynchronous acquisition and guarantees release, even if exceptions are raised inside the block.",
+        "theory": {
+          "title": "Python asyncio.Lock",
+          "content": "In single-process concurrent environments, Python co-routines share the same thread but yield context. An asyncio.Lock acts as a mutex to prevent other co-routines from executing the same critical path while another is waiting for an await.",
+          "analogy": "A single talk-show microphone that guests must pass to each other to speak.",
+          "application": "Wrap critical sections with \"async with lock:\" to prevent state mutation race conditions during DB await operations."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "developer"
+        ],
+        "logs": [
+          {
+            "timestamp": "13:38:00",
+            "level": "info",
+            "message": "Launching asyncio co-routine loop with 4 workers..."
+          },
+          {
+            "timestamp": "13:38:01",
+            "level": "info",
+            "message": "Worker 1 acquired asyncio.Lock..."
+          },
+          {
+            "timestamp": "13:38:03",
+            "level": "warn",
+            "message": "Worker 2 waiting on Lock release..."
+          },
+          {
+            "timestamp": "13:38:04",
+            "level": "success",
+            "message": "Worker 1 released Lock. State consistency preserved."
+          }
+        ]
+      },
+      {
+        "componentId": "ecom-py-2",
+        "concept_tested": "Distributed Locks",
+        "type": "interactive",
+        "title": "Case 2: Distributed Mutexes with Redis",
+        "prompt": "When procurement agents scale horizontally across multiple cloud instances, in-memory asyncio locks fail because state is not shared.",
+        "question": "Which mechanism correctly implements a distributed lock across multiple independent Python workers?",
+        "options": [
+          "A. Relying on an SQLite in-memory database configuration.",
+          "B. Using Redis \"SET key value NX PX milliseconds\" or the Redlock algorithm to coordinate lock states.",
+          "C. Sharing an in-memory lock through custom HTTP webhooks between servers."
+        ],
+        "answer": "B. Using Redis \"SET key value NX PX milliseconds\" or the Redlock algorithm to coordinate lock states.",
+        "explanation": "Redis NX (Not Exists) and PX (Expiry in ms) parameters allow atomic acquisition of locks that survive individual agent crashes.",
+        "theory": {
+          "title": "Distributed Redis Locks",
+          "content": "A distributed lock manager guarantees that only one agent across any server or process can claim a lock key in a central database (Redis). The lock key must have a TTL to prevent permanent locks if an agent crashes.",
+          "analogy": "A centralized reservation book for a tennis court used by multiple separate branches of a sports club.",
+          "application": "Always ensure key deletion is protected by verifying the value matches the unique agent token, preventing a slow agent from releasing another agent's lock."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "developer"
+        ],
+        "logs": [
+          {
+            "timestamp": "13:39:00",
+            "level": "info",
+            "message": "Acquiring global lock on Redis key: lock:procure:item_99"
+          },
+          {
+            "timestamp": "13:39:01",
+            "level": "success",
+            "message": "Successfully set lock value with SET NX PX 5000"
+          },
+          {
+            "timestamp": "13:39:03",
+            "level": "info",
+            "message": "Running isolated stock reconciliation..."
+          },
+          {
+            "timestamp": "13:39:05",
+            "level": "success",
+            "message": "Reconciliation complete. Releasing key safely."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "developer",
+      "devlush",
+      "agents",
+      "ai",
+      "marketplace",
+      "pricing",
+      "procurement",
+      "competition",
+      "retail"
+    ]
+  },
+  {
+    "course": "Ecommerce Agents",
+    "chapter_title": "Autonomous Revenue Generation & Personalization",
+    "labComponentId": "ecommerce-agents-revenue",
+    "critical_concepts": [
+      {
+        "concept": "Revenue Acceleration",
+        "elaboration": "Deploying agents for automated procurement and global supply negotiation to maximize profit."
+      },
+      {
+        "concept": "Hyper-Personalization",
+        "elaboration": "Using Generative AI agents as personal shoppers to boost conversion and average order value."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "ecom-benefits-1",
+        "concept_tested": "Revenue Acceleration",
+        "type": "analysis",
+        "title": "Case 3: Profit Maximization with Autonomous Negotiators",
+        "prompt": "Observe an AI agent actively negotiating supplier contracts in real-time by analyzing massive global supply datasets.",
+        "question": "What is a primary benefit of deploying autonomous e-commerce agents for procurement and pricing?",
+        "options": [
+          "A. They can continuously identify and exploit market inefficiencies at a scale and speed impossible for humans.",
+          "B. They eliminate the need for having any digital storefront or website.",
+          "C. They bypass all local legal regulations and import taxes automatically."
+        ],
+        "answer": "A. They can continuously identify and exploit market inefficiencies at a scale and speed impossible for humans.",
+        "explanation": "Autonomous agents excel at processing high volumes of data to discover margin opportunities, execute optimal pricing, and secure inventory 24/7.",
+        "theory": {
+          "title": "Autonomous Revenue Generation",
+          "content": "E-commerce agents transform static online stores into proactive, dynamic enterprises. They actively hunt for better supply chains, negotiate with vendors via APIs, and dynamically adjust prices to maximize profit margins continuously.",
+          "analogy": "A tireless digital broker who watches the stock ticker every millisecond and buys/sells exactly when the numbers align with your strategy.",
+          "application": "Deploy agents to monitor supplier APIs and trigger automated bulk purchasing when wholesale prices drop below historical moving averages."
+        },
+        "nature": "feature",
+        "tags": [
+          "business"
+        ],
+        "logs": [
+          {
+            "timestamp": "14:00:00",
+            "level": "info",
+            "message": "Analyzing global supply indexes for Component X..."
+          },
+          {
+            "timestamp": "14:00:01",
+            "level": "info",
+            "message": "Detected 14% price drop in secondary market APIs."
+          },
+          {
+            "timestamp": "14:00:02",
+            "level": "success",
+            "message": "Automated procurement executed. Projected margin increase: +4.2%."
+          }
+        ]
+      },
+      {
+        "componentId": "ecom-business-1",
+        "concept_tested": "Hyper-Personalization",
+        "type": "analysis",
+        "title": "Case 4: The Hyper-Personalized Shopping Concierge",
+        "prompt": "Observe a Generative AI agent acting as a personal shopper, engaging customers in natural language to understand their preferences, occasions, and constraints.",
+        "question": "How does a hyper-personalized shopping agent primarily elevate the business value of an e-commerce platform?",
+        "options": [
+          "A. By completely replacing the need for a graphical user interface.",
+          "B. By guiding users from broad intent to specific recommendations, increasing conversion rates and Average Order Value (AOV).",
+          "C. By automatically lowering prices to guarantee a sale on every interaction."
+        ],
+        "answer": "B. By guiding users from broad intent to specific recommendations, increasing conversion rates and Average Order Value (AOV).",
+        "explanation": "Through context-aware upselling and cross-selling, the concierge turns passive browsing into active, personalized buying journeys.",
+        "theory": {
+          "title": "Conversational Commerce",
+          "content": "Generative AI agents transition e-commerce from a passive catalog search to an active dialogue. They understand context and curate specific products, significantly boosting conversion.",
+          "analogy": "Like a high-end boutique clerk who remembers your style and suggests the perfect matching accessory.",
+          "application": "Deploy LLM-powered chat interfaces that hook directly into the product catalog and inventory APIs to synthesize dynamic product recommendations."
+        },
+        "nature": "feature",
+        "tags": [
+          "business"
+        ],
+        "logs": [
+          {
+            "timestamp": "14:15:00",
+            "level": "info",
+            "message": "Customer intent detected: 'Summer wedding guest attire'"
+          },
+          {
+            "timestamp": "14:15:02",
+            "level": "info",
+            "message": "Cross-referencing catalog with weather API for Italy (July)..."
+          },
+          {
+            "timestamp": "14:15:04",
+            "level": "success",
+            "message": "Recommendation generated: 3 dresses, 2 matching shoe options. Projected AOV +24%."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "business",
+      "devlush",
+      "agents",
+      "ai",
+      "marketplace",
+      "pricing",
+      "procurement",
+      "competition",
+      "retail"
+    ]
+  },
+  {
+    "course": "Ecommerce Agents",
+    "chapter_title": "Security Lens: API Race Exploits",
+    "labComponentId": "ecommerce-agents-security-lens",
+    "tags": [
+      "security",
+      "devlush",
+      "agents",
+      "ai",
+      "marketplace",
+      "pricing",
+      "procurement",
+      "competition",
+      "retail"
+    ],
+    "critical_concepts": [
+      {
+        "concept": "Race Exploits",
+        "elaboration": "Attackers sending concurrent requests to bypass checks."
+      },
+      {
+        "concept": "Advisory Locks",
+        "elaboration": "Database-level serialization for transactions."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "visual-security-lens",
+        "type": "interactive-visual",
+        "title": "Security Lens: API Race Exploits",
+        "prompt": "Observe how an attacker attempts to exploit a race condition by sending 20 concurrent HTTP requests, and how advisory locks prevent it.",
+        "question": "How do Database Advisory Locks mitigate API Race Exploits?",
+        "options": [
+          "By permanently blocking the user's IP address",
+          "By serializing arbitrary application-level checkout keys directly in the database engine",
+          "By asking the user to solve a CAPTCHA",
+          "By encrypting the user's password"
+        ],
+        "answer": "By serializing arbitrary application-level checkout keys directly in the database engine",
+        "explanation": "PostgreSQL Transaction Advisory Locking serializes transactions based on arbitrary application keys, forcing concurrent requests for the same resource to be processed sequentially.",
+        "architecture": {
+          "type": "security-lens",
+          "nodes": [
+            {
+              "id": "attacker",
+              "label": "Attacker",
+              "role": "input"
+            },
+            {
+              "id": "api",
+              "label": "API Gateway",
+              "role": "worker"
+            },
+            {
+              "id": "lock",
+              "label": "Advisory Lock",
+              "role": "layer"
+            },
+            {
+              "id": "db",
+              "label": "Database",
+              "role": "database"
+            }
+          ]
+        },
+        "theory": {
+          "title": "API Race Condition Defense",
+          "content": "<p>Bypassing row-level table locks by serializing arbitrary application-level checkout keys directly in the database engine. Configures atomic isolation levels to shield promo codes and balances from simultaneous multi-thread redemption.</p>",
+          "analogy": "A bank teller who refuses to process multiple withdrawal slips for the same account simultaneously, ensuring the balance is checked after each slip is fully processed.",
+          "application": "Implement PostgreSQL Transaction Advisory Locks to serialize checkout processes and prevent uncommitted read leaks."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ecommerce-agents-similar-discount",
+    "title": "Similar Products On Discount Agent",
+    "course": "Ecommerce Agents",
+    "chapter_title": "Similar Products On Discount Agent",
+    "labComponentId": "ecommerce-agents-similar-discount",
+    "critical_concepts": [
+      {
+        "concept": "Discount Discovery",
+        "elaboration": "Identifying products with active discounts that are semantically similar to the user's current intent."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "ecommerce-agents-similar-discount",
+        "type": "interactive-visual",
+        "title": "Discount Discovery Implementation",
+        "prompt": "An agent that helps users find similar products that are currently on discount.",
+        "question": "Which of these is the primary function of a Similar Products On Discount Agent?",
+        "options": [
+          "A. To process payments securely.",
+          "B. To automatically purchase items for the user.",
+          "C. To query the vector database for similar items and filter by discount availability.",
+          "D. To write product descriptions."
+        ],
+        "answer": "C. To query the vector database for similar items and filter by discount availability.",
+        "explanation": "This agent uses semantic search (vector database) combined with metadata filtering (discount availability) to recommend discounted similar products.",
+        "theory_explanation": "A Similar Products On Discount agent combines vector similarity search with inventory/discount metadata filtering to surface relevant, cheaper alternatives to users.",
+        "real_world_analogy": "Like a helpful store clerk pointing out that a similar shirt to the one you're holding is currently on the clearance rack.",
+        "visual_element": "activity"
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "marketplace",
+      "pricing",
+      "procurement",
+      "competition",
+      "retail"
+    ]
+  },
+  {
+    "course": "Ecommerce Agents",
+    "chapter_title": "Distributed Agent Synchronization",
+    "labComponentId": "ecommerce-agents-sync",
+    "critical_concepts": [
+      {
+        "concept": "Optimistic Locking",
+        "elaboration": "Verifying record version stamps before committing."
+      },
+      {
+        "concept": "Feedback Cascades",
+        "elaboration": "Continuous dynamic price alterations leading to crashing markets."
+      },
+      {
+        "concept": "Inventory Collisions",
+        "elaboration": "Multiple concurrent updates clashing on static resources."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "ecom-sync-1",
+        "concept_tested": "Race Condition Prevention",
+        "type": "interactive",
+        "title": "Case 1: Race Conditions & Multi-Agent Contention",
+        "prompt": "Observe two independent procurement agents attempting to purchase the same high-demand limited product at the same millisecond.",
+        "question": "Which method reliably prevents race conditions and stale stock reads in multi-agent transaction workflows?",
+        "options": [
+          "A. Retrying the checkout request with a random delay timer.",
+          "B. Implementing database optimistic concurrency locking or central queue handlers.",
+          "C. Simply increasing server CPU counts to process threads faster."
+        ],
+        "answer": "B. Implementing database optimistic concurrency locking or central queue handlers.",
+        "explanation": "Optimistic or pessimistic record locking ensures that stock reads and updates occur atomically, preventing double-sell state conflicts across concurrent agent checkout pipelines.",
+        "theory": {
+          "title": "Race Condition Prevention",
+          "content": "When multiple agents act concurrently, their read-modify-write patterns can easily collide on shared datastores, leading to double-sales or invalid inventories.",
+          "analogy": "Two people checking a physical seat map at the exact same moment, both seeing seat 12A free and trying to buy it.",
+          "application": "Utilize row-level locks (e.g. SELECT FOR UPDATE) or unique transaction index constraints to protect shared databases."
+        },
+        "nature": "feature",
+        "tags": [
+          "developer"
+        ],
+        "logs": [
+          {
+            "timestamp": "13:38:00",
+            "level": "info",
+            "message": "Agent A requests stock read for Item 42..."
+          },
+          {
+            "timestamp": "13:38:01",
+            "level": "info",
+            "message": "Agent B requests stock read for Item 42..."
+          },
+          {
+            "timestamp": "13:38:03",
+            "level": "warn",
+            "message": "Collision detected! Optimistic lock rejected Agent B."
+          },
+          {
+            "timestamp": "13:38:04",
+            "level": "success",
+            "message": "Agent B queued. Stock state preserved."
+          }
+        ]
+      },
+      {
+        "componentId": "ecom-sync-2",
+        "concept_tested": "Dynamic Price Stabilization",
+        "type": "analysis",
+        "title": "Case 2: Algorithmic Price Crashing Feedback Loops",
+        "prompt": "Observe two automated pricing agents on competing merchant stores constantly reducing prices to beat each other.",
+        "question": "How can dynamic feedback pricing loops be safeguarded against race-to-the-bottom asset depreciation?",
+        "options": [
+          "A. Adding a hardcoded price floor limit combined with randomized cooldown delays.",
+          "B. Disabling dynamic pricing and manually reviewing competitor rates daily.",
+          "C. Allowing agents to lower prices infinitely to maximize order counts."
+        ],
+        "answer": "A. Adding a hardcoded price floor limit combined with randomized cooldown delays.",
+        "explanation": "Deterministic floor policies and random cooldown timers prevent infinite feedback loops, breaking automatic downward price spirals.",
+        "theory": {
+          "title": "Dynamic Price Loops",
+          "content": "Autonomous agents reacting to other agents create feedback loops that can easily destabilize pricing mechanisms, crashing asset values in seconds.",
+          "analogy": "Two microphones placed too close together, creating a deafening screeching feedback loop.",
+          "application": "Enforce strict hardcoded invariants (e.g. minimum profitability limits) that agents cannot override under any condition."
+        },
+        "nature": "feature",
+        "tags": [
+          "developer"
+        ],
+        "logs": [
+          {
+            "timestamp": "13:39:00",
+            "level": "info",
+            "message": "Pricing Agent initiating feedback loop optimization..."
+          },
+          {
+            "timestamp": "13:39:01",
+            "level": "warn",
+            "message": "Price crashing below defined hard floor ($50.00)."
+          },
+          {
+            "timestamp": "13:39:03",
+            "level": "success",
+            "message": "Fallback policy engaged. Price clamped to $50.00."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "developer",
+      "devlush",
+      "agents",
+      "ai",
+      "marketplace",
+      "pricing",
+      "procurement",
+      "competition",
+      "retail"
+    ]
+  },
+  {
+    "course": "Ecommerce Agents",
+    "chapter_title": "Using Agent Synchronization In Typescript",
+    "labComponentId": "ecommerce-agents-typescript",
+    "critical_concepts": [
+      {
+        "concept": "async-mutex",
+        "elaboration": "Serializing async-await execution streams within the Node.js event loop."
+      },
+      {
+        "concept": "Advisory Locks",
+        "elaboration": "Using pg_advisory_xact_lock to synchronize agents at the PostgreSQL database level."
+      },
+      {
+        "concept": "Promise.all Concurrency",
+        "elaboration": "Limiting promise pools using p-limit to protect downstream payment microservices."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "ecom-ts-1",
+        "concept_tested": "In-Memory Mutexes",
+        "type": "interactive",
+        "title": "Case 1: TypeScript Async Mutex Execution",
+        "prompt": "Two independent asynchronous task functions are executed by the event loop. Since JavaScript is single-threaded, they do not run in parallel threads, but concurrent await statements can still lead to race conditions.",
+        "question": "How can you guarantee mutual exclusion for an asynchronous critical section in TypeScript?",
+        "options": [
+          "A. By using a standard while-loop checking a boolean flag.",
+          "B. By importing and awaiting an \"async-mutex\" lock, running the critical work in a release-guaranteed handler.",
+          "C. By removing all await statements and running everything synchronously."
+        ],
+        "answer": "B. By importing and awaiting an \"async-mutex\" lock, running the critical work in a release-guaranteed handler.",
+        "explanation": "Using an explicit Mutex from libraries like \"async-mutex\" ensures only one asynchronous fiber can enter the critical section at any given time, suspending other callers until release.",
+        "theory": {
+          "title": "TypeScript Mutex",
+          "content": "Because Node.js operates on an event loop, concurrent asynchronous calls yield execution when hitting an \"await\". This means variables can change between reading and writing. A mutex serialized these promises.",
+          "analogy": "A secure dressing room where only one person is let in at a time, and a line of people waits outside the door.",
+          "application": "Always acquire the mutex before checking or editing global cache records, and release it in a \"finally\" block."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "developer"
+        ],
+        "logs": [
+          {
+            "timestamp": "13:40:00",
+            "level": "info",
+            "message": "Initializing async-mutex lock on event-loop queue..."
+          },
+          {
+            "timestamp": "13:40:01",
+            "level": "info",
+            "message": "Fiber A entered critical section..."
+          },
+          {
+            "timestamp": "13:40:02",
+            "level": "warn",
+            "message": "Fiber B execution suspended awaiting lock release..."
+          },
+          {
+            "timestamp": "13:40:03",
+            "level": "success",
+            "message": "Fiber A released lock. Fiber B proceeded safely."
+          }
+        ]
+      },
+      {
+        "componentId": "ecom-ts-2",
+        "concept_tested": "PostgreSQL Advisory Locks",
+        "type": "interactive",
+        "title": "Case 2: Advisory Locks for Distributed TypeScript Agents",
+        "prompt": "A highly scalable serverless TypeScript backend runs concurrent order fulfillment agents. Standard in-memory Mutexes cannot coordinate across serverless functions.",
+        "question": "Which native database lock is ideal for application-level synchronization of arbitrary operations without locking whole rows?",
+        "options": [
+          "A. PostgreSQL Advisory Locks (e.g., SELECT pg_advisory_xact_lock(key)).",
+          "B. Running full table locks on the entire inventory schema.",
+          "C. Setting an application variable in process.env at runtime."
+        ],
+        "answer": "A. PostgreSQL Advisory Locks (e.g., SELECT pg_advisory_xact_lock(key)).",
+        "explanation": "Advisory locks are app-defined database locks that leverage PostgreSQL transaction-scoped locks to block concurrent transactions based on arbitrary application keys, perfect for serverless synchronization.",
+        "theory": {
+          "title": "PostgreSQL Advisory Locks",
+          "content": "Advisory locks let you define custom application locks built directly into PostgreSQL. When using \"pg_advisory_xact_lock(key)\", the lock is automatically released when the transaction commits or aborts, avoiding manually-managed lock leaks.",
+          "analogy": "The database acting as an objective referee who hands out numbered passes to represent specific resources.",
+          "application": "Use advisory locks to protect resources that lack a dedicated physical row (e.g. dynamic external API queues or sequence generation)."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "developer"
+        ],
+        "logs": [
+          {
+            "timestamp": "13:41:00",
+            "level": "info",
+            "message": "Invoking pg_advisory_xact_lock(4502) in PostgreSQL transaction..."
+          },
+          {
+            "timestamp": "13:41:01",
+            "level": "success",
+            "message": "Advisory lock acquired at DB engine level."
+          },
+          {
+            "timestamp": "13:41:02",
+            "level": "info",
+            "message": "Executing serverless order fulfillment checks..."
+          },
+          {
+            "timestamp": "13:41:03",
+            "level": "success",
+            "message": "Transaction committed. Lock automatically released."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "developer",
+      "devlush",
+      "agents",
+      "ai",
+      "marketplace",
+      "pricing",
+      "procurement",
+      "competition",
+      "retail"
+    ]
+  },
+  {
+    "course": "Ecommerce Agents",
+    "chapter_title": "Automated Margin & Double-Sell Protection",
+    "labComponentId": "ecommerce-agents",
+    "critical_concepts": [
+      {
+        "concept": "Double-Sell Mitigation",
+        "elaboration": "Ensuring zero inventory oversell during high-concurrency flash sales, protecting brand reputation and avoiding costly chargebacks."
+      },
+      {
+        "concept": "Algorithmic Pricing Floors",
+        "elaboration": "Enforcing safety boundaries on automated pricing agents to prevent competitor feedback loops from eroding gross profit margins."
+      },
+      {
+        "concept": "Order Reservation Integrity",
+        "elaboration": "Locking allocated inventory atomically prior to payment settlement to guarantee customer fulfillment success."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "ecom-sync-1",
+        "concept_tested": "Double-Sell Mitigation",
+        "type": "visual_element",
+        "title": "Case 1: Safeguarding Inventory from Double-Allocation",
+        "prompt": "Observe two independent purchasing agents attempting to buy the last remaining unit of high-demand stock at the exact same millisecond. Without reservation safeguards, both orders process, creating a fulfillment deficit.",
+        "question": "Which mechanism ensures your business never double-sells or oversells a limited-run item during high-concurrency event drops?",
+        "options": [
+          "A. Using a randomized wait timer before retrying checkout requests.",
+          "B. Implementing real-time inventory reservation locking to serialize concurrent transactions.",
+          "C. Scaling up server processor capacities to speed up database query responses."
+        ],
+        "answer": "B. Implementing real-time inventory reservation locking to serialize concurrent transactions.",
+        "explanation": "By locking inventory allocations prior to processing payment, the business guarantees atomic transactional integrity, completely eliminating high-volume customer oversells and chargeback losses.",
+        "theory": {
+          "title": "Double-Allocation & Operational Protection",
+          "content": "When multiple autonomous checkouts operate concurrently, their simultaneous database access can lead to double-selling. Establishing atomic lock constraints at the inventory layer ensures that a unit of stock is reserved exclusively for a single buyer, eliminating customer dissatisfaction and manual support overhead.",
+          "analogy": "Two ticketing offices trying to sell the absolute last seat on a flight. A shared booking system must reserve the seat for the first caller while immediately indicating 'sold out' to the second.",
+          "application": "Configure automatic row-level reservation locks on product stock items so that validation is fully integrated into the checkout flow."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "business",
+          "security"
+        ],
+        "logs": [
+          {
+            "timestamp": "13:36:01",
+            "level": "info",
+            "message": "Procurement Agent A requested purchase of Item #99..."
+          },
+          {
+            "timestamp": "13:36:01",
+            "level": "info",
+            "message": "Procurement Agent B requested purchase of Item #99..."
+          },
+          {
+            "timestamp": "13:36:02",
+            "level": "warn",
+            "message": "Inventory contention detected. Double-allocation threat!"
+          },
+          {
+            "timestamp": "13:36:03",
+            "level": "success",
+            "message": "Optimistic locking lock-stamp applied. Concurrency resolved cleanly."
+          }
+        ]
+      },
+      {
+        "componentId": "ecom-sync-2",
+        "concept_tested": "Dynamic Margin Safeguards",
+        "type": "visual_element",
+        "title": "Case 2: Protecting Operating Margins from Automated Pricing Spirals",
+        "prompt": "Observe two competing AI repricing agents that automatically adjust list prices to beat each other. Left unchecked, the cascading automated loop undercuts prices down to a penny, completely destroying profit margins.",
+        "question": "How can business owners safely protect their operating margins from automated competitor price-war spirals?",
+        "options": [
+          "A. Enforcing rigid programmatic margin floor boundaries combined with randomized repricing cooldowns.",
+          "B. Completely turning off automated repricing and relying on manual daily price audits.",
+          "C. Letting pricing agents adjust values indefinitely to capture maximum order volumes regardless of cost."
+        ],
+        "answer": "A. Enforcing rigid programmatic margin floor boundaries combined with randomized repricing cooldowns.",
+        "explanation": "Strict, non-overrideable margin floor rules guarantee that pricing loops halt before undercutting product cost, preserving operating margins while maintaining competitive pricing agility.",
+        "theory": {
+          "title": "Automated Repricing Safety Invariants",
+          "content": "Dynamic pricing loops can trigger uncontrolled recursive feedback cycles where agents continually react to competitor adjustments. The business must establish physical, immutable threshold policies (invariants) that are hard-coded outside the AI's discretion.",
+          "analogy": "A thermostat that has an built-in emergency limit preventing it from heating a room past 85 degrees, no matter how cold the outside air gets.",
+          "application": "Hardcode strict pricing limits and minimum profit percentages in the transaction backend, completely independent of the repricing agent's model context."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "business",
+          "security"
+        ],
+        "logs": [
+          {
+            "timestamp": "13:37:00",
+            "level": "info",
+            "message": "Starting automatic pricing sweep..."
+          },
+          {
+            "timestamp": "13:37:02",
+            "level": "warn",
+            "message": "Competitor pricing agent adjusted rate to $118.00."
+          },
+          {
+            "timestamp": "13:37:04",
+            "level": "warn",
+            "message": "Recursive loop triggered: 12,000 micro-adjustments detected."
+          },
+          {
+            "timestamp": "13:37:05",
+            "level": "success",
+            "message": "Hard floor safeguard of $80.00 hit. Loop halted successfully."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "developer",
+      "business",
+      "security",
+      "devlush",
+      "agents",
+      "ai",
+      "marketplace",
+      "pricing",
+      "procurement",
+      "competition",
+      "retail"
+    ]
+  }
+]

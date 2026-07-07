@@ -1,0 +1,77 @@
+[
+  {
+    "course": "Finance Agents",
+    "chapter_title": "Quantitative & Algorithmic Trading",
+    "labComponentId": "finance-agents-algo",
+    "critical_concepts": [
+      {
+        "concept": "High-Frequency Trading",
+        "elaboration": "Executing large number of orders at extremely high speeds."
+      },
+      {
+        "concept": "Risk Management",
+        "elaboration": "Implementing strict bounds to prevent runaway AI trades."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "finance-algo-1",
+        "concept_tested": "Algorithmic Flash Crashes",
+        "type": "interactive-visual",
+        "title": "Case 1: AI Trading Agent Cascades",
+        "prompt": "Observe multiple AI trading agents operating in an unregulated sandbox environment.",
+        "question": "What happens when multiple agents with similar reinforcement learning policies react to a slight market dip?",
+        "options": [
+          "A. They naturally balance the market by taking opposing sides of trades.",
+          "B. They create a rapid feedback loop of selling, causing a flash crash.",
+          "C. They temporarily pause trading to wait for human intervention."
+        ],
+        "answer": "B. They create a rapid feedback loop of selling, causing a flash crash.",
+        "explanation": "If agents are trained on similar datasets or use identical strategies, they often exhibit herd behavior. In a downward trend, they all sell simultaneously, draining liquidity and crashing the price instantly.",
+        "theory": {
+          "title": "Algorithmic Herd Behavior",
+          "content": "Flash crashes occur when high-frequency trading algorithms all decide to sell a security at the same time, often triggered by minor news or price movements. This herd behavior creates a sudden vacuum of liquidity.",
+          "analogy": "A crowded theater where someone yells 'Fire!' and everyone rushes the single exit at once.",
+          "application": "Implement circuit breakers and position limits in algorithmic trading systems to prevent catastrophic feedback loops."
+        },
+        "nature": "weakness",
+        "tags": [
+          "finance",
+          "agents"
+        ],
+        "logs": [
+          {
+            "timestamp": "09:30:00",
+            "level": "info",
+            "message": "Market opens. Agent cluster Alpha initialized."
+          },
+          {
+            "timestamp": "09:41:12",
+            "level": "warn",
+            "message": "Minor volume drop detected (-2%). Agent 1 executes SELL."
+          },
+          {
+            "timestamp": "09:41:13",
+            "level": "error",
+            "message": "Agents 2-50 detect downward momentum. Massive SELL cascade triggered."
+          },
+          {
+            "timestamp": "09:41:14",
+            "level": "critical",
+            "message": "Asset price dropped 45% in 2 seconds. Circuit breaker activated."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "trading",
+      "quant",
+      "risk-management",
+      "market-data",
+      "hft"
+    ]
+  }
+]

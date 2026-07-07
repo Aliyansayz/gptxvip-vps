@@ -1,0 +1,44 @@
+[
+  {
+    "target": "#tutorial-header",
+    "title": "Global Hub",
+    "content": "Welcome to the Command Center. This top bar shows your current target, active agents, and top-level financial or statistical metrics for your missions.",
+    "disableBeacon": true
+  },
+  {
+    "target": "#tutorial-alerts",
+    "title": "Actionable Alerts",
+    "content": "This section highlights critical findings that require your immediate attention, such as newly discovered assets or critical vulnerabilities.",
+    "disableBeacon": true
+  },
+  {
+    "target": "#tutorial-activity",
+    "title": "Activity Stream",
+    "content": "Watch your agents work in real-time. This terminal provides a live feed of actions being taken across all active agents.",
+    "disableBeacon": true
+  },
+  {
+    "target": "#tutorial-quick-start",
+    "title": "Quick Start Use Cases",
+    "content": "Launch predefined attack scenarios with a single click. Useful for testing standard workflows like eCommerce checkout exploits.",
+    "disableBeacon": true
+  },
+  {
+    "target": "#tutorial-custom-target",
+    "title": "Custom Target Scan",
+    "content": "Enter any custom URL, endpoint, or IP range here to dispatch your agents for a targeted, deep scan.",
+    "disableBeacon": true
+  },
+  {
+    "target": "#tutorial-priority-queue",
+    "title": "Priority Queue",
+    "content": "Review and verify vulnerabilities discovered by agents before they are compiled into reports or remediation plans.",
+    "disableBeacon": true
+  },
+  {
+    "target": ".theory-wiki-trigger",
+    "title": "Topic Theory Wiki",
+    "content": "Access the theory library to explore deep technical knowledge and references for the current context.",
+    "disableBeacon": true
+  }
+]

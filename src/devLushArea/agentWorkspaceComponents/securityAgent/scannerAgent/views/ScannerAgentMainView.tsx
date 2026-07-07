@@ -1,0 +1,203 @@
+import React, { useState } from 'react';
+import { WebVulnCandidate } from '../utility/schema';
+import WebExploitationDashboard from './WebExploitationDashboard';
+import RemediationPlanView from './RemediationPlanView';
+import ScannerDashboardView from './ScannerDashboardView';
+import AgentTheorySidebar from '../../../components/AgentTheorySidebar';
+import AgentSidebar, { SidebarView } from '../../../components/AgentSidebar';
+import { initialWebVulnCandidates } from '../data/mockSecurityData';
+import ScannerActivityView from './ScannerActivityView';
+import ScannerQueueView from './ScannerQueueView';
+import ScannerAgentsView from './ScannerAgentsView';
+import ScannerMissionsView from './ScannerMissionsView';
+import ScannerSkillsView from './ScannerSkillsView';
+import ScannerReconView from './ScannerReconView';
+import ScannerMemoryView from './ScannerMemoryView';
+import ScannerAnalyticsView from './ScannerAnalyticsView';
+import ScannerSettingsView from './ScannerSettingsView';
+import { Terminal, Activity, FileText, BookOpen, X } from 'lucide-react';
+
+import ScannerTutorialTour from '../tutorial/ScannerTutorialTour';
+import { SvgEmptyState, SvgTheoryIllustration } from '../components/ScannerIllustrations';
+
+type ScannerPhase = 'DASHBOARD' | 'SCANNING' | 'RESULTS' | 'REMEDIATION';
+
+export default function ScannerAgentMainView() {
+  const [sidebarView, setSidebarView] = useState<SidebarView>('dashboard');
+  const [isTheoryPaneOpen, setIsTheoryPaneOpen] = useState(false);
+  const [runTutorial, setRunTutorial] = useState(true);
+  
+  // Phase mapping for the specific Web Exploits / Scanner domain workflows
+  const [phase, setPhase] = useState<ScannerPhase>('DASHBOARD');
+  const [targetUrl, setTargetUrl] = useState('https://api.internal-sandbox.com');
+  const [scanLogs, setScanLogs] = useState<string[]>([]);
+  const [selectedCandidate, setSelectedCandidate] = useState<WebVulnCandidate | null>(null);
+
+  const startScan = (target: string) => {
+    setTargetUrl(target);
+    setPhase('SCANNING');
+    setSidebarView('scans');
+    setScanLogs(['> Initializing SecOps Scanner Agent...', '> Target acquired: ' + target]);
+    
+    // Simulate scan steps
+    setTimeout(() => addLog('> Crawling endpoints... found 42 routes'), 1000);
+    setTimeout(() => addLog('> Initiating payload injection sequence (XSS, SQLi, SSRF, RCE)...'), 2500);
+    setTimeout(() => addLog('> WARN: Suspicious reflection detected at /api/v1/users/profile'), 4000);
+    setTimeout(() => addLog('> CRITICAL: SQL syntax error confirmed on /api/v1/products?id=1\''), 5500);
+    setTimeout(() => addLog('> Aggregating findings... Scan complete.'), 7000);
+    setTimeout(() => {
+      setPhase('RESULTS');
+      setSidebarView('exploits');
+    }, 8000);
+  };
+
+  const addLog = (msg: string) => {
+    setScanLogs(prev => [...prev, msg]);
+  };
+
+  const handleRemediate = (candidate: WebVulnCandidate) => {
+    setSelectedCandidate(candidate);
+    setPhase('REMEDIATION');
+    setSidebarView('reports');
+  };
+
+  const handleSidebarNavigate = (view: SidebarView) => {
+    setSidebarView(view);
+    if (view === 'dashboard') setPhase('DASHBOARD');
+    else if (view === 'scans') setPhase('SCANNING');
+    else if (view === 'exploits') setPhase('RESULTS');
+    else if (view === 'reports' && selectedCandidate) setPhase('REMEDIATION');
+    
+    if (view === 'theory') {
+      setIsTheoryPaneOpen(true);
+    }
+  };
+
+  const showTheoryPane = isTheoryPaneOpen || sidebarView === 'theory';
+
+  return (
+    <div className="w-full h-full flex bg-slate-50 relative overflow-hidden">
+      <ScannerTutorialTour run={runTutorial} onFinish={() => setRunTutorial(false)} />
+      
+      <AgentSidebar currentView={sidebarView} onNavigate={handleSidebarNavigate} />
+      
+      <div className="flex-1 flex overflow-hidden">
+        <div className="flex-1 flex flex-col overflow-hidden relative">
+          {sidebarView === 'dashboard' && (
+            <ScannerDashboardView 
+              candidates={initialWebVulnCandidates}
+              onStartScan={startScan}
+              onViewAllFindings={() => {
+                setPhase('RESULTS');
+                setSidebarView('exploits');
+              }}
+            />
+          )}
+
+          {sidebarView === 'scans' && (
+            <div className="flex-1 flex flex-col p-6 bg-slate-50">
+              <div className="flex-1 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col overflow-hidden">
+                <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+                  <div className="flex items-center gap-2 text-slate-500">
+                    <Terminal className="w-4 h-4" />
+                    <span className="text-sm font-medium font-mono uppercase tracking-wider text-slate-700">Agent Execution Terminal</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-emerald-600">
+                    <Activity className="w-4 h-4 animate-pulse" />
+                    <span className="text-xs font-mono uppercase font-semibold">Scanning Active</span>
+                  </div>
+                </div>
+                <div className="flex-1 p-6 font-mono text-sm text-slate-600 overflow-y-auto space-y-2">
+                  {scanLogs.length === 0 && (
+                    <div className="text-slate-500 italic">No active scan running. Return to the Command Center to initiate a scan.</div>
+                  )}
+                  {scanLogs.map((log, i) => (
+                    <div key={i} className={`${log.includes('CRITICAL') || log.includes('WARN') ? 'text-red-600 font-medium' : log.startsWith('>') ? 'text-slate-800' : 'text-slate-500'}`}>
+                      {log}
+                    </div>
+                  ))}
+                  {scanLogs.length > 0 && phase === 'SCANNING' && <div className="animate-pulse text-emerald-600">_</div>}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {sidebarView === 'exploits' && (
+            <div className="flex-1 p-6 overflow-hidden">
+              <WebExploitationDashboard 
+                candidates={initialWebVulnCandidates}
+                onRemediate={handleRemediate}
+              />
+            </div>
+          )}
+
+          {sidebarView === 'reports' && (
+            <div className="flex-1 p-6 overflow-hidden bg-slate-50">
+              {selectedCandidate ? (
+                <RemediationPlanView 
+                  candidate={selectedCandidate} 
+                  onBack={() => {
+                    setPhase('RESULTS');
+                    setSidebarView('exploits');
+                  }}
+                />
+              ) : (
+                <div className="h-full flex items-center justify-center">
+                  <SvgEmptyState 
+                    title="No Active Remediation Plan" 
+                    message="Select a vulnerability from the Web Exploits tab to view its automated remediation steps." 
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
+          {sidebarView === 'theory' && (
+            <div className="flex-1 flex flex-col items-center justify-center bg-slate-50 text-slate-400">
+              <SvgTheoryIllustration />
+              <h3 className="text-lg font-medium text-slate-600 mb-2">Theory Wiki Pane is Open</h3>
+              <p className="text-sm">Check the right side of your screen to access the theory library.</p>
+            </div>
+          )}
+
+          {sidebarView === 'activity' && <ScannerActivityView />}
+          {sidebarView === 'queue' && <ScannerQueueView />}
+          {sidebarView === 'agents' && <ScannerAgentsView />}
+          {sidebarView === 'missions' && <ScannerMissionsView />}
+          {sidebarView === 'skills' && <ScannerSkillsView />}
+          {sidebarView === 'recon' && <ScannerReconView />}
+          {sidebarView === 'memory' && <ScannerMemoryView />}
+          {sidebarView === 'analytics' && <ScannerAnalyticsView />}
+          {sidebarView === 'settings' && <ScannerSettingsView />}
+        </div>
+        
+        {/* Right Side Theory Pane */}
+        {showTheoryPane && (
+          <div className="w-[450px] border-l border-slate-200 bg-white h-full shadow-2xl shrink-0 overflow-hidden relative z-40 flex flex-col animate-in slide-in-from-right-full duration-300">
+            <button 
+              onClick={() => {
+                 setIsTheoryPaneOpen(false);
+                 if (sidebarView === 'theory') setSidebarView('dashboard');
+              }}
+              className="absolute top-4 right-4 p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-md z-50 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            <AgentTheorySidebar agentType="scanner" />
+          </div>
+        )}
+      </div>
+
+      {/* Fixed Toggle Button when closed */}
+      {!showTheoryPane && (
+        <button 
+          onClick={() => setIsTheoryPaneOpen(true)}
+          className="theory-wiki-trigger absolute right-0 top-1/2 -translate-y-1/2 bg-indigo-600 hover:bg-indigo-700 text-white p-2.5 rounded-l-lg shadow-[0_0_15px_rgba(79,70,229,0.4)] z-50 flex items-center justify-center transition-transform hover:-translate-x-1"
+          title="Open Theory Wiki"
+        >
+          <BookOpen className="w-5 h-5" />
+        </button>
+      )}
+    </div>
+  );
+}

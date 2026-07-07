@@ -1,0 +1,286 @@
+[
+  {
+    "course": "Supply Chain & Logistics Agents",
+    "chapter_title": "Inventory Optimization",
+    "labComponentId": "supplychain-inventory",
+    "critical_concepts": [
+      {
+        "concept": "Inventory Optimization",
+        "elaboration": "Agents that monitor real-time sales data, predict future demand based on external factors (like weather or trends), and autonomously place purchase orders with suppliers."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "supplychain-inventory",
+        "concept_tested": "Inventory Optimization",
+        "type": "visual_element",
+        "title": "Case 1: Autonomous Restocking",
+        "prompt": "An inventory agent monitors a sudden spike in umbrella sales alongside an incoming storm forecast. It predicts a stockout in 48 hours and autonomously places a purchase order with a regional supplier to meet the anticipated demand.",
+        "question": "What makes an inventory optimization agent more effective than traditional reorder point systems?",
+        "options": [
+          "A. Traditional systems can only order one item at a time.",
+          "B. Agents can integrate external, unstructured data (like weather forecasts or social media trends) to proactively predict demand, rather than just reacting to low stock levels.",
+          "C. Agents physically drive the delivery trucks to pick up the inventory."
+        ],
+        "answer": "B. Agents can integrate external, unstructured data (like weather forecasts or social media trends) to proactively predict demand, rather than just reacting to low stock levels.",
+        "explanation": "Traditional systems use static thresholds (e.g., 'reorder when stock hits 50'). AI agents use predictive modeling, combining real-time sales velocity with external variables (weather, events) to anticipate needs dynamically.",
+        "theory": {
+          "title": "Predictive Demand Orchestration",
+          "content": "Supply chain agents act as dynamic forecasters and execution engines. They continuously ingest multifaceted data streams (POS data, macroeconomic indicators, weather) to adjust probabilistic demand models, and they have the authority (via APIs) to execute procurement actions.",
+          "analogy": "A smart thermostat that checks tomorrow's weather forecast and turns on the heat tonight, rather than waiting for the house to get cold.",
+          "application": "Connect predictive agents to both the ERP inventory database and external supplier APIs for autonomous just-in-time procurement."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "business"
+        ],
+        "logs": [
+          {
+            "timestamp": "09:00:00",
+            "level": "info",
+            "message": "Analyzing POS data: 300% week-over-week spike in SKU 402 (Umbrellas)."
+          },
+          {
+            "timestamp": "09:00:15",
+            "level": "info",
+            "message": "Correlating with external data: Severe weather warning for region."
+          },
+          {
+            "timestamp": "09:00:30",
+            "level": "warn",
+            "message": "Predictive model indicates stockout in 48 hours."
+          },
+          {
+            "timestamp": "09:01:00",
+            "level": "success",
+            "message": "Autonomous PO issued to Supplier B for 5,000 units. Expedited shipping confirmed."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "business",
+      "devlush",
+      "agents",
+      "ai",
+      "logistics",
+      "inventory",
+      "fleet",
+      "routing",
+      "predictive"
+    ]
+  },
+  {
+    "course": "Supply Chain & Logistics Agents",
+    "chapter_title": "Dynamic Route Planning",
+    "labComponentId": "supplychain-route-planning",
+    "critical_concepts": [
+      {
+        "concept": "Route Planning",
+        "elaboration": "Agents that dynamically adjust delivery fleet routes in real-time based on traffic accidents, weather disruptions, or last-minute priority orders."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "supplychain-route-planning",
+        "concept_tested": "Route Planning",
+        "type": "visual_element",
+        "title": "Case 2: Dynamic Fleet Rerouting",
+        "prompt": "A logistics agent is monitoring a fleet of 50 delivery trucks. It detects a major traffic accident on a key highway via a traffic API. Within seconds, it recalculates the routes for 12 affected trucks and pushes the new turn-by-turn directions to the drivers' devices.",
+        "question": "How does a dynamic routing agent differ from standard GPS navigation?",
+        "options": [
+          "A. Standard GPS navigation requires a physical map.",
+          "B. A dynamic agent orchestrates the entire fleet globally to optimize overall delivery windows and minimize total fuel consumption, rather than just finding the fastest route for a single vehicle.",
+          "C. The agent drives the vehicle autonomously."
+        ],
+        "answer": "B. A dynamic agent orchestrates the entire fleet globally to optimize overall delivery windows and minimize total fuel consumption, rather than just finding the fastest route for a single vehicle.",
+        "explanation": "While standard GPS optimizes for one driver, fleet routing agents solve complex vehicle routing problems (VRP) across multiple vehicles simultaneously, taking into account delivery windows, vehicle capacities, and shifting real-world constraints.",
+        "theory": {
+          "title": "Global Fleet Optimization",
+          "content": "Routing agents continuously solve multi-constraint optimization algorithms. When a disruption occurs, the agent doesn't just reroute one truck; it redistributes deliveries across the entire fleet in real-time to ensure SLA (Service Level Agreement) compliance.",
+          "analogy": "An air traffic controller managing the airspace for hundreds of planes simultaneously, rerouting multiple flights when a storm closes one runway.",
+          "application": "Implement real-time routing agents that interface with telemetry data from fleet vehicles and live traffic APIs to minimize last-mile delivery costs."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "business"
+        ],
+        "logs": [
+          {
+            "timestamp": "16:45:00",
+            "level": "info",
+            "message": "Traffic API alert: Major collision on I-95 North."
+          },
+          {
+            "timestamp": "16:45:05",
+            "level": "warn",
+            "message": "Impact analysis: 12 vehicles and 45 deliveries delayed beyond SLA."
+          },
+          {
+            "timestamp": "16:45:20",
+            "level": "info",
+            "message": "Executing fleet-wide route recalculation (VRP algorithm)."
+          },
+          {
+            "timestamp": "16:45:30",
+            "level": "success",
+            "message": "New manifests pushed to driver terminals. SLA compliance restored."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "business",
+      "devlush",
+      "agents",
+      "ai",
+      "logistics",
+      "inventory",
+      "fleet",
+      "routing",
+      "predictive"
+    ]
+  },
+  {
+    "course": "Supply Chain & Logistics Agents",
+    "chapter_title": "Supplier Risk Management",
+    "labComponentId": "supplychain-supplier-risk",
+    "critical_concepts": [
+      {
+        "concept": "Supplier Risk Management",
+        "elaboration": "Agents that monitor global events and financial data to assess and mitigate supplier risks proactively."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "supplychain-supplier-risk",
+        "concept_tested": "Supplier Risk Management",
+        "type": "visual_element",
+        "title": "Case 3: Autonomous Supplier Risk Management",
+        "prompt": "An AI agent continuously monitors global news, social media, and financial reports for a network of 500 tier-1 and tier-2 suppliers. It detects signs of financial instability in a critical component supplier and automatically initiates a search for alternative vendors, requesting quotes and assessing their capacities.",
+        "question": "What is the primary advantage of using an AI agent for supplier risk management over manual human monitoring?",
+        "options": [
+          "A. The AI agent can physically inspect the supplier's factories.",
+          "B. The AI agent can process vast amounts of unstructured global data in real-time to identify subtle risk signals early, enabling proactive mitigation before a disruption occurs.",
+          "C. The AI agent can force the financially unstable supplier to stay in business."
+        ],
+        "answer": "B. The AI agent can process vast amounts of unstructured global data in real-time to identify subtle risk signals early, enabling proactive mitigation before a disruption occurs.",
+        "explanation": "Human teams cannot manually monitor thousands of data sources 24/7. AI agents excel at continuous surveillance of diverse unstructured data streams to detect early warning signs of geopolitical, financial, or operational risks.",
+        "theory": {
+          "title": "Continuous Risk Surveillance and Mitigation",
+          "content": "Supply chain resilience requires proactive risk management. AI agents act as continuous intelligence gatherers, utilizing NLP (Natural Language Processing) to analyze global events and financial data. When a risk threshold is breached, the agent autonomously triggers predefined mitigation workflows, such as identifying alternative sourcing options.",
+          "analogy": "A financial analyst who reads every newspaper in the world simultaneously, instantly alerting you when a company you invest in faces trouble.",
+          "application": "Deploy risk monitoring agents that integrate with news aggregators, financial databases, and internal supplier networks to automate alternative sourcing strategies."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "business"
+        ],
+        "logs": [
+          {
+            "timestamp": "08:15:00",
+            "level": "info",
+            "message": "Scanning global news and financial filings."
+          },
+          {
+            "timestamp": "08:17:30",
+            "level": "warn",
+            "message": "Detected negative sentiment and delayed payment reports for Supplier C (Microchips)."
+          },
+          {
+            "timestamp": "08:18:00",
+            "level": "warn",
+            "message": "Risk score for Supplier C upgraded to HIGH."
+          },
+          {
+            "timestamp": "08:20:00",
+            "level": "info",
+            "message": "Querying alternative supplier database. Sending automated RFQs to 3 backup vendors."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "business",
+      "devlush",
+      "agents",
+      "ai",
+      "logistics",
+      "inventory",
+      "fleet",
+      "routing",
+      "predictive"
+    ]
+  },
+  {
+    "course": "Supply Chain & Logistics Agents",
+    "chapter_title": "Warehouse Robotics Orchestration",
+    "labComponentId": "supplychain-warehouse-orchestration",
+    "critical_concepts": [
+      {
+        "concept": "Warehouse Robotics Orchestration",
+        "elaboration": "Central orchestration agents that coordinate swarms of autonomous robots for optimal warehouse throughput."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "supplychain-warehouse-orchestration",
+        "concept_tested": "Warehouse Robotics Orchestration",
+        "type": "visual_element",
+        "title": "Case 4: Swarm Robotics Orchestration",
+        "prompt": "In a massive fulfillment center, a central AI agent coordinates a swarm of 200 autonomous mobile robots (AMRs). The agent assigns pick tasks based on order priority, real-time robot locations, and battery levels, ensuring collision-free paths and optimal throughput.",
+        "question": "In the context of warehouse automation, what is the role of the central orchestration agent?",
+        "options": [
+          "A. It acts as the physical battery charger for the robots.",
+          "B. It acts as the 'brain' of the operation, dynamically assigning tasks and coordinating movements to optimize the entire fleet's efficiency and prevent bottlenecks.",
+          "C. It packages the items into boxes for shipping."
+        ],
+        "answer": "B. It acts as the 'brain' of the operation, dynamically assigning tasks and coordinating movements to optimize the entire fleet's efficiency and prevent bottlenecks.",
+        "explanation": "Individual robots can navigate, but they lack the macro-level view. The orchestration agent acts as the conductor, managing the swarm as a cohesive unit to maximize throughput, balance workloads, and manage charging cycles.",
+        "theory": {
+          "title": "Multi-Agent System Orchestration",
+          "content": "Warehouse robotics relies on Multi-Agent Systems (MAS). The central orchestration agent solves dynamic task allocation and pathfinding problems for the entire swarm. It must constantly recalculate optimal assignments based on shifting variables like new orders, robot status, and floor congestion.",
+          "analogy": "A dispatcher for a large taxi fleet, knowing exactly where every car is, how much gas they have, and sending the closest available car to the most urgent passenger.",
+          "application": "Implement central orchestration layers that interface with individual AMR control systems and the Warehouse Management System (WMS) for seamless operational flow."
+        },
+        "nature": "feature",
+        "tags": [
+          "technology"
+        ],
+        "logs": [
+          {
+            "timestamp": "14:30:00",
+            "level": "info",
+            "message": "Received high-priority batch of 50 express orders from WMS."
+          },
+          {
+            "timestamp": "14:30:02",
+            "level": "info",
+            "message": "Calculating optimal pick paths and agent assignments."
+          },
+          {
+            "timestamp": "14:30:05",
+            "level": "success",
+            "message": "Dispatched 15 nearest idle AMRs. Rerouted 5 active AMRs for multi-order picking."
+          },
+          {
+            "timestamp": "14:30:10",
+            "level": "warn",
+            "message": "AMR-42 battery at 10%. Rerouting to charging station. Reassigning task to AMR-88."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "business",
+      "devlush",
+      "agents",
+      "ai",
+      "logistics",
+      "inventory",
+      "fleet",
+      "routing",
+      "predictive"
+    ]
+  }
+]

@@ -1,0 +1,173 @@
+Reconnaissance:
+  Social Interaction Analogy: Learning about someone through mutual friends before meeting them.
+  Social Sciences Analogy: Intelligence agencies gathering regional data before intervention.
+  Physics Analogy: Spectroscopy identifying material composition remotely.
+  Biology Analogy: Predators studying prey behavior before hunting.
+
+Network Scanning:
+  Social Interaction Analogy: Knocking on doors to see which houses are occupied.
+  Social Sciences Analogy: Census teams mapping population distribution.
+  Physics Analogy: Sonar locating objects through reflected waves.
+  Biology Analogy: Immune cells scanning tissues for foreign invaders.
+
+Enumeration:
+  Social Interaction Analogy: Asking detailed questions to uncover habits and routines.
+  Social Sciences Analogy: Ethnographers documenting social structures.
+  Physics Analogy: Crystallography exposing internal atomic patterns.
+  Biology Analogy: DNA sequencing revealing biological instructions.
+
+Vulnerability Assessment:
+  Social Interaction Analogy: Noticing weak locks or open windows in a building.
+  Social Sciences Analogy: Auditing institutions for systemic weaknesses.
+  Physics Analogy: Stress-testing structures for failure points.
+  Biology Analogy: Medical screening identifying health risks.
+
+Exploitation:
+  Social Interaction Analogy: Taking advantage of someone forgetting to lock a door.
+  Social Sciences Analogy: Exploiting legal loopholes for gain.
+  Physics Analogy: Crack propagation exploiting weak points in materials.
+  Biology Analogy: Parasites exploiting host weaknesses.
+
+System Hacking:
+  Social Interaction Analogy: Guessing a password to enter a private account.
+  Social Sciences Analogy: Manipulating institutional weaknesses.
+  Physics Analogy: Breaching containment in a stressed system.
+  Biology Analogy: Viruses hijacking cellular machinery.
+
+Malware:
+  Social Interaction Analogy: Harmful rumors spreading and damaging trust.
+  Social Sciences Analogy: Propaganda infecting public opinion.
+  Physics Analogy: Corrosion gradually degrading structures.
+  Biology Analogy: Pathogens spreading disease.
+
+Trojan:
+  Social Interaction Analogy: A gift hiding harmful intentions.
+  Social Sciences Analogy: Infiltration through disguised organizations.
+  Physics Analogy: Hidden impurities causing system failure.
+  Biology Analogy: Parasites disguising themselves to evade detection.
+
+Worm:
+  Social Interaction Analogy: A chain message spreading automatically without prompting.
+  Social Sciences Analogy: Viral social movements spreading independently.
+  Physics Analogy: Chain reactions propagating energy.
+  Biology Analogy: Self-replicating infections spreading through hosts.
+
+Ransomware:
+  Social Interaction Analogy: Holding someone’s belongings until demands are met.
+  Social Sciences Analogy: Economic coercion through embargoes or sanctions.
+  Physics Analogy: Locked systems requiring external energy to release.
+  Biology Analogy: Toxins disrupting normal function until neutralized.
+
+Privilege Escalation:
+  Social Interaction Analogy: Sneaking into restricted areas at an event.
+  Social Sciences Analogy: Climbing hierarchy through manipulation.
+  Physics Analogy: Transitioning to a higher energy state.
+  Biology Analogy: Bacteria acquiring resistance genes for advantage.
+
+Buffer Overflow:
+  Social Interaction Analogy: Overwhelming someone with information until mistakes happen.
+  Social Sciences Analogy: Administrative overload causing collapse.
+  Physics Analogy: Resonance exceeding structural tolerance.
+  Biology Analogy: Toxic overload disrupting cells.
+
+Denial of Service (DoS):
+  Social Interaction Analogy: Flooding a phone with calls so real communication fails.
+  Social Sciences Analogy: Protests blocking roads and disrupting movement.
+  Physics Analogy: Oscillation overload destabilizing systems.
+  Biology Analogy: Allergic reactions overwhelming immunity.
+
+Distributed DoS (DDoS):
+  Social Interaction Analogy: Coordinated spam calls from many people simultaneously.
+  Social Sciences Analogy: Mass mobilization overwhelming institutions.
+  Physics Analogy: Multiple wave sources amplifying disturbance.
+  Biology Analogy: Swarms overwhelming ecological defenses.
+
+Session Hijacking:
+  Social Interaction Analogy: Interrupting and impersonating someone mid-conversation.
+  Social Sciences Analogy: Political coups seizing ongoing authority.
+  Physics Analogy: Signal interception and interference.
+  Biology Analogy: Parasites manipulating host processes.
+
+Man-in-the-Middle (MITM):
+  Social Interaction Analogy: Secretly relaying and altering messages between friends.
+  Social Sciences Analogy: Intermediaries distorting negotiations.
+  Physics Analogy: Wave distortion affecting communication channels.
+  Biology Analogy: Viruses interfering with cellular signaling.
+
+Phishing:
+  Social Interaction Analogy: Pretending to be trusted to gain secrets.
+  Social Sciences Analogy: Fraudulent institutions exploiting trust.
+  Physics Analogy: False signals misleading detection systems.
+  Biology Analogy: Mimic species deceiving predators or prey.
+
+Social Engineering:
+  Social Interaction Analogy: Manipulating emotions to influence decisions.
+  Social Sciences Analogy: Persuasion and propaganda shaping behavior.
+  Physics Analogy: External forces redirecting motion.
+  Biology Analogy: Predators using deception strategies.
+
+Password Cracking:
+  Social Interaction Analogy: Trying many key combinations on a lock.
+  Social Sciences Analogy: Persistent pressure overcoming barriers.
+  Physics Analogy: Iterative search through solution space.
+  Biology Analogy: Enzymes probing molecular binding compatibility.
+
+Persistence / Post-Exploitation:
+  Social Interaction Analogy: Staying embedded in a social group after gaining trust.
+  Social Sciences Analogy: Colonial influence remaining after conquest.
+  Physics Analogy: Residual stress persisting in materials.
+  Biology Analogy: Latent viruses remaining dormant in hosts.
+
+Lateral Movement:
+  Social Interaction Analogy: Moving through connected friend circles after entry.
+  Social Sciences Analogy: Expansion through interconnected institutions.
+  Physics Analogy: Energy transfer through linked systems.
+  Biology Analogy: Infection spreading between tissues.
+
+Rootkits:
+  Social Interaction Analogy: Secret influence operating behind the scenes.
+  Social Sciences Analogy: Hidden power structures controlling outcomes.
+  Physics Analogy: Hidden variables influencing system behavior.
+  Biology Analogy: Dormant pathogens avoiding detection.
+
+Cryptography:
+  Social Interaction Analogy: Using secret codes among trusted friends.
+  Social Sciences Analogy: Diplomatic secrecy and classified communication.
+  Physics Analogy: Entropy and randomness protecting systems.
+  Biology Analogy: Genetic diversity improving resilience.
+
+Encryption Keys:
+  Social Interaction Analogy: Keeping the only key to a private diary.
+  Social Sciences Analogy: Exclusive access to state archives.
+  Physics Analogy: Boundary conditions controlling system access.
+  Biology Analogy: Receptor–ligand specificity controlling interaction.
+
+Digital Forensics:
+  Social Interaction Analogy: Reconstructing events from conversations and clues.
+  Social Sciences Analogy: Historical reconstruction from archives.
+  Physics Analogy: Particle trail analysis after collisions.
+  Biology Analogy: Fossil evidence reconstructing extinct life.
+
+Incident Response:
+  Social Interaction Analogy: Quickly calming and managing a crisis.
+  Social Sciences Analogy: Emergency governance during disasters.
+  Physics Analogy: Containment procedures after accidents.
+  Biology Analogy: Immune response isolating infection.
+
+Zero-Day Vulnerability:
+  Social Interaction Analogy: Someone discovering a secret weakness before anyone else knows.
+  Social Sciences Analogy: Unanticipated systemic loopholes.
+  Physics Analogy: Unknown instability suddenly appearing.
+  Biology Analogy: Newly emerged mutations bypassing defenses.
+
+Patch Management:
+  Social Interaction Analogy: Fixing a misunderstanding before it spreads.
+  Social Sciences Analogy: Policy reform correcting institutional flaws.
+  Physics Analogy: Repairing damaged systems.
+  Biology Analogy: Healing and tissue repair mechanisms.
+
+Penetration Testing:
+  Social Interaction Analogy: Hiring someone to test your house security.
+  Social Sciences Analogy: Independent oversight auditing systems.
+  Physics Analogy: Controlled experiments testing limits.
+  Biology Analogy: Vaccination safely exposing weaknesses to build defense.
