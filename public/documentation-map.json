@@ -1,0 +1,176 @@
+{
+  "phases": [
+    {
+      "id": "pre-init",
+      "title": "Preprocess Phase",
+      "subtitle": "INITIAL",
+      "x": "16.6%",
+      "y": "16.6%",
+      "direction": "right",
+      "color": "emerald",
+      "icon": "Database",
+      "classes": [
+        {
+          "name": "Group Config Loader",
+          "icon": "Database",
+          "description": "Loads the initial configuration settings for the trading group, establishing base parameters."
+        },
+        {
+          "name": "Strategy Parser",
+          "icon": "Activity",
+          "description": "Parses the defined trading strategy to understand entry, exit, and risk management rules."
+        },
+        {
+          "name": "Return Target Group",
+          "icon": "Layers",
+          "description": "Returns the initial group of target symbols or assets to be evaluated by the strategy."
+        }
+      ]
+    },
+    {
+      "id": "pre-final",
+      "title": "Preprocess Phase",
+      "subtitle": "FINAL",
+      "x": "50%",
+      "y": "16.6%",
+      "direction": "right",
+      "color": "teal",
+      "icon": "Cpu",
+      "classes": [
+        {
+          "name": "Trade Log Template",
+          "icon": "Box",
+          "description": "Initializes the template structure for logging all trade activities and events."
+        },
+        {
+          "name": "Trade Pool",
+          "icon": "Database",
+          "description": "Manages the pool of active and pending trades, keeping track of their current status."
+        },
+        {
+          "name": "Normalizing trade symbol states",
+          "icon": "Activity",
+          "description": "Standardizes the state and format of trade symbols to ensure consistency across the system."
+        },
+        {
+          "name": "Time Filter",
+          "icon": "Shield",
+          "description": "Applies time-based restrictions to prevent trading during highly volatile or illiquid periods."
+        },
+        {
+          "name": "Risk Filter",
+          "icon": "Shield",
+          "description": "Evaluates potential trades against predefined risk limits (e.g., max drawdown, exposure)."
+        },
+        {
+          "name": "Return Target Group (w/ filters)",
+          "icon": "Layers",
+          "description": "Outputs the refined list of target symbols after all pre-trade filters have been applied."
+        }
+      ]
+    },
+    {
+      "id": "in-init",
+      "title": "Inprocess Phase",
+      "subtitle": "INITIAL",
+      "x": "83.3%",
+      "y": "16.6%",
+      "direction": "right",
+      "color": "blue",
+      "icon": "Layers",
+      "classes": [
+        {
+          "name": "Fetch Data",
+          "icon": "Database",
+          "description": "Retrieves real-time market data (price, volume, order book) for the target symbols."
+        },
+        {
+          "name": "Indicator processor",
+          "icon": "Activity",
+          "description": "Calculates technical indicators (e.g., RSI, MACD, Z-Score) based on the fetched market data."
+        },
+        {
+          "name": "Strategy Manager -> Strategy Runner",
+          "icon": "Network",
+          "description": "The core engine that evaluates indicator signals against strategy rules to generate trade decisions."
+        },
+        {
+          "name": "Return Target Group (w/ states)",
+          "icon": "Layers",
+          "description": "Provides the final list of actionable targets along with their calculated states and signals."
+        }
+      ]
+    },
+    {
+      "id": "in-final",
+      "title": "Inprocess Phase",
+      "subtitle": "FINAL",
+      "x": "83.3%",
+      "y": "83.3%",
+      "direction": "left",
+      "color": "indigo",
+      "icon": "Network",
+      "classes": [
+        {
+          "name": "Position Sizing",
+          "icon": "Target",
+          "description": "Determines the optimal trade size based on account equity, risk tolerance, and stop-loss distance."
+        },
+        {
+          "name": "Trade Manager",
+          "icon": "Zap",
+          "description": "Executes the trade orders and continuously monitors open positions for exit conditions."
+        }
+      ]
+    },
+    {
+      "id": "post-init",
+      "title": "Postprocess Phase",
+      "subtitle": "INITIAL",
+      "x": "50%",
+      "y": "83.3%",
+      "direction": "left",
+      "color": "purple",
+      "icon": "BarChart3",
+      "classes": [
+        {
+          "name": "TradeJournal",
+          "icon": "Database",
+          "description": "Records the final outcome, execution details, and PnL of closed trades for historical analysis."
+        },
+        {
+          "name": "PerformanceMetrics",
+          "icon": "BarChart3",
+          "description": "Calculates overall system performance statistics (e.g., win rate, Sharpe ratio, max drawdown)."
+        }
+      ]
+    },
+    {
+      "id": "workflow",
+      "title": "Workflow",
+      "subtitle": "EXECUTION",
+      "x": "16.6%",
+      "y": "83.3%",
+      "direction": "left",
+      "color": "rose",
+      "icon": "Cpu",
+      "classes": [
+        {
+          "name": "SystemOrchestrator",
+          "icon": "Network",
+          "description": "The master controller that coordinates the execution flow between all different phases and components."
+        },
+        {
+          "name": "EventLoop",
+          "icon": "Activity",
+          "description": "The continuous loop that drives the system, processing market ticks and triggering evaluations."
+        },
+        {
+          "name": "StateBroadcaster",
+          "icon": "Layers",
+          "description": "Publishes system state changes and trade events to external listeners or UI dashboards."
+        }
+      ]
+    }
+  ]
+}

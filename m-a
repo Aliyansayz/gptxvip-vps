@@ -1,0 +1,8 @@
+tunnel: b8f0ae94-27bb-4b64-a3a7-d97a118922e5
+credentials-file: /home/<YOUR-LINUX-USERNAME>/.cloudflared/b8f0ae94-27bb-4b64-a3a7-d97a118922e5.json
+
+ingress:
+  - hostname: gptx.vip
+    service: http://localhost:5173
+  - service: http_status:404
+

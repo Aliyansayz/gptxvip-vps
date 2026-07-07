@@ -1,0 +1,102 @@
+{
+  "strategyArchitecture": {
+    "header": {
+      "title": "STRATEGY ARCHITECTURE",
+      "description": "Our algorithmic framework is built on a multi-layered approach to market analysis. By combining mathematical indicators with dynamic exit logic, we create resilient strategies that adapt to shifting market regimes."
+    },
+    "sections": [
+      {
+        "id": "common-indicators",
+        "title": "Common Indicators",
+        "icon": "Activity",
+        "themeColor": "emerald",
+        "intro": "Indicators serve as the sensory organs of an algorithm. They filter raw price data into actionable signals, allowing the system to distinguish between random noise and significant market moves.",
+        "philosophy": "A signal is only as good as the context it exists in. We use EMA for trend direction, VWAP for value, and SMI for timing—creating a triple-confirmation entry system.",
+        "items": [
+          {
+            "label": "VWAP",
+            "name": "Volume Weighted Average Price",
+            "description": "Provides the 'true' benchmark price by incorporating volume, essential for institutional-grade value assessment."
+          },
+          {
+            "label": "Momentum",
+            "name": "Momentum Based Entry",
+            "description": "Identifies the velocity of price changes to enter trades where the trend strength is highest."
+          },
+          {
+            "label": "LinReg Slope",
+            "name": "Linear Regression Slope",
+            "description": "Measures the rate of change of a best-fit line, quantifying the intensity of the current trend."
+          },
+          {
+            "label": "SMI",
+            "name": "Stochastic Momentum Index",
+            "description": "Offers a cleaner, less noisy version of traditional stochastics for overbought/oversold detection."
+          },
+          {
+            "label": "EMA",
+            "name": "Exponential Moving Average",
+            "description": "Prioritizes recent data, ensuring the algorithm stays responsive to immediate market shifts."
+          }
+        ]
+      },
+      {
+        "id": "threshold-exits",
+        "title": "Threshold Based Exits",
+        "icon": "Shield",
+        "themeColor": "blue",
+        "items": [
+          {
+            "name": "Take Profit",
+            "description": "Binary execution at a fixed mathematical target. Ensures capital is realized before mean reversion occurs."
+          },
+          {
+            "name": "Stop Loss",
+            "description": "The ultimate risk circuit breaker. Hard-coded exits to prevent catastrophic drawdown during black swan events."
+          }
+        ]
+      },
+      {
+        "id": "indicator-exits",
+        "title": "Indicator Based Exit",
+        "icon": "TrendingUp",
+        "themeColor": "purple",
+        "items": [
+          {
+            "name": "Slope Curvature Reversal",
+            "description": "Exits by detecting the 'rounding' of a trend (second derivative change) before price actually reverses."
+          },
+          {
+            "name": "Higher Timeframe Reversal",
+            "description": "A top-down safety check. If the macro trend shifts, the micro position is liquidated immediately to maintain alignment."
+          }
+        ]
+      },
+      {
+        "id": "time-exits",
+        "title": "Time Bounded Exits",
+        "icon": "Clock",
+        "themeColor": "amber",
+        "items": [
+          {
+            "name": "Fixed Time Exit",
+            "description": "Eliminates 'time risk' by closing positions after a specific duration, regardless of PnL status."
+          },
+          {
+            "name": "Volatility-Adjusted Time Exit",
+            "description": "Uses stochastic math to calculate expected trade duration. If the trade stagnates while volatility drops, it exits early."
+          }
+        ]
+      },
+      {
+        "id": "advance-strategies",
+        "title": "Advance Strategies",
+        "icon": "Zap",
+        "themeColor": "yellow",
+        "subtitle": "Variable Position Sizing & Dynamic Volatility Exits",
+        "description": "The most sophisticated layer of our engine. It doesn't just manage time or price—it manages exposure. As market volatility fluctuates, the algorithm dynamically scales the position size (Beta-weighting) while simultaneously shifting the time-based exit parameters.",
+        "tags": ["Stochastic Modeling", "Dynamic Beta", "Risk Scaling"]
+      }
+    ]
+  }
+}

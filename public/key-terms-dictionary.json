@@ -1,0 +1,162 @@
+{
+  "header": {
+    "title": "Key Terms & Definitions",
+    "description": "A comprehensive guide to the terminology used in algorithmic trading and market microstructure."
+  },
+  "terms": [
+    {
+      "id": "cointegration",
+      "term": "Cointegration",
+      "subheading": "The Invisible Tether Between Assets",
+      "definition": "A statistical property of a collection of time series variables. If two or more series are themselves non-stationary, but a linear combination of them is stationary, then the series are said to be cointegrated.",
+      "points": [
+        "Identifies long-term equilibrium between two or more assets.",
+        "Forms the mathematical foundation for pairs trading and mean-reversion strategies.",
+        "Fundamentally different from correlation, which only measures directional similarity over a specific timeframe."
+      ],
+      "example": "Imagine a drunk person walking a dog on a leash. Both wander randomly (non-stationary), but the distance between them is bounded by the leash (stationary).",
+      "visualContext": {
+        "type": "diagram",
+        "prompt": "A line chart showing two diverging random walk lines (Asset A and Asset B) that occasionally cross, with a third line below showing the stationary spread oscillating around a zero mean.",
+        "description": "Spread Oscillation Diagram"
+      }
+    },
+    {
+      "id": "correlation",
+      "term": "Correlation",
+      "subheading": "Directional Synchronization",
+      "definition": "A statistical measure that expresses the extent to which two variables are linearly related, meaning they change together at a constant rate.",
+      "points": [
+        "Measured on a scale from -1.0 (perfect inverse) to 1.0 (perfect positive).",
+        "Does not imply causation; two assets can move together due to a hidden third factor.",
+        "Prone to breaking down during market stress or regime changes."
+      ],
+      "example": "Ice cream sales and temperature are positively correlated. As one goes up, the other typically goes up.",
+      "visualContext": {
+        "type": "scatter-plot",
+        "prompt": "Three side-by-side scatter plots illustrating positive correlation (upward slope), negative correlation (downward slope), and zero correlation (random cloud of dots).",
+        "description": "Correlation Scatter Plots"
+      }
+    },
+    {
+      "id": "stochastic-momentum",
+      "term": "Stochastic Momentum",
+      "subheading": "Gauging Overbought and Oversold Extremes",
+      "definition": "An indicator that compares a particular closing price of a security to a range of its prices over a certain period of time. It is used to generate overbought and oversold trading signals.",
+      "points": [
+        "Bounded oscillator that fluctuates between 0 and 100.",
+        "Readings above 80 generally indicate an overbought condition.",
+        "Readings below 20 generally indicate an oversold condition.",
+        "Often uses a %K line (fast) and a %D line (slow/moving average) to identify crossovers."
+      ],
+      "example": "If a stock has been trading between $50 and $100 for a month, and today closes at $98, the stochastic oscillator will be near 96, indicating strong upward momentum but potential overbought status.",
+      "visualContext": {
+        "type": "chart-overlay",
+        "prompt": "A candlestick price chart with a sub-chart below it. The sub-chart shows two oscillating lines (%K and %D) moving between a 0-100 scale, with shaded highlight zones above the 80 line (red) and below the 20 line (green).",
+        "description": "Stochastic Oscillator Zones"
+      }
+    },
+    {
+      "id": "multi-timeframe",
+      "term": "Multi Timeframe Analysis",
+      "subheading": "The Top-Down Perspective",
+      "definition": "The process of viewing the same currency pair or asset under different time frames (e.g., 1-hour, 4-hour, Daily) to determine the larger trend and find better entry or exit points.",
+      "points": [
+        "Higher timeframes (e.g., Daily, Weekly) dictate the overall macroeconomic trend.",
+        "Lower timeframes (e.g., 15m, 1H) are used for precision entries and minimizing stop-loss distances.",
+        "Prevents trading against the dominant market flow."
+      ],
+      "example": "Checking the Daily chart to confirm a macro bullish trend, then zooming into the 15-minute chart to buy during a temporary pullback to a local support level.",
+      "visualContext": {
+        "type": "cascading-charts",
+        "prompt": "Three cascading chart windows. The back window shows a Daily chart with a broad uptrend. The middle window shows a 4H chart highlighting a pullback. The front window shows a 15m chart pinpointing a specific bullish candlestick pattern at support.",
+        "description": "Top-Down Timeframe Analysis"
+      }
+    },
+    {
+      "id": "filled-unfilled",
+      "term": "Filled / Unfilled (Orders)",
+      "subheading": "Order Execution States",
+      "definition": "A filled order is an order that has been successfully executed against a counterparty. An unfilled order is an order that has not yet been executed, usually because the specified price has not been reached or there is insufficient liquidity.",
+      "points": [
+        "Market orders are typically filled immediately at the best available price.",
+        "Limit orders remain unfilled in the order book until the market price reaches the limit price.",
+        "Partial fills occur when there is only enough liquidity to execute a portion of the requested order size."
+      ],
+      "example": "Placing a limit buy for 100 shares at $10.00. If the price drops to $10.00 but only 40 shares are available from sellers, you get a partial fill of 40 shares, leaving 60 shares unfilled.",
+      "visualContext": {
+        "type": "order-book",
+        "prompt": "A visual representation of an exchange order book. A specific limit order is highlighted in the 'Bids' column, showing its status as 'Unfilled' while waiting for the current market price to drop to its level.",
+        "description": "Limit Order in the Order Book"
+      }
+    },
+    {
+      "id": "floor-latency",
+      "term": "Floor Latency",
+      "subheading": "The Speed of Execution",
+      "definition": "The time delay experienced in trading systems between the moment an order is generated by an algorithm and the moment it is received, acknowledged, and processed by the exchange.",
+      "points": [
+        "Measured in milliseconds (ms) or microseconds (μs).",
+        "Critical for High-Frequency Trading (HFT) and arbitrage strategies.",
+        "Reduced by co-locating trading servers in the same data center as the exchange's matching engine."
+      ],
+      "example": "A high-frequency trading firm pays a premium to place its servers physically next to the NASDAQ matching engine, reducing their floor latency from 5 milliseconds to 1 microsecond to beat competitors to arbitrage opportunities.",
+      "visualContext": {
+        "type": "network-diagram",
+        "prompt": "A network topology diagram showing a trading server, a fiber optic connection, and an exchange matching engine. A stopwatch icon sits above the fiber line, indicating the transit time (latency).",
+        "description": "Network Latency Topology"
+      }
+    },
+    {
+      "id": "market-microstructure",
+      "term": "Market Microstructure",
+      "subheading": "The Anatomy of Trading",
+      "definition": "The study of how financial markets operate at a granular level, focusing on the behavior of participants, trading mechanisms, and the rules that govern the exchange of assets.",
+      "points": [
+        "Deals with the mechanics of the order book, bid-ask spreads, and liquidity provision.",
+        "Analyzes how different types of orders (market, limit, iceberg) impact price discovery.",
+        "Crucial for understanding slippage and market impact costs for large institutional trades."
+      ],
+      "example": "Analyzing how a large block order of 10,000 shares consumes available liquidity, temporarily widening the bid-ask spread and causing the price to spike before mean-reverting.",
+      "visualContext": {
+        "type": "level-2-data",
+        "prompt": "A detailed, zoomed-in view of Level 2 market data, showing the bid-ask spread, market depth bars, and a visual representation of a large market order 'eating' through several levels of limit asks.",
+        "description": "Liquidity Consumption in Level 2 Data"
+      }
+    },
+    {
+      "id": "regime-detection",
+      "term": "Regime Detection (Trend Based / Range Based)",
+      "subheading": "Identifying Market Environments",
+      "definition": "The algorithmic or statistical process of identifying the current market environment to deploy the most effective trading strategy.",
+      "points": [
+        "Trend-Based Regime: Characterized by sustained directional movement (up or down) with higher volatility.",
+        "Range-Based Regime: Characterized by price oscillating between established support and resistance levels with lower volatility.",
+        "Strategies that excel in trends often lose money in ranges, making regime detection a critical pre-filter."
+      ],
+      "example": "Using the Average Directional Index (ADX). If ADX > 25, the algorithm deploys a trend-following momentum strategy. If ADX < 25, it switches to a mean-reversion grid strategy.",
+      "visualContext": {
+        "type": "chart-segmentation",
+        "prompt": "A long price chart horizontally segmented into two distinct background colors. The left side (blue background) shows a tight horizontal trading range. The right side (green background) shows a sharp, volatile breakout into a strong uptrend.",
+        "description": "Market Regime Segmentation"
+      }
+    },
+    {
+      "id": "hedging",
+      "term": "Hedging",
+      "subheading": "Risk Mitigation",
+      "definition": "A risk management strategy employed to offset potential losses in investments by taking an opposite or inversely correlated position in a related asset.",
+      "points": [
+        "Acts like an insurance policy for a portfolio.",
+        "Reduces potential downside risk, but typically also caps potential upside profit.",
+        "Commonly executed using derivatives like options, futures, or inverse ETFs."
+      ],
+      "example": "An investor holds a large portfolio of tech stocks but fears an upcoming earnings season. They buy put options on the Nasdaq 100 index. If the tech stocks crash, the profit from the put options offsets the portfolio losses.",
+      "visualContext": {
+        "type": "balance-scale",
+        "prompt": "A stylized illustration of a balancing scale. On one side sits a stack of stock certificates (Long Position). On the other side sits a shield with a lock icon (Protective Put Option), keeping the scale perfectly balanced.",
+        "description": "Hedging Balance"
+      }
+    }
+  ]
+}

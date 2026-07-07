@@ -1,0 +1,182 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700;900&family=Righteous&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-righteous: "Righteous", cursive;
+}
+
+@custom-variant dark (&:is(.dark, .dark *));
+
+@layer base {
+  body {
+    @apply font-sans text-zinc-900 dark:text-zinc-100 antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display uppercase text-zinc-900 dark:text-zinc-100;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl font-black tracking-tighter;
+  }
+
+  h2 {
+    @apply text-lg md:text-xl font-bold tracking-widest;
+  }
+
+  h3 {
+    @apply text-base font-bold tracking-widest;
+  }
+
+  h4 {
+    @apply text-xs font-bold tracking-widest;
+  }
+
+  :root {
+    color-scheme: light;
+    --chart-tooltip-bg: #ffffff;
+    --chart-tooltip-border: #e4e4e7;
+  }
+  .dark {
+    color-scheme: dark;
+    --chart-tooltip-bg: #09090b;
+    --chart-tooltip-border: #27272a;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-zinc-300 dark:bg-zinc-700 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-zinc-400 dark:bg-zinc-600;
+  }
+
+  .camera-film-container {
+    will-change: transform;
+    transform-style: preserve-3d;
+  }
+
+  .custom-scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .custom-scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  /* C++ Syntax Highlighting - Generic Classes */
+  .cpp-syntax-keyword { color: var(--syntax-keyword); font-weight: 600; }
+  .cpp-syntax-type { color: var(--syntax-type); }
+  .cpp-syntax-function { color: var(--syntax-function); }
+  .cpp-syntax-string { color: var(--syntax-string); }
+  .cpp-syntax-comment { color: var(--syntax-comment); font-style: italic; }
+  .cpp-syntax-number { color: var(--syntax-number); }
+  .cpp-syntax-operator { color: var(--syntax-operator); }
+  .cpp-syntax-macro { color: var(--syntax-macro); }
+  .cpp-syntax-punctuation { color: var(--syntax-punctuation); }
+
+  /* Concept View Themes */
+  .walkthrough-light {
+    --syntax-keyword: #d73a49;
+    --syntax-type: #005cc5;
+    --syntax-function: #6f42c1;
+    --syntax-string: #032f62;
+    --syntax-comment: #6a737d;
+    --syntax-number: #005cc5;
+    --syntax-operator: #d73a49;
+    --syntax-macro: #d73a49;
+    --syntax-punctuation: #24292e;
+    @apply bg-white text-zinc-900;
+  }
+  .walkthrough-light .code-snippet-container {
+    @apply bg-zinc-50 border-zinc-200 shadow-sm;
+  }
+  .walkthrough-dark {
+    --syntax-keyword: #ff7b72;
+    --syntax-type: #ffa657;
+    --syntax-function: #d2a8ff;
+    --syntax-string: #a5d6ff;
+    --syntax-comment: #8b949e;
+    --syntax-number: #79c0ff;
+    --syntax-operator: #79c0ff;
+    --syntax-macro: #ff7b72;
+    --syntax-punctuation: #c9d1d9;
+    @apply bg-zinc-950 text-white;
+  }
+
+  @keyframes gradientMove {
+      0% { background-position: 0% center; }
+      100% { background-position: 100% center; }
+  }
+
+  @keyframes drift {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(4%, 4%); }
+  }
+
+  .neon-text-gradient {
+      background: linear-gradient(
+          90deg, 
+          #22d3ee, /* Cyan */
+          #ffffff, /* White */
+          #0ea5e9, /* Sky Blue */
+          #22d3ee  /* Cyan (loop) */
+      );
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradientMove 6s linear infinite;
+      filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.4)) 
+              drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
+  }
+
+  .light-leak-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      mix-blend-mode: screen;
+      pointer-events: none;
+  }
+
+  .leak {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.5;
+      animation: drift 15s infinite alternate ease-in-out;
+  }
+
+  .leak-cyan {
+      width: 80vw;
+      height: 80vw;
+      background: radial-gradient(circle, rgba(34, 211, 238, 0.3) 0%, transparent 70%);
+      top: -20%;
+      left: -10%;
+  }
+
+  .leak-white {
+      width: 50vw;
+      height: 50vw;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+      top: 20%;
+      right: 0%;
+      animation-delay: -3s;
+  }
+}

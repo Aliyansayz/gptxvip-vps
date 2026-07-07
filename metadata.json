@@ -1,0 +1,6 @@
+{
+  "name": "AlgoTrade Viz",
+  "description": "A visual guide to algorithmic trading strategies, featuring interactive charts with stop-loss and take-profit visualizations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,59 @@
+{
+  "header": {
+    "title": "Volatility",
+    "description": "Understanding market turbulence, pricing uncertainty, and risk measurement metrics."
+  },
+  "terms": [
+    {
+      "id": "implied-volatility",
+      "term": "Implied Volatility (IV)",
+      "subheading": "The Market's Expectation of Future Flutter",
+      "definition": "A metric that captures the market's view of the likelihood of changes in a given security's price. Unlike historical volatility, IV is forward-looking and is derived from the price of the asset's options.",
+      "points": [
+        "Higher IV means the market expects larger price swings (often due to upcoming earnings or macro events).",
+        "It directly affects option premiums; higher IV leads to more expensive options.",
+        "Mean-reverting by nature: periods of high IV tend to be followed by low IV, and vice-versa."
+      ],
+      "example": "Before an FDA drug approval announcement, a biotech stock's options might show an IV of 150%, making them incredibly expensive as the market expects a massive 50% price swing in either direction.",
+      "visualContext": {
+        "type": "chart",
+        "prompt": "An animated wave line that starts with small, tight ripples, suddenly expands into massive chaotic spikes around a central vertical 'Earnings Event' line, and then smoothly tapers back into tight ripples.",
+        "description": "Implied Volatility Expansion and Crush"
+      }
+    },
+    {
+      "id": "volatility-smile",
+      "term": "Volatility Smile",
+      "subheading": "The Asymmetry of Fear",
+      "definition": "A U-shaped pattern that emerges when plotting the implied volatility of options with the same expiration date against their strike prices. It indicates that out-of-the-money (OTM) options are priced with higher implied volatility than at-the-money (ATM) options.",
+      "points": [
+        "Highlights the market's demand for tail-risk protection.",
+        "After the 1987 market crash, equites typically exhibit a 'skew' or 'smirk' where downside puts are much more expensive than upside calls.",
+        "Breaks the Black-Scholes assumption that volatility is constant across all strikes."
+      ],
+      "example": "Investors naturally fear a 20% sudden market crash much more than they anticipate a sudden 20% melt-up. Therefore, they bid up the prices (and IV) of deep OTM put options compared to OTM call options.",
+      "visualContext": {
+        "type": "diagram",
+        "prompt": "A 2D coordinate graph plotting a prominent neon U-shaped curve (the smile) mapped against a horizontal axis of option strike prices, with a highlighted ATM center point at the dip.",
+        "description": "The Volatility Smile Curve"
+      }
+    },
+    {
+      "id": "average-true-range",
+      "term": "Average True Range (ATR)",
+      "subheading": "Measuring Absolute Price Velocity",
+      "definition": "A technical analysis indicator that measures market volatility by decomposing the entire range of an asset price for that period. It looks at the current high/low and the previous close to capture true movement, including gaps.",
+      "points": [
+        "Does not indicate price direction, only the magnitude of price movement.",
+        "Often used by quantitative systems to dynamically size positions (e.g., smaller position sizes when ATR is high).",
+        "Commonly used to set trailing stop-losses that breathe with the market's current volatility."
+      ],
+      "example": "If a stock's 14-day ATR is $5.00, it typically moves five dollars a day from high to low. A trader might set their stop-loss at 2x ATR ($10.00) below their entry to avoid being stopped out by normal daily noise.",
+      "visualContext": {
+        "type": "indicator-overlay",
+        "prompt": "A price chart displaying candlesticks that gap up and down, with a connected highlighted bounding box strictly tracking the absolute maximum 'True Range' distance of each bar and comparing it to the underlying animated ATR line graph.",
+        "description": "True Range Measurement bounding box"
+      }
+    }
+  ]
+}

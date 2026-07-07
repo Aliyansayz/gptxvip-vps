@@ -1,0 +1,617 @@
+{
+  "course": "C++ Introduction",
+  "chapter_title": "Hello World & Basics",
+  "tags": ["C++", "Programming", "Introduction", "Basics", "Pointers", "Memory", "Variables", "Control Flow", "Functions", "OOP"],
+  "critical_concepts": [
+    {
+      "concept": "Compiled Language",
+      "componentId": "cpp_compiled_visual",
+      "elaboration": "C++ is a compiled programming language. The source code is converted into machine code using a compiler before execution.",
+      "visual_prompt": "Show a pipeline diagram: [C++ Source Code] → [Compiler] → [Machine Code] → [Program Execution]. Animate arrows flowing through the pipeline."
+    },
+    {
+      "concept": "Memory Management",
+      "componentId": "cpp_memory_visual",
+      "elaboration": "C++ allows direct memory manipulation through pointers and manual allocation using new and delete.",
+      "visual_prompt": "Display a memory grid with blocks representing RAM. Show a pointer arrow referencing a memory cell. Animate allocation when 'new' is used and freeing when 'delete' is used."
+    },
+    {
+      "concept": "Object-Oriented Programming",
+      "componentId": "cpp_oop_visual",
+      "elaboration": "C++ supports classes, objects, inheritance, polymorphism, encapsulation, and abstraction.",
+      "visual_prompt": "Display a class diagram: Class 'Car' at the top with properties and methods. Below it, show multiple object instances like Car1, Car2 inheriting structure."
+    }
+  ],
+  "interactive_questions": [
+    {
+      "componentId": "cpp_basic_q1",
+      "type": "mcq",
+      "difficulty": "basic",
+      "concept_tested": "C++ Syntax",
+      "title": "Entry Point of a C++ Program",
+      "prompt": "Which function is the starting point of every C++ program?",
+      "visual_interactive_prompt": "Display a visual program flow diagram showing execution starting from a highlighted 'main()' block and flowing through the program.",
+      "answer": "main()",
+      "options": ["start()", "main()", "init()", "program()"],
+      "explanation": "Every C++ program begins execution from the main() function."
+    },
+    {
+      "componentId": "cpp_basic_q2",
+      "type": "mcq",
+      "difficulty": "basic",
+      "concept_tested": "Input Output",
+      "title": "Output Statement",
+      "prompt": "Which C++ statement is used to print text to the console?",
+      "visual_interactive_prompt": "Show a console window visualization. Animate text appearing when the cout statement executes.",
+      "answer": "cout",
+      "options": ["cin", "cout", "print", "output"],
+      "explanation": "cout (from iostream) is used with the << operator to display output."
+    },
+    {
+      "componentId": "cpp_basic_q3",
+      "type": "mcq",
+      "difficulty": "basic",
+      "concept_tested": "Header Files",
+      "title": "Standard Input Output Library",
+      "prompt": "Which header file is required for using cout and cin?",
+      "visual_interactive_prompt": "Show a program file including libraries. Highlight the #include <iostream> line and visually link it to input/output operations.",
+      "answer": "<iostream>",
+      "options": ["<stdio.h>", "<iostream>", "<conio.h>", "<math.h>"],
+      "explanation": "The iostream header provides the input/output stream objects like cin and cout."
+    },
+    {
+      "componentId": "cpp_basic_q4",
+      "type": "mcq",
+      "difficulty": "basic",
+      "concept_tested": "Variables",
+      "title": "Integer Variable",
+      "prompt": "Which keyword is used to declare an integer variable in C++?",
+      "visual_interactive_prompt": "Show a variable container labeled 'int'. When a value is assigned, the container fills with the number.",
+      "answer": "int",
+      "options": ["integer", "int", "number", "float"],
+      "explanation": "The keyword int is used to declare integer variables."
+    },
+    {
+      "componentId": "cpp_basic_q5",
+      "type": "mcq",
+      "difficulty": "basic",
+      "concept_tested": "Comments",
+      "title": "Single Line Comment",
+      "prompt": "Which symbol is used to write a single-line comment in C++?",
+      "visual_interactive_prompt": "Display a code editor where lines starting with // are grayed out to indicate they are ignored by the compiler.",
+      "answer": "//",
+      "options": ["#", "//", "/* */", "--"],
+      "explanation": "Double forward slashes // are used for single-line comments."
+    },
+    {
+      "componentId": "cpp_drag_1",
+      "type": "drag_and_drop",
+      "difficulty": "basic",
+      "concept_tested": "Program Structure",
+      "title": "Arrange the C++ Program Structure",
+      "prompt": "Drag the following parts to create a valid C++ program structure.",
+      "visual_interactive_prompt": "Display draggable code blocks scattered on the screen. Students drag them into a vertical code editor layout to build a working C++ program.",
+      "draggable_items": [
+        "#include <iostream>",
+        "using namespace std;",
+        "int main()",
+        "{",
+        "cout << \"Hello World\";",
+        "return 0;",
+        "}"
+      ],
+      "correct_order": [
+        "#include <iostream>",
+        "using namespace std;",
+        "int main()",
+        "{",
+        "cout << \"Hello World\";",
+        "return 0;",
+        "}"
+      ],
+      "explanation": "A valid C++ program starts with headers, followed by namespace declaration, main function, program body, and return statement."
+    },
+    {
+      "componentId": "cpp_drag_2",
+      "type": "drag_and_drop",
+      "difficulty": "basic",
+      "concept_tested": "Variable Declaration",
+      "title": "Match Variable Type with Example",
+      "prompt": "Drag each example to the correct variable type.",
+      "visual_interactive_prompt": "Show two columns: variable types on the left and example declarations on the right. Students drag examples to match the correct type container.",
+      "pairs": [
+        { "type": "int", "example": "int age = 20;" },
+        { "type": "float", "example": "float price = 10.5;" },
+        { "type": "char", "example": "char grade = 'A';" },
+        { "type": "bool", "example": "bool isPassed = true;" }
+      ],
+      "explanation": "Each variable type stores different forms of data in C++."
+    },
+    {
+      "componentId": "cpp_drag_3",
+      "type": "drag_and_drop",
+      "difficulty": "basic",
+      "concept_tested": "Operators",
+      "title": "Match Operator with Function",
+      "prompt": "Drag each operator to its correct meaning.",
+      "visual_interactive_prompt": "Show operator symbols as draggable cards and math operation labels as drop targets. Animate the operation result when a correct match is made.",
+      "pairs": [
+        { "operator": "+", "meaning": "Addition" },
+        { "operator": "-", "meaning": "Subtraction" },
+        { "operator": "*", "meaning": "Multiplication" },
+        { "operator": "/", "meaning": "Division" }
+      ],
+      "explanation": "Arithmetic operators perform mathematical calculations in C++."
+    },
+    {
+      "componentId": "cpp_intermediate_classes_explainer",
+      "type": "scroll_code_walkthrough",
+      "difficulty": "intermediate",
+      "concept_tested": "Classes and Encapsulation",
+      "title": "C++ Class Architecture",
+      "question": "Scroll to explore how Classes define objects and protect data through Encapsulation.",
+      "explanation": "Classes are the blueprints for objects, combining data (members) and behaviors (methods) while controlling access.",
+      "theory": {
+        "title": "Encapsulation & Access Modifiers",
+        "summary": "Classes are the foundation of Object-Oriented Programming in C++. They allow you to bundle data and the functions that operate on that data into a single unit.",
+        "bullets": [
+          "Private: Members only accessible within the class itself (Data Hiding).",
+          "Public: Members accessible from anywhere the object is visible.",
+          "Methods: Functions defined inside a class that operate on its private state."
+        ]
+      },
+      "codeSnippet": "class BankAccount {\nprivate:\n    // Balance is hidden from outside access\n    double balance;\n\npublic:\n    // Constructor initializes the balance\n    BankAccount(double init) : balance(init) {}\n\n    // Controlled method to add funds\n    void deposit(double amount) {\n        // Only accept positive deposits\n        if (amount > 0) balance += amount;\n    }\n\n    // Read-only getter for balance\n    double getBalance() const {\n        return balance;\n    }\n};\n\nint main() {\n    BankAccount myAcc(100.0);\n    myAcc.deposit(50.0);\n    return 0;\n}",
+      "steps": [
+        {
+          "range": [1, 5],
+          "title": "Data Hiding",
+          "description": "The 'private' keyword ensures that the balance cannot be modified directly from outside the class, preventing accidental corruption.",
+          "mcq": {
+            "question": "What happens if you try to execute 'myAcc.balance = 500;' in main()?",
+            "options": [
+              { "text": "The program compiles and sets the balance.", "isCorrect": false, "reasoning": "Private members cannot be accessed directly from outside the class scope." },
+              { "text": "A compile-time error occurs.", "isCorrect": true, "reasoning": "The compiler enforces encapsulation by blocking access to private members." }
+            ]
+          }
+        },
+        {
+          "range": [7, 9],
+          "title": "The Constructor",
+          "description": "Constructors initialize an object's state when it is created. Here, we use an initialization list to set the starting balance.",
+          "mcq": {
+            "question": "When is the BankAccount constructor executed?",
+            "options": [
+              { "text": "Every time deposit() is called.", "isCorrect": false, "reasoning": "Constructors only run once, per object, at creation time." },
+              { "text": "When 'myAcc' is declared in main().", "isCorrect": true, "reasoning": "Constructors are special member functions called automatically upon instantiation." }
+            ]
+          }
+        },
+        {
+          "range": [11, 15],
+          "title": "Controlled Interface",
+          "description": "Public methods like deposit() provide a controlled way to interact with private data, allowing for validation logic (like checking if amount > 0).",
+          "mcq": {
+            "question": "Why is it better to use a deposit() method instead of making balance public?",
+            "options": [
+              { "text": "It allows the class to validate the input before changing the balance.", "isCorrect": true, "reasoning": "This maintains the 'Invariants' of the class, like ensuring a balance never becomes negative via invalid input." },
+              { "text": "It makes the code run faster.", "isCorrect": false, "reasoning": "Method calls may add tiny overhead, though compilers often inline them; the primary benefit is safety and maintainability." }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "componentId": "cpp_intermediate_structs_explainer",
+      "type": "scroll_code_walkthrough",
+      "difficulty": "intermediate",
+      "concept_tested": "Structs and Data Aggregation",
+      "title": "Data Packaging with Structs",
+      "question": "Unlock the power of 'struct' for creating lightweight data containers.",
+      "explanation": "Structs in C++ are almost identical to classes, but default to 'public' access, making them ideal for simple data bundles.",
+      "theory": {
+        "title": "Struct vs Class",
+        "summary": "In C++, the only technical difference between a struct and a class is the default access level. Structs are 'public' by default, while classes are 'private' by default.",
+        "bullets": [
+          "POD (Plain Old Data): Structs are often used for simple groupings of variables.",
+          "Public Access: Ideal for components where encapsulation isn't required.",
+          "Memory Layout: Variables are typically stored in the order they are declared."
+        ]
+      },
+      "codeSnippet": "struct Vector3D {\n    // Struct members are public by default\n    float x;\n    float y;\n    float z;\n\n    // Methods can still be added to structs\n    float magnitude() {\n        return sqrt(x*x + y*y + z*z);\n    }\n};\n\nint main() {\n    // Aggregate initialization maps directly to members\n    Vector3D pos = {1.0, 2.0, 3.0};\n    // Public access allows direct modification\n    pos.x = 10.0;\n    return 0;\n}",
+      "steps": [
+        {
+          "range": [1, 5],
+          "title": "Public by Default",
+          "description": "Unlike a class, we don't need the 'public:' label here. x, y, and z are accessible immediately.",
+          "mcq": {
+            "question": "What is the access level of 'x' in the Vector3D struct?",
+            "options": [
+              { "text": "Public", "isCorrect": true, "reasoning": "Members of a struct are public by default in C++." },
+              { "text": "Private", "isCorrect": false, "reasoning": "Members are only private by default in a 'class'." }
+            ]
+          }
+        },
+        {
+          "range": [14, 17],
+          "title": "Aggregate Initialization",
+          "description": "Structs allow for concise initialization using curly braces, mapping values to members in order of declaration.",
+          "mcq": {
+            "question": "If you declared 'pos = {1.0, 2.0}', what value would 'z' have?",
+            "options": [
+              { "text": "It would be zero-initialized (0.0).", "isCorrect": true, "reasoning": "Missing values in an initializer list result in value-initialization (zeroing) for basic types." },
+              { "text": "It would contain random 'garbage' data.", "isCorrect": false, "reasoning": "While uninitialized variables have garbage data, partial aggregate initialization triggers the rest to be zeroed." }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "componentId": "cpp_intermediate_templates_explainer",
+      "type": "scroll_code_walkthrough",
+      "difficulty": "intermediate",
+      "concept_tested": "Templates and Generic Programming",
+      "title": "Generic Logic with Templates",
+      "question": "See how Templates allow you to write logic that works with any data type.",
+      "explanation": "Templates are a key part of C++ Meta-programming, allowing the compiler to generate specialized versions of a function for different types.",
+      "theory": {
+        "title": "The Power of Templates",
+        "summary": "Templates enable 'Generic Programming'. Instead of writing different functions for int, float, and double, you write one template and the compiler does the rest.",
+        "bullets": [
+          "Compile-time Generation: Templates don't exist at runtime; the compiler generates the code you need.",
+          "Type Safety: Unlike void pointers, templates are fully type-checked by the compiler.",
+          "STL: The entire Standard Template Library (vectors, maps) is built on this foundation."
+        ]
+      },
+      "codeSnippet": "// 'typename T' creates a generic type placeholder\ntemplate <typename T>\nT getMax(T a, T b) {\n    // This will work correctly for any compatible type\n    return (a > b) ? a : b;\n}\n\nint main() {\n    // Explicitly defining the type as int\n    int i = getMax<int>(10, 20);\n    \n    // Compiler deduces 'float' automatically here\n    float f = getMax(5.5f, 2.1f);\n    \n    return 0;\n}",
+      "steps": [
+        {
+          "range": [1, 2],
+          "title": "Type Parameterization",
+          "description": "The 'template <typename T>' declares that T is a placeholder for a type that will be decided when the function is used.",
+          "mcq": {
+            "question": "What does 'T' represent in this code?",
+            "options": [
+              { "text": "A specific integer variable.", "isCorrect": false, "reasoning": "T is a generic type name, not a variable." },
+              { "text": "A placeholder that can represent int, float, or even custom types.", "isCorrect": true, "reasoning": "T (Type) allows the function to be polymorphic based on the arguments provided." }
+            ]
+          }
+        },
+        {
+          "range": [12, 14],
+          "title": "Template Deduction",
+          "description": "In many cases, the compiler can 'deduce' the type T from the arguments, so you don't always have to write <int> explicitly.",
+          "mcq": {
+            "question": "How does the compiler handle the call 'getMax(5.5f, 2.1f)'?",
+            "options": [
+              { "text": "It generates a version of the function where T is replaced with 'float'.", "isCorrect": true, "reasoning": "This process is called Template Instantiation." },
+              { "text": "It converts 5.5f to an integer and uses the integer version.", "isCorrect": false, "reasoning": "Templates preserve the original types to ensure precision and type safety." }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "componentId": "cpp_advanced_vectors_explainer",
+      "type": "scroll_code_walkthrough",
+      "difficulty": "advanced",
+      "concept_tested": "std::vector Memory Management",
+      "title": "Deep Dive: std::vector",
+      "question": "Scroll to understand how std::vector dynamically manages memory.",
+      "explanation": "std::vector is a dynamic array that handles resizing automatically by reallocating memory when its capacity is reached.",
+      "theory": {
+        "title": "Dynamic Arrays via std::vector",
+        "summary": "Vectors are sequence containers representing arrays that can change in size.",
+        "bullets": [
+          "Contiguous Memory: Elements are stored sequentially, providing fast O(1) random access.",
+          "Capacity vs. Size: Size is how many elements exist; capacity is how much space is allocated.",
+          "Reallocation: When size exceeds capacity, the vector typically doubles its capacity, copying old elements."
+        ]
+      },
+      "codeSnippet": "#include <iostream>\n#include <vector>\n\nint main() {\n    std::vector<int> numbers;\n    \n    // Tracking memory geometry\n    std::cout << \"Initial capacity: \" << numbers.capacity() << \"\\n\";\n    \n    for (int i = 0; i < 5; i++) {\n        numbers.push_back(i * 10);\n        std::cout << \"Size: \" << numbers.size() \n                  << \", Capacity: \" << numbers.capacity() << \"\\n\";\n    }\n    \n    // Shrinking capacity to fit the actual size\n    numbers.shrink_to_fit();\n    \n    return 0;\n}",
+      "steps": [
+        {
+          "range": [4, 5],
+          "title": "Initialization",
+          "description": "An empty vector is created. At this point, it usually hasn't allocated any heap memory, so its size and capacity are both 0.",
+          "mcq": {
+             "question": "What happens if we call $snippet numbers[0] snippet$ right now?",
+             "options": [
+               { "text": "Undefined Behavior (likely a segfault).", "isCorrect": true, "reasoning": "The vector is empty, so accessing index 0 goes out of bounds." },
+               { "text": "It returns 0.", "isCorrect": false, "reasoning": "Vectors do not automatically pad empty indexes unless pre-allocated." }
+             ]
+          }
+        },
+        {
+          "range": [10, 14],
+          "title": "Growth Rate",
+          "description": "$snippet push_back() snippet$ appends elements. If the new size exceeds capacity, the vector allocates a larger chunk of memory (often doubling), copies elements, and deletes the old chunk.",
+          "mcq": {
+             "question": "Which snippet accurately represents pre-allocating memory to avoid these expensive reallocations?",
+             "options": [
+               { "text": "$snippet numbers.resize(5); snippet$", "isCorrect": false, "reasoning": "Resize also changes the actual size and constructs elements. $snippet reserve() snippet$ only changes capacity." },
+               { "text": "$snippet numbers.reserve(5); snippet$", "isCorrect": true, "reasoning": "Yes! Reserve allocates memory for future elements without actually creating them yet." }
+             ]
+          }
+        },
+        {
+          "range": [16, 17],
+          "title": "Reclaiming Memory",
+          "description": "Vectors rarely reduce their capacity automatically when elements are removed. $snippet shrink_to_fit() snippet$ requests the container to reduce its capacity to fit its size.",
+          "mcq": {
+             "question": "Is $snippet shrink_to_fit() snippet$ guaranteed to reduce capacity?",
+             "options": [
+               { "text": "Yes, it forces the vector to drop excess memory immediately.", "isCorrect": false, "reasoning": "It's technically a non-binding request; the implementation might ignore it for optimization reasons." },
+               { "text": "No, it's a non-binding request to the implementations' allocator.", "isCorrect": true, "reasoning": "Correct. However, most modern C++ standard libraries will honor this request and reallocate." }
+             ]
+          }
+        }
+      ]
+    },
+    {
+      "componentId": "cpp_advanced_templates_explainer",
+      "type": "scroll_code_walkthrough",
+      "difficulty": "advanced",
+      "concept_tested": "Variadic Templates",
+      "title": "Advanced: Variadic Templates",
+      "question": "Scroll to discover how Variadic Templates process an arbitrary number of arguments.",
+      "explanation": "Introduced in C++11, variadic templates allow functions and classes to take a variable number of template arguments.",
+      "theory": {
+        "title": "Variadic Templates & Parameter Packs",
+        "summary": "Sometimes you don't know how many arguments a function will receive (like a smart pointer maker or a custom print function). Variadic templates solve this type-safely.",
+        "bullets": [
+          "Parameter Pack: Declared using an ellipsis `...`, represents zero or more parameters.",
+          "Recursive Unpacking: You process arguments by popping off the first one, then recursively calling the function with the rest.",
+          "Compile-Time: All recursion happens at compile time, leading to highly optimized code."
+        ]
+      },
+      "codeSnippet": "#include <iostream>\n\n// Base case to stop the template recursion\nvoid printAll() {\n    std::cout << \"End of arguments\\n\";\n}\n\n// Recursive variadic template function\ntemplate <typename T, typename... Args>\nvoid printAll(T first, Args... rest) {\n    std::cout << first << \", \";\n    \n    // Recursive call expanding the parameter pack\n    printAll(rest...);\n}\n\nint main() {\n    printAll(10, \"Hello\", 3.14, 'A');\n    return 0;\n}",
+      "steps": [
+        {
+          "range": [8, 10],
+          "title": "The Parameter Pack",
+          "description": "$snippet typename... Args snippet$ defines a template parameter pack. $snippet Args... rest snippet$ defines a function parameter pack. It captures any number of additional arguments.",
+          "mcq": {
+             "question": "What are the types captured in $snippet Args snippet$ during the first call $snippet printAll(10, \"Hello\", 3.14, 'A') snippet$?",
+             "options": [
+               { "text": "$snippet const char*, double, char snippet$", "isCorrect": true, "reasoning": "T is deduced as int for the first argument (10). Args captures the remaining types." },
+               { "text": "$snippet int, const char*, double, char snippet$", "isCorrect": false, "reasoning": "The first argument satisfies 'T', so 'Args' only contains the subsequent elements." }
+             ]
+          }
+        },
+        {
+          "range": [13, 14],
+          "title": "Pack Expansion",
+          "description": "To use the pack, we apply the $snippet ... snippet$ operator. $snippet printAll(rest...) snippet$ unpacks the remaining arguments into the next function call.",
+          "mcq": {
+             "question": "What is the primary mechanism variadic templates use to process arguments in C++11?",
+             "options": [
+               { "text": "Compile-time recursion generating a new function signature for each step.", "isCorrect": true, "reasoning": "The compiler creates a chain of function overloads decreasing in argument count." },
+               { "text": "A runtime loop iterating over an array of `std::any`.", "isCorrect": false, "reasoning": "Templates are evaluated strictly at compile-time." }
+             ]
+          }
+        },
+        {
+          "range": [3, 6],
+          "title": "The Base Case",
+          "description": "Because the expansion relies on recursion, we need an empty function to handle the final call when the parameter pack is entirely empty.",
+          "mcq": {
+             "question": "Which snippet accurately represents what happens if we remove the base case function?",
+             "options": [
+               { "text": "$snippet Error: no matching function for call to printAll() snippet$", "isCorrect": true, "reasoning": "When the pack becomes empty, the compiler tries to call `printAll()` with 0 arguments, which will fail to compile." },
+               { "text": "- It silently stops printing.", "isCorrect": false, "reasoning": "C++ templates require exact matches. If an overloaded resolution fails, compilation fails." }
+             ]
+          }
+        }
+      ]
+    },
+    {
+      "componentId": "cpp_advanced_deque_explainer",
+      "type": "scroll_code_walkthrough",
+      "difficulty": "advanced",
+      "concept_tested": "std::deque Architecture",
+      "title": "std::deque: The Ring Buffer",
+      "question": "Scroll to learn how a double-ended queue balances fast access with efficient insertions.",
+      "explanation": "std::deque (double-ended queue) is not a single contiguous block of memory like std::vector, but a sequence of fixed-size arrays.",
+      "theory": {
+        "title": "Understanding std::deque (Deck)",
+        "summary": "While std::vector is great for appending, front-insertions are slow (O(n)). std::deque offers fast O(1) insertions at both the front and back.",
+        "bullets": [
+          "Segmented Memory: Internally, it manages a 'map' (array of pointers) pointing to fixed-size memory blocks.",
+          "No Reallocation Copies: Adding elements to the front or back doesn't require copying existing elements to a new array.",
+          "Random Access: Like vector, you can quickly access any index, but math is slightly more complex across boundaries."
+        ]
+      },
+      "codeSnippet": "#include <iostream>\n#include <deque>\n\nint main() {\n    std::deque<int> dq = { 20, 30, 40 };\n    \n    // O(1) insertion at the front\n    dq.push_front(10);\n    \n    // O(1) insertion at the back\n    dq.push_back(50);\n    \n    std::cout << \"Front: \" << dq.front() << \"\\n\";\n    std::cout << \"Back:  \" << dq.back() << \"\\n\";\n    \n    // O(1) random access (slightly slower than vector)\n    std::cout << \"Item at index 2: \" << dq[2] << \"\\n\";\n    \n    return 0;\n}",
+      "steps": [
+        {
+          "range": [7, 8],
+          "title": "Front Insertions",
+          "description": "In a $snippet std::vector snippet$, $snippet push_front() snippet$ does not exist because shifting all elements right costs O(n). In $snippet std::deque snippet$, it's an O(1) operation.",
+          "mcq": {
+             "question": "How does $snippet std::deque snippet$ achieve O(1) front insertions without shifting elements?",
+             "options": [
+               { "text": "It allocates memory in separate chunks, and prepends a new chunk if the first one is full.", "isCorrect": true, "reasoning": "The deque uses an array of pointers to fixed-size arrays, allowing O(1) growth in both directions." },
+               { "text": "It shifts the memory start pointer backwards into free space.", "isCorrect": false, "reasoning": "Contiguous sequences can't guarantee there's free space 'before' the array block." }
+             ]
+          }
+        },
+        {
+          "range": [16, 17],
+          "title": "Random Access",
+          "description": "Despite being fragmented, $snippet std::deque snippet$ allows direct access to elements using the $snippet [] snippet$ operator.",
+          "mcq": {
+             "question": "Why is $snippet dq[2] snippet$ slightly slower in a deque compared to a vector?",
+             "options": [
+               { "text": "Vectors use simple pointer offset math. Deques require two lookups: finding the target chunk, then the offset inside it.", "isCorrect": true, "reasoning": "Correct! Deque math involves dividing by chunk size to find the block pointer, then using modulo for the exact element." },
+               { "text": "Because it has to iterate from the head node to the third node like a linked list.", "isCorrect": false, "reasoning": "std::deque is NOT a linked list (like `std::list`), it offers true random access." }
+             ]
+          }
+        },
+        {
+          "range": [10, 14],
+          "title": "Back Insertions",
+          "description": "Just like a vector, pushing to the back is fast. But unlike a vector, pushing elements never invalidates pointers to existing elements.",
+          "mcq": {
+             "question": "Which snippet accurately represents when you should favor $snippet std::vector snippet$ over $snippet std::deque snippet$?",
+             "options": [
+               { "text": "When you need strict contiguous memory (e.g. interfacing with C-APIs using $snippet &vec[0] snippet$).", "isCorrect": true, "reasoning": "Because a deque is chunked, you cannot pass its underlying array to an API expecting a contiguous buffer." },
+               { "text": "When you need to insert elements at both ends frequently.", "isCorrect": false, "reasoning": "That is the exact use-case intended for `std::deque` over `std::vector`." }
+             ]
+          }
+        }
+      ]
+    },
+    {
+      "componentId": "cpp_prime_validator_circuit",
+      "type": "circuit_board",
+      "difficulty": "advanced",
+      "concept_tested": "Logic Components",
+      "title": "Prime Validator Circuit",
+      "question": "Drag and drop the logic blocks to validate whether a number is prime.",
+      "explanation": "Reconstruct the C++ logic to determine if a number 'n' is prime. Drag components into their logical execution slots.",
+      "nodes": [
+        { "id": "node-0", "label": "INIT", "description": "State Setup", "expectedBlock": "block-1", "x": 100, "y": 150 },
+        { "id": "node-1", "label": "GUARD", "description": "Boundary Check", "expectedBlock": "block-2", "x": 350, "y": 150 },
+        { "id": "node-2", "label": "ITER", "description": "Computational Loop", "expectedBlock": "block-3", "x": 350, "y": 350 },
+        { "id": "node-3", "label": "EXIT", "description": "Result Output", "expectedBlock": "block-4", "x": 100, "y": 350 }
+      ],
+      "blocks": [
+        { "id": "block-1", "label": "Var Init", "code": "int i, n;\nbool is_p = true;", "type": "init" },
+        { "id": "block-2", "label": "Zero Guard", "code": "if (n < 2) is_p = false;", "type": "logic" },
+        { "id": "block-3", "label": "Divisor Loop", "code": "for(i=2; i<=n/2; i++) {\n  if(n%i==0) {\n    is_p=false;\n    break;\n  }\n}", "type": "loop" },
+        { "id": "block-4", "label": "STDOUT", "code": "std::cout << (is_p ? 'Y' : 'N');", "type": "output" },
+        { "id": "block-5", "label": "Decrement", "code": "while(n > 0) n--;", "type": "loop" }
+      ]
+    },
+    {
+      "componentId": "creating_templates_cpp",
+      "type": "code_explainer_drag_drop",
+      "difficulty": "intermediate",
+      "concept_tested": "Templates",
+      "title": "Creating Templates In C++",
+      "question": "First, walkthrough the logic of generic programming, then complete the snippets using drag-and-drop.",
+      "explanation": "Templates in C++ allow you to write functions that work for any type. Let's see how they work.",
+      "explanation_steps": [
+        {
+          "description": "We start with the 'template' keyword followed by the type parameter in angle brackets.",
+          "code": "template <typename T>"
+        },
+        {
+          "description": "Then we define the function using 'T' as a placeholder for the actual type.",
+          "code": "T add(T a, T b) {\n    return a + b;\n}"
+        },
+        {
+          "description": "The compiler creates a version of the function for the types you use.",
+          "code": "int result = add<int>(5, 10);"
+        }
+      ],
+      "snippets": [
+        {
+          "id": "snippet_1",
+          "title": "Generic Addition Function",
+          "template": "template <[[SLOT1]] T>\nT sum(T a, T b) {\n    return [[SLOT2]];\n}",
+          "draggable_items": ["typename", "a + b", "int", "return"],
+          "correct_mappings": {
+            "SLOT1": "typename",
+            "SLOT2": "a + b"
+          }
+        },
+        {
+          "id": "snippet_2",
+          "title": "Template Class Storage",
+          "template": "template <typename T>\nclass Box {\n    [[SLOT1]] data;\npublic:\n    void set(T val) { [[SLOT2]] = val; }\n};",
+          "draggable_items": ["T", "data", "this->data", "public", "private"],
+          "correct_mappings": {
+            "SLOT1": "T",
+            "SLOT2": "data"
+          }
+        }
+      ]
+    },
+    {
+      "componentId": "cpp_intermediate_typing_structs",
+      "type": "code_rewriter_by_typing",
+      "difficulty": "intermediate",
+      "concept_tested": "Structs and Data Aggregation",
+      "title": "Structuring Data with Structs",
+      "question": "Type the structural boilerplate to understand how aggregate data is grouped.",
+      "explanation": "Structs in C++ group different data types together. They are essential for modeling real-world data.",
+      "snippets": [
+        {
+          "id": "struct_snippet_1",
+          "title": "Basic Struct Declaration",
+          "explanation": "Define a simple Position struct with x and y coordinates.",
+          "code": "struct Position {\n    float x;\n    float y;\n};",
+          "line_explanations": [
+            { "line_number": 1, "explanation": "The 'struct' keyword declares a new custom data type." },
+            { "line_number": 2, "explanation": "Member variables are defined just like normal variables." },
+            { "line_number": 4, "explanation": "Don't forget the required semicolon after a struct declaration." }
+          ]
+        },
+        {
+          "id": "struct_snippet_2",
+          "title": "Initializing and Using Structs",
+          "explanation": "Create an instance of Position and modify its members directly.",
+          "code": "int main() {\n    Position playerPos = {0.0f, 0.0f};\n    playerPos.x += 10.5f;\n    playerPos.y -= 2.0f;\n    return 0;\n}",
+          "line_explanations": [
+            { "line_number": 2, "explanation": "Creates a variable of our custom Position type and initializes it with an initializer list." },
+            { "line_number": 3, "explanation": "Use the dot (.) operator to access and modify struct members." }
+          ]
+        }
+      ]
+    },
+    {
+      "componentId": "cpp_intermediate_typing_templates",
+      "type": "code_rewriter_by_typing",
+      "difficulty": "intermediate",
+      "concept_tested": "Templates",
+      "title": "Generic Template Starters",
+      "question": "Type out the generic programming boilerplate to memorize the syntax of templates.",
+      "explanation": "Templates in C++ allow you to write functions that work for any type. Let's practice the basic syntax.",
+      "snippets": [
+        {
+          "id": "template_snippet_1",
+          "title": "A Generic Max Function",
+          "explanation": "Use 'template <typename T>' to create a type-agnostic function that returns the larger value.",
+          "code": "template <typename T>\nT getMax(T a, T b) {\n    return (a > b) ? a : b;\n}",
+          "line_explanations": [
+            { "line_number": 1, "explanation": "The template declaration tells the compiler that 'T' is a placeholder for a data type." },
+            { "line_number": 2, "explanation": "The function returns type T and accepts parameters of type T." }
+          ]
+        },
+        {
+          "id": "template_snippet_2",
+          "title": "Template Instantiation",
+          "explanation": "Use the template function in your main program with specified types.",
+          "code": "int main() {\n    int i = getMax<int>(5, 10);\n    float f = getMax<float>(3.14f, 2.71f);\n    return 0;\n}",
+          "line_explanations": [
+            { "line_number": 2, "explanation": "Call the function by specifying <int> so the compiler generates an int version." },
+            { "line_number": 3, "explanation": "Call it again with <float> so a float-specific version is generated." }
+          ]
+        }
+      ]
+    },
+    {
+      "componentId": "cpp_intermediate_typing_mutex",
+      "type": "code_rewriter_by_typing",
+      "difficulty": "intermediate",
+      "concept_tested": "Mutex and Lock Guard",
+      "title": "Mutex Use Example",
+      "question": "Type the boilerplate to understand how to synchronize thread access to shared resources.",
+      "explanation": "In concurrent programming, C++ uses std::mutex to prevent threads from simultaneously modifying a shared resource, avoiding race conditions.",
+      "snippets": [
+        {
+          "id": "mutex_snippet_1",
+          "title": "Using lock_guard",
+          "explanation": "std::lock_guard automatically acquires the mutex upon creation and releases it when it goes out of scope.",
+          "code": "std::mutex mtx;\n\nvoid updateData() {\n    std::lock_guard<std::mutex> lock(mtx);\n    // Critical Section\n    shared_resource++;\n}",
+          "line_explanations": [
+            { "line_number": 1, "explanation": "Declare a global or shared std::mutex." },
+            { "line_number": 4, "explanation": "std::lock_guard automatically locks 'mtx' here safely and unlocks at the end of the function scope." },
+            { "line_number": 6, "explanation": "It is now safe to safely modify 'shared_resource' from multiple threads within this protected block." }
+          ]
+        }
+      ]
+    }
+  ]
+}
