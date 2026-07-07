@@ -170,11 +170,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                     setActiveTab("trade-type");
                     setActiveSubTab("");
                   }}
-                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-transparent border-none ${
+                  style={{ transform: 'skewY(-2deg)' }}
+                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800/80 rounded-none shadow-xl ${
                     activeTab === "home" ? "text-white hover:text-white/80" : (!isDarkMode ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-white")
                   }`}
                 >
-                  Docs
+                  <div style={{ transform: 'skewY(2deg)' }}>Docs</div>
                 </button>
                 <button
                   onClick={() => {
@@ -184,11 +185,24 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                       setActiveCodeCategory("general");
                     }
                   }}
-                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-transparent border-none ${
+                  style={{ transform: 'skewY(-2deg)' }}
+                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800/80 rounded-none shadow-xl ${
                     activeTab === "home" ? "text-white hover:text-white/80" : (!isDarkMode ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-white")
                   }`}
                 >
-                  Code Concepts
+                  <div style={{ transform: 'skewY(2deg)' }}>Code Concepts</div>
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveTab("dev-labs-workspace");
+                    setActiveSubTab("");
+                  }}
+                  style={{ transform: 'skewY(-2deg)' }}
+                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800/80 rounded-none shadow-xl ${
+                    activeTab === "home" ? "text-white hover:text-white/80" : (!isDarkMode ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-white")
+                  }`}
+                >
+                  <div style={{ transform: 'skewY(2deg)' }}>Dev Agents</div>
                 </button>
                 <button
                   onClick={() => {

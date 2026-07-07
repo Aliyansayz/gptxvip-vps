@@ -74,13 +74,19 @@ export const HeroHeader: React.FC<{ onInitializeEngine?: () => void }> = ({ onIn
           <div className="flex flex-col sm:flex-row gap-8 justify-center items-center w-full sm:w-auto">
               <button 
                   onClick={onInitializeEngine}
-                  className="w-full sm:w-auto group relative px-12 py-5 bg-cyan-500 hover:bg-cyan-400 text-zinc-950 font-black rounded-full overflow-hidden transition-all hover:pr-14 shadow-[0_0_30px_rgba(34,211,238,0.4)] select-none cursor-pointer"
+                  style={{ transform: 'skewY(-2deg)' }}
+                  className="w-full sm:w-auto group relative px-12 py-5 bg-cyan-500 hover:bg-cyan-400 text-zinc-950 font-black rounded-none overflow-hidden transition-all hover:pr-14 shadow-[0_0_30px_rgba(34,211,238,0.4)] select-none cursor-pointer"
               >
-                  <span className="relative z-10 uppercase tracking-widest text-sm">Initialize Engine</span>
-                  <span className="absolute right-5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all text-lg font-bold text-zinc-950">→</span>
+                  <div style={{ transform: 'skewY(2deg)' }} className="flex items-center justify-center relative w-full h-full">
+                    <span className="relative z-10 uppercase tracking-widest text-sm">Initialize Engine</span>
+                    <span className="absolute right-5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all text-lg font-bold text-zinc-950">→</span>
+                  </div>
               </button>
-              <button className="w-full sm:w-auto px-12 py-5 bg-zinc-900/50 backdrop-blur-xl border border-zinc-700/50 shadow-[0_0_20px_rgba(0,0,0,0.3)] text-zinc-300 hover:text-white hover:bg-zinc-800/80 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(34,211,238,0.2)] font-bold rounded-full transition-all duration-300 uppercase tracking-widest text-sm">
-                  Explore Documentation
+              <button 
+                  style={{ transform: 'skewY(-2deg)' }}
+                  className="w-full sm:w-auto px-12 py-5 bg-zinc-900/50 backdrop-blur-xl border border-zinc-700/50 shadow-[0_0_20px_rgba(0,0,0,0.3)] text-zinc-300 hover:text-white hover:bg-zinc-800/80 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(34,211,238,0.2)] font-bold rounded-none transition-all duration-300 uppercase tracking-widest text-sm"
+              >
+                  <div style={{ transform: 'skewY(2deg)' }}>Explore Documentation</div>
               </button>
           </div>
       </div>
