@@ -43,7 +43,7 @@ interface ToggleSwitchProps {
 
 const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ label, isOn, onToggle, onIcon, offIcon }) => (
     <div className="flex items-center justify-between w-full">
-        <label htmlFor={`toggle-${label}`} className="text-sm font-medium text-foreground flex items-center gap-2">
+        <label htmlFor={`toggle-${label}`} className="text-sm font-medium text-slate-900 flex items-center gap-2">
             {isOn ? onIcon : offIcon}
             {label}
         </label>
@@ -70,7 +70,7 @@ const EnergyBeam: React.FC<{ studyEnergy: number; isInfinite: boolean; lockoutRe
 
     return (
         <div className="space-y-2">
-            <div className="flex justify-between items-center text-xs text-muted-foreground">
+            <div className="flex justify-between items-center text-xs text-slate-600">
                 <span className="font-semibold">Study Energy</span>
                 {isLocked ? (
                     <span className="font-mono text-destructive">{formatTime(lockoutRemaining)}</span>
@@ -169,18 +169,18 @@ const Navbar: React.FC<NavbarProps> = ({
         return 'devLush';
     };
 
-    const navTextColor = 'text-foreground';
-    const navBgColor = 'bg-background/50 border-border/50';
+    const navTextColor = 'text-slate-200';
+    const navBgColor = 'bg-slate-950 border-slate-800';
     const titleColor = 'text-primary';
 
     return (
-        <nav className="absolute top-0 left-0 w-full z-50 bg-transparent p-3 flex justify-center items-center pointer-events-none">
-            {/* Title removed per user request */}
-            <div className={`flex items-center p-1 backdrop-blur-md border rounded-full shadow-sm gap-1 overflow-hidden pointer-events-auto ${navBgColor}`}>
+        <nav className={`w-full flex-shrink-0 z-50 flex items-center justify-between px-4 py-2 backdrop-blur-md border-b shadow-sm ${navBgColor}`}>
+            {/* Left side empty space to balance right side settings */}
+            <div className="flex-1" />
 
-
+            <div className="flex items-center justify-center gap-4">
                 {/* Main Nav Group */}
-                <div className="flex items-center gap-1 p-0.5 rounded-lg">
+                <div className="flex items-center gap-1">
                     <button onClick={() => onViewChange('agent-workspace')} className={`${baseButtonClass} ${getButtonStyle('agent-workspace', 'special')}`}>
                         Agent Workspace
                     </button>
@@ -195,7 +195,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
 
                 {/* Extras Group */}
-                <div className="flex items-center gap-1 p-0.5">
+                <div className="flex items-center gap-1">
                     <button onClick={() => onViewChange('topic-theory')} className={`${baseButtonClass} ${getButtonStyle('topic-theory', 'special')}`} title="Topic Theory Library">
                         <Library className="w-4 h-4" />
                     </button>
@@ -217,27 +217,29 @@ const Navbar: React.FC<NavbarProps> = ({
                 </div>
             </div>
 
-            <div ref={settingsRef} className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-auto">
-                <button
-                    onClick={() => setIsSettingsOpen(prev => !prev)}
-                    className={`p-2 rounded-full backdrop-blur-md border hover:bg-background/80 transition-colors shadow-sm ${navBgColor}`}
-                    title="Settings"
-                >
-                    <Settings className={`w-4 h-4 ${navTextColor}`} />
-                </button>
+            {/* Settings button on the right */}
+            <div className="flex-1 flex justify-end">
+                <div ref={settingsRef} className="relative">
+                    <button
+                        onClick={() => setIsSettingsOpen(prev => !prev)}
+                        className="p-2 rounded-full border border-slate-700 hover:bg-slate-800 transition-colors shadow-sm bg-slate-900"
+                        title="Settings"
+                    >
+                        <Settings className={`w-4 h-4 ${navTextColor}`} />
+                    </button>
 
-                {isSettingsOpen && (
-                    <div className="absolute right-0 mt-2 w-64 bg-popover rounded-lg border shadow-lg z-50 p-4 animate-fade-in-down">
+                    {isSettingsOpen && (
+                        <div className="absolute right-0 mt-2 w-64 bg-white text-slate-900 rounded-lg border border-slate-200 shadow-xl z-50 p-4 animate-fade-in-down">
                         <div className="space-y-4">
                             <button
                                 onClick={() => { onViewChange('favorites'); setIsSettingsOpen(false); }}
-                                className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-muted transition-colors group"
+                                className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-slate-100 transition-colors group"
                             >
-                                <span className="text-sm font-medium text-foreground flex items-center gap-2">
+                                <span className="text-sm font-medium text-slate-900 flex items-center gap-2">
                                     <StarIcon className="w-4 h-4 text-yellow-500" />
                                     Favorites View
                                 </span>
-                                <span className="text-xs text-muted-foreground group-hover:text-primary">Open &rarr;</span>
+                                <span className="text-xs text-slate-500 group-hover:text-primary">Open &rarr;</span>
                             </button>
 
                             <div className="border-t border-border" />
@@ -246,37 +248,37 @@ const Navbar: React.FC<NavbarProps> = ({
                                 label={theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
                                 isOn={theme === 'dark'}
                                 onToggle={onToggleTheme}
-                                onIcon={<Moon className="w-4 h-4 text-muted-foreground" />}
-                                offIcon={<Sun className="w-4 h-4 text-muted-foreground" />}
+                                onIcon={<Moon className="w-4 h-4 text-slate-500" />}
+                                offIcon={<Sun className="w-4 h-4 text-slate-500" />}
                             />
                             <ToggleSwitch
                                 label="Manual Lock"
                                 isOn={isAppLocked}
                                 onToggle={onToggleLockMode}
-                                onIcon={<Lock className="w-4 h-4 text-destructive" />}
-                                offIcon={<Unlock className="w-4 h-4 text-muted-foreground" />}
+                                onIcon={<Lock className="w-4 h-4 text-red-500" />}
+                                offIcon={<Unlock className="w-4 h-4 text-slate-500" />}
                             />
                             <ToggleSwitch
                                 label="Focus Mode"
                                 isOn={focusMode}
                                 onToggle={onToggleFocusMode}
                                 onIcon={<Zap className="w-4 h-4 text-yellow-500" />}
-                                offIcon={<Zap className="w-4 h-4 text-muted-foreground" />}
+                                offIcon={<Zap className="w-4 h-4 text-slate-500" />}
                             />
                             <ToggleSwitch
                                 label="AI Assistant"
                                 isOn={showAiAssistant}
                                 onToggle={onToggleAiAssistant}
-                                onIcon={<ChatIcon className="w-4 h-4 text-primary" />}
-                                offIcon={<ChatIcon className="w-4 h-4 text-muted-foreground" />}
+                                onIcon={<ChatIcon className="w-4 h-4 text-indigo-600" />}
+                                offIcon={<ChatIcon className="w-4 h-4 text-slate-500" />}
                             />
                             <div className="border-t border-border !mt-4 !mb-2" />
                             <ToggleSwitch
                                 label="Infinite Energy"
                                 isOn={isInfiniteEnergy}
                                 onToggle={onToggleInfiniteEnergy}
-                                onIcon={<Infinity className="w-4 h-4 text-primary" />}
-                                offIcon={<Zap className="w-4 h-4 text-muted-foreground" />}
+                                onIcon={<Infinity className="w-4 h-4 text-indigo-600" />}
+                                offIcon={<Zap className="w-4 h-4 text-slate-500" />}
                             />
                             <EnergyBeam
                                 studyEnergy={studyEnergy}
@@ -286,6 +288,7 @@ const Navbar: React.FC<NavbarProps> = ({
                         </div>
                     </div>
                 )}
+            </div>
             </div>
         </nav>
     );
