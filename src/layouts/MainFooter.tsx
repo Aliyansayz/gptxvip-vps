@@ -112,8 +112,8 @@ export const MainFooter: React.FC<MainFooterProps> = ({
             <li>
               <button
                 onClick={() => {
-                  setActiveTab("map");
-                  setActiveSubTab("doc-map");
+                  setActiveTab("roadmap-workspace");
+                  setActiveSubTab("");
                 }}
                 className="hover:text-emerald-500 transition-colors flex items-center gap-2 group"
               >

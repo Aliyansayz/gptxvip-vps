@@ -14,6 +14,7 @@ import { HomeMainView } from "./components/homeMainView";
 import { ProfileInfo } from "./components/profileInfo";
 import { TradingToolsView } from "./views/TradingToolsView";
 import DevLushApp from "./devLushArea/agentDevRootComponents/devLushAreaApp";
+import RoadmapContainer from "./roadmapArea/roadmapView/RoadmapContainer";
 
 import { Toaster } from 'sonner';
 
@@ -34,6 +35,7 @@ export default function App() {
     | "archive-tools"
     | "profile"
     | "dev-labs-workspace"
+    | "roadmap-workspace"
   >("home");
   const [activeSubTab, setActiveSubTab] = useState<string>("liquidity-depth");
   const [activeCodeCategory, setActiveCodeCategory] = useState<string>("general");
@@ -51,6 +53,8 @@ export default function App() {
       <Toaster position="top-center" />
       {activeTab === "dev-labs-workspace" ? (
         <DevLushApp onExit={() => setActiveTab("home")} />
+      ) : activeTab === "roadmap-workspace" ? (
+        <RoadmapContainer onExit={() => setActiveTab("home")} />
       ) : (
         <MainLayout
           activeTab={activeTab}

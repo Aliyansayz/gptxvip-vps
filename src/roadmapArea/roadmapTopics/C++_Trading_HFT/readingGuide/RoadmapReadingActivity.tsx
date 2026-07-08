@@ -1,6 +1,5 @@
 import React from 'react';
 import { ArrowRight, ArrowDown, Server, Activity, BookOpen, Database } from 'lucide-react';
-import { useLab } from '../../../../devLushArea/agentDevRootComponents/LabContext';
 
 interface RoadmapReadingActivityProps {
   chapter: any;
@@ -8,7 +7,7 @@ interface RoadmapReadingActivityProps {
 }
 
 export const RoadmapReadingActivity: React.FC<RoadmapReadingActivityProps> = ({ chapter, onComplete }) => {
-  const { labId } = useLab();
+  const labId = chapter?.readingComponentId || chapter?.labComponentId;
   
   // --- Bespoke Visuals ---
   const kernelBypassVisual = (
