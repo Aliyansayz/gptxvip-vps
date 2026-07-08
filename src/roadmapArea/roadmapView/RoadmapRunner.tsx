@@ -8,13 +8,13 @@ import {
   BookOpen,
   Sparkles,
 } from "lucide-react";
-import FavoriteButton from "../../devLushArea/agentDevRootComponents/FavoriteButton";
+import FavoriteButton from "../roadmapSharedComponents/FavoriteButton";
 import {
   LabSettingsMenu,
   LabSettings,
   loadSavedSettings,
-} from "../../devLushArea/agentDevRootComponents/LabSettingsMenu";
-import { LabProvider } from "../../devLushArea/agentDevRootComponents/LabContext";
+} from "../roadmapSharedComponents/LabSettingsMenu";
+import { LabProvider } from "../roadmapSharedComponents/LabContext";
 import { getThemeColorClass } from "./themeHelpers";
 import { roadmapRegistry } from "../registries/roadmapRegistry";
 

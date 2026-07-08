@@ -3,7 +3,7 @@ import RoadmapSidebar from "./RoadmapSidebar";
 import RoadmapHub from "./RoadmapHub";
 import RoadmapRunner from "./RoadmapRunner";
 import { RoadmapSearchView } from "./RoadmapSearchView";
-import { LabData, ConceptCourse } from "../../devLushArea/agentDevRootComponents/types";
+import { LabData, ConceptCourse } from "../roadmapSharedComponents/types";
 import { toast } from "sonner";
 import { cppTradingHFTData } from "../roadmapTopics/C++_Trading_HFT/data";
 

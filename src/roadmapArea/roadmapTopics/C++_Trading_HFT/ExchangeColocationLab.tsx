@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../devLushArea/agentDevRootComponents/types';
+import { Exercise } from '../../roadmapSharedComponents/types';
 import { 
   CheckCircle, 
   XCircle, 
@@ -12,7 +12,7 @@ import {
   Activity,
   ArrowDown
 } from 'lucide-react';
-import { LabSettings } from '../../../devLushArea/agentDevRootComponents/LabSettingsMenu';
+import { LabSettings } from '../../roadmapSharedComponents/LabSettingsMenu';
 import { RoadmapLayout } from '../../roadmapView/RoadmapLayout';
 import { RoadmapTheoryBridge } from '../../roadmapView/RoadmapTheoryBridge';
 import Markdown from 'react-markdown';

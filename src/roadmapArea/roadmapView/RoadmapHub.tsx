@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { LabData, ConceptCourse } from "../../devLushArea/agentDevRootComponents/types";
+import { LabData, ConceptCourse } from "../roadmapSharedComponents/types";
 import {
   Play,
   Bot,

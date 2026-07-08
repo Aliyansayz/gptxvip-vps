@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { BookmarkPlus, FolderPlus, CheckCircle2 } from 'lucide-react';
-import { Theory } from '../../../types';
+import { Theory } from '../types';
 import { useTheoryCollections } from '../TheoryCollectionContext';
 import { useLabContext } from '../LabContext';
 

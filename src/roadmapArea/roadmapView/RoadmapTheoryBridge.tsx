@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Lightbulb, ShieldAlert, Cpu, Code } from 'lucide-react';
 import { RoadmapTheoryVisual } from './RoadmapTheoryVisual';
-import { ChevronDownIcon, BookOpenText } from '../../devLushArea/agentDevRootComponents/icons';
-import SaveTheoryButton from '../../devLushArea/agentDevRootComponents/TopicTheoryView/SaveTheoryButton';
+import { ChevronDownIcon, BookOpenText } from '../roadmapSharedComponents/icons';
+import SaveTheoryButton from '../roadmapSharedComponents/TopicTheoryView/SaveTheoryButton';
 
 interface TheoryItem {
   title: string;

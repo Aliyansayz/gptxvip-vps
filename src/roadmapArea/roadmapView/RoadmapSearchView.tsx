@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { LabData, ConceptCourse } from '../../devLushArea/agentDevRootComponents/types';
-import { SearchIcon, PlayIcon } from '../../devLushArea/agentDevRootComponents/icons';
-import { CourseIcon } from '../../devLushArea/agentDevRootComponents/CourseIcon';
+import { LabData, ConceptCourse } from '../roadmapSharedComponents/types';
+import { SearchIcon, PlayIcon } from '../roadmapSharedComponents/icons';
+import { CourseIcon } from '../roadmapSharedComponents/CourseIcon';
 import { RefreshCw, X } from 'lucide-react';
 import { getThemeColorClass } from './themeHelpers';
 
