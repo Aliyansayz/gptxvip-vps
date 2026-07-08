@@ -1,0 +1,87 @@
+
+[
+    {
+        "course": "Myocardial Infarction",
+        "chapter_title": "1. Pathophysiology of MI",
+        "labComponentId": "mi-pathophysiology",
+        "critical_concepts": [
+            { "concept": "Plaque Rupture", "elaboration": "The primary cause of most MIs. The fibrous cap of an atheroma breaks, exposing thrombogenic material." },
+            { "concept": "Thrombosis", "elaboration": "Platelet aggregation and fibrin clot formation rapidly occlude the coronary artery." },
+            { "concept": "Ischemia vs Infarction", "elaboration": "Ischemia is reversible lack of oxygen; Infarction is irreversible tissue death." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "mi_plaque_rupture_sim",
+                "type": "interactive-visual",
+                "title": "The Event Horizon",
+                "prompt": "Simulate the rupture of an atherosclerotic plaque and the resulting cascade.",
+                "question": "What is the immediate consequence of plaque rupture in a coronary artery?",
+                "options": ["Slow narrowing of the vessel", "Rapid thrombus formation and occlusion", "Vasodilation"],
+                "answer": "Rapid thrombus formation and occlusion",
+                "explanation": "When the plaque ruptures, the exposed lipid core is highly thrombogenic. Platelets rush to the site, triggering the coagulation cascade, forming a clot that blocks blood flow in minutes.",
+                "theory": {
+                    "title": "Atherothrombosis",
+                    "content": "<p>A heart attack is rarely caused by the slow buildup of plaque alone. It is a sudden, cataclysmic event.</p><ol><li><strong>Vulnerable Plaque:</strong> A lipid-rich core with a thin fibrous cap.</li><li><strong>Rupture:</strong> Stress tears the cap.</li><li><strong>Clot:</strong> Platelets adhere, activate, and aggregate. Fibrin mesh locks them in place.</li><li><strong>Occlusion:</strong> Blood flow stops. Muscle downstream begins to die.</li></ol>",
+                    "analogy": "The Dam Burst. Atherosclerosis is the water level rising behind a dam (Plaque). A Heart Attack isn't just high water; it's the moment the dam wall cracks (Rupture). The rushing water and debris (Clot) instantly block the river downstream.",
+                    "application": "This explains why aspirin (anti-platelet) is the first drug given. It stops the platelets from piling onto the dam break, preventing the clot from getting bigger."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Myocardial Infarction",
+        "chapter_title": "2. ECG Evolution",
+        "labComponentId": "mi-ecg-evolution",
+        "critical_concepts": [
+            { "concept": "ST Elevation", "elaboration": "Indicates transmural (full thickness) injury to the heart muscle. The hallmark of STEMI." },
+            { "concept": "Reciprocal Changes", "elaboration": "ST depression in leads opposite the area of injury." },
+            { "concept": "Q Waves", "elaboration": "Pathological Q waves indicate established necrosis (dead tissue)." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "mi_stemi_locator",
+                "type": "interactive-visual",
+                "title": "STEMI Localization",
+                "prompt": "Review the ECG leads. Identify the location of the infarction.",
+                "question": "ST Elevation is present in leads II, III, and aVF. Which wall of the heart is affected?",
+                "options": ["Anterior Wall (LAD)", "Inferior Wall (RCA)", "Lateral Wall (Circumflex)"],
+                "answer": "Inferior Wall (RCA)",
+                "explanation": "Leads II, III, and aVF 'look' at the bottom (inferior) surface of the heart, which is usually supplied by the Right Coronary Artery (RCA).",
+                "theory": {
+                    "title": "ECG Localization",
+                    "content": "<p>The ECG is a map. Different leads look at the heart from different angles.</p><ul><li><strong>II, III, aVF:</strong> Inferior Wall (RCA).</li><li><strong>V1, V2:</strong> Septal Wall (LAD).</li><li><strong>V3, V4:</strong> Anterior Wall (LAD).</li><li><strong>I, aVL, V5, V6:</strong> Lateral Wall (Circumflex).</li></ul>",
+                    "analogy": "Security Cameras. The heart is a bank vault. The leads are cameras positioned on different walls. If Camera 2, 3, and aVF go dark (ST elevation), you know the break-in is happening at the South Entrance (Inferior wall).",
+                    "application": "Inferior MIs (RCA) often affect the electrical nodes (SA/AV), causing slow heart rates (Bradycardia). Anterior MIs (LAD) affect the main pump, causing fluid in the lungs (Heart Failure)."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Myocardial Infarction",
+        "chapter_title": "3. Emergency Management",
+        "labComponentId": "mi-management",
+        "critical_concepts": [
+            { "concept": "MONA", "elaboration": "Morphine, Oxygen, Nitrates, Aspirin (Historical mnemonic, though modern usage varies)." },
+            { "concept": "Reperfusion", "elaboration": "Restoring blood flow via PCI (Stent) or Fibrinolytics (Clot busters)." },
+            { "concept": "Door-to-Balloon", "elaboration": "The time from ER arrival to inflation of the angioplasty balloon. Target < 90 mins." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "mi_treatment_drag",
+                "type": "drag-drop",
+                "title": "Code STEMI Protocol",
+                "prompt": "Prioritize your actions for a patient with active chest pain and ST Elevation.",
+                "question": "Select the immediate interventions.",
+                "options": ["Correct Order", "Incorrect Order"],
+                "answer": "Correct Order",
+                "explanation": "Aspirin (chewed) acts immediately on platelets. Nitroglycerin dilates vessels. Oxygen is used if hypoxic. The ultimate goal is the Cath Lab for PCI.",
+                "theory": {
+                    "title": "Time is Muscle",
+                    "content": "<p>Every minute a coronary artery remains blocked, more heart muscle dies permanently.</p><ul><li><strong>Anti-platelets (Aspirin/P2Y12):</strong> Stop clot growth.</li><li><strong>Anticoagulants (Heparin):</strong> Stabilize the clot.</li><li><strong>PCI (Percutaneous Coronary Intervention):</strong> Mechanical opening of the artery with a balloon and stent.</li></ul>",
+                    "analogy": "The clogged pipe. Meds are like pouring Drain-O down the sink—they help stop the clog from getting worse. PCI is calling the plumber to physically snake the drain and put in a new pipe (Stent).",
+                    "application": "Oxygen is no longer given routinely to everyone, only if O2 sat is <90%. Too much oxygen can actually cause vasoconstriction!"
+                }
+            }
+        ]
+    }
+]

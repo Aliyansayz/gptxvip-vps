@@ -1,0 +1,86 @@
+
+[
+    {
+        "course": "Pharmacology",
+        "chapter_title": "Chapter 1: Dose-Response Dynamics",
+        "labComponentId": "pharmacology-dose-response",
+        "critical_concepts": [
+            { "concept": "Therapeutic Window", "elaboration": "Safe effective range." },
+            { "concept": "Potency vs Efficacy", "elaboration": "Strength vs Max Effect." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "pharma_dose_response_sim",
+                "type": "dose-response",
+                "title": "Dose-Response Simulation",
+                "prompt": "Adjust the dosage to find the THERAPEUTIC WINDOW (50-80% effect without toxicity).",
+                "question": "Set the dosage to achieve a therapeutic effect without toxicity.",
+                "minTherapeutic": 50,
+                "maxTherapeutic": 80,
+                "toxicThreshold": 90,
+                "answer": "A dosage that results in an effect between 50% and 80%.",
+                "explanation": "You found the safe zone! The goal is to maximize benefit while minimizing harm.",
+                "theory": {
+                    "title": "The Therapeutic Window",
+                    "content": "<p>The <span style=\"color:#22c55e; font-weight:bold;\">Therapeutic Window</span> is the range of drug doses that treats disease effectively without causing toxic side effects.</p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 50' class='w-full'><rect x='5' y='10' width='90' height='30' fill='#f3f4f6' stroke='#94a3b8'/><rect x='40' y='10' width='30' height='30' fill='#dcfce7' stroke='#22c55e' stroke-width='2'/><text x='55' y='25' font-size='4' text-anchor='middle' fill='#166534'>Therapeutic Zone</text><text x='22' y='25' font-size='3' text-anchor='middle' fill='#64748b'>Sub-therapeutic</text><text x='85' y='25' font-size='3' text-anchor='middle' fill='#b91c1c'>Toxic</text></svg></div><p><strong>Analogy Visual: The Salt in the Soup</strong></p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 40' class='w-full'><g transform='translate(5, 5)'><path d='M 0 15 L 20 15 L 18 30 L 2 30 Z' fill='#e2e8f0'/><text x='10' y='38' font-size='3' text-anchor='middle'>Bland (Too Low)</text></g><g transform='translate(40, 5)'><path d='M 0 15 L 20 15 L 18 30 L 2 30 Z' fill='#e2e8f0'/><circle cx='8' cy='18' r='1' fill='white'/><circle cx='12' cy='20' r='1' fill='white'/><text x='10' y='38' font-size='3' text-anchor='middle'>Perfect (Window)</text></g><g transform='translate(75, 5)'><path d='M 0 15 L 20 15 L 18 30 L 2 30 Z' fill='#e2e8f0'/><rect x='5' y='15' width='10' height='5' fill='white'/><text x='10' y='38' font-size='3' text-anchor='middle'>Inedible (Toxic)</text></g></svg></div><ul><li><strong>Sub-therapeutic:</strong> Dose is too low to work.</li><li><strong>Toxic:</strong> Dose is too high and damages the body.</li><li><span style=\"color:#34d399; font-weight:bold;\">Therapeutic Index (TI)</span>: A measure of drug safety. A wide TI means the drug is safe (e.g., Penicillin). A narrow TI means the safe dose is very close to the toxic dose (e.g., Warfarin).</li></ul>",
+                    "analogy": "Cooking with salt. Too little, and the food is bland (ineffective). Too much, and it's ruined (toxic). The 'Therapeutic Window' is that perfect pinch that makes it taste good.",
+                    "application": "Drugs with narrow therapeutic windows require 'Therapeutic Drug Monitoring' (TDM). We regularly check blood levels of drugs like Lithium or Digoxin to ensure the patient isn't accidentally poisoned."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Pharmacology",
+        "chapter_title": "Chapter 2: Drug Metabolism",
+        "labComponentId": "pharmacology-drug-metabolism",
+        "critical_concepts": [
+            { "concept": "ADME", "elaboration": "Absorption, Distribution, Metabolism, Excretion." },
+            { "concept": "First-Pass Effect", "elaboration": "Hepatic metabolism before systemic circulation." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "adme_sequencing",
+                "type": "drag-and-drop-sequence",
+                "title": "The Journey of a Drug",
+                "prompt": "Place the four main stages of pharmacokinetics (ADME) in the correct chronological order.",
+                "question": "Arrange the ADME steps in order.",
+                "items": ["Metabolism", "Absorption", "Excretion", "Distribution"],
+                "answer": "Absorption,Distribution,Metabolism,Excretion",
+                "explanation": "Correct! Absorption (blood), Distribution (tissues), Metabolism (liver), Excretion (kidney).",
+                "theory": {
+                    "title": "ADME: Pharmacokinetics",
+                    "content": "<p>Pharmacokinetics describes what the body does to the drug.</p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 120 40' class='w-full'><rect x='5' y='10' width='20' height='20' fill='#bfdbfe' stroke='#3b82f6' rx='2'/><text x='15' y='35' font-size='3' text-anchor='middle'>A</text><path d='M 25 20 L 35 20' stroke='#94a3b8' marker-end='url(#arrow)'/><rect x='35' y='10' width='20' height='20' fill='#e9d5ff' stroke='#a855f7' rx='2'/><text x='45' y='35' font-size='3' text-anchor='middle'>D</text><path d='M 55 20 L 65 20' stroke='#94a3b8' marker-end='url(#arrow)'/><rect x='65' y='10' width='20' height='20' fill='#fef3c7' stroke='#f59e0b' rx='2'/><text x='75' y='35' font-size='3' text-anchor='middle'>M</text><path d='M 85 20 L 95 20' stroke='#94a3b8' marker-end='url(#arrow)'/><rect x='95' y='10' width='20' height='20' fill='#fecaca' stroke='#ef4444' rx='2'/><text x='105' y='35' font-size='3' text-anchor='middle'>E</text></svg></div><p><strong>Analogy Visual: Package Delivery</strong></p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 40' class='w-full'><g><rect x='2' y='20' width='10' height='10' fill='#d97706'/><text x='7' y='35' font-size='3' text-anchor='middle'>Loaded</text></g><g transform='translate(25,0)'><rect x='0' y='15' width='15' height='10' fill='#3b82f6'/><circle cx='3' cy='25' r='2' fill='black'/><circle cx='12' cy='25' r='2' fill='black'/><text x='7.5' y='35' font-size='3' text-anchor='middle'>Driven</text></g><g transform='translate(50,0)'><rect x='2' y='15' width='12' height='12' fill='#a855f7' fill-opacity='0.4' stroke='#7e22ce'/><text x='8' y='35' font-size='3' text-anchor='middle'>Opened</text></g><g transform='translate(75,0)'><rect x='5' y='20' width='10' height='12' fill='#94a3b8'/><text x='10' y='38' font-size='3' text-anchor='middle'>Recycled</text></g></svg></div><ol><li><span style=\"color:#3b82f6; font-weight:bold;\">Absorption</span>: Entering the bloodstream.</li><li><span style=\"color:#a855f7; font-weight:bold;\">Distribution</span>: Spreading to tissues/organs.</li><li><span style=\"color:#f59e0b; font-weight:bold;\">Metabolism</span>: Biotransformation (usually in the Liver) to make the drug water-soluble.</li><li><span style=\"color:#ef4444; font-weight:bold;\">Excretion</span>: Removal from the body (usually via Kidneys/Urine).</li></ol>",
+                    "analogy": "A package delivery: 1. Loaded onto the truck (Absorption). 2. Driven to your neighborhood (Distribution). 3. Unboxed and used (Metabolism/Action). 4. The box is recycled (Excretion).",
+                    "application": "Liver failure slows Metabolism, causing drugs to build up to toxic levels. Kidney failure stops Excretion. In these patients, we must drastically lower drug doses to prevent overdose."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Pharmacology",
+        "chapter_title": "Chapter 3: Drug Interactions",
+        "labComponentId": "pharmacology-drug-interactions",
+        "critical_concepts": [
+            { "concept": "Synergism", "elaboration": "1+1 > 2 effect." },
+            { "concept": "Antagonism", "elaboration": "Drugs blocking each other." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "interaction_simulation",
+                "type": "interactive-visual",
+                "title": "Synergy and Antagonism",
+                "prompt": "Observe how combining drugs can alter their effects.",
+                "question": "Administering two drugs together results in a much stronger response than either drug alone. This is:",
+                "options": ["Synergism", "Antagonism", "Tolerance"],
+                "answer": "Synergism",
+                "explanation": "Synergism occurs when drugs work together to produce an effect greater than the sum of their individual effects.",
+                "theory": {
+                    "title": "Drug Interactions",
+                    "content": "<p><span style=\"color:#22c55e; font-weight:bold;\">Synergism</span> (1+1 > 2): Two drugs amplify each other. Useful for pain relief (Opioid + Tylenol) or fighting infection (Antibiotic combos).</p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 40' class='w-full'><rect x='10' y='15' width='10' height='10' fill='#34d399' rx='2'/><text x='25' y='22' font-size='4'>+</text><rect x='35' y='15' width='10' height='10' fill='#3b82f6' rx='2'/><text x='50' y='22' font-size='4'>>></text><rect x='65' y='5' width='25' height='25' fill='#10b981' rx='4'/></svg></div><p><strong>Analogy Visual: Synergy vs. Antagonism</strong></p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 40' class='w-full'><g><rect x='5' y='25' width='20' height='10' fill='#94a3b8'/><circle cx='8' cy='20' r='5' fill='#34d399'/><circle cx='22' cy='20' r='5' fill='#3b82f6'/><text x='15' y='38' font-size='3' text-anchor='middle'>Synergy: Lifting Together</text></g><g transform='translate(55,0)'><rect x='15' y='10' width='5' height='25' fill='#374151'/><circle cx='5' cy='22' r='5' fill='#ef4444'/><circle cx='30' cy='22' r='5' fill='#3b82f6'/><path d='M 10 22 L 15 22 M 20 22 L 25 22' stroke='black'/><text x='17.5' y='38' font-size='3' text-anchor='middle'>Antagonism: Constant Push</text></g></svg></div><p><span style=\"color:#ef4444; font-weight:bold;\">Antagonism</span> (1+1 < 2): One drug blocks another. Used in antidotes.</p>",
+                    "analogy": "Synergy is like two people lifting a heavy sofa together—they can lift far more than just the sum of what each could lift alone. Antagonism is like one person trying to open a door while another holds it shut.",
+                    "application": "We use Antagonism to save lives. Naloxone (Narcan) is an antagonist that kicks opioids off brain receptors, instantly reversing a fatal overdose."
+                }
+            }
+        ]
+    }
+]

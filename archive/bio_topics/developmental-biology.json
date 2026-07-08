@@ -1,0 +1,156 @@
+
+[
+    {
+        "course": "Developmental Biology",
+        "chapter_title": "Chapter 1: Embryonic Development",
+        "labComponentId": "embryo-development",
+        "critical_concepts": [
+            { "concept": "Cleavage", "elaboration": "Rapid cell divisions in the early embryo without an increase in overall size." },
+            { "concept": "Blastulation", "elaboration": "Formation of a hollow ball of cells (blastocyst)." }
+        ],
+        "interactive_questions": [
+             {
+                "componentId": "dev_blastocyst",
+                "type": "slider",
+                "title": "Blastocyst Formation",
+                "prompt": "Use the time slider to observe development.",
+                "question": "Find the stage where the embryo becomes a hollow ball with an inner cell mass.",
+                "targetStage": "Blastocyst",
+                "answer": "Blastocyst",
+                "explanation": "The blastocyst forms around day 5, featuring a hollow cavity and an inner cell mass.",
+                "theory": {
+                    "title": "From Zygote to Blastocyst",
+                    "content": "<p>After fertilization, the single-celled <span style=\"color:#a855f7; font-weight:bold;\">Zygote</span> undergoes rapid division called <span style=\"color:#ec4899; font-weight:bold;\">Cleavage</span>. It becomes a solid ball (Morula) and then a hollow ball (<span style=\"color:#3b82f6; font-weight:bold;\">Blastocyst</span>). Crucially, the total size of the embryo does not change during this time; the cells just get smaller.</p>",
+                    "analogy": "Imagine slicing a pizza. You start with one giant circle (zygote). You cut it into 2, 4, 8, 16 slices. You have more individual pieces (cells), but the total amount of pizza (embryo size) remains exactly the same.",
+                    "application": "In IVF (In Vitro Fertilization), doctors often grow embryos to the Blastocyst stage (Day 5) in the lab before implanting them, as this is when the embryo naturally reaches the uterus and has the highest chance of implantation."
+                }
+            },
+            {
+                "componentId": "cleavage_sim_activity",
+                "type": "interactive",
+                "title": "Cleavage Simulator",
+                "prompt": "Click the cell to trigger the next stage of division.",
+                "question": "Observe how the cells multiply while the total volume remains the same.",
+                "answer": "N/A",
+                "theory": {
+                    "title": "Embryonic Cleavage",
+                    "content": "<p>During early embryonic development, the zygote undergoes rapid cell divisions called cleavage. Unlike normal cell division, there is no growth phase between divisions, so the total volume of the embryo remains constant while the number of cells increases.</p>",
+                    "analogy": "Cleavage is like taking an existing mansion and putting up walls to turn it into many small apartments without changing the exterior footprint.",
+                    "application": "This rapid division allows the embryo to quickly reach a multicellular state with a high nucleus-to-cytoplasm ratio, necessary for gene regulation."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Developmental Biology",
+        "chapter_title": "Chapter 2: Cell Division & Growth",
+        "labComponentId": "dev-bio-cell-division",
+        "critical_concepts": [
+            { "concept": "Mitosis", "elaboration": "Cell division producing identical daughter cells." },
+            { "concept": "Cleavage", "elaboration": "Rapid mitotic divisions without growth phases." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "cleavage_sim",
+                "type": "interactive-visual",
+                "title": "Cleavage vs. Growth",
+                "prompt": "Compare standard cell division (with growth) to embryonic cleavage.",
+                "question": "What distinguishes cleavage from adult cell division?",
+                "answer": "Cells divide without intervening growth periods",
+                "options": [
+                    "Cells grow double in size before dividing",
+                    "Cells divide without intervening growth periods",
+                    "DNA is not replicated between divisions"
+                ],
+                "explanation": "In cleavage, the G1 and G2 growth phases are skipped. The zygote is subdivided into smaller blastomeres.",
+                "theory": {
+                    "title": "Cleavage Divisions",
+                    "content": "<p>Standard cell division involves a cycle of Growth -> DNA Replication -> Growth -> Division. Embryonic <span style=\"color:#ec4899; font-weight:bold;\">Cleavage</span> skips the growth phases. It is purely DNA Replication -> Division.</p>",
+                    "analogy": "Standard division is like building an addition to a house before splitting it into a duplex. Cleavage is like splitting the house immediately.",
+                    "application": "This speed is vital for organisms that develop in external environments (like frogs) to reach a mobile stage quickly before being eaten by predators."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Developmental Biology",
+        "chapter_title": "Chapter 3: Genetic Expression",
+        "labComponentId": "dev-bio-gene-expression",
+        "critical_concepts": [
+            { "concept": "Differentiation", "elaboration": "Cells specialize by activating specific genes." },
+            { "concept": "Transcription Factors", "elaboration": "Proteins that turn genes on or off." },
+            { "concept": "Epigenetic Landscape", "elaboration": "A metaphor for how gene regulation modulates development and cell fate decisions." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "differentiation_game",
+                "type": "interactive-visual",
+                "title": "Cell Differentiation",
+                "prompt": "Activate transcription factors to differentiate a stem cell.",
+                "question": "Configure gene expression to create a NEURON.",
+                "answer": "Correct gene combination selected", 
+                "explanation": "Specific transcription factors determine cell fate. Neurogenin drives neuronal differentiation.",
+                "theory": {
+                    "title": "Differential Gene Expression",
+                    "content": "<p>Every cell in your body contains the exact same DNA. A neuron is different from a skin cell not because it has different genes, but because it <span style=\"color:#22c55e; font-weight:bold;\">expresses</span> different genes.</p><p><span style=\"color:#6B3F69; font-weight:bold;\">Transcription Factors</span> are the switches that turn specific genes on or off.</p>",
+                    "analogy": "Your DNA is like a giant cookbook containing every recipe imaginable. A Bakery (Skin Cell) only reads the pages for bread and pastries. A Steakhouse (Muscle Cell) only reads the pages for grilling meat.",
+                    "application": "Induced Pluripotent Stem Cells (iPSCs) can be created by forcing adult cells to express 'stem cell' transcription factors, resetting their identity."
+                }
+            },
+            {
+                "componentId": "waddingtons_landscape_activity",
+                "type": "interactive",
+                "title": "Stem Cell Plinko",
+                "prompt": "Drop the stem cell and watch it differentiate as it rolls down the epigenetic landscape.",
+                "question": "What does the rolling ball represent in this metaphor?",
+                "answer": "N/A",
+                "theory": {
+                    "title": "Waddington's Epigenetic Landscape",
+                    "content": "<p>Conrad Waddington proposed the epigenetic landscape to visualize how a pluripotent stem cell (the ball at the top of the hill) makes decisions as it rolls down valleys, eventually becoming a specialized, <span style=\"color:#22c55e; font-weight:bold;\">terminally differentiated</span> cell at the bottom.</p>",
+                    "analogy": "A ball rolling down a hilly landscape. The further down it goes, the harder it is to jump into a different valley (change cell type).",
+                    "application": "Understanding these 'valleys' helps researchers figure out how to 'reprogram' cells by pushing them back up the hill to a stem cell state."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Developmental Biology",
+        "chapter_title": "Chapter 101: Advanced Morphogenesis",
+        "labComponentId": "advanced-morphogenesis",
+        "levelId": "advanced-morphogenesis",
+        "critical_concepts": [
+            { "concept": "Morphogen", "elaboration": "A signaling molecule that acts directly on cells to produce specific cellular responses depending on its local concentration." },
+            { "concept": "Hox Genes", "elaboration": "A group of related genes that control the body plan of an embryo along the head-tail axis." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "morphogen_gradient_activity",
+                "type": "interactive",
+                "title": "Morphogen Gradient",
+                "prompt": "Adjust the morphogen concentration to see how it affects cell fate.",
+                "question": "How does the concentration of the morphogen determine what the cell becomes?",
+                "answer": "N/A",
+                "theory": {
+                    "title": "Morphogen Gradients",
+                    "content": "<p>A <span style=\"color:#f97316; font-weight:bold;\">morphogen gradient</span> is a spatial variation in the concentration of a signaling molecule. Cells detect this concentration and activate different genes accordingly, leading to different cell fates (e.g., head vs. tail structures).</p>",
+                    "analogy": "A Wi-Fi signal. The closer you are to the router (the source of the morphogen), the stronger the signal (higher concentration), allowing for different 'bandwidth' activities.",
+                    "application": "Limb development in humans is controlled by morphogens like Sonic Hedgehog (Shh). The concentration of Shh determines which finger is which (thumb vs. pinky)."
+                }
+            },
+            {
+                "componentId": "hox_gene_builder_activity",
+                "type": "interactive",
+                "title": "Hox Gene Body Plan Builder",
+                "prompt": "Assign Hox genes to different segments of the embryo to build a body plan.",
+                "question": "How do Hox genes specify the identity of body segments?",
+                "answer": "N/A",
+                "theory": {
+                    "title": "Hox Genes and Body Plans",
+                    "content": "<p><span style=\"color:#ef4444; font-weight:bold;\">Hox genes</span> are architectural genes that tell embryonic segments what to become (e.g., antennae, wings, or legs). They are highly conserved across species, meaning the same basic genes control the body plan in fruit flies and humans.</p>",
+                    "analogy": "A master blueprint for a house that specifies where the kitchen, bathroom, and bedrooms go, regardless of the specific materials used.",
+                    "application": "Mutations in Hox genes can lead to homeotic transformations, where one body part is replaced by another (e.g., legs growing where antennae should be in fruit flies)."
+                }
+            }
+        ]
+    }
+]

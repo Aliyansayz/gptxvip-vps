@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Theory } from '../../types';
+import { Theory } from './types';
 
 export interface SavedTheory {
   id: string; // unique id for the saved item
   labId: string;
   chapterTitle: string;
   exerciseTitle: string;
-  courseType: 'bio' | 'med' | 'devLush';
+  courseType: 'bio' | 'med' | 'devLush' | 'roadmap';
   theory: Theory;
   savedAt: number;
 }

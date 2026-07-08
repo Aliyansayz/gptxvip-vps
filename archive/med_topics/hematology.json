@@ -1,0 +1,363 @@
+
+[
+    {
+        "course": "Hematology",
+        "chapter_title": "Chapter 1: Peripheral Blood Smear",
+        "labComponentId": "hematology-blood-smear",
+        "critical_concepts": [
+            { "concept": "Morphology", "elaboration": "The size, shape, and color of blood cells under a microscope." },
+            { "concept": "Differential", "elaboration": "The relative proportions of different white blood cell types (Neutrophils, Lymphocytes, etc.)." },
+            { "concept": "Blasts", "elaboration": "Immature precursor cells that should not be in peripheral blood; their presence often indicates leukemia." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "smear_normal",
+                "type": "analysis",
+                "title": "Case 1: Routine Screen",
+                "prompt": "Examine this peripheral blood smear from a healthy individual.",
+                "question": "What is the primary observation?",
+                "pattern": "normal",
+                "options": ["Normal blood smear", "Iron deficiency anemia", "Acute leukemia", "Thrombocytopenia"],
+                "answer": "Normal blood smear",
+                "explanation": "This smear shows normal findings: uniform biconcave RBCs (with central pallor ~1/3 diameter), occasional mature WBCs, and scattered platelets. The RBC:WBC ratio is normal (~500:1).",
+                "theory": {
+                    "title": "The Normal Smear: A Balanced Society",
+                    "content": "<p>A peripheral blood smear reflects the demographics of the bloodstream. In health, there is a distinct <strong>Division of Labor</strong>.</p><ul><li><strong>RBCs (The Workforce):</strong> The vast majority. Uniform, efficient, focused on transport.</li><li><strong>WBCs (The Civil Services):</strong> Police (Neutrophils) and Intelligence (Lymphocytes). Present but not overwhelming.</li><li><strong>Platelets (Maintenance):</strong> Small crews ready to repair infrastructure damage.</li></ul>",
+                    "analogy": "Social Stability. Imagine a well-planned city during rush hour. 99% of the vehicles are commuter cars (RBCs) staying in their lanes. Occasionally, you see a police cruiser (WBC) or a road repair truck (Platelet). Traffic flows smoothly because the ratio of cars to services is balanced.",
+                    "application": "A normal smear is the baseline 'census'. It tells us the city is running smoothly. We use it to calibrate automated counters—if the machine says 'Error', the human eye acts as the ultimate auditor."
+                }
+            },
+            {
+                "componentId": "smear_anemia",
+                "type": "analysis",
+                "title": "Case 2: Chronic Fatigue",
+                "prompt": "This patient presents with fatigue and pallor. Analyze the RBC morphology.",
+                "question": "What characteristic describes these Red Blood Cells?",
+                "pattern": "anemia",
+                "options": ["Normal findings", "Microcytic hypochromic", "Macrocytic", "Polycythemia"],
+                "answer": "Microcytic hypochromic",
+                "explanation": "The RBCs are smaller than normal (microcytic) and have a large central white area (hypochromic, >1/3 diameter). This suggests a lack of hemoglobin, most commonly due to Iron Deficiency Anemia.",
+                "theory": {
+                    "title": "Iron Deficiency: Resource Scarcity",
+                    "content": "<p>When the body lacks iron, it cannot produce enough <strong>Hemoglobin</strong>. The marrow attempts to compensate by producing more cells, but without the raw materials, they come out small (Microcytic) and empty (Hypochromic).</p>",
+                    "analogy": "Economic Recession / Budget Cuts. Imagine a construction company (Bone Marrow) running out of steel (Iron). They still have quotas to meet, so they start building 'micro-apartments' with extremely thin walls. The city is full of buildings, but they are hollow and structurally weak, unable to house the necessary occupants (Oxygen).",
+                    "application": "This is the most common nutritional disorder globally. In pediatrics, it presents as developmental delay because the 'economy' of the growing brain is being starved of resources."
+                }
+            },
+            {
+                "componentId": "smear_leukemia",
+                "type": "analysis",
+                "title": "Case 3: Urgent Referral",
+                "prompt": "Patient with unexplained bruising, fever, and bone pain.",
+                "question": "Identify the abnormal cell population.",
+                "pattern": "leukemia",
+                "options": ["Bacterial infection", "Viral infection", "Acute Leukemia (Blasts)", "Normal variant"],
+                "answer": "Acute Leukemia (Blasts)",
+                "explanation": "The smear is crowded with large, immature cells with large nuclei and very little cytoplasm. These are 'Blasts'. Normal mature WBCs and platelets are scarce due to marrow overcrowding.",
+                "theory": {
+                    "title": "Acute Leukemia: Social Displacement",
+                    "content": "<p>Leukemia is a cancer where <strong>Blasts</strong> (immature stem cells) multiply uncontrollably. They refuse to mature into functional workers and refuse to die (apoptosis failure).</p>",
+                    "analogy": "Urban Overcrowding / Gentrification by Non-Contributors. Imagine a city suddenly flooded by millions of students who refuse to graduate or work. They crowd the streets, filling every coffee shop and apartment. The actual workforce (RBCs) cannot commute, and the police (normal WBCs) are pushed out. The city gridlocks and vital services collapse.",
+                    "application": "The diagnostic key is the 'Blast Count'. >20% blasts in the marrow is the definition of Acute Leukemia. Treatment involves 'evicting' these squatters (Chemotherapy) to allow the normal workforce to return."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Hematology",
+        "chapter_title": "Chapter 2: Red Blood Cell Disorders",
+        "labComponentId": "hematology-rbc",
+        "critical_concepts": [
+            { "concept": "Poikilocytosis", "elaboration": "Abnormal variation in the shape of red blood cells." },
+            { "concept": "Hemolysis", "elaboration": "Destruction of red blood cells, often leading to specific shapes like schistocytes." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "rbc_sickle",
+                "type": "analysis",
+                "title": "Case 1: Pain Crisis",
+                "prompt": "Patient presents with severe joint pain. Observe the RBC shapes.",
+                "question": "Identify the pathognomonic cell type.",
+                "pattern": "sickle",
+                "options": ["Target Cells", "Sickle Cells", "Spherocytes", "Normal RBCs"],
+                "answer": "Sickle Cells",
+                "explanation": "The presence of elongated, crescent-shaped RBCs is diagnostic for Sickle Cell Disease. These stiff cells block small blood vessels, causing pain and ischemia.",
+                "theory": {
+                    "title": "Sickle Cell: Structural Rigidity",
+                    "content": "<p>HbS mutation causes hemoglobin to polymerize into rods under stress, forcing the cell into a sickle shape. These cells lose flexibility.</p>",
+                    "analogy": "Traffic Jam caused by Rigid Vehicles. Normal RBCs are like soft bumper cars; they squish and squeeze through narrow alleys. Sickle cells are like rigid, long semi-trucks trying to navigate the narrow streets of Rome. One jackknifed truck blocks the entire road (Vaso-occlusion), causing a pile-up behind it.",
+                    "application": "Management focuses on keeping the 'roads' wide (Vasodilation/Hydration) and preventing the 'trucks' from forming (Hydroxyurea)."
+                }
+            },
+            {
+                "componentId": "rbc_target",
+                "type": "analysis",
+                "title": "Case 2: Microcytic Anemia",
+                "prompt": "Asymptomatic patient with low MCV.",
+                "question": "What are the cells with a central dark spot called?",
+                "pattern": "target",
+                "options": ["Target Cells (Codocytes)", "Stomatocytes", "Schistocytes", "Elliptocytes"],
+                "answer": "Target Cells (Codocytes)",
+                "explanation": "Target cells have a 'bullseye' appearance due to excess membrane relative to hemoglobin. Common in Thalassemia and Liver Disease.",
+                "theory": {
+                    "title": "Target Cells: Surface Area Surplus",
+                    "content": "<p>Target cells appear when there is too much membrane for the amount of hemoglobin inside. The center collapses, trapping a puddle of hemoglobin.</p>",
+                    "analogy": "The 'Baggy Suit' Phenomenon. Imagine a person (Hemoglobin) wearing a suit (Membrane) three sizes too big. The fabric bunches up in the middle. This happens either because the person shrank (Thalassemia/Iron Deficiency) or the suit got bigger (Liver Disease adding cholesterol to the membrane).",
+                    "application": "Seeing many target cells in a microcytic anemia strongly points towards Thalassemia Trait rather than simple Iron Deficiency."
+                }
+            },
+            {
+                "componentId": "rbc_schistocyte",
+                "type": "analysis",
+                "title": "Case 3: Medical Emergency",
+                "prompt": "Patient with renal failure and low platelets. Identify the fragmented RBCs.",
+                "question": "These fragmented cells (Schistocytes) indicate what process?",
+                "pattern": "schistocyte",
+                "options": ["Iron Deficiency", "Microangiopathic Hemolysis (MAHA)", "Viral Infection", "Bone Marrow Failure"],
+                "answer": "Microangiopathic Hemolysis (MAHA)",
+                "explanation": "Schistocytes ('helmet cells') are RBCs that have been sliced apart by fibrin strands in small blood vessels. This indicates conditions like TTP, HUS, or DIC.",
+                "theory": {
+                    "title": "MAHA: The Dangerous Obstacle Course",
+                    "content": "<p><strong>Microangiopathic Hemolytic Anemia</strong> occurs when small blood vessels are partially blocked by fibrin clots. RBCs are sheared as they force their way through.</p>",
+                    "analogy": "Running the Gauntlet. Imagine a hallway filled with razor wire (Fibrin strands). People (RBCs) running through it get sliced and injured. The presence of severed limbs (Schistocytes) at the exit tells you there is a dangerous trap inside the building.",
+                    "application": "This is a 'Critical Value'. If the lab sees schistocytes, they call the ER immediately. It usually signifies TTP or DIC—conditions where the blood is clotting and bleeding simultaneously, requiring urgent plasma exchange."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Hematology",
+        "chapter_title": "Chapter 3: White Blood Cell Disorders",
+        "labComponentId": "hematology-wbc",
+        "critical_concepts": [
+            { "concept": "Left Shift", "elaboration": "Increase in immature neutrophils (bands) suggesting infection." },
+            { "concept": "Dysplasia", "elaboration": "Abnormal cell development indicating marrow stress or deficiency." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "wbc_infection",
+                "type": "analysis",
+                "title": "Case 1: High Fever",
+                "prompt": "WBC count is 25k. Observe the neutrophil granulation.",
+                "question": "What do the dark granules and band forms suggest?",
+                "pattern": "infection",
+                "options": ["Severe Bacterial Infection", "Viral Infection", "Allergic Reaction", "Parasitic Infection"],
+                "answer": "Severe Bacterial Infection",
+                "explanation": "Toxic granulation (dark purple spots) and 'Band' forms (immature neutrophils) constitute a 'Left Shift', strongly suggesting a severe bacterial infection or sepsis.",
+                "theory": {
+                    "title": "Left Shift: The Draft",
+                    "content": "<p>A <strong>Left Shift</strong> means the bone marrow is releasing immature neutrophils (Bands) before they are fully ready.</p>",
+                    "analogy": "Emergency Military Draft. During peacetime, only fully trained soldiers (Segmented Neutrophils) are on patrol. When a massive invasion happens (Sepsis), the army runs out of veterans and starts sending cadets (Bands) straight from boot camp to the front lines. They are rough around the edges (Toxic Granulation) but necessary for survival.",
+                    "application": "A 'Left Shift' warns the clinician that the infection is outpacing the body's standard defenses. It's a sign to escalate antibiotic therapy."
+                }
+            },
+            {
+                "componentId": "wbc_hyperseg",
+                "type": "analysis",
+                "title": "Case 2: Neurologic Symptoms",
+                "prompt": "Patient with numbness and macrocytic anemia.",
+                "question": "Identify the abnormality in the neutrophil.",
+                "pattern": "hyperseg",
+                "options": ["Hypersegmentation (>5 lobes)", "Hyposegmentation", "Toxic Granulation", "Auer Rods"],
+                "answer": "Hypersegmentation (>5 lobes)",
+                "explanation": "Neutrophils with 6 or more lobes are hypersegmented. This is a classic sign of Megaloblastic Anemia (B12 or Folate deficiency).",
+                "theory": {
+                    "title": "Megaloblastic Anemia: Bureaucratic Stalling",
+                    "content": "<p>Vitamin B12/Folate are needed for DNA synthesis. Without them, the nucleus cannot divide properly, but the cytoplasm keeps growing.</p>",
+                    "analogy": "Bureaucratic Red Tape. The cell wants to divide (split into two), but the paperwork (DNA replication) is stuck in a backlog due to missing stamps (B12). The administration (Nucleus) keeps getting bigger and more complex (Hypersegmented lobes) waiting for approval to split, but it never comes.",
+                    "application": "This finding often precedes the anemia. Recognizing hypersegmentation in a patient with subtle memory loss can lead to B12 treatment before permanent nerve damage occurs."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Hematology",
+        "chapter_title": "Chapter 4: Leukemias and Lymphomas",
+        "labComponentId": "hematology-malignancy",
+        "critical_concepts": [
+            { "concept": "Acute vs Chronic", "elaboration": "Acute leukemias have blasts (immature); Chronic have mature cells." },
+            { "concept": "Auer Rods", "elaboration": "Needle-like inclusions diagnostic of AML." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "malig_aml",
+                "type": "analysis",
+                "title": "Case 1: Acute Onset",
+                "prompt": "Adult patient with sudden bleeding and fatigue. Look for rod-like inclusions.",
+                "question": "The presence of Auer Rods confirms which diagnosis?",
+                "pattern": "aml",
+                "options": ["Acute Myeloid Leukemia (AML)", "Acute Lymphoblastic Leukemia (ALL)", "CLL", "Mononucleosis"],
+                "answer": "Acute Myeloid Leukemia (AML)",
+                "explanation": "Auer rods are fused lysosomes that appear as red needles in the cytoplasm of blasts. They are pathognomonic for AML and rule out Lymphoblastic leukemia.",
+                "theory": {
+                    "title": "AML: The Defective Prototype",
+                    "content": "<p><strong>Acute Myeloid Leukemia</strong> is a proliferation of myeloid blasts. <strong>Auer Rods</strong> are clumps of granular material that only form in myeloid cells.</p>",
+                    "analogy": "Factory Recalls. The car factory (Marrow) has been hijacked. It is churning out cars with a specific, dangerous engine defect (Auer Rods). These cars (Blasts) never leave the lot, piling up until they crush the factory itself. Identifying the specific defect (Auer Rod) tells you exactly which assembly line (Myeloid vs Lymphoid) is broken.",
+                    "application": "Seeing an Auer Rod is a 'slam dunk' diagnosis. It saves days of testing because it instantly rules out Lymphoid leukemia (ALL), allowing immediate start of myeloid-specific chemotherapy."
+                }
+            },
+            {
+                "componentId": "malig_cll",
+                "type": "analysis",
+                "title": "Case 2: Incidental Finding",
+                "prompt": "Elderly patient with high WBC count but no symptoms. Smear shows many small mature lymphocytes.",
+                "question": "What are the fragile, broken cells called?",
+                "pattern": "cll",
+                "options": ["Smudge Cells", "Blast Cells", "Plasma Cells", "Hairy Cells"],
+                "answer": "Smudge Cells",
+                "explanation": "In Chronic Lymphocytic Leukemia (CLL), the cancerous lymphocytes are fragile and burst during slide preparation, creating 'Smudge Cells'.",
+                "theory": {
+                    "title": "CLL: The Retirement Crisis",
+                    "content": "<p>CLL is a cancer of mature B-cells. The problem isn't that they grow too fast, but that they <strong>don't die</strong> (defective apoptosis). They are physically fragile.</p>",
+                    "analogy": "A Population that Never Retires. Imagine a company where no one ever retires or quits. The office eventually becomes packed with very old, fragile employees (CLL cells) who can't handle stress. When you try to move them (make a smear), they crumble under the pressure (Smudge cells).",
+                    "application": "Smudge cells are an artifact, but a diagnostic one. If we see them, we know the cells are abnormally fragile, pointing straight to CLL. We don't count them in the differential."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Hematology",
+        "chapter_title": "Chapter 5: Platelet Disorders",
+        "labComponentId": "hematology-platelets",
+        "critical_concepts": [
+            { "concept": "Thrombocytopenia", "elaboration": "Low platelet count, risk of bleeding." },
+            { "concept": "Pseudothrombocytopenia", "elaboration": "False low count due to clumping in the tube." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "plt_clumping",
+                "type": "analysis",
+                "title": "Case 1: Lab Error?",
+                "prompt": "Machine reports low platelets, but patient has no bleeding.",
+                "question": "What is occurring in this smear?",
+                "pattern": "clumping",
+                "options": ["Platelet Clumping", "True Thrombocytopenia", "Giant Platelets", "RBC Agglutination"],
+                "answer": "Platelet Clumping",
+                "explanation": "Large clumps of platelets are visible. The machine counts one big clump as one cell (or ignores it), falsely lowering the count. This is often an artifact caused by the EDTA anticoagulant.",
+                "theory": {
+                    "title": "Pseudothrombocytopenia: The Group Huddle",
+                    "content": "<p>Some patients have antibodies that react with EDTA (the purple tube additive), causing platelets to stick together in vitro.</p>",
+                    "analogy": "The Census Error. You are trying to count people in a stadium. If everyone stands alone, it's easy. If everyone forms a giant group huddle (Clump), the aerial camera counts the whole group as 'one object'. The census report says 'Only 1 person present', which is false.",
+                    "application": "This prevents unnecessary treatment. If the machine says 'Critical Low' but the smear shows clumps, we know the patient is safe. We just redraw the blood in a different tube (Citrate) to get the real count."
+                }
+            },
+            {
+                "componentId": "plt_low",
+                "type": "analysis",
+                "title": "Case 2: Petechiae",
+                "prompt": "Patient with pinpoint rash. Scan the fields.",
+                "question": "Estimate the platelet status.",
+                "pattern": "thrombocytopenia",
+                "options": ["Marked Thrombocytopenia", "Normal Platelets", "Thrombocytosis", "Clumping"],
+                "answer": "Marked Thrombocytopenia",
+                "explanation": "Normal fields have 8-20 platelets. Here, fields are empty or have only 1-2 platelets, consistent with a risk of spontaneous bleeding.",
+                "theory": {
+                    "title": "Thrombocytopenia: Staff Shortage",
+                    "content": "<p>Low platelets mean the body cannot plug microscopic leaks in blood vessels that happen daily.</p>",
+                    "analogy": "The Leaking Dam. A dam (Blood Vessel) springs tiny leaks every day. Usually, a maintenance crew (Platelets) plugs them instantly with gum. If the crew goes on strike (Thrombocytopenia), these tiny leaks never get plugged. Eventually, the water starts seeping through everywhere (Petechiae/Bruising).",
+                    "application": "Patients with <10k platelets are at risk of spontaneous brain bleeds. We must transfuse platelets immediately, even if they aren't actively bleeding yet, to 'restaff the dam'."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Hematology",
+        "chapter_title": "Chapter 6: Bone Marrow Examination",
+        "labComponentId": "hematology-marrow",
+        "critical_concepts": [
+            { "concept": "Cellularity", "elaboration": "Ratio of hematopoietic cells to fat." },
+            { "concept": "Maturation", "elaboration": "Presence of all stages of cell development." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "marrow_aplastic",
+                "type": "analysis",
+                "title": "Case 1: Pancytopenia",
+                "prompt": "This marrow biopsy is from a young patient with low counts in all cell lines.",
+                "question": "Describe the cellularity.",
+                "pattern": "aplastic",
+                "options": ["Hypocellular (Empty)", "Hypercellular (Packed)", "Normal"],
+                "answer": "Hypocellular (Empty)",
+                "explanation": "The marrow space is mostly fat (white spaces) with very few hematopoietic cells. This is Aplastic Anemia.",
+                "theory": {
+                    "title": "Aplastic Anemia: The Ghost Town",
+                    "content": "<p><strong>Aplastic Anemia</strong> is bone marrow failure where stem cells are destroyed (often autoimmune). The marrow is replaced by fat.</p>",
+                    "analogy": "The Abandoned Industrial Park. The marrow should be a bustling factory floor (Hypercellular). In Aplastic Anemia, the workers are gone, the machines are broken, and the factory floor is empty, taken over by weeds and empty space (Fat cells). No product is being shipped out.",
+                    "application": "This is a medical emergency requiring isolation (no immune system) and eventual Stem Cell Transplant to 'reopen the factory' with new workers."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Hematology",
+        "chapter_title": "Chapter 7: Hematology Lab Techniques",
+        "labComponentId": "hematology-techniques",
+        "critical_concepts": [
+            { "concept": "Staining", "elaboration": "Wright-Giemsa stain allows differentiation of cell types." },
+            { "concept": "Artifacts", "elaboration": "Recognizing drying artifact, stain precipitate, and water artifact." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "tech_artifact",
+                "type": "analysis",
+                "title": "Quality Control",
+                "prompt": "Identify the issue with this slide preparation.",
+                "question": "The RBCs look crenated (spiky) and refractive. This is likely:",
+                "pattern": "artifact",
+                "options": ["Drying Artifact", "True Pathology (Burr cells)", "Stain Precipitate"],
+                "answer": "Drying Artifact",
+                "explanation": "Slow drying of the slide causes water to leave cells, making them shrink and appear spiky/shiny. This is an artifact, not disease.",
+                "theory": {
+                    "title": "Artifacts: The Unreliable Narrator",
+                    "content": "<p>Pre-analytical variables (how the slide was made) can mimic disease. Slow drying causes crenation.</p>",
+                    "analogy": "Instagram Filters. A bad slide preparation acts like a weird filter on a photo. It distorts the reality. If you take a photo with a 'distortion' filter (Drying Artifact), everyone looks sickly, but they are actually fine. A good scientist knows how to spot the filter and not diagnose the person based on a bad photo.",
+                    "application": "Always look at the 'good area' of the slide (the feathered edge) where cells are spread singly. If the cells look weird everywhere, check if the slide looks shiny (water artifact) before diagnosing a rare disease."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Hematology",
+        "chapter_title": "Chapter 8: Morphology Review (Pictorial Challenge)",
+        "labComponentId": "hematology-morphology-challenge",
+        "critical_concepts": [
+            { "concept": "Visual Recognition", "elaboration": "Identifying specific blood cell morphologies directly from detailed visual representations." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "morph_challenge_1",
+                "type": "visual_selection",
+                "title": "Morphology Challenge 1",
+                "prompt": "Review the clinical indication: Patient presents with sickle cell disease pain crisis.",
+                "question": "Which of the following visual options correctly identifies the pathognomonic cell type for this patient?",
+                "pattern": "sickle",
+                "options": ["Normal RBC", "Sickle Cell", "Target Cell", "Schistocyte"],
+                "answer": "Sickle Cell",
+                "explanation": "Sickle cells are characterized by their elongated, crescent shape which occurs due to HbS polymerization under low oxygen conditions.",
+                "theory": {
+                    "title": "Identifying Sickle Cells",
+                    "content": "<p>Visual identification of Sickle Cells reveals their distinctive crescent or sickle-like shape compared to the uniform biconcave disc shape of a normal red blood cell.</p>",
+                    "analogy": "A sickle cell looks like a crescent moon, while a normal red blood cell looks like a filled inner tube.",
+                    "application": "Directly identifying these cells helps clinicians immediately associate morphological abnormalities with the underlying pathophysiology of Vaso-occlusive crises."
+                }
+            },
+            {
+                "componentId": "morph_challenge_2",
+                "type": "visual_selection",
+                "title": "Morphology Challenge 2",
+                "prompt": "Review the clinical indication: Patient with acute leukemia.",
+                "question": "Which of the following images corresponds to a Blast Cell?",
+                "pattern": "leukemia",
+                "options": ["Hypersegmented Neutrophil", "Schistocyte", "Blast Cell", "Normal RBC"],
+                "answer": "Blast Cell",
+                "explanation": "Blast cells are typically large and lack traditional segmentation in their large nucleus, indicating an immature state often seen in acute leukemias.",
+                "theory": {
+                    "title": "Identifying Blast Cells",
+                    "content": "<p>Blast cells are large, lack specific granules, and have an unusually large nucleus compared to the cytoplasm.</p>",
+                    "analogy": "Think of Blast Cells as giant, unspecialized factory machines that take up most of the space but haven't been fitted with functioning parts yet.",
+                    "application": "The presence of blasts in the peripheral smear is a hallmark critical value in recognizing aggressive acute leukemias."
+                }
+            }
+        ]
+    }
+]

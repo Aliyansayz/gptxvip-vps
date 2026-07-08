@@ -622,5 +622,34 @@
       "prompt-injection",
       "red-team"
     ]
+  },
+  {
+    "course": "Cybersecurity Topologies",
+    "chapter_title": "Network Defense Visuals",
+    "labComponentId": "cybersecurity-morphology",
+    "title": "Cybersecurity Morphology",
+    "interactive_questions": [
+      {
+        "componentId": "cybersecurity-morphology",
+        "type": "visual_selection",
+        "title": "Threat Vector Challenge",
+        "prompt": "Review the incident report: Communication was intercepted and maliciously altered in transit without either the sender or receiver's awareness.",
+        "question": "Which of the following visual options corresponds to this attack vector?",
+        "options": [
+          "DDoS Overload",
+          "Man-in-the-Middle Attack",
+          "Perimeter DMZ",
+          "Zero-Trust Network"
+        ],
+        "answer": "Man-in-the-Middle Attack",
+        "explanation": "A Man-in-the-Middle (MitM) attack intercepts communication channels directly, allowing transparent modification.",
+        "theory": {
+          "title": "Man-in-the-Middle",
+          "content": "An attacker places themselves seamlessly between two communicating parties, able to eavesdrop and alter traffic.",
+          "analogy": "A rogue postal worker secretly opening your mail, reading or changing the contents, and sealing it back before final delivery.",
+          "application": "Enforce strict end-to-end encryption (TLS) and certificate pinning."
+        }
+      }
+    ]
   }
 ]

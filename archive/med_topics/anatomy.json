@@ -1,0 +1,42 @@
+[
+  {
+    "labComponentId": "anatomy-explorer",
+    "course": "Anatomy",
+    "chapter_title": "Chapter 1: Anatomy Explorer",
+    "chapter_id": "anatomy-1",
+    "critical_concepts": [
+      {
+        "concept": "Anatomical Planes",
+        "definition": "Imaginary lines used to divide the body into sections."
+      },
+      {
+        "concept": "Organ Systems",
+        "definition": "Functional groups of organs working together."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "id": "phys-q4",
+        "componentId": "anatomy-main-sim",
+        "type": "multiple-choice",
+        "title": "Organ Systems",
+        "prompt": "Identify the primary function of the organ system.",
+        "question": "Which system is responsible for the transport of nutrients and oxygen?",
+        "options": [
+          "Respiratory",
+          "Cardiovascular",
+          "Digestive",
+          "Urinary"
+        ],
+        "correctAnswer": 1,
+        "explanation": "The cardiovascular system pumps blood throughout the body to deliver oxygen and nutrients to tissues.",
+        "theory": {
+          "title": "Interactive Anatomy",
+          "content": "<p>Explore the human body and brain structure in this interactive module. Click on different organs to learn about their function, clinical significance, and anatomical details.</p>",
+          "analogy": "The human body is like a complex city with different districts (systems) working together to keep the city functioning.",
+          "application": "Understanding anatomical relationships is crucial for surgery and diagnosing referred pain."
+        }
+      }
+    ]
+  }
+]

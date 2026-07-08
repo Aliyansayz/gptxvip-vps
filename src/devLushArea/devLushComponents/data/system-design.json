@@ -144,6 +144,111 @@
     ]
   },
   {
+    "id": "caching-strategies",
+    "title": "System Design: Caching Strategies",
+    "course": "System Design & Distributed Systems",
+    "chapter_title": "Caching",
+    "labComponentId": "caching-strategies",
+    "interactive_questions": [
+      {
+        "componentId": "caching-strategies",
+        "type": "interactive-visual",
+        "title": "Caching Strategies",
+        "prompt": "Implement different caching strategies (Write-Through, Write-Behind, Cache-Aside) and observe the impact on read/write latency and data consistency.",
+        "question": "Which caching strategy ensures that data in the cache and database are always strictly consistent, but incurs higher write latency?",
+        "options": [
+          "A. Cache-Aside",
+          "B. Write-Through",
+          "C. Write-Behind",
+          "D. Read-Through"
+        ],
+        "answer": "B. Write-Through",
+        "explanation": "Write-Through caching writes data to both the cache and the underlying database simultaneously, ensuring strict consistency but adding the database write latency to the overall response time.",
+        "theory_explanation": "Caching temporarily stores frequently accessed data in fast memory to reduce latency. Strategies dictate how data is written: Write-Through (cache and DB together), Write-Behind (cache first, asynchronously to DB), Cache-Aside (application checks cache first, then DB).",
+        "real_world_analogy": "Imagine keeping your most used tools on your workbench (cache) instead of in the shed (database). Write-Through is like buying a new tool and putting one on the bench and a spare in the shed immediately."
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "distributed-systems",
+      "scalability",
+      "caching"
+    ]
+  },
+  {
+    "id": "consistent-hashing",
+    "title": "System Design: Consistent Hashing",
+    "course": "System Design & Distributed Systems",
+    "chapter_title": "Consistent Hashing",
+    "labComponentId": "consistent-hashing",
+    "interactive_questions": [
+      {
+        "componentId": "consistent-hashing",
+        "type": "interactive-visual",
+        "title": "Consistent Hashing",
+        "prompt": "Add and remove nodes in a distributed hash ring and observe how minimal data remapping occurs compared to traditional modulo hashing.",
+        "question": "What is the primary benefit of using Consistent Hashing in a distributed caching system?",
+        "options": [
+          "A. It completely eliminates cache misses",
+          "B. It minimizes data movement when adding or removing nodes",
+          "C. It compresses the cached data",
+          "D. It guarantees perfect uniform load distribution without virtual nodes"
+        ],
+        "answer": "B. It minimizes data movement when adding or removing nodes",
+        "explanation": "Consistent hashing ensures that when a node is added or removed, only a small fraction (1/N) of keys need to be remapped, making it highly efficient for scaling out.",
+        "theory_explanation": "Consistent hashing maps data and servers to a circular ring. A key is assigned to the first server encountered moving clockwise. This minimizes disruption during scaling.",
+        "real_world_analogy": "Think of seating people at round tables. If a new table is added, you don't reshuffle everyone in the room; you only move a few people nearby to the new table."
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "distributed-systems",
+      "scalability",
+      "hashing"
+    ]
+  },
+  {
+    "id": "api-gateway-design",
+    "title": "System Design: API Gateways",
+    "course": "System Design & Distributed Systems",
+    "chapter_title": "API Gateways",
+    "labComponentId": "api-gateway-design",
+    "interactive_questions": [
+      {
+        "componentId": "api-gateway-design",
+        "type": "interactive-visual",
+        "title": "API Gateway Architecture",
+        "prompt": "Configure an API Gateway to route requests to microservices, handle authentication, and aggregate responses.",
+        "question": "Which of the following is NOT typically a responsibility of an API Gateway?",
+        "options": [
+          "A. Request Routing",
+          "B. Authentication and Authorization",
+          "C. Primary Database Storage",
+          "D. Rate Limiting"
+        ],
+        "answer": "C. Primary Database Storage",
+        "explanation": "An API Gateway acts as a reverse proxy to route requests and handle cross-cutting concerns (auth, rate limiting), but it should not serve as the primary persistent data store.",
+        "theory_explanation": "An API Gateway sits between clients and backend services. It acts as a single entry point, providing routing, composition, and protocol translation, simplifying client interactions with microservices.",
+        "real_world_analogy": "An API Gateway is like a hotel concierge. Instead of you finding the kitchen for food, the laundry for clothes, and the bellhop for luggage individually, you ask the concierge who handles routing your requests to the right departments."
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "architecture",
+      "distributed-systems",
+      "scalability",
+      "api-gateway"
+    ]
+  },
+  {
     "id": "mp_system_design_overview",
     "title": "System Design Overview",
     "labComponentId": "mp_system_design_overview",
@@ -187,5 +292,32 @@
       "sharding",
       "event-driven"
     ]
+  },
+  {
+    "id": "system-design-morphology",
+    "title": "System Design Morphology",
+    "course": "System Design & Distributed Systems",
+    "chapter_title": "Visual Architectural Diagnostics",
+    "labComponentId": "system-design-morphology",
+    "interactive_questions": [
+      {
+        "componentId": "system-design-morphology",
+        "type": "visual_selection",
+        "title": "Architectural Topology Challenge",
+        "prompt": "Review the architectural requirement: A highly decoupled system where components react to state changes asynchronously without direct point-to-point connections.",
+        "question": "Which of the following visual options correctly identifies the architectural paradigm?",
+        "options": [
+          "Monolithic Architecture",
+          "Microservices Topology",
+          "Event-Driven Architecture",
+          "Serverless Execution"
+        ],
+        "answer": "Event-Driven Architecture",
+        "explanation": "Event-Driven Architecture decouples publishers from subscribers using a central message broker, fulfilling the requirement.",
+        "theory_explanation": "In an event-driven system, the state is communicated via events that components produce and consume asynchronously, removing tight coupling.",
+        "real_world_analogy": "Event-driven architecture is like a busy restaurant kitchen (the broker). Waiters drop order tickets (events) on the rail, and independent chefs (consumers) react without the waiter explicitly managing them."
+      }
+    ],
+    "tags": ["devlush", "architecture", "morphology"]
   }
 ]

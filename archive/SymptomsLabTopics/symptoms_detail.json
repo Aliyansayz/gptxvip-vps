@@ -1,0 +1,224 @@
+[
+  {
+    "id": 0,
+    "label": "Healthy Baseline",
+    "category": "Physiology",
+    "severity": "Normal",
+    "description": "Optimal physiological state with all biological markers within expected healthy ranges. Homeostasis is maintained.",
+    "causes": "Balanced diet, regular exercise, adequate sleep, and low stress.",
+    "commonSigns": ["High energy", "Clear focus", "Stable mood", "Restful sleep"],
+    "emergency": "None.",
+    "complications": "Long-term neglect of homeostasis can lead to metabolic syndrome or cardiovascular drift.",
+    "vital_signs": "BP: 120/80 mmHg, HR: 72 BPM, SpO2: 99%, RR: 14/min, Temp: 36.6°C",
+    "visual_prompt": "A balanced clinical scale with a glowing golden core, set against a dark grid background with steady, flowing pulse waves.",
+    "visuals_inspirations": "Inspired by the Homeostasis Theory panel in MedLabs Cardio, synthesizing the concept of equilibrium as a stable energetic core linked to systemic pulse consistency.",
+    "treatment": [
+      { "title": "Maintenance", "desc": "Continue current dietary and activity levels to sustain homeostasis." },
+      { "title": "Monitoring", "desc": "Routine bi-annual metabolic screening recommended." }
+    ]
+  },
+  {
+    "id": 1,
+    "label": "Hyperglycemia",
+    "category": "Endocrinology",
+    "severity": "High",
+    "description": "Also known as hyperglycemia, this condition occurs when there is too much sugar in the blood.",
+    "causes": "Low insulin, excessive carb intake, stress, or lack of exercise.",
+    "commonSigns": ["Frequent urination", "Extreme thirst", "Blurred vision", "Fatigue"],
+    "emergency": "Seek care if you experience fruity-smelling breath, vomiting, or confusion (signs of DKA).",
+    "complications": "Diabetic Ketoacidosis (DKA), Hyperosmolar Hyperglycemic State (HHS), and long-term microvascular damage.",
+    "vital_signs": "BP: 145/95 mmHg, HR: 88 BPM, SpO2: 98%, RR: 18/min, Temp: 37.1°C",
+    "visual_prompt": "Cross-section of a capillary vessel showing high density of glowing glucose crystals leading to osmotic fluid shifts visualized as outward blue flow vectors.",
+    "visuals_inspirations": "Derived from BioLabs Cellular Transport (Osmosis) module, rephrased to emphasize how high solute concentration (glucose) forces destructive fluid displacement across membranes.",
+    "treatment": [
+      { "title": "Hydration", "desc": "Aggressive fluid replacement to dilute blood glucose and encourage renal excretion." },
+      { "title": "Insulin Therapy", "desc": "Administer rapid-acting insulin according to sliding scale protocols." },
+      { "title": "Electrolyte Check", "desc": "Monitor potassium levels as insulin therapy shifts ions intracellularly." }
+    ]
+  },
+  {
+    "id": 2,
+    "label": "Fatigue",
+    "category": "Internal Medicine",
+    "severity": "Low-Medium",
+    "description": "A lingering feeling of tiredness or lack of energy that doesn’t improve with rest.",
+    "causes": "Anemia, thyroid issues, poor sleep, or chronic stress.",
+    "commonSigns": ["Morning sluggishness", "Muscle weakness", "Irritability"],
+    "emergency": "Sudden, extreme fatigue with chest pain or shortness of breath.",
+    "complications": "Cognitive impairment, increased risk of accidents, and potential cardiovascular strain if underlying anemia persists.",
+    "vital_signs": "BP: 110/70 mmHg, HR: 65 BPM, SpO2: 97%, RR: 12/min, Temp: 36.4°C",
+    "visual_prompt": "A stack of pale, de-saturated red blood cells next to a fading clinical energy meter, with sparks of ATP depletion shown as scattered static.",
+    "visuals_inspirations": "Combining MedLabs Anemia visualizations with BioLabs Bioenergetics, synthesizing a visual metaphor for metabolic power failure at the cellular level.",
+    "treatment": [
+      { "title": "Nutritional Support", "desc": "Iron and Vitamin B12 supplementation if deficiencies are confirmed." },
+      { "title": "Sleep Hygiene", "desc": "Implement strict circadian rhythm synchronization and sleep environment optimization." },
+      { "title": "Stress Reduction", "desc": "Evaluate cortisol rhythm and implement mindfulness-based stress reduction." }
+    ]
+  },
+  {
+    "id": 3,
+    "label": "Dyspnea",
+    "category": "Pulmonology",
+    "severity": "High",
+    "description": "Shortness of breath or difficulty breathing, making it hard to get enough air.",
+    "causes": "Asthma, pneumonia, heart failure, or intense anxiety.",
+    "commonSigns": ["Tightness in chest", "Rapid breathing", "Gasping for air"],
+    "emergency": "Blue lips/nails, inability to speak in full sentences, or sudden onset.",
+    "complications": "Hypoxemic respiratory failure, respiratory acidosis, and potential cardiac arrest.",
+    "vital_signs": "BP: 135/85 mmHg, HR: 110 BPM, SpO2: 92%, RR: 28/min, Temp: 37.5°C",
+    "visual_prompt": "An anatomical alveolus schematic with glowing orange oxygen exchange pathways narrowing and being blocked by heavy grey translucent veils of resistance.",
+    "visuals_inspirations": "Integrated from BioLabs Respiratory Physiology (Alveolar Exchange), rephrasing the concept of increased diffusion distance and airway resistance as physical visual obstructions.",
+    "treatment": [
+      { "title": "Oxygenation", "desc": "Immediate supplemental oxygen via nasal cannula or high-flow mask to maintain SpO2 >94%." },
+      { "title": "Positioning", "desc": "Place patient in High-Fowler's position to maximize lung expansion." },
+      { "title": "Medication", "desc": "Bronchodilators or steroids as indicated by underlying etiology." }
+    ]
+  },
+  {
+    "id": 4,
+    "label": "Arrhythmia",
+    "category": "Cardiology",
+    "severity": "Critical",
+    "description": "Irregular heartbeat that can lead to poor blood flow and cardiovascular instability.",
+    "causes": "Heart disease, electrolyte imbalance, stress, caffeine overload.",
+    "commonSigns": ["Palpitations", "Dizziness", "Shortness of breath", "Fluttering in chest"],
+    "emergency": "Loss of consciousness, severe chest pain.",
+    "complications": "Stroke (from thromboembolism), Heart Failure, and Sudden Cardiac Death.",
+    "vital_signs": "BP: 150/100 mmHg, HR: 135 BPM (Irregular), SpO2: 95%, RR: 20/min, Temp: 36.8°C",
+    "visual_prompt": "Heart silhouette with chaotic, jagged red electrical pulses overriding the glowing cyan SA-node signal, showing signal fragmentation across the atria.",
+    "visuals_inspirations": "Synthesized from MedLabs Cardiology (ECG/Pacing) and BioLabs Signal Transduction, rephrased to visualize electrical interference and loss of rhythmicity.",
+    "treatment": [
+      { "title": "Rate Control", "desc": "Beta-blockers or calcium channel blockers to control rapid ventricular response." },
+      { "title": "Anticoagulation", "desc": "Long-term stroke prevention based on CHADS2-VASc score." },
+      { "title": "Cardioversion", "desc": "Synchronized electrical cardioversion if hemodynamically unstable." }
+    ]
+  },
+  {
+    "id": 5,
+    "label": "Acute Kidney Injury",
+    "category": "Nephrology",
+    "severity": "High",
+    "description": "Sudden episode of kidney failure or kidney damage that limits the body's ability to filter waste.",
+    "causes": "Decreased blood flow, direct damage to kidneys, blockage of urinary tract.",
+    "commonSigns": ["Decreased urine output", "Fluid retention", "Fatigue", "Confusion"],
+    "emergency": "Seizures, coma, or chest pain due to fluid lining the heart.",
+    "complications": "Hyperkalemia, Pulmonary Edema, and Metabolic Acidosis.",
+    "vital_signs": "BP: 160/105 mmHg, HR: 95 BPM, SpO2: 94%, RR: 22/min, Temp: 37.0°C",
+    "visual_prompt": "Detailed nephron filtration barrier showing a 'clogged' mesh with red warning auras around the Bowman's capsule and toxic ion accumulation.",
+    "visuals_inspirations": "Inspired by BioLabs Renal Physiology filtration visuals, rephrasing glomerular damage as a mechanical mesh failure with associated chemical 'toxicity' glow.",
+    "treatment": [
+      { "title": "Fluid Management", "desc": "Strict Input/Output monitoring and loop diuretics if hypervolemic." },
+      { "title": "Ion Exchange", "desc": "Potassium-binding resins or insulin/dextrose to manage life-threatening hyperkalemia." },
+      { "title": "Dialysis", "desc": "Renal Replacement Therapy (RRT) if refractory to medical management." }
+    ]
+  },
+  {
+    "id": 6,
+    "label": "Peripheral Neuropathy",
+    "category": "Neurology",
+    "severity": "Medium",
+    "description": "Nerve damage affecting the peripheral nervous system, causing pain and signaling disruption.",
+    "causes": "Diabetes, chemotherapy, autoimmune diseases, vitamin deficiencies.",
+    "commonSigns": ["Numbness", "Tingling", "Sharp pain", "Muscle weakness"],
+    "emergency": "Sudden onset of severe weakness or spread of symptoms to breathing muscles.",
+    "complications": "Charcot foot, chronic ulceration, and increased fall risk due to loss of proprioception.",
+    "vital_signs": "BP: 130/85 mmHg, HR: 75 BPM, SpO2: 98%, RR: 16/min, Temp: 36.5°C",
+    "visual_prompt": "A long axon with visible cracks in the myelin sheath, showing 'flickering' and 'static' pulses instead of clean signal waves traveling toward a peripheral limb.",
+    "visuals_inspirations": "Synthesized from BioLabs Neuroscience (Neuron integrity) and MedLabs Neurology, rephrasing the loss of insulation (myelin) as an electrical 'leak' or 'static' interference.",
+    "treatment": [
+      { "title": "Glycemic Control", "desc": "Intensive blood sugar monitoring to halt progression of nerve damage." },
+      { "title": "Neuropathic Pain", "desc": "Gabapentinoids or SNRIs for symptomatic pain management." },
+      { "title": "Podiatric Care", "desc": "Daily foot inspections and specialized orthotic support to prevent structural damage." }
+    ]
+  },
+  {
+    "id": 7,
+    "label": "Hypothyroidism",
+    "category": "Endocrinology",
+    "severity": "Medium",
+    "description": "A condition where the thyroid gland doesn't produce enough thyroid hormone, slowing down metabolic processes.",
+    "causes": "Hashimoto's disease, iodine deficiency, or pituitary disorders.",
+    "commonSigns": ["Weight gain", "Cold intolerance", "Dry skin", "Constipation"],
+    "emergency": "Extreme lethargy leading to confusion or low body temperature (Myxedema coma).",
+    "complications": "Heart disease, goiter, and mental health issues.",
+    "vital_signs": "BP: 115/75 mmHg, HR: 58 BPM, SpO2: 98%, RR: 12/min, Temp: 36.1°C",
+    "visual_prompt": "A glowing thyroid butterfly-shaped gland with fading orange energy ripples, surrounded by slow, sluggish blue metabolic vectors.",
+    "visuals_inspirations": "Inspired by BioLabs Endocrine System, visualizing metabolic slowdown as a cooling, decelerating physical flow.",
+    "treatment": [
+      { "title": "Levothyroxine", "desc": "Oral synthetic T4 hormone replacement therapy, taken daily." },
+      { "title": "Iodine Monitor", "desc": "Evaluate dietary iodine intake if Hashimoto's is ruled out." }
+    ]
+  },
+  {
+    "id": 8,
+    "label": "Iron Deficiency Anemia",
+    "category": "Hematology",
+    "severity": "Medium",
+    "description": "Lack of healthy red blood cells due to insufficient iron, leading to reduced oxygen delivery to tissues.",
+    "causes": "Blood loss, poor iron intake, or inability to absorb iron.",
+    "commonSigns": ["Pale skin", "Chest pain", "Brittle nails", "Pica (cravings)"],
+    "emergency": "Severe shortness of breath, fainting, or chest pain.",
+    "complications": "Heart problems, pregnancy complications, and growth issues in children.",
+    "vital_signs": "BP: 105/65 mmHg, HR: 92 BPM, SpO2: 96%, RR: 18/min, Temp: 36.5°C",
+    "visual_prompt": "Small, pale red blood cells (microcytic) floating in a thin, watery stream with low iron-glowing particles.",
+    "visuals_inspirations": "Based on MedLabs Hematology morphology labs, emphasizing the physical changes in RBC size and hemoglobin density.",
+    "treatment": [
+      { "title": "Iron Supplementation", "desc": "Oral ferrous sulfate or intravenous iron sucrose depending on severity." },
+      { "title": "Vitamin C Intake", "desc": "Increase ascorbic acid intake to enhance non-heme iron absorption." }
+    ]
+  },
+  {
+    "id": 9,
+    "label": "Asthma Exacerbation",
+    "category": "Pulmonology",
+    "severity": "High",
+    "description": "Acute narrowing of the airways due to inflammation and muscle contraction.",
+    "causes": "Allergens, smoke, exercise, or viral infections.",
+    "commonSigns": ["Wheezing", "Tight chest", "Coughing", "Difficulty speaking"],
+    "emergency": "Silent chest (no air movement), gasping, or bluish tint to face.",
+    "complications": "Status asthmaticus, respiratory failure, and pneumothorax.",
+    "vital_signs": "BP: 140/90 mmHg, HR: 115 BPM, SpO2: 90%, RR: 30/min, Temp: 37.0°C",
+    "visual_prompt": "Constricted bronchial tubes with thick magenta inflammation layers and jagged spikes of air resistance.",
+    "visuals_inspirations": "Adapted from BioLabs Respiratory physiology, rephrasing obstruction as a high-contrast physical blockage.",
+    "treatment": [
+      { "title": "Bronchodilators", "desc": "Short-acting beta-agonists (SABA) via nebulizer or MDI." },
+      { "title": "Corticosteroids", "desc": "Systemic steroids to reduce airway inflammation during the acute phase." }
+    ]
+  },
+  {
+    "id": 10,
+    "label": "Severe Dehydration",
+    "category": "Internal Medicine",
+    "severity": "High",
+    "description": "Critical loss of body water and electrolytes disrupting metabolic functions.",
+    "causes": "Sweating, vomiting, diarrhea, or insufficient intake.",
+    "commonSigns": ["Dark urine", "Sunken eyes", "Lethargy", "Dry mucous membranes"],
+    "emergency": "Coma, very low blood pressure, or rapid, weak pulse.",
+    "complications": "Kidney failure, heat injury, and seizures from electrolyte imbalance.",
+    "vital_signs": "BP: 90/60 mmHg, HR: 120 BPM, SpO2: 97%, RR: 22/min, Temp: 38.2°C",
+    "visual_prompt": "Shriveled cells in a dry, desert-like interstitial space with red-hot heat ripples and sodium-excess sparks.",
+    "visuals_inspirations": "Derived from BioLabs Cellular Hydration, rephrasing fluid loss as a structural cellular collapse.",
+    "treatment": [
+      { "title": "Fluid Resuscitation", "desc": "Rapid IV infusion of isotonic saline or Ringer's Lactate." },
+      { "title": "Electrolyte Correction", "desc": "Monitor and replace sodium, potassium, and magnesium cautiously." }
+    ]
+  },
+  {
+    "id": 11,
+    "label": "Hypoglycemia",
+    "category": "Endocrinology",
+    "severity": "Critical",
+    "description": "Dangerously low blood sugar levels that can lead to immediate loss of brain function.",
+    "causes": "Excess insulin, skipping meals, or extreme exercise.",
+    "commonSigns": ["Shaking", "Sweating", "Confusion", "Extreme hunger"],
+    "emergency": "Seizures or loss of consciousness.",
+    "complications": "Brain damage, coma, and sudden death if untreated.",
+    "vital_signs": "BP: 100/60 mmHg, HR: 110 BPM, SpO2: 98%, RR: 20/min, Temp: 36.2°C",
+    "visual_prompt": "Empty glucose carriers on a neuron membrane flickering between dim red and black as neural energy fails.",
+    "visuals_inspirations": "Based on BioLabs Neuroplasticity energy panels, rephrasing low fuel as a flickering signal system.",
+    "treatment": [
+      { "title": "Rapid Glucose", "desc": "Oral glucose tablets or high-sugar fruit juice if conscious." },
+      { "title": "Glucagon", "desc": "Subcutaneous or IM glucagon if patient is unconscious." }
+    ]
+  }
+]

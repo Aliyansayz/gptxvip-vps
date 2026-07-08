@@ -1,0 +1,165 @@
+
+[
+    {
+        "course": "Pathology",
+        "chapter_title": "Chapter 1: Introduction to Pathology",
+        "labComponentId": "pathology-intro",
+        "critical_concepts": [
+            {
+                "concept": "Cell Injury",
+                "elaboration": "Cells can be injured by various stimuli. The injury can be reversible, or irreversible, leading to cell death (necrosis or apoptosis)."
+            },
+            {
+                "concept": "Inflammation",
+                "elaboration": "The body's protective response to injury or infection, characterized by redness, swelling, heat, and pain."
+            },
+            {
+                "concept": "Neoplasia",
+                "elaboration": "Abnormal and uncontrolled cell growth, forming a mass or tumor. Can be benign (localized) or malignant (invasive)."
+            }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "pathology_identify_abnormal_cells",
+                "type": "identify",
+                "concept_tested": "Cellular Morphology",
+                "title": "Tissue Sample Analysis",
+                "prompt": "Examine this tissue sample. Click on all ABNORMAL cells.",
+                "question": "Identify abnormal cells based on visual cues.",
+                "answer": "Correctly identified all abnormal cells.",
+                "tags": ["pathology", "cell morphology", "necrosis", "inflammation", "neoplasia", "abnormal cells", "tissue analysis"],
+                "explanation": "Abnormal cells, such as those that are inflamed, cancerous, or necrotic, often show irregular shapes, enlarged nuclei, or signs of damage. Normal cells are typically uniform and organized.",
+                "correctTypes": ["inflamed", "necrotic", "cancerous"],
+                    "theory": {
+                        "title": "Cellular Morphology & Injury",
+                        "content": "<p>Pathologists identify disease by looking for specific changes in cell structure (morphology) under a microscope.</p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 60' class='w-full'><circle cx='20' cy='30' r='10' fill='#fce7f3' stroke='#f472b6'/><circle cx='20' cy='30' r='3' fill='#be185d'/><text x='20' y='55' font-size='4' text-anchor='middle'>Normal</text><path d='M 40 25 L 50 20 L 60 25 L 60 35 L 50 40 L 40 35 Z' fill='#e5e7eb' stroke='#374151'/><circle cx='50' cy='30' r='2' fill='#1f2937'/><text x='50' y='55' font-size='4' text-anchor='middle'>Necrotic (Shrunken/Fragmented)</text><circle cx='80' cy='30' r='14' fill='#a855f7' fill-opacity='0.4' stroke='#7e22ce'/><circle cx='80' cy='30' r='6' fill='#581c87'/><text x='80' y='55' font-size='4' text-anchor='middle'>Neoplastic (Large Nucleus)</text></svg></div><p><strong>Analogy Visual: The Neighborhood</strong></p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 50' class='w-full'><g><rect x='5' y='25' width='10' height='10' fill='#fce7f3' stroke='#f472b6'/><path d='M 5 25 L 10 20 L 15 25' fill='none' stroke='#f472b6'/><text x='10' y='42' font-size='3' text-anchor='middle'>Normal</text></g><g transform='translate(20,0)'><path d='M 5 35 L 15 35 L 12 30 L 8 28 Z' fill='#e5e7eb' stroke='#374151'/><text x='10' y='42' font-size='3' text-anchor='middle'>Necrotic</text></g><g transform='translate(45,0)'><rect x='5' y='25' width='10' height='10' fill='#fce7f3' stroke='#f472b6'/><path d='M 5 25 L 10 20 L 15 25' fill='none' stroke='#f472b6'/><rect x='20' y='25' width='8' height='10' fill='#ef4444'/><text x='15' y='45' font-size='3' text-anchor='middle'>Inflamed (Fire Truck)</text></g><g transform='translate(75,0)'><rect x='2' y='5' width='18' height='30' fill='#a855f7' fill-opacity='0.4' stroke='#7e22ce'/><text x='10' y='42' font-size='3' text-anchor='middle'>Neoplastic</text></g></svg></div><ul><li><span style=\"color:#f472b6; font-weight:bold;\">Normal</span>: Uniform size, small nucleus.</li><li><span style=\"color:#374151; font-weight:bold;\">Necrotic</span>: Cell may lose integrity, nucleus fragments (karyorrhexis), or dissolves (karyolysis).</li><li><span style=\"color:#ef4444; font-weight:bold;\">Inflamed</span>: Often swollen with immune cells nearby.</li><li><span style=\"color:#a855f7; font-weight:bold;\">Neoplastic</span> (Cancer): Vary in size/shape (pleomorphism), large/dark nuclei (hyperchromasia).</li></ul>",
+                        "analogy": "Think of a neighborhood (tissue). Normal houses are uniform. A 'Necrotic' house has collapsed (fire damage). An 'Inflamed' house is surrounded by fire trucks (immune cells). A 'Neoplastic' house is a giant, haphazardly built mansion taking over the block.",
+                        "application": "In a biopsy, if a pathologist sees 'pleomorphism' (varying shapes) and 'hyperchromasia' (dark nuclei), they suspect malignancy (cancer)."
+                    }
+            },
+            {
+                "componentId": "pathology_inflammation_question",
+                "type": "select",
+                "concept_tested": "Inflammation Process",
+                "title": "Signs of Inflammation",
+                "prompt": "Inflammation is a key pathological process.",
+                "question": "Which cellular change indicates INFLAMMATION?",
+                "options": ["Cell shrinkage", "Swelling and redness", "DNA fragmentation", "Uncontrolled division"],
+                "answer": "Swelling and redness",
+                "tags": ["inflammation", "immune response", "swelling", "redness", "cell injury", "pathological process"],
+                "explanation": "Inflammation causes increased blood flow (redness) and fluid accumulation (swelling) as the immune response activates.",
+                "wrong_answer_feedback": [
+                    { "option": "Cell shrinkage", "feedback": "Cell shrinkage is characteristic of apoptosis (programmed cell death), not typically inflammation." },
+                    { "option": "DNA fragmentation", "feedback": "This is a hallmark of apoptosis." },
+                    { "option": "Uncontrolled division", "feedback": "This describes neoplasia or cancer, not inflammation." }
+                ],
+                    "theory": {
+                        "title": "Acute Inflammation",
+                        "content": "<p>Inflammation is the body's immediate protective response to injury. It involves vascular changes and immune cell recruitment.</p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 60' class='w-full'><path d='M 10 25 Q 50 20 90 25 L 90 35 Q 50 40 10 35 Z' fill='#fecaca' stroke='#ef4444'/><circle cx='30' cy='30' r='2' fill='#991b1b'/><circle cx='50' cy='30' r='2' fill='#991b1b'/><circle cx='70' cy='30' r='2' fill='#991b1b'/><text x='50' y='15' font-size='4' text-anchor='middle'>Vasodilation (Redness/Heat)</text><path d='M 45 35 L 45 45' stroke='#ef4444' stroke-dasharray='1 1'/><text x='50' y='55' font-size='4' text-anchor='middle'>Permeability (Swelling)</text></svg></div><p><strong>Analogy Visual: Traffic Accident Response</strong></p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 40' class='w-full'><rect x='0' y='10' width='100' height='20' fill='#9ca3af'/><line x1='0' y1='20' x2='100' y2='20' stroke='white' stroke-dasharray='4 4'/><rect x='10' y='12' width='8' height='5' fill='#374151'/><rect x='30' y='12' width='8' height='5' fill='#374151'/><rect x='50' y='22' width='12' height='6' fill='#ef4444'/><text x='56' y='27' font-size='3' fill='white' text-anchor='middle'>Fire</text><path d='M 70 12 L 78 12 L 78 28 L 70 28 Z' fill='#3b82f6' fill-opacity='0.3'/><text x='50' y='5' font-size='4' text-anchor='middle'>Wide lanes & Slow traffic (Permeability & Vasodilation)</text></svg></div><p><strong>Cardinal Signs:</strong></p><ul><li><span style=\"color:#ef4444; font-weight:bold;\">Rubor (Redness)</span>: Increased blood flow.</li><li><strong>Tumor (Swelling):</strong> Leakage of fluid into tissues (edema).</li><li><strong>Calor (Heat):</strong> Increased blood flow.</li><li><strong>Dolor (Pain):</strong> Chemical mediators stimulate nerve endings.</li></ul>",
+                        "analogy": "Inflammation is like a highway accident response. Traffic slows down (vasodilation), lanes widen (permeability), and emergency vehicles (WBCs) rush to the scene, causing congestion (swelling) and flashing lights (redness).",
+                        "application": "Anti-inflammatory drugs like Ibuprofen (NSAIDs) work by blocking the chemical messengers (prostaglandins) that call the 'emergency vehicles', thus reducing swelling and pain."
+                    }
+            },
+            {
+                "componentId": "pathology_malignant_tumor_question",
+                "type": "select",
+                "concept_tested": "Oncology Basics",
+                "title": "Benign vs. Malignant",
+                "prompt": "Understanding the nature of tumors is crucial in pathology.",
+                "question": "What distinguishes a MALIGNANT tumor from a BENIGN one?",
+                "options": ["Size of the tumor", "Ability to invade and metastasize", "Location in the body", "Color of the cells"],
+                "answer": "Ability to invade and metastasize",
+                "tags": ["oncology", "malignant", "benign", "tumor", "cancer", "metastasis", "neoplasia"],
+                "explanation": "Malignant tumors have the dangerous ability to invade surrounding tissues and spread (metastasize) to distant organs. Benign tumors, while they can grow large, remain localized and do not invade other tissues.",
+                "wrong_answer_feedback": [
+                    { "option": "Size of the tumor", "feedback": "Both benign and malignant tumors can grow to be very large. Size is not the defining difference." },
+                    { "option": "Location in the body", "feedback": "Tumors can occur anywhere. Location doesn't determine if it's malignant or benign." },
+                    { "option": "Color of the cells", "feedback": "Cell color is not a reliable indicator of malignancy." }
+                ],
+                    "theory": {
+                        "title": "Neoplasia: Benign vs. Malignant",
+                        "content": "<p><span style=\"color:#a855f7; font-weight:bold;\">Neoplasia</span> means 'new growth'. Not all neoplasms are cancer.</p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 60' class='w-full'><g><circle cx='25' cy='30' r='15' fill='#e9d5ff' stroke='#a855f7'/><circle cx='25' cy='30' r='18' fill='none' stroke='#4b5563' stroke-width='1' stroke-dasharray='2 1'/><text x='25' y='55' font-size='4' text-anchor='middle'>Benign (Encapsulated)</text></g><g><path d='M 75 30 m -10,0 a 10,10 0 1,0 20,0 a 10,10 0 1,0 -20,0' fill='#f5d0fe' stroke='#d946ef'/><path d='M 75 20 L 75 10' stroke='#d946ef'/><path d='M 85 30 L 95 30' stroke='#d946ef'/><path d='M 65 30 L 55 35' stroke='#d946ef'/><text x='75' y='55' font-size='4' text-anchor='middle'>Malignant (Invasive)</text></g></svg></div><p><strong>Analogy Visual: Balloon vs. Tree Roots</strong></p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 50' class='w-full'><g><circle cx='20' cy='25' r='12' fill='#bfdbfe' stroke='#3b82f6'/><rect x='35' y='10' width='5' height='30' fill='#94a3b8'/><text x='20' y='45' font-size='3' text-anchor='middle'>Benign: Pushes Aside</text></g><g transform='translate(50,0)'><rect x='10' y='30' width='30' height='10' fill='#94a3b8'/><path d='M 25 10 L 25 30 L 15 35 M 25 30 L 35 35' stroke='#d946ef' stroke-width='2' fill='none'/><text x='25' y='45' font-size='3' text-anchor='middle'>Malignant: Invades/Cracks</text></g></svg></div><ul><li><span style=\"color:#a855f7; font-weight:bold;\">Benign</span>: Localized, often encapsulated, resembles normal tissue, slow growth.</li><li><span style=\"color:#d946ef; font-weight:bold;\">Malignant</span> (Cancer): Invades surrounding tissue, capable of metastasis (spread), rapid growth, variation in cell structure.</li></ul>",
+                        "analogy": "A Benign tumor is like a balloon expanding in a room; it pushes furniture aside but doesn't break it. A Malignant tumor is like tree roots growing into the foundation of a house; it penetrates, cracks, and destroys the structure.",
+                        "application": "Surgeons try to remove tumors with 'clean margins'. For benign tumors, the capsule makes this easy. For malignant ones, they must cut wide into healthy tissue to ensure no microscopic roots are left behind."
+                    }
+            }
+        ]
+    },
+    {
+        "course": "Pathology",
+        "chapter_title": "Chapter 2: Tissue Changes",
+        "labComponentId": "pathology-tissue-changes",
+        "critical_concepts": [
+            { "concept": "Hypertrophy", "elaboration": "Increase in the size of cells, resulting in an increase in the size of the organ. No new cells, just bigger ones." },
+            { "concept": "Atrophy", "elaboration": "Shrinkage in the size of the cell by the loss of cell substance. A response to decreased workload, nutrition, or stimulation." },
+            { "concept": "Metaplasia", "elaboration": "A reversible change in which one adult cell type is replaced by another adult cell type, often in response to chronic irritation." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "tissue_changes_interactive",
+                "type": "interactive-visual",
+                "concept_tested": "Cellular Adaptations",
+                "title": "Recognize Pathological Patterns",
+                "prompt": "Cells adapt to stress. Apply different stressors to see how a layer of tissue responds.",
+                "question": "A weightlifter's muscles grow larger due to increased workload. This is an example of:",
+                "options": ["Hypertrophy", "Atrophy", "Metaplasia"],
+                "answer": "Hypertrophy",
+                "tags": ["cellular adaptation", "hypertrophy", "atrophy", "metaplasia", "tissue stress", "pathology"],
+                "explanation": "Correct! Hypertrophy is an increase in cell size. This is a common physiological adaptation in muscle tissue in response to exercise.",
+                    "theory": {
+                        "title": "Cellular Adaptations",
+                        "content": "<p>Cells adapt to changes in their environment to survive. Major types include:</p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 80' class='w-full'><rect x='10' y='10' width='20' height='20' rx='2' fill='#d1fae5' stroke='#10b981'/><text x='20' y='35' font-size='3' text-anchor='middle'>Normal</text><rect x='40' y='5' width='30' height='30' rx='2' fill='#d1fae5' stroke='#10b981'/><text x='55' y='40' font-size='3' text-anchor='middle'>Hypertrophy (Bigger)</text><rect x='80' y='15' width='10' height='10' rx='2' fill='#d1fae5' stroke='#10b981'/><text x='85' y='30' font-size='3' text-anchor='middle'>Atrophy (Smaller)</text><ellipse cx='20' cy='60' rx='10' ry='5' fill='#fecaca' stroke='#ef4444'/><text x='20' y='75' font-size='3' text-anchor='middle'>Metaplasia (Change Type)</text></svg></div><p><strong>Analogy Visual: The Balloon Theory</strong></p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 120 40' class='w-full'><g><circle cx='15' cy='20' r='8' fill='#bfdbfe' stroke='#3b82f6'/><text x='15' y='35' font-size='3' text-anchor='middle'>Normal</text></g><g transform='translate(30,0)'><circle cx='15' cy='20' r='14' fill='#bfdbfe' stroke='#3b82f6'/><text x='15' y='38' font-size='3' text-anchor='middle'>Hypertrophy</text></g><g transform='translate(60,0)'><circle cx='15' cy='20' r='4' fill='#bfdbfe' stroke='#3b82f6'/><text x='15' y='35' font-size='3' text-anchor='middle'>Atrophy</text></g><g transform='translate(90,0)'><rect x='5' y='15' width='20' height='10' fill='#fecaca' stroke='#ef4444'/><text x='15' y='35' font-size='3' text-anchor='middle'>Metaplasia</text></g></svg></div><ul><li><span style=\"color:#22c55e; font-weight:bold;\">Hypertrophy</span>: Increase in cell size (e.g., muscle growth).</li><li><span style=\"color:#64748b; font-weight:bold;\">Atrophy</span>: Decrease in cell size (e.g., muscle wasting from disuse).</li><li><strong>Hyperplasia:</strong> Increase in cell number.</li><li><span style=\"color:#ef4444; font-weight:bold;\">Metaplasia</span>: Reversible change from one cell type to another (e.g., smoker's lung lining).</li></ul>",
+                        "analogy": "Hypertrophy is like inflating a balloon (bigger volume). Hyperplasia is like buying more balloons (more quantity). Metaplasia is like trading your balloons for frisbees because frisbees are tougher and handle the wind better (change in type).",
+                        "application": "In chronic smokers, the delicate ciliated cells of the airway (which clean lungs) change into tough squamous cells (Metaplasia) to survive the smoke. While they survive better, they lose the ability to clean, leading to 'smoker's cough'."
+                    }
+            }
+        ]
+    },
+    {
+        "course": "Pathology",
+        "chapter_title": "Chapter 3: Disease Mechanisms",
+        "labComponentId": "pathology-disease-mechanisms",
+        "critical_concepts": [
+            { "concept": "Etiology", "elaboration": "The cause, set of causes, or manner of causation of a disease or condition. It's the 'why' a disease occurs (e.g., a virus, a genetic mutation)." },
+            { "concept": "Pathogenesis", "elaboration": "The mechanism by which a disease is produced. It's the step-by-step 'how' the disease develops from the initial cause to its final expression." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "disease_mechanisms_sequence",
+                "type": "drag-and-drop-sequence",
+                "concept_tested": "Pathogenesis",
+                "title": "How Diseases Develop",
+                "prompt": "Pathogenesis describes the sequence of events in response to an injurious agent. Arrange the steps of lung cancer development from smoking in the correct order.",
+                "question": "Arrange the steps from cause to disease.",
+                "items": ["Cilia in airways become paralyzed", "Metaplasia: Columnar cells change to squamous cells", "Carcinogens from smoke damage DNA", "Uncontrolled cell division (Cancer)"],
+                "answer": "Carcinogens from smoke damage DNA,Cilia in airways become paralyzed,Metaplasia: Columnar cells change to squamous cells,Uncontrolled cell division (Cancer)",
+                "tags": ["pathogenesis", "etiology", "disease mechanism", "carcinogens", "metaplasia", "sequence of events"],
+                "explanation": "Correct! The carcinogens are the initial cause (etiology). They lead to a sequence of cellular changes (pathogenesis), starting with DNA damage and functional impairment, leading to changes in cell type (metaplasia), and finally uncontrolled growth.",
+                    "theory": {
+                        "title": "Etiology vs. Pathogenesis",
+                        "content": "<p>Understanding disease requires distinguishing the <em>cause</em> from the <em>process</em>.</p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 50' class='w-full'><rect x='5' y='10' width='25' height='30' rx='4' fill='#bfdbfe' stroke='#3b82f6'/><text x='17.5' y='28' font-size='4' text-anchor='middle'>Etiology</text><text x='17.5' y='34' font-size='3' text-anchor='middle'>(The Cause)</text><path d='M 32 25 L 42 25' stroke='#64748b' stroke-width='1' marker-end='url(#arrow)'/><rect x='45' y='10' width='40' height='30' rx='4' fill='#e9d5ff' stroke='#a855f7'/><text x='65' y='25' font-size='4' text-anchor='middle'>Pathogenesis</text><text x='65' y='31' font-size='3' text-anchor='middle'>(The Mechanism/Story)</text><circle cx='65' cy='36' r='1' fill='#7e22ce'/><circle cx='60' cy='36' r='1' fill='#7e22ce'/><circle cx='70' cy='36' r='1' fill='#7e22ce'/></svg></div><p><strong>Analogy Visual: The Match and the Fire</strong></p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 40' class='w-full'><g><rect x='10' y='20' width='15' height='2' fill='#ea580c'/><circle cx='25' cy='21' r='3' fill='#ef4444'/><text x='17' y='35' font-size='3' text-anchor='middle'>Etiology (Match)</text></g><path d='M 30 21 L 40 21' stroke='#94a3b8' stroke-width='1' marker-end='url(#arrow)'/><g transform='translate(45,0)'><path d='M 5 25 Q 15 5 25 25 T 45 25' fill='#fca5a5' fill-opacity='0.5' stroke='#b91c1c'/><text x='25' y='35' font-size='3' text-anchor='middle'>Pathogenesis (Spread)</text></g></svg></div><ul><li><span style=\"color:#3b82f6; font-weight:bold;\">Etiology</span>: 'Why' it happened (e.g., HPV virus, smoking, genetic mutation).</li><li><span style=\"color:#a855f7; font-weight:bold;\">Pathogenesis</span>: 'How' it develops. The sequence of cellular and molecular events that follow the injury.</li></ul>",
+                        "analogy": "Etiology is the match that starts the fire. Pathogenesis is the way the fire spreads from the curtains to the sofa to the roof. Treatment can target the match (Prevention/Vaccine) or stop the spread (Blocking pathways).",
+                        "application": "In Cystic Fibrosis, the Etiology is a mutation in the CFTR gene. The Pathogenesis is the resulting thick mucus blocking airways and trapping bacteria. Understanding this allows us to design drugs that specifically help the defective CFTR protein work better."
+                    }
+            },
+            {
+                "componentId": "disease_mechanisms_definition",
+                "type": "select",
+                "concept_tested": "Etiology",
+                "title": "Cause vs. Mechanism",
+                "prompt": "Distinguishing between the cause and the mechanism of a disease is fundamental to pathology.",
+                "question": "The initial cause of a disease, such as a virus or a genetic defect, is known as its:",
+                "options": ["Pathogenesis", "Morphology", "Etiology"],
+                "answer": "Etiology",
+                "tags": ["etiology", "cause of disease", "pathogenesis", "virus", "genetic defect"],
+                "explanation": "Correct! Etiology refers to the fundamental cause of a disease.",
+                "theory": {
+                    "title": "Types of Etiology",
+                    "content": "<p>Etiological agents generally fall into two categories:</p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 60' class='w-full'><g><text x='25' y='10' font-size='4' font-weight='bold' text-anchor='middle'>Genetic</text><path d='M 20 20 Q 25 25 20 30 T 20 40' stroke='#ec4899' fill='none'/><path d='M 30 20 Q 25 25 30 30 T 30 40' stroke='#a855f7' fill='none'/><line x1='20' y1='22' x2='30' y2='22' stroke='gray' stroke-width='0.5'/><line x1='20' y1='38' x2='30' y2='38' stroke='gray' stroke-width='0.5'/></g><line x1='50' y1='10' x2='50' y2='50' stroke='#e5e7eb'/><g transform='translate(50,0)'><text x='25' y='10' font-size='4' font-weight='bold' text-anchor='middle'>Acquired</text><circle cx='25' cy='30' r='5' fill='#fbbf24' opacity='0.5'/><circle cx='20' cy='35' r='1' fill='#1f2937'/><circle cx='30' cy='25' r='1' fill='#1f2937'/><text x='25' y='50' font-size='3' text-anchor='middle'>Infectious, Physical, Chemical</text></g></svg></div><p><strong>Analogy Visual: Factory Defect vs. Road Damage</strong></p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 40' class='w-full'><g><rect x='10' y='15' width='25' height='15' fill='#e2e8f0' stroke='#64748b'/><text x='22.5' y='25' font-size='3' text-anchor='middle'>Bad Parts (DNA)</text><text x='22.5' y='38' font-size='3' text-anchor='middle'>Genetic</text></g><g transform='translate(55,0)'><circle cx='10' cy='25' r='10' fill='none' stroke='#1f2937' stroke-width='2'/><path d='M 10 15 L 10 10' stroke='#ef4444' stroke-width='1'/><text x='25' y='25' font-size='3' fill='#ef4444'>Nail!</text><text x='22.5' y='38' font-size='3' fill='#1f2937' text-anchor='middle'>Acquired</text></g></svg></div><ul><li><strong>Genetic:</strong> Inherited mutations or variants.</li><li><strong>Acquired:</strong> Infectious (bacteria, viruses), Physical (trauma, radiation), Chemical (toxins, drugs), Nutritional (deficiencies).</li></ul>",
+                    "analogy": "Genetic etiology is like a factory defect in a car's engine (built-in). Acquired etiology is like driving over a nail (external damage).",
+                    "application": "Idiopathic diseases have 'unknown etiology'. Essential Hypertension is idiopathic—we don't know the exact cause, only the risk factors."
+                }
+            }
+        ]
+    }
+]

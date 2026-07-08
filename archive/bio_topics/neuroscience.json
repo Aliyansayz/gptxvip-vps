@@ -1,0 +1,220 @@
+
+[
+    {
+        "course": "Neuroscience",
+        "chapter_title": "Chapter 1: Neuron Signaling",
+        "labComponentId": "neuron-signaling",
+        "critical_concepts": [
+            { "concept": "Action Potential", "elaboration": "A rapid rise and fall in voltage across a cellular membrane. It is the fundamental signal that transmits information in the nervous system." },
+            { "concept": "All-or-None Principle", "elaboration": "A neuron fires at full strength or not at all. Increasing stimulus strength above threshold does not produce a stronger action potential, just more frequent ones." },
+            { "concept": "Threshold", "elaboration": "The specific voltage (-55mV) that must be reached to trigger an action potential." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "neuron_ap_sim",
+                "type": "simulation",
+                "title": "Action Potential Threshold",
+                "prompt": "Adjust the stimulus strength to trigger an action potential. The threshold is marked on the gauge.",
+                "question": "What happens when you reach the threshold?",
+                "answer": "Neuron fires",
+                "explanation": "Action potentials follow the 'all-or-none' principle. Below threshold, nothing happens. At or above threshold, the neuron fires with full strength regardless of how much stronger the stimulus is.",
+                "theory": {
+                    "title": "The Action Potential",
+                    "content": "<p>An <span style=\"color:#f59e0b; font-weight:bold;\">action potential</span> is an explosion of electrical activity created by a depolarizing current. When the depolarization reaches about -55 mV (the <span style=\"color:#ef4444; font-weight:bold;\">threshold</span>), the neuron fires.</p><p>If the neuron does not reach this critical threshold level, then no action potential will fire. When the threshold level is reached, an action potential of a fixed size will always fire. This is the <span style=\"color:#3b82f6; font-weight:bold;\">'ALL OR NONE'</span> principle.</p>",
+                    "analogy": "The Toilet Flush. You can push the handle a little bit, and nothing happens (sub-threshold). But once you push it past a certain point (threshold), the flush engages. Pushing the handle harder or faster doesn't make the flush bigger—it just flushes. You can't stop it once it starts.",
+                    "application": "Local anesthetics like Novocaine work by blocking the sodium channels on the neuron. This prevents the neuron from ever reaching the threshold voltage, so the 'pain' signal can never be sent to the brain."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Neuroscience",
+        "chapter_title": "Chapter 2: Synaptic Transmission",
+        "labComponentId": "neuro-synapse",
+        "critical_concepts": [
+            { "concept": "Calcium Influx", "elaboration": "Action potentials open voltage-gated Ca2+ channels, causing vesicles to fuse." },
+            { "concept": "Summation", "elaboration": "Temporal and Spatial summation of EPSPs and IPSPs determines if the post-synaptic neuron fires." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "synapse_step_sim",
+                "type": "interactive-visual",
+                "title": "The Chemical Synapse",
+                "prompt": "Activate the sequence of events to transmit the signal across the synaptic cleft.",
+                "question": "What ion is directly responsible for causing neurotransmitter vesicles to fuse with the membrane?",
+                "options": ["Sodium (Na+)", "Potassium (K+)", "Calcium (Ca2+)", "Chloride (Cl-)"],
+                "answer": "Calcium (Ca2+)",
+                "explanation": "When the action potential reaches the terminal, voltage-gated Calcium channels open. Calcium rushes in and binds to sensor proteins (synaptotagmin), triggering vesicle fusion.",
+                "theory": {
+                    "title": "Vesicle Fusion",
+                    "content": "<p>The electrical signal cannot jump the gap between neurons. It must be converted into a chemical signal. <br/>1. AP arrives. <br/>2. <span style=\"color:#a855f7; font-weight:bold;\">Ca2+</span> channels open. <br/>3. <span style=\"color:#a855f7; font-weight:bold;\">Ca2+</span> causes vesicles to dock and fuse. <br/>4. <span style=\"color:#ec4899; font-weight:bold;\">Neurotransmitter</span> released.</p>",
+                    "analogy": "The Cargo Ship. The Action Potential is the ship arriving at the dock. The Calcium ions are the dockworkers who untie the ropes and open the cargo hold (Vesicles), allowing the goods (Neurotransmitters) to be unloaded onto the pier (Synapse).",
+                    "application": "Botox works by destroying the proteins needed for vesicle fusion. Even if the nerve fires, no acetylcholine is released, so the muscle never contracts (paralysis of wrinkles)."
+                }
+            },
+            {
+                "componentId": "summation_graph_sim",
+                "type": "interactive-visual",
+                "title": "Neural Integration (Summation)",
+                "prompt": "Fire the inputs rapidly to reach threshold. Observe how signals add up.",
+                "question": "What is 'Temporal Summation'?",
+                "options": ["Signals from multiple neurons at once", "Multiple signals from one neuron in rapid succession", "Inhibitory signals cancelling excitatory ones"],
+                "answer": "Multiple signals from one neuron in rapid succession",
+                "explanation": "Temporal summation occurs when a single presynaptic neuron fires many times in succession, causing the postsynaptic potential to build up like a staircase until threshold is reached.",
+                "theory": {
+                    "title": "Neural Math",
+                    "content": "<p>A single neuron receives thousands of inputs. <br/><span style=\"color:#3b82f6; font-weight:bold;\">Spatial Summation</span>: Many friends shouting at once. <br/><span style=\"color:#a855f7; font-weight:bold;\">Temporal Summation</span>: One friend shouting repeatedly and quickly.</p>",
+                    "analogy": "Filling a leaky bucket. You can fill it by having 10 people dump buckets in at once (Spatial), or by one person dumping buckets in incredibly fast before the water leaks out (Temporal).",
+                    "application": "This integration is the basis of decision making. The neuron 'decides' to fire only if the 'Yes' votes (Excitatory) outweigh the 'No' votes (Inhibitory) significantly."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Neuroscience",
+        "chapter_title": "Chapter 3: Sensory Systems",
+        "labComponentId": "neuro-sensory",
+        "critical_concepts": [
+            { "concept": "Receptive Fields", "elaboration": "The specific region of sensory space in which a stimulus will modify the firing of that neuron." },
+            { "concept": "Lateral Inhibition", "elaboration": "Capacity of an excited neuron to reduce the activity of its neighbors, enhancing edge detection." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "receptive_field_sim",
+                "type": "interactive-visual",
+                "title": "On-Center / Off-Surround",
+                "prompt": "Move the light stimulus across the retinal field. Observe the firing rate graph.",
+                "question": "Where does the light produce the HIGHEST firing rate?",
+                "options": ["In the dark surround", "Covering the entire field", "Spot of light exactly in the center"],
+                "answer": "Spot of light exactly in the center",
+                "explanation": "Ganglion cells are optimized for contrast. Light in the center excites, but light in the surround inhibits. Therefore, a small spot in the center causes maximum firing, while diffuse light causes weak firing.",
+                "theory": {
+                    "title": "Contrast Enhancement",
+                    "content": "<p>The brain cares more about edges and changes than absolute brightness. <span style=\"color:#22c55e; font-weight:bold;\">Center-Surround</span> organization allows neurons to act as edge detectors.</p>",
+                    "analogy": "A Spotlight on a Stage. If the spotlight hits the lead actor (Center), the crowd cheers. If the house lights come on illuminating everyone (Diffuse), the effect is ruined. The system is designed to highlight the star.",
+                    "application": "This mechanism explains optical illusions like the Hermann Grid, where you see grey spots at intersections that aren't there. It's how your eye sharpens the edges of objects."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Neuroscience",
+        "chapter_title": "Chapter 4: Motor Systems",
+        "labComponentId": "neuro-motor",
+        "critical_concepts": [
+            { "concept": "Reflex Arc", "elaboration": "Automatic response bypassing the brain for speed." },
+            { "concept": "Somatotopy", "elaboration": "Mapping of body parts to specific areas of the motor cortex (Homunculus)." },
+            { "concept": "Error Correction", "elaboration": "The cerebellum compares intended movement with actual movement to maintain balance." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "reflex_arc_sim",
+                "type": "interactive-visual",
+                "title": "The Reflex Arc",
+                "prompt": "Trace the path of a reflex. A hot stove is touched.",
+                "question": "Does the signal reach the brain BEFORE the muscle contracts?",
+                "options": ["Yes, the brain decides to pull away", "No, the spine handles the withdrawal reflex", "Yes, but only for pain perception"],
+                "answer": "No, the spine handles the withdrawal reflex",
+                "explanation": "Reflexes are processed in the spinal cord to maximize speed. The brain feels the pain *after* the hand has already been pulled away.",
+                "theory": {
+                    "title": "The Reflex Arc",
+                    "content": "<p>A reflex is an involuntary and nearly instantaneous movement in response to a stimulus. It bypasses the brain to save time.</p><ol><li><strong>Receptor:</strong> Detects heat/pain.</li><li><strong>Sensory Neuron:</strong> Carries signal to spine.</li><li><strong>Interneuron:</strong> Processes in spinal cord.</li><li><strong>Motor Neuron:</strong> Carries signal to muscle.</li><li><strong>Effector:</strong> Muscle contracts.</li></ol>",
+                    "analogy": "The Middle Manager. Ideally, you ask the CEO (Brain) for big decisions. But if the building is on fire (Hot Stove), the Middle Manager (Spine) orders the evacuation immediately without waiting for the CEO's email. Speed saves lives.",
+                    "application": "Deep Tendon Reflexes (Knee jerk). Doctors tap your knee to check if this spinal loop is intact. If the leg kicks too hard (Hyperreflexia), it suggests the brain isn't sending its usual 'calm down' signals to the spine (Upper Motor Neuron lesion)."
+                }
+            },
+            {
+                "componentId": "homunculus_explore",
+                "type": "interactive-visual",
+                "title": "Motor Homunculus",
+                "prompt": "Stimulate different areas of the Motor Cortex to see which body part moves.",
+                "question": "Which body part has the largest representation in the cortex relative to its actual size?",
+                "options": ["The Back", "The Hand/Fingers", "The Leg"],
+                "answer": "The Hand/Fingers",
+                "explanation": "Fine motor control requires more neurons. Hands and face take up huge amounts of cortical space compared to the trunk or legs.",
+                "theory": {
+                    "title": "Cortical Magnification",
+                    "content": "<p>The <span style=\"color:#ef4444; font-weight:bold;\">Motor Homunculus</span> is a map of the body on the brain. Areas requiring fine control (hands, lips, tongue) have disproportionately large areas of the brain dedicated to them.</p>",
+                    "analogy": "A distorted map. Imagine a map of the world where the size of the country is based on its population, not its land mass. China and India would be huge; Canada would be tiny. In the brain's map, the Hands and Lips are 'China and India'—superpowers of movement.",
+                    "application": "In a stroke, the specific location of the clot determines the symptoms. A clot in the 'Face/Arm' area of the strip causes facial droop and arm weakness, while the leg might be spared."
+                }
+            },
+            {
+                "componentId": "cerebellum_balance",
+                "type": "interactive-visual",
+                "title": "Cerebellar Control",
+                "prompt": "Act as the Cerebellum. Keep the bar balanced by correcting the motor errors.",
+                "question": "What is the primary role of the cerebellum?",
+                "options": ["Initiating movement", "Error correction and coordination", "Processing pain"],
+                "answer": "Error correction and coordination",
+                "explanation": "The cerebellum receives feedback from the body and 'fine-tunes' the motor commands to ensure smooth, balanced movement.",
+                "theory": {
+                    "title": "The Cerebellum",
+                    "content": "<p>The cerebellum ('little brain') monitors the difference between the <em>intended</em> movement (from the motor cortex) and the <em>actual</em> movement (from sensory feedback). It then sends corrective signals to smooth out the motion.</p>",
+                    "analogy": "The Autopilot. The Pilot (Motor Cortex) sets the destination. The Autopilot (Cerebellum) makes thousands of micro-adjustments to the flaps and rudder every second to keep the plane steady against the wind (External perturbations).",
+                    "application": "Drunk driving tests (walking a straight line) specifically test the cerebellum. Alcohol impairs the cerebellum's error-correction ability, leading to 'Ataxia' (clumsy, uncoordinated movements)."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Neuroscience",
+        "chapter_title": "Chapter 5: Neuroplasticity",
+        "labComponentId": "neuro-plasticity",
+        "critical_concepts": [
+            { "concept": "LTP (Long-Term Potentiation)", "elaboration": "Strengthening of synapses based on recent patterns of activity." },
+            { "concept": "Hebbian Learning", "elaboration": "'Cells that fire together, wire together'." },
+            { "concept": "Synaptic Pruning", "elaboration": "Elimination of weaker synaptic contacts while stronger connections are kept and strengthened." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "hebbian_wire",
+                "type": "interactive-visual",
+                "title": "Hebbian Learning",
+                "prompt": "Connect neurons by firing them simultaneously.",
+                "question": "How do neurons form strong connections?",
+                "options": ["Random chance", "Synchronous activity", "Genetic hardcoding"],
+                "answer": "Synchronous activity",
+                "explanation": "When presynaptic and postsynaptic neurons are active at the same time, the synapse between them is strengthened.",
+                "theory": {
+                    "title": "Fire Together, Wire Together",
+                    "content": "<p><span style=\"color:#a855f7; font-weight:bold;\">Hebbian Theory</span> explains how learning occurs at the cellular level. Repeated simultaneous firing leads to metabolic changes (more receptors, more neurotransmitter) that make the connection more efficient.</p>",
+                    "analogy": "Walking through a forest. The first time you walk through thick brush, it's hard. If you walk the exact same path every day, you tamp down the grass, move branches, and eventually create a clear, easy trail (Strong Synapse). If you stop walking it, it grows over (Pruning).",
+                    "application": "This is the basis of habit formation and studying. Repetition strengthens the specific neural circuits involved in that task, making it physically easier for your brain to perform the action next time."
+                }
+            },
+            {
+                "componentId": "ltp_sim",
+                "type": "interactive-visual",
+                "title": "Long-Term Potentiation",
+                "prompt": "Rapidly stimulate the synapse to induce LTP.",
+                "question": "What structural change occurs during LTP?",
+                "options": ["Axon gets shorter", "Post-synaptic membrane adds more receptors", "Neuron dies"],
+                "answer": "Post-synaptic membrane adds more receptors",
+                "explanation": "High-frequency stimulation causes the insertion of more AMPA receptors into the postsynaptic membrane, making the cell more sensitive to future signals.",
+                "theory": {
+                    "title": "Strengthening the Signal",
+                    "content": "<p><span style=\"color:#f59e0b; font-weight:bold;\">LTP</span> is the cellular basis of memory. Intense activity triggers Calcium influx, which activates kinases. These kinases cause more receptors to be inserted into the membrane, permanently boosting signal strength.</p>",
+                    "analogy": "Upgrading the WiFi. If you download huge files constantly (High Frequency Stimulation), the ISP upgrades your bandwidth (Adds Receptors). Now, even small files download instantly. The connection has been physically improved.",
+                    "application": "Drugs that block NMDA receptors (like Ketamine or Alcohol) can prevent the induction of LTP, which explains why they can cause memory blackouts or disrupt learning."
+                }
+            },
+            {
+                "componentId": "pruning_sim",
+                "type": "interactive-visual",
+                "title": "Synaptic Pruning",
+                "prompt": "Identify weak connections. The brain removes unused pathways to become efficient.",
+                "question": "Why does the brain prune synapses?",
+                "options": ["To forget traumatic memories", "To increase efficiency and remove noise", "It is a sign of damage"],
+                "answer": "To increase efficiency and remove noise",
+                "explanation": "Pruning removes redundant or unused connections, allowing the remaining essential circuits to work faster and more efficiently.",
+                "theory": {
+                    "title": "Use It or Lose It",
+                    "content": "<p>We are born with an excess of connections. Through childhood and adolescence, the brain 'prunes' away the wires that aren't being used, sculpting the final adult brain architecture.</p>",
+                    "analogy": "Gardening. To grow giant, prize-winning roses (Efficient Circuits), you must cut away the dead leaves and small sucker branches (Weak Synapses) so the plant directs all its energy to the important parts.",
+                    "application": "Schizophrenia is hypothesized to be related to excessive pruning in adolescence, while Autism might be related to insufficient pruning, leading to an over-connected, noisy brain."
+                }
+            }
+        ]
+    }
+]

@@ -1,0 +1,72 @@
+
+[
+    {
+        "course": "Microbiology",
+        "chapter_title": "Chapter 1: Bacterial Morphology & Staining",
+        "labComponentId": "microbiology-lab",
+        "critical_concepts": [
+            { "concept": "Gram Staining", "elaboration": "Differential staining technique to classify bacteria into Gram-positive (purple) and Gram-negative (pink) based on cell wall thickness." },
+            { "concept": "Morphology", "elaboration": "Bacterial shapes: Coccus (spherical), Bacillus (rod), Spirillum (spiral)." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "gram_stain_sim",
+                "type": "gram-stain",
+                "title": "Gram Stain Procedure",
+                "prompt": "Apply Gram stain and identify: Which bacteria are Gram-POSITIVE (purple)?",
+                "question": "Identify the Gram-Positive bacteria.",
+                "targetType": "gram-positive",
+                "answer": "gram-positive", 
+                "explanation": "Gram-positive bacteria retain the crystal violet dye (purple) due to their thick peptidoglycan cell wall. Gram-negative appear pink/red due to the counterstain safranin.",
+                "theory": {
+                    "title": "Gram Staining",
+                    "content": "<p><span style=\"color:#3b82f6; font-weight:bold;\">Gram Staining</span> is the most important staining technique in microbiology. It differentiates bacteria into two large groups based on their cell wall constituents.</p><ul><li><span style=\"color:#a855f7; font-weight:bold;\">Gram-Positive</span>: Thick peptidoglycan layer retains the primary stain (Crystal Violet). Appears <strong style=\"color:#a855f7;\">Purple</strong>.</li><li><span style=\"color:#ec4899; font-weight:bold;\">Gram-Negative</span>: Thin peptidoglycan layer allows the crystal violet to wash out, taking up the counterstain (Safranin). Appears <strong style=\"color:#ec4899;\">Pink/Red</strong>.</li></ul>",
+                    "application": "Doctors use Gram stain results to quickly choose an antibiotic. Penicillin works well on Gram-positives but often fails against Gram-negatives due to their outer membrane."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Microbiology",
+        "chapter_title": "Chapter 2: Antibiotic Resistance",
+        "labComponentId": "microbiology-resistance",
+        "critical_concepts": [
+            { "concept": "Zone of Inhibition", "elaboration": "The clear area around an antibiotic disk where bacteria cannot grow. Larger zone = higher susceptibility." },
+            { "concept": "Selection Pressure", "elaboration": "Antibiotics kill susceptible bacteria, leaving behind resistant mutants to reproduce and dominate the population." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "kirby_bauer_sim",
+                "type": "interactive-visual",
+                "title": "Kirby-Bauer Susceptibility Test",
+                "prompt": "Place antibiotic disks on the bacterial lawn to test for resistance.",
+                "question": "Which antibiotic is the bacteria MOST susceptible to?",
+                "options": ["Penicillin (No Zone)", "Amoxicillin (Small Zone)", "Ciprofloxacin (Large Zone)"],
+                "answer": "Ciprofloxacin (Large Zone)",
+                "explanation": "The size of the 'Zone of Inhibition' correlates with effectiveness. A large clear ring indicates the antibiotic effectively stops bacterial growth. No ring indicates resistance.",
+                "theory": {
+                    "title": "Antibiotic Susceptibility Testing",
+                    "content": "<p>The <span style=\"color:#22c55e; font-weight:bold;\">Kirby-Bauer test</span> determines which antibiotics kill a specific bacteria.</p><ul><li><span style=\"color:#34d399; font-weight:bold;\">Susceptible</span>: The antibiotic creates a large <span style=\"color:#3b82f6; font-weight:bold;\">'Zone of Inhibition'</span> (clear circle) where bacteria die.</li><li><span style=\"color:#ef4444; font-weight:bold;\">Resistant</span>: Bacteria grow right up to the disk, ignoring the drug.</li></ul>",
+                    "analogy": "Imagine putting different repellents around a picnic blanket. If ants stay far away from one repellent, it works (Susceptible). If ants walk right over another repellent to get the food, it fails (Resistant).",
+                    "application": "Overuse of antibiotics accelerates natural selection. Only the resistant bacteria survive and multiply, creating 'Superbugs' like MRSA that are immune to standard treatments."
+                }
+            },
+            {
+                "componentId": "natural_selection_sim",
+                "type": "interactive-visual",
+                "title": "Evolution of Resistance",
+                "prompt": "A population of bacteria contains one random resistant mutant (Red). Observe what happens when you treat with antibiotics.",
+                "question": "Why did the final population become entirely resistant?",
+                "options": ["The antibiotic caused mutations in all bacteria", "The antibiotic selected for the resistant mutant by killing its competition", "The bacteria learned to fight back"],
+                "answer": "The antibiotic selected for the resistant mutant by killing its competition",
+                "explanation": "This is natural selection in action. The antibiotic didn't create the resistance; it merely killed the susceptible (blue) bacteria. The pre-existing resistant (red) bacteria survived, had no competition for food, and multiplied to take over.",
+                "theory": {
+                    "title": "Selection Pressure",
+                    "content": "<p>Antibiotic resistance is a classic example of <span style=\"color:#f59e0b; font-weight:bold;\">Natural Selection</span>.</p><ol><li>Random mutations occur constantly. Occasionally, one confers resistance.</li><li>When antibiotics are used, they kill 99.9% of bacteria (the susceptible ones).</li><li>The 0.1% (resistant mutants) survive.</li><li>With all competitors dead, the resistant mutants reproduce rapidly, passing on the resistance gene.</li></ol>",
+                    "analogy": "Imagine a field of green and red beetles. Birds (antibiotics) love the taste of green beetles but hate red ones. After a week, all the green beetles are eaten. The red beetles, now safe and with plenty of food, multiply. The field is now entirely red.",
+                    "application": "This is why you must finish your full course of antibiotics. Stopping early kills the weak bacteria but leaves the slightly stronger ones alive to recover and become fully resistant 'superbugs'."
+                }
+            }
+        ]
+    }
+]

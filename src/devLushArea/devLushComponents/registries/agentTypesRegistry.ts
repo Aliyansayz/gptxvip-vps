@@ -15,6 +15,7 @@ import AgentInnateLayerActivity from '../devLushTopics/agentTypes/AgentInnateLay
 import AgentWorkingStateActivity from '../devLushTopics/agentTypes/AgentWorkingStateActivity';
 import AgentArchivalStorageActivity from '../devLushTopics/agentTypes/AgentArchivalStorageActivity';
 import AgentExecutionLayerActivity from '../devLushTopics/agentTypes/AgentExecutionLayerActivity';
+import AgentTypesMorphologyActivity from '../devLushTopics/agentTypes/AgentTypesMorphologyActivity';
 
 export const agentTypesRegistry: Record<string, React.ComponentType<any>> = {
   'agent-overview-activity': AgentOverviewActivity,
@@ -32,5 +33,6 @@ export const agentTypesRegistry: Record<string, React.ComponentType<any>> = {
   'agent-innate-layer': AgentInnateLayerActivity,
   'agent-working-state': AgentWorkingStateActivity,
   'agent-archival-storage': AgentArchivalStorageActivity,
-  'agent-execution-layer': AgentExecutionLayerActivity
+  'agent-execution-layer': AgentExecutionLayerActivity,
+  'agent-types-morphology': AgentTypesMorphologyActivity
 };

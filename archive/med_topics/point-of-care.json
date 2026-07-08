@@ -1,0 +1,241 @@
+
+[
+    {
+        "course": "Point of Care",
+        "chapter_title": "Chapter 1: Introduction to POCT",
+        "labComponentId": "poct-intro",
+        "critical_concepts": [
+            { "concept": "TAT (Turnaround Time)", "elaboration": "POCT significantly reduces the time from testing to treatment decision." },
+            { "concept": "Pre-analytical Errors", "elaboration": "Most common errors in POCT occur before the test (e.g., patient ID, sample collection)." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "poct_vs_lab",
+                "type": "sort",
+                "title": "Central Lab vs. POCT",
+                "prompt": "Classify the following characteristics into the correct testing modality.",
+                "question": "Which feature belongs to Point-of-Care Testing (POCT)?",
+                "options": ["High complexity instruments", "Performed at bedside", "Batched testing", "Results in hours/days"],
+                "answer": "Performed at bedside",
+                "explanation": "POCT is defined by being performed near the patient (bedside, clinic, home) to provide immediate results, unlike central labs which process high volumes in batches.",
+                "theory": {
+                    "title": "What is POCT?",
+                    "content": "<p><strong>Point-of-Care Testing (POCT)</strong> is diagnostic testing performed at or near the site of patient care. It brings the lab to the patient.</p><ul><li><strong>Speed:</strong> Actionable results in minutes vs hours.</li><li><strong>Access:</strong> Available in remote areas, ambulances, and pharmacies.</li><li><strong>Quality:</strong> Requires rigorous QC because non-lab personnel often perform the tests.</li></ul>",
+                    "analogy": "POCT is like a Polaroid camera or a smartphone photo—instant gratification. A Central Lab is like a professional photo studio—higher resolution and throughput, but you have to wait for the prints.",
+                    "application": "In a stroke, 'Time is Brain'. A portable POCT coagulometer in the ambulance allows paramedics to rule out bleeding disorders instantly, speeding up the decision to give clot-busting drugs."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Point of Care",
+        "chapter_title": "Chapter 2: Lateral Flow Assays",
+        "labComponentId": "poct-lateral-flow",
+        "critical_concepts": [
+            { "concept": "Immunochromatography", "elaboration": "The scientific principle behind 'dipsticks' and cassettes using antibody-antigen binding flow." },
+            { "concept": "Control Line", "elaboration": "Validates that the test reagents are working and the sample flowed correctly." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "lfa_malaria",
+                "type": "rapid-test",
+                "title": "Malaria Rapid Test",
+                "prompt": "Traveler returning from tropics with fever. Interpret the RDT.",
+                "question": "Does this patient have Malaria?",
+                "testResult": { "testName": "Malaria Pf/Pv", "result": "positive", "controlLine": true, "testLine": true },
+                "clinicalContext": "Fever of 40°C, chills, headache after returning from Safari.",
+                "options": ["Positive - Treat for Malaria", "Negative - Viral Fever", "Invalid - Repeat", "Indeterminate"],
+                "answer": "Positive - Treat for Malaria",
+                "explanation": "The presence of the Test line (T) alongside the Control line (C) indicates the presence of Malaria antigens.",
+                "theory": {
+                    "title": "Lateral Flow Technology",
+                    "content": "<p>Lateral flow assays use capillary action to pull a liquid sample through a paper strip. The sample picks up labeled antibodies (gold/latex). If the target antigen is present, it binds to these antibodies and gets captured at the 'Test Line', forming a visible colored band.</p>",
+                    "analogy": "Imagine floating down a river (capillary flow). You hold a sign (antigen). A person on the bank (test line antibody) has a hook that only grabs your specific sign. If enough people with signs get hooked at that spot, a crowd forms (visible line).",
+                    "application": "These tests revolutionized HIV testing in developing nations, allowing diagnosis in villages without electricity or refrigeration."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Point of Care",
+        "chapter_title": "Chapter 3: Blood Glucose Monitoring",
+        "labComponentId": "poct-glucose",
+        "critical_concepts": [
+            { "concept": "Capillary Sampling", "elaboration": "Obtaining blood from the fingertip; distinct from venous blood." },
+            { "concept": "Hyper/Hypoglycemia", "elaboration": "Dangerously high or low blood sugar levels requiring immediate intervention." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "glucose_check_1",
+                "type": "glucometer",
+                "title": "Hypoglycemia Alert",
+                "prompt": "Diabetic patient presents with sweating and confusion. Perform a fingerstick glucose.",
+                "question": "The reading is 42 mg/dL. What is your immediate action?",
+                "value": 42,
+                "unit": "mg/dL",
+                "status": "critical-low",
+                "clinicalContext": "Patient took insulin but missed lunch. Pale, diaphoresis, tremors.",
+                "options": ["Give Insulin", "Give Oral Glucose/Juice", "Wait and re-test", "Send blood to central lab"],
+                "answer": "Give Oral Glucose/Juice",
+                "explanation": "A value of 42 mg/dL indicates severe hypoglycemia. Immediate rapid-acting carbohydrates are needed to prevent seizure or coma. Insulin would kill this patient.",
+                "theory": {
+                    "title": "Glucose Monitoring",
+                    "content": "<p>Glucometers use an electrochemical reaction. Glucose oxidase on the strip reacts with glucose in the blood, generating a tiny electrical current proportional to the sugar level.</p>",
+                    "analogy": "The glucometer is like a coin counter. The chemical reaction 'counts' the glucose molecules by measuring the electricity they generate, just as a machine counts coins by weight or size.",
+                    "application": "Sliding Scale Insulin: Nurses use bedside glucose readings before meals to determine exactly how much insulin to inject, acting as an artificial pancreas."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Point of Care",
+        "chapter_title": "Chapter 4: Coagulation Testing",
+        "labComponentId": "poct-coag",
+        "critical_concepts": [
+            { "concept": "INR (International Normalized Ratio)", "elaboration": "Standardized measure of blood clotting time, primarily for Warfarin monitoring." },
+            { "concept": "PT (Prothrombin Time)", "elaboration": "The time it takes for plasma to clot after tissue factor is added." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "coag_warfarin",
+                "type": "coag-meter",
+                "title": "Warfarin Monitoring",
+                "prompt": "Patient on Warfarin for Atrial Fibrillation. Target INR is 2.0-3.0.",
+                "question": "The INR reading is 5.8. Assess the risk.",
+                "value": 5.8,
+                "unit": "INR",
+                "status": "critical-high",
+                "clinicalContext": "Patient notices gum bleeding and bruising easily.",
+                "options": ["Sub-therapeutic (Risk of Clot)", "Therapeutic (Good control)", "Supratherapeutic (Risk of Bleeding)", "Normal for healthy person"],
+                "answer": "Supratherapeutic (Risk of Bleeding)",
+                "explanation": "An INR of 5.8 is dangerously high, meaning the blood is too thin. The patient is at high risk for internal bleeding. Warfarin should be held and Vitamin K may be needed.",
+                "theory": {
+                    "title": "Point-of-Care INR",
+                    "content": "<p><strong>INR</strong> standardizes clotting time across labs. <br/><strong>INR 1.0:</strong> Normal healthy person.<br/><strong>INR 2.0-3.0:</strong> Therapeutic range for most anticoagulation.<br/><strong>INR > 4.0:</strong> Increased bleeding risk.</p>",
+                    "analogy": "Think of INR as the 'slipperiness' of the road. INR 1 is dry asphalt (good traction, easy to stop). INR 2-3 is a controlled slide. INR 5+ is black ice—you can't stop bleeding once it starts.",
+                    "application": "Patients can now self-test INR at home using fingerstick devices, similar to diabetics checking glucose, keeping them in the safe zone more often."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Point of Care",
+        "chapter_title": "Chapter 5: Cardiac Markers",
+        "labComponentId": "poct-cardiac",
+        "critical_concepts": [
+            { "concept": "Troponin", "elaboration": "Gold standard biomarker for myocardial injury." },
+            { "concept": "NSTEMI", "elaboration": "Heart attack without ST elevation, diagnosed by positive biomarkers." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "trop_er",
+                "type": "rapid-test",
+                "title": "Chest Pain Triage",
+                "prompt": "50M with chest pressure. ECG is non-diagnostic. Perform Rapid Troponin.",
+                "question": "Interpret the result shown on the cassette.",
+                "testResult": { "testName": "Troponin I", "result": "positive", "controlLine": true, "testLine": true },
+                "clinicalContext": "Onset of pain 2 hours ago. History of hypertension.",
+                "options": ["Negative - Gastritis", "Positive - Myocardial Infarction", "Invalid Test", "Requires PCR confirmation"],
+                "answer": "Positive - Myocardial Infarction",
+                "explanation": "A positive Troponin line indicates heart muscle damage. In the context of chest pain, this confirms an NSTEMI (Non-ST Elevation Myocardial Infarction).",
+                "theory": {
+                    "title": "Time is Muscle",
+                    "content": "<p>High-sensitivity POCT Troponin assays can detect heart damage in as little as 15-20 minutes at the bedside, rather than waiting 1-2 hours for the central lab.</p>",
+                    "analogy": "Troponin is like structural debris from a collapsing building. If you find pieces of the foundation (heart muscle proteins) in the street (bloodstream), you know the building is crumbling.",
+                    "application": "Rapid rule-out protocols allow ER doctors to discharge low-risk chest pain patients safely if their 0-hour and 1-hour Troponins are both negative."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Point of Care",
+        "chapter_title": "Chapter 6: Infectious Disease Rapid Tests",
+        "labComponentId": "poct-infectious",
+        "critical_concepts": [
+            { "concept": "Antigen vs Antibody", "elaboration": "Antigen tests detect the bug itself. Antibody tests detect the immune response to the bug." },
+            { "concept": "Sensitivity", "elaboration": "Ability to detect positive cases. Rapid flu tests often have lower sensitivity than PCR." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "flu_screening",
+                "type": "rapid-test",
+                "title": "Pediatric Fever",
+                "prompt": "Child with high fever and cough during flu season. Rapid Flu A/B test.",
+                "question": "Interpret the Influenza A result.",
+                "testResult": { "testName": "Influenza A+B", "result": "negative", "controlLine": true, "testLine": false },
+                "clinicalContext": "Symptoms started 12 hours ago. Exposure to sick classmates.",
+                "options": ["Positive for Flu A", "Positive for Flu B", "Negative for Flu A", "Invalid"],
+                "answer": "Negative for Flu A",
+                "explanation": "Only the control line is visible. However, clinicians must remember that rapid flu tests can have false negatives (sensitivity ~50-70%).",
+                "theory": {
+                    "title": "Sensitivity vs. Specificity in POCT",
+                    "content": "<p><strong>Rapid Antigen Tests</strong> are excellent at 'Ruling In' disease (High Specificity - if it's positive, you have it). They are less good at 'Ruling Out' (Moderate Sensitivity - if it's negative, you might still have it).</p>",
+                    "analogy": "A metal detector at an airport. High sensitivity (PCR) beeps at a gum wrapper. Low sensitivity (Rapid Test) might miss a small knife but will definitely catch a machine gun.",
+                    "application": "A negative rapid flu test in a highly symptomatic patient during an outbreak should often be treated as 'Presumed Positive' or confirmed with a better test (PCR)."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Point of Care",
+        "chapter_title": "Chapter 7: Urinalysis at the Bedside",
+        "labComponentId": "poct-urinalysis",
+        "critical_concepts": [
+            { "concept": "Dipstick Chemistry", "elaboration": "Multi-pad strips detecting Glucose, Bilirubin, Ketone, Specific Gravity, Blood, pH, Protein, Urobilinogen, Nitrite, and Leukocytes." },
+            { "concept": "Interference", "elaboration": "Vitamin C can cause false negatives; Pyridium can mask colors." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "urine_dip_uti",
+                "type": "dipstick",
+                "title": "Dipstick Interpretation",
+                "prompt": "Read the urine dipstick for a patient with burning urination.",
+                "question": "Identify the abnormal pads matching the reference chart.",
+                "pads": [
+                    {"name": "Leukocytes", "color": "purple", "result": "Large", "abnormal": true},
+                    {"name": "Nitrite", "color": "pink", "result": "Positive", "abnormal": true},
+                    {"name": "Blood", "color": "yellow", "result": "Negative", "abnormal": false},
+                    {"name": "Glucose", "color": "teal", "result": "Negative", "abnormal": false}
+                ],
+                "options": ["Normal", "UTI (Cystitis)", "Diabetic Ketoacidosis", "Hematuria"],
+                "answer": "UTI (Cystitis)",
+                "explanation": "Positive Leukocytes (WBCs) and Nitrites (bacteria by-product) are the hallmark combo for a Urinary Tract Infection.",
+                "theory": {
+                    "title": "The 10-Parameter Dipstick",
+                    "content": "<p>A plastic strip with chemical pads that change color within 60-120 seconds. It is a 'liquid biopsy' of the kidney and metabolic state.</p><ul><li><strong>Nitrites:</strong> Bacteria turn Nitrate -> Nitrite.</li><li><strong>Ketones:</strong> Fat breakdown (Starvation or DKA).</li><li><strong>Bilirubin:</strong> Liver blockage.</li></ul>",
+                    "analogy": "The dipstick is like a vehicle dashboard check-engine light system. One strip gives you 10 different status lights about the body's engine (liver, kidney, hydration, sugar control).",
+                    "application": "Routine prenatal visits always include a dipstick to check for Protein (Preeclampsia) and Glucose (Gestational Diabetes)."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Point of Care",
+        "chapter_title": "Chapter 8: Pregnancy and Fertility",
+        "labComponentId": "poct-fertility",
+        "critical_concepts": [
+            { "concept": "hCG", "elaboration": "Human Chorionic Gonadotropin, the hormone produced by the placenta shortly after implantation." },
+            { "concept": "Threshold", "elaboration": "Urine tests typically detect hCG above 20-25 mIU/mL." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "hcg_ectopic",
+                "type": "rapid-test",
+                "title": "Acute Abdominal Pain",
+                "prompt": "Female patient with severe abdominal pain and hypotension. Urine HCG performed.",
+                "question": "The test is Positive. Combined with shock, what is the critical concern?",
+                "testResult": { "testName": "hCG Combo", "result": "positive", "controlLine": true, "testLine": true },
+                "clinicalContext": "BP 80/50, HR 120. Last menstrual period 6 weeks ago.",
+                "options": ["Normal Pregnancy", "Ruptured Ectopic Pregnancy", "Appendicitis", "Food Poisoning"],
+                "answer": "Ruptured Ectopic Pregnancy",
+                "explanation": "A positive pregnancy test in a patient with shock and abdominal pain is a Ruptured Ectopic Pregnancy until proven otherwise. This is a surgical emergency.",
+                "theory": {
+                    "title": "The Vital Sign of Women's Health",
+                    "content": "<p>In emergency medicine, 'Female + Abdominal Pain = Pregnancy Test'. hCG is detectable in urine ~10-14 days after conception.</p>",
+                    "analogy": "hCG is the 'beacon' sent out by a new embryo to tell the body 'Don't restart the cycle, I'm here!'. POCT kits detect this beacon light.",
+                    "application": "Before any X-ray or CT scan involving radiation, or prescribing teratogenic drugs, a POCT pregnancy test is mandatory for women of childbearing age."
+                }
+            }
+        ]
+    }
+]

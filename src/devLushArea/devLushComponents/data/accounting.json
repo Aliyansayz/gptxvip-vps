@@ -277,5 +277,125 @@
       "ledger",
       "reconciliation"
     ]
+  },
+  {
+    "course": "Accounting Agents",
+    "chapter_title": "Advanced Forensic & Predictive Accounting",
+    "labComponentId": "accounting-advanced-forensics",
+    "critical_concepts": [
+      {
+        "concept": "Fuzzy Matching",
+        "elaboration": "Detecting invoice fraud by identifying slight variations in vendor names or bank details."
+      },
+      {
+        "concept": "Predictive Cash Flow",
+        "elaboration": "Combining historical ledger data with predictive models to forecast cash runway."
+      },
+      {
+        "concept": "GL Categorization",
+        "elaboration": "Classifying ambiguous transactions into specific General Ledger codes using semantic similarity."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "forensic-invoice-1",
+        "concept_tested": "Invoice Fraud Detection via Fuzzy Matching",
+        "type": "analysis",
+        "title": "Case 1: Phantom Vendor Detection",
+        "prompt": "An agent scans a batch of 500 invoices and flags two invoices: one from 'Global Tech Supplies' and another from 'Globel Tech Supply' with different routing numbers.",
+        "question": "What is the most effective AI technique for an agent to identify these potentially fraudulent 'phantom vendors'?",
+        "options": [
+          "A. Checking if the invoice total is exactly the same as previous months.",
+          "B. Using fuzzy string matching and semantic embeddings to detect slight variations in vendor names coupled with routing number anomalies.",
+          "C. Relying entirely on the LLM's pre-trained knowledge to know if 'Globel Tech Supply' is a real company."
+        ],
+        "answer": "B. Using fuzzy string matching and semantic embeddings to detect slight variations in vendor names coupled with routing number anomalies.",
+        "explanation": "Fraudsters often create 'phantom vendors' with names very similar to legitimate suppliers. AI agents use fuzzy matching (like Levenshtein distance) and vector embeddings to group similar names, then cross-reference bank routing numbers to flag discrepancies.",
+        "theory": {
+          "title": "Fuzzy Matching in Invoice Fraud",
+          "content": "Traditional deterministic rules struggle with typos or slight variations. AI agents excel at understanding semantic similarity, allowing them to cluster 'nearly identical' vendor records and highlight those that direct payments to unusual bank accounts.",
+          "analogy": "A security guard who recognizes a fake ID not because the barcode is invalid, but because the photo looks just slightly 'off' compared to the real employee.",
+          "application": "Compute vector embeddings of vendor names from incoming invoices and compare them against a vector database of approved master vendor records."
+        },
+        "nature": "defense",
+        "tags": ["business"],
+        "logs": [
+          { "timestamp": "10:05:00", "level": "info", "message": "Ingesting batch of 500 vendor invoices..." },
+          { "timestamp": "10:05:05", "level": "info", "message": "Computing text embeddings for vendor names and comparing to Master Vendor DB." },
+          { "timestamp": "10:05:08", "level": "warn", "message": "High similarity (0.94) detected between 'Global Tech Supplies' (Approved) and 'Globel Tech Supply' (Unverified)." },
+          { "timestamp": "10:05:09", "level": "error", "message": "Routing number mismatch on 'Globel Tech Supply'. Flagged for manual fraud review." }
+        ]
+      },
+      {
+        "componentId": "forensic-gl-1",
+        "concept_tested": "Semantic GL Routing",
+        "type": "simulation",
+        "title": "Case 2: Ambiguous GL Categorization",
+        "prompt": "The accounting agent encounters a credit card charge simply labeled 'AWS AMZN.COM/BILL WA'.",
+        "question": "How does an accounting agent correctly categorize this ambiguous transaction?",
+        "options": [
+          "A. It asks the user to manually enter the category for every single transaction.",
+          "B. It randomly assigns it to 'Office Supplies' because Amazon sells office supplies.",
+          "C. It uses semantic similarity against historical, correctly categorized transactions to map it to 'Cloud Infrastructure'."
+        ],
+        "answer": "C. It uses semantic similarity against historical, correctly categorized transactions to map it to 'Cloud Infrastructure'.",
+        "explanation": "Rather than relying on brittle keyword rules, the agent searches a vector database of past transactions. If past 'AWS' charges were mapped to 'Cloud Infrastructure', the agent applies the same GL code with high confidence.",
+        "theory": {
+          "title": "Semantic General Ledger (GL) Categorization",
+          "content": "Bank transaction descriptions are notoriously messy and abbreviated. AI agents use Retrieval-Augmented Generation (RAG) to find historically similar transactions in the company's own ledger, mimicking the judgment of a human accountant.",
+          "analogy": "An apprentice accountant looking through last year's books to see how the senior accountant handled a weird receipt.",
+          "application": "Embed previous transactions and their GL codes. For new transactions, perform a similarity search and auto-categorize if confidence is > 90%."
+        },
+        "nature": "weakness",
+        "tags": ["business"],
+        "logs": [
+          { "timestamp": "11:20:00", "level": "info", "message": "Processing uncategorized bank feed..." },
+          { "timestamp": "11:20:01", "level": "info", "message": "Transaction: 'AWS AMZN.COM/BILL WA' - $1,405.22" },
+          { "timestamp": "11:20:02", "level": "info", "message": "Querying historical vector DB for similar transaction descriptions." },
+          { "timestamp": "11:20:03", "level": "success", "message": "Matched 45 previous records. GL Code Assigned: 6500 (Cloud Infrastructure). Confidence: 98%." }
+        ]
+      },
+      {
+        "componentId": "forensic-cash-1",
+        "concept_tested": "Predictive Cash Flow Modeling",
+        "type": "interactive-visual",
+        "title": "Case 3: Predictive Cash Flow Agent",
+        "prompt": "The agent is forecasting cash flow for the next quarter. It sees stable revenue but notices three major software contracts up for annual renewal next month.",
+        "question": "How does the AI agent incorporate these upcoming renewals into its forecast?",
+        "options": [
+          "A. It only looks at the previous month's cash outflow and assumes the next month will be identical.",
+          "B. It parses vendor contracts to identify future liability dates and injects those projected outflows into the time-series model.",
+          "C. It ignores software contracts because they are not physical assets."
+        ],
+        "answer": "B. It parses vendor contracts to identify future liability dates and injects those projected outflows into the time-series model.",
+        "explanation": "Advanced agents combine structured historical data with unstructured contract data. They can read contracts, extract renewal dates and amounts, and adjust the cash flow forecast proactively.",
+        "theory": {
+          "title": "Multimodal Cash Flow Forecasting",
+          "content": "A true accounting agent doesn't just look at past numbers in a spreadsheet. It reads the fine print. By extracting terms from PDFs (contracts, leases, loan agreements) and combining them with historical burn rates, it provides a much more accurate picture of future liquidity.",
+          "analogy": "Checking the weather forecast based on current clouds, while also reading the satellite report about an incoming hurricane.",
+          "application": "Use an LLM to parse unstructured contracts into structured 'Future Liability' JSON objects, which are then fed into a standard financial modeling tool."
+        },
+        "nature": "defense",
+        "tags": ["business"],
+        "logs": [
+          { "timestamp": "15:40:00", "level": "info", "message": "Generating Q3 Cash Flow Forecast..." },
+          { "timestamp": "15:40:02", "level": "info", "message": "Historical burn rate analyzed: $120k/month." },
+          { "timestamp": "15:40:05", "level": "warn", "message": "Parsed 'Salesforce_Enterprise_Agreement.pdf'. Detected upcoming annual renewal of $45,000 due Aug 15." },
+          { "timestamp": "15:40:06", "level": "success", "message": "Forecast adjusted. Projected cash dip on Aug 15 highlighted for CFO review." }
+        ]
+      }
+    ],
+    "tags": [
+      "devlush",
+      "agents",
+      "ai",
+      "finance",
+      "audit",
+      "fraud",
+      "compliance",
+      "ledger",
+      "reconciliation",
+      "forensics"
+    ]
   }
 ]

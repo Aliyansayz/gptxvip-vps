@@ -21,6 +21,7 @@ import CORSMisconfiguration from '../devLushTopics/web-bugbounty/CORSMisconfigur
 import OffensiveAiSecurityLensActivity from '../devLushTopics/cybersecurity/OffensiveAiSecurityLensActivity';
 import OffensiveAiDeveloperLensActivity from '../devLushTopics/cybersecurity/OffensiveAiDeveloperLensActivity';
 import OffensiveAiBusinessLensActivity from '../devLushTopics/cybersecurity/OffensiveAiBusinessLensActivity';
+import CybersecurityMorphologyActivity from '../devLushTopics/cybersecurity/CybersecurityMorphologyActivity';
 
 export const cybersecurityRegistry: Record<string, React.ComponentType<any>> = {
   'offensive-ai-cybersecurity': AutonomousReconActivity,
@@ -42,4 +43,5 @@ export const cybersecurityRegistry: Record<string, React.ComponentType<any>> = {
   'attack-surface-discovery': AttackSurfaceDiscovery,
   'authorization-testing': AuthorizationTesting,
   'secops-agents': SecOpsActivity,
+  'cybersecurity-morphology': CybersecurityMorphologyActivity,
 };

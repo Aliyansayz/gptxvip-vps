@@ -1,0 +1,266 @@
+[
+  {
+    "labComponentId": "cellular-physiology",
+    "course": "Physiology",
+    "chapter_title": "Chapter 1: Cellular Physiology",
+    "chapter_id": "physiology-1",
+    "critical_concepts": [
+      {
+        "concept": "Membrane Transport and Ion Channels",
+        "definition": "The movement of ions and molecules across biological membranes via passive or active mechanisms, often facilitated by specific protein channels."
+      },
+      {
+        "concept": "Homeostasis and Signaling Pathways",
+        "definition": "The maintenance of a stable internal environment through complex communication systems that coordinate cellular activities."
+      },
+      {
+        "concept": "Electrolyte Imbalances",
+        "definition": "Clinical conditions resulting from abnormal concentrations of ions (like sodium, potassium, calcium) in the body fluids."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "id": "cell-phys-q1",
+        "componentId": "cellular-main-sim",
+        "type": "multiple-choice",
+        "title": "Membrane Transport",
+        "prompt": "Analyze the cellular transport mechanism.",
+        "question": "Which transport mechanism requires ATP to move molecules against their concentration gradient?",
+        "options": [
+          "Simple Diffusion",
+          "Facilitated Diffusion",
+          "Active Transport",
+          "Osmosis"
+        ],
+        "correctAnswer": 2,
+        "explanation": "Active transport uses cellular energy (ATP) to move substances from an area of lower concentration to an area of higher concentration.",
+        "theory": {
+          "title": "Cellular Foundations",
+          "content": "<p>Cellular physiology explores the fundamental processes that keep cells alive and functioning. This includes membrane transport (ion channels, pumps), homeostasis at the cellular level, and signaling pathways that allow cells to communicate.</p>",
+          "analogy": "The cell membrane is like a nightclub bouncer. It lets some things in easily (oxygen), requires VIP passes for others (glucose), and actively throws out troublemakers (sodium pumps).",
+          "application": "In cystic fibrosis, a defective chloride channel (the bouncer) prevents proper ion transport, leading to thick, sticky mucus in the lungs."
+        }
+      }
+    ]
+  },
+  {
+    "labComponentId": "cardiovascular-physiology",
+    "course": "Physiology",
+    "chapter_title": "Chapter 2: Cardiovascular Physiology",
+    "chapter_id": "physiology-2",
+    "critical_concepts": [
+      {
+        "concept": "Cardiac Cycle and Hemodynamics",
+        "definition": "The sequence of mechanical and electrical events in a heartbeat and the dynamics of blood flow within the circulatory system."
+      },
+      {
+        "concept": "Blood Pressure Regulation",
+        "definition": "The mechanisms (neural and hormonal) that maintain arterial pressure within a narrow range."
+      },
+      {
+        "concept": "Hypertension and Shock",
+        "definition": "Pathophysiological states where blood pressure is either chronically elevated (hypertension) or acutely insufficient to perfuse tissues (shock)."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "id": "cv-phys-q1",
+        "componentId": "cv-main-sim",
+        "type": "multiple-choice",
+        "title": "The Cardiac Cycle",
+        "prompt": "Observe the phases of the cardiac cycle.",
+        "question": "During which phase of the cardiac cycle do the ventricles contract and eject blood?",
+        "options": [
+          "Atrial Systole",
+          "Ventricular Diastole",
+          "Ventricular Systole",
+          "Isovolumetric Relaxation"
+        ],
+        "correctAnswer": 2,
+        "explanation": "Ventricular systole is the phase where the ventricles contract, increasing pressure to eject blood into the aorta and pulmonary trunk.",
+        "theory": {
+          "title": "Hemodynamics and Regulation",
+          "content": "<p>This chapter covers the cardiac cycle, hemodynamics, and the complex regulation of blood pressure. We also explore the pathophysiology of hypertension and different types of shock, providing a clinical context for cardiovascular function.</p>",
+          "analogy": "The heart is a dual-action mechanical pump. The right side pumps to the local filter (lungs), while the left side pumps to the entire city (body).",
+          "application": "In heart failure, the pump weakens. Fluid backs up into the lungs (left-sided) or the body (right-sided), causing edema."
+        }
+      }
+    ]
+  },
+  {
+    "labComponentId": "respiratory-physiology",
+    "course": "Physiology",
+    "chapter_title": "Chapter 3: Respiratory Physiology",
+    "chapter_id": "physiology-3",
+    "critical_concepts": [
+      {
+        "concept": "Mechanics of Breathing",
+        "definition": "The physical processes of inhalation and exhalation driven by pressure changes in the thoracic cavity."
+      },
+      {
+        "concept": "Gas Exchange and Oxygen Transport",
+        "definition": "The diffusion of gases across the alveolar-capillary membrane and their transport in the blood, primarily via hemoglobin."
+      },
+      {
+        "concept": "Hypoxemia and Hypercapnia",
+        "definition": "Clinical states characterized by abnormally low oxygen levels (hypoxemia) or high carbon dioxide levels (hypercapnia) in the blood."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "id": "resp-phys-q1",
+        "componentId": "resp-main-sim",
+        "type": "multiple-choice",
+        "title": "Mechanics of Ventilation",
+        "prompt": "Analyze the mechanics of breathing.",
+        "question": "What is the primary driver of quiet inspiration?",
+        "options": [
+          "Contraction of abdominal muscles",
+          "Contraction of the diaphragm",
+          "Relaxation of external intercostals",
+          "Elastic recoil of the lungs"
+        ],
+        "correctAnswer": 1,
+        "explanation": "The diaphragm is the most important muscle of inspiration. Its contraction increases thoracic volume, lowering pressure and drawing air into the lungs.",
+        "theory": {
+          "title": "Pulmonary Function",
+          "content": "<p>Respiratory physiology focuses on how the body acquires oxygen and removes carbon dioxide. Key topics include the mechanics of ventilation, gas exchange at the respiratory membrane, and the transport of gases in the blood.</p>",
+          "analogy": "The lungs are like a pair of bellows. When you pull the handles apart (diaphragm contracts), pressure drops and air rushes in. When you push them together, air is forced out.",
+          "application": "In asthma, the tubes leading to the bellows constrict, making it incredibly hard to push air out, leading to wheezing."
+        }
+      }
+    ]
+  },
+  {
+    "labComponentId": "renal-physiology",
+    "course": "Physiology",
+    "chapter_title": "Chapter 4: Renal Physiology",
+    "chapter_id": "physiology-4",
+    "critical_concepts": [
+      {
+        "concept": "Glomerular Filtration and Tubular Function",
+        "definition": "The multi-step process of filtering blood and modifying the filtrate through reabsorption and secretion to form urine."
+      },
+      {
+        "concept": "Acid-Base Balance Regulation",
+        "definition": "The regulation of hydrogen ion concentration in body fluids, largely managed by the kidneys and lungs."
+      },
+      {
+        "concept": "Acute Kidney Injury and Metabolic Acidosis",
+        "definition": "Clinical conditions involving sudden loss of kidney function (AKI) or an accumulation of acid in the body (metabolic acidosis)."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "id": "renal-phys-q1",
+        "componentId": "renal-main-sim",
+        "type": "multiple-choice",
+        "title": "Tubular Reabsorption",
+        "prompt": "Evaluate the function of the nephron.",
+        "question": "In which part of the nephron does the majority of water and solute reabsorption occur?",
+        "options": [
+          "Distal Convoluted Tubule",
+          "Loop of Henle",
+          "Proximal Convoluted Tubule",
+          "Collecting Duct"
+        ],
+        "correctAnswer": 2,
+        "explanation": "The proximal convoluted tubule (PCT) is responsible for reabsorbing about 65% of the filtered water and solutes.",
+        "theory": {
+          "title": "Renal Function and Balance",
+          "content": "<p>The kidneys play a vital role in maintaining fluid and electrolyte balance and regulating blood pH. This chapter explores glomerular filtration, tubular reabsorption/secretion, and the renal response to acid-base disturbances.</p>",
+          "analogy": "The kidney is a recycling center. It dumps almost everything onto a conveyor belt (filtration), then carefully picks back up what it wants to keep (reabsorption), and lets the rest go as waste (urine).",
+          "application": "Diuretics (water pills) block the recycling workers from picking up sodium. Water follows sodium, so more water stays on the belt and becomes urine, lowering blood pressure."
+        }
+      }
+    ]
+  },
+  {
+    "labComponentId": "endocrine-physiology",
+    "course": "Physiology",
+    "chapter_title": "Chapter 5: Endocrine Physiology",
+    "chapter_id": "physiology-5",
+    "critical_concepts": [
+      {
+        "concept": "Hormone Synthesis and Feedback Loops",
+        "definition": "The production of hormones and the regulatory systems that control their levels, usually via negative feedback."
+      },
+      {
+        "concept": "Thyroid, Adrenal, and Pancreatic Regulation",
+        "definition": "The control of metabolism, stress response, and blood glucose through specific endocrine glands."
+      },
+      {
+        "concept": "Diabetes and Thyroid Disorders",
+        "definition": "Common clinical conditions resulting from dysfunction in pancreatic (diabetes) or thyroid gland regulation."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "id": "endo-phys-q1",
+        "componentId": "endo-main-sim",
+        "type": "multiple-choice",
+        "title": "Hormonal Feedback",
+        "prompt": "Analyze the endocrine feedback loop.",
+        "question": "Which hormone is released by the pancreas in response to high blood glucose levels?",
+        "options": [
+          "Glucagon",
+          "Cortisol",
+          "Insulin",
+          "Epinephrine"
+        ],
+        "correctAnswer": 2,
+        "explanation": "Insulin is secreted by pancreatic beta cells to facilitate glucose uptake by tissues, thereby lowering blood sugar levels.",
+        "theory": {
+          "title": "Hormonal Coordination",
+          "content": "<p>Endocrine physiology examines how hormones coordinate body functions over long distances. We study hormone synthesis, feedback mechanisms, and the specific roles of the thyroid, adrenal, and pancreatic glands.</p>",
+          "analogy": "The endocrine system is like a thermostat. When the house gets cold, the heater turns on. Once it's warm, the thermostat senses it and turns the heater off (negative feedback).",
+          "application": "In Type 1 Diabetes, the 'heater' (pancreas) is broken and cannot produce insulin, so blood sugar stays dangerously high."
+        }
+      }
+    ]
+  },
+  {
+    "labComponentId": "gastrointestinal-physiology",
+    "course": "Physiology",
+    "chapter_title": "Chapter 6: Gastrointestinal Physiology",
+    "chapter_id": "physiology-6",
+    "critical_concepts": [
+      {
+        "concept": "Digestion and Absorption Processes",
+        "definition": "The mechanical and chemical breakdown of food and the subsequent uptake of nutrients into the bloodstream."
+      },
+      {
+        "concept": "Liver and Biliary Function",
+        "definition": "The diverse roles of the liver in metabolism and detoxification, and the production/release of bile."
+      },
+      {
+        "concept": "Malabsorption and Liver Disease",
+        "definition": "Clinical states where nutrient uptake is impaired (malabsorption) or liver function is compromised (liver disease)."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "id": "gi-phys-q1",
+        "componentId": "gi-main-sim",
+        "type": "multiple-choice",
+        "title": "Intestinal Absorption",
+        "prompt": "Evaluate the process of digestion and absorption.",
+        "question": "Where does the majority of nutrient absorption take place in the gastrointestinal tract?",
+        "options": [
+          "Stomach",
+          "Small Intestine",
+          "Large Intestine",
+          "Esophagus"
+        ],
+        "correctAnswer": 1,
+        "explanation": "The small intestine, with its large surface area provided by villi and microvilli, is the primary site for nutrient absorption.",
+        "theory": {
+          "title": "Digestive Processes",
+          "content": "<p>This chapter covers the physiology of the digestive system, from mechanical breakdown to nutrient absorption. We also focus on the critical roles of the liver and biliary system.</p>",
+          "analogy": "The GI tract is a chemical disassembly line. Food enters as a complex machine, gets smashed (chewing), bathed in acid (stomach), and dismantled into raw materials (intestines) for absorption.",
+          "application": "In Celiac disease, the 'sponges' (villi) that absorb the raw materials are destroyed by an immune reaction to gluten, leading to severe malnutrition."
+        }
+      }
+    ]
+  }
+]

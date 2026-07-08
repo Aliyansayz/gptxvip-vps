@@ -1,0 +1,63 @@
+
+[
+    {
+        "course": "ecology",
+        "chapter_title": "Chapter 1: Ecosystem Dynamics",
+        "labComponentId": "ecology-balance",
+        "levelId": "ecology-balance",
+        "critical_concepts": [
+            {
+                "concept": "Producers",
+                "elaboration": "Organisms like plants that produce their own food, usually through photosynthesis. They form the base of the food web."
+            },
+            {
+                "concept": "Trophic Cascades",
+                "elaboration": "Ecological phenomenon triggered by the addition or removal of top predators and involving reciprocal changes in the relative populations of predator and prey."
+            }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "ecosystem_simulation_exercise",
+                "type": "simulation",
+                "title": "Ecosystem Balance Simulation",
+                "prompt": "A stable ecosystem requires a delicate balance between producers, herbivores, and carnivores. Too many predators or too few producers can lead to a collapse.",
+                "question": "Adjust the populations to create a stable ecosystem that runs for 10 generations.",
+                "answer": "Stable configuration found",
+                "explanation": "You've found a stable balance! This demonstrates that a much larger biomass of producers is needed to support a smaller biomass of herbivores.",
+                "theory": {
+                    "title": "Population Dynamics",
+                    "content": "<p>Ecosystems rely on a balance between <span style=\"color:#22c55e; font-weight:bold;\">Producers</span> (plants), <span style=\"color:#3b82f6; font-weight:bold;\">Primary Consumers</span> (herbivores), and <span style=\"color:#f59e0b; font-weight:bold;\">Secondary Consumers</span> (carnivores).</p><p>Populations fluctuate in cycles. If prey increases, predators eventually increase. As predators increase, prey decreases, which then causes predators to decrease, allowing prey to recover.</p>",
+                    "analogy": "Think of a bank account. Producers are your income (deposits). Herbivores are your daily expenses (withdrawals). If expenses consistently exceed income, the account goes bankrupt (ecosystem collapse).",
+                    "application": "In Yellowstone National Park, the reintroduction of wolves (top predators) controlled the elk population, which allowed willow trees to recover, eventually changing the flow of the rivers (Trophic Cascade)."
+                }
+            },
+            {
+                "componentId": "energy_pyramid_exercise",
+                "type": "pyramid",
+                "title": "Energy Pyramid",
+                "prompt": "The flow of energy in an ecosystem can be visualized as a pyramid. Each level up has significantly less energy than the one below it.",
+                "question": "Build the energy pyramid from the bottom up.",
+                "items": [
+                    "Secondary Consumers (Carnivores)",
+                    "Producers",
+                    "Tertiary Consumers (Apex Predators)",
+                    "Primary Consumers (Herbivores)"
+                ],
+                "correctOrder": [
+                    "Producers",
+                    "Primary Consumers (Herbivores)",
+                    "Secondary Consumers (Carnivores)",
+                    "Tertiary Consumers (Apex Predators)"
+                ],
+                "answer": "Producers,Primary Consumers,Secondary Consumers,Tertiary Consumers",
+                "explanation": "Correct! Producers form the base, followed by primary consumers, then secondary consumers. Only about 10% of energy is transferred up.",
+                "theory": {
+                    "title": "The 10% Rule",
+                    "content": "<p>In an ecosystem, energy is lost as heat at each step of the food chain. Only about <span style=\"color:#ef4444; font-weight:bold;\">10%</span> of the energy at one trophic level is passed on to the next.</p><ul><li><span style=\"color:#22c55e; font-weight:bold;\">Producers</span>: 100% Energy</li><li><span style=\"color:#3b82f6; font-weight:bold;\">Primary Consumers</span>: 10% Energy</li><li><span style=\"color:#f59e0b; font-weight:bold;\">Secondary Consumers</span>: 1% Energy</li></ul>",
+                    "analogy": "Imagine a pyramid of champagne glasses. You pour a whole bottle into the top glass (sunlight energy to producers), but due to spilling and splashing (metabolic heat loss), only a sip makes it to the glasses at the very bottom.",
+                    "application": "This explains why apex predators (like tigers or eagles) are rare compared to plants or insects. An ecosystem simply cannot support a large number of top-tier consumers due to energy inefficiency."
+                }
+            }
+        ]
+    }
+]

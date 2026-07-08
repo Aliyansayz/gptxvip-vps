@@ -1,0 +1,198 @@
+[
+  {
+    "id": 0,
+    "label": "Healthy Baseline",
+    "category": "Physiology",
+    "severity": "Normal",
+    "description": "Optimal physiological state with all biological markers within expected healthy ranges. Homeostasis is maintained.",
+    "causes": "Balanced diet, regular exercise, adequate sleep, and low stress.",
+    "commonSigns": ["High energy", "Clear focus", "Stable mood", "Restful sleep"],
+    "emergency": "None.",
+    "bgImage": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2099&auto=format&fit=crop",
+    "metrics": [
+      { "label": "Blood Sugar (mg/dL)", "value": 100, "min": 70, "max": 300, "normalMin": 70, "normalMax": 140, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-emerald-400", "bg": "bg-emerald-400" },
+      { "label": "Insulin Efficacy", "value": 90, "min": 0, "max": 100, "normalMin": 80, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-emerald-400", "bg": "bg-emerald-400" },
+      { "label": "Sleep Quality", "value": 95, "min": 0, "max": 100, "normalMin": 80, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-emerald-400", "bg": "bg-emerald-400" },
+      { "label": "SpO2 (Oxygen %)", "value": 99, "min": 80, "max": 100, "normalMin": 95, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-emerald-400", "bg": "bg-emerald-400" },
+      { "label": "Pulse Rate (BPM)", "value": 72, "min": 40, "max": 200, "normalMin": 60, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-emerald-400", "bg": "bg-emerald-400" },
+      { "label": "RBC Count (million/uL)", "value": 4.8, "min": 2, "max": 7, "normalMin": 4.2, "normalMax": 5.4, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-emerald-400", "bg": "bg-emerald-400" },
+      { "label": "Hemoglobin (g/dL)", "value": 14, "min": 5, "max": 20, "normalMin": 12, "normalMax": 16, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-emerald-400", "bg": "bg-emerald-400" }
+    ]
+  },
+  {
+    "id": 1,
+    "label": "Hyperglycemia",
+    "category": "Endocrinology",
+    "severity": "High",
+    "description": "Also known as hyperglycemia, this condition occurs when there is too much sugar in the blood.",
+    "causes": "Low insulin, excessive carb intake, stress, or lack of exercise.",
+    "commonSigns": ["Frequent urination", "Extreme thirst", "Blurred vision", "Fatigue"],
+    "emergency": "Seek care if you experience fruity-smelling breath, vomiting, or confusion (signs of DKA).",
+    "bgImage": "https://images.unsplash.com/photo-1511174511562-5f7f185854c8?q=80&w=2070&auto=format&fit=crop",
+    "metrics": [
+      { "label": "Blood Sugar (mg/dL)", "value": 180, "min": 70, "max": 300, "normalMin": 70, "normalMax": 140, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-red-400", "bg": "bg-red-400" },
+      { "label": "Insulin Efficacy", "value": 20, "min": 0, "max": 100, "normalMin": 80, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-blue-400", "bg": "bg-blue-400" },
+      { "label": "Carb Load", "value": 85, "min": 0, "max": 100, "normalMin": 20, "normalMax": 50, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-orange-400", "bg": "bg-orange-400" }
+    ]
+  },
+  {
+    "id": 2,
+    "label": "Fatigue",
+    "category": "Internal Medicine",
+    "severity": "Low-Medium",
+    "description": "A lingering feeling of tiredness or lack of energy that doesn’t improve with rest.",
+    "causes": "Anemia, thyroid issues, poor sleep, or chronic stress.",
+    "commonSigns": ["Morning sluggishness", "Muscle weakness", "Irritability"],
+    "emergency": "Sudden, extreme fatigue with chest pain or shortness of breath.",
+    "bgImage": "https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?q=80&w=2099&auto=format&fit=crop",
+    "metrics": [
+      { "label": "Sleep Quality", "value": 30, "min": 0, "max": 100, "normalMin": 80, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-indigo-400", "bg": "bg-indigo-400" },
+      { "label": "Cortisol Levels", "value": 90, "min": 0, "max": 100, "normalMin": 10, "normalMax": 50, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-yellow-400", "bg": "bg-yellow-400" },
+      { "label": "Iron Reserve", "value": 15, "min": 0, "max": 100, "normalMin": 50, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-red-500", "bg": "bg-red-500" }
+    ]
+  },
+  {
+    "id": 3,
+    "label": "Dyspnea",
+    "category": "Pulmonology",
+    "severity": "High",
+    "description": "Shortness of breath or difficulty breathing, making it hard to get enough air.",
+    "causes": "Asthma, pneumonia, heart failure, or intense anxiety.",
+    "commonSigns": ["Tightness in chest", "Rapid breathing", "Gasping for air"],
+    "emergency": "Blue lips/nails, inability to speak in full sentences, or sudden onset.",
+    "bgImage": "https://images.unsplash.com/photo-1584634731339-252c5aba1957?q=80&w=2070&auto=format&fit=crop",
+    "metrics": [
+      { "label": "SpO2 (Oxygen %)", "value": 92, "min": 80, "max": 100, "normalMin": 95, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-cyan-400", "bg": "bg-cyan-400" },
+      { "label": "Airway Clarity", "value": 45, "min": 0, "max": 100, "normalMin": 80, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-emerald-400", "bg": "bg-emerald-400" },
+      { "label": "Pulse Rate (BPM)", "value": 110, "min": 40, "max": 200, "normalMin": 60, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-rose-400", "bg": "bg-rose-400" }
+    ]
+  },
+  {
+    "id": 4,
+    "label": "Arrhythmia",
+    "category": "Cardiology",
+    "severity": "Critical",
+    "description": "Irregular heartbeat that can lead to poor blood flow and cardiovascular instability.",
+    "causes": "Heart disease, electrolyte imbalance, stress, caffeine overload.",
+    "commonSigns": ["Palpitations", "Dizziness", "Shortness of breath", "Fluttering in chest"],
+    "emergency": "Loss of consciousness, severe chest pain.",
+    "bgImage": "https://images.unsplash.com/photo-1628348068285-1175ebcde222?q=80&w=2070&auto=format&fit=crop",
+    "metrics": [
+      { "label": "Pulse Rate (BPM)", "value": 130, "min": 40, "max": 200, "normalMin": 60, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-rose-400", "bg": "bg-rose-400" },
+      { "label": "Ejection Fraction (%)", "value": 45, "min": 0, "max": 100, "normalMin": 55, "normalMax": 70, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-indigo-400", "bg": "bg-indigo-400" },
+      { "label": "Systolic BP (mmHg)", "value": 150, "min": 70, "max": 200, "normalMin": 100, "normalMax": 120, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-red-500", "bg": "bg-red-500" }
+    ]
+  },
+  {
+    "id": 5,
+    "label": "Acute Kidney Injury",
+    "category": "Nephrology",
+    "severity": "High",
+    "description": "Sudden episode of kidney failure or kidney damage that limits the body's ability to filter waste.",
+    "causes": "Decreased blood flow, direct damage to kidneys, blockage of urinary tract.",
+    "commonSigns": ["Decreased urine output", "Fluid retention", "Fatigue", "Confusion"],
+    "emergency": "Seizures, coma, or chest pain due to fluid lining the heart.",
+    "bgImage": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2000&auto=format&fit=crop",
+    "metrics": [
+      { "label": "GFR (mL/min)", "value": 45, "min": 0, "max": 140, "normalMin": 90, "normalMax": 120, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-emerald-500", "bg": "bg-emerald-500" },
+      { "label": "Serum Creatinine (mg/dL)", "value": 2.5, "min": 0, "max": 10, "normalMin": 0.7, "normalMax": 1.3, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-amber-500", "bg": "bg-amber-500" },
+      { "label": "Hydration Level (%)", "value": 60, "min": 0, "max": 100, "normalMin": 80, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-cyan-500", "bg": "bg-cyan-500" }
+    ]
+  },
+  {
+    "id": 6,
+    "label": "Peripheral Neuropathy",
+    "category": "Neurology",
+    "severity": "Medium",
+    "description": "Nerve damage affecting the peripheral nervous system, causing pain and signaling disruption.",
+    "causes": "Diabetes, chemotherapy, autoimmune diseases, vitamin deficiencies.",
+    "commonSigns": ["Numbness", "Tingling", "Sharp pain", "Muscle weakness"],
+    "emergency": "Sudden onset of severe weakness or spread of symptoms to breathing muscles.",
+    "bgImage": "https://images.unsplash.com/photo-1559757175-5700dde675bc?q=80&w=2000&auto=format&fit=crop",
+    "metrics": [
+      { "label": "Nerve Conduction (m/s)", "value": 35, "min": 0, "max": 80, "normalMin": 50, "normalMax": 65, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-purple-500", "bg": "bg-purple-500" },
+      { "label": "Pain Intensity (1-10)", "value": 6, "min": 0, "max": 10, "normalMin": 0, "normalMax": 2, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-rose-500", "bg": "bg-rose-500" },
+      { "label": "Blood Sugar (mg/dL)", "value": 160, "min": 70, "max": 300, "normalMin": 70, "normalMax": 140, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-red-400", "bg": "bg-red-400" }
+    ]
+  },
+  {
+    "id": 7,
+    "label": "Hypothyroidism",
+    "category": "Endocrinology",
+    "severity": "Medium",
+    "description": "A condition where the thyroid gland doesn't produce enough thyroid hormone, slowing down metabolic processes.",
+    "causes": "Hashimoto's disease, iodine deficiency, or pituitary disorders.",
+    "commonSigns": ["Weight gain", "Cold intolerance", "Dry skin", "Constipation"],
+    "emergency": "Extreme lethargy leading to confusion or low body temperature (Myxedema coma).",
+    "bgImage": "https://images.unsplash.com/photo-1576091160550-217359f49f4c?q=80&w=2070&auto=format&fit=crop",
+    "metrics": [
+      { "label": "TSH Level (mIU/L)", "value": 15, "min": 0, "max": 50, "normalMin": 0.4, "normalMax": 4.0, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-purple-400", "bg": "bg-purple-400" },
+      { "label": "T4 Free (ng/dL)", "value": 0.5, "min": 0, "max": 2.5, "normalMin": 0.8, "normalMax": 1.8, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-blue-400", "bg": "bg-blue-400" },
+      { "label": "Basal Metabolic Rate (%)", "value": 75, "min": 50, "max": 150, "normalMin": 90, "normalMax": 110, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-amber-400", "bg": "bg-amber-400" }
+    ]
+  },
+  {
+    "id": 8,
+    "label": "Iron Deficiency Anemia",
+    "category": "Hematology",
+    "severity": "Medium",
+    "description": "Lack of healthy red blood cells due to insufficient iron, leading to reduced oxygen delivery to tissues.",
+    "causes": "Blood loss, poor iron intake, or inability to absorb iron.",
+    "commonSigns": ["Pale skin", "Chest pain", "Brittle nails", "Pica (cravings for non-food items)"],
+    "emergency": "Severe shortness of breath, fainting, or chest pain.",
+    "bgImage": "https://images.unsplash.com/photo-1579154235602-3c2c2aa5d72f?q=80&w=2070&auto=format&fit=crop",
+    "metrics": [
+      { "label": "Hemoglobin (g/dL)", "value": 9, "min": 5, "max": 20, "normalMin": 12, "normalMax": 16, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-red-400", "bg": "bg-red-400" },
+      { "label": "Ferritin (ng/mL)", "value": 10, "min": 0, "max": 300, "normalMin": 15, "normalMax": 200, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-orange-400", "bg": "bg-orange-400" },
+      { "label": "RBC Count (million/uL)", "value": 3.5, "min": 2, "max": 7, "normalMin": 4.2, "normalMax": 5.4, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-rose-400", "bg": "bg-rose-400" }
+    ]
+  },
+  {
+    "id": 9,
+    "label": "Asthma Exacerbation",
+    "category": "Pulmonology",
+    "severity": "High",
+    "description": "Acute narrowing of the airways due to inflammation and muscle contraction, causing severe breathing difficulty.",
+    "causes": "Allergens, smoke, exercise, or viral infections.",
+    "commonSigns": ["Wheezing", "Tight chest", "Coughing", "Difficulty speaking"],
+    "emergency": "Silent chest (no wheezing because air isn't moving), gasping, or bluish tint to face.",
+    "bgImage": "https://images.unsplash.com/photo-1559839734-2b71f1e9cbee?q=80&w=2070&auto=format&fit=crop",
+    "metrics": [
+      { "label": "Peak Flow (L/min)", "value": 250, "min": 100, "max": 800, "normalMin": 400, "normalMax": 600, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-yellow-400", "bg": "bg-yellow-400" },
+      { "label": "Airway Clarity", "value": 30, "min": 0, "max": 100, "normalMin": 80, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-teal-400", "bg": "bg-teal-400" },
+      { "label": "SpO2 (Oxygen %)", "value": 90, "min": 80, "max": 100, "normalMin": 95, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-cyan-400", "bg": "bg-cyan-400" }
+    ]
+  },
+  {
+    "id": 10,
+    "label": "Severe Dehydration",
+    "category": "Internal Medicine",
+    "severity": "High",
+    "description": "Critical loss of body water and electrolytes that disrupts normal metabolic and physiological functions.",
+    "causes": "Excessive sweating, vomiting, diarrhea, or insufficient fluid intake.",
+    "commonSigns": ["Dark urine", "Sunken eyes", "Lethargy", "Dry mucous membranes"],
+    "emergency": "Coma, very low blood pressure, or rapid, weak pulse.",
+    "bgImage": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=2040&auto=format&fit=crop",
+    "metrics": [
+      { "label": "Hydration Level (%)", "value": 50, "min": 0, "max": 100, "normalMin": 80, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-cyan-400", "bg": "bg-cyan-400" },
+      { "label": "Systolic BP (mmHg)", "value": 90, "min": 70, "max": 200, "normalMin": 100, "normalMax": 120, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-red-400", "bg": "bg-red-400" },
+      { "label": "Pulse Rate (BPM)", "value": 115, "min": 40, "max": 200, "normalMin": 60, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-orange-400", "bg": "bg-orange-400" }
+    ]
+  },
+  {
+    "id": 11,
+    "label": "Hypoglycemia",
+    "category": "Endocrinology",
+    "severity": "Critical",
+    "description": "DANGEROUSLY low blood sugar levels that can lead to immediate loss of brain function and consciousness.",
+    "causes": "Too much insulin, skipping meals, or excessive exercise with diabetes medication.",
+    "commonSigns": ["Shaking", "Sweating", "Confusion", "Extreme hunger"],
+    "emergency": "Seizures or loss of consciousness.",
+    "bgImage": "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=2070&auto=format&fit=crop",
+    "metrics": [
+      { "label": "Blood Sugar (mg/dL)", "value": 45, "min": 30, "max": 300, "normalMin": 70, "normalMax": 140, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-red-600", "bg": "bg-red-600" },
+      { "label": "Insulin Level (uIU/mL)", "value": 25, "min": 0, "max": 100, "normalMin": 2, "normalMax": 20, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-sky-400", "bg": "bg-sky-400" },
+      { "label": "Alertness Level (%)", "value": 40, "min": 0, "max": 100, "normalMin": 90, "normalMax": 100, "suspiciousDeviation": 0.33, "criticalDeviation": 0.66, "color": "text-yellow-500", "bg": "bg-yellow-500" }
+    ]
+  }
+]

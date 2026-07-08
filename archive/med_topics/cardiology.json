@@ -1,0 +1,254 @@
+
+[
+    {
+        "course": "Cardiology",
+        "chapter_title": "1. Heart Anatomy & Physiology",
+        "labComponentId": "cardio-anatomy",
+        "critical_concepts": [
+            { "concept": "Electrical Conduction", "elaboration": "The sequence of electrical activation: SA Node → AV Node → Bundle of His → Purkinje Fibers." },
+            { "concept": "Coronary Circulation", "elaboration": "The network of arteries (LAD, RCA, Circumflex) supplying oxygenated blood to the heart muscle." },
+            { "concept": "Valve Function", "elaboration": "Tricuspid, Pulmonary, Mitral, and Aortic valves ensuring unidirectional blood flow." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "anatomy_conduction_map",
+                "type": "interactive-visual",
+                "title": "Conduction System Mapping",
+                "prompt": "Trace the electrical pathway of a normal heartbeat.",
+                "question": "Click the structure that acts as the 'Pacemaker' of the heart.",
+                "options": ["AV Node", "SA Node", "Purkinje Fibers", "Bundle of His"],
+                "answer": "SA Node",
+                "explanation": "The Sinoatrial (SA) Node initiates the electrical impulse, setting the pace for the heart.",
+                "theory": {
+                    "title": "Cardiac Conduction",
+                    "content": "<p>The heart's pumping action is orchestrated by an intrinsic electrical system. The <strong>SA Node</strong> (Sinoatrial) generates the impulse, which travels through the atria to the <strong>AV Node</strong> (Atrioventricular). There is a slight delay here to allow the atria to contract fully. The signal then shoots down the <strong>Bundle of His</strong> and spreads through the <strong>Purkinje Fibers</strong> to contract the ventricles.</p>",
+                    "analogy": "The conduction system is like the electrical wiring of a house. The SA node is the main fuse box or 'master switch' that sends power to the lights (heart muscle). If the main fuse blows, backup generators (AV node) can kick in, but they are dimmer (slower heart rate).",
+                    "application": "In 'Sick Sinus Syndrome', the SA node fails to fire reliably. We treat this by implanting a Pacemaker, which acts as an artificial fuse box to send regular electrical signals."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Cardiology",
+        "chapter_title": "2. Electrocardiography (ECG)",
+        "labComponentId": "cardiology-ecg-basics",
+        "critical_concepts": [
+            { "concept": "P-QRS-T Complex", "elaboration": "P wave (Atrial depolarization), QRS (Ventricular depolarization), T wave (Repolarization)." },
+            { "concept": "Arrhythmia Recognition", "elaboration": "Identifying abnormal patterns like Atrial Fibrillation (irregularly irregular) or V-Tach (wide, fast)." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "ecg_afib_sim",
+                "type": "select",
+                "title": "Arrhythmia Simulation",
+                "prompt": "Observe the live rhythm strip. Note the absence of P-waves and irregular R-R intervals.",
+                "question": "Diagnose the rhythm:",
+                "options": ["Normal Sinus", "Atrial Fibrillation", "Ventricular Tachycardia"],
+                "answer": "Atrial Fibrillation",
+                "explanation": "The chaotic baseline (no defined P-waves) and irregular spacing between beats are hallmarks of AFib.",
+                "pattern": "afib",
+                "rate": 110,
+                "theory": {
+                    "title": "Atrial Fibrillation",
+                    "content": "<p>AFib is caused by disorganized electrical signals in the atria. Instead of a strong, coordinated contraction, the atria quiver chaotically.</p>",
+                    "analogy": "Normal rhythm is like a well-drilled army marching in step. AFib is like a disorganized crowd running in all directions. The result is ineffective movement (blood flow) and chaos (irregular pulse).",
+                    "application": "Because blood stagnates in the quivering atria, clots can form. If a clot travels to the brain, it causes a stroke. This is why AFib patients often need blood thinners (anticoagulants) to prevent strokes."
+                }
+            },
+            {
+                "componentId": "ecg_vtach_sim",
+                "type": "select",
+                "title": "Emergency Rhythm",
+                "prompt": "Patient is unresponsive. Monitor shows wide complexes at >150 bpm.",
+                "question": "Diagnose the rhythm:",
+                "options": ["Sinus Tachycardia", "Ventricular Tachycardia", "Asystole"],
+                "answer": "Ventricular Tachycardia",
+                "explanation": "Wide, regular complexes at a rapid rate indicate V-Tach, a medical emergency.",
+                "pattern": "vtach",
+                "rate": 180,
+                "theory": {
+                    "title": "Ventricular Tachycardia",
+                    "content": "<p>V-Tach originates in the ventricles and causes them to beat extremely fast. This prevents the heart from filling with enough blood between beats, leading to a drastic drop in blood pressure.</p>",
+                    "analogy": "Imagine a car engine revving at maximum RPM while in neutral. It's working incredibly hard and making a lot of noise, but the car isn't moving anywhere. The heart is beating so fast it's effectively pumping nothing.",
+                    "application": "Stable V-Tach can be treated with meds (Amiodarone). Unstable or pulseless V-Tach requires immediate electrical cardioversion or defibrillation to 'reset' the heart's electrical system."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Cardiology",
+        "chapter_title": "3. Hemodynamics & BP",
+        "labComponentId": "cardio-hemodynamics",
+        "critical_concepts": [
+            { "concept": "Preload", "elaboration": "The volume of blood in the ventricles at the end of diastole (stretching the muscle)." },
+            { "concept": "Afterload", "elaboration": "The resistance the heart must overcome to circulate blood (systemic vascular resistance)." },
+            { "concept": "Cardiac Output", "elaboration": "Stroke Volume × Heart Rate. The total volume pumped per minute." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "hemo_slider_sim",
+                "type": "simulation",
+                "title": "Hemodynamic Controls",
+                "prompt": "Adjust the physiological parameters to observe changes in Blood Pressure and Cardiac Output.",
+                "question": "What happens to Blood Pressure when you significantly increase Afterload (Vasoconstriction)?",
+                "options": ["BP Increases", "BP Decreases", "No Change"],
+                "answer": "BP Increases",
+                "explanation": "Increasing afterload (tightening arteries) increases resistance, which raises blood pressure but forces the heart to work harder.",
+                "theory": {
+                    "title": "Frank-Starling Law",
+                    "content": "<p>The <strong>Frank-Starling Law</strong> states that the heart pumps all the blood returned to it. Increased venous return (Preload) stretches the muscle fibers, leading to a stronger contraction.</p>",
+                    "analogy": "Think of the heart as a balloon. Preload is how much air you blow into it; the more you stretch it, the harder it snaps back. Afterload is like squeezing the neck of the balloon while letting air out; the tighter you squeeze (resistance), the harder it is for air to escape.",
+                    "application": "In heart failure, the 'balloon' is overstretched and flabby. We give diuretics to lower preload (reduce the air) and ACE inhibitors to lower afterload (stop squeezing the neck), making it easier for the weak heart to pump."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Cardiology",
+        "chapter_title": "4. Cardiac Imaging",
+        "labComponentId": "cardio-imaging",
+        "critical_concepts": [
+            { "concept": "Echocardiography", "elaboration": "Ultrasound of the heart to visualize valves, wall motion, and ejection fraction." },
+            { "concept": "Angiography", "elaboration": "Using contrast dye and X-rays to visualize blockages in coronary arteries." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "echo_view_sim",
+                "type": "visual-toggle",
+                "title": "Virtual Echocardiography",
+                "prompt": "Toggle between Normal and Dilated Cardiomyopathy views.",
+                "question": "In the 'Dilated' view, how does the left ventricle compare to normal?",
+                "options": ["Walls are thicker", "Chamber is enlarged and walls are thin", "Valves are calcified"],
+                "answer": "Chamber is enlarged and walls are thin",
+                "explanation": "Dilated cardiomyopathy is characterized by an enlarged LV cavity with thinned walls and reduced contractility.",
+                "theory": {
+                    "title": "Echocardiogram Modes",
+                    "content": "<p>Echos allow us to see the heart beating in real-time. We assess <strong>Ejection Fraction (EF)</strong>, which is the percentage of blood pumped out with each beat (Normal is 55-70%).</p>",
+                    "analogy": "An echocardiogram is like using a weather radar (sonar) to see inside a storm. Instead of rain clouds, we see moving blood and muscle walls using sound waves.",
+                    "application": "Echo is the first-line test for Heart Failure. If a patient is short of breath, a quick Echo can tell us if the heart is pumping weakly (Systolic Failure) or if it's stiff and not filling properly (Diastolic Failure)."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Cardiology",
+        "chapter_title": "5. Lab Tests & Biomarkers",
+        "labComponentId": "cardio-labs",
+        "critical_concepts": [
+            { "concept": "Troponin", "elaboration": "Highly specific proteins released into blood when heart muscle is damaged (MI)." },
+            { "concept": "BNP", "elaboration": "Brain Natriuretic Peptide, released in response to ventricular stretch (Heart Failure)." },
+            { "concept": "Lipid Panel", "elaboration": "Measures cholesterol (LDL, HDL) to assess long-term risk of atherosclerosis." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "trop_curve_analysis",
+                "type": "graph-analysis",
+                "title": "Troponin Release Curve",
+                "prompt": "Analyze the biomarker release timeline after chest pain onset.",
+                "question": "Which biomarker rises first, and how long does Troponin stay elevated?",
+                "options": ["CK-MB rises first; Troponin stays ~1 week", "Troponin rises first; stays 24 hours", "LDH rises first"],
+                "answer": "CK-MB rises first; Troponin stays ~1 week",
+                "explanation": "Myoglobin rises earliest but is non-specific. Troponin rises within 3-4 hours and can remain elevated for 10-14 days, making it useful for late diagnosis.",
+                "theory": {
+                    "title": "Cardiac Biomarkers",
+                    "content": "<p><strong>Troponin I/T</strong> are the gold standards. <strong>CK-MB</strong> is useful for detecting re-infarction because it clears from the system faster (2-3 days).</p>",
+                    "analogy": "Imagine the heart muscle cells are filled with a specific red dye (Troponin). When the cell wall bursts due to injury (Heart Attack), that dye leaks into the river (bloodstream). By measuring the color of the river, we know if a dam broke upstream.",
+                    "application": "We use 'serial troponins' to rule out a heart attack. One negative test isn't enough because the 'dye' takes a few hours to reach the testing site. We repeat the test every 3-6 hours to catch the rise."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Cardiology",
+        "chapter_title": "6. Pathophysiology",
+        "labComponentId": "cardio-patho",
+        "critical_concepts": [
+            { "concept": "Atherosclerosis", "elaboration": "Plaque buildup in arteries leading to stenosis and potential rupture." },
+            { "concept": "Heart Failure", "elaboration": "Systolic (pumping problem) vs. Diastolic (filling problem) dysfunction." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "plaque_progression",
+                "type": "process-visual",
+                "title": "Coronary Artery Disease",
+                "prompt": "Observe the progression of atherosclerosis.",
+                "question": "What is the immediate event that typically causes a heart attack (MI)?",
+                "options": ["Slow narrowing over years", "Plaque rupture and clot formation", "Artery spasm"],
+                "answer": "Plaque rupture and clot formation",
+                "explanation": "While narrowing causes angina, a heart attack is usually caused by the sudden rupture of a plaque, which triggers a blood clot that completely blocks the artery.",
+                "theory": {
+                    "title": "The Ischemic Cascade",
+                    "content": "<p><strong>Ischemia</strong> (lack of oxygen) leads to <strong>Injury</strong>, which if untreated leads to <strong>Infarction</strong> (tissue death). Time is muscle.</p>",
+                    "analogy": "Atherosclerosis is like a kitchen sink pipe slowly clogging with grease (plaque). A heart attack isn't just the slow clog—it's when a chunk of grease breaks off and completely plugs the drain instantly, causing an overflow (damage).",
+                    "application": "Stents are like plumbing snakes used to clear the blockage. Statins are like using high-quality soap to prevent grease from sticking to the pipes in the first place."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Cardiology",
+        "chapter_title": "7. Clinical Case Studies",
+        "labComponentId": "cardiology-diagnostics",
+        "critical_concepts": [
+            { "concept": "Differential Diagnosis", "elaboration": "Distinguishing between cardiac and non-cardiac causes of chest pain." },
+            { "concept": "STEMI vs NSTEMI", "elaboration": "Using ECG to determine urgency of reperfusion." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "case_chest_pain_er",
+                "type": "diagnosis",
+                "title": "ER Case: 55M Chest Pain",
+                "prompt": "Patient presents with crushing chest pain. BP 160/90. ECG shows ST elevation in V1-V4.",
+                "difficulty": "Critical",
+                "patient": {
+                    "age": 55,
+                    "gender": "Male",
+                    "history": "Diabetes, Smoker",
+                    "complaint": "Crushing substernal pain, 10/10, radiating to left arm."
+                },
+                "vitals": { "bp": "160/90", "hr": 110, "rr": 24, "temp": 37.0, "o2": "92%" },
+                "tests": [
+                    { "name": "ECG", "result": "ST Elevation V1-V4", "flag": "critical" },
+                    { "name": "Troponin", "result": "Positive", "flag": "critical" }
+                ],
+                "question": "What is the diagnosis and immediate action?",
+                "options": ["Anterior STEMI - Cath Lab immediately", "Stable Angina - Stress test", "GERD - Antacids"],
+                "answer": "Anterior STEMI - Cath Lab immediately",
+                "explanation": "ST elevation in anterior leads (V1-V4) indicates an Anterior STEMI. This requires immediate reperfusion therapy (PCI in Cath Lab).",
+                "theory": {
+                    "title": "Acute Coronary Syndrome",
+                    "content": "<p>Management relies on MONA (Morphine, Oxygen, Nitrates, Aspirin) and rapid reperfusion.</p>",
+                    "analogy": "A STEMI is like a house fire. You don't wait to schedule an inspection; you call the fire department (Cath Lab) immediately to put it out before the structure (heart muscle) collapses.",
+                    "application": "Door-to-Balloon time is the key metric. We aim to open the blocked artery within 90 minutes of the patient hitting the ER door to save the heart muscle."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Cardiology",
+        "chapter_title": "8. Pharmacology Integration",
+        "labComponentId": "cardio-pharma",
+        "critical_concepts": [
+            { "concept": "Beta Blockers", "elaboration": "Slow heart rate and decrease contractility to reduce oxygen demand." },
+            { "concept": "ACE Inhibitors", "elaboration": "Lower blood pressure by preventing conversion of Angiotensin I to II." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "drug_drag_drop",
+                "type": "drug-sim",
+                "title": "Mechanism of Action",
+                "prompt": "Drag the drug to the heart to see its effect on Vitals.",
+                "question": "Which drug effectively lowers Heart Rate?",
+                "options": ["Beta Blocker", "Diuretic", "Statin"],
+                "answer": "Beta Blocker",
+                "explanation": "Beta blockers bind to beta-adrenergic receptors, blocking epinephrine/norepinephrine, which directly reduces heart rate and contractility.",
+                "theory": {
+                    "title": "Cardiovascular Pharmacology",
+                    "content": "<p><strong>Beta Blockers (-olol):</strong> Reduce workload. <br/><strong>ACE Inhibitors (-pril):</strong> Vasodilate and reduce afterload. <br/><strong>Diuretics:</strong> Reduce preload/fluid.</p>",
+                    "analogy": "Beta blockers are like a governor on a car engine; they prevent the engine (heart) from revving too high, saving gas (oxygen). ACE Inhibitors widen the highway (arteries), so traffic (blood) flows smoother with less pressure.",
+                    "application": "We start Beta Blockers after a heart attack to rest the heart. We start ACE Inhibitors in heart failure to prevent the heart from remodeling (changing shape) under high pressure."
+                }
+            }
+        ]
+    }
+]

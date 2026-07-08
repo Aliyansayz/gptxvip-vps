@@ -1,0 +1,210 @@
+
+[
+    {
+        "course": "Clinical Chemistry",
+        "chapter_title": "Chapter 1: Metabolic Panels",
+        "labComponentId": "metabolic-panel",
+        "critical_concepts": [
+            {
+                "concept": "Electrolytes",
+                "elaboration": "Charged minerals (Na+, K+, Ca2+) essential for nerve function, hydration, and muscle contraction."
+            },
+            {
+                "concept": "Renal Function",
+                "elaboration": "BUN and Creatinine levels indicate how well the kidneys are filtering waste from the blood."
+            },
+            {
+                "concept": "Glucose Homeostasis",
+                "elaboration": "Maintaining blood sugar within a narrow range is critical; deviations can indicate diabetes or acute metabolic crises."
+            }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "metabolic_case_1",
+                "type": "analysis",
+                "title": "Case 1: Muscle Weakness",
+                "prompt": "Interpret this metabolic panel. What is the primary diagnosis?",
+                "scenario": "45-year-old with chronic fatigue and muscle weakness",
+                "values": [
+                    { "name": "Sodium", "value": 128, "unit": "mEq/L", "normalRange": [136, 145], "status": "low" },
+                    { "name": "Potassium", "value": 5.8, "unit": "mEq/L", "normalRange": [3.5, 5.0], "status": "high" },
+                    { "name": "BUN", "value": 45, "unit": "mg/dL", "normalRange": [7, 20], "status": "high" },
+                    { "name": "Creatinine", "value": 3.2, "unit": "mg/dL", "normalRange": [0.7, 1.3], "status": "high" },
+                    { "name": "Glucose", "value": 95, "unit": "mg/dL", "normalRange": [70, 100], "status": "normal" },
+                    { "name": "Calcium", "value": 8.8, "unit": "mg/dL", "normalRange": [8.5, 10.5], "status": "normal" }
+                ],
+                "options": ["Acute Kidney Injury", "Diabetic Ketoacidosis", "Liver Failure", "Dehydration"],
+                "answer": "Acute Kidney Injury",
+                "explanation": "Elevated BUN and creatinine (BUN:Cr ratio ~14) with hyperkalemia and hyponatremia indicate acute kidney injury. The kidneys cannot excrete potassium or concentrate urine properly.",
+                "theory": {
+                    "title": "Acute Kidney Injury (AKI)",
+                    "content": "<p><strong>Acute Kidney Injury</strong> is characterized by a rapid loss of kidney function.</p><p><strong>Key Lab Findings:</strong></p><ul><li><strong>Elevated Creatinine & BUN:</strong> Waste products build up in the blood.</li><li><strong>Hyperkalemia (High Potassium):</strong> Kidneys fail to excrete excess potassium, which can be life-threatening to the heart.</li><li><strong>Hyponatremia (Low Sodium):</strong> Fluid retention can dilute sodium levels.</li></ul>",
+                    "analogy": "Think of the kidneys as a coffee filter. If the filter gets clogged (AKI), the coffee grounds (waste like Creatinine) stay in the water (blood) instead of ending up in the trash (urine).",
+                    "application": "In clinical practice, we closely monitor urine output and daily creatinine trends. A sudden drop in urine or rise in creatinine is a 'red flag' alerting us to stop nephrotoxic drugs and assess fluid status immediately."
+                }
+            },
+            {
+                "componentId": "metabolic_case_2",
+                "type": "analysis",
+                "title": "Case 2: Altered Mental Status",
+                "prompt": "This diabetic patient has altered mental status. What syndrome is this?",
+                "scenario": "60-year-old diabetic patient with confusion",
+                "values": [
+                    { "name": "Sodium", "value": 148, "unit": "mEq/L", "normalRange": [136, 145], "status": "high" },
+                    { "name": "Potassium", "value": 4.0, "unit": "mEq/L", "normalRange": [3.5, 5.0], "status": "normal" },
+                    { "name": "Glucose", "value": 650, "unit": "mg/dL", "normalRange": [70, 100], "status": "high" },
+                    { "name": "BUN", "value": 35, "unit": "mg/dL", "normalRange": [7, 20], "status": "high" },
+                    { "name": "Serum Osmolality", "value": 340, "unit": "mOsm/kg", "normalRange": [275, 295], "status": "high" },
+                    { "name": "pH", "value": 7.38, "unit": "", "normalRange": [7.35, 7.45], "status": "normal" }
+                ],
+                "options": ["Diabetic Ketoacidosis (DKA)", "Hyperosmolar Hyperglycemic State (HHS)", "Hypoglycemia", "Uremic Encephalopathy"],
+                "answer": "Hyperosmolar Hyperglycemic State (HHS)",
+                "explanation": "Very high glucose (>600), elevated serum osmolality (>320), normal pH (no acidosis), and absence of significant ketosis defines HHS. Unlike DKA, there is enough insulin to prevent ketogenesis but not enough to control glucose.",
+                "theory": {
+                    "title": "Hyperosmolar Hyperglycemic State (HHS)",
+                    "content": "<p><strong>HHS</strong> is a serious complication of type 2 diabetes.</p><ul><li><strong>Extreme Hyperglycemia:</strong> Blood sugar often >600 mg/dL.</li><li><strong>Hyperosmolality:</strong> The blood becomes very concentrated (thick), drawing water out of the brain causing confusion.</li><li><strong>No Acidosis:</strong> Unlike DKA, the body produces enough insulin to prevent the breakdown of fats into ketones, so the blood pH remains normal.</li></ul>",
+                    "analogy": "Imagine boiling sugar water to make syrup. As the water evaporates (dehydration) and sugar stays, it becomes thick and sticky. HHS is like your blood turning into syrup, making it hard to circulate and creating a 'sticky' environment that dehydrates brain cells.",
+                    "application": "Treatment priorities are aggressive fluids to thin the blood (reduce osmolality) followed by insulin to lower sugar. Correcting it too fast can cause brain swelling, so precise calculation is key."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Clinical Chemistry",
+        "chapter_title": "Chapter 2: Basic Principles",
+        "labComponentId": "clin-chem-basics",
+        "critical_concepts": [
+            { "concept": "Beer-Lambert Law", "elaboration": "Absorbance is directly proportional to concentration. A = εlc" },
+            { "concept": "Spectrophotometry", "elaboration": "Measuring the intensity of light in a part of the spectrum, especially as transmitted or emitted by particular substances." },
+            { "concept": "Calibration Curve", "elaboration": "A method for determining the concentration of a substance in an unknown sample by comparing the unknown to a set of standard samples of known concentration." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "spectrophotometry_sim",
+                "type": "interactive-visual",
+                "title": "Spectrophotometry Lab",
+                "prompt": "Use the spectrophotometer to measure absorbance. Increase the concentration of the solute and observe the effect on light transmission and absorbance.",
+                "question": "Based on the Beer-Lambert Law, what is the relationship between Concentration and Absorbance?",
+                "options": ["Inversely Proportional", "Linear (Directly Proportional)", "Exponential", "No Relationship"],
+                "answer": "Linear (Directly Proportional)",
+                "explanation": "According to the Beer-Lambert Law (A = εlc), Absorbance (A) is directly proportional to the concentration (c) of the solution. As concentration doubles, absorbance doubles.",
+                "theory": {
+                    "title": "Spectrophotometry & Beer's Law",
+                    "content": "<p><strong>Spectrophotometry</strong> is used to measure the amount of light that a chemical substance absorbs.</p><p><strong>Beer-Lambert Law: A = εlc</strong></p><ul><li><strong>A:</strong> Absorbance (no units)</li><li><strong>ε:</strong> Molar absorptivity (constant for a substance)</li><li><strong>l:</strong> Path length (width of cuvette, usually 1cm)</li><li><strong>c:</strong> Concentration</li></ul><p>The darker the solution (higher concentration), the more light it absorbs, and the less light passes through to the detector.</p>",
+                    "analogy": "Think of wearing sunglasses. Darker lenses (higher concentration of tint) block more sunlight (absorbance) from reaching your eyes (detector). A light tint represents a low concentration sample, while blackout shades represent a high concentration sample.",
+                    "application": "This is the engine of the clinical lab. When you order a 'Basic Metabolic Panel', automated spectrophotometers rapidly shine light through your serum mixed with reagents to instantly calculate glucose, cholesterol, and enzyme levels based on color intensity."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Clinical Chemistry",
+        "chapter_title": "Chapter 3: Acid-Base Balance",
+        "labComponentId": "clin-chem-acid-base",
+        "critical_concepts": [
+            { "concept": "pH", "elaboration": "A measure of acidity or alkalinity. Normal blood pH is 7.35-7.45." },
+            { "concept": "pCO₂", "elaboration": "Partial pressure of carbon dioxide. Regulated by the lungs (Respiratory component)." },
+            { "concept": "HCO₃⁻", "elaboration": "Bicarbonate. Regulated by the kidneys (Metabolic component)." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "abg_interpreter",
+                "type": "interactive-visual",
+                "title": "ABG Interpreter",
+                "prompt": "Analyze the Arterial Blood Gas (ABG) values. Determine the acid-base disorder.",
+                "question": "Patient Results: pH 7.25 (Low), pCO₂ 60 mmHg (High), HCO₃ 26 mEq/L (Normal). What is the diagnosis?",
+                "options": ["Metabolic Acidosis", "Respiratory Acidosis", "Metabolic Alkalosis", "Respiratory Alkalosis"],
+                "answer": "Respiratory Acidosis",
+                "explanation": "Low pH indicates Acidosis. High pCO₂ (acidic gas) indicates a Respiratory cause. Normal HCO₃ suggests no metabolic compensation yet. Diagnosis: Uncompensated Respiratory Acidosis.",
+                "theory": {
+                    "title": "Acid-Base Homeostasis",
+                    "content": "<p>The body maintains pH through two main systems:</p><ul><li><strong>Respiratory (Lungs):</strong> Controls CO₂ (acid). Breathing fast blows off CO₂ (alkalosis); breathing slow retains CO₂ (acidosis). Fast response.</li><li><strong>Metabolic (Kidneys):</strong> Controls HCO₃⁻ (base). Excretes or reabsorbs acid/base. Slow response (hours to days).</li></ul>",
+                    "analogy": "Imagine a seesaw balancing pH. The Lungs sit on one side holding bags of CO₂ (Acid), and the Kidneys sit on the other holding bags of Bicarbonate (Base). If the Lungs hoard too many bags (hypoventilation), the seesaw tips to Acidosis. The Kidneys must then pile on more Bicarbonate to re-balance it.",
+                    "application": "In an emergency code, pH is vital. If a patient is not breathing (high CO2, respiratory acidosis), we intubate and increase ventilation to 'blow off' the acid. If they have failed kidneys (low bicarb, metabolic acidosis), we might need dialysis or bicarbonate drips."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Clinical Chemistry",
+        "chapter_title": "Chapter 4: Enzymology",
+        "labComponentId": "clin-chem-enzymology",
+        "critical_concepts": [
+            { "concept": "Isoenzymes", "elaboration": "Different forms of an enzyme that catalyze the same reaction but are found in different tissues (e.g., CK-MM, CK-MB, CK-BB)." },
+            { "concept": "Liver Enzymes", "elaboration": "ALT and AST are markers of hepatocellular injury; ALP involves the bile ducts." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "enzyme_body_map",
+                "type": "drag-drop",
+                "title": "Clinical Enzymology Map",
+                "prompt": "Match the enzyme marker to its primary organ of origin/pathology.",
+                "question": "Drag the markers to the correct organ: ALT (Liver), CK-MB (Heart), Amylase (Pancreas).",
+                "options": ["Correct Match", "Incorrect"],
+                "answer": "Correct Match",
+                "explanation": "ALT is highly specific to the Liver. CK-MB is specific to the Heart muscle. Amylase is secreted by the Pancreas (and salivary glands).",
+                "theory": {
+                    "title": "Diagnostic Enzymes",
+                    "content": "<p>When cells are damaged, they release intracellular enzymes into the blood. Measuring these enzymes helps localize injury.</p><ul><li><strong>ALT/AST:</strong> Liver damage (Hepatitis).</li><li><strong>Amylase/Lipase:</strong> Pancreatitis.</li><li><strong>CK-MB/Troponin:</strong> Heart attack (MI).</li><li><strong>ALP:</strong> Bone or Bile duct issues.</li></ul>",
+                    "analogy": "Enzymes are like specialized tools kept inside specific workshops (organs). If you find a mechanic's wrench (ALT) lying in the middle of the street (bloodstream), you know the auto shop (liver) has been broken into or damaged.",
+                    "application": "This specificity helps solve mysteries. If a patient has severe chest pain but their Troponin/CK-MB is normal and their Amylase is sky-high, we stop treating for a heart attack and start treating for Pancreatitis."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Clinical Chemistry",
+        "chapter_title": "Chapter 5: Proteins & Lipids",
+        "labComponentId": "clin-chem-proteins",
+        "critical_concepts": [
+            { "concept": "Electrophoresis", "elaboration": "Separation of proteins based on charge and size. Used to identify abnormalities like monoclonal gammopathy." },
+            { "concept": "Lipoproteins", "elaboration": "Complexes that transport lipids. LDL ('bad') deposits cholesterol; HDL ('good') removes it." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "spep_visualizer",
+                "type": "visual-toggle",
+                "title": "Protein Electrophoresis (SPEP)",
+                "prompt": "Compare the normal serum protein pattern with the pathological sample.",
+                "question": "The pathological sample shows a sharp, narrow spike in the Gamma region (M-Spike). What condition is this characteristic of?",
+                "options": ["Cirrhosis", "Multiple Myeloma", "Nephrotic Syndrome", "Acute Inflammation"],
+                "answer": "Multiple Myeloma",
+                "explanation": "A monoclonal spike (M-spike) in the gamma globulin region indicates the overproduction of a single antibody clone, a hallmark of Multiple Myeloma.",
+                "theory": {
+                    "title": "Serum Protein Electrophoresis",
+                    "content": "<p>SPEP separates blood proteins into 5 bands: <strong>Albumin, Alpha-1, Alpha-2, Beta, and Gamma</strong>.</p><ul><li><strong>Albumin:</strong> Largest peak.</li><li><strong>Gamma Region:</strong> Contains antibodies (Immunoglobulins). A broad increase implies infection (polyclonal). A sharp spike implies cancer (monoclonal).</li></ul>",
+                    "analogy": "Imagine a marathon race. Albumin is small and fast, so it finishes first and forms a big group. Antibodies are heavy and slow, finishing last (Gamma region). In Multiple Myeloma, one specific runner (a cancer clone) copies itself millions of times, creating a huge, dense crowd at one specific spot on the track (M-Spike), rather than the usual spread-out group.",
+                    "application": "We use SPEP to screen for blood cancers. If an elderly patient has unexplained bone pain and kidney failure, looking for this 'M-Spike' is the key diagnostic step for Multiple Myeloma."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Clinical Chemistry",
+        "chapter_title": "Chapter 6: Carbohydrate Metabolism",
+        "labComponentId": "clin-chem-glucose",
+        "critical_concepts": [
+            { "concept": "Insulin", "elaboration": "Hormone produced by beta cells in the pancreas. Lowers blood glucose by facilitating uptake into cells." },
+            { "concept": "Glucagon", "elaboration": "Hormone produced by alpha cells. Raises blood glucose by stimulating glycogen breakdown in the liver." },
+            { "concept": "HbA1c", "elaboration": "Glycated hemoglobin. Reflects average blood glucose over the past 2-3 months." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "glucose_regulation_sim",
+                "type": "simulation",
+                "title": "Glucose Homeostasis",
+                "prompt": "Blood glucose is rising after a meal. Activate the correct hormone to restore homeostasis.",
+                "question": "Which hormone should be released to lower blood glucose?",
+                "options": ["Glucagon", "Insulin", "Cortisol"],
+                "answer": "Insulin",
+                "explanation": "Insulin acts like a key, unlocking cells to allow glucose to enter, thereby lowering blood sugar levels.",
+                "theory": {
+                    "title": "Insulin & Glucagon",
+                    "content": "<p>The body tightly regulates glucose:</p><ul><li><strong>High Blood Sugar:</strong> Pancreas releases <strong>Insulin</strong> -> Cells take up glucose -> Sugar drops.</li><li><strong>Low Blood Sugar:</strong> Pancreas releases <strong>Glucagon</strong> -> Liver breaks down glycogen -> Sugar rises.</li></ul>",
+                    "analogy": "Insulin is the 'key' that unlocks the front door of your house (cells) to let the grocery delivery (glucose) inside. Without the key (Type 1 Diabetes) or if the lock is jammed (Type 2 Resistance), the groceries pile up on the porch (bloodstream) and rot, while the people inside starve.",
+                    "application": "Understanding this balance allows us to prescribe the right meds. For Type 1, we must provide the missing keys (Insulin injections). For Type 2, we use drugs to fix the locks (Metformin) or force the door open."
+                }
+            }
+        ]
+    }
+]

@@ -1,0 +1,20 @@
+
+[
+    {
+        "course": "Overview",
+        "chapter_title": "Welcome to MedLabs",
+        "labComponentId": "med-overview-intro",
+        "critical_concepts": [],
+        "interactive_questions": [
+            {
+                "componentId": "med_overview_main",
+                "type": "overview",
+                "title": "Welcome to MedLabs",
+                "prompt": "Explore clinical medicine through interactive simulation.",
+                "question": "",
+                "answer": "",
+                "explanation": ""
+            }
+        ]
+    }
+]

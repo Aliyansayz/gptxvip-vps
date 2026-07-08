@@ -1,0 +1,218 @@
+
+[
+    {
+        "course": "Cellular Biology",
+        "chapter_title": "Chapter 1: Cell Membrane Transport",
+        "labComponentId": "cell-membrane-transport",
+        "critical_concepts": [
+            {
+                "concept": "Osmosis",
+                "elaboration": "The passive movement of water from a region of high water concentration to a region of low water concentration across a selectively permeable membrane. It requires no energy."
+            },
+            {
+                "concept": "Active Transport",
+                "elaboration": "The movement of molecules against their concentration gradient (from low to high concentration). This process is 'active' because it requires cellular energy in the form of ATP."
+            },
+            {
+                "concept": "Facilitated Diffusion",
+                "elaboration": "A type of passive transport for molecules that are too large or charged to pass through the membrane directly. It uses protein channels or carriers but does not require ATP, as movement is still down the concentration gradient."
+            }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "osmosis_demo",
+                "concept_tested": "Osmosis and Water Potential",
+                "title": "Osmosis Demonstration",
+                "prompt": "Osmosis is the passive movement of water from high to low concentration across a semipermeable membrane.",
+                "question": "In which direction will the net movement of water occur in the simulation?",
+                "answer": "From high to low concentration",
+                "tags": ["osmosis", "passive transport", "water movement", "concentration gradient", "semipermeable membrane", "diffusion"],
+                "options": [
+                    "From high to low concentration",
+                    "From low to high concentration",
+                    "There will be no net movement"
+                ],
+                "explanation": "Osmosis is the passive movement of water from an area of high water concentration to an area of low water concentration across a semipermeable membrane. This movement requires no energy from the cell.",
+                "wrong_answer_feedback": [
+                    { "option": "From low to high concentration", "feedback": "This would require energy (active transport) and is the opposite of osmosis, which is a passive process." },
+                    { "option": "There will be no net movement", "feedback": "Net movement occurs as long as there is a concentration difference across the membrane, driving the system towards equilibrium." }
+                ],
+                 "theory": {
+                    "title": "The Theory of Osmosis",
+                    "content": "<p><span style=\"color:#3b82f6; font-weight:bold;\">Osmosis</span> is the diffusion of water across a <span style=\"color:#ec4899; font-weight:bold;\">selectively permeable membrane</span>. Water moves from high to low water concentration. The cell membrane allows water to pass but blocks larger molecules like salts.</p><div class=\"my-4 p-4 bg-background border border-border rounded-lg\"><svg viewBox=\"0 0 100 60\" class=\"w-full\"><defs><linearGradient id=\"membraneGradient\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0%\" stop-color=\"#ec4899\" /><stop offset=\"100%\" stop-color=\"#a855f7\" /></linearGradient><marker id=\"arrowhead\" markerWidth=\"5\" markerHeight=\"3.5\" refX=\"0\" refY=\"1.75\" orient=\"auto\"><polygon points=\"0 0, 5 1.75, 0 3.5\" fill=\"#3b82f6\" /></marker></defs><rect x=\"48\" y=\"5\" width=\"4\" height=\"50\" fill=\"url(#membraneGradient)\" /><circle cx=\"50\" cy=\"15\" r=\"1.5\" fill=\"#f8fafc\"/><circle cx=\"50\" cy=\"30\" r=\"1.5\" fill=\"#f8fafc\"/><circle cx=\"50\" cy=\"45\" r=\"1.5\" fill=\"#f8fafc\"/><text x=\"24\" y=\"10\" font-size=\"4\" font-weight=\"bold\" fill=\"hsl(var(--muted-foreground))\" text-anchor=\"middle\">High Water Conc.</text><circle cx=\"15\" cy=\"20\" r=\"2\" fill=\"#60a5fa\" opacity=\"0.8\"/><circle cx=\"25\" cy=\"25\" r=\"2\" fill=\"#60a5fa\" opacity=\"0.8\"/><circle cx=\"35\" cy=\"20\" r=\"2\" fill=\"#60a5fa\" opacity=\"0.8\"/><circle cx=\"10\" cy=\"35\" r=\"2\" fill=\"#60a5fa\" opacity=\"0.8\"/><circle cx=\"20\" cy=\"45\" r=\"2\" fill=\"#60a5fa\" opacity=\"0.8\"/><circle cx=\"30\" cy=\"50\" r=\"2\" fill=\"#60a5fa\" opacity=\"0.8\"/><circle cx=\"40\" cy=\"40\" r=\"2\" fill=\"#60a5fa\" opacity=\"0.8\"/><circle cx=\"15\" cy=\"50\" r=\"2\" fill=\"#60a5fa\" opacity=\"0.8\"/><circle cx=\"30\" cy=\"30\" r=\"2.5\" fill=\"#6B3F69\"/><text x=\"76\" y=\"10\" font-size=\"4\" font-weight=\"bold\" fill=\"hsl(var(--muted-foreground))\" text-anchor=\"middle\">Low Water Conc.</text><circle cx=\"65\" cy=\"25\" r=\"2\" fill=\"#60a5fa\" opacity=\"0.8\"/><circle cx=\"75\" cy=\"45\" r=\"2\" fill=\"#60a5fa\" opacity=\"0.8\"/><circle cx=\"70\" cy=\"20\" r=\"2.5\" fill=\"#6B3F69\"/><circle cx=\"85\" cy=\"30\" r=\"2.5\" fill=\"#6B3F69\"/><circle cx=\"60\" cy=\"40\" r=\"2.5\" fill=\"#6B3F69\"/><circle cx=\"80\" cy=\"50\" r=\"2.5\" fill=\"#6B3F69\"/><text x=\"50\" y=\"58\" font-size=\"3.5\" font-weight=\"bold\" fill=\"#2563eb\" text-anchor=\"middle\">Net Movement of Water</text><line x1=\"30\" y1=\"30\" x2=\"65\" y2=\"30\" stroke-width=\"1.5\" stroke=\"#3b82f6\" marker-end=\"url(#arrowhead)\"/></svg></div><p>Think of a crowded room (high water concentration) connected to an empty room (low water concentration) by a special door that only lets people (water) through. People will naturally spread out into the empty room until the number of people is roughly equal in both. This movement requires no energy from the people themselves.</p>"
+                }
+            },
+            {
+                "componentId": "active_transport_q",
+                "concept_tested": "Energy Requirement in Transport",
+                "title": "Active Transport",
+                "prompt": "Some transport mechanisms require energy to work against the natural flow.",
+                "question": "Which type of transport requires ATP energy to move molecules against their concentration gradient?",
+                "options": ["Passive diffusion", "Active transport", "Osmosis"],
+                "answer": "Active transport",
+                "tags": ["active transport", "ATP", "energy", "concentration gradient", "protein pump", "sodium-potassium pump"],
+                "explanation": "Active transport uses cellular energy (ATP) to power protein pumps that move molecules from a region of low concentration to a region of high concentration, which is against the natural gradient.",
+                "wrong_answer_feedback": [
+                    { "option": "Passive diffusion", "feedback": "Passive diffusion doesn't require energy, but it moves molecules *down* their concentration gradient, not against it." },
+                    { "option": "Osmosis", "feedback": "Osmosis is a type of passive transport specifically for water and does not require ATP energy." }
+                ],
+                "theory": {
+                    "title": "The Theory of Active Transport",
+                    "content": "<p><span style=\"color:#ef4444; font-weight:bold;\">Active Transport</span> is the process of moving molecules across a cell membrane <strong style=\"color:#ef4444;\">against</strong> their concentration gradient—from a region of lower concentration to a region of higher concentration. This is an 'uphill' battle that requires energy.</p><div class=\"my-4 p-4 bg-background border border-border rounded-lg\"><svg viewBox=\"0 0 100 60\" class=\"w-full\"><defs><linearGradient id=\"membraneGradAT\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0%\" stop-color=\"#c084fc\" /><stop offset=\"100%\" stop-color=\"#a855f7\" /></linearGradient><marker id=\"at-arrowhead\" markerWidth=\"5\" markerHeight=\"3.5\" refX=\"5\" refY=\"1.75\" orient=\"auto\"><polygon points=\"0 0, 5 1.75, 0 3.5\" fill=\"#c026d3\" /></marker></defs><rect x=\"0\" y=\"25\" width=\"100\" height=\"10\" fill=\"url(#membraneGradAT)\" stroke=\"rgba(168, 85, 247, 0.5)\"/><path d=\"M 40 35 C 40 45, 60 45, 60 35 L 60 25 C 60 15, 40 15, 40 25 Z\" fill=\"#6B3F69\" stroke=\"#4a2c49\" stroke-width=\"0.5\"/><path d=\"M 45 30 C 45 27, 55 27, 55 30\" fill=\"none\" stroke=\"#d8b4fe\" stroke-width=\"1\" /><text x=\"50\" y=\"55\" font-size=\"4\" font-weight=\"bold\" fill=\"hsl(var(--muted-foreground))\" text-anchor=\"middle\">Low Concentration</text><circle cx=\"30\" cy=\"45\" r=\"2.5\" fill=\"#34d399\"/><circle cx=\"70\" cy=\"48\" r=\"2.5\" fill=\"#34d399\"/><text x=\"50\" y=\"10\" font-size=\"4\" font-weight=\"bold\" fill=\"hsl(var(--muted-foreground))\" text-anchor=\"middle\">High Concentration</text><circle cx=\"10\" cy=\"18\" r=\"2.5\" fill=\"#34d399\"/><circle cx=\"25\" cy=\"15\" r=\"2.5\" fill=\"#34d399\"/><circle cx=\"40\" cy=\"20\" r=\"2.5\" fill=\"#34d399\"/><circle cx=\"60\" cy=\"16\" r=\"2.5\" fill=\"#34d399\"/><circle cx=\"75\" cy=\"20\" r=\"2.5\" fill=\"#34d399\"/><circle cx=\"90\" cy=\"17\" r=\"2.5\" fill=\"#34d399\"/><g class=\"animate-pulse\"><path d=\"M 75 40 L 80 45 L 75 50 L 85 50 L 80 55 L 85 60 L 75 60\" stroke=\"#f59e0b\" stroke-width=\"1.5\" fill=\"none\" transform=\"translate(-5, -15)\"/><text x=\"88\" y=\"48\" font-size=\"5\" font-weight=\"bold\" fill=\"#f59e0b\">ATP</text></g><line x1=\"50\" y1=\"45\" x2=\"50\" y2=\"20\" stroke-width=\"2\" stroke=\"#d946ef\" stroke-dasharray=\"2 2\" marker-end=\"url(#at-arrowhead)\"/></svg></div><p>The cell spends energy in the form of <span style=\"color:#f59e0b; font-weight:bold;\">ATP (Adenosine Triphosphate)</span> to power special protein pumps embedded in the membrane. These pumps grab specific molecules and force them to the other side. An analogy is a water pump pushing water up a hill into a reservoir. The pump needs electricity (like ATP) to work against gravity (the concentration gradient).</p>"
+                }
+            },
+            {
+                "componentId": "facilitated_diffusion_q",
+                "concept_tested": "Role of Proteins in Transport",
+                "title": "Facilitated Diffusion",
+                "prompt": "Large molecules like glucose need help to cross the cell membrane.",
+                "question": "How does glucose typically enter a cell down its concentration gradient?",
+                "answer": "Facilitated Diffusion",
+                "tags": ["facilitated diffusion", "passive transport", "protein channel", "carrier protein", "glucose", "GLUT proteins"],
+                "options": [
+                    "Simple Diffusion",
+                    "Facilitated Diffusion",
+                    "Active Transport"
+                ],
+                "explanation": "Glucose is too large to pass through the membrane on its own. It uses facilitated diffusion, where specific carrier proteins bind to it and help it cross the membrane. Since this is still movement down the concentration gradient, it does not require ATP energy.",
+                "wrong_answer_feedback": [
+                    { "option": "Simple Diffusion", "feedback": "Simple diffusion works for small, nonpolar molecules like oxygen, but glucose is too large and polar to pass through the lipid bilayer unaided." },
+                    { "option": "Active Transport", "feedback": "Active transport is used to move substances *against* their concentration gradient and requires energy. This question specifies movement *down* the gradient." }
+                ],
+                "theory": {
+                    "title": "The Theory of Facilitated Diffusion",
+                    "content": "<p><span style=\"color:#34d399; font-weight:bold;\">Facilitated Diffusion</span> is a type of <span style=\"color:#3b82f6; font-weight:bold;\">passive transport</span>, meaning it does not require energy (ATP). It's used for molecules that are too large or too charged to simply diffuse across the membrane on their own, like glucose.</p><div class=\"my-4 p-4 bg-background border border-border rounded-lg\"><svg viewBox=\"0 0 100 60\" class=\"w-full\"><defs><linearGradient id=\"membraneGradFD\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0%\" stop-color=\"#c084fc\" /><stop offset=\"100%\" stop-color=\"#a855f7\" /></linearGradient><marker id=\"fd-arrowhead\" markerWidth=\"5\" markerHeight=\"3.5\" refX=\"5\" refY=\"1.75\" orient=\"auto\"><polygon points=\"0 0, 5 1.75, 0 3.5\" fill=\"#059669\" /></marker></defs><rect x=\"0\" y=\"25\" width=\"100\" height=\"10\" fill=\"url(#membraneGradFD)\" stroke=\"rgba(168, 85, 247, 0.5)\"/><path d=\"M 42 35 C 42 45, 58 45, 58 35 L 58 25 C 58 15, 42 15, 42 25 Z\" fill=\"#6B3F69\" stroke=\"#4a2c49\" stroke-width=\"0.5\"/><rect x=\"47\" y=\"15\" width=\"6\" height=\"30\" fill=\"#6B3F69\" fillOpacity=\"0.3\" /><text x=\"50\" y=\"10\" font-size=\"4\" font-weight=\"bold\" fill=\"hsl(var(--muted-foreground))\" text-anchor=\"middle\">High Concentration</text><path d=\"M 10 15 l 3 -5 l 3 5 l -1.5 -5 l -3 5 Z\" fill=\"hsl(var(--destructive))\"/><path d=\"M 25 20 l 3 -5 l 3 5 l -1.5 -5 l -3 5 Z\" fill=\"hsl(var(--destructive))\"/><path d=\"M 70 18 l 3 -5 l 3 5 l -1.5 -5 l -3 5 Z\" fill=\"hsl(var(--destructive))\"/><path d=\"M 85 15 l 3 -5 l 3 5 l -1.5 -5 l -3 5 Z\" fill=\"hsl(var(--destructive))\"/><path d=\"M 47 20 l 3 -5 l 3 5 l -1.5 -5 l -3 5 Z\" fill=\"hsl(var(--destructive))\" class=\"animate-pulse\"/><text x=\"50\" y=\"55\" font-size=\"4\" font-weight=\"bold\" fill=\"hsl(var(--muted-foreground))\" text-anchor=\"middle\">Low Concentration</text><path d=\"M 30 45 l 3 -5 l 3 5 l -1.5 -5 l -3 5 Z\" fill=\"hsl(var(--destructive))\"/><path d=\"M 75 50 l 3 -5 l 3 5 l -1.5 -5 l -3 5 Z\" fill=\"hsl(var(--destructive))\"/><text x=\"25\" y=\"30\" font-size=\"3\" font-weight=\"bold\" fill=\"hsl(var(--muted-foreground))\">No Energy (ATP) required</text><line x1=\"50\" y1=\"18\" x2=\"50\" y2=\"45\" stroke-width=\"2\" stroke=\"hsl(var(--success))\" marker-end=\"url(#fd-arrowhead)\"/></svg></div><p>These molecules get help from specific <span style=\"color:#a855f7; font-weight:bold;\">protein channels</span> or <span style=\"color:#ec4899; font-weight:bold;\">carrier proteins</span>. These proteins act like selective tunnels or revolving doors, allowing only certain molecules to pass through the membrane. Even with this help, the movement is still always from high concentration to low concentration. Imagine a bridge across a river. While you can't walk through the water, the bridge (the protein channel) provides a path for you to cross easily from one side to the other, following the natural flow of traffic.</p>"
+                }
+            }
+        ]
+    },
+    {
+        "course": "Cellular Biology",
+        "chapter_title": "Chapter 2: Cell Structures and Functions",
+        "labComponentId": "cell-organelles",
+        "critical_concepts": [
+            {"concept": "Nucleus", "elaboration": "The 'brain' of the cell, containing the DNA and controlling all cell activities."},
+            {"concept": "Mitochondria", "elaboration": "The 'powerhouses' of the cell, responsible for cellular respiration and generating most of the cell's ATP."},
+            {"concept": "Ribosomes", "elaboration": "The 'factories' of the cell, responsible for synthesizing proteins based on instructions from the nucleus."}
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "animal_cell_explorer",
+                "title": "Animal Cell Explorer",
+                "prompt": "Hover over the different parts of the animal cell to learn about their functions.",
+                "question": "Which organelle is known as the 'powerhouse' of the cell?",
+                "answer": "Mitochondrion",
+                "tags": ["organelle", "animal cell", "mitochondrion", "powerhouse", "nucleus", "ribosome", "cell structures"],
+                "options": ["Nucleus", "Ribosome", "Mitochondrion"],
+                "explanation": "The mitochondrion is responsible for cellular respiration, the process that generates the majority of the cell's supply of adenosine triphosphate (ATP), used as a source of chemical energy.",
+                "wrong_answer_feedback": [
+                    { "option": "Nucleus", "feedback": "The nucleus is the 'control center' or 'brain' of the cell, containing the DNA. It directs activities but does not generate the primary energy." },
+                    { "option": "Ribosome", "feedback": "Ribosomes are the 'factories' that synthesize proteins. They use energy but are not the primary producers of it." }
+                ],
+                "theory": {
+                    "title": "Cell Organelles",
+                    "content": "<p>A cell is like a miniature city, with different buildings (organelles) each performing a specialized job to keep the city running.</p><div class=\"my-4 p-4 bg-background border border-border rounded-lg\"><svg viewBox=\"0 0 150 100\" class=\"w-full\"><path d=\"M 75,5 A 70,45 0 1,0 75,95 A 70,45 0 1,0 75,5 Z\" fill=\"#f3e8ff\" stroke=\"#d8b4fe\" stroke-width=\"1\"/><circle cx=\"75\" cy=\"50\" r=\"20\" fill=\"#6B3F69\"/><text x=\"75\" y=\"50\" font-size=\"5\" fill=\"white\" text-anchor=\"middle\">Nucleus</text><ellipse cx=\"40\" cy=\"30\" rx=\"12\" ry=\"6\" fill=\"#f59e0b\"/><text x=\"40\" y=\"30\" font-size=\"3\" fill=\"white\" text-anchor=\"middle\">Mitochondrion</text><circle cx=\"60\" cy=\"70\" r=\"2\" fill=\"#f97316\"/><circle cx=\"65\" cy=\"75\" r=\"2\" fill=\"#f97316\"/><circle cx=\"80\" cy=\"25\" r=\"2\" fill=\"#f97316\"/><text x=\"70\" y=\"70\" font-size=\"3\">Ribosomes</text></svg></div><p>The <span style=\"color:#6B3F69; font-weight:bold;\">Nucleus</span> is the city hall, containing the master blueprints (DNA). The <span style=\"color:#f59e0b; font-weight:bold;\">Mitochondria</span> are the power plants, generating energy (ATP). The <span style=\"color:#f97316; font-weight:bold;\">Ribosomes</span> are the factories, building proteins based on the blueprints.</p>"
+                }
+            },
+            {
+                "componentId": "organelle_matching_game",
+                "title": "Organelle Matching",
+                "prompt": "Match the organelle to its primary function in the cell.",
+                "question": "Which organelle's primary function is protein synthesis?",
+                "answer": "Ribosome",
+                "tags": ["protein synthesis", "ribosome", "nucleus", "golgi apparatus", "organelle function", "mRNA"],
+                "options": ["Nucleus", "Ribosome", "Golgi Apparatus"],
+                "explanation": "Ribosomes are the cellular machinery responsible for synthesizing proteins by translating the genetic code from messenger RNA (mRNA).",
+                "wrong_answer_feedback": [
+                    { "option": "Nucleus", "feedback": "The nucleus holds the instructions (DNA) for proteins, but ribosomes are the machinery that actually builds them." },
+                    { "option": "Golgi Apparatus", "feedback": "The Golgi apparatus modifies, sorts, and packages proteins *after* they are made, but it doesn't synthesize them from scratch." }
+                ],
+                 "theory": {
+                    "title": "Protein Synthesis Pathway",
+                    "content": "<p>Making a protein is like a factory assembly line:</p><div class=\"my-4 p-4 bg-background border border-border rounded-lg\"><svg viewBox='0 0 150 60' class='w-full'><path d='M 20 30 L 130 30' stroke-dasharray='2 2' stroke='hsl(var(--muted-foreground))' marker-end='url(#arrow)'/><text x='10' y='15' font-size='8'>🧬</text><text x='10' y='25' font-size='4'>Nucleus</text><text x='45' y='15' font-size='8'>🏭</text><text x='45' y='25' font-size='4'>Ribosome</text><text x='80' y='15' font-size='8'>📦</text><text x='80' y='25' font-size='4'>Golgi</text><text x='115' y='15' font-size='8'>✨</text><text x='115' y='25' font-size='4'>Protein</text></svg></div><ol><li>Instructions (mRNA) are copied from DNA in the <strong style=\"color:#6B3F69;\">Nucleus</strong>.</li><li>The <strong style=\"color:#f97316;\">Ribosome</strong> reads the instructions and assembles the protein.</li><li>The protein is sent to the <strong style=\"color:#22c55e;\">Golgi Apparatus</strong> for final processing and packaging.</li></ol>"
+                }
+            },
+            {
+                "componentId": "plant_vs_animal_cell",
+                "title": "Plant vs. Animal Cells",
+                "prompt": "Plant cells have a few key structures that animal cells lack. Identify them.",
+                "question": "Which two of the following structures are found in plant cells but NOT in animal cells?",
+                "answer": "Cell Wall & Chloroplast",
+                "tags": ["plant cell", "animal cell", "cell wall", "chloroplast", "photosynthesis", "vacuole", "cell differences"],
+                "options": ["Cell Membrane", "Cell Wall", "Cytoplasm", "Chloroplast"],
+                "explanation": "Plant cells have a rigid Cell Wall outside their cell membrane for structural support, and they contain Chloroplasts, which are the sites of photosynthesis. Animal cells lack both of these structures.",
+                "generic_wrong_answer_feedback": "Not quite. Remember that animal cells have a flexible membrane, and they don't perform photosynthesis. Select the two options unique to plants.",
+                "theory": {
+                    "title": "Key Differences",
+                    "content": "<p>While they share many organelles, plant cells have three main structures animal cells lack:</p><div class=\"my-4 p-4 bg-background border border-border rounded-lg\"><svg viewBox=\"0 0 100 60\" class=\"w-full\"><rect x=\"5\" y=\"5\" width=\"90\" height=\"50\" rx=\"5\" fill=\"#dcfce7\" stroke=\"#166534\" stroke-width=\"2\"/><rect x=\"7\" y=\"7\" width=\"86\" height=\"46\" rx=\"3\" fill=\"none\" stroke=\"#a3e635\" stroke-width=\"1\"/><rect x=\"20\" y=\"20\" width=\"15\" height=\"20\" rx=\"2\" fill=\"#22c55e\"/><text x=\"27.5\" y=\"15\" font-size=\"4\" text-anchor=\"middle\">Chloroplast</text><path d=\"M 50 10 L 50 50\" stroke-dasharray=\"2 2\" stroke=\"hsl(var(--muted-foreground))\"/><text x=\"60\" y=\"15\" font-size=\"4\">Cell Wall</text><text x=\"60\" y=\"25\" font-size=\"4\">Vacuole</text></svg></div><ol><li><span style=\"color:#a855f7; font-weight:bold;\">Cell Wall</span>: A rigid outer layer providing structural support.</li><li><span style=\"color:#22c55e; font-weight:bold;\">Chloroplasts</span>: The site of photosynthesis, converting light to energy.</li><li><span style=\"color:#3b82f6; font-weight:bold;\">Large Central Vacuole</span>: A large sac that stores water and maintains turgor pressure.</li></ol>"
+                }
+            }
+        ]
+    },
+    {
+        "course": "Cellular Biology",
+        "chapter_title": "Chapter 3: Cellular Respiration",
+        "labComponentId": "cellular-respiration",
+        "critical_concepts": [
+            {"concept": "Glycolysis", "elaboration": "The first step in cellular respiration, occurring in the cytoplasm, where one molecule of glucose is broken down into two molecules of pyruvate, producing a net of 2 ATP."},
+            {"concept": "Krebs Cycle (Citric Acid Cycle)", "elaboration": "Occurs in the mitochondrial matrix. It takes the products of glycolysis and further breaks them down, releasing CO₂ and generating high-energy molecules (NADH and FADH₂)."},
+            {"concept": "Electron Transport Chain", "elaboration": "The final stage, located in the inner mitochondrial membrane. High-energy electrons from NADH and FADH₂ are passed down a series of proteins, pumping protons to create a gradient. This gradient drives ATP synthase to produce a large amount of ATP."}
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "glycolysis_drag_drop",
+                "title": "Glycolysis",
+                "prompt": "The first stage of respiration breaks down glucose.",
+                "question": "What is the net gain of ATP molecules from glycolysis?",
+                "answer": "2 ATP",
+                "tags": ["glycolysis", "cellular respiration", "ATP", "glucose", "pyruvate", "cytoplasm", "anaerobic"],
+                "options": ["0 ATP", "2 ATP", "32 ATP"],
+                "explanation": "Although 4 ATP are produced during glycolysis, 2 ATP are consumed in the initial steps, resulting in a net gain of 2 ATP molecules per molecule of glucose.",
+                "wrong_answer_feedback": [
+                    { "option": "0 ATP", "feedback": "While 2 ATP are invested at the start, 4 are produced, leading to a net gain, not zero." },
+                    { "option": "32 ATP", "feedback": "This number is the approximate total yield from the entire process of aerobic respiration, not just the initial glycolysis step." }
+                ],
+                "theory": {
+                    "title": "Stage 1: Glycolysis",
+                    "content": "<p><span style=\"color:#a855f7; font-weight:bold;\">Glycolysis</span> is the 'splitting of sugar' and it happens in the cell's <span style=\"color:#3b82f6; font-weight:bold;\">cytoplasm</span>. It's the universal first step for both aerobic and anaerobic respiration.</p><div class=\"my-4 p-4 bg-background border border-border rounded-lg\"><svg viewBox=\"0 0 100 60\" class=\"w-full\"><path d=\"M 50 10 L 30 30 M 50 10 L 70 30\" stroke=\"hsl(var(--muted-foreground))\" marker-end=\"url(#resp-arrow)\" /><text x=\"50\" y=\"8\" text-anchor=\"middle\" font-size=\"5\">Glucose (6C)</text><circle cx=\"30\" cy=\"40\" r=\"8\" fill=\"#a855f7\"/><text x=\"30\" y=\"41\" text-anchor=\"middle\" font-size=\"3\" fill=\"white\">Pyruvate (3C)</text><circle cx=\"70\" cy=\"40\" r=\"8\" fill=\"#a855f7\"/><text x=\"70\" y=\"41\" text-anchor=\"middle\" font-size=\"3\" fill=\"white\">Pyruvate (3C)</text><text x=\"85\" y=\"25\" font-size=\"6\" fill=\"#f59e0b\">+2 ATP</text></svg></div><p>This process breaks one 6-carbon glucose molecule into two 3-carbon pyruvate molecules. While it produces a small amount of ATP, its main purpose is to prepare the glucose for the next stage.</p>"
+                }
+            },
+            {
+                "componentId": "krebs_cycle_visualizer",
+                "title": "Krebs Cycle",
+                "prompt": "This cycle completes the breakdown of glucose.",
+                "question": "What waste product is released during the Krebs cycle?",
+                "answer": "Carbon Dioxide (CO₂)",
+                "tags": ["krebs cycle", "citric acid cycle", "mitochondria", "NADH", "FADH2", "carbon dioxide", "aerobic respiration"],
+                "options": ["Oxygen (O₂)", "Water (H₂O)", "Carbon Dioxide (CO₂)"],
+                "explanation": "During the Krebs cycle, the carbon atoms from the original glucose molecule are fully oxidized and released as carbon dioxide (CO₂), which we then exhale.",
+                "wrong_answer_feedback": [
+                    { "option": "Oxygen (O₂)", "feedback": "Oxygen is the final electron acceptor in the Electron Transport Chain; it is consumed at the end of respiration, not produced here." },
+                    { "option": "Water (H₂O)", "feedback": "Water is a final product formed when oxygen accepts electrons in the Electron Transport Chain, not during the Krebs cycle." }
+                ],
+                "theory": {
+                    "title": "Stage 2: The Krebs Cycle",
+                    "content": "<p>Also known as the Citric Acid Cycle, this process takes place inside the <span style=\"color:#f59e0b; font-weight:bold;\">mitochondria</span>. It takes the pyruvate from glycolysis and systematically breaks it down.</p><div class=\"my-4 p-4 bg-background border border-border rounded-lg\"><svg viewBox=\"0 0 100 60\" class=\"w-full\"><circle cx=\"50\" cy=\"30\" r=\"25\" fill=\"none\" stroke=\"hsl(var(--border))\" stroke-width=\"1\"/><path d=\"M 50 5 L 50 15 M 70 15 L 65 20 M 85 30 L 75 30 M 70 45 L 65 40 M 50 55 L 50 45 M 30 45 L 35 40 M 15 30 L 25 30 M 30 15 L 35 20\" stroke=\"hsl(var(--muted-foreground))\" stroke-width=\"1.5\" marker-end=\"url(#resp-arrow)\"/><text x=\"15\" y=\"15\" font-size=\"4\">Pyruvate In</text><text x=\"85\" y=\"15\" font-size=\"4\">NADH/FADH₂ Out</text><text x=\"85\" y=\"55\" font-size=\"4\">CO₂ Out</text></svg></div><p>Its main purpose is not to make ATP directly, but to load up high-energy electron carriers (NADH and FADH₂) for the final stage. It also releases the carbon atoms from glucose as CO₂.</p>"
+                }
+            },
+            {
+                "componentId": "etc_simulation",
+                "title": "Electron Transport Chain",
+                "prompt": "This is where the majority of ATP is produced.",
+                "question": "What is the final electron acceptor at the end of the electron transport chain?",
+                "answer": "Oxygen (O₂)",
+                "tags": ["electron transport chain", "ATP synthase", "oxidative phosphorylation", "oxygen", "mitochondrial membrane", "chemiosmosis"],
+                "options": ["Water (H₂O)", "NAD+", "Oxygen (O₂)"],
+                "explanation": "Oxygen is the final electron acceptor. It combines with the electrons and protons to form water, which is why oxygen is essential for aerobic respiration.",
+                "wrong_answer_feedback": [
+                    { "option": "Water (H₂O)", "feedback": "Water is the product formed when oxygen accepts the electrons and protons; it is not the acceptor itself." },
+                    { "option": "NAD+", "feedback": "NAD+ is an electron carrier that gets *reduced* to NADH earlier in the process; it doesn't accept the *final* electrons from the chain." }
+                ],
+                 "theory": {
+                    "title": "Stage 3: Electron Transport Chain",
+                    "content": "<p>This is the powerhouse stage, occurring on the <span style=\"color:#ec4899; font-weight:bold;\">inner mitochondrial membrane</span>. The high-energy carriers from the Krebs cycle drop off their electrons.</p><div class=\"my-4 p-4 bg-background border border-border rounded-lg\"><svg viewBox=\"0 0 100 60\" class=\"w-full\"><rect x=\"0\" y=\"25\" width=\"100\" height=\"10\" fill=\"url(#membraneGradFD)\"/><path d=\"M 10 25 L 20 40 L 30 25 L 40 40\" stroke=\"#6B3F69\" fill=\"none\"/><text x=\"20\" y=\"18\" font-size=\"4\">H+</text><text x=\"55\" y=\"18\" font-size=\"4\">H+</text><text x=\"85\" y=\"18\" font-size=\"4\">H+</text><path d=\"M 50 35 L 50 15\" stroke-dasharray=\"2 2\" stroke=\"hsl(var(--destructive))\" marker-end=\"url(#at-arrowhead)\"/><path d=\"M 80 35 L 80 15\" stroke-dasharray=\"2 2\" stroke=\"hsl(var(--destructive))\" marker-end=\"url(#at-arrowhead)\"/><path d=\"M 75 50 L 85 50 L 80 55 Z\" fill=\"#f59e0b\" class=\"animate-spin\"/></svg></div><p>As electrons are passed down a chain of proteins, their energy is used to pump protons (H+) across the membrane, creating a steep gradient. This gradient is a form of stored energy. The protons then rush back through a special enzyme called <span style=\"color:#22c55e; font-weight:bold;\">ATP synthase</span>, which spins like a turbine to produce massive amounts of ATP.</p>"
+                }
+            }
+        ]
+    }
+]

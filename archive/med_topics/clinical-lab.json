@@ -1,0 +1,332 @@
+
+[
+    {
+        "course": "Clinical Laboratory",
+        "chapter_title": "Chapter 1: Urinalysis & Fluids",
+        "labComponentId": "urinalysis-lab",
+        "critical_concepts": [
+            { "concept": "Urinalysis", "elaboration": "Diagnostic screening test for detecting byproducts of normal and abnormal metabolism, cells, cell fragments, and bacteria in urine." },
+            { "concept": "Specific Gravity", "elaboration": "A measure of the concentration of solutes in the urine. High values indicate concentrated urine (dehydration), low values indicate dilute urine." },
+            { "concept": "Leukocyte Esterase", "elaboration": "An enzyme produced by white blood cells. Its presence in urine suggests inflammation or infection (UTI)." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "urinalysis_case_1",
+                "type": "analysis",
+                "title": "Case 1: 35M Outdoor Worker",
+                "prompt": "Analyze this urinalysis. What is the most likely condition?",
+                "question": "What is the most likely condition based on the findings?",
+                "results": [
+                    { "name": "Color", "result": "Dark amber", "normal": "Pale yellow", "abnormal": true },
+                    { "name": "Specific Gravity", "result": "1.035", "normal": "1.005-1.030", "abnormal": true },
+                    { "name": "pH", "result": "6.0", "normal": "4.5-8.0", "abnormal": false },
+                    { "name": "Protein", "result": "Negative", "normal": "Negative", "abnormal": false },
+                    { "name": "Glucose", "result": "Negative", "normal": "Negative", "abnormal": false },
+                    { "name": "Ketones", "result": "Trace", "normal": "Negative", "abnormal": true }
+                ],
+                "options": ["Dehydration", "UTI", "Diabetes", "Kidney stones"],
+                "answer": "Dehydration",
+                "explanation": "Dark amber color, high specific gravity (>1.030), and trace ketones suggest dehydration. The concentrated urine indicates the body is conserving water.",
+                "theory": {
+                    "title": "Interpreting Concentration",
+                    "content": "<p><strong>Specific Gravity (SG)</strong> measures the kidney's ability to concentrate or dilute urine.</p><ul><li><strong>High SG (>1.030):</strong> Indicates concentrated urine. Common in dehydration, glycosuria, or SIADH.</li><li><strong>Low SG (<1.005):</strong> Indicates dilute urine. Common in diabetes insipidus, excessive water intake, or renal failure.</li></ul><p><strong>Color:</strong> Normal urine is pale yellow (urochrome). Dark amber indicates concentration (dehydration) or bilirubin. Red suggests blood.",
+                    "analogy": "Imagine making lemonade. High Specific Gravity is like adding too much powder to too little water—it's thick, strong, and dark. Low Specific Gravity is like adding a tiny spoon of powder to a gallon of water—it's weak, watery, and pale.",
+                    "application": "Athletes and military personnel use urine specific gravity (USG) to measure hydration status before activity. Keeping USG below 1.020 prevents cramping and heat exhaustion."
+                }
+            },
+            {
+                "componentId": "urinalysis_case_2",
+                "type": "analysis",
+                "title": "Case 2: 24F Dysuria",
+                "prompt": "Review these urinalysis findings. What do they indicate?",
+                "question": "What does the combination of Nitrites and Leukocyte Esterase indicate?",
+                "results": [
+                    { "name": "Color", "result": "Cloudy yellow", "normal": "Clear", "abnormal": true },
+                    { "name": "WBC", "result": "50/hpf", "normal": "0-5/hpf", "abnormal": true },
+                    { "name": "Bacteria", "result": "Many", "normal": "None", "abnormal": true },
+                    { "name": "Nitrites", "result": "Positive", "normal": "Negative", "abnormal": true },
+                    { "name": "Leukocyte Esterase", "result": "Positive", "normal": "Negative", "abnormal": true },
+                    { "name": "RBC", "result": "5/hpf", "normal": "0-3/hpf", "abnormal": true }
+                ],
+                "options": ["Normal findings", "Urinary Tract Infection", "Glomerulonephritis", "Diabetes insipidus"],
+                "answer": "Urinary Tract Infection",
+                "explanation": "Elevated WBC, bacteria, positive nitrites, and leukocyte esterase are classic signs of bacterial UTI. The cloudy appearance is due to pus cells.",
+                "theory": {
+                    "title": "Markers of Infection",
+                    "content": "<p>Urinalysis is a key tool for diagnosing Urinary Tract Infections (UTIs).</p><ul><li><strong>Leukocyte Esterase:</strong> An enzyme released by white blood cells (neutrophils). A positive result indicates pyuria (pus in urine).</li><li><strong>Nitrites:</strong> Many Gram-negative bacteria (like <em>E. coli</em>) convert nitrate (normally in urine) to nitrite. A positive result is highly specific for a bacterial infection.</li><li><strong>Turbidity:</strong> Cloudy urine often signifies the presence of WBCs, bacteria, or epithelial cells.</li></ul>",
+                    "analogy": "Nitrites are like footprints left by a burglar. Normally, there shouldn't be footprints (Nitrites) in your hallway (Urine). If you see them, you know someone (Bacteria) has been there recently, even if you don't see the burglar right now.",
+                    "application": "In elderly patients, UTIs often present without pain or fever, showing up only as sudden confusion or falls. Checking for Nitrites and Leukocyte Esterase is a critical first step in the ER for any confused geriatric patient."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Clinical Laboratory",
+        "chapter_title": "Chapter 2: Blood Analysis",
+        "labComponentId": "blood-analysis-lab",
+        "critical_concepts": [
+            { "concept": "Complete Blood Count (CBC)", "elaboration": "Evaluates overall health and detects disorders like anemia, infection, and leukemia." },
+            { "concept": "Hemoglobin A1c", "elaboration": "Reflects average blood sugar levels over the past 3 months." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "blood_case_1",
+                "type": "analysis",
+                "title": "Case 1: Fatigue",
+                "prompt": "Review this CBC panel. What condition does this pattern suggest?",
+                "question": "What is the most likely diagnosis?",
+                "results": [
+                    { "name": "Hemoglobin", "value": 8.5, "unit": "g/dL", "normal": "12-16", "category": "low" },
+                    { "name": "WBC", "value": 7.2, "unit": "K/µL", "normal": "4.5-11", "category": "normal" },
+                    { "name": "Platelets", "value": 250, "unit": "K/µL", "normal": "150-400", "category": "normal" },
+                    { "name": "RBC", "value": 3.2, "unit": "M/µL", "normal": "4.5-5.5", "category": "low" }
+                ],
+                "options": ["Anemia", "Leukemia", "Thrombocytopenia", "Normal findings"],
+                "answer": "Anemia",
+                "explanation": "Low hemoglobin (8.5 g/dL) and low RBC (3.2 M/µL) with normal WBC and platelets indicate anemia. The patient likely needs iron studies to determine the type.",
+                "theory": {
+                    "title": "Understanding Anemia",
+                    "content": "<p><strong>Anemia</strong> is a condition in which you lack enough healthy red blood cells to carry adequate oxygen to your body's tissues.</p><ul><li><strong>Hemoglobin (Hb):</strong> The iron-rich protein that carries oxygen. Low levels define anemia.</li><li><strong>RBC Count:</strong> The number of red blood cells. Often low in anemia.</li></ul>",
+                    "analogy": "Red blood cells are like delivery trucks. If you don't have enough trucks (Low RBC) or they aren't big enough (Low Hb), the city (tissues) doesn't get enough supplies (oxygen), leading to a slowdown (fatigue).",
+                    "application": "In chronic anemia, the heart pumps faster to compensate for the lack of oxygen carriers, which can lead to heart failure over time."
+                }
+            },
+            {
+                "componentId": "blood_case_2",
+                "type": "analysis",
+                "title": "Case 2: Polydipsia",
+                "prompt": "Analyze this metabolic panel. What is the most likely diagnosis?",
+                "question": "What does the elevated HbA1c indicate?",
+                "results": [
+                    { "name": "Glucose", "value": 280, "unit": "mg/dL", "normal": "70-100", "category": "high" },
+                    { "name": "HbA1c", "value": 9.2, "unit": "%", "normal": "4-5.6", "category": "high" },
+                    { "name": "Creatinine", "value": 1.0, "unit": "mg/dL", "normal": "0.7-1.3", "category": "normal" },
+                    { "name": "BUN", "value": 18, "unit": "mg/dL", "normal": "7-20", "category": "normal" }
+                ],
+                "options": ["Type 1 Diabetes", "Uncontrolled Diabetes", "Kidney Disease", "Hypoglycemia"],
+                "answer": "Uncontrolled Diabetes",
+                "explanation": "Elevated glucose (280 mg/dL) and HbA1c (9.2%) indicate poorly controlled diabetes. HbA1c reflects average blood sugar over 2-3 months.",
+                "theory": {
+                    "title": "Diabetes Markers",
+                    "content": "<p><strong>Glucose</strong> measures current blood sugar, while <strong>HbA1c</strong> measures the average blood sugar over the past 3 months.</p><ul><li><strong>Glucose > 200 mg/dL:</strong> Suggests diabetes if symptomatic.</li><li><strong>HbA1c > 6.5%:</strong> Diagnostic for diabetes.</li></ul>",
+                    "analogy": "HbA1c is like a 'memory' of sugar. While a finger-stick glucose test is a snapshot of traffic right now, HbA1c is the traffic report for the last 3 months.",
+                    "application": "We target an HbA1c of <7% for most diabetics to prevent long-term damage to eyes, kidneys, and nerves."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Clinical Laboratory",
+        "chapter_title": "Chapter 3: Microbiology",
+        "labComponentId": "microbiology-lab",
+        "critical_concepts": [
+            { "concept": "Gram Staining", "elaboration": "A differential staining technique that classifies bacteria into two groups: Gram-positive (purple) and Gram-negative (pink)." },
+            { "concept": "Culture & Sensitivity", "elaboration": "Growing bacteria to identify the organism and determine which antibiotics kill it." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "micro_gram_pos",
+                "type": "identify",
+                "title": "Case 1: Skin Infection",
+                "prompt": "A sample from a purulent wound is stained. Observe the microscopic field.",
+                "question": "Identify the organism based on the Gram stain morphology.",
+                "options": ["Gram Positive Cocci in Clusters", "Gram Negative Rods", "Gram Positive Rods", "Gram Negative Diplococci"],
+                "answer": "Gram Positive Cocci in Clusters",
+                "explanation": "The organisms are purple (Gram Positive) and spherical (Cocci) arranged in grape-like clusters. This is characteristic of Staphylococcus species.",
+                "theory": {
+                    "title": "Gram Stain Basics",
+                    "content": "<p><strong>Gram Staining</strong> differentiates bacteria based on their cell wall structure.</p><ul><li><strong>Gram Positive:</strong> Thick peptidoglycan layer retains the crystal violet stain, appearing <strong>purple</strong>.</li><li><strong>Gram Negative:</strong> Thin peptidoglycan layer loses the stain and takes up the counterstain (safranin), appearing <strong>pink/red</strong>.</li></ul>",
+                    "analogy": "Think of Gram Positive bacteria as wearing a thick wool coat (thick cell wall) that soaks up the purple dye and won't let go. Gram Negative bacteria wear a thin raincoat that lets the purple dye wash right off, so they only show the pink dye added later."
+                }
+            },
+            {
+                "componentId": "micro_gram_neg",
+                "type": "identify",
+                "title": "Case 2: Urinary Tract Infection",
+                "prompt": "A urine sample is cultured and stained. Observe the microscopic field.",
+                "question": "Identify the organism based on the Gram stain morphology.",
+                "options": ["Gram Positive Cocci", "Gram Negative Rods", "Yeast", "Gram Positive Rods"],
+                "answer": "Gram Negative Rods",
+                "explanation": "The organisms are pink (Gram Negative) and rod-shaped (Bacilli). E. coli, the most common cause of UTI, fits this description.",
+                "theory": {
+                    "title": "Common Pathogens",
+                    "content": "<p><strong>Gram Negative Rods</strong> are a large group of bacteria that include many common pathogens like <em>E. coli</em>, <em>Salmonella</em>, and <em>Pseudomonas</em>.</p><p>Identifying the shape (cocci vs rods) and stain color is the first step in diagnosis.</p>",
+                    "analogy": "If Gram Positive Cocci are 'purple grapes', Gram Negative Rods are 'pink hot dogs'. Shape and color tell you the 'flavor' of the bacteria."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Clinical Laboratory",
+        "chapter_title": "Chapter 4: Immunology & Serology",
+        "labComponentId": "immunology-lab",
+        "critical_concepts": [
+            { "concept": "Antigen-Antibody Reaction", "elaboration": "The specific binding of an antibody to its target antigen, often visible as agglutination (clumping)." },
+            { "concept": "Blood Typing", "elaboration": "Determining blood group (A, B, AB, O) and Rh status (+/-) using antisera." },
+            { "concept": "Infectious Disease Screening", "elaboration": "Performing assays like ELISA to detect antibodies against viral pathogens such as HIV or Hepatitis." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "immuno_blood_type_1",
+                "type": "analysis",
+                "title": "Case 1: Pre-Transfusion",
+                "prompt": "Perform forward blood typing on the patient sample. Click to add antisera and observe the wells for agglutination.",
+                "question": "What is the patient's blood type?",
+                "options": ["A Positive", "B Positive", "AB Negative", "O Positive"],
+                "answer": "A Positive",
+                "explanation": "Agglutination (clumping) is seen in the Anti-A well and Anti-D well, but not Anti-B. This indicates the presence of A antigens and Rh factor.",
+                "theory": {
+                    "title": "ABO Blood Grouping",
+                    "content": "<p>Blood types are determined by antigens on the surface of red blood cells.</p><ul><li><strong>Type A:</strong> Has A antigens. Clumps with Anti-A.</li><li><strong>Type B:</strong> Has B antigens. Clumps with Anti-B.</li><li><strong>Type AB:</strong> Has both. Clumps with both.</li><li><strong>Type O:</strong> Has neither. Clumps with neither.</li></ul>",
+                    "analogy": "Think of antigens as name tags. Type A cells wear 'A' name tags. If you send in the 'Anti-A' security guards, they will tackle (clump) anyone wearing an 'A' tag."
+                }
+            },
+            {
+                "componentId": "immuno_blood_type_2",
+                "type": "analysis",
+                "title": "Case 2: Emergency Donor",
+                "prompt": "You need to identify a universal donor. Test this sample.",
+                "question": "What is the blood type shown?",
+                "options": ["O Negative", "O Positive", "A Negative", "AB Positive"],
+                "answer": "O Negative",
+                "explanation": "No agglutination is seen in any well (Anti-A, Anti-B, or Anti-D). The lack of antigens makes this O Negative.",
+                "theory": {
+                    "title": "Universal Donor",
+                    "content": "<p><strong>O Negative</strong> blood lacks A, B, and Rh antigens. Because it has no antigens to trigger an immune reaction in the recipient, it can be given to almost anyone in an emergency.</p>",
+                    "analogy": "O Negative cells are like 'stealth' vehicles. They have no flags or markings (antigens) on them, so they can slip past the recipient's immune system defenses without being attacked."
+                }
+            },
+            {
+                "componentId": "immuno_elisa_screen_1",
+                "type": "analysis",
+                "title": "Case 3: Donor Blood Screening (HIV)",
+                "prompt": "You are performing an ELISA screening on a blood unit. Follow the interactive protocol steps to check for HIV antibodies.",
+                "question": "What is the interpretation of a distinct color change in the patient's well after adding substrate?",
+                "options": ["Negative (Safe)", "Positive (Discard Blood)", "Invalid (Retest)", "Indeterminate"],
+                "answer": "Positive (Discard Blood)",
+                "explanation": "A distinct color change forming in the patient's well indicates the enzyme-linked antibody has bound to the target HIV antibodies. The unit is potentially infected and must be discarded.",
+                "theory": {
+                    "title": "ELISA Screening Principle",
+                    "content": "<p>Blood banks screen every donated unit for infectious diseases such as HIV, Hepatitis B, and Hepatitis C.</p><ul><li><strong>Negative:</strong> No color change. The target antigen/antibody is absent. Safe for transfusion.</li><li><strong>Positive:</strong> Enzyme causes a color change indicating the infection marker's presence. Unit is discarded.</li></ul>",
+                    "analogy": "ELISA is like a suspect lineup with an ink trap. If the specific suspect (antibody) is there, they trigger the trap and get heavily colored, allowing you to quickly spot them."
+                }
+            },
+            {
+                "componentId": "immuno_elisa_screen_2",
+                "type": "analysis",
+                "title": "Case 4: Hepatitis B Serology",
+                "prompt": "Evaluate Hepatitis B Surface Antigen (HBsAg) ELISA results. Step through the interactive protocol. The test shows no color change.",
+                "question": "What does the lack of color change represent?",
+                "options": ["Patient currently has Hepatitis B", "Patient lacks Hepatitis B surface antigen", "Test is invalid", "Patient is immune to Hepatitis B"],
+                "answer": "Patient lacks Hepatitis B surface antigen",
+                "explanation": "No color change means the primary antibody did not find any HBsAg to bind to in the sample. Thus, the antigen is absent or below detectable levels.",
+                "theory": {
+                    "title": "HBsAg Screening",
+                    "content": "<p><strong>Hepatitis B Surface Antigen (HBsAg)</strong> is the earliest indicator of an active Hepatitis B infection.</p><p>Its absence usually implies that there is no active infection, although further testing (like anti-HBs indicating immunity) might be required for a full profile.</p>",
+                    "analogy": "If Hepatitis is a burglar, HBsAg is the burglar's jacket left at the scene. No jacket found means the burglar likely hasn't broken in recently."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Clinical Laboratory",
+        "chapter_title": "Chapter 5: Toxicology",
+        "labComponentId": "toxicology-lab",
+        "critical_concepts": [
+            { "concept": "Immunoassay Screening", "elaboration": "A rapid test using antibodies to detect drugs in urine. A competitive binding assay." },
+            { "concept": "Cut-off Concentration", "elaboration": "The minimum amount of drug required to trigger a positive result." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "tox_opioid",
+                "type": "analysis",
+                "title": "Case 1: Opioid Overdose",
+                "prompt": "A patient arrives unconscious with pinpoint pupils. A rapid urine screen is performed.",
+                "question": "Interpret the result for OPI (Opiates).",
+                "options": ["Positive", "Negative", "Invalid", "Indeterminate"],
+                "answer": "Positive",
+                "explanation": "In competitive immunoassays, the ABSENCE of a test line indicates a POSITIVE result. The OPI strip shows only the Control line.",
+                "theory": {
+                    "title": "Reading Drug Screens",
+                    "content": "<p>Drug screens use <strong>competitive binding</strong>.</p><ul><li><strong>Negative Result:</strong> Drug is ABSENT. Antibodies bind to the test strip, creating a colored line. (2 Lines = Negative)</li><li><strong>Positive Result:</strong> Drug is PRESENT. The drug blocks the antibodies from binding to the strip, so NO line appears. (1 Line = Positive)</li></ul>",
+                    "analogy": "Think of the test line as a parking spot. If the drug (a car) is present, it takes the parking spot, so the dye (another car) can't park there, and you don't see the line. If there is no drug, the spot is open, the dye parks there, and you see the line."
+                }
+            },
+            {
+                "componentId": "tox_cocaine",
+                "type": "analysis",
+                "title": "Case 2: Chest Pain",
+                "prompt": "A young male presents with chest pain. A drug screen is ordered to rule out cocaine use.",
+                "question": "Interpret the result for COC (Cocaine).",
+                "options": ["Positive", "Negative", "Invalid"],
+                "answer": "Positive",
+                "explanation": "The COC strip shows only the Control line, with no Test line visible. This indicates the presence of cocaine metabolites above the cutoff.",
+                "theory": {
+                    "title": "Clinical Correlation",
+                    "content": "<p>Toxicology results must always be correlated with clinical symptoms.</p><ul><li><strong>Cocaine:</strong> Sympathomimetic toxidrome (tachycardia, hypertension, dilated pupils).</li><li><strong>Opioids:</strong> Toxidrome of depression (bradycardia, hypotension, pinpoint pupils).</li></ul>",
+                    "analogy": "The drug screen is the 'what', the symptoms are the 'how'. If the screen says 'fire' (positive test) and you see smoke (symptoms), you confirm the diagnosis."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Clinical Laboratory",
+        "chapter_title": "Chapter 6: Microscopic Cellular Morphology",
+        "labComponentId": "morphology-lab",
+        "critical_concepts": [
+            { "concept": "Crystal Morphology", "elaboration": "Microscopic crystals in urine sediment change shape based on pH levels, indicating potential renal calculi (kidney stones)." },
+            { "concept": "Hematocrit Centrifugation", "elaboration": "Separating blood layers using high centrifugal speeds to assess stacked cell volume and detect anemia or polycythemia." },
+            { "concept": "Bacterial Gram-stain Morphology", "elaboration": "Identifying cellular shapes (cocci vs bacilli rods) and cell-wall absorption properties under oil-immersion microscopy." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "morph_case_1",
+                "type": "analysis",
+                "title": "Case 1: Microscopic Urine Crystal Screening",
+                "prompt": "Evaluate the patient's urine microscopic feed of crystal sediments. Adjust pH controls to observe crystallogenesis.",
+                "question": "Which crystal structure is typically seen in alkaline urine and has a classic 'coffin-lid' morphology?",
+                "options": ["Calcium Oxalate", "Triple Phosphate", "Uric Acid", "Cystine Hexagons"],
+                "answer": "Triple Phosphate",
+                "explanation": "Triple Phosphate (struvite) crystals exhibit a distinctive rectangular coffin-lid shape and grow particularly well in alkaline urine (pH > 7.0), often associated with urea-splitting UTI pathogens.",
+                "theory": {
+                    "title": "Urinary Crystallography & pH",
+                    "content": "<p><strong>Urine Crystals:</strong> The chemical composition of kidney and bladder stones can be diagnosed directly by searching for crystalline footprints under polarizing lenses.</p><ul><li><strong>Calcium Oxalate:</strong> 'Envelope-like' shapes in acidic pH. Form the base of most renal calculi.</li><li><strong>Triple Phosphate:</strong> 'Coffin-lid' prisms in alkaline pH. Form large staghorn calculi in presence of urease-producing bacteria (like Proteus).</li></ul>",
+                    "analogy": "Urinary sediment crystallography is like freezing water. Under different temperature (pH) points, the chemical bonds coordinate into completely distinct visual structures—envelopes versus coffin lids.",
+                    "application": "Spotting triple phosphate crystals alerts practitioners to run early bacterial cultures even if other UTI screen parameters are faint."
+                }
+            },
+            {
+                "componentId": "morph_case_2",
+                "type": "analysis",
+                "title": "Case 2: Centrifugal Packed Cell Volume Analysis",
+                "prompt": "Perform high-speed centrifugal separation on a blood specimen from a chronically fatigued patient to inspect the hematocrit index.",
+                "question": "If centrifugation splits the specimen into a yellow translucent fluid upper layer of 70% volume and a deep-red base layer of 29% volume, what is the clinical interpretation?",
+                "options": ["Normal Baseline", "Severe Anemia", "Severe Polycythemia", "Acute Leukometastasis"],
+                "answer": "Severe Anemia",
+                "explanation": "A packed red cell volume (hematocrit) of 29% is significantly below the normal range (36-48% for females, 40-52% for males), establishing the presence of severe anemia.",
+                "theory": {
+                    "title": "Centrifugation and Packed Volumes",
+                    "content": "<p><strong>Hematocrit Index (Hct):</strong> Measures the percentage of whole blood volume comprised of oxygen-carrying erythrocytes.</p><ul><li><strong>Plasma Layer:</strong> Concentrates electrolyte fluids and coagulants. Normally ~55% of total volume.</li><li><strong>Red Cells Layer:</strong> Dense packed sediment. Normally ~45% of total volume.</li><li><strong>Buffy Coat:</strong> Intermediate white boundary of leukocytes and platelets. Normally ~1%.</li></ul>",
+                    "analogy": "Red blood cells are like delivery trucks carrying cargo. If your overall fleet percentage falls to 29% while the fluid highway holds 70% empty space, the tissues experience severe supply line bottlenecks (oxygen depletion and fatigue).",
+                    "application": "Evaluating blood packed volumes immediately in emergencies guides critical transfusion choices before complete count lab reports return."
+                }
+            },
+            {
+                "componentId": "morph_case_3",
+                "type": "analysis",
+                "title": "Case 3: Microbial Peptidoglycan Gram-Stain",
+                "prompt": "Inspect the Gram-stain smear of a purulent swab taken from a joint fluid puncture under high oil-immersion power magnification.",
+                "question": "The microscope reveals deep purple clusters of spherical cells. What is the Gram status and morphology of this clinical pathogen?",
+                "options": ["Gram Negative Rods", "Gram Positive Cocci in Clusters", "Gram Positive Rods", "Gram Negative Diplococci"],
+                "answer": "Gram Positive Cocci in Clusters",
+                "explanation": "Deep purple staining indicates Gram-Positive status (crystal violet retention in a matching thick peptide wall), and grape-like spherical shapes represent cocci in clusters, typical of Staphylococcus aureus.",
+                "theory": {
+                    "title": "Cell Wall Peptidoglycan Staining",
+                    "content": "<p><strong>Differential Gram-staining:</strong> Distinguishes bacteria by tracing outer layer thickness and chemical absorption.</p><ul><li><strong>Gram Positive:</strong> Rigid thick 'sponge' wall of peptidoglycans that holds the violet color tightly.</li><li><strong>Gram Negative:</strong> Thin layer with outer lipopolysaccharide membranes that allow alcohol decolorization to wash out violet, showing safranin pink counterstain.</li></ul>",
+                    "analogy": "Gram-positive bacteria are like absorbent thick wool sponges (holding purple dye), whereas Gram-negative are like thin canvas coats that easily shed the purple stain during a rapid alcohol splash, turning pink with subsequent dye.",
+                    "application": "Confirming Gram-positive cocci in synovial fluid warrants rapid treatment with wall-targeting penicillinases before joint cartilage breaks down."
+                }
+            }
+        ]
+    }
+]

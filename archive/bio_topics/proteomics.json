@@ -1,0 +1,123 @@
+
+[
+    {
+        "course": "Proteomics",
+        "chapter_title": "Chapter 1: Protein Structure & Folding",
+        "labComponentId": "proteomics-structure",
+        "critical_concepts": [
+            { "concept": "Protein Folding", "elaboration": "The physical process by which a protein chain acquires its native 3-dimensional structure, driven by hydrophobic interactions." },
+            { "concept": "Denaturation", "elaboration": "Loss of quaternary, tertiary, and secondary structure due to external stress (heat, pH), resulting in loss of function." },
+            { "concept": "Structure Levels", "elaboration": "Primary (sequence), Secondary (helices/sheets), Tertiary (3D shape), Quaternary (subunits)." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "structure_hierarchy",
+                "type": "interactive-visual",
+                "title": "Levels of Protein Structure",
+                "prompt": "Explore the four levels of protein structure.",
+                "question": "Which level of structure determines the overall 3D shape of a single polypeptide chain?",
+                "options": ["Primary", "Secondary", "Tertiary", "Quaternary"],
+                "answer": "Tertiary",
+                "explanation": "Tertiary structure is the overall 3D shape formed by interactions between R-groups (side chains), including hydrophobic interactions, hydrogen bonds, and disulfide bridges.",
+                "theory": {
+                    "title": "The Hierarchy of Shape",
+                    "content": "<p>Proteins are not just strings; they are machines built from strings.</p><ul><li><span style=\"color:#3b82f6; font-weight:bold;\">Primary</span>: The sequence of amino acids (the code).</li><li><span style=\"color:#a855f7; font-weight:bold;\">Secondary</span>: Local folding into <span style=\"color:#ec4899; font-weight:bold;\">Alpha-helices</span> and <span style=\"color:#f59e0b; font-weight:bold;\">Beta-sheets</span> (the framework).</li><li><span style=\"color:#22c55e; font-weight:bold;\">Tertiary</span>: The overall 3D folding of the whole chain (the functional shape).</li><li><span style=\"color:#ef4444; font-weight:bold;\">Quaternary</span>: Multiple chains coming together (the multi-part machine).</li></ul>",
+                    "analogy": "Building a House. Primary = The list of materials. Secondary = The walls and frames. Tertiary = The finished house with rooms. Quaternary = A complex of houses (a neighborhood or apartment complex).",
+                    "application": "Sickle Cell Anemia is caused by a single error in the Primary structure (one wrong amino acid), which ruins the Quaternary structure of Hemoglobin, causing it to clump."
+                }
+            },
+            {
+                "componentId": "folding_sim",
+                "type": "interactive-visual",
+                "title": "Hydrophobic Collapse",
+                "prompt": "Proteins fold to hide hydrophobic (water-hating) residues from the aqueous environment.",
+                "question": "In a watery environment, where do hydrophobic amino acids cluster?",
+                "options": ["On the surface", "In the core", "Randomly distributed"],
+                "answer": "In the core",
+                "explanation": "To minimize energy, hydrophobic residues bury themselves in the center of the protein to avoid water, while hydrophilic residues stay on the surface. This is the driving force of protein folding.",
+                "theory": {
+                    "title": "The Hydrophobic Effect",
+                    "content": "<p>Water is 'sticky' (polar). Oil (hydrophobic molecules) is not. When you put oil in water, the water squeezes the oil together to maximize its own bonding.</p><p>Proteins have oily parts (<span style=\"color:#ef4444; font-weight:bold;\">hydrophobic</span>) and watery parts (<span style=\"color:#3b82f6; font-weight:bold;\">hydrophilic</span>). The protein collapses so the oily parts are hidden inside, away from the water.</p>",
+                    "analogy": "Penguins in a Blizzard. To stay warm, penguins huddle together. The penguins on the outside (Hydrophilic) face the cold, protecting the penguins in the middle (Hydrophobic).",
+                    "application": "Cystic Fibrosis is often caused by a folding error. The protein CFTR misfolds because of a missing amino acid, and the cell's quality control system destroys it before it can reach the membrane to do its job."
+                }
+            },
+            {
+                "componentId": "denaturation_lab",
+                "type": "interactive-visual",
+                "title": "Protein Denaturation",
+                "prompt": "Apply heat to the protein and observe the structural changes.",
+                "question": "What happens to the protein function when it denatures?",
+                "options": ["It works faster", "It stops functioning", "It gains new functions"],
+                "answer": "It stops functioning",
+                "explanation": "Structure equals function. When heat breaks the weak bonds holding the 3D shape together (denaturation), the protein unravels and can no longer perform its job.",
+                "theory": {
+                    "title": "Denaturation: Breaking the Shape",
+                    "content": "<p><span style=\"color:#ef4444; font-weight:bold;\">Denaturation</span> is the unraveling of a protein. Heat, acid, or salt can break the hydrogen bonds and hydrophobic interactions that hold the shape together. The primary sequence remains, but the 3D shape is lost.</p>",
+                    "analogy": "Cooking an Egg. The egg white is full of clear, soluble proteins (Albumin). When you heat them, they denature (unravel) and then tangle together, turning solid and white. You cannot 'uncook' the egg back to its original liquid state.",
+                    "application": "Fever is a defense mechanism. By raising body temperature, the body attempts to denature the enzymes of invading bacteria/viruses to kill them. However, if the fever gets too high (>105°F), it risks denaturing your own brain proteins."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Proteomics",
+        "chapter_title": "Chapter 2: Analytical Techniques",
+        "labComponentId": "proteomics-techniques",
+        "critical_concepts": [
+            { "concept": "Mass Spectrometry", "elaboration": "Identifies proteins by measuring the mass-to-charge ratio of their peptide fragments." },
+            { "concept": "Gel Electrophoresis", "elaboration": "Separates proteins based on physical properties like size and charge." },
+            { "concept": "Western Blotting", "elaboration": "Uses antibodies to detect specific proteins in a complex mixture." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "mass_spec_lab",
+                "type": "interactive-visual",
+                "title": "Mass Spectrometry",
+                "prompt": "Identify the protein peaks in the spectrum.",
+                "question": "What property does Mass Spectrometry measure?",
+                "options": ["Color", "Mass-to-Charge Ratio (m/z)", "Radioactivity"],
+                "answer": "Mass-to-Charge Ratio (m/z)",
+                "explanation": "Mass spec ionizes molecules and measures how fast they fly or how much they bend in a magnetic field, which depends on their mass and charge.",
+                "theory": {
+                    "title": "Fingerprinting Molecules",
+                    "content": "<p><span style=\"color:#a855f7; font-weight:bold;\">Mass Spectrometry</span> chops proteins into peptides, ionizes them, and flies them through a vacuum. Heavier ions fly slower or bend less.</p><p>The resulting 'spectrum' of peaks is a unique fingerprint for that protein, which computer databases match to known sequences.</p>",
+                    "analogy": "Coin Sorting. A coin machine sorts coins by size and weight. Mass Spec sorts molecules by mass and charge. Just as a specific combination of weights tells you 'This is a quarter', a specific pattern of peptide masses tells you 'This is Insulin'.",
+                    "application": "Newborn Screening. A drop of blood from a baby's heel is run through Mass Spec to detect dozens of metabolic disorders (like Phenylketonuria) within minutes, allowing early life-saving treatment."
+                }
+            },
+            {
+                "componentId": "gel_electrophoresis_sim",
+                "type": "interactive-visual",
+                "title": "2D Gel Electrophoresis",
+                "prompt": "Separate a protein mixture. First by Charge (Isoelectric Focusing), then by Size (SDS-PAGE).",
+                "question": "In the second dimension (vertical), how are proteins separated?",
+                "options": ["By Color", "By Charge", "By Molecular Weight (Size)"],
+                "answer": "By Molecular Weight (Size)",
+                "explanation": "SDS-PAGE coats proteins in negative charge so they move towards the positive electrode. The gel acts like a sieve: small proteins move fast (bottom), large proteins move slow (top).",
+                "theory": {
+                    "title": "Sorting the Crowd",
+                    "content": "<p><span style=\"color:#3b82f6; font-weight:bold;\">2D Gel Electrophoresis</span> separates complex mixtures (like cell lysate) into individual spots.</p><ol><li><span style=\"color:#22c55e; font-weight:bold;\">1st Dimension (Horizontal)</span>: Separation by pH (Isoelectric point).</li><li><span style=\"color:#ec4899; font-weight:bold;\">2nd Dimension (Vertical)</span>: Separation by Size (Mass).</li></ol>",
+                    "analogy": "Sorting a High School Class. First, you line everyone up by the color of their shirt (Charge/pH). Then, you ask them to race through an obstacle course. The small, agile students finish first (bottom of gel), while the large football players are slower (top of gel). Now every student has a unique coordinate.",
+                    "application": "Cancer Research. Scientists run a gel of 'Normal Tissue' vs 'Tumor Tissue'. They look for spots that appear only in the tumor. These unique proteins are potential targets for new cancer drugs."
+                }
+            },
+            {
+                "componentId": "western_blot_sim",
+                "type": "interactive-visual",
+                "title": "Western Blotting",
+                "prompt": "Use an antibody to detect a specific protein on the membrane.",
+                "question": "What provides the specificity in a Western Blot?",
+                "options": ["Electricity", "The Gel Matrix", "Antibodies"],
+                "answer": "Antibodies",
+                "explanation": "While the gel separates proteins by size, the antibody probing step is what identifies the *specific* protein of interest among thousands of others.",
+                "theory": {
+                    "title": "Finding a Needle in a Haystack",
+                    "content": "<p>After separating proteins on a gel, they are transferred to a paper-like membrane. Then, a specific <span style=\"color:#a855f7; font-weight:bold;\">Antibody</span> is washed over the membrane. It sticks only to its target protein. A chemical reaction then makes that antibody light up or turn dark.</p>",
+                    "analogy": "The Police Lineup. You have 50 suspects lined up (The Gel). You bring in a witness (The Antibody) who knows the face of the criminal. The witness walks down the line and points only at the culprit. We then put a spotlight on them (Detection).",
+                    "application": "HIV Confirmation. If a rapid HIV test is positive, a Western Blot is often used to confirm. It looks for antibodies against specific HIV viral proteins (like gp120 or p24) to ensure the first result wasn't a false alarm."
+                }
+            }
+        ]
+    }
+]

@@ -175,10 +175,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
     return (
         <nav className="absolute top-0 left-0 w-full z-50 bg-transparent p-2 flex justify-between items-center">
-            <div className="flex items-center gap-3 ml-2">
-                <h1 className={`text-xl font-heading tracking-wider ${titleColor}`}>{getTitle()}</h1>
-            </div>
-
+            {/* Title removed per user request */}
             <div className={`flex items-center p-0.5 backdrop-blur-md border rounded-full shadow-sm gap-1 overflow-hidden ${navBgColor}`}>
 
 

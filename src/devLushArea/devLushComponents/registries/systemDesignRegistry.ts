@@ -4,6 +4,7 @@ import EventDrivenArchitectureActivity from '../devLushTopics/system-design/Even
 import { SystemDesignOverviewActivity } from '../devLushTopics/system-design/SystemDesignOverviewActivity';
 import RateLimitingActivity from '../devLushTopics/system-design/RateLimitingActivity';
 import LoadBalancingActivity from '../devLushTopics/system-design/LoadBalancingActivity';
+import SystemDesignMorphologyActivity from '../devLushTopics/system-design/SystemDesignMorphologyActivity';
 
 export const systemDesignRegistry: Record<string, React.ComponentType<any>> = {
   'database-sharding-replication': DatabaseShardingActivity,
@@ -11,4 +12,5 @@ export const systemDesignRegistry: Record<string, React.ComponentType<any>> = {
   'mp_system_design_overview': SystemDesignOverviewActivity,
   'rate-limiting-strategies': RateLimitingActivity,
   'load-balancing-algorithms': LoadBalancingActivity,
+  'system-design-morphology': SystemDesignMorphologyActivity,
 };

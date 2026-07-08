@@ -463,6 +463,18 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                         DevLushArea
                       </button>
                     </li>
+                    <li>
+                      <button
+                        onClick={() => {
+                          setActiveTab("map");
+                          setActiveSubTab("");
+                        }}
+                        className="hover:text-emerald-500 transition-colors flex items-center gap-2 group"
+                      >
+                        <ChevronRight className="w-3 h-3 text-zinc-300 dark:text-zinc-700 group-hover:text-emerald-500 transition-colors" />
+                        Roadmap
+                      </button>
+                    </li>
                   </ul>
                 </div>
 

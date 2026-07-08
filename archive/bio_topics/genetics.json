@@ -1,0 +1,163 @@
+
+[
+    {
+        "course": "genetics",
+        "chapter_title": "Chapter 1: From DNA to Protein",
+        "labComponentId": "dna-to-protein",
+        "levelId": "dna-to-protein",
+        "critical_concepts": [
+            {
+                "concept": "DNA Replication",
+                "elaboration": "The process by which a cell makes an identical copy of its DNA, ensuring genetic information is passed on during cell division. It relies on complementary base pairing (A-T, G-C)."
+            },
+            {
+                "concept": "Transcription",
+                "elaboration": "The first step of gene expression, where a segment of DNA is copied into messenger RNA (mRNA) by the enzyme RNA polymerase. In RNA, Uracil (U) replaces Thymine (T)."
+            },
+            {
+                "concept": "Translation",
+                "elaboration": "The process where ribosomes in the cytoplasm or ER synthesize proteins after the process of transcription of DNA to RNA in the cell's nucleus. The genetic code is read in three-letter 'codons' to assemble amino acids."
+            }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "dna_replication_exercise",
+                "concept_tested": "DNA Replication & Base Pairing",
+                "title": "DNA Replication",
+                "prompt": "DNA replication ensures that each new cell receives a complete set of genetic instructions. The process relies on the strict rules of base pairing.",
+                "question": "If a segment of the template DNA strand reads 'A-T-G-C-C-A', what will the corresponding sequence on the newly synthesized complementary strand be?",
+                "answer": "T-A-C-G-G-T",
+                "tags": ["dna replication", "base pairing", "adenine", "thymine", "guanine", "cytosine", "semiconservative"],
+                "options": [
+                    "T-A-C-G-G-T",
+                    "U-A-C-G-G-U",
+                    "A-T-G-C-C-A"
+                ],
+                "explanation": "Correct! During DNA replication, Adenine (A) always pairs with Thymine (T), and Guanine (G) always pairs with Cytosine (C). The new strand is built by matching these complementary bases to the template strand.",
+                "wrong_answer_feedback": [
+                    { "option": "U-A-C-G-G-U", "feedback": "Incorrect. Uracil (U) is found in RNA, not DNA. During DNA replication, Adenine (A) pairs with Thymine (T)." },
+                    { "option": "A-T-G-C-C-A", "feedback": "Incorrect. This is identical to the template strand. The new strand must be complementary (A pairs with T, G pairs with C)." }
+                ],
+                "theory": {
+                    "title": "DNA Replication: The Double Helix Unzips",
+                    "content": "<p><span style=\"color:#a855f7; font-weight:bold;\">DNA Replication</span> is the process of producing two identical replicas of DNA from one original DNA molecule. It is the basis for biological inheritance.</p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 60' class='w-full'><path d='M20 10 C 40 20, 60 0, 80 10' stroke='#a855f7' fill='none' stroke-width='2'/><path d='M20 50 C 40 40, 60 60, 80 50' stroke='#ec4899' fill='none' stroke-width='2'/><line x1='30' y1='12' x2='30' y2='48' stroke='hsl(var(--muted-foreground))' stroke-dasharray='1 1'/><line x1='50' y1='10' x2='50' y2='50' stroke='hsl(var(--muted-foreground))' stroke-dasharray='1 1'/><line x1='70' y1='12' x2='70' y2='48' stroke='hsl(var(--muted-foreground))' stroke-dasharray='1 1'/></svg></div><p>The process starts with the 'unzipping' of the parent molecule as the hydrogen bonds between the base pairs are broken. Each separated strand then acts as a template for producing a new, complementary strand. This is known as <span style=\"color:#ec4899; font-weight:bold;\">semiconservative replication</span> because each new DNA molecule consists of one 'old' and one 'new' strand.</p>"
+                }
+            },
+            {
+                "componentId": "transcription_exercise",
+                "concept_tested": "Transcription: DNA to mRNA",
+                "title": "Transcription",
+                "prompt": "Transcription is the process of copying a gene's DNA sequence to make a messenger RNA (mRNA) molecule.",
+                "question": "If a DNA template strand reads 'T-A-C-G-G-T', what will the sequence of the transcribed mRNA molecule be?",
+                "answer": "A-U-G-C-C-A",
+                "tags": ["transcription", "mrna", "rna polymerase", "uracil", "gene expression", "central dogma"],
+                "options": [
+                    "A-T-G-C-C-A",
+                    "A-U-G-C-C-A",
+                    "U-A-C-G-G-U"
+                ],
+                "explanation": "Correct! During transcription, the base pairing rules are similar to DNA replication, with one key difference: RNA uses Uracil (U) instead of Thymine (T). So, Adenine (A) on the DNA pairs with Uracil (U) on the mRNA.",
+                 "wrong_answer_feedback": [
+                    { "option": "A-T-G-C-C-A", "feedback": "Almost correct! Remember the key difference between DNA and RNA: in RNA, Uracil (U) replaces Thymine (T)." },
+                    { "option": "U-A-C-G-G-U", "feedback": "This would be the complementary strand if the template was 'A-T-G-C-C-A'. You need to find the complement to the given template 'T-A-C-G-G-T'." }
+                ],
+                "theory": {
+                    "title": "Transcription: Writing the Message",
+                    "content": "<p><span style=\"color:#34d399; font-weight:bold;\">Transcription</span> is the first step in gene expression. It involves copying a gene's DNA sequence to make an RNA molecule. The main enzyme involved is <span style=\"color:#6B3F69; font-weight:bold;\">RNA polymerase</span>.</p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 60' class='w-full'><path d='M10 20 L 90 20' stroke='#a855f7' stroke-width='2'/><path d='M10 40 L 90 40' stroke='#ec4899' stroke-width='2'/><rect x='40' y='15' width='20' height='30' fill='#6B3F69' rx='5'/><path d='M60 30 L 90 30' stroke='#34d399' stroke-width='2' marker-end='url(#rna-arrow)'/><text x='45' y='10' font-size='4'>DNA</text><text x='75' y='25' font-size='4'>mRNA</text></svg></div><p>During transcription, a strand of mRNA is made that is complementary to a strand of DNA. A key rule to remember is that in RNA, the base <span style=\"color:#ef4444; font-weight:bold;\">Uracil (U)</span> replaces Thymine (T).</p>"
+                }
+            },
+            {
+                "componentId": "translation_exercise",
+                "concept_tested": "Translation: mRNA to Protein",
+                "title": "Translation",
+                "prompt": "Translation is the process where ribosomes synthesize proteins by reading the mRNA sequence in three-base-pair 'codons'.",
+                "question": "Using the provided codon chart, what amino acid sequence does the mRNA 'A-U-G-C-C-A-U-A-G' code for?",
+                "answer": "Met - Pro - STOP",
+                "tags": ["translation", "protein synthesis", "ribosome", "codon", "amino acid", "polypeptide chain"],
+                "options": [
+                    "Met - Pro - STOP",
+                    "Tyr - Gly - Ile",
+                    "Start - Ala - Ser"
+                ],
+                "explanation": "Correct! The ribosome reads the mRNA in codons. AUG is the start codon and codes for Methionine (Met). CCA codes for Proline (Pro). UAG is a stop codon, which terminates protein synthesis.",
+                "wrong_answer_feedback": [
+                    { "option": "Tyr - Gly - Ile", "feedback": "Incorrect. Check the codon chart again. AUG codes for Met (Methionine), not Tyr (Tyrosine)." },
+                    { "option": "Start - Ala - Ser", "feedback": "While AUG is the start codon, it also specifies the amino acid Methionine (Met). Review the codons for Proline and the stop signal." }
+                ],
+                 "theory": {
+                    "title": "Translation: Reading the Code",
+                    "content": "<p><span style=\"color:#f59e0b; font-weight:bold;\">Translation</span> is the final step of gene expression, where the genetic code carried by mRNA is decoded to produce the specific sequence of amino acids in a polypeptide chain (a protein).</p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 60' class='w-full'><path d='M10 30 L 90 30' stroke='#34d399' stroke-width='2'/><rect x='30' y='15' width='40' height='30' rx='15' fill='#6B3F69'/><circle cx='40' cy='45' r='5' fill='#f59e0b'/><circle cx='50' cy='45' r='5' fill='#f97316'/><circle cx='60' cy='45' r='5' fill='#22c55e'/><text x='50' y='10' font-size='4'>mRNA</text><text x='50' y='58' font-size='4'>Protein</text></svg></div><p>This process is carried out by <span style=\"color:#6B3F69; font-weight:bold;\">ribosomes</span>. The ribosome reads the mRNA sequence in groups of three bases called <span style=\"color:#f97316; font-weight:bold;\">codons</span>. Each codon specifies a particular amino acid. For example, the codon 'AUG' is the universal 'start' signal and also codes for the amino acid Methionine.</p>"
+                }
+            }
+        ]
+    },
+    {
+        "course": "genetics",
+        "chapter_title": "Chapter 2: Interactive DNA Replication",
+        "labComponentId": "interactive-dna-replication",
+        "levelId": "interactive-dna-replication",
+        "critical_concepts": [
+            {
+                "concept": "Base Pairing",
+                "elaboration": "The core principle of replication where Adenine (A) pairs with Thymine (T), and Guanine (G) pairs with Cytosine (C)."
+            },
+            {
+                "concept": "Semiconservative Replication",
+                "elaboration": "Each new DNA molecule consists of one original (template) strand and one newly synthesized strand."
+            }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "dna_replication_build_activity",
+                "type": "build",
+                "concept_tested": "Complementary Base Pairing",
+                "title": "Build a DNA Strand",
+                "prompt": "An unzipped DNA strand is shown. Your task is to build the complementary strand by selecting the correct base pairs.",
+                "tags": ["dna replication", "base pairing", "A-T", "G-C", "semiconservative", "template strand", "complementary strand"],
+                "explanation": "Excellent! You've correctly applied the base-pairing rules (A-T, G-C) to replicate the DNA strand. This is the fundamental mechanism for copying genetic information.",
+                "theory": {
+                    "title": "DNA Replication: The Copying Process",
+                    "content": "<p><span style=\"color:#a855f7; font-weight:bold;\">DNA Replication</span> is the process where a cell makes an identical copy of its DNA. This is essential for cell division, allowing genetic information to be passed to new cells.</p><div class='my-4 p-4 bg-background border border-border rounded-lg'><svg viewBox='0 0 100 60' class='w-full'><path d='M20 10 C 40 20, 60 0, 80 10' stroke='#a855f7' fill='none' stroke-width='2'/><path d='M20 50 C 40 40, 60 60, 80 50' stroke='#ec4899' fill='none' stroke-width='2'/><line x1='30' y1='12' x2='30' y2='48' stroke='hsl(var(--muted-foreground))' stroke-dasharray='1 1'/><line x1='50' y1='10' x2='50' y2='50' stroke='hsl(var(--muted-foreground))' stroke-dasharray='1 1'/><line x1='70' y1='12' x2='70' y2='48' stroke='hsl(var(--muted-foreground))' stroke-dasharray='1 1'/></svg></div><p>The process follows strict <strong>base-pairing rules</strong>, where specific nucleotide bases form pairs: Adenine (A) always pairs with Thymine (T), and Guanine (G) always pairs with Cytosine (C). The double helix 'unzips', and each strand serves as a template to build a new complementary strand. Because each new DNA molecule consists of one old and one new strand, this is called <span style=\"color:#ec4899; font-weight:bold;\">semiconservative replication</span>.</p>"
+                }
+            }
+        ]
+    },
+    {
+        "course": "genetics",
+        "chapter_title": "Chapter 3: Mendelian Genetics",
+        "labComponentId": "mendelian-genetics",
+        "levelId": "mendelian-genetics",
+        "critical_concepts": [
+            {
+                "concept": "Alleles & Genotypes",
+                "elaboration": "Alleles are different versions of a gene (e.g., 'B' for brown eyes, 'b' for blue). An individual's combination of two alleles (e.g., 'Bb') is their genotype."
+            },
+            {
+                "concept": "Dominant vs. Recessive",
+                "elaboration": "A dominant allele ('B') will express its trait even if only one copy is present. A recessive allele ('b') only expresses its trait if two copies are present ('bb')."
+            },
+            {
+                "concept": "Punnett Square",
+                "elaboration": "A tool used to predict the probability of an offspring having a particular genotype by combining all possible gametes from the parents."
+            }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "punnett_square_exercise",
+                "type": "punnett",
+                "concept_tested": "Predicting Offspring Genotypes",
+                "title": "Punnett Square",
+                "prompt": "Brown eyes (B) are dominant to blue eyes (b). Predict the outcome of a cross between two heterozygous parents (Bb).",
+                "question": "What percentage of offspring are predicted to have the dominant phenotype (Brown eyes)?",
+                "answer": "75%",
+                "tags": ["punnett square", "mendelian genetics", "alleles", "genotype", "phenotype", "dominant", "recessive", "heterozygous"],
+                "options": ["25%", "50%", "75%", "100%"],
+                "explanation": "With two heterozygous parents (Bb), the Punnett Square predicts genotypes of BB, Bb, Bb, and bb. Since 'B' is dominant, the BB and Bb genotypes result in brown eyes. This accounts for 3 out of the 4 possibilities, or 75%.",
+                "theory": {
+                    "title": "Mendelian Genetics",
+                    "content": "<p>A <span style=\"color:#22c55e; font-weight:bold;\">Punnett Square</span> is a simple graphical way of discovering all of the potential combinations of genotypes of an offspring, given the parents’ genotypes.</p><p>It is a powerful tool for predicting the probability of inheriting specific traits. The square is named after Reginald C. Punnett, who devised the approach. The diagram is used by biologists to determine the probability of an offspring having a particular genotype.</p>"
+                }
+            }
+        ]
+    }
+]

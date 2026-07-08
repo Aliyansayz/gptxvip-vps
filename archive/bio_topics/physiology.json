@@ -1,0 +1,313 @@
+
+[
+    {
+        "course": "Physiology",
+        "chapter_title": "Chapter 1: Heart & Circulation",
+        "labComponentId": "physiology-heart",
+        "critical_concepts": [
+            { "concept": "Systemic Circulation", "elaboration": "Delivers oxygenated blood to the body." },
+            { "concept": "Pulmonary Circulation", "elaboration": "Sends deoxygenated blood to lungs." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "heart_path_trace",
+                "type": "path",
+                "title": "Circulation Path",
+                "prompt": "Trace the flow of blood through the heart and lungs.",
+                "question": "Click the structures in order: Start at the Right Atrium → through the heart → to the Lungs → back to Left Atrium",
+                "correctPath": ["right-ventricle", "pulmonary-artery", "lungs"],
+                "answer": "Path traced correctly",
+                "explanation": "Deoxygenated blood flows from the Right Atrium to the Right Ventricle, is pumped through the Pulmonary Artery to the Lungs for oxygenation.",
+                "theory": {
+                    "title": "Blood Flow Through the Heart",
+                    "content": "<p>The heart is a dual-pump system. The <span style=\"color:#3b82f6; font-weight:bold;\">Right Heart</span> receives oxygen-poor blood from the body and pumps it to the lungs (Pulmonary Loop). The <span style=\"color:#ef4444; font-weight:bold;\">Left Heart</span> receives oxygen-rich blood from the lungs and pumps it out to the body (Systemic Loop).</p><p>Valves ensure one-way flow, preventing backwash during contraction.</p>",
+                    "analogy": "The Metro System. The heart is the central station. The 'Blue Line' (Right side) takes commuters (blood cells) to the airport (Lungs) to pick up luggage (Oxygen). The 'Red Line' (Left side) takes them from the airport out to the city (Body) to deliver their luggage.",
+                    "application": "In heart failure, if the Left Pump fails, fluid backs up into the lungs (Congestive Heart Failure), causing shortness of breath (drowning). If the Right Pump fails, fluid backs up into the body, causing swollen legs."
+                }
+            },
+            {
+                "componentId": "heart_structure",
+                "type": "select",
+                "title": "Heart Anatomy",
+                "prompt": "Form follows function in cardiac anatomy.",
+                "question": "Why is the left ventricle wall thicker than the right?",
+                "options": ["It holds more blood volume", "It must pump blood much farther (whole body)", "It receives blood from the lungs", "It beats faster"],
+                "answer": "It must pump blood much farther (whole body)",
+                "explanation": "The left ventricle needs thicker muscle to generate the high pressure needed to pump blood throughout the entire body.",
+                "theory": {
+                    "title": "Form Follows Function",
+                    "content": "<p>The <span style=\"color:#ef4444; font-weight:bold;\">Left Ventricle</span> is the powerhouse. It must generate enough pressure (~120 mmHg) to push blood to the tips of your toes and the top of your head against gravity and resistance.</p><p>The <span style=\"color:#3b82f6; font-weight:bold;\">Right Ventricle</span> only pumps to the lungs next door, requiring much less pressure (~25 mmHg), so its wall is thinner.</p>",
+                    "analogy": "The Pitcher vs. The Outfielder. The Right Ventricle is like a pitcher tossing a ball to a first baseman just a few feet away. The Left Ventricle is an outfielder trying to throw the ball all the way to home plate; it needs a much stronger arm (thicker muscle).",
+                    "application": "Left Ventricular Hypertrophy (LVH) occurs when the heart has to work too hard for too long, commonly due to untreated High Blood Pressure. It's like a weightlifter getting bulky muscles, but for the heart, this bulkiness eventually leads to stiffness and failure."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Physiology",
+        "chapter_title": "Chapter 2: Respiratory System",
+        "labComponentId": "physiology-respiratory",
+        "critical_concepts": [
+            { "concept": "Gas Exchange", "elaboration": "Diffusion of O2 and CO2 across the alveolar membrane." },
+            { "concept": "Ventilation", "elaboration": "Mechanical movement of air in and out of lungs." }
+        ],
+        "interactive_questions": [
+             {
+                "componentId": "resp_gas_exchange",
+                "type": "select",
+                "title": "Gas Exchange",
+                "prompt": "Gas exchange occurs in the alveoli.",
+                "question": "What happens to oxygen during gas exchange in the alveoli?",
+                "options": ["O₂ moves from blood to alveoli", "O₂ moves from alveoli to blood", "O₂ is converted to CO₂", "O₂ stays in the alveoli"],
+                "answer": "O₂ moves from alveoli to blood",
+                "explanation": "Oxygen diffuses from the high concentration in alveoli to the lower concentration in blood capillaries.",
+                "theory": {
+                    "title": "Gas Exchange",
+                    "content": "<p><span style=\"color:#a855f7; font-weight:bold;\">Diffusion</span> drives gas exchange. Molecules naturally move from areas of high concentration to low concentration.</p><p>In the lungs, <span style=\"color:#34d399; font-weight:bold;\">Oxygen (O₂)</span> concentration is high in the air sacs (alveoli) and low in the arriving blood. Therefore, O₂ rushes into the blood. Conversely, <span style=\"color:#f97316; font-weight:bold;\">Carbon Dioxide (CO₂)</span> is high in the blood (waste) and low in the lungs, so it rushes out to be exhaled.</p>",
+                    "analogy": "The Tea Bag. When you put a tea bag (Alveolus with O2) into hot water (Blood), the flavor (O2) naturally spreads out into the water where there is none. You don't need a pump; nature seeks balance.",
+                    "application": "Pneumonia fills the alveoli with fluid instead of air. This fluid acts like a thick plastic wrapper around the tea bag. The water can't get to the tea, so diffusion stops, and the blood doesn't get oxygenated (Hypoxia)."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Physiology",
+        "chapter_title": "Chapter 3: Renal Physiology",
+        "labComponentId": "physiology-renal",
+        "critical_concepts": [
+            { "concept": "Glomerular Filtration Rate (GFR)", "elaboration": "The volume of fluid filtered from the kidney glomerular capillaries into the Bowman's capsule per unit time." },
+            { "concept": "Countercurrent Multiplier", "elaboration": "The process of using energy to generate an osmotic gradient that enables you to reabsorb water from the tubular fluid and produce concentrated urine." },
+            { "concept": "Hormonal Regulation", "elaboration": "ADH (Vasopressin) regulates water reabsorption in the collecting duct." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "gfr_slider_sim",
+                "type": "interactive-visual",
+                "title": "GFR Regulation",
+                "prompt": "The kidney regulates filtration by constricting or dilating the Afferent (Input) and Efferent (Output) arterioles.",
+                "question": "To INCREASE filtration pressure (GFR), what combination works best?",
+                "options": ["Constrict Afferent + Dilate Efferent", "Dilate Afferent + Constrict Efferent", "Constrict Both"],
+                "answer": "Dilate Afferent + Constrict Efferent",
+                "explanation": "Dilating the input (Afferent) lets more blood in, while constricting the output (Efferent) creates a bottleneck. This maximizes pressure inside the glomerulus, driving filtration up.",
+                "theory": {
+                    "title": "The Glomerulus as a Sieve",
+                    "content": "<p>The <span style=\"color:#f59e0b; font-weight:bold;\">Glomerulus</span> acts like a high-pressure sieve. Blood pressure forces water and small solutes out of the blood and into the tubule to become urine.</p><p><strong>Afferent Arteriole:</strong> The 'Tap' letting water in.<br/><strong>Efferent Arteriole:</strong> The 'Drain' letting unfiltered blood out.</p>",
+                    "analogy": "A Garden Hose with a Nozzle. If you open the tap (Dilate Afferent) and partially block the nozzle (Constrict Efferent), the pressure in the hose builds up, and water sprays out forcefully (High GFR).",
+                    "application": "NSAIDS (Ibuprofen) constrict the Afferent arteriole. ACE Inhibitors dilate the Efferent arteriole. Taking both together drops pressure significantly and can cause Acute Kidney Failure."
+                }
+            },
+            {
+                "componentId": "loop_henle_sim",
+                "type": "interactive-visual",
+                "title": "Loop of Henle",
+                "prompt": "The Loop of Henle creates a salty environment in the kidney to pull water out of urine. Adjust the salt pumps.",
+                "question": "How does the kidney concentrate urine?",
+                "options": ["By pumping water directly", "By pumping salt to create an osmotic gradient", "By heating the urine"],
+                "answer": "By pumping salt to create an osmotic gradient",
+                "explanation": "The kidney cannot pump water directly. It pumps salt into the medulla tissue, making it very salty. Water then naturally follows the salt (osmosis) out of the tubule, concentrating the urine.",
+                "theory": {
+                    "title": "Countercurrent Multiplier",
+                    "content": "<p>The <span style=\"color:#a855f7; font-weight:bold;\">Loop of Henle</span> dips deep into the kidney medulla. The ascending limb actively pumps salts (Na+, K+, Cl-) out but is impermeable to water. This makes the medulla salty. The descending limb lets water flow out towards this salt.</p>",
+                    "analogy": "Salting a Cucumber. To get water out of a cucumber, you don't squeeze it; you sprinkle salt on it. The salt draws the moisture out via osmosis. The kidney 'salts' its own tissue to draw water out of the urine.",
+                    "application": "Loop Diuretics (like Furosemide) work by disabling these salt pumps. Without the salty gradient, water stays in the urine, making you pee more. This helps treat heart failure fluid overload."
+                }
+            },
+            {
+                "componentId": "adh_water_sim",
+                "type": "interactive-visual",
+                "title": "ADH & Dehydration",
+                "prompt": "You are dehydrated. Release ADH (Antidiuretic Hormone) to save water.",
+                "question": "What is the effect of high ADH levels?",
+                "options": ["More urine, dilute", "Less urine, concentrated", "No change"],
+                "answer": "Less urine, concentrated",
+                "explanation": "ADH inserts water channels (Aquaporins) into the collecting duct, allowing the body to reclaim water back into the blood. This results in a small volume of dark, concentrated urine.",
+                "theory": {
+                    "title": "ADH: The Water Saver",
+                    "content": "<p><span style=\"color:#3b82f6; font-weight:bold;\">Antidiuretic Hormone (ADH)</span> is released by the brain when you are dehydrated. It tells the kidney collecting ducts to become permeable to water, reabsorbing it back into the blood.</p>",
+                    "analogy": "Recycling Plant. Normally, trash (urine) goes straight to the dump. ADH is the manager yelling 'Wait! We need that water!' and opening doors (Aquaporins) to pull water bottles out of the trash conveyor belt before they are lost forever.",
+                    "application": "Alcohol inhibits ADH release. This prevents the kidney from saving water, leading to excessive urination and the dehydration headache known as a hangover."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Physiology",
+        "chapter_title": "Chapter 4: Muscle Physiology",
+        "labComponentId": "physiology-muscle",
+        "critical_concepts": [
+            { "concept": "Sliding Filament Theory", "elaboration": "Muscle contraction occurs as actin and myosin filaments slide past each other." },
+            { "concept": "Excitation-Contraction Coupling", "elaboration": "The link between the electrical nerve signal and the mechanical muscle contraction via Calcium." },
+            { "concept": "Motor Unit Recruitment", "elaboration": "Activation of additional motor units to accomplish an increase in contractile strength." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "sarcomere_sim",
+                "type": "interactive-visual",
+                "title": "Sarcomere Contraction",
+                "prompt": "Interact with the sarcomere to initiate a contraction cycle.",
+                "question": "What molecule binds to Troponin to expose the binding sites on Actin?",
+                "options": ["ATP", "Calcium", "Potassium", "Sodium"],
+                "answer": "Calcium",
+                "explanation": "Calcium binds to Troponin, causing a conformational change that moves Tropomyosin out of the way, allowing Myosin to grab Actin.",
+                "theory": {
+                    "title": "Sliding Filament Theory",
+                    "content": "<p>Muscles don't 'scrunch' up; the filaments slide past one another like a telescope collapsing.</p><ol><li><span style=\"color:#facc15; font-weight:bold;\">Calcium</span> unlocks the actin.</li><li><span style=\"color:#6B3F69; font-weight:bold;\">Myosin</span> grabs actin (Cross-bridge).</li><li><strong>Power Stroke:</strong> Myosin pulls actin inward.</li><li><span style=\"color:#f59e0b; font-weight:bold;\">ATP</span> releases the grip to reset.</li></ol>",
+                    "analogy": "Rowing a Boat. The oar (Myosin) grabs the water (Actin). The rower pulls (Power Stroke). Then they lift the oar out (ATP required) to reset for the next stroke. Without ATP (energy to release), the oar stays stuck in the water (Rigor Mortis).",
+                    "application": "Rigor Mortis happens after death because calcium leaks out (causing binding), but there is no ATP produced to detach the myosin heads. The muscles lock up in a contracted state."
+                }
+            },
+            {
+                "componentId": "motor_unit_sim",
+                "type": "interactive-visual",
+                "title": "Motor Unit Recruitment",
+                "prompt": "Lift the weight. As the load increases, recruit more motor units.",
+                "question": "To lift a heavier weight, the body:",
+                "options": ["Makes each fiber pull harder", "Recruits more muscle fibers", "Relaxes the antagonist muscle only"],
+                "answer": "Recruits more muscle fibers",
+                "explanation": "Muscle fibers contract all-or-none. To increase force, the nervous system activates (recruits) more motor units, starting with small ones and adding larger ones (Henneman's Size Principle).",
+                "theory": {
+                    "title": "Spatial Summation",
+                    "content": "<p>A <span style=\"color:#a855f7; font-weight:bold;\">Motor Unit</span> is one neuron and all the muscle fibers it controls. For light loads, we use small, weak, fatigue-resistant units. For heavy loads, we add large, powerful, easily fatigued units.</p>",
+                    "analogy": "Moving a Piano. First, you try to lift it alone (Small Motor Unit). It doesn't move. You call a friend. Still no movement. You call 5 more friends (Recruitment). Finally, with everyone lifting together, the piano moves.",
+                    "application": "In precision tasks (threading a needle), we use only a few small motor units for fine control. In power tasks (jumping), we recruit almost everything simultaneously."
+                }
+            },
+            {
+                "componentId": "length_tension_sim",
+                "type": "interactive-visual",
+                "title": "Length-Tension Relationship",
+                "prompt": "Adjust the starting length of the muscle fiber to see how much force it can generate.",
+                "question": "At what length is muscle force generation strongest?",
+                "options": ["Fully shortened", "Optimal overlap (mid-length)", "Fully stretched"],
+                "answer": "Optimal overlap (mid-length)",
+                "explanation": "Maximum force occurs when there is optimal overlap between actin and myosin heads. Too short = crowding. Too long = heads can't reach.",
+                "theory": {
+                    "title": "The Goldilocks Zone",
+                    "content": "<p>Muscle force depends on how many myosin heads can grab actin. <strong>Optimal Length:</strong> Max overlap. <strong>Too Short:</strong> Filaments collide, interfering with binding. <strong>Too Long:</strong> Minimal overlap, few heads can bind.</p>",
+                    "analogy": "Tug of War. If the teams are too close (Short), they bump into each other and can't pull. If the rope is too long (Stretched), only the front person can reach it. The best pull happens when everyone is spaced out perfectly to grab the rope comfortably.",
+                    "application": "The heart relies on this. As it fills with blood (stretches), it actually pumps *harder* because it moves closer to optimal length (Frank-Starling Law). However, if it overstretches (Heart Failure), force drops drastically."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Physiology",
+        "chapter_title": "Chapter 5: Digestive Physiology",
+        "labComponentId": "physiology-digestive",
+        "critical_concepts": [
+            { "concept": "Enzymatic Hydrolysis", "elaboration": "Breaking down macromolecules using enzymes at specific pH levels." },
+            { "concept": "Surface Area", "elaboration": "Villi and microvilli increase absorption area." },
+            { "concept": "Peristalsis", "elaboration": "Wave-like muscle contractions moving food." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "enzyme_ph_lab",
+                "type": "interactive-visual",
+                "title": "Enzyme Specificity",
+                "prompt": "Place the enzyme in the correct organ environment to see it work.",
+                "question": "Where is Pepsin most active?",
+                "options": ["Mouth (pH 7)", "Stomach (pH 2)", "Small Intestine (pH 8)"],
+                "answer": "Stomach (pH 2)",
+                "explanation": "Pepsin is a protease that requires a highly acidic environment to unfold and activate. It works best in the stomach.",
+                "theory": {
+                    "title": "pH Dependence",
+                    "content": "<p>Enzymes are proteins folded into specific shapes. pH affects this folding. <span style=\"color:#6B3F69; font-weight:bold;\">Pepsin</span> evolves to work in acid (Stomach). <strong>Trypsin</strong> evolves to work in base (Intestine). Putting them in the wrong pH denatures them.</p>",
+                    "analogy": "Tools for the Job. You use a heavy coat (Pepsin) in the arctic (Stomach/Acid). If you wear it in the desert (Intestine/Base), you overheat and collapse. Different environments require different specialized tools.",
+                    "application": "Antacids neutralize stomach acid. While this helps heartburn, it can theoretically reduce the effectiveness of protein digestion by making the stomach too alkaline for pepsin to work optimally."
+                }
+            },
+            {
+                "componentId": "villi_expansion",
+                "type": "interactive-visual",
+                "title": "Absorption Surface",
+                "prompt": "Zoom into the intestinal wall. Unfold the structures to see the true surface area.",
+                "question": "What is the purpose of Villi and Microvilli?",
+                "options": ["To move food faster", "To maximize absorption area", "To produce acid"],
+                "answer": "To maximize absorption area",
+                "explanation": "These folds increase the surface area of the intestine to roughly the size of a tennis court, allowing maximum nutrient absorption.",
+                "theory": {
+                    "title": "Fractal Geometry of the Gut",
+                    "content": "<p>To absorb enough fuel for a human body, we need a massive surface area. The gut achieves this through folding: Folds -> Villi -> Microvilli.</p>",
+                    "analogy": "A Towel. A flat sheet of cloth absorbs a little water. A terry-cloth towel with thousands of tiny loops (Villi) absorbs huge amounts of water because the actual surface area of the fabric is enormous.",
+                    "application": "Celiac Disease causes the immune system to attack and flatten these villi (Villous Atrophy). This turns the 'towel' back into a 'sheet', causing severe malabsorption and malnutrition."
+                }
+            },
+            {
+                "componentId": "peristalsis_control",
+                "type": "interactive-visual",
+                "title": "Peristalsis",
+                "prompt": "Coordinate the muscle contractions to move the food bolus effectively.",
+                "question": "How does peristalsis move food?",
+                "options": ["Gravity", "Simultaneous contraction of all muscles", "Sequential wave of contraction behind the bolus"],
+                "answer": "Sequential wave of contraction behind the bolus",
+                "explanation": "Peristalsis involves contracting the muscles *behind* the food and relaxing the muscles *in front* of it to squeeze it forward.",
+                "theory": {
+                    "title": "The Digestive Wave",
+                    "content": "<p><strong>Peristalsis</strong> is an involuntary, coordinated muscle movement. Circular muscles squeeze behind the food, while longitudinal muscles shorten the path ahead.</p>",
+                    "analogy": "Squeezing Toothpaste. To get toothpaste out, you don't squeeze the whole tube at once. You squeeze at the bottom and move your fingers up, pushing the paste ahead of the pressure.",
+                    "application": "Opioids paralyze the bowel muscles, stopping this wave (Ileus). This is why constipation is a major side effect of pain medication."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Physiology",
+        "chapter_title": "Chapter 6: Endocrine System",
+        "labComponentId": "physiology-endocrine",
+        "critical_concepts": [
+            { "concept": "Negative Feedback", "elaboration": "The output of a system inhibits the system, maintaining homeostasis." },
+            { "concept": "Receptor Binding", "elaboration": "Hormones only affect cells with specific receptors." },
+            { "concept": "Fight or Flight", "elaboration": "Adrenal response to stress." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "thyroid_feedback",
+                "type": "interactive-visual",
+                "title": "Thyroid Feedback Loop",
+                "prompt": "Adjust the Thyroxine (T4) levels. Observe the pituitary response (TSH).",
+                "question": "If T4 levels are HIGH, what happens to TSH?",
+                "options": ["TSH Increases", "TSH Decreases", "TSH stays the same"],
+                "answer": "TSH Decreases",
+                "explanation": "In a negative feedback loop, high levels of the end product (T4) signal the control center (Pituitary) to stop stimulating production (Low TSH).",
+                "theory": {
+                    "title": "Negative Feedback",
+                    "content": "<p>Most hormones are regulated by <span style=\"color:#ef4444; font-weight:bold;\">Negative Feedback</span>. It's like a thermostat: when the room gets hot enough (High Hormone), the heater turns off (Stimulation stops).</p>",
+                    "analogy": "The Thermostat. TSH is the heater; T4 is the heat. When the room is cold (Low T4), the heater blasts (High TSH). When the room is hot (High T4), the heater shuts off (Low TSH).",
+                    "application": "In Graves' Disease, the body makes antibodies that mimic TSH. They turn the heater on permanently. The actual TSH drops to zero trying to compensate, but the antibodies keep driving the thyroid to produce excess T4."
+                }
+            },
+            {
+                "componentId": "receptor_cascade",
+                "type": "interactive-visual",
+                "title": "Signal Transduction",
+                "prompt": "Bind the hormone to the correct receptor to trigger a cell response.",
+                "question": "Why do hormones only affect specific cells?",
+                "options": ["They can't enter other cells", "Only target cells have the specific matching receptor", "Other cells destroy the hormone"],
+                "answer": "Only target cells have the specific matching receptor",
+                "explanation": "Hormones travel everywhere in the blood, but only cells with the specific 'lock' (receptor) for that hormone 'key' can respond.",
+                "theory": {
+                    "title": "Lock and Key",
+                    "content": "<p>A hormone is a chemical message broadcast to the whole body. Specificity is achieved by <span style=\"color:#a855f7; font-weight:bold;\">Receptors</span>. No receptor = No response.</p>",
+                    "analogy": "Radio Broadcast. A radio station broadcasts music (Hormone) over the entire city. Only people tuned to that specific frequency (Receptor) hear the music and start dancing (Response). Everyone else ignores it.",
+                    "application": "Type 2 Diabetes is often a receptor problem. There is plenty of insulin (Radio signal), but the cells' receptors (Radio sets) are broken or ignoring the signal (Insulin Resistance)."
+                }
+            },
+            {
+                "componentId": "stress_response",
+                "type": "interactive-visual",
+                "title": "Adrenal Stress Response",
+                "prompt": "Activate the 'Fight or Flight' switch. Observe physiological changes.",
+                "question": "Which system is inhibited during the stress response?",
+                "options": ["Heart Rate", "Digestion", "Pupil Dilation"],
+                "answer": "Digestion",
+                "explanation": "During stress (Sympathetic activation), energy is diverted to muscles and brain. 'Rest and Digest' functions like digestion are shut down.",
+                "theory": {
+                    "title": "Sympathetic Nervous System",
+                    "content": "<p>Adrenaline prepares the body for action: Heart rate up, airways open, glucose released. Non-essential functions like digestion and immunity are temporarily paused.</p>",
+                    "analogy": "Battle Stations. When a ship goes to battle stations, all power is diverted to shields and weapons (Muscles/Brain). The cafeteria (Digestion) and laundry (Immunity) are shut down to save energy.",
+                    "application": "Chronic stress keeps the body at 'Battle Stations' for months. This chronic shutdown of maintenance systems leads to ulcers (poor digestion), frequent colds (poor immunity), and heart disease."
+                }
+            }
+        ]
+    }
+]

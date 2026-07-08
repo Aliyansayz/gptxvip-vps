@@ -1,0 +1,338 @@
+[
+  {
+    "labComponentId": "toxicology-intro",
+    "course": "Toxicology",
+    "chapter_title": "Chapter 1: Introduction to Clinical Toxicology",
+    "chapter_id": "toxicology-1",
+    "critical_concepts": [
+      {
+        "concept": "Scope of Toxicology",
+        "definition": "The study of adverse effects of chemicals on living organisms, crucial for diagnosing and treating poisonings."
+      },
+      {
+        "concept": "Toxicokinetics",
+        "definition": "How a substance gets into the body and what happens to it (Absorption, Distribution, Metabolism, Excretion)."
+      },
+      {
+        "concept": "Dose-Response",
+        "definition": "The principle that the severity of the response is related to the dose of the toxicant."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "id": "tox-1-q1",
+        "type": "multiple-choice",
+        "title": "Dose-Response Principle",
+        "prompt": "Evaluate the fundamental principle of toxicology.",
+        "question": "Which concept states that 'the dose makes the poison'?",
+        "options": [
+          "Toxicodynamics",
+          "Dose-Response Relationship",
+          "Bioaccumulation",
+          "Therapeutic Index"
+        ],
+        "answer": "Dose-Response Relationship",
+        "explanation": "Paracelsus's principle states that any substance can be toxic if the dose is high enough.",
+        "theory": {
+          "title": "The Foundation of Toxicology",
+          "content": "<p>Clinical toxicology involves the prevention, diagnosis, and treatment of poisoning. A core principle is the <strong>dose-response relationship</strong>, which illustrates how the magnitude of a toxic effect correlates with the dose administered.</p><p>Understanding <strong>toxicokinetics</strong> (ADME: Absorption, Distribution, Metabolism, Excretion) helps predict how long a toxin will remain in the body and what organs it might affect.</p>",
+          "analogy": "Think of water: essential for life, but drinking gallons in a short time can cause fatal water intoxication. The dose makes the poison.",
+          "application": "In the ER, understanding the dose-response relationship helps determine if a patient who ingested a substance requires immediate aggressive treatment or simple observation."
+        }
+      }
+    ]
+  },
+  {
+    "labComponentId": "toxicology-mechanisms",
+    "course": "Toxicology",
+    "chapter_title": "Chapter 2: Poisoning Mechanisms",
+    "chapter_id": "toxicology-2",
+    "critical_concepts": [
+      {
+        "concept": "Cellular Toxicity",
+        "definition": "Damage to cellular structures like mitochondria or cell membranes by toxic agents."
+      },
+      {
+        "concept": "Oxidative Stress",
+        "definition": "An imbalance between free radicals and antioxidants, leading to cell damage."
+      },
+      {
+        "concept": "Organ-Specific Toxicity",
+        "definition": "Toxins that preferentially damage specific organs (e.g., hepatotoxins target the liver)."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "id": "tox-2-q1",
+        "type": "multiple-choice",
+        "title": "Cellular Damage",
+        "prompt": "Identify the mechanism of cellular injury.",
+        "question": "Which mechanism involves an excess of free radicals damaging cellular components?",
+        "options": [
+          "Receptor antagonism",
+          "Oxidative stress",
+          "Enzyme inhibition",
+          "DNA methylation"
+        ],
+        "answer": "Oxidative stress",
+        "explanation": "Oxidative stress occurs when reactive oxygen species (free radicals) overwhelm the cell's antioxidant defenses, damaging lipids, proteins, and DNA.",
+        "theory": {
+          "title": "How Toxins Damage Cells",
+          "content": "<p>Toxins exert their effects through various mechanisms. Some bind to receptors (like opioids), while others inhibit crucial enzymes (like cyanide inhibiting cytochrome c oxidase).</p><p><strong>Oxidative stress</strong> is a common pathway where toxic metabolites generate free radicals that destroy cellular membranes and DNA. Many toxins are <strong>organ-specific</strong>, such as acetaminophen primarily causing hepatotoxicity (liver damage).</p>",
+          "analogy": "Free radicals are like sparks flying from a fire. If you don't have enough water (antioxidants) to put them out, they'll burn down the house (the cell).",
+          "application": "Recognizing the specific mechanism of toxicity allows clinicians to administer targeted antidotes, such as N-acetylcysteine (NAC) which replenishes glutathione to combat oxidative stress in acetaminophen overdose."
+        }
+      }
+    ]
+  },
+  {
+    "labComponentId": "toxicology-analytical",
+    "course": "Toxicology",
+    "chapter_title": "Chapter 3: Analytical Techniques in Toxicology",
+    "chapter_id": "toxicology-3",
+    "critical_concepts": [
+      {
+        "concept": "Chromatography",
+        "definition": "A technique (like GC or HPLC) used to separate mixtures into their individual components."
+      },
+      {
+        "concept": "Mass Spectrometry",
+        "definition": "An analytical technique that measures the mass-to-charge ratio of ions, used to identify unknown compounds."
+      },
+      {
+        "concept": "Immunoassays",
+        "definition": "Biochemical tests that use antibodies to detect the presence of specific drugs or toxins rapidly."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "id": "tox-3-q1",
+        "type": "multiple-choice",
+        "title": "Drug Detection",
+        "prompt": "Select the appropriate analytical method.",
+        "question": "Which technique is considered the 'gold standard' for definitively identifying unknown drugs in a forensic sample?",
+        "options": [
+          "Immunoassay screening",
+          "Gas Chromatography-Mass Spectrometry (GC-MS)",
+          "Thin Layer Chromatography",
+          "Spectrophotometry"
+        ],
+        "answer": "Gas Chromatography-Mass Spectrometry (GC-MS)",
+        "explanation": "GC-MS combines the separation power of chromatography with the definitive identification capability of mass spectrometry.",
+        "theory": {
+          "title": "Detecting the Invisible",
+          "content": "<p>Toxicology labs rely on a tiered approach. <strong>Immunoassays</strong> are used for rapid, initial screening (e.g., urine drug screens). However, they can have false positives.</p><p>For definitive identification, <strong>Chromatography</strong> (to separate the mixture) coupled with <strong>Mass Spectrometry</strong> (to identify the specific molecules based on their mass signature) is used. This is the gold standard for forensic and confirmatory testing.</p>",
+          "analogy": "Immunoassays are like a bouncer checking IDs quickly at the door. GC-MS is like taking fingerprints and running them through a national database for absolute certainty.",
+          "application": "When a patient presents with an unknown overdose, rapid immunoassays guide immediate clinical decisions, while GC-MS provides the definitive legal and medical confirmation later."
+        }
+      }
+    ]
+  },
+  {
+    "labComponentId": "toxicology-tdm",
+    "course": "Toxicology",
+    "chapter_title": "Chapter 4: Therapeutic Drug Monitoring",
+    "chapter_id": "toxicology-4",
+    "critical_concepts": [
+      {
+        "concept": "Narrow Therapeutic Index",
+        "definition": "Drugs where the difference between an effective dose and a toxic dose is very small."
+      },
+      {
+        "concept": "Pharmacokinetics",
+        "definition": "The study of drug absorption, distribution, metabolism, and excretion over time."
+      },
+      {
+        "concept": "Steady State",
+        "definition": "The point where drug intake equals drug elimination, resulting in stable blood levels."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "id": "tox-4-q1",
+        "type": "multiple-choice",
+        "title": "Monitoring Drug Levels",
+        "prompt": "Apply principles of therapeutic drug monitoring.",
+        "question": "Why do drugs like Digoxin or Lithium require routine blood level monitoring?",
+        "options": [
+          "They are highly addictive",
+          "They have a narrow therapeutic index",
+          "They are metabolized too quickly",
+          "They have no known side effects"
+        ],
+        "answer": "They have a narrow therapeutic index",
+        "explanation": "Drugs with a narrow therapeutic index have a small window between being effective and being toxic, requiring careful monitoring.",
+        "theory": {
+          "title": "Balancing Efficacy and Toxicity",
+          "content": "<p><strong>Therapeutic Drug Monitoring (TDM)</strong> involves measuring drug concentrations in blood to optimize dosage. It is crucial for drugs with a <strong>narrow therapeutic index</strong> (e.g., digoxin, lithium, phenytoin).</p><p>Clinicians use TDM to ensure the patient reaches a <strong>steady state</strong> within the therapeutic window, avoiding sub-therapeutic (ineffective) or supra-therapeutic (toxic) levels.</p>",
+          "analogy": "TDM is like driving on a very narrow mountain road. Steer slightly left and you hit the mountain (ineffective); steer slightly right and you fall off the cliff (toxicity). You need constant monitoring to stay in the middle.",
+          "application": "TDM is routinely used in psychiatric and cardiac care to adjust dosages of medications like Lithium or Digoxin, preventing life-threatening arrhythmias or neurotoxicity."
+        }
+      }
+    ]
+  },
+  {
+    "labComponentId": "toxicology-forensic",
+    "course": "Toxicology",
+    "chapter_title": "Chapter 5: Forensic Toxicology",
+    "chapter_id": "toxicology-5",
+    "critical_concepts": [
+      {
+        "concept": "Chain of Custody",
+        "definition": "The chronological documentation showing the seizure, custody, control, transfer, and analysis of evidence."
+      },
+      {
+        "concept": "Postmortem Redistribution",
+        "definition": "The movement of drugs from solid organs into the blood after death, altering drug concentrations."
+      },
+      {
+        "concept": "Metabolite Detection",
+        "definition": "Testing for the breakdown products of a drug, which often remain in the body longer than the parent drug."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "id": "tox-5-q1",
+        "type": "multiple-choice",
+        "title": "Legal Evidence Handling",
+        "prompt": "Identify crucial forensic procedures.",
+        "question": "What is the most critical procedural step to ensure a toxicology result is admissible in court?",
+        "options": [
+          "Using the most expensive equipment",
+          "Maintaining a strict Chain of Custody",
+          "Testing the sample immediately",
+          "Having two different scientists run the test"
+        ],
+        "answer": "Maintaining a strict Chain of Custody",
+        "explanation": "The Chain of Custody proves that the sample was not tampered with from collection to analysis, which is essential for legal admissibility.",
+        "theory": {
+          "title": "Science Meets the Law",
+          "content": "<p><strong>Forensic Toxicology</strong> applies toxicology to cases with medico-legal implications, such as DUI, workplace drug testing, or death investigations.</p><p>A strict <strong>Chain of Custody</strong> is paramount. Analysts often look for <strong>metabolites</strong> rather than the parent drug, as they persist longer (e.g., testing for benzoylecgonine to prove cocaine use). In death investigations, they must account for <strong>postmortem redistribution</strong>, where drug levels in blood can artificially rise after death.</p>",
+          "analogy": "Chain of Custody is like a registered mail receipt. You need a signature at every single step to prove exactly whose hands the package (sample) passed through.",
+          "application": "Forensic toxicologists provide critical testimony in court regarding DUI cases or post-mortem investigations, relying entirely on the integrity of the Chain of Custody."
+        }
+      }
+    ]
+  },
+  {
+    "labComponentId": "toxicology-environmental",
+    "course": "Toxicology",
+    "chapter_title": "Chapter 6: Environmental & Occupational Toxicology",
+    "chapter_id": "toxicology-6",
+    "critical_concepts": [
+      {
+        "concept": "Heavy Metals",
+        "definition": "Toxic metals like lead, mercury, and arsenic that can cause severe neurological and systemic damage."
+      },
+      {
+        "concept": "Bioaccumulation",
+        "definition": "The buildup of toxins in an organism over time, faster than they can be excreted."
+      },
+      {
+        "concept": "Occupational Exposure",
+        "definition": "Toxicity resulting from chronic exposure to chemicals, dusts, or fumes in the workplace."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "id": "tox-6-q1",
+        "type": "multiple-choice",
+        "title": "Heavy Metal Toxicity",
+        "prompt": "Diagnose based on environmental exposure.",
+        "question": "A patient presents with a 'blue line' on their gums, anemia, and neurological deficits. They work in battery manufacturing. What is the likely toxic agent?",
+        "options": [
+          "Mercury",
+          "Lead",
+          "Arsenic",
+          "Organophosphate pesticides"
+        ],
+        "answer": "Lead",
+        "explanation": "Lead poisoning (plumbism) classically presents with Burton's line (blue line on gums), anemia (basophilic stippling), and neuropathy. Battery manufacturing is a known occupational risk.",
+        "theory": {
+          "title": "Toxins in Our Surroundings",
+          "content": "<p><strong>Environmental and Occupational Toxicology</strong> studies exposures in our daily lives and workplaces. <strong>Heavy metals</strong> are a major concern. Lead causes neurological and hematological issues; Mercury affects the CNS (Minamata disease); Arsenic causes skin lesions and cancers.</p><p>Many environmental toxins undergo <strong>bioaccumulation</strong>, meaning apex predators (including humans) consume higher concentrations of the toxin.</p>",
+          "analogy": "Bioaccumulation is like collecting dust. A single day's dust is unnoticeable, but over years without cleaning, it forms a thick, harmful layer.",
+          "application": "Occupational health screening programs use blood lead levels to monitor workers in high-risk industries, preventing chronic neurological damage."
+        }
+      }
+    ]
+  },
+  {
+    "labComponentId": "toxicology-cases",
+    "course": "Toxicology",
+    "chapter_title": "Chapter 7: Clinical Case Studies in Toxicology",
+    "chapter_id": "toxicology-7",
+    "critical_concepts": [
+      {
+        "concept": "Toxidrome Recognition",
+        "definition": "Identifying the specific pattern of vital signs and symptoms to determine the class of poison."
+      },
+      {
+        "concept": "Acetaminophen Toxicity",
+        "definition": "Overdose depletes glutathione, leading to toxic NAPQI accumulation and liver failure. Treated with N-acetylcysteine (NAC)."
+      },
+      {
+        "concept": "Anticholinergic Toxidrome",
+        "definition": "Characterized by 'red as a beet, dry as a bone, blind as a bat, mad as a hatter, hot as a hare'."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "id": "tox-7-q1",
+        "type": "analysis",
+        "title": "Case 1: Agitation and Fever",
+        "prompt": "Review this patient's vital signs and physical exam panel. What toxidrome does this pattern suggest?",
+        "question": "Which toxidrome is this?",
+        "results": [
+          { "name": "Heart Rate", "value": 145, "unit": "bpm", "normal": "60-100", "category": "high" },
+          { "name": "Temperature", "value": 39.2, "unit": "°C", "normal": "36.5-37.5", "category": "high" },
+          { "name": "Pupils", "value": "8mm (Dilated)", "unit": "", "normal": "2-4mm", "category": "high" },
+          { "name": "Skin", "value": "Dry/Flushed", "unit": "", "normal": "Normal", "category": "abnormal" },
+          { "name": "Mental Status", "value": "Agitated/Delirious", "unit": "", "normal": "Alert", "category": "abnormal" }
+        ],
+        "options": [
+          "Cholinergic",
+          "Opioid",
+          "Anticholinergic",
+          "Sedative-Hypnotic"
+        ],
+        "answer": "Anticholinergic",
+        "explanation": "These symptoms perfectly match the anticholinergic toxidrome ('mad as a hatter, blind as a bat, red as a beet, hot as a hare, dry as a bone').",
+        "theory": {
+          "title": "Putting It All Together",
+          "content": "<p>In the ER, toxicologists rely on <strong>toxidromes</strong>—syndromes caused by dangerous levels of toxins. Recognizing these patterns allows for rapid empiric treatment before lab results return.</p><p>For example, an opioid overdose presents with pinpoint pupils, respiratory depression, and coma. An <strong>anticholinergic</strong> overdose (like Benadryl) presents with delirium, dry skin, and dilated pupils. <strong>Acetaminophen</strong> overdose is insidious, often showing no early symptoms but causing massive liver failure days later if not treated with NAC.</p>",
+          "analogy": "A toxidrome is like a criminal's calling card. Even if you didn't see the crime happen, the specific clues left behind tell you exactly who did it.",
+          "application": "Rapid recognition of toxidromes allows emergency physicians to administer life-saving antidotes (like Naloxone for opioids or Physostigmine for severe anticholinergic toxicity) even before lab tests confirm the exact substance."
+        }
+      },
+      {
+        "id": "tox-7-q2",
+        "type": "analysis",
+        "title": "Case 2: Unresponsive Patient",
+        "prompt": "Review this patient's vital signs and physical exam panel. What toxidrome does this pattern suggest?",
+        "question": "Which toxidrome is this?",
+        "results": [
+          { "name": "Heart Rate", "value": 52, "unit": "bpm", "normal": "60-100", "category": "low" },
+          { "name": "Respiratory Rate", "value": 6, "unit": "breaths/min", "normal": "12-20", "category": "low" },
+          { "name": "Pupils", "value": "1mm (Pinpoint)", "unit": "", "normal": "2-4mm", "category": "low" },
+          { "name": "Bowel Sounds", "value": "Absent", "unit": "", "normal": "Active", "category": "low" },
+          { "name": "Mental Status", "value": "Comatose", "unit": "", "normal": "Alert", "category": "abnormal" }
+        ],
+        "options": [
+          "Cholinergic",
+          "Opioid",
+          "Sympathomimetic",
+          "Anticholinergic"
+        ],
+        "answer": "Opioid",
+        "explanation": "The classic triad of opioid overdose is coma, pinpoint pupils (miosis), and respiratory depression.",
+        "theory": {
+          "title": "The Opioid Toxidrome",
+          "content": "<p>The <strong>opioid toxidrome</strong> is characterized by depression of the central nervous system and vital signs. Key features include bradypnea (slow breathing), bradycardia (slow heart rate), miosis (pinpoint pupils), and decreased bowel sounds.</p><p>The most immediate life-threatening complication is respiratory arrest. The antidote is <strong>Naloxone</strong>, a competitive opioid receptor antagonist.</p>",
+          "analogy": "Opioids act like a heavy blanket thrown over the entire nervous system, slowing everything down—breathing, heart rate, and consciousness—until it stops completely.",
+          "application": "In suspected opioid overdoses, securing the airway and administering Naloxone are the immediate priorities. Because Naloxone has a shorter half-life than many opioids, patients must be observed for 're-narcotization' as the antidote wears off."
+        }
+      }
+    ]
+  }
+]

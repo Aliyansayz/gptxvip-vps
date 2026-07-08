@@ -1,0 +1,91 @@
+
+[
+    {
+        "course": "Immunology",
+        "chapter_title": "Chapter 1: Immune Defense",
+        "labComponentId": "immunology-lab",
+        "critical_concepts": [
+            { "concept": "Specificity", "elaboration": "Antibodies are specific to antigens, like a lock and key." },
+            { "concept": "Memory", "elaboration": "The immune system remembers past pathogens for faster future response." },
+            { "concept": "Cellular Immunity", "elaboration": "T cells attacking infected host cells directly." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "antibody_matching",
+                "type": "matching",
+                "title": "Antibody Specificity",
+                "prompt": "Match antibodies to their specific antigens! Select an antibody, then click matching antigens.",
+                "question": "Match 5 antigens to continue.",
+                "answer": "All matched",
+                "targetMatches": 5,
+                "explanation": "Antibodies have specific binding sites that only recognize antigens with complementary shapes - this is called specificity. Each antibody type can only bind to one antigen type.",
+                "theory": {
+                    "title": "Antibody Specificity",
+                    "content": "<p><span style=\"color:#a855f7; font-weight:bold;\">Antibodies</span> (Immunoglobulins) are Y-shaped proteins produced by B cells. The tips of the 'Y' are variable regions that form a specific lock-and-key fit with a unique part of a pathogen called an <span style=\"color:#ec4899; font-weight:bold;\">Antigen</span>.</p><p>This specificity allows the immune system to target a specific virus (like flu) without accidentally attacking healthy cells or other beneficial bacteria.</p>",
+                    "analogy": "Antibodies are like police handcuffs that are custom-made to fit only one specific criminal's wrists. They won't work on anyone else.",
+                    "application": "Monoclonal antibody therapy uses lab-made antibodies designed to target specific cancer cells or autoimmune markers, acting like guided missiles for treatment."
+                }
+            },
+            {
+                "componentId": "immune_cell_select",
+                "type": "select",
+                "title": "Cellular Immunity",
+                "prompt": "Different immune cells have specialized roles.",
+                "question": "Which immune cell directly kills virus-infected cells?",
+                "options": ["B Cell", "Cytotoxic T Cell (CD8+)", "Macrophage", "Neutrophil"],
+                "answer": "Cytotoxic T Cell (CD8+)",
+                "explanation": "Cytotoxic T cells (CD8+ T cells) directly kill infected cells by recognizing viral antigens on cell surfaces and inducing apoptosis (cell death).",
+                "theory": {
+                    "title": "T Cell Function",
+                    "content": "<p><span style=\"color:#ef4444; font-weight:bold;\">Cytotoxic T Cells</span> are the assassins of the immune system. They scan body cells for signs of infection (<span style=\"color:#ec4899; font-weight:bold;\">viral antigens</span> presented on the surface). If detected, they release toxic granules that force the infected cell to self-destruct.</p>",
+                    "analogy": "If B cells are the artillery firing missiles (antibodies) from a distance, Cytotoxic T cells are the special ops soldiers engaging in close-quarters combat to neutralize targets.",
+                    "application": "In organ transplants, these T cells often recognize the new organ as 'foreign' and attack it, causing rejection. Patients take immunosuppressants to calm these T cells down."
+                }
+            }
+        ]
+    },
+    {
+        "course": "Immunology",
+        "chapter_title": "Chapter 2: Immunological Memory",
+        "labComponentId": "immunology-memory",
+        "critical_concepts": [
+            { "concept": "Primary Response", "elaboration": "Slow, lower magnitude response upon first exposure to an antigen." },
+            { "concept": "Secondary Response", "elaboration": "Rapid, massive response upon re-exposure due to memory B cells." },
+            { "concept": "Clonal Expansion", "elaboration": "The rapid multiplication of a specific B or T cell after it encounters its matching antigen." }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "immune_memory_sim",
+                "type": "interactive-visual",
+                "title": "Antibody Titer Simulation",
+                "prompt": "Investigate the difference between first and second exposure to a pathogen.",
+                "question": "Inject Antigen A twice. Compare the second peak to the first.",
+                "options": ["Second peak is slower and smaller", "Second peak is faster and larger", "Peaks are identical"],
+                "answer": "Second peak is faster and larger",
+                "explanation": "The secondary immune response is characterized by a shorter lag phase, a steeper rise in antibody levels, and a much higher peak titer due to the activation of Memory B cells.",
+                "theory": {
+                    "title": "Immunological Memory",
+                    "content": "<p><span style=\"color:#3b82f6; font-weight:bold;\">Primary Response</span>: When the body first sees a pathogen, it takes days to select and clone the right B cells. IgM antibodies are produced first, followed by IgG.</p><p><span style=\"color:#a855f7; font-weight:bold;\">Secondary Response</span>: <span style=\"color:#22c55e; font-weight:bold;\">Memory B cells</span> from the first encounter persist. Upon re-exposure, they differentiate into plasma cells almost instantly, producing massive amounts of high-affinity IgG antibodies.</p>",
+                    "analogy": "The first time you drive to a new location, you drive slowly and check the map often (Primary Response). The second time, you remember the route and drive there quickly and confidently without stopping (Secondary Response).",
+                    "application": "Booster shots exploit this mechanism. They mimic a 're-exposure', forcing the body to expand its population of memory cells and keep antibody levels high for long-term protection."
+                }
+            },
+            {
+                "componentId": "clonal_selection_sim",
+                "type": "interactive-visual",
+                "title": "Clonal Selection",
+                "prompt": "The body has millions of B cells, but only one matches the invader. Find it to start the defense.",
+                "question": "What happens immediately after the correct B cell is selected?",
+                "options": ["It dies immediately", "It clones itself rapidly (Proliferation)", "It turns into a T cell"],
+                "answer": "It clones itself rapidly (Proliferation)",
+                "explanation": "Once a B cell binds to its specific antigen, it undergoes Clonal Expansion, creating an army of identical cells to fight that specific pathogen. Some become Plasma Cells (fighters), others Memory Cells.",
+                "theory": {
+                    "title": "Clonal Selection Theory",
+                    "content": "<p>Your body generates millions of random B cells, each with a unique receptor. When an <span style=\"color:#ec4899; font-weight:bold;\">antigen</span> enters, it will only bind to the B cell with the matching receptor.</p><p>This binding event <span style=\"color:#34d399; font-weight:bold;\">'selects'</span> that specific B cell to wake up and divide rapidly (clone itself). This ensures resources are only spent making the specific antibodies needed for the current threat.</p>",
+                    "analogy": "Cinderella's Slipper. The Prince (Antigen) travels the kingdom trying the glass slipper on everyone. Only when he finds the one girl it fits (Matching B Cell) does the wedding (Immune Response) happen. He doesn't marry the whole village.",
+                    "application": "This explains why it takes time to fight a new infection (Primary Response)—the body is literally searching through its library of cells to find the one matching book."
+                }
+            }
+        ]
+    }
+]

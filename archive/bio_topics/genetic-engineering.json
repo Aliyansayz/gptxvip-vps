@@ -1,0 +1,135 @@
+[
+    {
+        "course": "genetic-engineering",
+        "chapter_title": "Chapter 1: Genetic Engineering",
+        "labComponentId": "genetic-engineering",
+        "levelId": "genetic-engineering",
+        "critical_concepts": [
+            {
+                "concept": "CRISPR-Cas9",
+                "elaboration": "A revolutionary gene-editing technology adapted from bacterial immune systems, allowing precise modification of DNA sequences."
+            },
+            {
+                "concept": "Recombinant DNA",
+                "elaboration": "DNA molecules formed by laboratory methods of genetic recombination to bring together genetic material from multiple sources."
+            },
+            {
+                "concept": "PCR",
+                "elaboration": "Polymerase Chain Reaction is a method used to rapidly make millions to billions of copies of a specific DNA sample."
+            }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "crispr_simulation",
+                "type": "crispr",
+                "concept_tested": "CRISPR-Cas9 Mechanism",
+                "title": "CRISPR Gene Editing",
+                "prompt": "Complete the CRISPR-Cas9 gene editing process by clicking each step in order:",
+                "explanation": "CRISPR-Cas9 uses guide RNA to direct the Cas9 enzyme to a specific DNA location, where it cuts both strands, allowing precise gene editing through cellular repair mechanisms.",
+                "answer": "repair",
+                "theory": {
+                    "title": "CRISPR-Cas9 Mechanism",
+                    "content": "<p><span style=\"color:#a855f7; font-weight:bold;\">CRISPR-Cas9</span> is a powerful tool for editing genomes. It allows researchers to easily alter DNA sequences and modify gene function.</p><p>The system consists of two key molecules that introduce a change into the DNA:</p><ul><li><span style=\"color:#ef4444; font-weight:bold;\">Cas9</span>: An enzyme that acts as a pair of 'molecular scissors' that can cut the two strands of DNA at a specific location.</li><li><span style=\"color:#3b82f6; font-weight:bold;\">Guide RNA (gRNA)</span>: A small piece of pre-designed RNA sequence located within a longer RNA scaffold. The scaffold part binds to DNA and the pre-designed sequence 'guides' Cas9 to the right part of the genome.</li></ul>"
+                }
+            },
+            {
+                "componentId": "crispr_definition",
+                "type": "select",
+                "concept_tested": "CRISPR Acronym",
+                "title": "What is CRISPR?",
+                "prompt": "What does CRISPR stand for?",
+                "options": [
+                    "Clustered Regularly Interspaced Short Palindromic Repeats",
+                    "Cellular RNA Integration Sequence Protocol Repair",
+                    "Chromosomal Recombination In Specific Protein Regions",
+                    "Controlled Replication of Inserted Sequences for Proteins"
+                ],
+                "answer": "Clustered Regularly Interspaced Short Palindromic Repeats",
+                "explanation": "CRISPR stands for Clustered Regularly Interspaced Short Palindromic Repeats - naturally occurring sequences in bacterial DNA that inspired the gene-editing technology.",
+                "theory": {
+                    "title": "The Origins of CRISPR",
+                    "content": "<p><span style=\"color:#a855f7; font-weight:bold;\">CRISPR</span> stands for <span style=\"color:#ec4899; font-weight:bold;\">Clustered Regularly Interspaced Short Palindromic Repeats</span>.</p><p>These are unique sequences found in the DNA of bacteria and archaea. They are the hallmark of a bacterial defense system that forms the basis for CRISPR-Cas9 genome editing technology.</p>"
+                }
+            },
+            {
+                "componentId": "cas9_function",
+                "type": "select",
+                "concept_tested": "Cas9 Function",
+                "title": "Cas9 Enzyme",
+                "prompt": "What is the function of Cas9 in the CRISPR system?",
+                "options": [
+                    "It copies the DNA sequence",
+                    "It acts as molecular scissors to cut DNA",
+                    "It synthesizes new proteins",
+                    "It translates RNA to protein"
+                ],
+                "answer": "It acts as molecular scissors to cut DNA",
+                "explanation": "Cas9 is an endonuclease enzyme that acts as 'molecular scissors,' cutting both strands of DNA at the location specified by the guide RNA.",
+                "theory": {
+                    "title": "Cas9: The Molecular Scissors",
+                    "content": "<p><span style=\"color:#ef4444; font-weight:bold;\">Cas9</span> (CRISPR-associated protein 9) is an enzyme that acts like a pair of molecular scissors, capable of cutting strands of DNA.</p><p>Although Cas9 is the enzyme that cuts the DNA, it needs a guide to tell it where to cut. This guide is the <span style=\"color:#3b82f6; font-weight:bold;\">gRNA</span>.</p>"
+                }
+            },
+            {
+                "componentId": "pcr_technique",
+                "type": "select",
+                "concept_tested": "PCR Technique",
+                "title": "Polymerase Chain Reaction",
+                "prompt": "Which technique is used to make multiple copies of a DNA segment?",
+                "options": ["Western Blot", "PCR (Polymerase Chain Reaction)", "Gel Electrophoresis", "ELISA"],
+                "answer": "PCR (Polymerase Chain Reaction)",
+                "explanation": "PCR amplifies DNA by using thermal cycling and DNA polymerase to create millions of copies of a specific DNA segment in just a few hours.",
+                "theory": {
+                    "title": "Polymerase Chain Reaction (PCR)",
+                    "content": "<p><span style=\"color:#f59e0b; font-weight:bold;\">PCR</span> is a technique used to 'amplify' - copy - small segments of DNA.</p><p>Using PCR, copies of DNA sequences are exponentially amplified to generate thousands to millions of more copies of that particular DNA segment. This is crucial for many genetic engineering procedures.</p>"
+                }
+            },
+            {
+                "componentId": "recombinant_dna",
+                "type": "select",
+                "concept_tested": "Recombinant DNA",
+                "title": "Recombinant DNA",
+                "prompt": "Recombinant DNA is created by:",
+                "options": [
+                    "Crossing two different species",
+                    "Joining DNA from different sources using restriction enzymes and ligase",
+                    "Exposing DNA to radiation",
+                    "Heating DNA to high temperatures"
+                ],
+                "answer": "Joining DNA from different sources using restriction enzymes and ligase",
+                "explanation": "Recombinant DNA technology uses restriction enzymes to cut DNA at specific sites and DNA ligase to join fragments from different sources, creating new genetic combinations.",
+                "theory": {
+                    "title": "Recombinant DNA Technology",
+                    "content": "<p><span style=\"color:#22c55e; font-weight:bold;\">Recombinant DNA</span> (rDNA) molecules are DNA molecules formed by laboratory methods of genetic recombination (such as molecular cloning) to bring together genetic material from multiple sources, creating sequences that would not otherwise be found in the genome.</p><p>Key tools include <span style=\"color:#ef4444; font-weight:bold;\">restriction enzymes</span> (to cut DNA) and <span style=\"color:#3b82f6; font-weight:bold;\">DNA ligase</span> (to join DNA fragments).</p>"
+                }
+            }
+        ]
+    },
+    {
+        "course": "genetic-engineering",
+        "chapter_title": "PCR Walkthrough",
+        "labComponentId": "pcr-walkthrough",
+        "levelId": "pcr-walkthrough",
+        "critical_concepts": [
+            {
+                "concept": "PCR",
+                "elaboration": "Polymerase Chain Reaction is a method used to rapidly make millions to billions of copies of a specific DNA sample."
+            }
+        ],
+        "interactive_questions": [
+            {
+                "componentId": "pcr_walkthrough",
+                "type": "walkthrough",
+                "concept_tested": "PCR Exponential Growth",
+                "title": "PCR Amplification Math",
+                "prompt": "Explore the exponential growth of DNA during Polymerase Chain Reaction (PCR).",
+                "explanation": "PCR doubles the DNA copies each cycle, leading to exponential growth.",
+                "answer": "N/A",
+                "theory": {
+                    "title": "PCR Exponential Growth",
+                    "content": "<p><span style=\"color:#f59e0b; font-weight:bold;\">Polymerase Chain Reaction (PCR)</span> is a method used to rapidly make millions to billions of copies of a specific DNA sample.</p><p>Because each cycle doubles the amount of DNA, the growth is exponential. This allows scientists to take a very small sample of DNA and amplify it to a large enough amount to study in detail.</p>"
+                }
+            }
+        ]
+    }
+]

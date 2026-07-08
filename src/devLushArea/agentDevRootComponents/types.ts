@@ -62,6 +62,7 @@ export interface Exercise {
 
 export interface LabData {
     course: string;
+    roadmap?: number;
     chapter_title: string;
     labComponentId: string;
     levelId?: string;
@@ -77,6 +78,7 @@ export interface LabData {
 
 export interface ConceptCourse {
     id: string;
+    roadmap?: number;
     title: string;
     icon: React.ComponentType<{ className?: string }>;
     longDescription: string;
