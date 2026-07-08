@@ -174,9 +174,9 @@ const Navbar: React.FC<NavbarProps> = ({
     const titleColor = 'text-primary';
 
     return (
-        <nav className="absolute top-0 left-0 w-full z-50 bg-transparent p-2 flex justify-between items-center">
+        <nav className="absolute top-0 left-0 w-full z-50 bg-transparent p-3 flex justify-center items-center pointer-events-none">
             {/* Title removed per user request */}
-            <div className={`flex items-center p-0.5 backdrop-blur-md border rounded-full shadow-sm gap-1 overflow-hidden ${navBgColor}`}>
+            <div className={`flex items-center p-1 backdrop-blur-md border rounded-full shadow-sm gap-1 overflow-hidden pointer-events-auto ${navBgColor}`}>
 
 
                 {/* Main Nav Group */}
@@ -217,10 +217,10 @@ const Navbar: React.FC<NavbarProps> = ({
                 </div>
             </div>
 
-            <div ref={settingsRef} className="relative mr-2">
+            <div ref={settingsRef} className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-auto">
                 <button
                     onClick={() => setIsSettingsOpen(prev => !prev)}
-                    className={`p-1.5 rounded-full backdrop-blur-md border hover:bg-background/80 transition-colors ${navBgColor}`}
+                    className={`p-2 rounded-full backdrop-blur-md border hover:bg-background/80 transition-colors shadow-sm ${navBgColor}`}
                     title="Settings"
                 >
                     <Settings className={`w-4 h-4 ${navTextColor}`} />
