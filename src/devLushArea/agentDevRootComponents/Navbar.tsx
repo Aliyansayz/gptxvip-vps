@@ -4,7 +4,7 @@ import { Lock, Unlock, Sun, Moon, Zap, Infinity, Settings, MessageSquare as Chat
 import { StarIcon } from './icons';
 
 type Theme = 'light' | 'dark';
-type View = 'devlush-search' | 'reading' | 'articles' | 'favorites' | 'topic-theory' | 'devlush' | 'agent-workspace';
+type View = 'landing' | 'devlush-search' | 'reading' | 'articles' | 'favorites' | 'topic-theory' | 'devlush' | 'agent-workspace';
 
 interface NavbarProps {
     isAppLocked: boolean;

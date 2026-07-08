@@ -143,7 +143,7 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
     return (
         <FavoritesProvider>
             <TheoryCollectionProvider>
-                <div className={`w-full h-full flex flex-col overflow-hidden bg-background text-foreground font-sans ${theme}`}>
+                <div className={`relative w-full h-full flex flex-col overflow-hidden bg-background text-foreground font-sans ${theme}`}>
                 <Toaster richColors theme={theme} position="top-center" />
                 
                 <Navbar 

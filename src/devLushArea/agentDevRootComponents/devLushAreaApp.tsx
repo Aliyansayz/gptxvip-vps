@@ -171,7 +171,7 @@ const App: React.FC<AppProps> = ({ onExit }) => {
     return (
         <FavoritesProvider>
             <TheoryCollectionProvider>
-                <div className={`flex flex-col h-screen overflow-hidden bg-background text-foreground font-sans ${theme}`}>
+                <div className={`relative flex flex-col h-screen overflow-hidden bg-background text-foreground font-sans ${theme}`}>
                 <Toaster richColors theme={theme} position="top-center" />
                 
                 <Navbar
