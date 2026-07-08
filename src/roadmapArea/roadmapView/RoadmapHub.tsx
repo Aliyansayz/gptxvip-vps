@@ -36,7 +36,7 @@ const RoadmapChapterCard: React.FC<{
   chapter: LabData;
   onStart: () => void;
 }> = ({ chapter, onStart }) => {
-  const totalExercises = chapter.interactive_questions.length;
+  const totalExercises = chapter.interactive_questions?.length || 0;
   const themeColors = getThemeColorClass(chapter.course);
   
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
