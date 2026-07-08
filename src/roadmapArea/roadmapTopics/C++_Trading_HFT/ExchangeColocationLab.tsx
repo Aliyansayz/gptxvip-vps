@@ -8,7 +8,9 @@ import {
   Globe,
   MonitorSmartphone,
   Radio,
-  ArrowRight
+  ArrowRight,
+  Activity,
+  ArrowDown
 } from 'lucide-react';
 import { LabSettings } from '../../../devLushArea/agentDevRootComponents/LabSettingsMenu';
 import { RoadmapLayout } from '../../roadmapView/RoadmapLayout';
