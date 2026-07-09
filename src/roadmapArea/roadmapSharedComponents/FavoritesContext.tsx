@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
 
-export type FavoriteItemType = 'lab' | 'medlab';
+export type FavoriteItemType = 'roadmap_lab';
 
 export interface FavoriteItem {
     id: string; // The componentId or labComponentId
@@ -36,7 +36,23 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
         if (storedFavs && storedFavs.trim() !== '') {
             try {
-                setFavorites(JSON.parse(storedFavs));
+                let parsedFavs = JSON.parse(storedFavs);
+                let migrated = false;
+                parsedFavs = parsedFavs.map((fav: any) => {
+                    if (fav.type === 'lab') {
+                        migrated = true;
+                        return { ...fav, type: 'devlush_lab' };
+                    }
+                    if (fav.type === 'medlab') {
+                        migrated = true;
+                        return { ...fav, type: 'roadmap_lab' };
+                    }
+                    return fav;
+                });
+                setFavorites(parsedFavs);
+                if (migrated) {
+                    localStorage.setItem('life_labs_favorites', JSON.stringify(parsedFavs));
+                }
             } catch (e) {
                 console.error('Failed to parse favorites', e);
             }

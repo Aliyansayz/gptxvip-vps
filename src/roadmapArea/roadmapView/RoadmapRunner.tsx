@@ -131,7 +131,7 @@ const RoadmapRunner: React.FC<RoadmapRunnerProps> = ({
             <div className="flex items-center gap-3 flex-wrap">
               <FavoriteButton
                 id={componentId}
-                type="medlab"
+                type="roadmap_lab"
                 title={chapter.chapter_title}
                 courseId={chapter.course}
               />

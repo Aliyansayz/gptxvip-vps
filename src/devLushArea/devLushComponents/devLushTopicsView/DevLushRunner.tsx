@@ -125,7 +125,7 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
             <div className="flex items-center gap-3 flex-wrap">
               <FavoriteButton
                 id={chapter.labComponentId}
-                type="medlab"
+                type="devlush_lab"
                 title={chapter.chapter_title}
                 courseId={chapter.course}
               />
