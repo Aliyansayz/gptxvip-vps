@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import RoadmapSidebar from "./rootComponents/RoadmapSidebar";
 import RoadmapHub from "./rootComponents/RoadmapHub";
 import RoadmapLabRunner from "./rootComponents/RoadmapLabRunner";
@@ -7,6 +7,8 @@ import { RoadmapSearchView } from "./rootComponents/RoadmapSearchView";
 import { LabData, ConceptCourse } from "../roadmapSharedComponents/types";
 import { toast } from "sonner";
 import { cppTradingHFTData } from "../roadmapTopics/C++_Trading_HFT/data";
+import { FavoritesProvider } from "../roadmapSharedComponents/FavoritesContext";
+import { TheoryCollectionProvider } from "../roadmapSharedComponents/TheoryCollectionContext";
 
 interface EnrichedConceptData extends ConceptCourse {
   chapters: LabData[];
@@ -49,44 +51,32 @@ export const RoadmapContainer: React.FC<RoadmapContainerProps> = ({
     setIsSearchOpen(false);
   };
 
-  const sidebarTopics = enrichedTopics.map((t) => ({
-    id: t.id,
-    title: t.title,
-    icon: t.icon,
+  const sidebarTopics = rawRoadmapCourseData.map((course) => ({
+    id: course.id,
+    title: course.title,
+    icon: course.icon,
   }));
 
-  const scrollContainerRef = React.useRef<HTMLDivElement | null>(null);
+  const activeTopic = enrichedTopics.find((t) => t.id === activeTopicId);
 
-  // Save scroll position when the user scrolls
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    sessionStorage.setItem(
-      "roadmap_scroll_pos_" + activeTopicId,
-      e.currentTarget.scrollTop.toString(),
-    );
-  };
-
-  const setScrollRef = (el: HTMLDivElement | null) => {
-    if (el) {
-      scrollContainerRef.current = el;
-      const savedScroll = sessionStorage.getItem(
-        "roadmap_scroll_pos_" + activeTopicId,
-      );
-      if (savedScroll) {
-        const scrollTopVal = parseInt(savedScroll, 10);
-        el.scrollTop = scrollTopVal;
-        setTimeout(() => {
-          if (el) el.scrollTop = scrollTopVal;
-        }, 100);
-      }
-    } else {
-      scrollContainerRef.current = null;
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  
+  const handleScroll = () => {
+    if (!selectedChapter && activeTopicId && scrollContainerRef.current) {
+      const currentScroll = scrollContainerRef.current.scrollTop;
+      sessionStorage.setItem(`roadmap-scroll-${activeTopicId}`, currentScroll.toString());
     }
   };
 
+  const setScrollRef = (el: HTMLDivElement) => {
+    scrollContainerRef.current = el;
+  };
+
   useEffect(() => {
-    if (!selectedChapter && scrollContainerRef.current) {
-      const savedScroll =
-        sessionStorage.getItem("roadmap_scroll_pos_" + activeTopicId) || "0";
+    if (selectedChapter) return;
+    
+    const savedScroll = sessionStorage.getItem(`roadmap-scroll-${activeTopicId}`);
+    if (savedScroll && scrollContainerRef.current) {
       const scrollTopVal = parseInt(savedScroll, 10);
       scrollContainerRef.current.scrollTop = scrollTopVal;
       setTimeout(() => {
@@ -98,68 +88,72 @@ export const RoadmapContainer: React.FC<RoadmapContainerProps> = ({
   }, [activeTopicId, selectedChapter]);
 
   return (
-    <div className="flex h-full overflow-hidden bg-slate-50 dark:bg-black w-full relative">
-      <RoadmapSidebar
-        topics={sidebarTopics}
-        activeTopicId={activeTopicId}
-        onTopicSelect={(id) => {
-          setActiveTopicId(id);
-          setSelectedChapter(null);
-          setIsSearchOpen(false);
-        }}
-        isSidebarOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
-        onSearchClick={() => setIsSearchOpen(true)}
-        onExit={onExit}
-      />
+    <FavoritesProvider>
+      <TheoryCollectionProvider>
+        <div className="flex h-full overflow-hidden bg-slate-50 dark:bg-black w-full relative">
+          <RoadmapSidebar
+            topics={sidebarTopics}
+            activeTopicId={activeTopicId}
+            onTopicSelect={(id) => {
+              setActiveTopicId(id);
+              setSelectedChapter(null);
+              setIsSearchOpen(false);
+            }}
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+            onSearchClick={() => setIsSearchOpen(true)}
+            onExit={onExit}
+          />
 
-      <div className="flex-1 overflow-hidden relative flex flex-col">
-        <main className="flex-1 bg-slate-50 dark:bg-black overflow-hidden relative flex flex-col">
-          {selectedChapter ? (
-            selectedChapter.readingComponentId ? (
-              <RoadmapReadingView
-                chapter={selectedChapter as any}
-                onBack={() => setSelectedChapter(null)}
-                onComplete={() => {
-                  toast.success("Roadmap Reading Activity Completed Successfully!");
-                  setSelectedChapter(null);
-                }}
-              />
-            ) : (
-              <RoadmapLabRunner
-                chapter={selectedChapter as any}
-                onBack={() => setSelectedChapter(null)}
-                onComplete={() => {
-                  toast.success("Roadmap Lab Activity Completed Successfully!");
-                  setSelectedChapter(null);
-                }}
-              />
-            )
-          ) : isSearchOpen ? (
-            <RoadmapSearchView
-              roadmapTopics={enrichedTopics}
-              onStartChapter={handleStartChapter as any}
-              onClose={() => setIsSearchOpen(false)}
-            />
-          ) : (
-            <div
-              ref={setScrollRef}
-              onScroll={handleScroll}
-              className="flex-1 overflow-y-auto custom-scrollbar flex relative"
-            >
-              <div className="flex-1 flex flex-col min-h-fit pb-16">
-                <RoadmapHub
+          <div className="flex-1 overflow-hidden relative flex flex-col">
+            <main className="flex-1 bg-slate-50 dark:bg-black overflow-hidden relative flex flex-col">
+              {selectedChapter ? (
+                selectedChapter.readingComponentId ? (
+                  <RoadmapReadingView
+                    chapter={selectedChapter as any}
+                    onBack={() => setSelectedChapter(null)}
+                    onComplete={() => {
+                      toast.success("Roadmap Reading Activity Completed Successfully!");
+                      setSelectedChapter(null);
+                    }}
+                  />
+                ) : (
+                  <RoadmapLabRunner
+                    chapter={selectedChapter as any}
+                    onBack={() => setSelectedChapter(null)}
+                    onComplete={() => {
+                      toast.success("Roadmap Lab Activity Completed Successfully!");
+                      setSelectedChapter(null);
+                    }}
+                  />
+                )
+              ) : isSearchOpen ? (
+                <RoadmapSearchView
                   roadmapTopics={enrichedTopics}
-                  isLoading={loading}
-                  activeTopicId={activeTopicId}
                   onStartChapter={handleStartChapter as any}
+                  onClose={() => setIsSearchOpen(false)}
                 />
-              </div>
-            </div>
-          )}
-        </main>
-      </div>
-    </div>
+              ) : (
+                <div
+                  ref={setScrollRef as any}
+                  onScroll={handleScroll as any}
+                  className="flex-1 overflow-y-auto custom-scrollbar flex relative"
+                >
+                  <div className="flex-1 flex flex-col min-h-fit pb-16">
+                    <RoadmapHub
+                      roadmapTopics={enrichedTopics}
+                      isLoading={loading}
+                      activeTopicId={activeTopicId}
+                      onStartChapter={handleStartChapter as any}
+                    />
+                  </div>
+                </div>
+              )}
+            </main>
+          </div>
+        </div>
+      </TheoryCollectionProvider>
+    </FavoritesProvider>
   );
 };
 

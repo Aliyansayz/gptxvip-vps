@@ -64,7 +64,8 @@ export interface LabData {
     course: string;
     roadmap?: number;
     chapter_title: string;
-    labComponentId: string;
+    labComponentId?: string;
+  readingComponentId?: string;
     levelId?: string;
     critical_concepts: CriticalConcept[];
     interactive_questions: Exercise[];
