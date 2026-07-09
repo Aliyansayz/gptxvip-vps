@@ -84,3 +84,11 @@ export interface ConceptCourse {
     icon: React.ComponentType<{ className?: string }>;
     longDescription: string;
 }
+export enum RoadmapActivityLabels {
+  LAB = "Roadmap Lab Activity",
+  READING = "Roadmap Reading Activity"
+}
+
+export enum CourseType {
+  ROADMAP = "roadmap",
+}

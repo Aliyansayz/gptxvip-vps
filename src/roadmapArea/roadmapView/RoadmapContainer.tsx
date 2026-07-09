@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import RoadmapSidebar from "./RoadmapSidebar";
-import RoadmapHub from "./RoadmapHub";
-import RoadmapRunner from "./RoadmapRunner";
-import { RoadmapSearchView } from "./RoadmapSearchView";
+import RoadmapSidebar from "./rootComponents/RoadmapSidebar";
+import RoadmapHub from "./rootComponents/RoadmapHub";
+import RoadmapLabRunner from "./rootComponents/RoadmapLabRunner";
+import RoadmapReadingView from "./rootComponents/RoadmapReadingView";
+import { RoadmapSearchView } from "./rootComponents/RoadmapSearchView";
 import { LabData, ConceptCourse } from "../roadmapSharedComponents/types";
 import { toast } from "sonner";
 import { cppTradingHFTData } from "../roadmapTopics/C++_Trading_HFT/data";
@@ -115,14 +116,25 @@ export const RoadmapContainer: React.FC<RoadmapContainerProps> = ({
       <div className="flex-1 overflow-hidden relative flex flex-col">
         <main className="flex-1 bg-slate-50 dark:bg-black overflow-hidden relative flex flex-col">
           {selectedChapter ? (
-            <RoadmapRunner
-              chapter={selectedChapter as any}
-              onBack={() => setSelectedChapter(null)}
-              onComplete={() => {
-                toast.success("Roadmap Chapter Completed Successfully!");
-                setSelectedChapter(null);
-              }}
-            />
+            selectedChapter.readingComponentId ? (
+              <RoadmapReadingView
+                chapter={selectedChapter as any}
+                onBack={() => setSelectedChapter(null)}
+                onComplete={() => {
+                  toast.success("Roadmap Reading Activity Completed Successfully!");
+                  setSelectedChapter(null);
+                }}
+              />
+            ) : (
+              <RoadmapLabRunner
+                chapter={selectedChapter as any}
+                onBack={() => setSelectedChapter(null)}
+                onComplete={() => {
+                  toast.success("Roadmap Lab Activity Completed Successfully!");
+                  setSelectedChapter(null);
+                }}
+              />
+            )
           ) : isSearchOpen ? (
             <RoadmapSearchView
               roadmapTopics={enrichedTopics}

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { LabData, ConceptCourse } from '../roadmapSharedComponents/types';
-import { SearchIcon, PlayIcon } from '../roadmapSharedComponents/icons';
-import { CourseIcon } from '../roadmapSharedComponents/CourseIcon';
+import { LabData, ConceptCourse } from '../../roadmapSharedComponents/types';
+import { SearchIcon, PlayIcon } from '../../roadmapSharedComponents/icons';
+import { CourseIcon } from '../../roadmapSharedComponents/CourseIcon';
 import { RefreshCw, X } from 'lucide-react';
-import { getThemeColorClass } from './themeHelpers';
+import { getThemeColorClass } from '../shared/themeHelpers';
 
 interface EnrichedConceptData extends ConceptCourse {
     chapters: LabData[];

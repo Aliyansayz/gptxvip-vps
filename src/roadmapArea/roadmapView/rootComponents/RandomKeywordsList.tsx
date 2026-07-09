@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LabData } from '../roadmapSharedComponents/types';
+import { LabData } from '../../roadmapSharedComponents/types';
 import { Tag } from 'lucide-react';
 
 interface RandomKeywordsListProps {

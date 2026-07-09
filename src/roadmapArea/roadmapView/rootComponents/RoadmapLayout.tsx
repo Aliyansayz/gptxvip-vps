@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LabSettings } from '../roadmapSharedComponents/LabSettingsMenu';
+import { LabSettings } from '../../roadmapSharedComponents/LabSettingsMenu';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 
 interface RoadmapLayoutProps {

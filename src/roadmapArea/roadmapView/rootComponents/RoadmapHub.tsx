@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { LabData, ConceptCourse } from "../roadmapSharedComponents/types";
+import { LabData, ConceptCourse } from "../../roadmapSharedComponents/types";
 import {
   Play,
   Bot,
@@ -19,7 +19,7 @@ import {
   Terminal,
 } from "lucide-react";
 import { RandomKeywordsList } from "./RandomKeywordsList";
-import { getThemeColorClass } from "./themeHelpers";
+import { getThemeColorClass } from "../shared/themeHelpers";
 
 interface EnrichedConceptData extends ConceptCourse {
   chapters: LabData[];

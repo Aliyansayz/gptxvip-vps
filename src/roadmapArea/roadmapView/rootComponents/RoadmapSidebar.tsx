@@ -7,7 +7,7 @@ import {
   Shield,
   Bot
 } from "lucide-react";
-import { getThemeColorClass } from "./themeHelpers";
+import { getThemeColorClass } from "../shared/themeHelpers";
 
 interface Topic {
   id: string;

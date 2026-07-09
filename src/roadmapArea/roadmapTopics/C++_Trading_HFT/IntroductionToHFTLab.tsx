@@ -11,8 +11,8 @@ import {
   Activity
 } from 'lucide-react';
 import { LabSettings } from '../../roadmapSharedComponents/LabSettingsMenu';
-import { RoadmapLayout } from '../../roadmapView/RoadmapLayout';
-import { RoadmapTheoryBridge } from '../../roadmapView/RoadmapTheoryBridge';
+import { RoadmapLayout } from '../../roadmapView/rootComponents/RoadmapLayout';
+import { RoadmapTheoryBridge } from '../../roadmapView/rootComponents/RoadmapTheoryBridge';
 import Markdown from 'react-markdown';
 
 interface ChapterProps {

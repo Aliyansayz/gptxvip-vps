@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense } from "react";
-import { LabData } from "./types";
+import { LabData, RoadmapActivityLabels, CourseType } from "../types";
 import {
   ChevronLeft,
   ChevronRight,
@@ -8,52 +8,48 @@ import {
   BookOpen,
   Sparkles,
 } from "lucide-react";
-import FavoriteButton from "../roadmapSharedComponents/FavoriteButton";
+import FavoriteButton from "../../roadmapSharedComponents/FavoriteButton";
 import {
   LabSettingsMenu,
   LabSettings,
   loadSavedSettings,
-} from "../roadmapSharedComponents/LabSettingsMenu";
-import { LabProvider } from "../roadmapSharedComponents/LabContext";
-import { getThemeColorClass } from "./themeHelpers";
-import { roadmapRegistry } from "../registries/roadmapRegistry";
+} from "../../roadmapSharedComponents/LabSettingsMenu";
+import { LabProvider } from "../../roadmapSharedComponents/LabContext";
+import { getThemeColorClass } from "../shared/themeHelpers";
+import { roadmapRegistry } from "../../registries/roadmapRegistry";
 
-interface RoadmapRunnerProps {
+interface RoadmapLabRunnerProps {
   chapter: LabData;
   onBack: () => void;
   onComplete: () => void;
 }
 
-const RoadmapRunner: React.FC<RoadmapRunnerProps> = ({
+const RoadmapLabRunner: React.FC<RoadmapLabRunnerProps> = ({
   chapter,
   onBack,
   onComplete,
 }) => {
-  const componentId = (chapter.readingComponentId || chapter.labComponentId) || "";
-  const isReading = !!chapter.readingComponentId;
+  const componentId = chapter.labComponentId || "";
 
   const [step, setStep] = useState(() => {
-    if (isReading) return 0;
     const saved = sessionStorage.getItem(`devlush_step_${componentId}`);
     return saved ? parseInt(saved, 10) : 0;
   });
 
   useEffect(() => {
-    if (!isReading) {
-      sessionStorage.setItem(`devlush_step_${componentId}`, step.toString());
-    }
-  }, [step, componentId, isReading]);
+    sessionStorage.setItem(`devlush_step_${componentId}`, step.toString());
+  }, [step, componentId]);
+
   const [settings, setSettings] = useState<LabSettings>(loadSavedSettings());
   const [infoVisible, setInfoVisible] = useState(!settings.hideTheoryDefault);
   const [infoPlacement, setInfoPlacement] = useState<"side" | "bottom">("side");
 
   const labContextValue = {
-    courseType: "med" as const, // Maps nicely inside standard favorite lists
+    courseType: CourseType.ROADMAP, 
     labId: componentId,
     chapterTitle: chapter.chapter_title,
   };
 
-  // Keep theory hidden if disabled in settings
   useEffect(() => {
     if (settings.disableTheory) {
       setInfoVisible(false);
@@ -66,24 +62,23 @@ const RoadmapRunner: React.FC<RoadmapRunnerProps> = ({
     return (
       <div className="w-full max-w-4xl mx-auto p-8 bg-white dark:bg-slate-900 border border-red-200 dark:border-red-950/30 rounded-2xl shadow-xl">
         <h2 className="text-2xl font-bold text-rose-500">
-          Error: Simulation Core Not Found
+          Error: Lab Component Not Found
         </h2>
         <p className="text-slate-500 dark:text-slate-400 mt-2">
-          Sandbox component not found for simulation ID:{" "}
+          Lab component not found for ID:{" "}
           {componentId}
         </p>
         <button
           onClick={onBack}
           className="mt-6 px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold rounded-lg transition-all"
         >
-          Back to Module Hub
+          Back to Hub
         </button>
       </div>
     );
   }
 
-  const totalSteps = isReading ? 1 : (chapter.interactive_questions?.length || 1);
-  const isMultiStep = totalSteps > 1;
+  const totalSteps = chapter.interactive_questions?.length || 1;
 
   const handlePrev = () => {
     if (step > 0) setStep((s) => s - 1);
@@ -104,7 +99,6 @@ const RoadmapRunner: React.FC<RoadmapRunnerProps> = ({
     <LabProvider value={labContextValue}>
       <div className="w-full h-full flex flex-col">
         <div className="flex-1 overflow-y-auto custom-scrollbar w-full p-6 pb-20">
-          {/* Simulation Header Panel */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-slate-100 dark:border-slate-800 pb-4">
             <div className="flex items-center gap-4">
               <button
@@ -116,8 +110,7 @@ const RoadmapRunner: React.FC<RoadmapRunnerProps> = ({
               </button>
               <div className="flex flex-col">
                 <span className={`text-xs font-bold ${themeColors.text} uppercase tracking-widest mb-1 flex items-center gap-1`}>
-                  <Sparkles className="w-3.5 h-3.5" /> roadmap Interactive
-                  Workspace {chapter.roadmap && `| Day ${chapter.roadmap}`}
+                  <Sparkles className="w-3.5 h-3.5" /> {RoadmapActivityLabels.LAB} {chapter.roadmap && `| Day ${chapter.roadmap}`}
                 </span>
                 <h2 className="text-4xl md:text-5xl font-heading tracking-wide text-slate-900 dark:text-white">
                   <span className={`text-transparent bg-clip-text bg-gradient-to-r ${themeColors.gradientFrom} ${themeColors.gradientVia} ${themeColors.gradientTo} bg-[size:200%_auto] animate-gradient`}>
@@ -127,7 +120,6 @@ const RoadmapRunner: React.FC<RoadmapRunnerProps> = ({
               </div>
             </div>
 
-            {/* Simulation Controls Menu */}
             <div className="flex items-center gap-3 flex-wrap">
               <FavoriteButton
                 id={componentId}
@@ -176,7 +168,6 @@ const RoadmapRunner: React.FC<RoadmapRunnerProps> = ({
                 </div>
               )}
 
-              {/* Option Visibility Toggle */}
               {!settings.disableQuestion && (
                 <div className="flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-1 shadow-sm">
                   <button
@@ -200,7 +191,6 @@ const RoadmapRunner: React.FC<RoadmapRunnerProps> = ({
             </div>
           </div>
 
-          {/* Sleek Navigation Bar */}
           <div className="flex justify-between items-center mb-4 px-1.5 mt-2">
             <div className="flex items-center gap-2">
               {totalSteps > 0 && (
@@ -237,10 +227,7 @@ const RoadmapRunner: React.FC<RoadmapRunnerProps> = ({
             </div>
           </div>
 
-          {/* Active Registered Sandbox Component */}
           <div className="w-full flex-1 flex flex-col min-h-[500px] relative overflow-hidden bg-white dark:bg-slate-900">
-
-            {/* Contextual Abstract SVG Visual Background for the Runner */}
             <div className="absolute inset-0 pointer-events-none opacity-10 dark:opacity-[0.15] mix-blend-multiply dark:mix-blend-screen z-0">
               <svg className="absolute w-full h-full" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
@@ -254,8 +241,6 @@ const RoadmapRunner: React.FC<RoadmapRunnerProps> = ({
                 </defs>
                 <rect width="100%" height="100%" fill="url(#gridPattern)" />
                 <rect width="100%" height="100%" fill="url(#fadeGrad)" className={themeColors.text} />
-
-                {/* Floating abstract tech geometry */}
                 <g className={themeColors.text} opacity="0.6">
                   <circle cx="10%" cy="20%" r="100" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="5 5" />
                   <circle cx="90%" cy="80%" r="150" fill="none" stroke="currentColor" strokeWidth="0.5" />
@@ -296,4 +281,4 @@ const RoadmapRunner: React.FC<RoadmapRunnerProps> = ({
   );
 };
 
-export default RoadmapRunner;
+export default RoadmapLabRunner;

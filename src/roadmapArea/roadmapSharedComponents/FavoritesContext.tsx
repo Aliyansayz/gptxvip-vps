@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
 
-export type FavoriteItemType = 'roadmap_lab';
+export type FavoriteItemType = 'roadmap_lab' | 'roadmap_reading';
 
 export interface FavoriteItem {
     id: string; // The componentId or labComponentId

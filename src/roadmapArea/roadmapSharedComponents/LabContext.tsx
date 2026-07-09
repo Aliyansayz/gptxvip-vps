@@ -1,7 +1,8 @@
 import React, { createContext, useContext, ReactNode } from 'react';
+import { CourseType } from '../roadmapView/types';
 
 interface LabContextType {
-    courseType: 'bio' | 'med';
+    courseType: 'bio' | 'med' | CourseType;
     labId: string;
     chapterTitle: string;
 }
