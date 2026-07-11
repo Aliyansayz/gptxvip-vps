@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
-import { 
-  CheckCircle, 
-  XCircle, 
-  Cpu, 
-  RefreshCw, 
-  AlertTriangle, 
-  Play, 
-  Terminal, 
-  Lock, 
-  Unlock, 
+import {
+  CheckCircle,
+  XCircle,
+  Cpu,
+  RefreshCw,
+  AlertTriangle,
+  Play,
+  Terminal,
+  Lock,
+  Unlock,
   Database,
   Code
 } from 'lucide-react';
@@ -27,12 +28,12 @@ interface ChapterProps {
   settings?: LabSettings;
 }
 
-export const AgentSyncPythonActivity: React.FC<ChapterProps> = ({ 
-  step, 
-  exercises, 
-  infoVisible, 
-  infoPlacement, 
-  settings 
+export const AgentSyncPythonActivity: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
+  settings
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -84,15 +85,15 @@ export const AgentSyncPythonActivity: React.FC<ChapterProps> = ({
       { text: "task_A: Initiating checkout for item 'Vintage Leather Jacket'...", delay: 400, activeWorker: 1 },
       { text: "task_B: Initiating checkout for item 'Vintage Leather Jacket'...", delay: 800, activeWorker: 2 },
       { text: "task_C: Initiating checkout for item 'Vintage Leather Jacket'...", delay: 1200, activeWorker: 3 },
-      
+
       // If lock is enabled, Task A gets it, Task B waits, Task C waits
       lockingEnabled ? { text: "task_A: async with lock: successfully acquired asyncio.Lock()", delay: 1600, lock: 'LOCKED', activeWorker: 1 } : null,
       lockingEnabled ? { text: "task_B: Lock is acquired by task_A. Suspending coroutine... yielding control.", delay: 2000, activeWorker: 2 } : null,
       lockingEnabled ? { text: "task_C: Lock is acquired by task_A. Suspending coroutine... yielding control.", delay: 2400, activeWorker: 3 } : null,
-      
+
       lockingEnabled ? { text: "task_A: Verified stock (1). Processing secure payment...", delay: 2800, activeWorker: 1 } : null,
       lockingEnabled ? { text: "task_A: Order placed. Decreasing stock to 0. Releasing lock...", delay: 3600, lock: 'UNLOCKED', activeWorker: 1 } : null,
-      
+
       lockingEnabled ? { text: "task_B: Resumed execution! Acquired asyncio.Lock(). Checking stock...", delay: 4200, lock: 'LOCKED', activeWorker: 2 } : null,
       lockingEnabled ? { text: "task_B: Stock is 0. Aborting transaction safely! Releasing lock...", delay: 4800, lock: 'UNLOCKED', activeWorker: 2 } : null,
       lockingEnabled ? { text: "task_C: Resumed execution! Acquired asyncio.Lock(). Checking stock...", delay: 5400, lock: 'LOCKED', activeWorker: 3 } : null,
@@ -214,7 +215,7 @@ def process_checkout_distributed(agent_id):
   const visualContent = (
     <div className="my-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 flex flex-col items-center w-full">
       <h5 className="text-xs font-bold text-slate-500 uppercase mb-2 tracking-wider">
-          Analogy: Synchronization Flow
+        Analogy: Synchronization Flow
       </h5>
       <div className="w-full flex flex-col lg:grid lg:grid-cols-12 gap-4">
         {/* Simulation Dashboard Left Column: Code and Controls */}
@@ -284,8 +285,8 @@ def process_checkout_distributed(agent_id):
                 const isCurrent = activeWorker === workerId;
                 const titleName = step === 0 ? `task_${String.fromCharCode(64 + workerId).toLowerCase()}` : `worker_${workerId}`;
                 return (
-                  <div 
-                    key={workerId} 
+                  <div
+                    key={workerId}
                     className={`p-3 rounded-lg border text-center transition-all duration-300 flex flex-col items-center justify-center ${isCurrent ? 'border-indigo-400 bg-indigo-950/40 text-indigo-300 scale-105 shadow-md shadow-indigo-950/50' : 'border-slate-800 bg-slate-900 text-slate-500'}`}
                   >
                     <Cpu className="w-5 h-5 mb-1" />

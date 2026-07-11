@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Shield, ShieldAlert, Code, Eye, RefreshCw, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
 import { DevLushLayout } from '../../devLushTopicsView/DevLushLayout';
 import SaveTheoryButton from '../../../agentDevRootComponents/TopicTheoryView/SaveTheoryButton';
@@ -22,7 +23,7 @@ const XSSDomSandboxContent = () => {
   const [protection, setProtection] = useState<'none' | 'encode'>('none');
   const [isAttacked, setIsAttacked] = useState(false);
 
-  const encodedPayload = protection === 'encode' 
+  const encodedPayload = protection === 'encode'
     ? payload.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
     : payload;
 
@@ -46,30 +47,30 @@ const XSSDomSandboxContent = () => {
             className="w-full bg-gray-950 border border-gray-800 rounded p-3 text-emerald-400 font-mono text-sm mb-4 h-24"
             placeholder="Enter XSS payload..."
           />
-          
+
           <div className="flex flex-col gap-3">
-             <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Defense Mechanism</h4>
-             <div className="flex gap-2">
-                <button
-                  onClick={() => setProtection('none')}
-                  className={`flex-1 py-2 px-3 rounded text-xs font-medium border ${protection === 'none' ? 'bg-red-900/30 border-red-800 text-red-400' : 'bg-gray-800 border-gray-700 text-gray-400'}`}
-                >
-                  Raw (Vulnerable)
-                </button>
-                <button
-                  onClick={() => setProtection('encode')}
-                  className={`flex-1 py-2 px-3 rounded text-xs font-medium border ${protection === 'encode' ? 'bg-emerald-900/30 border-emerald-800 text-emerald-400' : 'bg-gray-800 border-gray-700 text-gray-400'}`}
-                >
-                  Context Encode
-                </button>
-             </div>
-             
-             <button
-               onClick={handleSimulate}
-               className="mt-2 w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium text-sm flex items-center justify-center gap-2"
-             >
-               <RefreshCw className="w-4 h-4" /> Simulate Execution
-             </button>
+            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Defense Mechanism</h4>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setProtection('none')}
+                className={`flex-1 py-2 px-3 rounded text-xs font-medium border ${protection === 'none' ? 'bg-red-900/30 border-red-800 text-red-400' : 'bg-gray-800 border-gray-700 text-gray-400'}`}
+              >
+                Raw (Vulnerable)
+              </button>
+              <button
+                onClick={() => setProtection('encode')}
+                className={`flex-1 py-2 px-3 rounded text-xs font-medium border ${protection === 'encode' ? 'bg-emerald-900/30 border-emerald-800 text-emerald-400' : 'bg-gray-800 border-gray-700 text-gray-400'}`}
+              >
+                Context Encode
+              </button>
+            </div>
+
+            <button
+              onClick={handleSimulate}
+              className="mt-2 w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium text-sm flex items-center justify-center gap-2"
+            >
+              <RefreshCw className="w-4 h-4" /> Simulate Execution
+            </button>
           </div>
         </div>
 
@@ -80,24 +81,24 @@ const XSSDomSandboxContent = () => {
             Rendered Output & DOM
           </h3>
           <div className="flex-1 bg-white rounded p-4 text-gray-800 mb-4 overflow-hidden relative">
-             <p className="text-sm text-gray-600 mb-2">User Comment:</p>
-             {protection === 'none' && isAttacked ? (
-                <motion.div 
-                  initial={{ scale: 0.8, opacity: 0 }} 
-                  animate={{ scale: 1, opacity: 1 }}
-                  className="bg-red-100 border border-red-300 p-3 rounded text-red-700 text-xs font-mono break-all"
-                >
-                  [Execution!] Script alert('XSS') ran.
-                </motion.div>
-             ) : (
-                <div className="text-sm break-all font-mono">
-                  {encodedPayload}
-                </div>
-             )}
+            <p className="text-sm text-gray-600 mb-2">User Comment:</p>
+            {protection === 'none' && isAttacked ? (
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="bg-red-100 border border-red-300 p-3 rounded text-red-700 text-xs font-mono break-all"
+              >
+                [Execution!] Script alert('XSS') ran.
+              </motion.div>
+            ) : (
+              <div className="text-sm break-all font-mono">
+                {encodedPayload}
+              </div>
+            )}
           </div>
           <div className="bg-gray-950 p-3 rounded border border-gray-800 font-mono text-xs text-gray-400">
-            {'<div class="comment">'}<br/>
-            &nbsp;&nbsp;{protection === 'none' && isAttacked ? <span className="text-red-400">{payload}</span> : <span className="text-emerald-400">{encodedPayload}</span>}<br/>
+            {'<div class="comment">'}<br />
+            &nbsp;&nbsp;{protection === 'none' && isAttacked ? <span className="text-red-400">{payload}</span> : <span className="text-emerald-400">{encodedPayload}</span>}<br />
             {'</div>'}
           </div>
         </div>
@@ -115,7 +116,7 @@ const XSSDomSandboxContent = () => {
           </div>
         </div>
         {protection === 'none' && isAttacked && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             className="text-red-400 text-sm font-semibold bg-red-950/50 px-3 py-1 rounded border border-red-900"
@@ -124,7 +125,7 @@ const XSSDomSandboxContent = () => {
           </motion.div>
         )}
         {protection === 'encode' && isAttacked && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             className="text-emerald-400 text-sm font-semibold bg-emerald-950/50 px-3 py-1 rounded border border-emerald-900 flex items-center gap-2"
@@ -140,7 +141,7 @@ const XSSDomSandboxContent = () => {
 
 export default function XSSDomSandbox(props: ChapterProps) {
   if (!props.exercises || props.step === undefined) return <XSSDomSandboxContent />;
-  
+
   const question = props.exercises[props.step];
   if (!question) return <XSSDomSandboxContent />;
 

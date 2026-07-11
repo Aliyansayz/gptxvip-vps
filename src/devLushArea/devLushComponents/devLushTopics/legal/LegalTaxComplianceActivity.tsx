@@ -6,7 +6,7 @@ import SaveTheoryButton from "../../../agentDevRootComponents/TopicTheoryView/Sa
 import { motion } from "motion/react";
 import { toast } from 'sonner';
 
-const LegalActivity: React.FC<{
+const LegalTaxComplianceActivity: React.FC<{
   step: number;
   exercises: any[];
   infoVisible?: boolean;
@@ -62,7 +62,7 @@ const LegalActivity: React.FC<{
         <SaveTheoryButton theory={theoryData} />
       </div>
       <div className="flex-1">
-        <DevLushTheoryBridge item={{ labId: 'legal-agents', exerciseTitle: question.title, theory: theoryData }} />
+        <DevLushTheoryBridge item={{ labId: 'legal-tax-compliance', exerciseTitle: question.title, theory: theoryData }} />
       </div>
     </div>
   ) : null;
@@ -169,4 +169,4 @@ const LegalActivity: React.FC<{
   );
 };
 
-export default LegalActivity;
+export default LegalTaxComplianceActivity;

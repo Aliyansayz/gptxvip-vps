@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Exercise } from '../../roadmapSharedComponents/types';
+
+
+
 import { 
   CheckCircle, 
   XCircle, 

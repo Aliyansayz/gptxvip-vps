@@ -1,12 +1,13 @@
 import React from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
 import { CheckCircleIcon, History } from 'lucide-react';
 
-export const EpisodicMemoryActivity: React.FC<{ 
-  exercises: Exercise[]; 
-  step: number;
-  onComplete: () => void; 
+export const EpisodicMemoryActivity: React.FC<{
+    exercises: Exercise[];
+    step: number;
+    onComplete: () => void;
 }> = ({ exercises, step, onComplete }) => {
     const exercise = exercises[step] || exercises[0];
 
@@ -21,10 +22,10 @@ export const EpisodicMemoryActivity: React.FC<{
                 <h2 className="text-3xl font-bold">{exercise?.title || 'Episodic Memory'}</h2>
                 <p className="text-muted-foreground mt-2">{exercise?.prompt || 'Illustrates personalized, long-term interaction history.'}</p>
             </div>
-            
+
             <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
                 <h2 className="text-2xl font-bold text-card-foreground flex items-center mb-4">
-                    <History className="w-6 h-6 text-emerald-500"/>
+                    <History className="w-6 h-6 text-emerald-500" />
                     <span className="ml-3">What is Episodic Memory?</span>
                 </h2>
                 <div className="space-y-4 text-muted-foreground">
@@ -47,10 +48,10 @@ export const EpisodicMemoryActivity: React.FC<{
                     </div>
                 </div>
             </div>
-            
+
             <div className="p-4 text-center">
-                 <button onClick={handleComplete} className="px-6 py-2 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 inline-flex items-center gap-2">
-                    <CheckCircleIcon className="w-5 h-5"/>
+                <button onClick={handleComplete} className="px-6 py-2 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 inline-flex items-center gap-2">
+                    <CheckCircleIcon className="w-5 h-5" />
                     Mark as Reviewed
                 </button>
             </div>

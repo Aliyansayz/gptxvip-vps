@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LabData } from '../../../types';
+import { LabData } from '../devLushTypes';
 import { Tag } from 'lucide-react';
 
 interface RandomKeywordsListProps {
@@ -12,7 +12,7 @@ export const RandomKeywordsList: React.FC<RandomKeywordsListProps> = ({ chapters
   useEffect(() => {
     // Extract tags from chapters
     const allTags = new Set<string>();
-    
+
     chapters.forEach(chapter => {
       if (chapter.tags) {
         chapter.tags.forEach(tag => allTags.add(tag));
@@ -27,7 +27,7 @@ export const RandomKeywordsList: React.FC<RandomKeywordsListProps> = ({ chapters
     });
 
     const tagsArray = Array.from(allTags).filter(Boolean);
-    
+
     // Shuffle and pick a random subset (e.g., up to 10)
     const shuffled = tagsArray.sort(() => 0.5 - Math.random());
     setKeywords(shuffled.slice(0, 10));

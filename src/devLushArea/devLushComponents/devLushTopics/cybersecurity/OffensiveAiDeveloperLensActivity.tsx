@@ -1,15 +1,16 @@
 import React from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
 import ReadingActivity from '../shared/ReadingActivity';
 
 interface ChapterProps {
-  step: number;
-  exercises: Exercise[];
-  infoVisible: boolean;
-  infoPlacement: 'side' | 'bottom';
-  settings?: LabSettings;
-  labData?: any;
+    step: number;
+    exercises: Exercise[];
+    infoVisible: boolean;
+    infoPlacement: 'side' | 'bottom';
+    settings?: LabSettings;
+    labData?: any;
 }
 
 const PerceptionLoopVisual: React.FC = () => (
@@ -17,7 +18,7 @@ const PerceptionLoopVisual: React.FC = () => (
         <circle cx="50" cy="30" r="15" fill="none" stroke="#6366f1" strokeWidth="1" strokeDasharray="4 2">
             <animateTransform attributeName="transform" type="rotate" from="0 50 30" to="360 50 30" dur="4s" repeatCount="indefinite" />
         </circle>
-        
+
         {/* Core Agent */}
         <circle cx="50" cy="30" r="6" fill="#4f46e5" />
         <text x="50" y="31.5" textAnchor="middle" fontSize="3" className="fill-white font-bold font-mono">LLM</text>
@@ -28,7 +29,7 @@ const PerceptionLoopVisual: React.FC = () => (
             <text x="0" y="1" textAnchor="middle" fontSize="3" className="fill-sky-400 font-mono">Sensors</text>
             <path d="M 8 0 L 15 0" stroke="#38bdf8" markerEnd="url(#arrow-dev-1)" />
         </g>
-        
+
         <g transform="translate(75, 30)">
             <rect x="-8" y="-6" width="16" height="12" rx="2" fill="#1e293b" stroke="#a855f7" strokeWidth="0.5" />
             <text x="0" y="1" textAnchor="middle" fontSize="3" className="fill-purple-400 font-mono">Actions</text>

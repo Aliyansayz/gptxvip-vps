@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
 import { CheckCircle, XCircle, Terminal, RefreshCw, Key, LockOpen, EyeOff } from 'lucide-react';
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
@@ -16,17 +17,17 @@ interface ChapterProps {
   settings?: LabSettings;
 }
 
-export const AuthorizationTesting: React.FC<ChapterProps> = ({ 
-  step, 
-  exercises, 
-  infoVisible, 
-  infoPlacement, 
-  settings 
+export const AuthorizationTesting: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
+  settings
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [displayedLogs, setDisplayedLogs] = useState<{timestamp: string, level: string, message: string}[]>([]);
+  const [displayedLogs, setDisplayedLogs] = useState<{ timestamp: string, level: string, message: string }[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -56,11 +57,11 @@ export const AuthorizationTesting: React.FC<ChapterProps> = ({
     setProgress(10);
 
     const logSequence = exerciseData.logs || [];
-    
+
     if (logSequence.length === 0) {
-        setIsRunning(false);
-        setProgress(100);
-        return;
+      setIsRunning(false);
+      setProgress(100);
+      return;
     }
 
     let currentLogIndex = 0;
@@ -95,12 +96,12 @@ export const AuthorizationTesting: React.FC<ChapterProps> = ({
   };
 
   const getLogColor = (level: string) => {
-      switch(level) {
-          case 'error': return '#ff0033'; // red theme base
-          case 'warn': return '#ffb300';
-          case 'success': return '#00ff41';
-          default: return '#ff8b8b'; // red text secondary
-      }
+    switch (level) {
+      case 'error': return '#ff0033'; // red theme base
+      case 'warn': return '#ffb300';
+      case 'success': return '#00ff41';
+      default: return '#ff8b8b'; // red text secondary
+    }
   };
 
   const visualContent = (
@@ -145,8 +146,8 @@ export const AuthorizationTesting: React.FC<ChapterProps> = ({
             <span>PROGRESS: {progress}%</span>
           </div>
           <div className="w-full h-1.5 bg-[rgba(255,0,51,0.1)] rounded-full overflow-hidden">
-            <div 
-              className={`h-full transition-all duration-500 bg-[#ff0033]`} 
+            <div
+              className={`h-full transition-all duration-500 bg-[#ff0033]`}
               style={{ width: `${progress}%`, boxShadow: '0 0 10px #ff0033' }}
             ></div>
           </div>
@@ -172,9 +173,9 @@ export const AuthorizationTesting: React.FC<ChapterProps> = ({
   const interactionContent = (
     <div className="space-y-4">
       {question.question && (
-          <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
-              {question.question}
-          </h4>
+        <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
+          {question.question}
+        </h4>
       )}
       <div className="grid grid-cols-1 gap-3">
         {question.options?.map((opt: string, i: number) => {

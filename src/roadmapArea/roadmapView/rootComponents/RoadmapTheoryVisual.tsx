@@ -23,17 +23,17 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                         Concept: Perception-Reasoning-Action Loop
                     </h5>
                 </div>
-                
+
                 {/* Visual Canvas */}
                 <div className="relative w-full h-48 bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex flex-col justify-between p-3">
                     <div className="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:20px_20px] opacity-10" />
-                    
+
                     <div className="flex justify-between items-start z-10">
                         <span className="text-[9px] font-mono text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800/40">
-                          SYS_STATUS: ACTIVE_LOOP
+                            SYS_STATUS: ACTIVE_LOOP
                         </span>
                         <span className="text-[9px] font-mono text-cyan-400 bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-800/40 animate-pulse">
-                          MODEL: OMNI_FLASH
+                            MODEL: OMNI_FLASH
                         </span>
                     </div>
 
@@ -102,12 +102,12 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                     {/* Left: No Containment */}
                     <div className="p-2 bg-slate-900 rounded-lg border border-red-950 flex flex-col justify-between">
                         <span className="text-[8px] font-mono text-red-400">🚨 UNBOUNDED AGENT</span>
-                        
+
                         <div className="my-3 flex flex-col gap-1 items-center">
                             <div className="text-[10px] font-bold text-red-500 line-through">System Instructions</div>
                             <span className="text-xl">💣</span>
                             <div className="text-[8px] text-red-400 bg-red-950/40 px-1 rounded animate-pulse">
-                              "Format disk / C:"
+                                "Format disk / C:"
                             </div>
                         </div>
 
@@ -122,7 +122,7 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                             <div className="text-[10px] font-bold text-emerald-400">Strict Sandbox microVM</div>
                             <span className="text-xl">🧱🤖🧱</span>
                             <div className="text-[8px] text-emerald-400 bg-emerald-950/40 px-1 rounded">
-                              "Explosion Isolated"
+                                "Explosion Isolated"
                             </div>
                         </div>
 
@@ -153,14 +153,14 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                 {/* Interactive Visual Canvas */}
                 <div className="relative w-full h-44 bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center p-3">
                     <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:12px_12px]" />
-                    
+
                     {/* The Blast Chamber (Thick Kevlar Walls) */}
                     <div className="relative w-72 h-36 border-4 border-cyan-500/40 bg-slate-900/90 rounded-2xl flex flex-col items-center justify-between p-2 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
                         <div className="absolute top-1 right-2 text-[7px] font-mono text-cyan-400">KEVLAR CHAMBER SECURE</div>
-                        
+
                         {/* Little robot & Sparking Bomb */}
                         <div className="flex-1 flex items-center justify-center gap-6">
-                            <motion.div 
+                            <motion.div
                                 className="text-3xl"
                                 animate={{ y: [0, -3, 0] }}
                                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
@@ -170,7 +170,7 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
 
                             <div className="relative">
                                 <span className="text-3xl">💣</span>
-                                <motion.span 
+                                <motion.span
                                     className="absolute -top-1 -right-1 text-xs"
                                     animate={{ scale: [1, 1.4, 1], opacity: [0.7, 1, 0.7] }}
                                     transition={{ duration: 0.5, repeat: Infinity }}
@@ -181,7 +181,7 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                         </div>
 
                         {/* Blast containment flash */}
-                        <motion.div 
+                        <motion.div
                             className="absolute inset-0 bg-red-600/30 rounded-xl mix-blend-screen pointer-events-none"
                             animate={{ opacity: [0, 0.8, 0, 0] }}
                             transition={{ duration: 2.5, repeat: Infinity, ease: "easeOut" }}
@@ -306,9 +306,9 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                         </g>
 
                         {/* Burglar/scanner sweeping target */}
-                        <motion.circle 
-                            r="5" 
-                            fill="#06b6d4" 
+                        <motion.circle
+                            r="5"
+                            fill="#06b6d4"
                             animate={{
                                 cx: [40, 95, 200, 150, 40],
                                 cy: [15, 50, 50, 85, 15]
@@ -348,15 +348,15 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                         {/* Padlock Base */}
                         <rect x="110" y="40" width="80" height="60" rx="10" fill="#1e293b" stroke="#475569" strokeWidth="3" />
                         <circle cx="150" cy="70" r="12" fill="#0f172a" />
-                        
+
                         {/* Padlock Shackle */}
                         <path d="M 125 40 L 125 25 C 125 10, 175 10, 175 25 L 175 40" fill="none" stroke="#475569" strokeWidth="4" />
 
                         {/* Lockpick tool inserting */}
-                        <motion.path 
-                            d="M 20 70 L 138 70" 
-                            stroke="#06b6d4" 
-                            strokeWidth="3" 
+                        <motion.path
+                            d="M 20 70 L 138 70"
+                            stroke="#06b6d4"
+                            strokeWidth="3"
                             strokeLinecap="round"
                             animate={{
                                 x: [0, 5, 0, 10, 0]
@@ -369,10 +369,10 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                         />
 
                         {/* Turned Lock shackle upon bypass */}
-                        <motion.path 
-                            d="M 125 40 L 125 25 C 125 10, 175 10, 175 25 L 175 40" 
-                            fill="none" 
-                            stroke="#10b981" 
+                        <motion.path
+                            d="M 125 40 L 125 25 C 125 10, 175 10, 175 25 L 175 40"
+                            fill="none"
+                            stroke="#10b981"
                             strokeWidth="4"
                             animate={{
                                 y: [0, -8, 0],
@@ -492,11 +492,11 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                         </motion.g>
 
                         {/* Status feedback text */}
-                        <motion.text 
-                            x="250" 
-                            y="33" 
-                            fontSize="8" 
-                            fontFamily="monospace" 
+                        <motion.text
+                            x="250"
+                            y="33"
+                            fontSize="8"
+                            fontFamily="monospace"
                             fontWeight="bold"
                             animate={{
                                 fill: ["#ef4444", "#ef4444", "#10b981"],
@@ -536,12 +536,12 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                         Concept: Attack Surface Discovery
                     </h5>
                 </div>
-                
+
                 {/* Visual Canvas */}
                 <div className="relative w-full h-44 bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex flex-col justify-between p-3">
                     {/* Background decor & labels */}
                     <div className="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] opacity-40" />
-                    
+
                     <div className="flex justify-between items-start z-10">
                         <div className="flex flex-col gap-1">
                             <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-900/40 flex items-center gap-1">
@@ -550,7 +550,7 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                             </span>
                             <span className="text-[9px] text-slate-400">Guarded / Keycard</span>
                         </div>
-                        
+
                         <div className="flex flex-col items-end gap-1">
                             <span className="text-[10px] font-bold text-rose-400 bg-rose-950/40 px-2 py-0.5 rounded border border-rose-900/40 flex items-center gap-1">
                                 <span className="w-1.5 h-1.5 bg-rose-500 rounded-full animate-ping" />
@@ -585,9 +585,9 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                         </g>
 
                         {/* Glowing packet traveling service path */}
-                        <motion.circle 
-                            r="5" 
-                            fill="#f43f5e" 
+                        <motion.circle
+                            r="5"
+                            fill="#f43f5e"
                             animate={{
                                 cx: [340, 340, 200],
                                 cy: [80, 40, 35]
@@ -600,9 +600,9 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                         />
 
                         {/* Security check blocking the main gate */}
-                        <motion.circle 
-                            r="4" 
-                            fill="#10b981" 
+                        <motion.circle
+                            r="4"
+                            fill="#10b981"
                             animate={{
                                 cx: [60, 60, 60],
                                 cy: [110, 80, 80]
@@ -801,11 +801,11 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
 
                         {/* Dangerous Grenade shape getting blocked at the gate */}
                         <motion.g
-                            animate={{ 
-                                x: [50, 140, 140, 140], 
+                            animate={{
+                                x: [50, 140, 140, 140],
                                 y: [22, 22, 45, 55],
                                 rotate: [0, 0, 45, 90],
-                                opacity: [1, 1, 1, 0] 
+                                opacity: [1, 1, 1, 0]
                             }}
                             transition={{ duration: 3, repeat: Infinity, delay: 1.5, ease: "easeOut" }}
                         >
@@ -841,12 +841,12 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                     <circle cx="100" cy="15" r="5" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-400" />
 
                     {/* Standard Package (Rejected or harmless) */}
-                    <motion.rect 
+                    <motion.rect
                         x="20" y="40" width="20" height="15" fill="currentColor" className="text-blue-400"
                         animate={{ x: [0, 50, 50] }}
                         transition={{ duration: 2, repeat: Infinity }}
                     />
-                    
+
                     {/* Malicious Payload (Disguised) */}
                     <motion.g
                         animate={{ x: [0, 110, 150] }}
@@ -855,7 +855,7 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                         {/* Trojan horse box */}
                         <rect x="20" y="60" width="25" height="15" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-400" />
                         {/* Hidden instruction pops out after passing */}
-                        <motion.circle 
+                        <motion.circle
                             cx="32.5" cy="67.5" r="3" fill="currentColor" className="text-red-500"
                             animate={{ scale: [1, 1, 3], opacity: [0, 0, 1] }}
                             transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
@@ -886,7 +886,7 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                     <circle cx="110" cy="50" r="8" fill="none" stroke="currentColor" strokeWidth="2" className="text-red-400" />
 
                     {/* Normal User (Blocked/Checked) */}
-                    <motion.circle 
+                    <motion.circle
                         cx="50" cy="50" r="5" fill="currentColor" className="text-blue-400"
                         animate={{ x: [0, 40, 0] }}
                         transition={{ duration: 2, repeat: Infinity }}
@@ -958,13 +958,13 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                     {/* Agents */}
                     <rect x="20" y="40" width="40" height="20" rx="4" fill="none" stroke="currentColor" strokeWidth="2" className="text-indigo-500" />
                     <text x="40" y="53" fontSize="8" textAnchor="middle" className="fill-indigo-500 font-bold">AGENT 1</text>
-                    
+
                     <rect x="140" y="40" width="40" height="20" rx="4" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500" />
                     <text x="160" y="53" fontSize="8" textAnchor="middle" className="fill-emerald-500 font-bold">AGENT 2</text>
 
                     {/* Baton Passing */}
                     <path d="M 60 50 L 140 50" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-300 stroke-dashed" />
-                    
+
                     <motion.rect x="90" y="45" width="20" height="10" rx="2" fill="currentColor" className="text-amber-500"
                         animate={{ x: [60, 120] }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} />
                     <motion.text x="100" y="53" fontSize="6" textAnchor="middle" className="fill-white font-bold"
@@ -1033,7 +1033,7 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                     <circle cx="40" cy="50" r="10" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500" />
                     <motion.circle cx="40" cy="50" r="10" fill="none" stroke="currentColor" strokeWidth="1" className="text-emerald-400"
                         animate={{ r: [10, 80], opacity: [1, 0] }} transition={{ duration: 2, repeat: Infinity }} />
-                    
+
                     {/* Detected points */}
                     <motion.circle cx="120" cy="30" r="3" fill="currentColor" className="text-red-500"
                         animate={{ opacity: [0, 1, 0] }} transition={{ duration: 2, repeat: Infinity, delay: 0.8 }} />
@@ -1057,20 +1057,20 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                 <svg viewBox="0 0 200 100" className="w-full max-w-[240px] h-auto">
                     {/* Expected Curve */}
                     <path d="M 20 80 Q 50 20 180 70" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="4 2" className="text-green-500 opacity-50" />
-                    
+
                     {/* Bar Chart (Actual Data) */}
                     <rect x="25" y="40" width="15" height="40" fill="currentColor" className="text-slate-400" />
                     <rect x="55" y="60" width="15" height="20" fill="currentColor" className="text-slate-400" />
-                    
+
                     {/* Anomalous Bar */}
-                    <motion.rect 
+                    <motion.rect
                         x="85" y="30" width="15" height="50" fill="currentColor" className="text-rose-500"
                         animate={{ height: [50, 70, 50], y: [30, 10, 30] }} transition={{ duration: 2, repeat: Infinity }}
                     />
-                    
+
                     <rect x="115" y="65" width="15" height="15" fill="currentColor" className="text-slate-400" />
                     <rect x="145" y="70" width="15" height="10" fill="currentColor" className="text-slate-400" />
-                    
+
                     {/* Baseline */}
                     <line x1="20" y1="80" x2="180" y2="80" stroke="currentColor" strokeWidth="2" className="text-slate-500" />
                 </svg>
@@ -1091,7 +1091,7 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                 <svg viewBox="0 0 200 100" className="w-full max-w-[240px] h-auto">
                     {/* The Foundation */}
                     <line x1="20" y1="80" x2="180" y2="80" stroke="currentColor" strokeWidth="2" className="text-slate-500" />
-                    
+
                     {/* Falling Dominoes */}
                     <motion.rect x="30" y="50" width="10" height="30" fill="currentColor" className="text-rose-500"
                         animate={{ rotate: [0, 45, 0], transformOrigin: "35px 80px" }} transition={{ duration: 2, repeat: Infinity }} />
@@ -1140,11 +1140,11 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
 
                     {/* Animated loop packet */}
                     <motion.circle cx="60" cy="40" r="3" fill="currentColor" className="text-purple-400"
-                        animate={{ 
-                            cx: [60, 130, 145, 145, 130, 60], 
-                            cy: [40, 30, 30, 60, 70, 60] 
-                        }} 
-                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }} 
+                        animate={{
+                            cx: [60, 130, 145, 145, 130, 60],
+                            cy: [40, 30, 30, 60, 70, 60]
+                        }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                     />
                 </svg>
                 <p className="text-[10px] text-center mt-2 text-slate-500 italic">
@@ -1207,7 +1207,7 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
 
                     {/* Animated packet traveling through chain */}
                     <motion.circle cx="10" cy="50" r="4" fill="currentColor" className="text-emerald-500"
-                        animate={{ cx: [10, 30, 90, 100, 160, 170, 190] }} 
+                        animate={{ cx: [10, 30, 90, 100, 160, 170, 190] }}
                         transition={{ duration: 3, repeat: Infinity, ease: "linear" }} />
                 </svg>
                 <p className="text-[10px] text-center mt-2 text-slate-500 italic">
@@ -1227,12 +1227,12 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
                 <svg viewBox="0 0 200 100" className="w-full max-w-[240px] h-auto">
                     {/* Central dispatcher */}
                     <circle cx="40" cy="50" r="10" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-500" />
-                    
+
                     {/* Parallel nodes */}
                     <rect x="100" y="10" width="20" height="20" rx="2" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-500" />
                     <rect x="100" y="40" width="20" height="20" rx="2" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-500" />
                     <rect x="100" y="70" width="20" height="20" rx="2" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-500" />
-                    
+
                     {/* Aggregator */}
                     <circle cx="160" cy="50" r="10" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500" />
 
@@ -1288,7 +1288,7 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
 
                     {/* Packet pausing and proceeding */}
                     <motion.circle cx="20" cy="50" r="4" fill="currentColor" className="text-purple-500"
-                        animate={{ cx: [20, 60, 85, 85, 115, 140, 180] }} 
+                        animate={{ cx: [20, 60, 85, 85, 115, 140, 180] }}
                         transition={{ duration: 4, times: [0, 0.2, 0.3, 0.7, 0.8, 0.9, 1], repeat: Infinity }} />
                 </svg>
                 <p className="text-[10px] text-center mt-2 text-slate-500 italic">
@@ -1349,7 +1349,7 @@ export const RoadmapTheoryVisual: React.FC<RoadmapTheoryVisualProps> = ({ analog
 
                     <circle cx="170" cy="30" r="12" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-slate-400" />
                     <text x="170" y="32" fontSize="5" textAnchor="middle" className="fill-slate-500 font-bold">DB</text>
-                    
+
                     <circle cx="170" cy="70" r="12" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-slate-400" />
                     <text x="170" y="72" fontSize="5" textAnchor="middle" className="fill-slate-500 font-bold">WEB</text>
 

@@ -1,15 +1,16 @@
 import React from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
 import ReadingActivity from '../shared/ReadingActivity';
 
 interface ChapterProps {
-  step: number;
-  exercises: Exercise[];
-  infoVisible: boolean;
-  infoPlacement: 'side' | 'bottom';
-  settings?: LabSettings;
-  labData?: any;
+    step: number;
+    exercises: Exercise[];
+    infoVisible: boolean;
+    infoPlacement: 'side' | 'bottom';
+    settings?: LabSettings;
+    labData?: any;
 }
 
 const PayloadSanitizationVisual: React.FC = () => (
@@ -20,12 +21,12 @@ const PayloadSanitizationVisual: React.FC = () => (
         <circle cx="10" cy="35" r="2" fill="#ef4444">
             <animateMotion dur="2s" repeatCount="indefinite" path="M 0 0 L 35 0" />
         </circle>
-        
+
         {/* Sanitization Filter */}
         <rect x="45" y="20" width="10" height="30" rx="2" fill="#022c22" stroke="#10b981" strokeWidth="1" />
         <path d="M 45 25 L 55 45 M 45 45 L 55 25" stroke="#10b981" strokeWidth="0.5" opacity="0.5" />
         <text x="50" y="15" textAnchor="middle" fontSize="4" className="fill-emerald-500 font-bold font-mono">Sanitizer</text>
-        
+
         {/* Clean Payload */}
         <path d="M 55 35 L 90 35" stroke="#475569" strokeDasharray="2 2" />
         <circle cx="55" cy="35" r="2" fill="#10b981">
@@ -51,7 +52,7 @@ const PrivilegeDroppingVisual: React.FC = () => (
         <text x="72.5" y="23" textAnchor="middle" fontSize="4" className="fill-blue-400 font-bold font-mono">USER_PROC</text>
         <circle cx="72.5" cy="32" r="4" fill="#3b82f6" opacity="0.8" />
         <text x="72.5" y="42" textAnchor="middle" fontSize="3" className="fill-blue-400 font-mono">Least Privilege Sandbox</text>
-        
+
         <defs>
             <marker id="arrow-flow-priv" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
                 <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />

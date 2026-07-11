@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
 import { CheckCircle, XCircle, Activity, Terminal, ChevronRight, TrendingDown } from 'lucide-react';
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
@@ -28,7 +29,7 @@ const LiveStockChart: React.FC<{ isRunning: boolean; currentPrice: number; hasCr
       animationFrameId = requestAnimationFrame(animate);
     };
     if (isRunning) {
-        animationFrameId = requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
     }
     return () => cancelAnimationFrame(animationFrameId);
   }, [isRunning]);
@@ -40,7 +41,7 @@ const LiveStockChart: React.FC<{ isRunning: boolean; currentPrice: number; hasCr
       const x = i;
       // Normal variation
       let variation = Math.sin((i + animationProgress) * 0.1) * 5 + Math.cos((i + animationProgress) * 0.05) * 3;
-      
+
       if (hasCrashed && i > 250) {
         // Flash crash downward trend
         variation += (i - 250) * 1.5;
@@ -48,7 +49,7 @@ const LiveStockChart: React.FC<{ isRunning: boolean; currentPrice: number; hasCr
         // Slight upward trend normally
         variation -= i * 0.05;
       }
-      
+
       const plottedY = Math.min(Math.max(50 + variation, 10), 110);
       points.push(`${x},${plottedY}`);
     }
@@ -76,39 +77,39 @@ const LiveStockChart: React.FC<{ isRunning: boolean; currentPrice: number; hasCr
 };
 
 const TradingSwarmAnalogy: React.FC = () => (
-    <div className="my-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 flex flex-col items-center">
-        <h5 className="text-xs font-bold text-muted-foreground uppercase mb-2 tracking-wider flex items-center gap-2">
-            <Activity className="w-4 h-4 text-rose-500" /> Analogy: Swarm Intelligence
-        </h5>
-        <svg viewBox="0 0 200 100" className="w-full h-32">
-            {/* The Asset/Food Source */}
-            <circle cx="100" cy="50" r="10" fill="#fbbf24" stroke="#d97706" strokeWidth="2" className="animate-pulse" />
-            
-            {/* Swarm Agents (Fish/Bees) */}
-            <g className="animate-spin-slow" style={{ transformOrigin: '100px 50px' }}>
-                <path d="M 60 50 L 50 45 L 50 55 Z" fill="#3b82f6" opacity="0.8" />
-                <path d="M 70 30 L 60 25 L 60 35 Z" fill="#3b82f6" opacity="0.8" />
-                <path d="M 140 50 L 150 45 L 150 55 Z" fill="#ef4444" opacity="0.8" /> {/* Divergent agent */}
-                <path d="M 130 70 L 140 65 L 140 75 Z" fill="#3b82f6" opacity="0.8" />
-                <path d="M 90 20 L 85 10 L 95 10 Z" fill="#3b82f6" opacity="0.8" />
-                <path d="M 110 80 L 105 90 L 115 90 Z" fill="#3b82f6" opacity="0.8" />
-            </g>
+  <div className="my-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 flex flex-col items-center">
+    <h5 className="text-xs font-bold text-muted-foreground uppercase mb-2 tracking-wider flex items-center gap-2">
+      <Activity className="w-4 h-4 text-rose-500" /> Analogy: Swarm Intelligence
+    </h5>
+    <svg viewBox="0 0 200 100" className="w-full h-32">
+      {/* The Asset/Food Source */}
+      <circle cx="100" cy="50" r="10" fill="#fbbf24" stroke="#d97706" strokeWidth="2" className="animate-pulse" />
 
-            {/* Attack vector / Panic sell */}
-            <path d="M 100 50 L 180 90" stroke="#ef4444" strokeWidth="2" strokeDasharray="4 2" className="animate-pulse" />
-            <circle cx="180" cy="90" r="4" fill="#ef4444" />
+      {/* Swarm Agents (Fish/Bees) */}
+      <g className="animate-spin-slow" style={{ transformOrigin: '100px 50px' }}>
+        <path d="M 60 50 L 50 45 L 50 55 Z" fill="#3b82f6" opacity="0.8" />
+        <path d="M 70 30 L 60 25 L 60 35 Z" fill="#3b82f6" opacity="0.8" />
+        <path d="M 140 50 L 150 45 L 150 55 Z" fill="#ef4444" opacity="0.8" /> {/* Divergent agent */}
+        <path d="M 130 70 L 140 65 L 140 75 Z" fill="#3b82f6" opacity="0.8" />
+        <path d="M 90 20 L 85 10 L 95 10 Z" fill="#3b82f6" opacity="0.8" />
+        <path d="M 110 80 L 105 90 L 115 90 Z" fill="#3b82f6" opacity="0.8" />
+      </g>
 
-            <text x="100" y="95" textAnchor="middle" fontSize="8" fill="currentColor" className="text-slate-500">Simultaneous flocking causes liquidity drain</text>
-        </svg>
-    </div>
+      {/* Attack vector / Panic sell */}
+      <path d="M 100 50 L 180 90" stroke="#ef4444" strokeWidth="2" strokeDasharray="4 2" className="animate-pulse" />
+      <circle cx="180" cy="90" r="4" fill="#ef4444" />
+
+      <text x="100" y="95" textAnchor="middle" fontSize="8" fill="currentColor" className="text-slate-500">Simultaneous flocking causes liquidity drain</text>
+    </svg>
+  </div>
 );
 
-const AlgoTradingActivity: React.FC<ChapterProps> = ({ 
-  step, 
-  exercises, 
-  infoVisible, 
-  infoPlacement, 
-  settings 
+const AlgoTradingActivity: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
+  settings
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -210,7 +211,7 @@ const AlgoTradingActivity: React.FC<ChapterProps> = ({
                 <div className="flex items-end gap-1">
                   <span className="text-sm text-gray-600">$</span>
                   <AnimatePresence mode="wait">
-                    <motion.span 
+                    <motion.span
                       key={price}
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -227,7 +228,7 @@ const AlgoTradingActivity: React.FC<ChapterProps> = ({
                   </span>
                 )}
               </div>
-              
+
               {/* Dynamic SVG Stock Chart */}
               <LiveStockChart isRunning={isRunning} currentPrice={price} hasCrashed={price < 100} />
             </div>
@@ -239,8 +240,8 @@ const AlgoTradingActivity: React.FC<ChapterProps> = ({
         <div className="opacity-50 mb-2">root@hft-engine:~# ./start_agents.sh</div>
         <AnimatePresence>
           {tradingLogs.map((log, index) => (
-            <motion.div 
-              key={index} 
+            <motion.div
+              key={index}
               initial={{ opacity: 0, x: -5 }}
               animate={{ opacity: 1, x: 0 }}
               className={`leading-relaxed flex gap-2 ${log.includes("CRITICAL") || log.includes("SYSTEM") ? "text-rose-400 font-bold bg-rose-950/20 p-1 border-l-2 border-rose-500" : ""}`}
@@ -337,8 +338,8 @@ const AlgoTradingActivity: React.FC<ChapterProps> = ({
       </div>
       <div className="flex-1">
         <div className="flex flex-col h-full gap-4">
-            <DevLushTheoryBridge item={{ labId: 'finance-agents-algo', exerciseTitle: question.title, theory: question.theory }} />
-            <TradingSwarmAnalogy />
+          <DevLushTheoryBridge item={{ labId: 'finance-agents-algo', exerciseTitle: question.title, theory: question.theory }} />
+          <TradingSwarmAnalogy />
         </div>
       </div>
     </div>

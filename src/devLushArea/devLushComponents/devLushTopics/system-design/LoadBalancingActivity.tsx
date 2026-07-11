@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
 import { CheckCircle, XCircle, Server, Activity, Users, ArrowRight } from 'lucide-react';
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
@@ -15,17 +16,17 @@ interface ChapterProps {
   settings?: LabSettings;
 }
 
-export const LoadBalancingActivity: React.FC<ChapterProps> = ({ 
-  step, 
-  exercises, 
-  infoVisible, 
-  infoPlacement, 
-  settings 
+export const LoadBalancingActivity: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
+  settings
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  
+
   // Interactive visual state
   const [servers, setServers] = useState([
     { id: 1, connections: 0, capacity: 10 },
@@ -62,7 +63,7 @@ export const LoadBalancingActivity: React.FC<ChapterProps> = ({
 
   const handleRouteRequest = () => {
     let targetIndex = 0;
-    
+
     if (algorithm === 'round-robin') {
       targetIndex = rrIndex;
       setRrIndex((prev) => (prev + 1) % servers.length);
@@ -109,24 +110,24 @@ export const LoadBalancingActivity: React.FC<ChapterProps> = ({
           <span className="font-mono text-xs font-bold tracking-widest text-sky-400">LOAD_BALANCER</span>
         </div>
         <div className="flex gap-2">
-           <select 
-             value={algorithm}
-             onChange={(e) => setAlgorithm(e.target.value as any)}
-             className="bg-slate-800 border border-slate-700 text-xs text-white rounded px-2 py-1 outline-none"
-           >
-             <option value="round-robin">Round Robin</option>
-             <option value="least-connections">Least Connections</option>
-           </select>
+          <select
+            value={algorithm}
+            onChange={(e) => setAlgorithm(e.target.value as any)}
+            className="bg-slate-800 border border-slate-700 text-xs text-white rounded px-2 py-1 outline-none"
+          >
+            <option value="round-robin">Round Robin</option>
+            <option value="least-connections">Least Connections</option>
+          </select>
         </div>
       </div>
 
       <div className="bg-slate-950 text-slate-200 border-x border-b border-slate-800 rounded-b-xl p-5 flex-1 flex flex-col items-center justify-center relative">
-        
+
         <div className="flex items-center justify-between w-full max-w-lg mb-8">
           {/* Client */}
           <div className="flex flex-col items-center">
             <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center border-2 border-slate-700 mb-2">
-               <Users className="w-8 h-8 text-slate-400" />
+              <Users className="w-8 h-8 text-slate-400" />
             </div>
             <button
               onClick={handleRouteRequest}
@@ -135,13 +136,13 @@ export const LoadBalancingActivity: React.FC<ChapterProps> = ({
               Send Request
             </button>
           </div>
-          
+
           <ArrowRight className="w-8 h-8 text-slate-600" />
-          
+
           {/* Load Balancer */}
           <div className="flex flex-col items-center">
             <div className="w-20 h-20 bg-sky-900/40 rounded-xl flex items-center justify-center border-2 border-sky-500 shadow-[0_0_15px_rgba(14,165,233,0.3)]">
-               <Activity className="w-10 h-10 text-sky-400" />
+              <Activity className="w-10 h-10 text-sky-400" />
             </div>
             <div className="text-[10px] font-mono text-sky-400 mt-2 uppercase">{algorithm}</div>
           </div>
@@ -200,9 +201,9 @@ export const LoadBalancingActivity: React.FC<ChapterProps> = ({
           {question.options?.map((option, idx) => {
             const isSelected = selectedAnswer === option;
             const isCorrectOption = option === question.answer;
-            
+
             let btnClass = "w-full text-left p-4 rounded-xl border-2 transition-all duration-200 font-medium ";
-            
+
             if (!showResult) {
               btnClass += "border-slate-200 dark:border-slate-700 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 text-slate-700 dark:text-slate-300";
             } else {
@@ -234,11 +235,10 @@ export const LoadBalancingActivity: React.FC<ChapterProps> = ({
       </div>
 
       {showResult && (
-        <div className={`p-4 border-t ${
-          isCorrect 
-            ? 'bg-emerald-50 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-900/30' 
+        <div className={`p-4 border-t ${isCorrect
+            ? 'bg-emerald-50 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-900/30'
             : 'bg-rose-50 border-rose-100 dark:bg-rose-900/20 dark:border-rose-900/30'
-        }`}>
+          }`}>
           <div className="flex items-start gap-3">
             {isCorrect ? (
               <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 mt-0.5" />

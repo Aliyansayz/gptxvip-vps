@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { BookmarkPlus, FolderPlus, CheckCircle2 } from 'lucide-react';
-import { Theory } from '../../../types';
+import { Theory } from '../../devLushComponents/devLushTypes';
 import { useTheoryCollections } from '../TheoryCollectionContext';
 import { useLabContext } from '../LabContext';
 
 interface SaveTheoryButtonProps {
     theory?: any;
-    courseType?: 'bio' | 'med';
+    courseType?: 'devLush';
     labId?: string;
     chapterTitle?: string;
     exerciseTitle?: string;
@@ -49,8 +49,7 @@ const SaveTheoryButton: React.FC<SaveTheoryButtonProps> = ({
     const labId = propLabId || labContext?.labId || 'unknown';
 
     // Determine courseType: prop > context > inferred from labId
-    const courseType = propCourseType || labContext?.courseType ||
-        (labId.startsWith('bio-') ? 'bio' : 'med');
+    const courseType = propCourseType || labContext?.courseType || 'devLush';
 
     // Determine chapterTitle: prop > context > theory title > default
     const chapterTitle = propChapterTitle || labContext?.chapterTitle || actualTheory.title || 'Theory';
@@ -59,7 +58,7 @@ const SaveTheoryButton: React.FC<SaveTheoryButtonProps> = ({
         labId: labId,
         chapterTitle: chapterTitle,
         exerciseTitle: exerciseTitle || actualTheory.title || 'Theory',
-        courseType: courseType as 'bio' | 'med',
+        courseType: courseType as 'devLush',
         theory: actualTheory
     };
 

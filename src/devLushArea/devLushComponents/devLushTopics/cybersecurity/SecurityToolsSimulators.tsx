@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
 import { CheckCircle, XCircle, Terminal, RefreshCw, Database, Bot, Cpu, Search, FileCode2, Globe } from 'lucide-react';
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
@@ -90,7 +91,7 @@ export const SecurityToolsSimulators: React.FC<ChapterProps> = ({
 
       <div className="flex justify-between items-center gap-4 pt-2">
         <button
-          onClick={() => {}}
+          onClick={() => { }}
           className="px-4 py-2 text-xs font-bold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:underline"
         >
           Reset Simulation

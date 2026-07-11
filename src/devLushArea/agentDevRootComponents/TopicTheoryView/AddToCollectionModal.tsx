@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTheoryCollections } from '../TheoryCollectionContext';
 import { FolderPlus, X, CheckCircle2 } from 'lucide-react';
-import { Theory } from '../../../types';
+import { Theory } from '../../devLushComponents/devLushTypes';
 
 interface AddToCollectionModalProps {
   isOpen: boolean;

@@ -1,4 +1,4 @@
-import { LabData } from "../../../types";
+import { LabData } from "../../devLushComponents/devLushTypes";
 import { SavedTheory } from "../TheoryCollectionContext";
 import devLushChaptersRaw from "../../devLushComponents/data/index";
 

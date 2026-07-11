@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Globe, User, Server, ShieldBan, ShieldCheck, Cookie } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
 import { DevLushLayout } from '../../devLushTopicsView/DevLushLayout';
 import SaveTheoryButton from '../../../agentDevRootComponents/TopicTheoryView/SaveTheoryButton';
@@ -45,8 +46,8 @@ const CSRFAmbientAuthorityContent = () => {
             <Globe className="w-4 h-4" /> Trigger Hidden Form Submit
           </button>
           <div className="mt-2 text-xs text-gray-500 font-mono bg-gray-950 p-2 rounded border border-gray-800">
-            &lt;form action="https://bank.com/transfer" method="POST"&gt;<br/>
-            &nbsp;&nbsp;&lt;input type="hidden" name="amount" value="1000" /&gt;<br/>
+            &lt;form action="https://bank.com/transfer" method="POST"&gt;<br />
+            &nbsp;&nbsp;&lt;input type="hidden" name="amount" value="1000" /&gt;<br />
             &lt;/form&gt;
           </div>
         </div>
@@ -79,7 +80,7 @@ const CSRFAmbientAuthorityContent = () => {
       </div>
 
       <div className="bg-gray-950 border border-gray-800 rounded-lg p-8 relative overflow-hidden min-h-[300px] flex items-center justify-between">
-        
+
         {/* Attacker */}
         <div className="flex flex-col items-center gap-2 relative z-10 w-1/4">
           <div className="w-14 h-14 bg-red-950 border border-red-800 rounded-lg flex items-center justify-center">
@@ -116,15 +117,15 @@ const CSRFAmbientAuthorityContent = () => {
           {status === 'attacking' && (
             <>
               {/* Step 1: Evil.com to Browser */}
-              <motion.div 
+              <motion.div
                 initial={{ left: "12.5%" }}
                 animate={{ left: "37.5%" }}
                 transition={{ duration: 0.5, ease: "linear" }}
                 className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-red-500 rounded-full shadow-[0_0_10px_#ef4444] z-0"
               />
-              
+
               {/* Step 2: Browser to Bank */}
-              <motion.div 
+              <motion.div
                 initial={{ left: "37.5%", opacity: 0 }}
                 animate={{ left: defense === 'samesite' ? "45%" : "87.5%", opacity: 1 }}
                 transition={{ delay: 0.5, duration: defense === 'samesite' ? 0.3 : 1.5, ease: "linear" }}
@@ -136,7 +137,7 @@ const CSRFAmbientAuthorityContent = () => {
           )}
 
           {status === 'blocked' && defense === 'samesite' && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               className="absolute top-1/3 left-1/2 -translate-x-1/2 bg-emerald-950 border border-emerald-800 text-emerald-400 p-2 rounded text-xs font-medium z-20 flex items-center gap-2"
@@ -146,7 +147,7 @@ const CSRFAmbientAuthorityContent = () => {
           )}
 
           {status === 'blocked' && defense === 'token' && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               className="absolute top-1/3 right-[10%] bg-emerald-950 border border-emerald-800 text-emerald-400 p-2 rounded text-xs font-medium z-20 flex items-center gap-2"
@@ -156,7 +157,7 @@ const CSRFAmbientAuthorityContent = () => {
           )}
 
           {status === 'success' && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               className="absolute top-1/3 right-[10%] bg-red-950 border border-red-800 text-red-400 p-2 rounded text-xs font-medium z-20 flex items-center gap-2"
@@ -174,7 +175,7 @@ const CSRFAmbientAuthorityContent = () => {
 
 export default function CSRFAmbientAuthority(props: ChapterProps) {
   if (!props.exercises || props.step === undefined) return <CSRFAmbientAuthorityContent />;
-  
+
   const question = props.exercises[props.step];
   if (!question) return <CSRFAmbientAuthorityContent />;
 

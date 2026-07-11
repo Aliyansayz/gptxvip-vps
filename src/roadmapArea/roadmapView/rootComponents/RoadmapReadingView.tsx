@@ -41,10 +41,9 @@ const RoadmapReadingView: React.FC<RoadmapReadingViewProps> = ({
   }
 
   return (
-    <div className="w-full h-full flex flex-col bg-slate-50 dark:bg-slate-950">
-      <div className="flex-1 overflow-y-auto custom-scrollbar w-full p-6 pb-20">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
-          <div className="flex items-center gap-4">
+    <div className="w-full h-full flex flex-col bg-slate-50 dark:bg-slate-950 p-6 pb-20 overflow-hidden">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-slate-200 dark:border-slate-800 pb-4 shrink-0">
+        <div className="flex items-center gap-4">
             <button
               onClick={onBack}
               className="flex items-center gap-1.5 px-4 py-3 text-sm font-bold bg-white dark:bg-slate-900 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-xl border border-slate-200 dark:border-slate-800 transition-all"
@@ -82,7 +81,7 @@ const RoadmapReadingView: React.FC<RoadmapReadingViewProps> = ({
         </div>
 
         <div className="w-full max-w-5xl mx-auto flex-1 flex flex-col relative overflow-hidden bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
-          <div className="relative z-10 flex-1 flex flex-col p-6">
+          <div className="relative z-10 flex-1 flex flex-col overflow-y-auto custom-scrollbar p-6">
             <Suspense fallback={
               <div className="flex-1 flex items-center justify-center p-8">
                 <div className="flex flex-col items-center gap-3">
@@ -93,6 +92,7 @@ const RoadmapReadingView: React.FC<RoadmapReadingViewProps> = ({
             }>
               <ReadingComponent
                 chapter={chapter}
+                exercise={chapter}
                 onComplete={onComplete}
                 onBack={onBack}
               />
@@ -100,7 +100,6 @@ const RoadmapReadingView: React.FC<RoadmapReadingViewProps> = ({
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

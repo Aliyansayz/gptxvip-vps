@@ -68,12 +68,12 @@ export const RoadmapLayout: React.FC<RoadmapLayoutProps> = ({
                 </p>
             )}
 
-            <div className={`flex-none min-h-0 flex flex-col justify-start`}>
+            <div className={`flex-1 min-h-0 flex flex-col justify-start`}>
                 {visualContent}
             </div>
 
             {!settings?.disableQuestion && questionExpanded && interactionContent && (
-                <div className="animate-in fade-in slide-in-from-top-2 flex-shrink-0 border-t border-slate-100 dark:border-slate-800">
+                <div className="animate-in fade-in slide-in-from-top-2 flex-1 min-h-0 border-t border-slate-100 dark:border-slate-800">
                     {interactionContent}
                 </div>
             )}

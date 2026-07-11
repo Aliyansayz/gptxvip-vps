@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
-import { 
-  CheckCircle, 
-  XCircle, 
-  ShieldAlert, 
-  ShieldCheck, 
-  Terminal, 
-  RefreshCw, 
-  Bot, 
-  Cpu, 
+import {
+  CheckCircle,
+  XCircle,
+  ShieldAlert,
+  ShieldCheck,
+  Terminal,
+  RefreshCw,
+  Bot,
+  Cpu,
   BookOpen,
   ArrowRight,
   Database,
@@ -28,12 +29,12 @@ interface ChapterProps {
   settings?: LabSettings;
 }
 
-export const AutonomousReconActivity: React.FC<ChapterProps> = ({ 
-  step, 
-  exercises, 
-  infoVisible, 
-  infoPlacement, 
-  settings 
+export const AutonomousReconActivity: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
+  settings
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -182,8 +183,8 @@ export const AutonomousReconActivity: React.FC<ChapterProps> = ({
             <span>PROGRESS: {attackProgress}%</span>
           </div>
           <div className="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden">
-            <div 
-              className={`h-full transition-all duration-500 bg-gradient-to-r ${activeNode === 'compromised' ? 'from-rose-500 to-rose-600 animate-pulse' : 'from-indigo-500 to-purple-600'}`} 
+            <div
+              className={`h-full transition-all duration-500 bg-gradient-to-r ${activeNode === 'compromised' ? 'from-rose-500 to-rose-600 animate-pulse' : 'from-indigo-500 to-purple-600'}`}
               style={{ width: `${attackProgress}%` }}
             ></div>
           </div>

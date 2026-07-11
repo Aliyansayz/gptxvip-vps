@@ -6,7 +6,7 @@ import RoadmapReadingView from "./rootComponents/RoadmapReadingView";
 import { RoadmapSearchView } from "./rootComponents/RoadmapSearchView";
 import { LabData, ConceptCourse } from "../roadmapSharedComponents/types";
 import { toast } from "sonner";
-import { cppTradingHFTData } from "../roadmapTopics/C++_Trading_HFT/data";
+import { cppTradingHFTData } from "../roadmapTopics/C++_Trading_HFT/index";
 import { FavoritesProvider } from "../roadmapSharedComponents/FavoritesContext";
 import { TheoryCollectionProvider } from "../roadmapSharedComponents/TheoryCollectionContext";
 

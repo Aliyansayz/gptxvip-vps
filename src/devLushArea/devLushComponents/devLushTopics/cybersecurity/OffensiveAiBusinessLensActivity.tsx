@@ -1,15 +1,16 @@
 import React from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
 import ReadingActivity from '../shared/ReadingActivity';
 
 interface ChapterProps {
-  step: number;
-  exercises: Exercise[];
-  infoVisible: boolean;
-  infoPlacement: 'side' | 'bottom';
-  settings?: LabSettings;
-  labData?: any;
+    step: number;
+    exercises: Exercise[];
+    infoVisible: boolean;
+    infoPlacement: 'side' | 'bottom';
+    settings?: LabSettings;
+    labData?: any;
 }
 
 const AttackSurfaceVisual: React.FC = () => (
@@ -20,7 +21,7 @@ const AttackSurfaceVisual: React.FC = () => (
         <path d="M 50 30 L 70 30" stroke="#4ade80" strokeWidth="1" strokeLinecap="round">
             <animateTransform attributeName="transform" type="rotate" from="0 50 30" to="360 50 30" dur="3s" repeatCount="indefinite" />
         </path>
-        
+
         {/* Discovered Assets */}
         <circle cx="65" cy="18" r="2" fill="#ef4444" opacity="0.8">
             <animate attributeName="opacity" values="0.2; 1; 0.2" dur="1.5s" repeatCount="indefinite" />
@@ -55,7 +56,7 @@ const PenTestVisual: React.FC = () => (
         {/* Target Systems */}
         <rect x="74" y="15" width="16" height="10" rx="1" fill="#022c22" stroke="#34d399" strokeWidth="0.5" />
         <text x="82" y="21" textAnchor="middle" fontSize="3" className="fill-emerald-400 font-mono">Web App</text>
-        
+
         <rect x="74" y="37" width="16" height="10" rx="1" fill="#0f172a" stroke="#cbd5e1" strokeWidth="0.5" />
         <text x="82" y="43" textAnchor="middle" fontSize="3" className="fill-slate-300 font-mono">Auth API</text>
 

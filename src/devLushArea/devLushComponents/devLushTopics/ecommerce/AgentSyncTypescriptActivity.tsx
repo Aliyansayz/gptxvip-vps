@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
-import { 
-  CheckCircle, 
-  XCircle, 
-  Layers, 
-  Play, 
-  Terminal, 
-  Lock, 
-  Unlock, 
+import {
+  CheckCircle,
+  XCircle,
+  Layers,
+  Play,
+  Terminal,
+  Lock,
+  Unlock,
   Database,
   Code
 } from 'lucide-react';
@@ -25,12 +26,12 @@ interface ChapterProps {
   settings?: LabSettings;
 }
 
-export const AgentSyncTypescriptActivity: React.FC<ChapterProps> = ({ 
-  step, 
-  exercises, 
-  infoVisible, 
-  infoPlacement, 
-  settings 
+export const AgentSyncTypescriptActivity: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
+  settings
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -82,14 +83,14 @@ export const AgentSyncTypescriptActivity: React.FC<ChapterProps> = ({
       { text: "promise_1: Executing await db.getProduct(ID) [STOCK: 1]...", delay: 400, activeWorker: 1 },
       { text: "promise_2: Executing await db.getProduct(ID) [STOCK: 1]...", delay: 800, activeWorker: 2 },
       { text: "promise_3: Executing await db.getProduct(ID) [STOCK: 1]...", delay: 1200, activeWorker: 3 },
-      
+
       lockingEnabled ? { text: "promise_1: mutex.acquire() success. Entering critical block...", delay: 1600, lock: 'LOCKED', activeWorker: 1 } : null,
       lockingEnabled ? { text: "promise_2: Mutex occupied. Suspending in microtask queue...", delay: 2000, activeWorker: 2 } : null,
       lockingEnabled ? { text: "promise_3: Mutex occupied. Suspending in microtask queue...", delay: 2400, activeWorker: 3 } : null,
-      
+
       lockingEnabled ? { text: "promise_1: Decrementing stock. Saving order record...", delay: 2900, activeWorker: 1 } : null,
       lockingEnabled ? { text: "promise_1: Release lock. Completed checkout.", delay: 3600, lock: 'UNLOCKED', activeWorker: 1 } : null,
-      
+
       lockingEnabled ? { text: "promise_2: Resolved mutex wait. Acquired lock. Checking stock...", delay: 4200, lock: 'LOCKED', activeWorker: 2 } : null,
       lockingEnabled ? { text: "promise_2: Stock is 0! Aborting order safely. Release lock.", delay: 4800, lock: 'UNLOCKED', activeWorker: 2 } : null,
       lockingEnabled ? { text: "promise_3: Resolved mutex wait. Acquired lock. Checking stock...", delay: 5400, lock: 'LOCKED', activeWorker: 3 } : null,
@@ -211,7 +212,7 @@ async function processCheckoutDistributed(agentId: string) {
   const visualContent = (
     <div className="my-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 flex flex-col items-center w-full">
       <h5 className="text-xs font-bold text-slate-500 uppercase mb-2 tracking-wider">
-          Analogy: Synchronization Flow
+        Analogy: Synchronization Flow
       </h5>
       <div className="w-full flex flex-col lg:grid lg:grid-cols-12 gap-4">
         {/* Simulation Dashboard Left Column: Code and Controls */}
@@ -281,8 +282,8 @@ async function processCheckoutDistributed(agentId: string) {
                 const isCurrent = activeWorker === workerId;
                 const titleName = step === 0 ? `promise_${workerId}` : `txn_${workerId}`;
                 return (
-                  <div 
-                    key={workerId} 
+                  <div
+                    key={workerId}
                     className={`p-3 rounded-lg border text-center transition-all duration-300 flex flex-col items-center justify-center ${isCurrent ? 'border-cyan-400 bg-cyan-950/40 text-cyan-300 scale-105 shadow-md shadow-cyan-950/50' : 'border-slate-800 bg-slate-900 text-slate-500'}`}
                   >
                     <Layers className="w-5 h-5 mb-1" />

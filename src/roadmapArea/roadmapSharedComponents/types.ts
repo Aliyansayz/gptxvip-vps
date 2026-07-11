@@ -5,6 +5,10 @@ export interface CriticalConcept {
     concept: string;
     elaboration?: string;
     definition?: string;
+    nature?: string;
+    perspective?: string;
+    theory_explanation?: string;
+    real_world_analogy?: string;
 }
 
 export interface WrongAnswerFeedback {

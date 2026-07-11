@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
 import { CheckCircle, XCircle, AlertTriangle, Terminal, Activity, ChevronRight } from 'lucide-react';
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
@@ -16,12 +17,12 @@ interface ChapterProps {
   settings?: LabSettings;
 }
 
-export const BenfordsLawAudit: React.FC<ChapterProps> = ({ 
-  step, 
-  exercises, 
-  infoVisible, 
-  infoPlacement, 
-  settings 
+export const BenfordsLawAudit: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
+  settings
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -121,7 +122,7 @@ export const BenfordsLawAudit: React.FC<ChapterProps> = ({
             <span>DISTRIBUTION_MAP [1-9]</span>
             <AnimatePresence>
               {ledgerLogs.length > 4 && (
-                <motion.span 
+                <motion.span
                   initial={{ opacity: 0, x: 10 }}
                   animate={{ opacity: 1, x: 0 }}
                   className="text-amber-500 flex items-center gap-1 bg-amber-950/30 px-2 py-1 border border-amber-900/50 rounded"
@@ -142,22 +143,22 @@ export const BenfordsLawAudit: React.FC<ChapterProps> = ({
             {benfordValues.map((val, idx) => {
               const actual = actualValues[idx];
               const isAnomaly = idx === 3 && ledgerLogs.length > 3; // Highlight '4' after it's logged
-              
+
               return (
                 <div key={idx} className="flex-1 flex flex-col justify-end h-full relative z-10">
                   <div className="flex gap-1 justify-center items-end h-full">
-                    <motion.div 
+                    <motion.div
                       initial={{ height: 0 }}
                       animate={{ height: isRunning || ledgerLogs.length > 0 ? `${val * 2.5}%` : 0 }}
                       transition={{ duration: 0.5, delay: idx * 0.05 }}
-                      className="w-3 bg-gray-700/50 border-t border-gray-500" 
+                      className="w-3 bg-gray-700/50 border-t border-gray-500"
                       title={`Expected: ${val}%`}
                     />
-                    <motion.div 
+                    <motion.div
                       initial={{ height: 0 }}
                       animate={{ height: isRunning || ledgerLogs.length > 0 ? `${actual * 2.5}%` : 0 }}
                       transition={{ duration: 0.5, delay: 0.2 + idx * 0.05 }}
-                      className={`w-3 border-t ${isAnomaly ? 'bg-amber-500/80 border-amber-400 shadow-[0_0_10px_#f59e0b]' : 'bg-emerald-600/60 border-emerald-400'}`} 
+                      className={`w-3 border-t ${isAnomaly ? 'bg-amber-500/80 border-amber-400 shadow-[0_0_10px_#f59e0b]' : 'bg-emerald-600/60 border-emerald-400'}`}
                       title={`Actual: ${actual}%`}
                     />
                   </div>
@@ -168,10 +169,10 @@ export const BenfordsLawAudit: React.FC<ChapterProps> = ({
           </div>
           <div className="flex justify-center gap-6 mt-3 text-[10px] text-gray-500">
             <div className="flex items-center gap-2">
-               <div className="w-2 h-2 bg-gray-700 border border-gray-500" /> Expected (Benford's Law)
+              <div className="w-2 h-2 bg-gray-700 border border-gray-500" /> Expected (Benford's Law)
             </div>
             <div className="flex items-center gap-2">
-               <div className="w-2 h-2 bg-emerald-600/60 border border-emerald-400" /> Actual Ledger Frequency
+              <div className="w-2 h-2 bg-emerald-600/60 border border-emerald-400" /> Actual Ledger Frequency
             </div>
           </div>
         </div>
@@ -181,8 +182,8 @@ export const BenfordsLawAudit: React.FC<ChapterProps> = ({
         <div className="opacity-50 mb-2">root@auditor-vm:~# tail -f /var/log/ledger_audit.log</div>
         <AnimatePresence>
           {ledgerLogs.map((log, index) => (
-            <motion.div 
-              key={index} 
+            <motion.div
+              key={index}
               initial={{ opacity: 0, x: -5 }}
               animate={{ opacity: 1, x: 0 }}
               className={`leading-relaxed flex gap-2 ${log.includes("CRITICAL") || log.includes("ALERT") ? "text-amber-400 font-bold bg-amber-950/20 p-1 border-l-2 border-amber-500" : log.includes("ERROR") ? "text-rose-400 font-bold" : ""}`}

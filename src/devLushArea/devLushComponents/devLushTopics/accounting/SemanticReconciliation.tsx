@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
 import { CheckCircle, XCircle, FileSpreadsheet, RefreshCw, Zap, Terminal, Code, ChevronRight } from 'lucide-react';
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
@@ -16,12 +17,12 @@ interface ChapterProps {
   settings?: LabSettings;
 }
 
-export const SemanticReconciliation: React.FC<ChapterProps> = ({ 
-  step, 
-  exercises, 
-  infoVisible, 
-  infoPlacement, 
-  settings 
+export const SemanticReconciliation: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
+  settings
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -131,7 +132,7 @@ export const SemanticReconciliation: React.FC<ChapterProps> = ({
                 </span>
               </div>
             </div>
-            
+
             <div className={`p-4 bg-black border rounded-lg flex flex-col relative overflow-hidden transition-colors duration-500 ${debit !== credit && !isRunning ? 'border-rose-900/50' : 'border-gray-800'}`}>
               <span className="text-[10px] uppercase font-bold tracking-wider text-gray-500 block mb-2 text-left border-b border-gray-800 pb-2 flex justify-between">
                 Computed Sum (Credit)
@@ -140,7 +141,7 @@ export const SemanticReconciliation: React.FC<ChapterProps> = ({
               <div className="flex items-end gap-1 mt-2">
                 <span className="text-sm text-gray-600">$</span>
                 <AnimatePresence mode="wait">
-                  <motion.span 
+                  <motion.span
                     key={credit}
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -177,8 +178,8 @@ export const SemanticReconciliation: React.FC<ChapterProps> = ({
         <div className="opacity-50 mb-2">root@reconciler-vm:~# ./run_audit.sh</div>
         <AnimatePresence>
           {ledgerLogs.map((log, index) => (
-            <motion.div 
-              key={index} 
+            <motion.div
+              key={index}
               initial={{ opacity: 0, x: -5 }}
               animate={{ opacity: 1, x: 0 }}
               className={`leading-relaxed flex gap-2 ${log.includes("CRITICAL") || log.includes("ERROR") ? "text-rose-400 font-bold bg-rose-950/20 p-1 border-l-2 border-rose-500" : log.includes("SOLVER") ? "text-indigo-400 font-bold" : ""}`}

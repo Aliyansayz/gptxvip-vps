@@ -393,8 +393,8 @@
   },
   {
     "course": "Web Bug Bounty",
-    "chapter_title": "Foundations of Web Bug Bounty Hunting",
-    "labComponentId": "web-bugbounty-foundations",
+    "chapter_title": "Foundations of Web Bug Bounty Hunting (Part 1)",
+    "labComponentId": "web-bugbounty-foundations-1",
     "critical_concepts": [
       {
         "concept": "Attack Surface Discovery",
@@ -523,7 +523,28 @@
         "tags": [
           "security"
         ]
-      },
+      }
+    ],
+    "tags": [
+      "developer",
+      "business",
+      "security",
+      "devlush",
+      "agents",
+      "ai",
+      "vulnerability",
+      "web-security",
+      "ethical-hacking",
+      "idor",
+      "exploit"
+    ]
+  },
+  {
+    "course": "Web Bug Bounty",
+    "chapter_title": "Foundations of Web Bug Bounty Hunting (Part 2)",
+    "labComponentId": "web-bugbounty-foundations-2",
+    "critical_concepts": [],
+    "interactive_questions": [
       {
         "componentId": "web-case-4",
         "concept_tested": "Cross-Site Request Forgery (CSRF)",
@@ -598,7 +619,28 @@
         "tags": [
           "security"
         ]
-      },
+      }
+    ],
+    "tags": [
+      "developer",
+      "business",
+      "security",
+      "devlush",
+      "agents",
+      "ai",
+      "vulnerability",
+      "web-security",
+      "ethical-hacking",
+      "idor",
+      "exploit"
+    ]
+  },
+  {
+    "course": "Web Bug Bounty",
+    "chapter_title": "Foundations of Web Bug Bounty Hunting (Part 3)",
+    "labComponentId": "web-bugbounty-foundations-3",
+    "critical_concepts": [],
+    "interactive_questions": [
       {
         "componentId": "web-case-7",
         "concept_tested": "Server-Side Request Forgery (SSRF)",
@@ -673,7 +715,28 @@
         "tags": [
           "security"
         ]
-      },
+      }
+    ],
+    "tags": [
+      "developer",
+      "business",
+      "security",
+      "devlush",
+      "agents",
+      "ai",
+      "vulnerability",
+      "web-security",
+      "ethical-hacking",
+      "idor",
+      "exploit"
+    ]
+  },
+  {
+    "course": "Web Bug Bounty",
+    "chapter_title": "Foundations of Web Bug Bounty Hunting (Part 4)",
+    "labComponentId": "web-bugbounty-foundations-4",
+    "critical_concepts": [],
+    "interactive_questions": [
       {
         "componentId": "web-case-10",
         "concept_tested": "DNS Vulnerabilities",

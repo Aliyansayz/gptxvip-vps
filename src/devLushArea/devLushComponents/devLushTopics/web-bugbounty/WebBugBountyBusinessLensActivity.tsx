@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
 import { CheckCircle, XCircle, TrendingUp, AlertTriangle, Bug, Target } from 'lucide-react';
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
@@ -16,11 +17,11 @@ interface ChapterProps {
   onComplete?: () => void;
 }
 
-export const WebBugBountyBusinessLensActivity: React.FC<ChapterProps> = ({ 
-  step, 
-  exercises, 
-  infoVisible, 
-  infoPlacement, 
+export const WebBugBountyBusinessLensActivity: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
   settings,
   onComplete
 }) => {
@@ -56,69 +57,69 @@ export const WebBugBountyBusinessLensActivity: React.FC<ChapterProps> = ({
   const visualContent = (
     <div className="w-full flex flex-col">
       <div className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-t-xl flex items-center gap-2 flex-shrink-0">
-         <TrendingUp className="w-4 h-4 text-emerald-400" />
-         <span className="text-xs font-mono text-slate-300 font-bold tracking-widest">TRIAGE DASHBOARD</span>
+        <TrendingUp className="w-4 h-4 text-emerald-400" />
+        <span className="text-xs font-mono text-slate-300 font-bold tracking-widest">TRIAGE DASHBOARD</span>
       </div>
-      
+
       <div className="bg-slate-900 border-x border-b border-slate-700 rounded-b-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-4 h-72 overflow-y-auto animate-in fade-in">
         {/* Bug 1: Complex XSS */}
-        <button 
+        <button
           onClick={() => setActiveBug('xss')}
           className={`text-left p-4 rounded-xl border transition-all ${activeBug === 'xss' ? 'bg-slate-800 border-indigo-500 ring-1 ring-indigo-500' : 'bg-slate-800/50 border-slate-700 hover:bg-slate-800'}`}
         >
-           <div className="flex items-start justify-between">
-             <div>
-               <div className="text-xs font-bold text-slate-300 flex items-center gap-1.5"><Bug className="w-3.5 h-3.5"/> DOM XSS via postMessage</div>
-               <div className="text-[10px] text-slate-500 mt-1">Requires 10 user interaction steps. Bypass CSP.</div>
-             </div>
-           </div>
-           
-           {activeBug === 'xss' && (
-             <div className="mt-4 pt-4 border-t border-slate-700 animate-in fade-in space-y-2">
-               <div className="flex justify-between items-center text-[10px]">
-                 <span className="text-slate-400">Technical Complexity:</span>
-                 <span className="text-rose-400 font-bold">EXTREME</span>
-               </div>
-               <div className="flex justify-between items-center text-[10px]">
-                 <span className="text-slate-400">Business Impact:</span>
-                 <span className="text-emerald-400 font-bold">LOW (1 user affected)</span>
-               </div>
-               <div className="flex justify-between items-center text-[10px]">
-                 <span className="text-slate-400">Estimated Payout:</span>
-                 <span className="text-slate-200 font-bold">$500</span>
-               </div>
-             </div>
-           )}
+          <div className="flex items-start justify-between">
+            <div>
+              <div className="text-xs font-bold text-slate-300 flex items-center gap-1.5"><Bug className="w-3.5 h-3.5" /> DOM XSS via postMessage</div>
+              <div className="text-[10px] text-slate-500 mt-1">Requires 10 user interaction steps. Bypass CSP.</div>
+            </div>
+          </div>
+
+          {activeBug === 'xss' && (
+            <div className="mt-4 pt-4 border-t border-slate-700 animate-in fade-in space-y-2">
+              <div className="flex justify-between items-center text-[10px]">
+                <span className="text-slate-400">Technical Complexity:</span>
+                <span className="text-rose-400 font-bold">EXTREME</span>
+              </div>
+              <div className="flex justify-between items-center text-[10px]">
+                <span className="text-slate-400">Business Impact:</span>
+                <span className="text-emerald-400 font-bold">LOW (1 user affected)</span>
+              </div>
+              <div className="flex justify-between items-center text-[10px]">
+                <span className="text-slate-400">Estimated Payout:</span>
+                <span className="text-slate-200 font-bold">$500</span>
+              </div>
+            </div>
+          )}
         </button>
-        
+
         {/* Bug 2: Simple IDOR */}
-        <button 
+        <button
           onClick={() => setActiveBug('idor')}
           className={`text-left p-4 rounded-xl border transition-all ${activeBug === 'idor' ? 'bg-slate-800 border-indigo-500 ring-1 ring-indigo-500' : 'bg-slate-800/50 border-slate-700 hover:bg-slate-800'}`}
         >
-           <div className="flex items-start justify-between">
-             <div>
-               <div className="text-xs font-bold text-slate-300 flex items-center gap-1.5"><Target className="w-3.5 h-3.5"/> IDOR on /export_data</div>
-               <div className="text-[10px] text-slate-500 mt-1">Change ID in URL to download any user's data.</div>
-             </div>
-           </div>
-           
-           {activeBug === 'idor' && (
-             <div className="mt-4 pt-4 border-t border-slate-700 animate-in fade-in space-y-2">
-               <div className="flex justify-between items-center text-[10px]">
-                 <span className="text-slate-400">Technical Complexity:</span>
-                 <span className="text-emerald-400 font-bold">TRIVIAL</span>
-               </div>
-               <div className="flex justify-between items-center text-[10px]">
-                 <span className="text-slate-400">Business Impact:</span>
-                 <span className="text-rose-400 font-bold">CRITICAL (Data Breach)</span>
-               </div>
-               <div className="flex justify-between items-center text-[10px]">
-                 <span className="text-slate-400">Estimated Payout:</span>
-                 <span className="text-slate-200 font-bold">$10,000+</span>
-               </div>
-             </div>
-           )}
+          <div className="flex items-start justify-between">
+            <div>
+              <div className="text-xs font-bold text-slate-300 flex items-center gap-1.5"><Target className="w-3.5 h-3.5" /> IDOR on /export_data</div>
+              <div className="text-[10px] text-slate-500 mt-1">Change ID in URL to download any user's data.</div>
+            </div>
+          </div>
+
+          {activeBug === 'idor' && (
+            <div className="mt-4 pt-4 border-t border-slate-700 animate-in fade-in space-y-2">
+              <div className="flex justify-between items-center text-[10px]">
+                <span className="text-slate-400">Technical Complexity:</span>
+                <span className="text-emerald-400 font-bold">TRIVIAL</span>
+              </div>
+              <div className="flex justify-between items-center text-[10px]">
+                <span className="text-slate-400">Business Impact:</span>
+                <span className="text-rose-400 font-bold">CRITICAL (Data Breach)</span>
+              </div>
+              <div className="flex justify-between items-center text-[10px]">
+                <span className="text-slate-400">Estimated Payout:</span>
+                <span className="text-slate-200 font-bold">$10,000+</span>
+              </div>
+            </div>
+          )}
         </button>
       </div>
     </div>
@@ -127,9 +128,9 @@ export const WebBugBountyBusinessLensActivity: React.FC<ChapterProps> = ({
   const interactionContent = (
     <div className="space-y-4">
       {question.question && (
-          <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
-              {question.question}
-          </h4>
+        <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
+          {question.question}
+        </h4>
       )}
       <div className="grid grid-cols-1 gap-3">
         {question.options?.map((opt: string, i: number) => {

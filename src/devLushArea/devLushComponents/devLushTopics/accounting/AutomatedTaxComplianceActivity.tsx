@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
 import { CheckCircle, XCircle, Search, RefreshCw, Landmark, FileText, Database } from 'lucide-react';
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
@@ -16,12 +17,12 @@ interface ChapterProps {
   settings?: LabSettings;
 }
 
-export const AutomatedTaxComplianceActivity: React.FC<ChapterProps> = ({ 
-  step, 
-  exercises, 
-  infoVisible, 
-  infoPlacement, 
-  settings 
+export const AutomatedTaxComplianceActivity: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
+  settings
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -115,37 +116,37 @@ export const AutomatedTaxComplianceActivity: React.FC<ChapterProps> = ({
 
         {/* SVG Pipeline */}
         <div className="w-full h-40 mb-8 relative bg-slate-950 rounded-xl border border-slate-800 overflow-hidden flex items-center justify-center">
-            <svg viewBox="0 0 400 120" className="w-full h-full">
-                {/* Nodes */}
-                <rect x="20" y="40" width="80" height="40" rx="8" fill={activeStage === 'extracting' ? "#312e81" : "#1e293b"} stroke={activeStage === 'extracting' ? "#6366f1" : "#475569"} strokeWidth="2" />
-                <text x="60" y="60" textAnchor="middle" fontSize="10" fill="#cbd5e1" fontWeight="bold">EXTRACTOR</text>
-                
-                <rect x="160" y="40" width="80" height="40" rx="8" fill={activeStage === 'api' ? "#064e3b" : "#1e293b"} stroke={activeStage === 'api' ? "#10b981" : "#475569"} strokeWidth="2" />
-                <text x="200" y="60" textAnchor="middle" fontSize="10" fill="#cbd5e1" fontWeight="bold">API ENGINE</text>
-                
-                <rect x="300" y="40" width="80" height="40" rx="8" fill={activeStage === 'complete' ? "#1e3a8a" : "#1e293b"} stroke={activeStage === 'complete' ? "#3b82f6" : "#475569"} strokeWidth="2" />
-                <text x="340" y="60" textAnchor="middle" fontSize="10" fill="#cbd5e1" fontWeight="bold">LEDGER</text>
+          <svg viewBox="0 0 400 120" className="w-full h-full">
+            {/* Nodes */}
+            <rect x="20" y="40" width="80" height="40" rx="8" fill={activeStage === 'extracting' ? "#312e81" : "#1e293b"} stroke={activeStage === 'extracting' ? "#6366f1" : "#475569"} strokeWidth="2" />
+            <text x="60" y="60" textAnchor="middle" fontSize="10" fill="#cbd5e1" fontWeight="bold">EXTRACTOR</text>
 
-                {/* Paths */}
-                <path d="M 100 60 L 160 60" stroke="#475569" strokeWidth="2" strokeDasharray="4 4" />
-                <path d="M 240 60 L 300 60" stroke="#475569" strokeWidth="2" strokeDasharray="4 4" />
+            <rect x="160" y="40" width="80" height="40" rx="8" fill={activeStage === 'api' ? "#064e3b" : "#1e293b"} stroke={activeStage === 'api' ? "#10b981" : "#475569"} strokeWidth="2" />
+            <text x="200" y="60" textAnchor="middle" fontSize="10" fill="#cbd5e1" fontWeight="bold">API ENGINE</text>
 
-                {/* Animated Documents */}
-                <g style={{ transform: activeStage === 'extracting' ? 'translateX(60px)' : activeStage === 'api' ? 'translateX(200px)' : activeStage === 'complete' ? 'translateX(340px)' : 'translateX(0)', transition: 'transform 1s ease-in-out', opacity: activeStage === 'idle' ? 0 : 1 }}>
-                    <rect x="-10" y="45" width="20" height="30" fill="#f8fafc" stroke="#94a3b8" />
-                    <line x1="-5" y1="52" x2="5" y2="52" stroke="#94a3b8" strokeWidth="1" />
-                    <line x1="-5" y1="58" x2="5" y2="58" stroke="#94a3b8" strokeWidth="1" />
-                    <line x1="-5" y1="64" x2="5" y2="64" stroke="#94a3b8" strokeWidth="1" />
-                </g>
-            </svg>
+            <rect x="300" y="40" width="80" height="40" rx="8" fill={activeStage === 'complete' ? "#1e3a8a" : "#1e293b"} stroke={activeStage === 'complete' ? "#3b82f6" : "#475569"} strokeWidth="2" />
+            <text x="340" y="60" textAnchor="middle" fontSize="10" fill="#cbd5e1" fontWeight="bold">LEDGER</text>
+
+            {/* Paths */}
+            <path d="M 100 60 L 160 60" stroke="#475569" strokeWidth="2" strokeDasharray="4 4" />
+            <path d="M 240 60 L 300 60" stroke="#475569" strokeWidth="2" strokeDasharray="4 4" />
+
+            {/* Animated Documents */}
+            <g style={{ transform: activeStage === 'extracting' ? 'translateX(60px)' : activeStage === 'api' ? 'translateX(200px)' : activeStage === 'complete' ? 'translateX(340px)' : 'translateX(0)', transition: 'transform 1s ease-in-out', opacity: activeStage === 'idle' ? 0 : 1 }}>
+              <rect x="-10" y="45" width="20" height="30" fill="#f8fafc" stroke="#94a3b8" />
+              <line x1="-5" y1="52" x2="5" y2="52" stroke="#94a3b8" strokeWidth="1" />
+              <line x1="-5" y1="58" x2="5" y2="58" stroke="#94a3b8" strokeWidth="1" />
+              <line x1="-5" y1="64" x2="5" y2="64" stroke="#94a3b8" strokeWidth="1" />
+            </g>
+          </svg>
         </div>
 
         <div className="bg-black/50 p-4 rounded-xl font-mono text-xs text-emerald-400 h-48 overflow-y-auto">
           {processLogs.length === 0 ? (
-             <div className="text-slate-500 italic">Waiting to start tax agent pipeline...</div>
+            <div className="text-slate-500 italic">Waiting to start tax agent pipeline...</div>
           ) : (
             processLogs.map((log, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -177,10 +178,10 @@ export const AutomatedTaxComplianceActivity: React.FC<ChapterProps> = ({
               onClick={() => !showResult && setSelectedAnswer(option)}
               disabled={showResult}
               className={`w-full text-left p-4 rounded-xl border transition-all duration-200 flex items-start gap-3
-                ${showResult 
-                  ? option === question.answer 
-                    ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-500 dark:border-emerald-500/50' 
-                    : option === selectedAnswer 
+                ${showResult
+                  ? option === question.answer
+                    ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-500 dark:border-emerald-500/50'
+                    : option === selectedAnswer
                       ? 'bg-rose-50 dark:bg-rose-900/20 border-rose-500 dark:border-rose-500/50 opacity-50'
                       : 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 opacity-50'
                   : selectedAnswer === option
@@ -209,7 +210,7 @@ export const AutomatedTaxComplianceActivity: React.FC<ChapterProps> = ({
             Submit Final Architecture Strategy
           </button>
         ) : (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className={`mt-6 p-5 rounded-xl border ${isCorrect ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800' : 'bg-rose-50 dark:bg-rose-900/20 border-rose-200 dark:border-rose-800'}`}
@@ -242,33 +243,34 @@ export const AutomatedTaxComplianceActivity: React.FC<ChapterProps> = ({
 
   const TollBoothAnalogy: React.FC = () => (
     <div className="my-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 flex flex-col items-center">
-        <h5 className="text-xs font-bold text-muted-foreground uppercase mb-2 tracking-wider flex items-center gap-2">
-            <Landmark className="w-4 h-4 text-indigo-500" /> Analogy: Automated Toll Booth
-        </h5>
-        <svg viewBox="0 0 200 120" className="w-full h-40">
-            {/* Road */}
-            <path d="M 0 70 L 200 70 M 0 90 L 200 90" stroke="#cbd5e1" strokeWidth="20" />
-            <path d="M 0 80 L 200 80" stroke="#fcd34d" strokeWidth="1" strokeDasharray="4 4" />
-            
-            {/* Toll Booth */}
-            <rect x="80" y="30" width="40" height="35" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="2" />
-            <rect x="85" y="40" width="30" height="15" fill="#1e293b" />
-            <text x="100" y="50" textAnchor="middle" fontSize="6" fill="#10b981" fontWeight="bold">TAX_RULE</text>
-            <rect x="95" y="65" width="10" height="15" fill="#94a3b8" /> {/* pillar */}
-            
-            {/* Boom Gate */}
-            <line x1="105" y1="70" x2="105" y2="90" stroke="#ef4444" strokeWidth="2" />
+      <h5 className="text-xs font-bold text-muted-foreground uppercase mb-2 tracking-wider flex items-center gap-2">
+        <Landmark className="w-4 h-4 text-indigo-500" /> Analogy: Automated Toll Booth
+      </h5>
+      <svg viewBox="0 0 200 120" className="w-full h-40">
+        {/* Road */}
+        <path d="M 0 70 L 200 70 M 0 90 L 200 90" stroke="#cbd5e1" strokeWidth="20" />
+        <path d="M 0 80 L 200 80" stroke="#fcd34d" strokeWidth="1" strokeDasharray="4 4" />
 
-            {/* Cars */}
-            <g className="animate-[drive_3s_linear_infinite]">
-                <rect x="20" y="73" width="15" height="8" rx="2" fill="#3b82f6" />
-                <circle cx="23" cy="81" r="2" fill="#1e293b" />
-                <circle cx="32" cy="81" r="2" fill="#1e293b" />
-            </g>
-            
-            <text x="100" y="115" textAnchor="middle" fontSize="8" fill="currentColor" className="text-slate-500">Fixed rules (Toll API) deterministically classify inputs (Vehicles)</text>
-        </svg>
-        <style dangerouslySetInnerHTML={{__html: `
+        {/* Toll Booth */}
+        <rect x="80" y="30" width="40" height="35" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="2" />
+        <rect x="85" y="40" width="30" height="15" fill="#1e293b" />
+        <text x="100" y="50" textAnchor="middle" fontSize="6" fill="#10b981" fontWeight="bold">TAX_RULE</text>
+        <rect x="95" y="65" width="10" height="15" fill="#94a3b8" /> {/* pillar */}
+
+        {/* Boom Gate */}
+        <line x1="105" y1="70" x2="105" y2="90" stroke="#ef4444" strokeWidth="2" />
+
+        {/* Cars */}
+        <g className="animate-[drive_3s_linear_infinite]">
+          <rect x="20" y="73" width="15" height="8" rx="2" fill="#3b82f6" />
+          <circle cx="23" cy="81" r="2" fill="#1e293b" />
+          <circle cx="32" cy="81" r="2" fill="#1e293b" />
+        </g>
+
+        <text x="100" y="115" textAnchor="middle" fontSize="8" fill="currentColor" className="text-slate-500">Fixed rules (Toll API) deterministically classify inputs (Vehicles)</text>
+      </svg>
+      <style dangerouslySetInnerHTML={{
+        __html: `
             @keyframes drive {
                 from { transform: translateX(0); }
                 to { transform: translateX(150px); }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
 import { CheckCircle, XCircle, Shield, Play, RotateCcw, Activity } from 'lucide-react';
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
@@ -15,17 +16,17 @@ interface ChapterProps {
   settings?: LabSettings;
 }
 
-export const RateLimitingActivity: React.FC<ChapterProps> = ({ 
-  step, 
-  exercises, 
-  infoVisible, 
-  infoPlacement, 
-  settings 
+export const RateLimitingActivity: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
+  settings
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  
+
   // Interactive visual state
   const [tokens, setTokens] = useState(5);
   const maxTokens = 10;
@@ -101,9 +102,8 @@ export const RateLimitingActivity: React.FC<ChapterProps> = ({
         <div className="flex gap-2">
           <button
             onClick={() => setIsRunning(!isRunning)}
-            className={`flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-md transition-all ${
-              isRunning ? 'bg-rose-500 hover:bg-rose-600 text-white' : 'bg-indigo-600 hover:bg-indigo-500 text-white'
-            }`}
+            className={`flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-md transition-all ${isRunning ? 'bg-rose-500 hover:bg-rose-600 text-white' : 'bg-indigo-600 hover:bg-indigo-500 text-white'
+              }`}
           >
             {isRunning ? 'Pause Refill' : 'Start Refill'}
             <Play className="w-3.5 h-3.5" />
@@ -118,7 +118,7 @@ export const RateLimitingActivity: React.FC<ChapterProps> = ({
       </div>
 
       <div className="bg-slate-950 text-slate-200 border-x border-b border-slate-800 rounded-b-xl p-5 flex-1 flex flex-col items-center justify-center relative overflow-hidden">
-        
+
         {/* Token Bucket Visualization */}
         <div className="flex flex-col items-center mb-8 relative z-10">
           <div className="text-xs font-mono text-slate-400 mb-2">TOKEN BUCKET CAPACITY: {maxTokens}</div>
@@ -126,19 +126,18 @@ export const RateLimitingActivity: React.FC<ChapterProps> = ({
             {/* Tokens */}
             <div className="flex flex-wrap gap-2 justify-center">
               {Array.from({ length: maxTokens }).map((_, i) => (
-                <div 
-                  key={i} 
-                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
-                    i < tokens ? 'bg-indigo-500/20 border border-indigo-400 scale-100 shadow-[0_0_10px_rgba(99,102,241,0.5)]' : 'bg-slate-800 border border-slate-700 scale-75 opacity-50'
-                  }`}
+                <div
+                  key={i}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${i < tokens ? 'bg-indigo-500/20 border border-indigo-400 scale-100 shadow-[0_0_10px_rgba(99,102,241,0.5)]' : 'bg-slate-800 border border-slate-700 scale-75 opacity-50'
+                    }`}
                 >
                   <Activity className={`w-5 h-5 ${i < tokens ? 'text-indigo-400' : 'text-slate-600'}`} />
                 </div>
               ))}
             </div>
-            
+
             {/* Water level effect */}
-            <div 
+            <div
               className="absolute bottom-0 left-0 right-0 bg-indigo-500/10 transition-all duration-500 pointer-events-none"
               style={{ height: `${(tokens / maxTokens) * 100}%` }}
             ></div>
@@ -163,16 +162,15 @@ export const RateLimitingActivity: React.FC<ChapterProps> = ({
 
         {/* Request Log */}
         <div className="w-full max-w-md h-12 flex gap-1 relative z-10">
-           {requests.map((req, i) => (
-             <div 
-               key={req.id}
-               className={`flex-1 h-full rounded flex items-center justify-center animate-in slide-in-from-right-4 fade-in ${
-                 req.status === 'success' ? 'bg-emerald-500/20 border border-emerald-500 text-emerald-400' : 'bg-rose-500/20 border border-rose-500 text-rose-400'
-               }`}
-             >
-               {req.status === 'success' ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
-             </div>
-           ))}
+          {requests.map((req, i) => (
+            <div
+              key={req.id}
+              className={`flex-1 h-full rounded flex items-center justify-center animate-in slide-in-from-right-4 fade-in ${req.status === 'success' ? 'bg-emerald-500/20 border border-emerald-500 text-emerald-400' : 'bg-rose-500/20 border border-rose-500 text-rose-400'
+                }`}
+            >
+              {req.status === 'success' ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
+            </div>
+          ))}
         </div>
 
       </div>
@@ -195,9 +193,9 @@ export const RateLimitingActivity: React.FC<ChapterProps> = ({
           {question.options?.map((option, idx) => {
             const isSelected = selectedAnswer === option;
             const isCorrectOption = option === question.answer;
-            
+
             let btnClass = "w-full text-left p-4 rounded-xl border-2 transition-all duration-200 font-medium ";
-            
+
             if (!showResult) {
               btnClass += "border-slate-200 dark:border-slate-700 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 text-slate-700 dark:text-slate-300";
             } else {
@@ -229,11 +227,10 @@ export const RateLimitingActivity: React.FC<ChapterProps> = ({
       </div>
 
       {showResult && (
-        <div className={`p-4 border-t ${
-          isCorrect 
-            ? 'bg-emerald-50 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-900/30' 
+        <div className={`p-4 border-t ${isCorrect
+            ? 'bg-emerald-50 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-900/30'
             : 'bg-rose-50 border-rose-100 dark:bg-rose-900/20 dark:border-rose-900/30'
-        }`}>
+          }`}>
           <div className="flex items-start gap-3">
             {isCorrect ? (
               <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 mt-0.5" />

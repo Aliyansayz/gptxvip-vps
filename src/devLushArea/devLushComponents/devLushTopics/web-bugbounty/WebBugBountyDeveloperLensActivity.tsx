@@ -1,5 +1,6 @@
 import React from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
 import ReadingActivity from '../shared/ReadingActivity';
 import VulnerabilityPatcherActivity from './VulnerabilityPatcherActivity';

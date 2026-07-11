@@ -10,6 +10,7 @@ interface TheoryItem {
   analogy?: string;
   application?: string;
   visual_element?: string;
+  critical_failure_vector?: string;
 }
 
 interface DevLushTheoryBridgeProps {
@@ -22,7 +23,7 @@ interface DevLushTheoryBridgeProps {
 
 export const DevLushTheoryBridge: React.FC<DevLushTheoryBridgeProps> = ({ item }) => {
   const [isOpen, setIsOpen] = useState(true);
-  const { title, content, analogy, application, visual_element } = item.theory;
+  const { title, content, analogy, application, visual_element, critical_failure_vector } = item.theory;
 
   return (
     <div className="bg-white dark:bg-slate-900 h-full flex flex-col space-y-4">
@@ -37,7 +38,12 @@ export const DevLushTheoryBridge: React.FC<DevLushTheoryBridgeProps> = ({ item }
           {title}
         </span>
         <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
-          <SaveTheoryButton theory={item.theory} />
+          <SaveTheoryButton 
+            theory={item.theory} 
+            labId={item.labId} 
+            exerciseTitle={item.exerciseTitle} 
+            courseType="devLush"
+          />
           <ChevronDownIcon className={`w-6 h-6 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </div>
       </div>
@@ -99,7 +105,7 @@ export const DevLushTheoryBridge: React.FC<DevLushTheoryBridgeProps> = ({ item }
               Critical Failure Vector
             </h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Uncontrolled agent context loops, injection vulnerabilities, and race conditions account for over 90% of autonomous business agent financial and resource overhead leakages.
+              {critical_failure_vector || "Uncontrolled agent context loops, injection vulnerabilities, and race conditions account for over 90% of autonomous business agent financial and resource overhead leakages."}
             </p>
           </div>
         </div>

@@ -1371,5 +1371,76 @@ export const DevLushTheoryVisual: React.FC<DevLushTheoryVisualProps> = ({ analog
         );
     }
 
+    // Legal: Tax Compliance Agents (Dashboard)
+    if (has('tax') || has('compliance') || has('transfer pricing') || has('tax-compliance-dashboard-visual-prompt')) {
+        return (
+            <div className="my-4 p-5 bg-gradient-to-br from-emerald-50 to-slate-100 dark:from-slate-900 dark:to-slate-900/80 rounded-2xl border border-emerald-100 dark:border-emerald-950/40 shadow-md flex flex-col w-full hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center gap-2 mb-3">
+                    <span className="p-1.5 bg-emerald-500/10 rounded-lg text-emerald-600 dark:text-emerald-400">
+                        <Target className="w-4 h-4" />
+                    </span>
+                    <h5 className="text-xs font-bold text-emerald-900 dark:text-emerald-300 uppercase tracking-wider">
+                        Concept: Dynamic Tax Rule Mapping
+                    </h5>
+                </div>
+                
+                {/* Visual Canvas */}
+                <div className="relative w-full h-44 bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex flex-col justify-between p-3">
+                    <div className="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:20px_20px] opacity-10" />
+                    
+                    <div className="flex justify-between items-start z-10">
+                        <span className="text-[9px] font-mono text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800/40">
+                          GLOBAL_TAX_MONITOR: ACTIVE
+                        </span>
+                    </div>
+
+                    <svg viewBox="0 0 400 120" className="w-full h-24 z-10 mt-2">
+                        {/* Financial Flow Nodes */}
+                        <g transform="translate(40, 60)">
+                            <rect width="40" height="20" rx="4" fill="#022c22" stroke="#10b981" strokeWidth="1" />
+                            <text x="20" y="12" fill="#34d399" fontSize="6" textAnchor="middle" fontFamily="monospace">CORP A</text>
+                        </g>
+
+                        <g transform="translate(320, 60)">
+                            <rect width="40" height="20" rx="4" fill="#0f172a" stroke="#64748b" strokeWidth="1" />
+                            <text x="20" y="12" fill="#94a3b8" fontSize="6" textAnchor="middle" fontFamily="monospace">SUB B</text>
+                        </g>
+
+                        {/* Financial transfer path */}
+                        <path d="M 80 70 L 320 70" fill="none" stroke="#10b981" strokeWidth="1" strokeDasharray="2 2" />
+                        <motion.circle r="3" fill="#10b981" animate={{ cx: [80, 320] }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} />
+                        <text x="200" y="65" fill="#34d399" fontSize="6" textAnchor="middle" fontFamily="monospace">$$$ TRANSFER</text>
+
+                        {/* Agent monitoring the flow */}
+                        <g transform="translate(180, 10)">
+                            <rect width="40" height="20" rx="4" fill="#4c0519" stroke="#f43f5e" strokeWidth="1.5" />
+                            <text x="20" y="12" fill="#fda4af" fontSize="6" fontWeight="bold" textAnchor="middle" fontFamily="monospace">TAX AGENT</text>
+                        </g>
+
+                        {/* Agent scanning */}
+                        <path d="M 200 30 L 200 70" fill="none" stroke="#f43f5e" strokeWidth="1.5" />
+                        <motion.circle r="2" fill="#f43f5e" animate={{ cy: [30, 70, 30] }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} />
+
+                        {/* Rule match indicator */}
+                        <g transform="translate(230, 10)">
+                            <rect width="60" height="30" rx="4" fill="#0f172a" stroke="#f59e0b" strokeWidth="1" />
+                            <text x="30" y="12" fill="#fbbf24" fontSize="5" textAnchor="middle" fontFamily="monospace">EU DIGITAL TAX</text>
+                            <text x="30" y="22" fill="#fbbf24" fontSize="4" textAnchor="middle" className="animate-pulse">VIOLATION DETECTED</text>
+                        </g>
+                        <path d="M 220 20 L 230 20" fill="none" stroke="#f59e0b" strokeWidth="1" />
+                    </svg>
+
+                    <div className="text-[10px] text-slate-400 text-center z-10 bg-slate-900/85 py-1 px-2 rounded border border-emerald-950">
+                        Agent dynamically maps transfers against live tax feeds.
+                    </div>
+                </div>
+
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed">
+                    <strong>Dynamic Mapping Analogy:</strong> A GPS navigation system that not only finds the fastest route but constantly checks if the toll roads on your path have changed their prices, recalculating the financial compliance of every border crossed.
+                </p>
+            </div>
+        );
+    }
+
     return null;
 };

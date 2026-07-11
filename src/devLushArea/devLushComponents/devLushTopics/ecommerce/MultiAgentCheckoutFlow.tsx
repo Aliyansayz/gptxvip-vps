@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
-import { 
-  CheckCircle, 
-  XCircle, 
-  Database, 
-  ShoppingBag, 
-  RefreshCw, 
-  AlertTriangle, 
-  TrendingDown, 
-  TrendingUp, 
-  Coins, 
+import {
+  CheckCircle,
+  XCircle,
+  Database,
+  ShoppingBag,
+  RefreshCw,
+  AlertTriangle,
+  TrendingDown,
+  TrendingUp,
+  Coins,
   Clock,
   Unlock,
   Lock,
@@ -38,12 +39,12 @@ const CheckoutRaceVisual: React.FC<{ isRunning: boolean; lockingEnabled: boolean
           <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
       </div>
-      
+
       <h5 className="text-xs font-bold text-slate-500 uppercase mb-2 tracking-wider relative z-10">
-          Analogy: Multi-Agent Transaction Race
+        Analogy: Multi-Agent Transaction Race
       </h5>
       <div className="relative w-full h-[320px] bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-center p-4">
-        
+
         {/* Decorative Sandbox Agents */}
         <div className="absolute top-4 left-1/2 -translate-x-1/2 flex gap-8 z-0">
           <div className="flex flex-col items-center opacity-60">
@@ -71,7 +72,7 @@ const CheckoutRaceVisual: React.FC<{ isRunning: boolean; lockingEnabled: boolean
           <div className={`w-28 h-28 rounded-lg flex items-center justify-center border-4 relative z-10 ${stock < 0 ? 'bg-rose-950/50 border-rose-500 shadow-[0_0_20px_rgba(244,63,94,0.6)]' : 'bg-emerald-950/50 border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.6)]'}`}>
             <Database className={`w-12 h-12 ${stock < 0 ? 'text-rose-400 animate-pulse' : 'text-emerald-400'}`} />
             {lockingEnabled && isRunning && (
-              <motion.div 
+              <motion.div
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 1.5, type: 'spring' }}
@@ -91,13 +92,13 @@ const CheckoutRaceVisual: React.FC<{ isRunning: boolean; lockingEnabled: boolean
           <div className="w-14 h-14 bg-indigo-900/60 border-2 border-indigo-500 rounded-full flex items-center justify-center text-indigo-300 relative shadow-[0_0_15px_rgba(99,102,241,0.3)]">
             <ShoppingBag className="w-6 h-6 text-indigo-400" />
             {isRunning && (
-              <motion.div 
+              <motion.div
                 initial={{ x: 0, opacity: 1 }}
                 animate={{ x: 300, opacity: [1, 1, 0] }}
                 transition={{ duration: 2, ease: "linear", delay: 0 }}
                 className="absolute w-5 h-5 rounded-full bg-indigo-400 shadow-[0_0_12px_rgba(129,140,248,0.9)] z-0 flex items-center justify-center"
               >
-                 <div className="w-2 h-2 bg-white rounded-full"></div>
+                <div className="w-2 h-2 bg-white rounded-full"></div>
               </motion.div>
             )}
           </div>
@@ -108,7 +109,7 @@ const CheckoutRaceVisual: React.FC<{ isRunning: boolean; lockingEnabled: boolean
           <div className="w-14 h-14 bg-purple-900/60 border-2 border-purple-500 rounded-full flex items-center justify-center text-purple-300 relative shadow-[0_0_15px_rgba(168,85,247,0.3)]">
             <ShoppingBag className="w-6 h-6 text-purple-400" />
             {isRunning && (
-              <motion.div 
+              <motion.div
                 initial={{ x: 0, opacity: 1 }}
                 animate={lockingEnabled ? { x: 220, opacity: [1, 1, 0] } : { x: 300, opacity: [1, 1, 0] }}
                 transition={{ duration: 2, ease: "linear", delay: 0.5 }}
@@ -121,13 +122,13 @@ const CheckoutRaceVisual: React.FC<{ isRunning: boolean; lockingEnabled: boolean
         </div>
 
         {stock < 0 && (
-           <motion.div 
-             initial={{ scale: 0 }} animate={{ scale: 1 }}
-             className="absolute z-50 px-5 py-3 bg-rose-500 text-white font-bold rounded-lg border-2 border-white shadow-2xl flex items-center gap-2 text-sm"
-           >
-             <AlertTriangle className="w-6 h-6" />
-             RACE CONDITION EXPLOITED! (OVERSOLD)
-           </motion.div>
+          <motion.div
+            initial={{ scale: 0 }} animate={{ scale: 1 }}
+            className="absolute z-50 px-5 py-3 bg-rose-500 text-white font-bold rounded-lg border-2 border-white shadow-2xl flex items-center gap-2 text-sm"
+          >
+            <AlertTriangle className="w-6 h-6" />
+            RACE CONDITION EXPLOITED! (OVERSOLD)
+          </motion.div>
         )}
       </div>
     </div>
@@ -136,7 +137,7 @@ const CheckoutRaceVisual: React.FC<{ isRunning: boolean; lockingEnabled: boolean
 
 const PricingSpiralVisual: React.FC<{ price: number; isRunning: boolean }> = ({ price, isRunning }) => {
   const percentage = Math.max(0, Math.min(100, (price / 120) * 100));
-  
+
   return (
     <div className="my-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 flex flex-col items-center w-full relative overflow-hidden">
       {/* Background illustrative elements */}
@@ -152,10 +153,10 @@ const PricingSpiralVisual: React.FC<{ price: number; isRunning: boolean }> = ({ 
       </div>
 
       <h5 className="text-xs font-bold text-slate-500 uppercase mb-2 tracking-wider relative z-10">
-          Analogy: Pricing Spiral Cascade
+        Analogy: Pricing Spiral Cascade
       </h5>
       <div className="relative w-full h-[320px] bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-center p-6 gap-12 overflow-hidden">
-        
+
         {/* Sandbox Agents in background */}
         <div className="absolute top-4 right-8 flex gap-6 z-0">
           <div className="flex flex-col items-center opacity-60">
@@ -177,9 +178,9 @@ const PricingSpiralVisual: React.FC<{ price: number; isRunning: boolean }> = ({ 
           {/* Margin Floor line */}
           <div className="absolute bottom-[30%] left-0 w-full h-1 bg-rose-500 z-20 shadow-[0_0_15px_rgba(244,63,94,1)]"></div>
           <div className="absolute bottom-[28%] -right-10 text-[10px] font-bold text-rose-400 uppercase bg-rose-950/80 px-2 py-1 rounded border border-rose-500/50 shadow-lg backdrop-blur-sm z-30">Margin Floor</div>
-          
+
           {/* Liquid */}
-          <motion.div 
+          <motion.div
             className="w-full bg-gradient-to-t from-indigo-600 via-indigo-500 to-indigo-400 rounded-full relative z-10 shadow-[0_0_20px_rgba(99,102,241,0.6)]"
             animate={{ height: `${percentage}%` }}
             transition={{ type: "spring", bounce: 0, duration: 0.5 }}
@@ -189,17 +190,17 @@ const PricingSpiralVisual: React.FC<{ price: number; isRunning: boolean }> = ({ 
         <div className="flex flex-col gap-6 z-10">
           <div className="bg-slate-950/80 backdrop-blur-md p-5 rounded-2xl border-2 border-slate-800 flex items-center gap-5 min-w-[220px] shadow-xl">
             <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${price < 40 ? 'bg-rose-900/50 border-rose-500 text-rose-400 animate-pulse' : 'bg-indigo-900/50 border-indigo-500 text-indigo-400'} border`}>
-               {price < 40 ? <AlertTriangle className="w-6 h-6" /> : <TrendingDown className="w-6 h-6" />}
+              {price < 40 ? <AlertTriangle className="w-6 h-6" /> : <TrendingDown className="w-6 h-6" />}
             </div>
             <div>
               <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Current Price</div>
               <div className={`text-4xl font-mono font-bold ${price < 40 ? 'text-rose-400' : 'text-white'}`}>${price.toFixed(2)}</div>
             </div>
           </div>
-          
+
           <div className="text-sm text-slate-300 max-w-[220px] leading-relaxed bg-slate-900/80 p-4 rounded-xl border border-slate-800 backdrop-blur-sm">
-            {price < 40 ? 
-              <span className="text-rose-400 font-bold flex items-start gap-2"><AlertTriangle className="w-4 h-4 mt-0.5 shrink-0"/> HARD STOP: Floor reached, preventing margin loss.</span> : 
+            {price < 40 ?
+              <span className="text-rose-400 font-bold flex items-start gap-2"><AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" /> HARD STOP: Floor reached, preventing margin loss.</span> :
               <span className="flex items-start gap-2"><RefreshCw className="w-4 h-4 mt-0.5 shrink-0 text-indigo-400 animate-spin-slow" /> Agents recursively undercut each other to win the auction.</span>
             }
           </div>
@@ -218,12 +219,12 @@ interface ChapterProps {
   settings?: LabSettings;
 }
 
-export const MultiAgentCheckoutFlow: React.FC<ChapterProps> = ({ 
-  step, 
-  exercises, 
-  infoVisible, 
-  infoPlacement, 
-  settings 
+export const MultiAgentCheckoutFlow: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
+  settings
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -310,10 +311,10 @@ export const MultiAgentCheckoutFlow: React.FC<ChapterProps> = ({
           const discount = currentPrice * 0.15; // accelerated pricing decay
           currentPrice = Math.max(38.50, Number((currentPrice - discount).toFixed(2))); // Hard floor around $38.50
           setPrice(currentPrice);
-          
+
           const merchant = count % 2 === 0 ? "MERCHANT A" : "MERCHANT B";
           setTransactions(prev => [
-            ...prev, 
+            ...prev,
             `[${new Date().toLocaleTimeString()}] ${merchant}: Detected rival discount. Recalculated price to $${currentPrice}`
           ]);
           if (currentPrice <= 38.50) {

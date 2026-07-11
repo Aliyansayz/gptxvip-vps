@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Database, User, ShieldAlert, ShieldCheck, ArrowRight, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
 import { DevLushLayout } from '../../devLushTopicsView/DevLushLayout';
 import SaveTheoryButton from '../../../agentDevRootComponents/TopicTheoryView/SaveTheoryButton';
@@ -41,8 +42,8 @@ const IDORIdentitySwitcherContent = () => {
           <div className="bg-gray-950 p-3 rounded border border-gray-800 mb-3 font-mono text-sm flex items-center">
             <span className="text-blue-400 mr-2">GET</span>
             <span className="text-gray-400">/api/user/</span>
-            <input 
-              type="text" 
+            <input
+              type="text"
               value={requestedId}
               onChange={(e) => { setRequestedId(e.target.value); setStatus('idle'); }}
               className="bg-transparent border-b border-gray-600 text-amber-400 w-16 focus:outline-none focus:border-amber-400 px-1"
@@ -90,7 +91,7 @@ const IDORIdentitySwitcherContent = () => {
 
         <div className="flex-1 h-px bg-gray-800 relative z-0 mx-4">
           {status === 'fetching' && (
-            <motion.div 
+            <motion.div
               initial={{ left: 0 }}
               animate={{ left: defense === 'secure' && requestedId !== '1001' ? "50%" : "100%" }}
               transition={{ duration: defense === 'secure' && requestedId !== '1001' ? 0.75 : 1.5, ease: "linear" }}
@@ -98,7 +99,7 @@ const IDORIdentitySwitcherContent = () => {
             />
           )}
           {status === 'success' && (
-            <motion.div 
+            <motion.div
               initial={{ left: "100%" }}
               animate={{ left: 0 }}
               transition={{ duration: 1.5, ease: "linear" }}
@@ -126,7 +127,7 @@ const IDORIdentitySwitcherContent = () => {
 
         <AnimatePresence>
           {status === 'blocked' && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
@@ -137,7 +138,7 @@ const IDORIdentitySwitcherContent = () => {
             </motion.div>
           )}
           {status === 'success' && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
@@ -160,7 +161,7 @@ const IDORIdentitySwitcherContent = () => {
 
 export default function IDORIdentitySwitcher(props: ChapterProps) {
   if (!props.exercises || props.step === undefined) return <IDORIdentitySwitcherContent />;
-  
+
   const question = props.exercises[props.step];
   if (!question) return <IDORIdentitySwitcherContent />;
 

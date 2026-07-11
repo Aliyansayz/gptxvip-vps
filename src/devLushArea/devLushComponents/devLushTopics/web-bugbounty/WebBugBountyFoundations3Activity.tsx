@@ -1,5 +1,6 @@
 import React from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
 import AttackSurfaceDiscovery from './AttackSurfaceDiscovery';
 import AuthorizationTesting from './AuthorizationTesting';
@@ -17,7 +18,6 @@ import { DevLushLayout } from '../../devLushTopicsView/DevLushLayout';
 import { DevLushTheoryBridge } from '../../devLushTopicsView/DevLushTheoryBridge';
 import SaveTheoryButton from '../../../agentDevRootComponents/TopicTheoryView/SaveTheoryButton';
 
-
 interface ChapterProps {
   step: number;
   exercises: Exercise[];
@@ -26,17 +26,16 @@ interface ChapterProps {
   settings?: LabSettings;
 }
 
-export const WebBugBountyActivity: React.FC<ChapterProps> = (props) => {
+export const WebBugBountyFoundations3Activity: React.FC<ChapterProps> = (props) => {
   const question = props.exercises[props.step];
 
   if (question.componentId === 'web-case-1') {
     return <AttackSurfaceDiscovery {...props} />;
   }
-  
+
   if (question.componentId === 'web-case-2') {
     return <AuthorizationTesting {...props} />;
   }
-
 
   let SandboxComponent = null;
   if (question.componentId === 'web-case-3') SandboxComponent = <XssSandbox />;
@@ -62,7 +61,7 @@ export const WebBugBountyActivity: React.FC<ChapterProps> = (props) => {
           <SaveTheoryButton theory={theoryData} />
         </div>
         <div className="flex-1">
-          <DevLushTheoryBridge item={{ labId: 'cybersecurity', exerciseTitle: question.title, theory: theoryData }} />
+          <DevLushTheoryBridge item={{ labId: 'web-bugbounty-foundations-3', exerciseTitle: question.title, theory: theoryData }} />
         </div>
       </div>
     ) : null;
@@ -80,7 +79,6 @@ export const WebBugBountyActivity: React.FC<ChapterProps> = (props) => {
     );
   }
 
-
   return (
     <div className="p-8 text-center text-slate-500">
       Component not found for {question.componentId}
@@ -88,4 +86,4 @@ export const WebBugBountyActivity: React.FC<ChapterProps> = (props) => {
   );
 };
 
-export default WebBugBountyActivity;
+export default WebBugBountyFoundations3Activity;

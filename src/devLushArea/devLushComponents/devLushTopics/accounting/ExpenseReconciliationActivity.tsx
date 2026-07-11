@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
 import { CheckCircle, XCircle, Search, RefreshCw, FileImage, ShieldAlert, Receipt } from 'lucide-react';
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
@@ -16,12 +17,12 @@ interface ChapterProps {
   settings?: LabSettings;
 }
 
-export const ExpenseReconciliationActivity: React.FC<ChapterProps> = ({ 
-  step, 
-  exercises, 
-  infoVisible, 
-  infoPlacement, 
-  settings 
+export const ExpenseReconciliationActivity: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
+  settings
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -115,31 +116,31 @@ export const ExpenseReconciliationActivity: React.FC<ChapterProps> = ({
         </div>
 
         <div className="grid grid-cols-3 gap-4 mb-8">
-            {/* Stage 1: Multimodal Vision */}
-            <div className={`flex flex-col items-center justify-center p-4 rounded-xl border ${activeStage === 'parsing' ? 'bg-fuchsia-900/40 border-fuchsia-500 shadow-[0_0_15px_rgba(217,70,239,0.3)]' : 'bg-slate-800 border-slate-700'} transition-all duration-500`}>
-                <FileImage className={`w-8 h-8 mb-2 ${activeStage === 'parsing' ? 'text-fuchsia-400 animate-pulse' : 'text-slate-500'}`} />
-                <span className="text-xs font-mono font-bold text-center text-slate-300">Vision Model<br/>(Extract Line Items)</span>
-            </div>
-            
-            {/* Stage 2: Policy Evaluation */}
-            <div className={`flex flex-col items-center justify-center p-4 rounded-xl border ${activeStage === 'policy' ? 'bg-amber-900/40 border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.3)]' : 'bg-slate-800 border-slate-700'} transition-all duration-500`}>
-                <ShieldAlert className={`w-8 h-8 mb-2 ${activeStage === 'policy' ? 'text-amber-400 animate-bounce' : 'text-slate-500'}`} />
-                <span className="text-xs font-mono font-bold text-center text-slate-300">Policy Engine<br/>(Deterministic Check)</span>
-            </div>
-            
-            {/* Stage 3: Approval */}
-            <div className={`flex flex-col items-center justify-center p-4 rounded-xl border ${activeStage === 'complete' ? 'bg-emerald-900/40 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)]' : 'bg-slate-800 border-slate-700'} transition-all duration-500`}>
-                <CheckCircle className={`w-8 h-8 mb-2 ${activeStage === 'complete' ? 'text-emerald-400' : 'text-slate-500'}`} />
-                <span className="text-xs font-mono font-bold text-center text-slate-300">Approval Workflow<br/>(Partial/Full Sync)</span>
-            </div>
+          {/* Stage 1: Multimodal Vision */}
+          <div className={`flex flex-col items-center justify-center p-4 rounded-xl border ${activeStage === 'parsing' ? 'bg-fuchsia-900/40 border-fuchsia-500 shadow-[0_0_15px_rgba(217,70,239,0.3)]' : 'bg-slate-800 border-slate-700'} transition-all duration-500`}>
+            <FileImage className={`w-8 h-8 mb-2 ${activeStage === 'parsing' ? 'text-fuchsia-400 animate-pulse' : 'text-slate-500'}`} />
+            <span className="text-xs font-mono font-bold text-center text-slate-300">Vision Model<br />(Extract Line Items)</span>
+          </div>
+
+          {/* Stage 2: Policy Evaluation */}
+          <div className={`flex flex-col items-center justify-center p-4 rounded-xl border ${activeStage === 'policy' ? 'bg-amber-900/40 border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.3)]' : 'bg-slate-800 border-slate-700'} transition-all duration-500`}>
+            <ShieldAlert className={`w-8 h-8 mb-2 ${activeStage === 'policy' ? 'text-amber-400 animate-bounce' : 'text-slate-500'}`} />
+            <span className="text-xs font-mono font-bold text-center text-slate-300">Policy Engine<br />(Deterministic Check)</span>
+          </div>
+
+          {/* Stage 3: Approval */}
+          <div className={`flex flex-col items-center justify-center p-4 rounded-xl border ${activeStage === 'complete' ? 'bg-emerald-900/40 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)]' : 'bg-slate-800 border-slate-700'} transition-all duration-500`}>
+            <CheckCircle className={`w-8 h-8 mb-2 ${activeStage === 'complete' ? 'text-emerald-400' : 'text-slate-500'}`} />
+            <span className="text-xs font-mono font-bold text-center text-slate-300">Approval Workflow<br />(Partial/Full Sync)</span>
+          </div>
         </div>
 
         <div className="bg-black/50 p-4 rounded-xl font-mono text-xs text-amber-400 h-48 overflow-y-auto">
           {processLogs.length === 0 ? (
-             <div className="text-slate-500 italic">Waiting to start expense agent pipeline...</div>
+            <div className="text-slate-500 italic">Waiting to start expense agent pipeline...</div>
           ) : (
             processLogs.map((log, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -171,10 +172,10 @@ export const ExpenseReconciliationActivity: React.FC<ChapterProps> = ({
               onClick={() => !showResult && setSelectedAnswer(option)}
               disabled={showResult}
               className={`w-full text-left p-4 rounded-xl border transition-all duration-200 flex items-start gap-3
-                ${showResult 
-                  ? option === question.answer 
-                    ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-500 dark:border-emerald-500/50' 
-                    : option === selectedAnswer 
+                ${showResult
+                  ? option === question.answer
+                    ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-500 dark:border-emerald-500/50'
+                    : option === selectedAnswer
                       ? 'bg-rose-50 dark:bg-rose-900/20 border-rose-500 dark:border-rose-500/50 opacity-50'
                       : 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 opacity-50'
                   : selectedAnswer === option
@@ -203,7 +204,7 @@ export const ExpenseReconciliationActivity: React.FC<ChapterProps> = ({
             Submit Final Architecture Strategy
           </button>
         ) : (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className={`mt-6 p-5 rounded-xl border ${isCorrect ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800' : 'bg-rose-50 dark:bg-rose-900/20 border-rose-200 dark:border-rose-800'}`}

@@ -1,6 +1,9 @@
 import React from 'react';
 import AutonomousReconActivity from '../devLushTopics/cybersecurity/AutonomousReconActivity';
-import WebBugBountyActivity from '../devLushTopics/web-bugbounty/WebBugBountyActivity';
+import WebBugBountyFoundations1Activity from '../devLushTopics/web-bugbounty/WebBugBountyFoundations1Activity';
+import WebBugBountyFoundations2Activity from '../devLushTopics/web-bugbounty/WebBugBountyFoundations2Activity';
+import WebBugBountyFoundations3Activity from '../devLushTopics/web-bugbounty/WebBugBountyFoundations3Activity';
+import WebBugBountyFoundations4Activity from '../devLushTopics/web-bugbounty/WebBugBountyFoundations4Activity';
 import WebBugBountyDeveloperLensActivity from '../devLushTopics/web-bugbounty/WebBugBountyDeveloperLensActivity';
 import WebBugBountySecurityLensActivity from '../devLushTopics/web-bugbounty/WebBugBountySecurityLensActivity';
 import WebBugBountyBusinessLensActivity from '../devLushTopics/web-bugbounty/WebBugBountyBusinessLensActivity';
@@ -31,7 +34,10 @@ export const cybersecurityRegistry: Record<string, React.ComponentType<any>> = {
   'web-bugbounty-developer-lens': WebBugBountyDeveloperLensActivity,
   'web-bugbounty-security-lens': WebBugBountySecurityLensActivity,
   'web-bugbounty-business-lens': WebBugBountyBusinessLensActivity,
-  'web-bugbounty-foundations': WebBugBountyActivity,
+  'web-bugbounty-foundations-1': WebBugBountyFoundations1Activity,
+  'web-bugbounty-foundations-2': WebBugBountyFoundations2Activity,
+  'web-bugbounty-foundations-3': WebBugBountyFoundations3Activity,
+  'web-bugbounty-foundations-4': WebBugBountyFoundations4Activity,
   'web-bugbounty-xss': XSSDomSandbox,
   'web-bugbounty-sqli': SQLiQueryBuilder,
   'web-bugbounty-ssrf': SSRFCloudTopology,

@@ -5,6 +5,7 @@ import { SystemDesignOverviewActivity } from '../devLushTopics/system-design/Sys
 import RateLimitingActivity from '../devLushTopics/system-design/RateLimitingActivity';
 import LoadBalancingActivity from '../devLushTopics/system-design/LoadBalancingActivity';
 import SystemDesignMorphologyActivity from '../devLushTopics/system-design/SystemDesignMorphologyActivity';
+import ApiGatewayDesignActivity from '../devLushTopics/system-design/ApiGatewayDesignActivity';
 
 export const systemDesignRegistry: Record<string, React.ComponentType<any>> = {
   'database-sharding-replication': DatabaseShardingActivity,
@@ -13,4 +14,5 @@ export const systemDesignRegistry: Record<string, React.ComponentType<any>> = {
   'rate-limiting-strategies': RateLimitingActivity,
   'load-balancing-algorithms': LoadBalancingActivity,
   'system-design-morphology': SystemDesignMorphologyActivity,
+  'api-gateway-design': ApiGatewayDesignActivity,
 };

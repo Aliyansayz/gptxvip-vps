@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
 import { CheckCircle, XCircle, Terminal, RefreshCw, Search, LockOpen, Activity } from 'lucide-react';
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
@@ -16,17 +17,17 @@ interface ChapterProps {
   settings?: LabSettings;
 }
 
-export const AttackSurfaceDiscovery: React.FC<ChapterProps> = ({ 
-  step, 
-  exercises, 
-  infoVisible, 
-  infoPlacement, 
-  settings 
+export const AttackSurfaceDiscovery: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
+  settings
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [displayedLogs, setDisplayedLogs] = useState<{timestamp: string, level: string, message: string}[]>([]);
+  const [displayedLogs, setDisplayedLogs] = useState<{ timestamp: string, level: string, message: string }[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -56,11 +57,11 @@ export const AttackSurfaceDiscovery: React.FC<ChapterProps> = ({
     setProgress(10);
 
     const logSequence = exerciseData.logs || [];
-    
+
     if (logSequence.length === 0) {
-        setIsRunning(false);
-        setProgress(100);
-        return;
+      setIsRunning(false);
+      setProgress(100);
+      return;
     }
 
     let currentLogIndex = 0;
@@ -95,12 +96,12 @@ export const AttackSurfaceDiscovery: React.FC<ChapterProps> = ({
   };
 
   const getLogColor = (level: string) => {
-      switch(level) {
-          case 'error': return '#f43f5e'; // rose-500
-          case 'warn': return '#f59e0b'; // amber-500
-          case 'success': return '#10b981'; // emerald-500
-          default: return '#94a3b8'; // slate-400
-      }
+    switch (level) {
+      case 'error': return '#f43f5e'; // rose-500
+      case 'warn': return '#f59e0b'; // amber-500
+      case 'success': return '#10b981'; // emerald-500
+      default: return '#94a3b8'; // slate-400
+    }
   };
 
   const visualContent = (
@@ -123,33 +124,33 @@ export const AttackSurfaceDiscovery: React.FC<ChapterProps> = ({
 
         {/* Network Map SVG */}
         <div className="w-full h-32 mb-4 bg-black/40 rounded border border-[#ffb300]/20 relative overflow-hidden flex items-center justify-center">
-            <svg viewBox="0 0 300 100" className="w-full h-full">
-                {/* Main Target */}
-                <circle cx="150" cy="50" r="15" fill="#1e293b" stroke="#ffb300" strokeWidth="2" className={progress > 0 ? "animate-pulse" : ""} />
-                <text x="150" y="53" textAnchor="middle" fontSize="6" fill="#ffb300" fontWeight="bold">TARGET</text>
-                
-                {/* Subdomains / Ports */}
-                <circle cx="80" cy="20" r="8" fill="#1e293b" stroke={progress > 20 ? "#10b981" : "#475569"} strokeWidth="1.5" />
-                <text x="80" y="35" textAnchor="middle" fontSize="5" fill="#94a3b8">api.target</text>
-                
-                <circle cx="80" cy="80" r="8" fill="#1e293b" stroke={progress > 40 ? "#f43f5e" : "#475569"} strokeWidth="1.5" />
-                <text x="80" y="95" textAnchor="middle" fontSize="5" fill="#94a3b8">dev.target</text>
-                
-                <circle cx="220" cy="20" r="8" fill="#1e293b" stroke={progress > 60 ? "#10b981" : "#475569"} strokeWidth="1.5" />
-                <text x="220" y="35" textAnchor="middle" fontSize="5" fill="#94a3b8">staging.target</text>
-                
-                <circle cx="220" cy="80" r="8" fill="#1e293b" stroke={progress > 80 ? "#f43f5e" : "#475569"} strokeWidth="1.5" />
-                <text x="220" y="95" textAnchor="middle" fontSize="5" fill="#94a3b8">admin.target</text>
+          <svg viewBox="0 0 300 100" className="w-full h-full">
+            {/* Main Target */}
+            <circle cx="150" cy="50" r="15" fill="#1e293b" stroke="#ffb300" strokeWidth="2" className={progress > 0 ? "animate-pulse" : ""} />
+            <text x="150" y="53" textAnchor="middle" fontSize="6" fill="#ffb300" fontWeight="bold">TARGET</text>
 
-                {/* Connections */}
-                <path d="M 140 43 L 88 25" stroke="#ffb300" strokeWidth="1" opacity="0.5" strokeDasharray="2 2" className={progress > 0 && progress < 30 ? "animate-pulse" : ""} />
-                <path d="M 140 57 L 88 75" stroke="#ffb300" strokeWidth="1" opacity="0.5" strokeDasharray="2 2" className={progress > 30 && progress < 50 ? "animate-pulse" : ""} />
-                <path d="M 160 43 L 212 25" stroke="#ffb300" strokeWidth="1" opacity="0.5" strokeDasharray="2 2" className={progress > 50 && progress < 70 ? "animate-pulse" : ""} />
-                <path d="M 160 57 L 212 75" stroke="#ffb300" strokeWidth="1" opacity="0.5" strokeDasharray="2 2" className={progress > 70 && progress < 90 ? "animate-pulse" : ""} />
-                
-                {/* Scanning rings */}
-                {isRunning && <circle cx="150" cy="50" r="30" fill="none" stroke="#ffb300" strokeWidth="0.5" opacity="0.3" className="animate-ping" />}
-            </svg>
+            {/* Subdomains / Ports */}
+            <circle cx="80" cy="20" r="8" fill="#1e293b" stroke={progress > 20 ? "#10b981" : "#475569"} strokeWidth="1.5" />
+            <text x="80" y="35" textAnchor="middle" fontSize="5" fill="#94a3b8">api.target</text>
+
+            <circle cx="80" cy="80" r="8" fill="#1e293b" stroke={progress > 40 ? "#f43f5e" : "#475569"} strokeWidth="1.5" />
+            <text x="80" y="95" textAnchor="middle" fontSize="5" fill="#94a3b8">dev.target</text>
+
+            <circle cx="220" cy="20" r="8" fill="#1e293b" stroke={progress > 60 ? "#10b981" : "#475569"} strokeWidth="1.5" />
+            <text x="220" y="35" textAnchor="middle" fontSize="5" fill="#94a3b8">staging.target</text>
+
+            <circle cx="220" cy="80" r="8" fill="#1e293b" stroke={progress > 80 ? "#f43f5e" : "#475569"} strokeWidth="1.5" />
+            <text x="220" y="95" textAnchor="middle" fontSize="5" fill="#94a3b8">admin.target</text>
+
+            {/* Connections */}
+            <path d="M 140 43 L 88 25" stroke="#ffb300" strokeWidth="1" opacity="0.5" strokeDasharray="2 2" className={progress > 0 && progress < 30 ? "animate-pulse" : ""} />
+            <path d="M 140 57 L 88 75" stroke="#ffb300" strokeWidth="1" opacity="0.5" strokeDasharray="2 2" className={progress > 30 && progress < 50 ? "animate-pulse" : ""} />
+            <path d="M 160 43 L 212 25" stroke="#ffb300" strokeWidth="1" opacity="0.5" strokeDasharray="2 2" className={progress > 50 && progress < 70 ? "animate-pulse" : ""} />
+            <path d="M 160 57 L 212 75" stroke="#ffb300" strokeWidth="1" opacity="0.5" strokeDasharray="2 2" className={progress > 70 && progress < 90 ? "animate-pulse" : ""} />
+
+            {/* Scanning rings */}
+            {isRunning && <circle cx="150" cy="50" r="30" fill="none" stroke="#ffb300" strokeWidth="0.5" opacity="0.3" className="animate-ping" />}
+          </svg>
         </div>
 
         <div className="grid grid-cols-3 gap-4 text-center mb-4 text-[#ffdf8b]">
@@ -176,8 +177,8 @@ export const AttackSurfaceDiscovery: React.FC<ChapterProps> = ({
             <span>PROGRESS: {progress}%</span>
           </div>
           <div className="w-full h-1.5 bg-[rgba(255,179,0,0.1)] rounded-full overflow-hidden">
-            <div 
-              className={`h-full transition-all duration-500 bg-[#ffb300]`} 
+            <div
+              className={`h-full transition-all duration-500 bg-[#ffb300]`}
               style={{ width: `${progress}%`, boxShadow: '0 0 10px #ffb300' }}
             ></div>
           </div>
@@ -203,9 +204,9 @@ export const AttackSurfaceDiscovery: React.FC<ChapterProps> = ({
   const interactionContent = (
     <div className="space-y-4">
       {question.question && (
-          <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
-              {question.question}
-          </h4>
+        <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
+          {question.question}
+        </h4>
       )}
       <div className="grid grid-cols-1 gap-3">
         {question.options?.map((opt: string, i: number) => {
@@ -278,29 +279,29 @@ export const AttackSurfaceDiscovery: React.FC<ChapterProps> = ({
 
   const BurglaryReconAnalogy: React.FC = () => (
     <div className="my-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 flex flex-col items-center">
-        <h5 className="text-xs font-bold text-muted-foreground uppercase mb-2 tracking-wider flex items-center gap-2">
-            <Search className="w-4 h-4 text-amber-500" /> Analogy: House Reconnaissance
-        </h5>
-        <svg viewBox="0 0 200 120" className="w-full h-40">
-            {/* House */}
-            <path d="M 60 60 L 100 20 L 140 60 L 140 110 L 60 110 Z" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="2" />
-            <rect x="90" y="80" width="20" height="30" fill="#cbd5e1" stroke="#94a3b8" strokeWidth="1.5" />
-            <circle cx="95" cy="95" r="1.5" fill="#64748b" /> {/* Door knob */}
-            
-            <rect x="70" y="65" width="15" height="15" fill="#f1f5f9" stroke="#94a3b8" strokeWidth="1.5" />
-            <rect x="115" y="65" width="15" height="15" fill="#f1f5f9" stroke="#94a3b8" strokeWidth="1.5" />
-            
-            {/* Attacker */}
-            <circle cx="40" cy="90" r="5" fill="#ef4444" />
-            <path d="M 40 95 L 40 110 M 35 100 L 45 100 M 35 115 L 40 110 L 45 115" stroke="#ef4444" strokeWidth="1.5" fill="none" />
-            
-            {/* Recon paths */}
-            <path d="M 45 90 C 60 85, 75 75, 75 72" stroke="#f59e0b" strokeWidth="1" strokeDasharray="2 2" fill="none" className="animate-pulse" />
-            <path d="M 45 90 C 60 90, 80 90, 85 90" stroke="#f59e0b" strokeWidth="1" strokeDasharray="2 2" fill="none" className="animate-pulse" style={{animationDelay: '0.3s'}} />
-            <path d="M 45 90 C 70 50, 100 30, 120 62" stroke="#f59e0b" strokeWidth="1" strokeDasharray="2 2" fill="none" className="animate-pulse" style={{animationDelay: '0.6s'}} />
+      <h5 className="text-xs font-bold text-muted-foreground uppercase mb-2 tracking-wider flex items-center gap-2">
+        <Search className="w-4 h-4 text-amber-500" /> Analogy: House Reconnaissance
+      </h5>
+      <svg viewBox="0 0 200 120" className="w-full h-40">
+        {/* House */}
+        <path d="M 60 60 L 100 20 L 140 60 L 140 110 L 60 110 Z" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="2" />
+        <rect x="90" y="80" width="20" height="30" fill="#cbd5e1" stroke="#94a3b8" strokeWidth="1.5" />
+        <circle cx="95" cy="95" r="1.5" fill="#64748b" /> {/* Door knob */}
 
-            <text x="100" y="118" textAnchor="middle" fontSize="6" fill="currentColor" className="text-slate-500">Checking every window (port) and door (endpoint)</text>
-        </svg>
+        <rect x="70" y="65" width="15" height="15" fill="#f1f5f9" stroke="#94a3b8" strokeWidth="1.5" />
+        <rect x="115" y="65" width="15" height="15" fill="#f1f5f9" stroke="#94a3b8" strokeWidth="1.5" />
+
+        {/* Attacker */}
+        <circle cx="40" cy="90" r="5" fill="#ef4444" />
+        <path d="M 40 95 L 40 110 M 35 100 L 45 100 M 35 115 L 40 110 L 45 115" stroke="#ef4444" strokeWidth="1.5" fill="none" />
+
+        {/* Recon paths */}
+        <path d="M 45 90 C 60 85, 75 75, 75 72" stroke="#f59e0b" strokeWidth="1" strokeDasharray="2 2" fill="none" className="animate-pulse" />
+        <path d="M 45 90 C 60 90, 80 90, 85 90" stroke="#f59e0b" strokeWidth="1" strokeDasharray="2 2" fill="none" className="animate-pulse" style={{ animationDelay: '0.3s' }} />
+        <path d="M 45 90 C 70 50, 100 30, 120 62" stroke="#f59e0b" strokeWidth="1" strokeDasharray="2 2" fill="none" className="animate-pulse" style={{ animationDelay: '0.6s' }} />
+
+        <text x="100" y="118" textAnchor="middle" fontSize="6" fill="currentColor" className="text-slate-500">Checking every window (port) and door (endpoint)</text>
+      </svg>
     </div>
   );
 

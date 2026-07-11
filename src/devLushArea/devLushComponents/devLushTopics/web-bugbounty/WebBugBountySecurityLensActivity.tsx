@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
 import { CheckCircle, XCircle, ShieldAlert, ArrowRightLeft, User, FileText } from 'lucide-react';
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
@@ -16,18 +17,18 @@ interface ChapterProps {
   onComplete?: () => void;
 }
 
-export const WebBugBountySecurityLensActivity: React.FC<ChapterProps> = ({ 
-  step, 
-  exercises, 
-  infoVisible, 
-  infoPlacement, 
+export const WebBugBountySecurityLensActivity: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
   settings,
   onComplete
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  
+
   // Interactive visual state
   const [userId, setUserId] = useState("9283");
   const [responseState, setResponseState] = useState<'pending' | 'success' | 'unauthorized'>('pending');
@@ -69,79 +70,79 @@ export const WebBugBountySecurityLensActivity: React.FC<ChapterProps> = ({
   const visualContent = (
     <div className="w-full flex flex-col">
       <div className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-t-xl flex items-center gap-2 flex-shrink-0">
-         <ArrowRightLeft className="w-4 h-4 text-indigo-400" />
-         <span className="text-xs font-mono text-slate-300 font-bold tracking-widest">HTTP INTERCEPTOR</span>
+        <ArrowRightLeft className="w-4 h-4 text-indigo-400" />
+        <span className="text-xs font-mono text-slate-300 font-bold tracking-widest">HTTP INTERCEPTOR</span>
       </div>
-      
+
       <div className="bg-slate-900 border-x border-b border-slate-700 rounded-b-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-6 h-[290px] overflow-y-auto animate-in fade-in">
         {/* Request Panel */}
         <div className="space-y-3">
-           <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Request</div>
-           <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg font-mono text-xs text-slate-300">
-             <div className="flex gap-2">
-               <span className="text-emerald-400 font-bold">GET</span>
-               <span>/api/v1/user/profile</span>
-             </div>
-             <div className="mt-2 text-slate-500 text-[10px]">Host: api.example.com</div>
-             <div className="text-slate-500 text-[10px]">Authorization: Bearer user_9283_token</div>
-             
-             <div className="mt-4 flex items-center gap-2">
-               <span className="text-indigo-400">?id=</span>
-               <input 
-                 type="text" 
-                 value={userId}
-                 onChange={(e) => setUserId(e.target.value)}
-                 className="bg-slate-800 border border-slate-600 text-white px-2 py-0.5 rounded w-16 focus:outline-none focus:border-indigo-500"
-               />
-             </div>
-           </div>
-           
-           <button 
-             onClick={sendRequest}
-             className="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition-colors"
-           >
-             Forward Request
-           </button>
+          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Request</div>
+          <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg font-mono text-xs text-slate-300">
+            <div className="flex gap-2">
+              <span className="text-emerald-400 font-bold">GET</span>
+              <span>/api/v1/user/profile</span>
+            </div>
+            <div className="mt-2 text-slate-500 text-[10px]">Host: api.example.com</div>
+            <div className="text-slate-500 text-[10px]">Authorization: Bearer user_9283_token</div>
+
+            <div className="mt-4 flex items-center gap-2">
+              <span className="text-indigo-400">?id=</span>
+              <input
+                type="text"
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
+                className="bg-slate-800 border border-slate-600 text-white px-2 py-0.5 rounded w-16 focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+          </div>
+
+          <button
+            onClick={sendRequest}
+            className="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition-colors"
+          >
+            Forward Request
+          </button>
         </div>
-        
+
         {/* Response Panel */}
         <div className="space-y-3">
-           <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Response</div>
-           <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg font-mono text-xs text-slate-300 h-full min-h-[140px] flex flex-col">
-              {responseState === 'pending' && (
-                <div className="text-slate-500 italic flex items-center justify-center h-full">Awaiting request...</div>
-              )}
-              
-              {responseState === 'success' && (
-                <div className="animate-in fade-in space-y-2">
-                  <div className="text-emerald-400 font-bold">200 OK</div>
-                  <div className="text-[10px] text-slate-400">
-                    {"{"}
-                    <div className="pl-4">"id": "9283",</div>
-                    <div className="pl-4">"name": "Alice Researcher",</div>
-                    <div className="pl-4">"email": "alice@example.com"</div>
-                    {"}"}
-                  </div>
+          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Response</div>
+          <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg font-mono text-xs text-slate-300 h-full min-h-[140px] flex flex-col">
+            {responseState === 'pending' && (
+              <div className="text-slate-500 italic flex items-center justify-center h-full">Awaiting request...</div>
+            )}
+
+            {responseState === 'success' && (
+              <div className="animate-in fade-in space-y-2">
+                <div className="text-emerald-400 font-bold">200 OK</div>
+                <div className="text-[10px] text-slate-400">
+                  {"{"}
+                  <div className="pl-4">"id": "9283",</div>
+                  <div className="pl-4">"name": "Alice Researcher",</div>
+                  <div className="pl-4">"email": "alice@example.com"</div>
+                  {"}"}
                 </div>
-              )}
-              
-              {responseState === 'unauthorized' && (
-                <div className="animate-in fade-in space-y-2">
-                  <div className="text-emerald-400 font-bold flex items-center justify-between">
-                     <span>200 OK</span>
-                     <span className="text-[10px] bg-rose-500/20 text-rose-400 px-1.5 rounded uppercase flex items-center gap-1"><ShieldAlert className="w-3 h-3"/> IDOR Detected</span>
-                  </div>
-                  <div className="text-[10px] text-slate-400">
-                    {"{"}
-                    <div className="pl-4 text-rose-300">"id": "{userId}",</div>
-                    <div className="pl-4">"name": "Bob Victim",</div>
-                    <div className="pl-4">"email": "bob.victim@example.com",</div>
-                    <div className="pl-4">"credit_card": "4111-XXXX-XXXX-1111"</div>
-                    {"}"}
-                  </div>
+              </div>
+            )}
+
+            {responseState === 'unauthorized' && (
+              <div className="animate-in fade-in space-y-2">
+                <div className="text-emerald-400 font-bold flex items-center justify-between">
+                  <span>200 OK</span>
+                  <span className="text-[10px] bg-rose-500/20 text-rose-400 px-1.5 rounded uppercase flex items-center gap-1"><ShieldAlert className="w-3 h-3" /> IDOR Detected</span>
                 </div>
-              )}
-           </div>
+                <div className="text-[10px] text-slate-400">
+                  {"{"}
+                  <div className="pl-4 text-rose-300">"id": "{userId}",</div>
+                  <div className="pl-4">"name": "Bob Victim",</div>
+                  <div className="pl-4">"email": "bob.victim@example.com",</div>
+                  <div className="pl-4">"credit_card": "4111-XXXX-XXXX-1111"</div>
+                  {"}"}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -150,9 +151,9 @@ export const WebBugBountySecurityLensActivity: React.FC<ChapterProps> = ({
   const interactionContent = (
     <div className="space-y-4">
       {question.question && (
-          <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
-              {question.question}
-          </h4>
+        <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
+          {question.question}
+        </h4>
       )}
       <div className="grid grid-cols-1 gap-3">
         {question.options?.map((opt: string, i: number) => {

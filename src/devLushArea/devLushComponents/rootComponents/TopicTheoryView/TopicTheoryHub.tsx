@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import DevLushTheoryPaneGrid from "./DevLushTheoryPaneGrid";
 import DevLushAutoImportModal from "./DevLushAutoImportModal";
+import { AnimatePresence } from "framer-motion";
 
 const TopicTheoryHub: React.FC = () => {
   const { collections, createCollection, deleteCollection, renameCollection } =
@@ -199,9 +200,11 @@ const TopicTheoryHub: React.FC = () => {
         </div>
       )}
 
-      {showAutoImport && (
-        <DevLushAutoImportModal onClose={() => setShowAutoImport(false)} />
-      )}
+      <AnimatePresence>
+        {showAutoImport && (
+          <DevLushAutoImportModal onClose={() => setShowAutoImport(false)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

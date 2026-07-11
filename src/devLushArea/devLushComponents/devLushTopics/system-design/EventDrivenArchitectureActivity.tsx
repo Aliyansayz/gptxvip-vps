@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { toast } from 'sonner';
 import { CheckCircle, XCircle, Activity, Send, Users, ArrowRightLeft } from 'lucide-react';
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
@@ -15,17 +16,17 @@ interface ChapterProps {
   settings?: LabSettings;
 }
 
-export const EventDrivenArchitectureActivity: React.FC<ChapterProps> = ({ 
-  step, 
-  exercises, 
-  infoVisible, 
-  infoPlacement, 
-  settings 
+export const EventDrivenArchitectureActivity: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
+  settings
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  
+
   // Interactive visual state
   const [messages, setMessages] = useState<{ id: number, key: string, partition: number }[]>([]);
   const [consumers, setConsumers] = useState([
@@ -72,12 +73,12 @@ export const EventDrivenArchitectureActivity: React.FC<ChapterProps> = ({
     const partition = Math.abs(hash) % 3;
 
     const newMessage = { id: messageCount, key: routingKey, partition };
-    
+
     setMessages(prev => {
-       const next = [...prev, newMessage];
-       // keep only last 9 messages to fit in UI
-       if (next.length > 9) return next.slice(next.length - 9);
-       return next;
+      const next = [...prev, newMessage];
+      // keep only last 9 messages to fit in UI
+      if (next.length > 9) return next.slice(next.length - 9);
+      return next;
     });
     setMessageCount(c => c + 1);
   };
@@ -85,30 +86,30 @@ export const EventDrivenArchitectureActivity: React.FC<ChapterProps> = ({
   const toggleConsumer = (id: number) => {
     setConsumers(prev => {
       const updated = prev.map(c => c.id === id ? { ...c, active: !c.active } : c);
-      
+
       // Rebalance partitions (0, 1, 2)
       const activeCount = updated.filter(c => c.active).length;
       if (activeCount === 0) {
         return updated.map(c => ({ ...c, partitionAssigned: [] }));
       }
-      
+
       let pIdx = 0;
       return updated.map(c => {
-         if (!c.active) return { ...c, partitionAssigned: [] };
-         const assigned = [];
-         // Simple round-robin assignment simulation for 3 partitions
-         // Just a basic mock for visual representation
-         if (activeCount === 1) {
-           assigned.push(0, 1, 2);
-         } else if (activeCount === 2) {
-           if (pIdx === 0) assigned.push(0, 1);
-           else assigned.push(2);
-           pIdx++;
-         } else if (activeCount === 3) {
-           assigned.push(pIdx);
-           pIdx++;
-         }
-         return { ...c, partitionAssigned: assigned };
+        if (!c.active) return { ...c, partitionAssigned: [] };
+        const assigned = [];
+        // Simple round-robin assignment simulation for 3 partitions
+        // Just a basic mock for visual representation
+        if (activeCount === 1) {
+          assigned.push(0, 1, 2);
+        } else if (activeCount === 2) {
+          if (pIdx === 0) assigned.push(0, 1);
+          else assigned.push(2);
+          pIdx++;
+        } else if (activeCount === 3) {
+          assigned.push(pIdx);
+          pIdx++;
+        }
+        return { ...c, partitionAssigned: assigned };
       });
     });
   };
@@ -122,18 +123,18 @@ export const EventDrivenArchitectureActivity: React.FC<ChapterProps> = ({
       const activeCount = updated.filter(c => c.active).length;
       let pIdx = 0;
       return updated.map(c => {
-         if (!c.active) return { ...c, partitionAssigned: [] };
-         const assigned = [];
-         if (activeCount === 1) assigned.push(0, 1, 2);
-         else if (activeCount === 2) {
-           if (pIdx === 0) assigned.push(0, 1);
-           else assigned.push(2);
-           pIdx++;
-         } else if (activeCount === 3) {
-           assigned.push(pIdx);
-           pIdx++;
-         }
-         return { ...c, partitionAssigned: assigned };
+        if (!c.active) return { ...c, partitionAssigned: [] };
+        const assigned = [];
+        if (activeCount === 1) assigned.push(0, 1, 2);
+        else if (activeCount === 2) {
+          if (pIdx === 0) assigned.push(0, 1);
+          else assigned.push(2);
+          pIdx++;
+        } else if (activeCount === 3) {
+          assigned.push(pIdx);
+          pIdx++;
+        }
+        return { ...c, partitionAssigned: assigned };
       });
     });
   }
@@ -142,22 +143,22 @@ export const EventDrivenArchitectureActivity: React.FC<ChapterProps> = ({
     <div className="relative w-full h-[400px] flex flex-col items-center justify-center p-6 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
       <div className="w-full max-w-2xl bg-slate-900 border border-slate-700 rounded-xl overflow-hidden shadow-2xl flex flex-col z-10 mt-8">
         <div className="px-4 py-3 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
-           <div className="flex items-center gap-2">
-             <Activity className="w-4 h-4 text-emerald-400" />
-             <span className="text-xs font-mono text-slate-300 font-bold tracking-widest">MESSAGE BROKER</span>
-           </div>
-           <button onClick={addConsumer} disabled={consumers.length >= 3} className="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-2 py-1 rounded disabled:opacity-50">Add Consumer</button>
+          <div className="flex items-center gap-2">
+            <Activity className="w-4 h-4 text-emerald-400" />
+            <span className="text-xs font-mono text-slate-300 font-bold tracking-widest">MESSAGE BROKER</span>
+          </div>
+          <button onClick={addConsumer} disabled={consumers.length >= 3} className="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-2 py-1 rounded disabled:opacity-50">Add Consumer</button>
         </div>
-        
+
         <div className="p-6">
           <div className="flex gap-4 mb-8">
             <div className="flex-1 bg-slate-950 p-4 rounded-xl border border-slate-800">
-               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Publish (Producer)</div>
-               <div className="flex gap-2">
-                  <button onClick={() => publishMessage("User_A")} className="flex-1 bg-blue-600/20 border border-blue-500/50 hover:bg-blue-600/40 text-blue-400 text-xs py-1.5 rounded flex items-center justify-center gap-1">User A <Send className="w-3 h-3"/></button>
-                  <button onClick={() => publishMessage("User_B")} className="flex-1 bg-amber-600/20 border border-amber-500/50 hover:bg-amber-600/40 text-amber-400 text-xs py-1.5 rounded flex items-center justify-center gap-1">User B <Send className="w-3 h-3"/></button>
-                  <button onClick={() => publishMessage("User_C")} className="flex-1 bg-emerald-600/20 border border-emerald-500/50 hover:bg-emerald-600/40 text-emerald-400 text-xs py-1.5 rounded flex items-center justify-center gap-1">User C <Send className="w-3 h-3"/></button>
-               </div>
+              <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Publish (Producer)</div>
+              <div className="flex gap-2">
+                <button onClick={() => publishMessage("User_A")} className="flex-1 bg-blue-600/20 border border-blue-500/50 hover:bg-blue-600/40 text-blue-400 text-xs py-1.5 rounded flex items-center justify-center gap-1">User A <Send className="w-3 h-3" /></button>
+                <button onClick={() => publishMessage("User_B")} className="flex-1 bg-amber-600/20 border border-amber-500/50 hover:bg-amber-600/40 text-amber-400 text-xs py-1.5 rounded flex items-center justify-center gap-1">User B <Send className="w-3 h-3" /></button>
+                <button onClick={() => publishMessage("User_C")} className="flex-1 bg-emerald-600/20 border border-emerald-500/50 hover:bg-emerald-600/40 text-emerald-400 text-xs py-1.5 rounded flex items-center justify-center gap-1">User C <Send className="w-3 h-3" /></button>
+              </div>
             </div>
           </div>
 
@@ -167,35 +168,35 @@ export const EventDrivenArchitectureActivity: React.FC<ChapterProps> = ({
               <div key={partition} className="bg-slate-950 border border-slate-800 rounded-lg p-2 h-32 flex flex-col">
                 <div className="text-[10px] text-slate-500 text-center border-b border-slate-800 pb-1 mb-2">Partition {partition}</div>
                 <div className="flex-1 overflow-hidden flex flex-col gap-1">
-                   {messages.filter(m => m.partition === partition).map(m => (
-                     <div key={m.id} className={`text-[10px] px-2 py-1 rounded text-center truncate ${m.key === 'User_A' ? 'bg-blue-900/50 text-blue-400' : m.key === 'User_B' ? 'bg-amber-900/50 text-amber-400' : 'bg-emerald-900/50 text-emerald-400'}`}>
-                       Msg: {m.key}
-                     </div>
-                   ))}
+                  {messages.filter(m => m.partition === partition).map(m => (
+                    <div key={m.id} className={`text-[10px] px-2 py-1 rounded text-center truncate ${m.key === 'User_A' ? 'bg-blue-900/50 text-blue-400' : m.key === 'User_B' ? 'bg-amber-900/50 text-amber-400' : 'bg-emerald-900/50 text-emerald-400'}`}>
+                      Msg: {m.key}
+                    </div>
+                  ))}
                 </div>
               </div>
             ))}
           </div>
-          
+
           <div className="border-t border-slate-800 pt-6">
-             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2"><Users className="w-4 h-4"/> Consumer Group</div>
-             <div className="flex gap-4 justify-center">
-                {consumers.map(c => (
-                  <button 
-                    key={c.id}
-                    onClick={() => toggleConsumer(c.id)}
-                    className={`flex-1 max-w-[120px] p-3 rounded-xl border transition-all ${c.active ? 'bg-indigo-900/30 border-indigo-500' : 'bg-slate-900 border-slate-700 opacity-50 grayscale'}`}
-                  >
-                     <div className="text-xs font-bold text-slate-200 text-center mb-2">Consumer {c.id}</div>
-                     <div className="flex gap-1 justify-center flex-wrap">
-                        {c.partitionAssigned.map(p => (
-                          <span key={p} className="text-[10px] bg-slate-800 text-slate-300 px-1.5 rounded">P{p}</span>
-                        ))}
-                        {c.partitionAssigned.length === 0 && <span className="text-[10px] text-rose-400 italic">Idle</span>}
-                     </div>
-                  </button>
-                ))}
-             </div>
+            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2"><Users className="w-4 h-4" /> Consumer Group</div>
+            <div className="flex gap-4 justify-center">
+              {consumers.map(c => (
+                <button
+                  key={c.id}
+                  onClick={() => toggleConsumer(c.id)}
+                  className={`flex-1 max-w-[120px] p-3 rounded-xl border transition-all ${c.active ? 'bg-indigo-900/30 border-indigo-500' : 'bg-slate-900 border-slate-700 opacity-50 grayscale'}`}
+                >
+                  <div className="text-xs font-bold text-slate-200 text-center mb-2">Consumer {c.id}</div>
+                  <div className="flex gap-1 justify-center flex-wrap">
+                    {c.partitionAssigned.map(p => (
+                      <span key={p} className="text-[10px] bg-slate-800 text-slate-300 px-1.5 rounded">P{p}</span>
+                    ))}
+                    {c.partitionAssigned.length === 0 && <span className="text-[10px] text-rose-400 italic">Idle</span>}
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -205,9 +206,9 @@ export const EventDrivenArchitectureActivity: React.FC<ChapterProps> = ({
   const interactionContent = (
     <div className="space-y-4">
       {question.question && (
-          <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
-              {question.question}
-          </h4>
+        <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
+          {question.question}
+        </h4>
       )}
       <div className="grid grid-cols-1 gap-3">
         {question.options?.map((opt: string, i: number) => {

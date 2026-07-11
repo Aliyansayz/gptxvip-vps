@@ -1,5 +1,6 @@
 import React from 'react';
-import { Exercise } from '../../../../types';
+import { Exercise } from '../../devLushTypes';
+
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
 import BenfordsLawAudit from './BenfordsLawAudit';
 import SemanticReconciliation from './SemanticReconciliation';
@@ -18,7 +19,7 @@ export const AutomatedReconciliation: React.FC<ChapterProps> = (props) => {
   if (question.componentId === 'audit-ledger-1') {
     return <BenfordsLawAudit {...props} />;
   }
-  
+
   if (question.componentId === 'audit-ledger-2') {
     return <SemanticReconciliation {...props} />;
   }
