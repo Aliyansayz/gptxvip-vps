@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Exercise } from '../../devLushTypes';
 
 import { toast } from 'sonner';
-import { CheckCircle, XCircle, Terminal, RefreshCw, Search, LockOpen, Activity } from 'lucide-react';
+import { CheckCircle, XCircle, Terminal, RefreshCw, Search, Activity } from 'lucide-react';
 import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
 import { DevLushLayout } from '../../devLushTopicsView/DevLushLayout';
 import SaveTheoryButton from '../../../agentDevRootComponents/TopicTheoryView/SaveTheoryButton';

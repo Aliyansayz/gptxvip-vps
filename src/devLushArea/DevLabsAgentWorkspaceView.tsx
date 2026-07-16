@@ -211,7 +211,7 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
                     )}
 
                 </main>
-                {!['landing', 'devlush', 'devlush-search', 'agent-workspace'].includes(currentView as any) && (
+                {!['landing', 'devlush', 'devlush-search', 'agent-workspace', 'topic-theory'].includes(currentView as any) && (
                     <Footer theme={theme} currentView={currentView as any} />
                 )}
             </div>

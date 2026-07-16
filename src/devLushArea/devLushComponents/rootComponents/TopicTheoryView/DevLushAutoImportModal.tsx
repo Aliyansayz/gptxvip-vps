@@ -82,10 +82,10 @@ const DevLushAutoImportModal: React.FC<AutoImportModalProps> = ({ onClose }) => 
               <select
                 value={targetCollectionId}
                 onChange={(e) => setTargetCollectionId(e.target.value)}
-                className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow appearance-none cursor-pointer"
+                className="w-full bg-white dark:bg-slate-900 border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow appearance-none cursor-pointer"
               >
                 {collectionOptions.map((col) => (
-                  <option key={col.id} value={col.id} className="bg-background text-foreground">
+                  <option key={col.id} value={col.id} className="bg-white dark:bg-slate-900 text-foreground">
                     {col.name}
                   </option>
                 ))}
