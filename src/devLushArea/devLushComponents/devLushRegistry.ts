@@ -14,6 +14,7 @@ import { supplychainRegistry } from './registries/supplychainRegistry';
 import { helpdeskRegistry } from './registries/helpdeskRegistry';
 import { recommendationRegistry } from './registries/recommendationRegistry';
 import { marketingRegistry } from './registries/marketingRegistry';
+import { voiceAgentsRegistry } from './registries/voiceAgentsRegistry';
 
 export const devLushRegistry: Record<string, React.ComponentType<any>> = {
   ...reinforcementLearningRegistry,
@@ -31,6 +32,7 @@ export const devLushRegistry: Record<string, React.ComponentType<any>> = {
   ...marketingRegistry,
   ...helpdeskRegistry,
   ...recommendationRegistry,
+  ...voiceAgentsRegistry,
 };
 
 export default devLushRegistry;

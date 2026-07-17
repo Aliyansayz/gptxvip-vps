@@ -42,6 +42,7 @@ export const devLushFiles = [
   "legal",
   "supplychain",
   "helpdesk",
+  "voiceAgents",
 ];
 
 export const fetchLabsData = async (

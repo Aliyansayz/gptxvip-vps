@@ -267,19 +267,20 @@
     "interactive_questions": [
       {
         "componentId": "mp_system_design_overview",
-        "tags": [
-          "System Design",
-          "Distributed Systems",
-          "Architecture",
-          "Scalability",
-          "Reliability"
-        ],
-        "concept_tested": "Fundamentals of Distributed Systems Design",
+        "type": "interactive-visual",
         "title": "System Design: Overview",
         "prompt": "Explore the fundamental concepts of designing large-scale, highly available distributed systems.",
-        "interaction": "A static overview page introducing core system design concepts, database sharding, and event-driven architectures.",
-        "question": "Review the concepts below.",
-        "answer": null
+        "question": "According to the CAP theorem, which two guarantees can a distributed system realistically provide simultaneously when a network partition occurs?",
+        "options": [
+          "A. Consistency and Availability",
+          "B. Consistency and Partition Tolerance",
+          "C. Availability and Partition Tolerance",
+          "D. Either (B) or (C)"
+        ],
+        "answer": "D. Either (B) or (C)",
+        "explanation": "Because network partitions (P) are inevitable in distributed systems, you must choose between providing Consistency (C) or Availability (A) during a partition. Thus, the system can either be CP or AP.",
+        "theory_explanation": "System Design is the process of architecting distributed systems. A key principle is the CAP Theorem: you can only have two of Consistency, Availability, and Partition Tolerance. In reality, Partitions (network failures) will happen, so systems must choose between prioritizing Consistency (everyone sees the same data, but some requests might fail) or Availability (all requests succeed, but some users might see stale data).",
+        "real_world_analogy": "Imagine a bank with two branches that lose phone connection (Partition). If a customer wants to withdraw money, the bank can either refuse (prioritizing Consistency so accounts don't overdraw) or allow it (prioritizing Availability but risking overdraws until the phones work again)."
       }
     ],
     "tags": [

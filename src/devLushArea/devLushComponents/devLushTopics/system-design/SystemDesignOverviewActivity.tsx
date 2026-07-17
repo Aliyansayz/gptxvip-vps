@@ -1,31 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Exercise } from '../../devLushTypes';
-
 import { toast } from 'sonner';
-import { CheckCircleIcon, Network, Database, Layers, ArrowRightLeft, Activity } from 'lucide-react';
+import { CheckCircle, XCircle } from 'lucide-react';
+import { LabSettings } from '../../../agentDevRootComponents/LabSettingsMenu';
+import { DevLushLayout } from '../../devLushTopicsView/DevLushLayout';
+import SaveTheoryButton from '../../../agentDevRootComponents/TopicTheoryView/SaveTheoryButton';
+import { DevLushTheoryBridge } from '../../devLushTopicsView/DevLushTheoryBridge';
 
-// --- Reusable Components ---
-
-const SectionCard = ({ title, icon, children, id }: { title: string, icon: React.ReactNode, children: React.ReactNode, id: string }) => (
-    <div id={id} className="bg-card border border-border rounded-2xl p-6 shadow-sm scroll-mt-20">
-        <h2 className="text-2xl font-bold text-card-foreground flex items-center mb-4">{icon}<span className="ml-3">{title}</span></h2>
-        <div className="space-y-4 text-muted-foreground prose prose-sm max-w-none prose-p:my-1 prose-ul:my-2 prose-li:my-1">{children}</div>
-    </div>
-);
-
-const ExampleCard = ({ title, icon, children, visual }: { title: string, icon: React.ReactNode, children: React.ReactNode, visual: React.ReactNode }) => (
-    <div className="bg-card border border-border rounded-xl p-4 flex flex-col h-full">
-        <h3 className="font-bold text-card-foreground flex items-center mb-2">{icon}<span className="ml-2">{title}</span></h3>
-        <div className="h-40 bg-muted rounded-lg mb-3 flex items-center justify-center overflow-hidden">
-            {visual}
-        </div>
-        <div className="text-xs text-muted-foreground flex-grow">{children}</div>
-    </div>
-);
+interface ChapterProps {
+  step: number;
+  exercises: Exercise[];
+  infoVisible: boolean;
+  infoPlacement: 'side' | 'bottom';
+  settings?: LabSettings;
+}
 
 const GlobalTrafficRouterVisual: React.FC = () => {
     return (
-        <div className="w-full bg-slate-950 p-6 rounded-2xl mb-8 flex flex-col items-center justify-center relative overflow-hidden border border-slate-800 shadow-xl">
+        <div className="w-full bg-slate-950 p-6 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden border border-slate-800 shadow-xl h-full">
             <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Global Traffic Routing</h3>
             <svg viewBox="0 0 400 200" className="w-full h-64">
                 {/* Globe / Users */}
@@ -64,95 +56,149 @@ const GlobalTrafficRouterVisual: React.FC = () => {
     );
 };
 
-export const SystemDesignOverviewActivity: React.FC<{
-    exercises: Exercise[];
-    step: number;
-    onComplete: () => void;
-}> = ({ exercises, step, onComplete }) => {
-    const exercise = exercises[step] || exercises[0];
+export const SystemDesignOverviewActivity: React.FC<ChapterProps> = ({
+  step,
+  exercises,
+  infoVisible,
+  infoPlacement,
+  settings
+}) => {
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [showResult, setShowResult] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
 
-    const handleComplete = () => {
-        toast.success("Overview marked as complete!");
-        onComplete();
-    };
+  const question = exercises[step];
 
-    return (
-        <div className="space-y-8">
-            <div className="text-center">
-                <h2 className="text-3xl font-bold">{exercise.title}</h2>
-                <p className="text-muted-foreground mt-2">{exercise.prompt}</p>
-            </div>
+  useEffect(() => {
+    setSelectedAnswer(null);
+    setShowResult(false);
+    setIsCorrect(false);
+  }, [step]);
 
-            <GlobalTrafficRouterVisual />
+  const handleOptionSelect = (option: string) => {
+    if (showResult) return;
+    setSelectedAnswer(option);
+    const correct = option === question.answer;
+    setIsCorrect(correct);
+    setShowResult(true);
+    if (correct) {
+      toast.success("Correct Answer!");
+    } else {
+      toast.error("Incorrect. Try again.");
+    }
+  };
 
-            <SectionCard id="definition" title="What is System Design?" icon={<Network className="w-6 h-6 text-primary" />}>
-                <p>System Design is the process of architecting and defining the modules, interfaces, and data for a system to satisfy specified requirements. In modern applications, this usually means designing <strong>distributed systems</strong>—systems whose components are located on different networked computers, communicating and coordinating their actions by passing messages to achieve a common goal.</p>
-                <p>The main challenges involve scaling applications to handle millions of users while maintaining high availability, reliability, and low latency.</p>
-            </SectionCard>
+  const visualContent = (
+    <div className="w-full flex flex-col h-[400px]">
+      <GlobalTrafficRouterVisual />
+    </div>
+  );
 
-            <SectionCard id="tradeoffs" title="Trade-offs & Fundamentals" icon={<ArrowRightLeft className="w-6 h-6 text-primary" />}>
-                <div className="w-full h-48 bg-background rounded-lg p-4 flex items-center justify-center">
-                    <svg viewBox="0 0 300 100" className="w-full h-full">
-                        <circle cx="150" cy="50" r="40" fill="hsl(var(--primary)/0.1)" stroke="hsl(var(--primary))" strokeWidth="2" strokeDasharray="5,5" />
-                        <circle cx="130" cy="40" r="25" fill="hsl(var(--accent)/0.2)" stroke="hsl(var(--accent-foreground))" />
-                        <text x="130" y="45" textAnchor="middle" fontSize="8" fill="hsl(var(--foreground))">Consistency</text>
-                        <circle cx="170" cy="40" r="25" fill="hsl(var(--destructive)/0.2)" stroke="hsl(var(--destructive))" />
-                        <text x="170" y="45" textAnchor="middle" fontSize="8" fill="hsl(var(--foreground))">Availability</text>
-                        <circle cx="150" cy="75" r="25" fill="hsl(var(--success-DEFAULT, #22c55e)/0.2)" stroke="hsl(var(--success-DEFAULT, #22c55e))" />
-                        <text x="150" y="80" textAnchor="middle" fontSize="8" fill="hsl(var(--foreground))">Partition Tolerance</text>
-                        <text x="150" y="15" textAnchor="middle" fontSize="12" fontWeight="bold" fill="hsl(var(--foreground))">CAP Theorem</text>
-                    </svg>
+  const interactionContent = (
+    <div className="w-full flex flex-col h-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+      <div className="p-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
+        <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">
+          {question?.title}
+        </h3>
+        <p className="text-sm text-slate-600 dark:text-slate-300">
+          {question?.question}
+        </p>
+      </div>
+
+      <div className="p-5 flex-1 flex flex-col justify-center bg-slate-50 dark:bg-slate-900">
+        <div className="space-y-3">
+          {question?.options?.map((option, idx) => {
+            const isSelected = selectedAnswer === option;
+            const isCorrectOption = option === question.answer;
+
+            let btnClass = "w-full text-left p-4 rounded-xl border-2 transition-all duration-200 font-medium ";
+
+            if (!showResult) {
+              btnClass += "border-slate-200 dark:border-slate-700 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 text-slate-700 dark:text-slate-300";
+            } else {
+              if (isCorrectOption) {
+                btnClass += "border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300";
+              } else if (isSelected) {
+                btnClass += "border-rose-500 bg-rose-50 dark:bg-rose-900/20 text-rose-700 dark:text-rose-300";
+              } else {
+                btnClass += "border-slate-200 dark:border-slate-700 opacity-50 text-slate-500";
+              }
+            }
+
+            return (
+              <button
+                key={idx}
+                onClick={() => handleOptionSelect(option)}
+                disabled={showResult}
+                className={btnClass}
+              >
+                <div className="flex justify-between items-center">
+                  <span>{option}</span>
+                  {showResult && isCorrectOption && <CheckCircle className="w-5 h-5 text-emerald-500" />}
+                  {showResult && isSelected && !isCorrectOption && <XCircle className="w-5 h-5 text-rose-500" />}
                 </div>
-                <p>Designing distributed systems is all about trade-offs:</p>
-                <ul>
-                    <li><strong>CAP Theorem:</strong> You can only have two out of three: Consistency, Availability, and Partition Tolerance. In a distributed system, partitions (network failures) are inevitable, so you must choose between Consistency and Availability.</li>
-                    <li><strong>Latency vs. Throughput:</strong> Making a single request faster (latency) vs. handling more requests concurrently (throughput).</li>
-                    <li><strong>Horizontal vs. Vertical Scaling:</strong> Adding more machines (horizontal) vs. adding more power to an existing machine (vertical).</li>
-                </ul>
-            </SectionCard>
-
-            <SectionCard id="applications" title="Interactive Examples in System Design" icon={<Layers className="w-6 h-6 text-primary" />}>
-                <div className="grid md:grid-cols-2 gap-4">
-                    <ExampleCard title="Database Sharding" icon={<Database className="w-5 h-5 text-blue-500" />} visual={
-                        <svg viewBox="0 0 100 60" className="w-full h-full">
-                            <rect x="10" y="10" width="20" height="40" rx="3" fill="hsl(var(--primary))" opacity="0.8" />
-                            <rect x="40" y="10" width="20" height="40" rx="3" fill="hsl(var(--primary))" opacity="0.6" />
-                            <rect x="70" y="10" width="20" height="40" rx="3" fill="hsl(var(--primary))" opacity="0.4" />
-                            <path d="M 15 20 L 25 20 M 15 30 L 25 30 M 15 40 L 25 40" stroke="white" strokeWidth="2" />
-                            <path d="M 45 20 L 55 20 M 45 30 L 55 30 M 45 40 L 55 40" stroke="white" strokeWidth="2" />
-                            <path d="M 75 20 L 85 20 M 75 30 L 85 30 M 75 40 L 85 40" stroke="white" strokeWidth="2" />
-                            <path d="M 50 5 L 20 5 M 50 5 L 80 5" stroke="hsl(var(--foreground))" strokeWidth="1" strokeDasharray="2,2" />
-                            <circle cx="50" cy="5" r="3" fill="hsl(var(--destructive))" />
-                        </svg>}>
-                        Learn how to scale databases horizontally by splitting a single logical dataset into multiple distinct physical partitions (shards). Explore shard keys, consistent hashing, and failover mechanics.
-                    </ExampleCard>
-                    <ExampleCard title="Event-Driven Architecture" icon={<Activity className="w-5 h-5 text-green-500" />} visual={
-                        <svg viewBox="0 0 100 60" className="w-full h-full">
-                            <rect x="10" y="25" width="20" height="10" rx="2" fill="hsl(var(--muted-foreground))" />
-                            <text x="20" y="32" textAnchor="middle" fontSize="6" fill="white">Producer</text>
-                            <rect x="40" y="10" width="20" height="40" rx="2" fill="hsl(var(--accent))" stroke="hsl(var(--accent-foreground))" />
-                            <text x="50" y="25" textAnchor="middle" fontSize="6" fill="hsl(var(--foreground))">Kafka</text>
-                            <text x="50" y="35" textAnchor="middle" fontSize="6" fill="hsl(var(--foreground))">Broker</text>
-                            <rect x="70" y="15" width="20" height="10" rx="2" fill="hsl(var(--primary))" />
-                            <text x="80" y="22" textAnchor="middle" fontSize="6" fill="white">Consumer</text>
-                            <rect x="70" y="35" width="20" height="10" rx="2" fill="hsl(var(--primary))" />
-                            <text x="80" y="42" textAnchor="middle" fontSize="6" fill="white">Consumer</text>
-                            <path d="M 30 30 L 40 30" stroke="hsl(var(--foreground))" strokeWidth="1.5" markerEnd="url(#arrow-sys)" />
-                            <path d="M 60 20 L 70 20" stroke="hsl(var(--foreground))" strokeWidth="1.5" markerEnd="url(#arrow-sys)" />
-                            <path d="M 60 40 L 70 40" stroke="hsl(var(--foreground))" strokeWidth="1.5" markerEnd="url(#arrow-sys)" />
-                            <defs><marker id="arrow-sys" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="hsl(var(--foreground))" /></marker></defs>
-                        </svg>}>
-                        Simulate asynchronous communication where producers emit events to brokers, and consumers process them independently. Visualize topic partitions, offsets, and pub/sub patterns.
-                    </ExampleCard>
-                </div>
-            </SectionCard>
-
-            <div className="p-4 bg-accent rounded-lg text-center">
-                <button onClick={handleComplete} className="mt-4 px-4 py-2 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 flex items-center gap-2 mx-auto">
-                    <CheckCircleIcon className="w-5 h-5" />
-                    Mark as Reviewed
-                </button>
-            </div>
+              </button>
+            );
+          })}
         </div>
-    );
+      </div>
+
+      {showResult && (
+        <div className={`p-4 border-t ${isCorrect
+            ? 'bg-emerald-50 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-900/30'
+            : 'bg-rose-50 border-rose-100 dark:bg-rose-900/20 dark:border-rose-900/30'
+          }`}>
+          <div className="flex items-start gap-3">
+            {isCorrect ? (
+              <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 mt-0.5" />
+            ) : (
+              <XCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 mt-0.5" />
+            )}
+            <div>
+              <h4 className={`font-bold ${isCorrect ? 'text-emerald-800 dark:text-emerald-300' : 'text-rose-800 dark:text-rose-300'}`}>
+                {isCorrect ? 'Correct!' : 'Incorrect'}
+              </h4>
+              <p className={`text-sm mt-1 ${isCorrect ? 'text-emerald-700 dark:text-emerald-400/80' : 'text-rose-700 dark:text-rose-400/80'}`}>
+                {question.explanation}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  const theoryData = question?.theory || (question?.theory_explanation ? {
+    title: question.title || "Theory Concept",
+    content: question.theory_explanation,
+    summary: question.real_world_analogy || undefined
+  } : null);
+
+  const theoryContent = theoryData ? (
+    <div className="h-full flex flex-col">
+      <div className="flex justify-end items-center mb-2">
+        <SaveTheoryButton theory={theoryData} />
+      </div>
+      <div className="flex-1">
+        <DevLushTheoryBridge item={{ labId: 'system-design', exerciseTitle: question.title, theory: theoryData }} />
+      </div>
+    </div>
+  ) : null;
+
+  if (!question) return null;
+
+  return (
+    <DevLushLayout
+      title={question.title}
+      prompt={question.prompt}
+      visualContent={visualContent}
+      interactionContent={interactionContent}
+      theoryContent={theoryContent}
+      infoVisible={infoVisible && !!theoryData}
+      infoPlacement={infoPlacement}
+      settings={settings}
+    />
+  );
 };
+
+export default SystemDesignOverviewActivity;

@@ -1,0 +1,108 @@
+[
+  {
+    "id": "voice-agent-overview",
+    "title": "Voice Agents Overview",
+    "course": "Voice Agents",
+    "chapter_title": "Overview",
+    "labComponentId": "voice-agent-overview",
+    "critical_concepts": [
+      {
+        "concept": "Realtime API",
+        "elaboration": "Enables low-latency, bidirectional audio streaming between the user and the agent."
+      },
+      {
+        "concept": "Voice Activity Detection (VAD)",
+        "elaboration": "Automatically detects when the user starts or stops speaking to manage interruptions naturally."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "voice-agent-overview",
+        "type": "interactive-visual",
+        "title": "Voice Agent Core Concepts",
+        "prompt": "Explore the fundamental concepts of voice-based AI agents.",
+        "question": "What is the primary benefit of using a Realtime WebSockets API for voice agents over traditional REST API loops?",
+        "options": [
+          "A. It reduces the cost of LLM tokens.",
+          "B. It allows for extremely low-latency, bidirectional streaming and natural interruptions.",
+          "C. It prevents the model from needing external tools.",
+          "D. It guarantees a deterministic output for every run."
+        ],
+        "answer": "B. It allows for extremely low-latency, bidirectional streaming and natural interruptions.",
+        "explanation": "Realtime WebSockets allow audio to be streamed chunk-by-chunk in both directions without the HTTP overhead of request-response cycles, enabling sub-second latency and interruption handling.",
+        "theory_explanation": "Voice Agents leverage continuous audio streaming to interact with users. Unlike text-based agents, they must handle Voice Activity Detection (VAD) to know when to listen and when to speak, and they must handle interruptions gracefully, stopping playback instantly when the user cuts in.",
+        "real_world_analogy": "Like a normal phone call rather than leaving voicemails back and forth.",
+        "visual_element": "activity"
+      }
+    ],
+    "tags": ["devlush", "agents", "voice", "audio", "realtime"]
+  },
+  {
+    "id": "voice-agent-typescript",
+    "title": "Voice Agent in TypeScript",
+    "course": "Voice Agents",
+    "chapter_title": "Implementation",
+    "labComponentId": "voice-agent-typescript",
+    "critical_concepts": [
+      {
+        "concept": "WebSockets",
+        "elaboration": "Establishing persistent connections for real-time audio streams."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "voice-agent-typescript",
+        "type": "interactive-visual",
+        "title": "TS Voice Implementation",
+        "prompt": "Review the TypeScript implementation for streaming audio to an AI model.",
+        "question": "In the OpenAI Realtime API Node.js SDK, which event indicates that the server has sent a piece of audio for playback?",
+        "options": [
+          "A. server.response.done",
+          "B. server.audio.delta",
+          "C. client.audio.append",
+          "D. server.text.delta"
+        ],
+        "answer": "B. server.audio.delta",
+        "explanation": "The 'server.audio.delta' event streams back chunks of generated audio data as the model generates it, allowing for immediate playback.",
+        "theory_explanation": "When building voice agents in Node.js/TypeScript, you typically use WebSockets (or the official SDKs which abstract them) to establish a connection. You send audio buffers from the microphone (or file) and receive delta events containing audio chunks to play through the speaker.",
+        "real_world_analogy": "Like a live radio broadcast where you hear the words as they are spoken, rather than waiting for the whole show to be recorded.",
+        "visual_element": "activity"
+      }
+    ],
+    "tags": ["devlush", "agents", "voice", "typescript"]
+  },
+  {
+    "id": "voice-agent-python",
+    "title": "Voice Agent in Python",
+    "course": "Voice Agents",
+    "chapter_title": "Implementation",
+    "labComponentId": "voice-agent-python",
+    "critical_concepts": [
+      {
+        "concept": "Asyncio",
+        "elaboration": "Used to handle concurrent WebSocket connections and audio processing in Python."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "voice-agent-python",
+        "type": "interactive-visual",
+        "title": "Python Voice Implementation",
+        "prompt": "Review the Python implementation for streaming audio over WebSockets.",
+        "question": "Why is 'asyncio' heavily used in Python voice agent implementations?",
+        "options": [
+          "A. To process the audio data mathematically.",
+          "B. To handle non-blocking WebSocket I/O for sending and receiving audio concurrently.",
+          "C. To encode audio in base64 format.",
+          "D. To train the AI model."
+        ],
+        "answer": "B. To handle non-blocking WebSocket I/O for sending and receiving audio concurrently.",
+        "explanation": "Asyncio enables Python programs to efficiently manage I/O bound tasks like streaming audio data back and forth over WebSockets without blocking the main thread.",
+        "theory_explanation": "Python voice agents often rely on libraries like 'websockets' and 'asyncio'. You connect to the Realtime API, use an async loop to read microphone data and send it, and concurrently listen for incoming messages from the server to play the generated audio.",
+        "real_world_analogy": "Like a juggler tossing balls in the air; asyncio allows the program to handle incoming audio and outgoing audio at the same time without dropping either.",
+        "visual_element": "activity"
+      }
+    ],
+    "tags": ["devlush", "agents", "voice", "python"]
+  }
+]
