@@ -1,6 +1,29 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Key, Ticket, UserCheck, ShieldAlert, Coins, Lock, Package, Sparkles, Radio, Bot, Target, Layers } from 'lucide-react';
+import { Key, Ticket, UserCheck, ShieldAlert, Coins, Lock, Package, Sparkles, Radio, Bot, Target, Layers, Database, Activity, Map, ArrowRight, Route, Building2 } from 'lucide-react';
+import {
+    DatabaseShardingVisual,
+    EventDrivenVisual,
+    LoadBalancingVisual,
+    RateLimitingVisual,
+    ApiGatewayVisual,
+    CapTheoremVisual
+} from '../devLushTopics/system-design/visuals';
+import {
+    PerceptionLoopVisual,
+    OrchestratorVisual,
+    HandoffsVisual,
+    SpecialistTeamsVisual,
+    ReactPatternVisual,
+    EvaluatorOptimizerVisual,
+    SequentialChainingVisual,
+    ParallelFanoutVisual,
+    HumanInTheLoopVisual,
+    SingleAgentVisual
+} from '../devLushTopics/agentTypes/visuals';
+import {
+    MemoryArchitecturesVisual
+} from '../devLushTopics/agentMemories/visuals';
 
 interface DevLushTheoryVisualProps {
     analogyName: string;
@@ -11,77 +34,39 @@ export const DevLushTheoryVisual: React.FC<DevLushTheoryVisualProps> = ({ analog
     const lowerKeywords = keywords.map(k => (k || '').toLowerCase());
     const has = (k: string) => lowerKeywords.some(kw => kw.includes(k));
 
+    // SYSTEM DESIGN: Database Sharding
+    if (has('library-warehouse') || has('library') || has('sharding')) {
+        return <DatabaseShardingVisual />;
+    }
+
+    // SYSTEM DESIGN: Event-Driven Architecture
+    if (has('restaurant-kitchen') || has('kitchen') || has('event-driven')) {
+        return <EventDrivenVisual />;
+    }
+
+    // SYSTEM DESIGN: Load Balancing
+    if (has('grocery-checkout') || has('grocery store') || has('load-balancing')) {
+        return <LoadBalancingVisual />;
+    }
+
+    // SYSTEM DESIGN: Rate Limiting
+    if (has('theme-park-queue') || has('theme park') || has('rate-limiting')) {
+        return <RateLimitingVisual />;
+    }
+
+    // SYSTEM DESIGN: API Gateway
+    if (has('hotel-concierge') || has('hotel concierge') || has('api-gateway')) {
+        return <ApiGatewayVisual />;
+    }
+
+    // SYSTEM DESIGN: Overview (CAP Theorem)
+    if (has('bank-partition') || has('bank with two branches') || has('cap-theorem')) {
+        return <CapTheoremVisual />;
+    }
+
     // 1. Perception-Reasoning-Action Loops (Autonomous Recon / Drone / Analyst)
     if (has('perception') || has('analyst') || has('scanning') || has('drone')) {
-        return (
-            <div className="my-4 p-5 bg-gradient-to-br from-emerald-50 to-slate-100 dark:from-slate-900 dark:to-slate-900/80 rounded-2xl border border-emerald-100 dark:border-emerald-950/40 shadow-md flex flex-col w-full hover:shadow-lg transition-all duration-300 animate-in fade-in-50">
-                <div className="flex items-center gap-2 mb-3">
-                    <span className="p-1.5 bg-emerald-500/10 rounded-lg text-emerald-600 dark:text-emerald-400">
-                        <Radio className="w-4 h-4 animate-pulse" />
-                    </span>
-                    <h5 className="text-xs font-bold text-emerald-900 dark:text-emerald-300 uppercase tracking-wider">
-                        Concept: Perception-Reasoning-Action Loop
-                    </h5>
-                </div>
-                
-                {/* Visual Canvas */}
-                <div className="relative w-full h-48 bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex flex-col justify-between p-3">
-                    <div className="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:20px_20px] opacity-10" />
-                    
-                    <div className="flex justify-between items-start z-10">
-                        <span className="text-[9px] font-mono text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800/40">
-                          SYS_STATUS: ACTIVE_LOOP
-                        </span>
-                        <span className="text-[9px] font-mono text-cyan-400 bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-800/40 animate-pulse">
-                          MODEL: OMNI_FLASH
-                        </span>
-                    </div>
-
-                    {/* SVG diagram representing autonomous drone scanning */}
-                    <svg viewBox="0 0 400 120" className="w-full h-24 z-10">
-                        {/* Central Agent brain */}
-                        <g transform="translate(180, 40)">
-                            <rect x="-30" y="-15" width="60" height="30" rx="4" fill="#022c22" stroke="#10b981" strokeWidth="1.5" />
-                            <text x="0" y="3" fill="#34d399" fontSize="8" fontWeight="bold" textAnchor="middle" fontFamily="monospace">LLM AGENT</text>
-                        </g>
-
-                        {/* Environment state / Targets */}
-                        <g transform="translate(30, 40)">
-                            <rect x="-25" y="-15" width="50" height="30" rx="4" fill="#0f172a" stroke="#64748b" strokeWidth="1" />
-                            <text x="0" y="3" fill="#94a3b8" fontSize="7" textAnchor="middle" fontFamily="monospace">ENV STATUS</text>
-                        </g>
-
-                        <g transform="translate(330, 40)">
-                            <rect x="-25" y="-15" width="50" height="30" rx="4" fill="#4c0519" stroke="#f43f5e" strokeWidth="1" />
-                            <text x="0" y="3" fill="#fda4af" fontSize="7" textAnchor="middle" fontFamily="monospace">EXPLOIT TOOL</text>
-                        </g>
-
-                        {/* Connectors / Flow of Loop */}
-                        {/* Perceive: Env -> Agent */}
-                        <path d="M 55 45 C 100 45, 110 30, 140 30" fill="none" stroke="#10b981" strokeWidth="1.5" strokeDasharray="3 3" />
-                        <motion.circle r="3" fill="#10b981" animate={{ cx: [55, 140], cy: [45, 30] }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} />
-                        <text x="95" y="25" fill="#10b981" fontSize="7" fontFamily="monospace" textAnchor="middle">1. PERCEIVE</text>
-
-                        {/* Reason: Internal logic circular ring */}
-                        <motion.circle cx="180" cy="40" r="22" fill="none" stroke="#06b6d4" strokeWidth="1" strokeDasharray="4 4" animate={{ rotate: 360 }} transition={{ duration: 8, repeat: Infinity, ease: "linear" }} />
-                        <text x="180" y="10" fill="#06b6d4" fontSize="7" fontFamily="monospace" textAnchor="middle">2. REASON</text>
-
-                        {/* Act: Agent -> Tool */}
-                        <path d="M 220 30 C 250 30, 260 45, 305 45" fill="none" stroke="#06b6d4" strokeWidth="1.5" />
-                        <motion.circle r="3" fill="#06b6d4" animate={{ cx: [220, 305], cy: [30, 45] }} transition={{ duration: 2, repeat: Infinity, ease: "linear", delay: 1 }} />
-                        <text x="260" y="25" fill="#06b6d4" fontSize="7" fontFamily="monospace" textAnchor="middle">3. ACTION</text>
-                    </svg>
-
-                    <div className="text-[10px] text-slate-400 text-center z-10 bg-slate-900/85 py-1 px-2 rounded border border-emerald-950">
-                        Autonomous loops replace static templates with dynamic tool responses.
-                    </div>
-                </div>
-
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed">
-                    <strong>Perception Loop Analogy:</strong> A military drone doesn't follow a hardcoded flight plan. It continuously sweeps the field, receives live radar data (Perceive), calculates target threat level (Reason), and engages optimal tactics (Action) dynamically.
-                </p>
-            </div>
-        );
+        return <PerceptionLoopVisual />;
     }
 
     // 2. Prompt Injection Containment (Poisoned Translation / Hypnotist Teleprompter)
@@ -912,109 +897,17 @@ export const DevLushTheoryVisual: React.FC<DevLushTheoryVisualProps> = ({ analog
 
     // 3. Multi-Agent / Orchestrator
     if (has('orchestrator') || has('multi-agent') || has('master') || has('traffic') || has('manager')) {
-        return (
-            <div className="my-4 p-5 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700/50 shadow-sm flex flex-col items-center w-full transition-all hover:shadow-md">
-                <h5 className="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">
-                    Analogy: {analogyName || 'The Factory Foreman'}
-                </h5>
-                <svg viewBox="0 0 200 100" className="w-full max-w-[240px] h-auto">
-                    {/* Foreman (Orchestrator) */}
-                    <rect x="80" y="10" width="40" height="20" rx="4" fill="none" stroke="currentColor" strokeWidth="2" className="text-indigo-500" />
-                    <text x="100" y="23" fontSize="8" textAnchor="middle" className="fill-indigo-500 font-bold">MASTER</text>
-
-                    {/* Workers */}
-                    <rect x="20" y="60" width="30" height="20" rx="2" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-400" />
-                    <rect x="85" y="60" width="30" height="20" rx="2" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-400" />
-                    <rect x="150" y="60" width="30" height="20" rx="2" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-400" />
-
-                    {/* Delegation Lines */}
-                    <path d="M 100 30 L 100 45 L 35 45 L 35 60" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300 stroke-dashed" />
-                    <path d="M 100 30 L 100 60" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300 stroke-dashed" />
-                    <path d="M 100 30 L 100 45 L 165 45 L 165 60" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300 stroke-dashed" />
-
-                    {/* Task Pulses */}
-                    <motion.circle cx="35" cy="45" r="3" fill="currentColor" className="text-indigo-400"
-                        animate={{ cy: [30, 60], cx: [100, 35] }} transition={{ duration: 1.5, repeat: Infinity }} />
-                    <motion.circle cx="100" cy="45" r="3" fill="currentColor" className="text-indigo-400"
-                        animate={{ cy: [30, 60], cx: [100, 100] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }} />
-                    <motion.circle cx="165" cy="45" r="3" fill="currentColor" className="text-indigo-400"
-                        animate={{ cy: [30, 60], cx: [100, 165] }} transition={{ duration: 1.5, repeat: Infinity, delay: 1 }} />
-                </svg>
-                <p className="text-[10px] text-center mt-2 text-slate-500 italic">
-                    A central intelligence delegating tasks to specialized workers.
-                </p>
-            </div>
-        );
+        return <OrchestratorVisual analogyName={analogyName} />;
     }
 
     // 3b. Handoffs
     if (has('handoff') || has('sequential routing')) {
-        return (
-            <div className="my-4 p-5 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700/50 shadow-sm flex flex-col items-center w-full transition-all hover:shadow-md">
-                <h5 className="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">
-                    Analogy: {analogyName || 'The Relay Race'}
-                </h5>
-                <svg viewBox="0 0 200 100" className="w-full max-w-[240px] h-auto">
-                    {/* Agents */}
-                    <rect x="20" y="40" width="40" height="20" rx="4" fill="none" stroke="currentColor" strokeWidth="2" className="text-indigo-500" />
-                    <text x="40" y="53" fontSize="8" textAnchor="middle" className="fill-indigo-500 font-bold">AGENT 1</text>
-                    
-                    <rect x="140" y="40" width="40" height="20" rx="4" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500" />
-                    <text x="160" y="53" fontSize="8" textAnchor="middle" className="fill-emerald-500 font-bold">AGENT 2</text>
-
-                    {/* Baton Passing */}
-                    <path d="M 60 50 L 140 50" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-300 stroke-dashed" />
-                    
-                    <motion.rect x="90" y="45" width="20" height="10" rx="2" fill="currentColor" className="text-amber-500"
-                        animate={{ x: [60, 120] }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} />
-                    <motion.text x="100" y="53" fontSize="6" textAnchor="middle" className="fill-white font-bold"
-                        animate={{ x: [70, 130] }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}>CTX</motion.text>
-                </svg>
-                <p className="text-[10px] text-center mt-2 text-slate-500 italic">
-                    Passing control and full context memory to the next specialist.
-                </p>
-            </div>
-        );
+        return <HandoffsVisual analogyName={analogyName} />;
     }
 
     // 3c. Specialist Teams / Worker
     if (has('worker') || has('specialist') || has('teams')) {
-        return (
-            <div className="my-4 p-5 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700/50 shadow-sm flex flex-col items-center w-full transition-all hover:shadow-md">
-                <h5 className="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">
-                    Analogy: {analogyName || 'The Special Ops Team'}
-                </h5>
-                <svg viewBox="0 0 200 100" className="w-full max-w-[240px] h-auto">
-                    {/* Hub */}
-                    <circle cx="100" cy="50" r="15" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-300" />
-                    <text x="100" y="53" fontSize="6" textAnchor="middle" className="fill-slate-500 font-bold">CONTEXT</text>
-
-                    {/* Specialists */}
-                    <rect x="20" y="20" width="30" height="15" rx="2" fill="none" stroke="currentColor" strokeWidth="2" className="text-rose-500" />
-                    <text x="35" y="30" fontSize="6" textAnchor="middle" className="fill-rose-500 font-bold">RED</text>
-                    <path d="M 50 27 L 88 43" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300 stroke-dashed" />
-
-                    <rect x="150" y="20" width="30" height="15" rx="2" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-500" />
-                    <text x="165" y="30" fontSize="6" textAnchor="middle" className="fill-blue-500 font-bold">BLUE</text>
-                    <path d="M 150 27 L 112 43" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300 stroke-dashed" />
-
-                    <rect x="85" y="80" width="30" height="15" rx="2" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-500" />
-                    <text x="100" y="90" fontSize="6" textAnchor="middle" className="fill-amber-500 font-bold">GOLD</text>
-                    <path d="M 100 80 L 100 65" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300 stroke-dashed" />
-
-                    {/* Pulses */}
-                    <motion.circle cx="50" cy="27" r="2" fill="currentColor" className="text-rose-400"
-                        animate={{ cx: [50, 88], cy: [27, 43] }} transition={{ duration: 2, repeat: Infinity }} />
-                    <motion.circle cx="150" cy="27" r="2" fill="currentColor" className="text-blue-400"
-                        animate={{ cx: [150, 112], cy: [27, 43] }} transition={{ duration: 2, repeat: Infinity, delay: 0.6 }} />
-                    <motion.circle cx="100" cy="80" r="2" fill="currentColor" className="text-amber-400"
-                        animate={{ cx: [100, 100], cy: [80, 65] }} transition={{ duration: 2, repeat: Infinity, delay: 1.2 }} />
-                </svg>
-                <p className="text-[10px] text-center mt-2 text-slate-500 italic">
-                    Experts contributing distinct skills to a shared goal.
-                </p>
-            </div>
-        );
+        return <SpecialistTeamsVisual analogyName={analogyName} />;
     }
 
     // 3. Multi-Agent / Orchestrator
@@ -1117,258 +1010,37 @@ export const DevLushTheoryVisual: React.FC<DevLushTheoryVisualProps> = ({ analog
 
     // 7. ReAct Pattern / Thought-Action-Observation
     if (has('react') || has('reason') || has('thought') || has('act') || has('detective')) {
-        return (
-            <div className="my-4 p-5 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700/50 shadow-sm flex flex-col items-center w-full transition-all hover:shadow-md">
-                <h5 className="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">
-                    Analogy: {analogyName || 'The Detective Loop'}
-                </h5>
-                <svg viewBox="0 0 200 100" className="w-full max-w-[240px] h-auto">
-                    {/* Nodes */}
-                    <circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" strokeWidth="2" className="text-purple-500" />
-                    <text x="50" y="53" fontSize="8" textAnchor="middle" className="fill-purple-500 font-bold">THINK</text>
-
-                    <rect x="130" y="20" width="30" height="20" rx="4" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-500" />
-                    <text x="145" y="33" fontSize="8" textAnchor="middle" className="fill-amber-500 font-bold">ACT</text>
-
-                    <rect x="130" y="60" width="30" height="20" rx="4" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500" />
-                    <text x="145" y="73" fontSize="8" textAnchor="middle" className="fill-emerald-500 font-bold">OBSERVE</text>
-
-                    {/* Connecting lines */}
-                    <path d="M 60 40 L 130 30" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-300 stroke-dashed" />
-                    <path d="M 145 40 L 145 60" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-300 stroke-dashed" />
-                    <path d="M 130 70 L 60 60" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-300 stroke-dashed" />
-
-                    {/* Animated loop packet */}
-                    <motion.circle cx="60" cy="40" r="3" fill="currentColor" className="text-purple-400"
-                        animate={{ 
-                            cx: [60, 130, 145, 145, 130, 60], 
-                            cy: [40, 30, 30, 60, 70, 60] 
-                        }} 
-                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }} 
-                    />
-                </svg>
-                <p className="text-[10px] text-center mt-2 text-slate-500 italic">
-                    Interleaving reasoning and environmental interaction.
-                </p>
-            </div>
-        );
+        return <ReactPatternVisual analogyName={analogyName} />;
     }
 
     // 8. Evaluator-Optimizer
     if (has('evaluator') || has('optimizer') || has('critique') || has('feedback') || has('writer') || has('editor')) {
-        return (
-            <div className="my-4 p-5 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700/50 shadow-sm flex flex-col items-center w-full transition-all hover:shadow-md">
-                <h5 className="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">
-                    Analogy: {analogyName || 'The Editor and Writer'}
-                </h5>
-                <svg viewBox="0 0 200 100" className="w-full max-w-[240px] h-auto">
-                    {/* Generator */}
-                    <rect x="30" y="40" width="40" height="20" rx="4" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-500" />
-                    <text x="50" y="53" fontSize="8" textAnchor="middle" className="fill-blue-500 font-bold">GENERATE</text>
-
-                    {/* Evaluator */}
-                    <rect x="130" y="40" width="40" height="20" rx="4" fill="none" stroke="currentColor" strokeWidth="2" className="text-rose-500" />
-                    <text x="150" y="53" fontSize="8" textAnchor="middle" className="fill-rose-500 font-bold">CRITIQUE</text>
-
-                    {/* Forward Draft */}
-                    <path d="M 70 45 L 130 45" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-300 stroke-dashed" />
-                    {/* Feedback loop */}
-                    <path d="M 130 55 L 70 55" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-300 stroke-dashed" />
-
-                    {/* Data packets */}
-                    <motion.circle cx="70" cy="45" r="3" fill="currentColor" className="text-blue-400"
-                        animate={{ cx: [70, 130, 130] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }} />
-                    <motion.circle cx="130" cy="55" r="3" fill="currentColor" className="text-rose-400"
-                        animate={{ cx: [130, 70, 70] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.75, ease: "easeInOut" }} />
-                </svg>
-                <p className="text-[10px] text-center mt-2 text-slate-500 italic">
-                    A generator refines outputs based on strict evaluation.
-                </p>
-            </div>
-        );
+        return <EvaluatorOptimizerVisual analogyName={analogyName} />;
     }
 
     // 9. Sequential Chaining
     if (has('sequential') || has('chaining') || has('pipeline') || has('linear') || has('assembly')) {
-        return (
-            <div className="my-4 p-5 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700/50 shadow-sm flex flex-col items-center w-full transition-all hover:shadow-md">
-                <h5 className="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">
-                    Analogy: {analogyName || 'The Assembly Line'}
-                </h5>
-                <svg viewBox="0 0 200 100" className="w-full max-w-[240px] h-auto">
-                    {/* Nodes in a line */}
-                    <circle cx="30" cy="50" r="10" fill="none" stroke="currentColor" strokeWidth="2" className="text-indigo-500" />
-                    <circle cx="100" cy="50" r="10" fill="none" stroke="currentColor" strokeWidth="2" className="text-indigo-500" />
-                    <circle cx="170" cy="50" r="10" fill="none" stroke="currentColor" strokeWidth="2" className="text-indigo-500" />
-
-                    {/* Connecting lines */}
-                    <path d="M 40 50 L 90 50" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-300 stroke-dashed" />
-                    <path d="M 110 50 L 160 50" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-300 stroke-dashed" />
-
-                    {/* Animated packet traveling through chain */}
-                    <motion.circle cx="10" cy="50" r="4" fill="currentColor" className="text-emerald-500"
-                        animate={{ cx: [10, 30, 90, 100, 160, 170, 190] }} 
-                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }} />
-                </svg>
-                <p className="text-[10px] text-center mt-2 text-slate-500 italic">
-                    Sequential processing where step B strictly waits for step A.
-                </p>
-            </div>
-        );
+        return <SequentialChainingVisual analogyName={analogyName} />;
     }
 
     // 10. Parallel Fanout
     if (has('parallel') || has('fanout') || has('scatter') || has('delegating')) {
-        return (
-            <div className="my-4 p-5 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700/50 shadow-sm flex flex-col items-center w-full transition-all hover:shadow-md">
-                <h5 className="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">
-                    Analogy: {analogyName || 'The Newsroom Spread'}
-                </h5>
-                <svg viewBox="0 0 200 100" className="w-full max-w-[240px] h-auto">
-                    {/* Central dispatcher */}
-                    <circle cx="40" cy="50" r="10" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-500" />
-                    
-                    {/* Parallel nodes */}
-                    <rect x="100" y="10" width="20" height="20" rx="2" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-500" />
-                    <rect x="100" y="40" width="20" height="20" rx="2" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-500" />
-                    <rect x="100" y="70" width="20" height="20" rx="2" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-500" />
-                    
-                    {/* Aggregator */}
-                    <circle cx="160" cy="50" r="10" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500" />
-
-                    {/* Fanout lines */}
-                    <path d="M 50 45 L 100 20" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300" />
-                    <path d="M 50 50 L 100 50" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300" />
-                    <path d="M 50 55 L 100 80" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300" />
-
-                    {/* Fan-in lines */}
-                    <path d="M 120 20 L 155 45" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300" />
-                    <path d="M 120 50 L 150 50" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300" />
-                    <path d="M 120 80 L 155 55" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300" />
-
-                    {/* Animated Fanout */}
-                    <motion.circle cx="50" cy="45" r="2" fill="currentColor" className="text-blue-400" animate={{ cx: [50, 100], cy: [45, 20] }} transition={{ duration: 1, repeat: Infinity }} />
-                    <motion.circle cx="50" cy="50" r="2" fill="currentColor" className="text-blue-400" animate={{ cx: [50, 100] }} transition={{ duration: 1, repeat: Infinity }} />
-                    <motion.circle cx="50" cy="55" r="2" fill="currentColor" className="text-blue-400" animate={{ cx: [50, 100], cy: [55, 80] }} transition={{ duration: 1, repeat: Infinity }} />
-
-                    {/* Animated Fan-in */}
-                    <motion.circle cx="120" cy="20" r="2" fill="currentColor" className="text-emerald-400" animate={{ cx: [120, 155], cy: [20, 45] }} transition={{ duration: 1, repeat: Infinity, delay: 1 }} />
-                    <motion.circle cx="120" cy="50" r="2" fill="currentColor" className="text-emerald-400" animate={{ cx: [120, 150] }} transition={{ duration: 1, repeat: Infinity, delay: 1 }} />
-                    <motion.circle cx="120" cy="80" r="2" fill="currentColor" className="text-emerald-400" animate={{ cx: [120, 155], cy: [80, 55] }} transition={{ duration: 1, repeat: Infinity, delay: 1 }} />
-                </svg>
-                <p className="text-[10px] text-center mt-2 text-slate-500 italic">
-                    Executing independent tasks concurrently and aggregating results.
-                </p>
-            </div>
-        );
+        return <ParallelFanoutVisual analogyName={analogyName} />;
     }
 
     // 11. Human-in-the-Loop
     if (has('human') || has('hitl') || has('approval') || has('gate') || has('self-driving')) {
-        return (
-            <div className="my-4 p-5 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700/50 shadow-sm flex flex-col items-center w-full transition-all hover:shadow-md">
-                <h5 className="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">
-                    Analogy: {analogyName || 'The Manager’s Approval'}
-                </h5>
-                <svg viewBox="0 0 200 100" className="w-full max-w-[240px] h-auto">
-                    {/* Agent Pipeline */}
-                    <rect x="20" y="40" width="40" height="20" rx="2" fill="none" stroke="currentColor" strokeWidth="2" className="text-indigo-500" />
-                    <text x="40" y="53" fontSize="8" textAnchor="middle" className="fill-indigo-500 font-bold">AGENT</text>
-
-                    <rect x="140" y="40" width="40" height="20" rx="2" fill="none" stroke="currentColor" strokeWidth="2" className="text-indigo-500" />
-                    <text x="160" y="53" fontSize="8" textAnchor="middle" className="fill-indigo-500 font-bold">PROCEED</text>
-
-                    {/* Human Gate */}
-                    <circle cx="100" cy="50" r="15" fill="currentColor" className="text-amber-500/20" stroke="currentColor" strokeWidth="2" />
-                    <text x="100" y="53" fontSize="8" textAnchor="middle" className="fill-amber-600 dark:fill-amber-400 font-bold">HUMAN</text>
-
-                    {/* Lines */}
-                    <path d="M 60 50 L 85 50" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-300 stroke-dashed" />
-                    <path d="M 115 50 L 140 50" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-300 stroke-dashed" />
-
-                    {/* Packet pausing and proceeding */}
-                    <motion.circle cx="20" cy="50" r="4" fill="currentColor" className="text-purple-500"
-                        animate={{ cx: [20, 60, 85, 85, 115, 140, 180] }} 
-                        transition={{ duration: 4, times: [0, 0.2, 0.3, 0.7, 0.8, 0.9, 1], repeat: Infinity }} />
-                </svg>
-                <p className="text-[10px] text-center mt-2 text-slate-500 italic">
-                    Agent pauses execution until human oversight grants permission.
-                </p>
-            </div>
-        );
+        return <HumanInTheLoopVisual analogyName={analogyName} />;
     }
 
     // 12. Memory Architectures / RAG
     if (has('memory') || has('rag') || has('vector') || has('database') || has('student') || has('exam')) {
-        return (
-            <div className="my-4 p-5 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700/50 shadow-sm flex flex-col items-center w-full transition-all hover:shadow-md">
-                <h5 className="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">
-                    Analogy: {analogyName || 'The Librarian'}
-                </h5>
-                <svg viewBox="0 0 200 100" className="w-full max-w-[240px] h-auto">
-                    {/* Agent Brain */}
-                    <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" strokeWidth="2" className="text-indigo-500" />
-                    <text x="50" y="53" fontSize="8" textAnchor="middle" className="fill-indigo-500 font-bold">AGENT</text>
-
-                    {/* Vector DB / Library */}
-                    <path d="M 130 30 L 170 30 L 170 70 L 130 70 Z" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500" />
-                    <path d="M 130 40 L 170 40 M 130 50 L 170 50 M 130 60 L 170 60" fill="none" stroke="currentColor" strokeWidth="1" className="text-emerald-500/50" />
-                    <text x="150" y="25" fontSize="8" textAnchor="middle" className="fill-emerald-500 font-bold">VECTOR DB</text>
-
-                    {/* Query & Retrieve */}
-                    <path d="M 70 45 L 125 45" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300 stroke-dashed" />
-                    <path d="M 125 55 L 70 55" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300 stroke-dashed" />
-
-                    <motion.circle cx="70" cy="45" r="2" fill="currentColor" className="text-blue-400"
-                        animate={{ cx: [70, 125] }} transition={{ duration: 1, repeat: Infinity }} />
-                    <motion.circle cx="125" cy="55" r="3" fill="currentColor" className="text-emerald-400"
-                        animate={{ cx: [125, 70] }} transition={{ duration: 1, repeat: Infinity, delay: 0.5 }} />
-                </svg>
-                <p className="text-[10px] text-center mt-2 text-slate-500 italic">
-                    Retrieving vast semantic context to inject into short-term reasoning.
-                </p>
-            </div>
-        );
+        return <MemoryArchitecturesVisual analogyName={analogyName} />;
     }
 
     // 13. Single Agent (Fallback)
     if (has('agent') || has('single agent')) {
-        return (
-            <div className="my-4 p-5 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700/50 shadow-sm flex flex-col items-center w-full transition-all hover:shadow-md">
-                <h5 className="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">
-                    Analogy: {analogyName || 'The Autonomous Problem Solver'}
-                </h5>
-                <svg viewBox="0 0 200 100" className="w-full max-w-[240px] h-auto">
-                    {/* Agent Brain */}
-                    <circle cx="100" cy="50" r="25" fill="none" stroke="currentColor" strokeWidth="2" className="text-indigo-500" />
-                    <text x="100" y="53" fontSize="8" textAnchor="middle" className="fill-indigo-500 font-bold">AGENT</text>
-
-                    {/* Tools */}
-                    <circle cx="30" cy="50" r="12" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-slate-400" />
-                    <text x="30" y="52" fontSize="5" textAnchor="middle" className="fill-slate-500 font-bold">API</text>
-
-                    <circle cx="170" cy="30" r="12" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-slate-400" />
-                    <text x="170" y="32" fontSize="5" textAnchor="middle" className="fill-slate-500 font-bold">DB</text>
-                    
-                    <circle cx="170" cy="70" r="12" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-slate-400" />
-                    <text x="170" y="72" fontSize="5" textAnchor="middle" className="fill-slate-500 font-bold">WEB</text>
-
-                    {/* Connections */}
-                    <path d="M 42 50 L 75 50" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300 stroke-dashed" />
-                    <path d="M 158 30 L 122 40" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300 stroke-dashed" />
-                    <path d="M 158 70 L 122 60" fill="none" stroke="currentColor" strokeWidth="1" className="text-slate-300 stroke-dashed" />
-
-                    {/* Activity Orbits */}
-                    <motion.circle cx="42" cy="50" r="2" fill="currentColor" className="text-indigo-400"
-                        animate={{ cx: [75, 42, 75] }} transition={{ duration: 2, repeat: Infinity }} />
-                    <motion.circle cx="158" cy="30" r="2" fill="currentColor" className="text-indigo-400"
-                        animate={{ cx: [122, 158, 122], cy: [40, 30, 40] }} transition={{ duration: 2.2, repeat: Infinity, delay: 0.5 }} />
-                </svg>
-                <p className="text-[10px] text-center mt-2 text-slate-500 italic">
-                    A single model autonomously utilizing tools.
-                </p>
-            </div>
-        );
+        return <SingleAgentVisual analogyName={analogyName} />;
     }
 
     // Legal: Tax Compliance Agents (Dashboard)

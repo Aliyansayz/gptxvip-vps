@@ -254,7 +254,8 @@ export const RateLimitingActivity: React.FC<ChapterProps> = ({
   const theoryData = question.theory || (question.theory_explanation ? {
     title: question.title || "Theory Concept",
     content: question.theory_explanation,
-    summary: question.real_world_analogy || undefined
+    summary: question.real_world_analogy || undefined,
+    visual_element: 'theme-park-queue'
   } : null);
 
   const theoryContent = theoryData ? (

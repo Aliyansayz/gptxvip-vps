@@ -262,7 +262,8 @@ export const LoadBalancingActivity: React.FC<ChapterProps> = ({
   const theoryData = question.theory || (question.theory_explanation ? {
     title: question.title || "Theory Concept",
     content: question.theory_explanation,
-    summary: question.real_world_analogy || undefined
+    summary: question.real_world_analogy || undefined,
+    visual_element: 'grocery-checkout'
   } : null);
 
   const theoryContent = theoryData ? (

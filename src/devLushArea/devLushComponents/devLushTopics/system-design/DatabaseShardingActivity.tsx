@@ -296,7 +296,8 @@ export const DatabaseShardingActivity: React.FC<ChapterProps> = ({
   const theoryData = question.theory || (question.theory_explanation ? {
     title: question.title || "Theory Concept",
     content: question.theory_explanation,
-    analogy: question.real_world_analogy
+    analogy: question.real_world_analogy,
+    visual_element: 'library-warehouse'
   } : null);
 
   const theoryContent = theoryData ? (
