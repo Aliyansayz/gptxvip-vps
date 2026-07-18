@@ -24,6 +24,18 @@ import {
 import {
     MemoryArchitecturesVisual
 } from '../devLushTopics/agentMemories/visuals';
+import {
+    ContextualMemoryVisual,
+    PatternRecognitionVisual,
+    CurrencyHandlingVisual,
+    SemanticMemoryVisual
+} from '../devLushTopics/recommendation/visuals';
+import {
+    PredictiveDemandVisual,
+    GlobalFleetVisual,
+    RiskSurveillanceVisual,
+    SwarmOrchestrationVisual
+} from '../devLushTopics/supplychain/visuals';
 
 interface DevLushTheoryVisualProps {
     analogyName: string;
@@ -1039,7 +1051,7 @@ export const DevLushTheoryVisual: React.FC<DevLushTheoryVisualProps> = ({ analog
     }
 
     // 13. Single Agent (Fallback)
-    if (has('agent') || has('single agent')) {
+    if (has('single agent') || has('autonomous problem solver')) {
         return <SingleAgentVisual analogyName={analogyName} />;
     }
 
@@ -1112,6 +1124,34 @@ export const DevLushTheoryVisual: React.FC<DevLushTheoryVisualProps> = ({ analog
                 </p>
             </div>
         );
+    }
+
+    // RECOMMENDATION
+    if (has('bookstore owner') || has('contextual memory') || has('past purchases')) {
+        return <ContextualMemoryVisual analogyName={analogyName} />;
+    }
+    if (has('financial advisor') || has('pattern recognition') || has('gym memberships')) {
+        return <PatternRecognitionVisual analogyName={analogyName} />;
+    }
+    if (has('counting every penny') || has('handling currency') || has('0.30000')) {
+        return <CurrencyHandlingVisual analogyName={analogyName} />;
+    }
+    if (has('closest points') || has('semantic memory') || has('vector space')) {
+        return <SemanticMemoryVisual analogyName={analogyName} />;
+    }
+
+    // SUPPLY CHAIN
+    if (has('smart thermostat') || has('predictive demand') || has('weather forecast')) {
+        return <PredictiveDemandVisual analogyName={analogyName} />;
+    }
+    if (has('air traffic controller') || has('global fleet') || has('rerouting multiple flights')) {
+        return <GlobalFleetVisual analogyName={analogyName} />;
+    }
+    if (has('financial analyst') || has('risk surveillance') || has('every newspaper')) {
+        return <RiskSurveillanceVisual analogyName={analogyName} />;
+    }
+    if (has('fleet dispatcher') || has('swarm orchestration') || has('taxi fleet')) {
+        return <SwarmOrchestrationVisual analogyName={analogyName} />;
     }
 
     return null;

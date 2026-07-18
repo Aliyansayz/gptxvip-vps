@@ -254,5 +254,35 @@
       "user-data",
       "suggestions"
     ]
+  },
+  {
+    "course": "Recommendation Agents",
+    "chapter_title": "Collaborative vs Content-Based Theory",
+    "labComponentId": "recommendation-reading-activity",
+    "critical_concepts": [
+      {
+        "concept": "Filtering Methodologies",
+        "elaboration": "Understanding how recommendation algorithms bridge the gap between users and items."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "reading-recommendation-filtering",
+        "type": "reading",
+        "title": "Recommendation Approaches",
+        "prompt": "<p><strong>Exploring the differences between Content-Based Filtering and Collaborative Filtering.</strong></p>\n\n<h3 class=\"text-lg font-bold text-slate-800 dark:text-slate-200 mt-4 mb-2\">Core Methodologies</h3>\n<ul class=\"list-disc list-inside space-y-2 ml-4\">\n<li><strong>Content-Based Filtering:</strong> Recommends items similar to those the user liked in the past, based on item attributes (metadata, tags).</li>\n<li><strong>Collaborative Filtering:</strong> Recommends items based on the preferences of similar users (user-user) or similar item interaction histories (item-item).</li>\n</ul>\n\n<h3 class=\"text-lg font-bold text-slate-800 dark:text-slate-200 mt-6 mb-2\">Critical Pain Points</h3>\n<ul class=\"list-disc list-inside space-y-2 ml-4\">\n<li><strong>Cold Start Problem:</strong> Collaborative filtering struggles when a new user or a new item is introduced because there is no interaction history.</li>\n<li><strong>Filter Bubbles:</strong> Content-based algorithms can over-specialize, repeatedly recommending the exact same type of content and ignoring serendipitous discovery.</li>\n</ul>",
+        "question": "Which recommendation strategy is most susceptible to the 'Cold Start Problem' when a brand new movie is added to the catalog?",
+        "options": [
+          "A. Content-Based Filtering, because it needs tags to understand the movie.",
+          "B. Collaborative Filtering, because it requires user interaction data to form connections.",
+          "C. Demographic Filtering, because the movie has no age rating.",
+          "D. Semantic Search, because vectors take too long to compute."
+        ],
+        "answer": "B. Collaborative Filtering, because it requires user interaction data to form connections.",
+        "theory_explanation": "Collaborative filtering relies entirely on the 'wisdom of the crowd' (user interaction matrices). When a new item is introduced, it has zero interactions, meaning the algorithm cannot associate it with any existing items or users. Content-based filtering mitigates this because it can immediately recommend the new movie based on its genre, director, or cast metadata, regardless of whether anyone has watched it yet.",
+        "real_world_analogy": "Collaborative filtering is like asking your friends for a restaurant recommendation; they can't recommend a place that literally just opened and nobody has visited. Content-based filtering is like reading the menu of the new place to see if they serve your favorite food."
+      }
+    ],
+    "tags": ["devlush", "algorithms", "reading", "recommendation"]
   }
 ]

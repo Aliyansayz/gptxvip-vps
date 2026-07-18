@@ -5,8 +5,8 @@ export const GlossaryIntro: React.FC = () => {
   return (
     <div className="w-full space-y-4 mt-12 pb-12">
       <div className="flex items-center gap-3 mb-8">
-        <BookOpen className="w-6 h-6 text-cyan-400" />
-        <h2 className="text-2xl font-black uppercase tracking-widest text-white">Frequently Asked Questions</h2>
+        <BookOpen className="w-6 h-6 text-cyan-600 dark:text-cyan-400 transition-colors" />
+        <h2 className="text-2xl font-black uppercase tracking-widest text-zinc-900 dark:text-white transition-colors">Frequently Asked Questions</h2>
       </div>
 
       <div className="grid grid-cols-1 gap-4">
@@ -46,18 +46,18 @@ export const GlossaryIntro: React.FC = () => {
 const FaqItem = ({ q, a }: { q: string, a: string }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   return (
-    <div className="border border-zinc-800 bg-zinc-900/40 rounded-xl overflow-hidden hover:border-zinc-700 transition-colors">
+    <div className="border border-zinc-200 dark:border-zinc-800 bg-white/40 dark:bg-zinc-900/40 rounded-xl overflow-hidden hover:border-cyan-200 dark:hover:border-zinc-700 transition-colors">
       <button 
         onClick={() => setIsOpen(!isOpen)}
         className="w-full text-left px-6 py-4 flex items-center justify-between focus:outline-none"
       >
-        <h3 className="text-sm font-bold text-cyan-50/90">{q}</h3>
-        <span className={`text-cyan-500 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
+        <h3 className="text-sm font-bold text-zinc-800 dark:text-cyan-50/90 transition-colors">{q}</h3>
+        <span className={`text-cyan-600 dark:text-cyan-500 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
           ▼
         </span>
       </button>
       {isOpen && (
-        <div className="px-6 pb-5 pt-1 text-sm text-zinc-400 leading-relaxed border-t border-zinc-800/50">
+        <div className="px-6 pb-5 pt-1 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed border-t border-zinc-200/50 dark:border-zinc-800/50 transition-colors">
           {a}
         </div>
       )}

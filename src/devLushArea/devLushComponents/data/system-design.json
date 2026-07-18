@@ -320,5 +320,37 @@
       }
     ],
     "tags": ["devlush", "architecture", "morphology"]
+  },
+  {
+    "id": "system-design-reading-activity",
+    "title": "System Design: Scalability Deep Dive",
+    "course": "System Design & Distributed Systems",
+    "chapter_title": "Scalability Theory",
+    "labComponentId": "system-design-reading-activity",
+    "critical_concepts": [
+      {
+        "concept": "Data Replication & Consistency",
+        "elaboration": "Balancing strong vs. eventual consistency across nodes."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "reading-system-design-scalability",
+        "type": "reading",
+        "title": "Scalability: The CAP Theorem in Practice",
+        "prompt": "<p><strong>Understanding the trade-offs between Consistency, Availability, and Partition Tolerance in distributed data stores.</strong></p>\n\n<h3 class=\"text-lg font-bold text-slate-800 dark:text-slate-200 mt-4 mb-2\">Core Features & Use Cases</h3>\n<ul class=\"list-disc list-inside space-y-2 ml-4\">\n<li><strong>Eventual Consistency:</strong> Accepting that replicas may temporarily lag, useful for highly available systems like social media feeds.</li>\n<li><strong>Strong Consistency:</strong> Forcing all nodes to agree before acknowledging a write, essential for financial transactions.</li>\n</ul>\n\n<h3 class=\"text-lg font-bold text-slate-800 dark:text-slate-200 mt-6 mb-2\">Critical Pain Points</h3>\n<ul class=\"list-disc list-inside space-y-2 ml-4\">\n<li><strong>Replication Lag:</strong> Users reading stale data immediately after writing it to a different node.</li>\n<li><strong>Network Partitions:</strong> The system must choose whether to reject requests (sacrificing Availability) or serve stale data (sacrificing Consistency).</li>\n</ul>",
+        "question": "When designing a highly available social media feed during a network partition, which CAP theorem property is typically sacrificed?",
+        "options": [
+          "A. Availability, to ensure no stale posts are shown.",
+          "B. Partition Tolerance, to maintain network stability.",
+          "C. Consistency, allowing users to see slightly older posts while the network recovers.",
+          "D. Security, to bypass the network partition."
+        ],
+        "answer": "C. Consistency, allowing users to see slightly older posts while the network recovers.",
+        "theory_explanation": "The CAP theorem states that in the presence of a network partition (P), a distributed system must choose between Consistency (C) and Availability (A). For a social media feed, Availability is generally prioritized; it's better for a user to see a slightly stale feed than an error message. Therefore, the system sacrifices strong Consistency in favor of eventual consistency.",
+        "real_world_analogy": "Imagine a network of franchise restaurants. If the internet goes down (Partition), they can either refuse to serve customers until head office confirms prices (Consistency), or keep selling burgers using the morning's price list (Availability) and sync up later."
+      }
+    ],
+    "tags": ["devlush", "architecture", "reading", "cap-theorem"]
   }
 ]

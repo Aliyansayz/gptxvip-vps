@@ -9,6 +9,7 @@ interface CandlestickWithLOBProps {
   isLiveRunning?: boolean;
   assetType?: AssetType;
   customParams?: OHLCSimulationParams;
+  isDarkMode?: boolean;
 }
 
 export const CandlestickWithLOB: React.FC<CandlestickWithLOBProps> = ({ 
@@ -16,7 +17,8 @@ export const CandlestickWithLOB: React.FC<CandlestickWithLOBProps> = ({
   onPriceChange, 
   isLiveRunning = true,
   assetType = 'Anonymous',
-  customParams
+  customParams,
+  isDarkMode = true
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const lastEmittedPrice = useRef<number>(0);
@@ -105,7 +107,7 @@ export const CandlestickWithLOB: React.FC<CandlestickWithLOBProps> = ({
       const candleWidth = Math.max(2, (chartWidth / visibleData.length) * 0.6);
 
       // Grid
-      ctx.strokeStyle = "rgba(34, 211, 238, 0.15)";
+      ctx.strokeStyle = isDarkMode ? "rgba(34, 211, 238, 0.15)" : "rgba(0, 0, 0, 0.1)";
       ctx.lineWidth = 1;
       for (let i = 0; i <= 4; i++) {
         const y = padding.top + (candleHeight * i) / 4;
@@ -114,7 +116,7 @@ export const CandlestickWithLOB: React.FC<CandlestickWithLOBProps> = ({
         ctx.lineTo(width - padding.right, y);
         ctx.stroke();
         
-        ctx.fillStyle = "rgba(34, 211, 238, 0.7)";
+        ctx.fillStyle = isDarkMode ? "rgba(34, 211, 238, 0.7)" : "rgba(0, 0, 0, 0.5)";
         ctx.font = "10px monospace";
         ctx.textAlign = "left";
         const priceLabel = (maxPrice - (priceRange * i) / 4).toFixed(2);
@@ -125,8 +127,8 @@ export const CandlestickWithLOB: React.FC<CandlestickWithLOBProps> = ({
       ctx.lineWidth = 1.5;
       
       // Green Candles
-      ctx.strokeStyle = "rgba(34,211,238,1)";
-      ctx.fillStyle = "rgba(34,211,238,1)";
+      ctx.strokeStyle = isDarkMode ? "rgba(34,211,238,1)" : "rgba(16, 185, 129, 1)";
+      ctx.fillStyle = isDarkMode ? "rgba(34,211,238,1)" : "rgba(16, 185, 129, 1)";
       ctx.beginPath();
       visibleData.forEach((d, i) => {
         if (d.close >= d.open) {
@@ -148,8 +150,8 @@ export const CandlestickWithLOB: React.FC<CandlestickWithLOBProps> = ({
       });
 
       // Red/White Candles
-      ctx.strokeStyle = "#ffffff";
-      ctx.fillStyle = "#ffffff";
+      ctx.strokeStyle = isDarkMode ? "#ffffff" : "#ef4444";
+      ctx.fillStyle = isDarkMode ? "#ffffff" : "#ef4444";
       ctx.beginPath();
       visibleData.forEach((d, i) => {
         if (d.close < d.open) {
@@ -177,7 +179,7 @@ export const CandlestickWithLOB: React.FC<CandlestickWithLOBProps> = ({
       ctx.beginPath();
       ctx.moveTo(padding.left, padding.top + candleHeight);
       ctx.lineTo(width - padding.right, padding.top + candleHeight);
-      ctx.strokeStyle = "rgba(34, 211, 238, 0.3)";
+      ctx.strokeStyle = isDarkMode ? "rgba(34, 211, 238, 0.3)" : "rgba(0, 0, 0, 0.2)";
       ctx.stroke();
 
       // Simulated Depth Data based on current price
@@ -216,9 +218,9 @@ export const CandlestickWithLOB: React.FC<CandlestickWithLOBProps> = ({
         ctx.lineTo(x, y);
       });
       ctx.lineTo(midX + chartWidth / 2, lobTopY + lobHeight);
-      ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
+      ctx.fillStyle = isDarkMode ? "rgba(255, 255, 255, 0.15)" : "rgba(239, 68, 68, 0.15)";
       ctx.fill();
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
+      ctx.strokeStyle = isDarkMode ? "rgba(255, 255, 255, 0.8)" : "rgba(239, 68, 68, 0.8)";
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
@@ -232,9 +234,9 @@ export const CandlestickWithLOB: React.FC<CandlestickWithLOBProps> = ({
         ctx.lineTo(x, y);
       });
       ctx.lineTo(midX, lobTopY + lobHeight);
-      ctx.fillStyle = "rgba(34, 211, 238, 0.15)";
+      ctx.fillStyle = isDarkMode ? "rgba(34, 211, 238, 0.15)" : "rgba(16, 185, 129, 0.15)";
       ctx.fill();
-      ctx.strokeStyle = "rgba(34, 211, 238, 0.8)";
+      ctx.strokeStyle = isDarkMode ? "rgba(34, 211, 238, 0.8)" : "rgba(16, 185, 129, 0.8)";
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
@@ -242,17 +244,17 @@ export const CandlestickWithLOB: React.FC<CandlestickWithLOBProps> = ({
       ctx.beginPath();
       ctx.moveTo(midX, lobTopY);
       ctx.lineTo(midX, lobTopY + lobHeight);
-      ctx.strokeStyle = "rgba(34, 211, 238, 0.5)";
+      ctx.strokeStyle = isDarkMode ? "rgba(34, 211, 238, 0.5)" : "rgba(0, 0, 0, 0.3)";
       ctx.setLineDash([4, 4]);
       ctx.stroke();
       ctx.setLineDash([]);
 
-      ctx.fillStyle = "rgba(34,211,238,1)";
+      ctx.fillStyle = isDarkMode ? "rgba(34,211,238,1)" : "rgba(16, 185, 129, 1)";
       ctx.font = "12px monospace";
       ctx.textAlign = "center";
       ctx.fillText("Bids", padding.left + 30, lobTopY + 15);
 
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = isDarkMode ? "#ffffff" : "#ef4444";
       ctx.fillText("Asks", width - padding.right - 30, lobTopY + 15);
     };
 
@@ -264,10 +266,10 @@ export const CandlestickWithLOB: React.FC<CandlestickWithLOBProps> = ({
         window.removeEventListener("resize", resize);
         cancelAnimationFrame(animationFrameId);
     };
-  }, [assetType, customParams, onPriceChange]);
+  }, [assetType, customParams, onPriceChange, isDarkMode]);
 
   return (
-    <div className="w-full h-full bg-zinc-900 flex flex-col relative z-20 overflow-visible" style={{ transform: 'perspective(1200px) rotateX(5deg) rotateZ(-1deg) scaleX(1.1)', transformStyle: 'preserve-3d' }}>
+    <div className="w-full h-full bg-white/80 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800/80 flex flex-col relative z-20 overflow-visible transition-colors shadow-2xl dark:shadow-none backdrop-blur-sm" style={{ transform: 'perspective(1200px) rotateX(5deg) rotateZ(-1deg) scaleX(1.1)', transformStyle: 'preserve-3d' }}>
       <div className="relative w-full flex-1 min-h-[500px]">
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
       </div>

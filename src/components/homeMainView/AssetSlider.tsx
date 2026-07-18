@@ -44,7 +44,7 @@ const getAssetIcon = (type: AssetType) => {
       return <span className="mr-1.5 text-[14px]">🇪🇺🇨🇦</span>;
     case 'Anonymous':
     default:
-      return <Ghost className="w-3.5 h-3.5 mr-1.5 text-cyan-500" />;
+      return <Ghost className="w-3.5 h-3.5 mr-1.5 text-cyan-600 dark:text-cyan-500 transition-colors" />;
   }
 };
 
@@ -70,10 +70,10 @@ export const AssetSlider: React.FC<AssetSliderProps> = ({
   return (
     <div className="flex flex-col md:flex-row items-stretch md:items-center gap-2">
       {/* Asset Selection Slider */}
-      <div className="inline-flex items-center border border-zinc-700/50 rounded-lg bg-zinc-900 shadow-lg overflow-hidden h-9">
+      <div className="inline-flex items-center border border-zinc-300 dark:border-zinc-700/50 rounded-lg bg-white dark:bg-zinc-900 shadow-sm dark:shadow-lg overflow-hidden h-9 transition-colors">
         <button 
           onClick={() => changeSlide(-1)}
-          className="p-1.5 hover:bg-zinc-800 border-r border-zinc-700/50 text-zinc-400 hover:text-cyan-400 transition-colors focus:outline-none flex items-center justify-center h-full cursor-pointer"
+          className="p-1.5 hover:bg-slate-100 dark:hover:bg-zinc-800 border-r border-zinc-300 dark:border-zinc-700/50 text-zinc-500 hover:text-cyan-600 dark:text-zinc-400 dark:hover:text-cyan-400 transition-colors focus:outline-none flex items-center justify-center h-full cursor-pointer"
           title="Previous Asset"
         >
           <ChevronLeft className="w-4 h-4" />
@@ -87,7 +87,7 @@ export const AssetSlider: React.FC<AssetSliderProps> = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 5 }}
               transition={{ duration: 0.15 }}
-              className="flex items-center text-xs font-bold uppercase tracking-widest text-cyan-400"
+              className="flex items-center text-xs font-bold uppercase tracking-widest text-cyan-700 dark:text-cyan-400 transition-colors"
             >
               {getAssetIcon(value)}
               {value}
@@ -97,7 +97,7 @@ export const AssetSlider: React.FC<AssetSliderProps> = ({
 
         <button 
           onClick={() => changeSlide(1)}
-          className="p-1.5 hover:bg-zinc-800 border-l border-zinc-700/50 text-zinc-400 hover:text-cyan-400 transition-colors focus:outline-none flex items-center justify-center h-full cursor-pointer"
+          className="p-1.5 hover:bg-slate-100 dark:hover:bg-zinc-800 border-l border-zinc-300 dark:border-zinc-700/50 text-zinc-500 hover:text-cyan-600 dark:text-zinc-400 dark:hover:text-cyan-400 transition-colors focus:outline-none flex items-center justify-center h-full cursor-pointer"
           title="Next Asset"
         >
           <ChevronRight className="w-4 h-4" />
@@ -106,17 +106,17 @@ export const AssetSlider: React.FC<AssetSliderProps> = ({
 
       {/* Preset Selector Dropdown */}
       {onPresetChange && presets.length > 0 && (
-        <div className="inline-flex items-center border border-zinc-700/50 rounded-lg bg-zinc-900 shadow-lg overflow-hidden h-9 px-2 gap-1.5">
+        <div className="inline-flex items-center border border-zinc-300 dark:border-zinc-700/50 rounded-lg bg-white dark:bg-zinc-900 shadow-sm dark:shadow-lg overflow-hidden h-9 px-2 gap-1.5 transition-colors">
           <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-pulse shrink-0" />
-          <span className="text-[10px] font-mono font-semibold uppercase text-zinc-400 tracking-wider">Regime:</span>
+          <span className="text-[10px] font-mono font-semibold uppercase text-zinc-500 dark:text-zinc-400 tracking-wider transition-colors">Regime:</span>
           <select 
             value={selectedPreset}
             onChange={(e) => onPresetChange(e.target.value)}
-            className="bg-transparent text-xs font-semibold text-zinc-200 border-none outline-none focus:ring-0 cursor-pointer pr-4 h-full uppercase tracking-wider text-cyan-400"
+            className="bg-transparent text-xs font-semibold text-zinc-800 dark:text-zinc-200 border-none outline-none focus:ring-0 cursor-pointer pr-4 h-full uppercase tracking-wider !text-cyan-700 dark:!text-cyan-400 transition-colors"
           >
-            <option value="default" className="bg-zinc-950 text-zinc-300">Default Baseline</option>
+            <option value="default" className="bg-white dark:bg-zinc-950 text-zinc-800 dark:text-zinc-300">Default Baseline</option>
             {presets.map((p) => (
-              <option key={p.name} value={p.name} className="bg-zinc-950 text-zinc-300" title={p.description}>
+              <option key={p.name} value={p.name} className="bg-white dark:bg-zinc-950 text-zinc-800 dark:text-zinc-300" title={p.description}>
                 {p.label}
               </option>
             ))}

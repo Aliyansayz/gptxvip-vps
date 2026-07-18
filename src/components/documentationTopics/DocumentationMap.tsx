@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import * as Icons from "lucide-react";
-import { Network, Loader2 } from "lucide-react";
+import { Network, Loader2, Database, Activity, Layers, Box, Shield, Target, Zap, BarChart3, Cpu, Circle } from "lucide-react";
+
+const IconMap: Record<string, React.ElementType> = {
+  Database, Activity, Layers, Box, Shield, Network, Target, Zap, BarChart3, Cpu, Circle
+};
 
 interface ClassNode {
   name: string;
@@ -102,7 +105,7 @@ export const DocumentationMap: React.FC = () => {
           {phases.map((phase) => {
             const isActive = activePhaseId === phase.id;
             const isRight = phase.direction === "right";
-            const PhaseIcon = (Icons as any)[phase.icon] || Icons.Circle;
+            const PhaseIcon = IconMap[phase.icon] || Circle;
 
             return (
               <div
@@ -180,7 +183,7 @@ export const DocumentationMap: React.FC = () => {
                     style={{ scrollbarWidth: "thin" }}
                   >
                     {activePhase.classes.map((cls, idx) => {
-                      const ClassIcon = (Icons as any)[cls.icon] || Icons.Circle;
+                      const ClassIcon = IconMap[cls.icon] || Circle;
                       return (
                         <div key={cls.name} className="relative">
                           <motion.div
@@ -245,7 +248,7 @@ export const DocumentationMap: React.FC = () => {
                 <div className="flex items-center gap-3 mb-4 border-b border-zinc-200 dark:border-zinc-800 pb-4">
                   <div className="p-2 bg-zinc-100 dark:bg-zinc-900 rounded-lg text-zinc-900 dark:text-zinc-100">
                     {(() => {
-                        const PaneIcon = (Icons as any)[activeClass.icon] || Icons.Circle;
+                        const PaneIcon = IconMap[activeClass.icon] || Circle;
                         return <PaneIcon className="w-4 h-4" />;
                     })()}
                   </div>

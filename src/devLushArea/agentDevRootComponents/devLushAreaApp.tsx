@@ -241,7 +241,7 @@ const App: React.FC<AppProps> = ({ onExit }) => {
 
 
                 </main>
-                {!['devlush', 'devlush-search', 'agent-workspace'].includes(currentView as any) && (
+                {!['devlush', 'devlush-search', 'agent-workspace', 'topic-theory'].includes(currentView as any) && (
                     <Footer theme={theme} currentView={currentView as any} />
                 )}
             </div>

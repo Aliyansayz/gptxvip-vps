@@ -39,7 +39,7 @@ export const DevLushLayout: React.FC<DevLushLayoutProps> = ({
 
     const containerStyle = {};
 
-    const containerClasses = "bg-white dark:bg-slate-900 h-full flex flex-col relative overflow-hidden";
+    const containerClasses = "bg-white dark:bg-slate-900 h-full flex flex-col relative overflow-y-auto overflow-x-hidden";
 
     const Content = exerciseContent || (
         <div className={containerClasses} style={containerStyle}>
@@ -87,7 +87,7 @@ export const DevLushLayout: React.FC<DevLushLayoutProps> = ({
                     <div className="lg:col-span-2 w-full min-w-0 h-full">
                         {Content}
                     </div>
-                    <aside className="lg:col-span-1 h-full overflow-hidden min-w-0">
+                    <aside className="lg:col-span-1 h-full overflow-y-auto min-w-0">
                         {theoryContent}
                     </aside>
                 </div>

@@ -15,7 +15,7 @@ export const HeroHeader: React.FC<{ onInitializeEngine?: () => void }> = ({ onIn
   }, []);
 
   return (
-    <div className="relative w-[100vw] ml-[calc(-50vw+50%)] min-h-[700px] flex items-center justify-center bg-zinc-950 overflow-hidden border-y border-zinc-800/50 mb-12 shadow-[0_0_50px_rgba(34,211,238,0.1)]">
+    <div className="relative w-[100vw] ml-[calc(-50vw+50%)] min-h-[700px] flex items-center justify-center bg-transparent dark:bg-zinc-950 overflow-hidden border-y border-zinc-200/50 dark:border-zinc-800/50 mb-12 shadow-[0_0_50px_rgba(34,211,238,0.05)] dark:shadow-[0_0_50px_rgba(34,211,238,0.1)] transition-colors">
       <style>
         {`
           .rotating-text {
@@ -41,13 +41,13 @@ export const HeroHeader: React.FC<{ onInitializeEngine?: () => void }> = ({ onIn
       </div>
 
       {/* Vignette Layer */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle,transparent_30%,rgba(9,9,11,0.95)_100%)] z-[15] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle,transparent_30%,rgba(255,255,255,0.85)_100%)] dark:bg-[radial-gradient(circle,transparent_30%,rgba(9,9,11,0.95)_100%)] z-[15] pointer-events-none transition-colors" />
 
       {/* Content */}
       <div className="relative z-20 text-center px-6 py-32 flex flex-col items-center w-full max-w-5xl mx-auto">
           
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-8 tracking-tight leading-none text-center">
-              <span className="inline-flex items-center justify-center gap-x-2 text-white/95">
+              <span className="inline-flex items-center justify-center gap-x-2 text-zinc-900/95 dark:text-white/95 transition-colors">
                 <span className="rotating-text window relative inline-block h-[1.2em] overflow-hidden align-bottom text-left min-w-[150px] sm:min-w-[200px] md:min-w-[260px]">
                   <AnimatePresence mode="popLayout">
                     <motion.span
@@ -56,7 +56,7 @@ export const HeroHeader: React.FC<{ onInitializeEngine?: () => void }> = ({ onIn
                       animate={{ y: '0%', opacity: 1 }}
                       exit={{ y: '-100%', opacity: 0 }}
                       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                      className="absolute left-0 right-0 text-cyan-400 font-black block select-none"
+                      className="absolute left-0 right-0 text-cyan-600 dark:text-cyan-400 font-black block select-none transition-colors"
                     >
                       {WORDS[wordIndex]}
                     </motion.span>
@@ -67,7 +67,7 @@ export const HeroHeader: React.FC<{ onInitializeEngine?: () => void }> = ({ onIn
               <span className="neon-text-gradient bg-clip-text text-transparent text-5xl sm:text-6xl md:text-7xl font-black block mt-1">ALGORITHM</span>
           </h1>
 
-          <p className="text-base md:text-xl text-zinc-300 mb-14 max-w-3xl mx-auto font-light leading-relaxed tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+          <p className="text-base md:text-xl text-zinc-600 dark:text-zinc-300 mb-14 max-w-3xl mx-auto font-light leading-relaxed tracking-wide drop-shadow-sm dark:drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] transition-colors">
               Interactive light systems blending algorithmic theory, high-frequency execution simulations, and deep visual documentation into a singular digital experience.
           </p>
 
@@ -75,16 +75,16 @@ export const HeroHeader: React.FC<{ onInitializeEngine?: () => void }> = ({ onIn
               <button 
                   onClick={onInitializeEngine}
                   style={{ transform: 'skewY(-2deg)' }}
-                  className="w-full sm:w-auto group relative px-12 py-5 bg-cyan-500 hover:bg-cyan-400 text-zinc-950 font-black rounded-none overflow-hidden transition-all hover:pr-14 shadow-[0_0_30px_rgba(34,211,238,0.4)] select-none cursor-pointer"
+                  className="w-full sm:w-auto group relative px-12 py-5 bg-cyan-600 hover:bg-cyan-700 dark:bg-cyan-500 dark:hover:bg-cyan-400 text-white dark:text-zinc-950 font-black rounded-none overflow-hidden transition-all hover:pr-14 shadow-[0_0_20px_rgba(34,211,238,0.2)] dark:shadow-[0_0_30px_rgba(34,211,238,0.4)] select-none cursor-pointer"
               >
                   <div style={{ transform: 'skewY(2deg)' }} className="flex items-center justify-center relative w-full h-full">
                     <span className="relative z-10 uppercase tracking-widest text-sm">Initialize Engine</span>
-                    <span className="absolute right-5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all text-lg font-bold text-zinc-950">→</span>
+                    <span className="absolute right-5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all text-lg font-bold text-white dark:text-zinc-950">→</span>
                   </div>
               </button>
               <button 
                   style={{ transform: 'skewY(-2deg)' }}
-                  className="w-full sm:w-auto px-12 py-5 bg-zinc-900/50 backdrop-blur-xl border border-zinc-700/50 shadow-[0_0_20px_rgba(0,0,0,0.3)] text-zinc-300 hover:text-white hover:bg-zinc-800/80 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(34,211,238,0.2)] font-bold rounded-none transition-all duration-300 uppercase tracking-widest text-sm"
+                  className="w-full sm:w-auto px-12 py-5 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl border border-zinc-300/80 dark:border-zinc-700/50 shadow-[0_0_10px_rgba(0,0,0,0.05)] dark:shadow-[0_0_20px_rgba(0,0,0,0.3)] text-zinc-700 dark:text-zinc-300 hover:text-cyan-700 dark:hover:text-white hover:bg-zinc-50/80 dark:hover:bg-zinc-800/80 hover:border-cyan-400/50 dark:hover:border-cyan-500/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.15)] dark:hover:shadow-[0_0_30px_rgba(34,211,238,0.2)] font-bold rounded-none transition-all duration-300 uppercase tracking-widest text-sm"
               >
                   <div style={{ transform: 'skewY(2deg)' }}>Explore Documentation</div>
               </button>

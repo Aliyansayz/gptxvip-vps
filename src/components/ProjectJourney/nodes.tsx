@@ -1,5 +1,9 @@
 import React, { useRef, useEffect } from "react";
-import * as Icons from "lucide-react";
+import { Database, Activity, Layers, Box, Shield, Network, Target, Zap, BarChart3, Cpu, Circle } from "lucide-react";
+
+const IconMap: Record<string, React.ElementType> = {
+  Database, Activity, Layers, Box, Shield, Network, Target, Zap, BarChart3, Cpu, Circle
+};
 import { JourneyNode, ProjectJourneyData } from "./types";
 import { ScrollProgressRibbon } from "./ScrollProgressRibbon";
 import { TextRevealOnScroll } from "./TextRevealOnScroll";
@@ -36,7 +40,7 @@ const NodeExpansion: React.FC<{
         className="overflow-hidden flex flex-col gap-2 relative z-10 w-full pl-8 pr-1 py-1 h-full"
       >
         {step.details?.map((detail: any, idx: number) => {
-           const IconComponent = (Icons as any)[detail.icon] || Icons.Circle;
+           const IconComponent = IconMap[detail.icon] || Circle;
            return (
               <div 
                 key={idx} 

@@ -43,7 +43,7 @@ export const CodeExplainerShowcase: React.FC = () => {
     return (
         <div 
           style={{ transform: 'skewY(-2deg)' }}
-          className="w-full flex flex-col md:flex-row gap-8 relative bg-zinc-900 border border-zinc-800/80 rounded-none p-6 shadow-2xl overflow-hidden mt-8"
+          className="w-full flex flex-col md:flex-row gap-8 relative bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800/80 rounded-none p-6 shadow-2xl overflow-hidden mt-8 transition-colors"
         >
             <div className="absolute inset-0 bg-[linear-gradient(rgba(99,102,241,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.03)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none opacity-50"></div>
             
@@ -109,13 +109,13 @@ export const CodeExplainerShowcase: React.FC = () => {
             {/* Right: Explainer Steps */}
             <div style={{ transform: 'skewY(2deg)' }} className="w-full md:w-2/5 flex flex-col justify-center z-10">
                 <div className="mb-6">
-                    <h3 className="text-2xl font-display font-bold text-white mb-2 flex items-center gap-3">
-                        <div className="p-2 rounded-none bg-indigo-500/10 border border-indigo-500/20">
-                            <Code2 className="w-5 h-5 text-indigo-400" />
+                    <h3 className="text-2xl font-display font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-3 transition-colors">
+                        <div className="p-2 rounded-none bg-indigo-100/50 dark:bg-indigo-500/10 border border-indigo-500/20 transition-colors">
+                            <Code2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400 transition-colors" />
                         </div>
                         Code Walkthrough
                     </h3>
-                    <p className="text-sm text-zinc-400 font-light leading-relaxed">
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400 font-light leading-relaxed transition-colors">
                         Highlights relevant lines while explaining the theory, bridging the gap between high-level architectural concepts and implementation details.
                     </p>
                 </div>
@@ -128,19 +128,19 @@ export const CodeExplainerShowcase: React.FC = () => {
                                 key={idx}
                                 onClick={() => setActiveStep(idx)}
                                 style={{ transform: 'skewY(-2deg)' }}
-                                className={`p-4 rounded-none border transition-all duration-300 cursor-pointer relative overflow-hidden ${isActive ? 'bg-indigo-500/10 border-indigo-500/30 shadow-[0_0_20px_rgba(99,102,241,0.1)]' : 'bg-zinc-900/50 border-zinc-800/50 hover:bg-zinc-800/80'}`}
+                                className={`p-4 rounded-none border transition-all duration-300 cursor-pointer relative overflow-hidden ${isActive ? 'bg-indigo-50 dark:bg-indigo-500/10 border-indigo-300 dark:border-indigo-500/30 shadow-[0_0_20px_rgba(99,102,241,0.05)] dark:shadow-[0_0_20px_rgba(99,102,241,0.1)]' : 'bg-slate-50/50 dark:bg-zinc-900/50 border-zinc-200/50 dark:border-zinc-800/50 hover:bg-slate-100/80 dark:hover:bg-zinc-800/80'}`}
                             >
                                 <div style={{ transform: 'skewY(2deg)' }}>
                                     {isActive && (
                                         <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500" />
                                     )}
                                     <div className="flex items-center justify-between mb-2">
-                                        <span className={`text-xs font-bold uppercase tracking-widest ${isActive ? 'text-indigo-400' : 'text-zinc-500'}`}>
+                                        <span className={`text-xs font-bold uppercase tracking-widest ${isActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-zinc-400 dark:text-zinc-500'}`}>
                                             Step 0{idx + 1} // {step.title}
                                         </span>
-                                        {isActive && <ChevronRight className="w-4 h-4 text-indigo-400" />}
+                                        {isActive && <ChevronRight className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />}
                                     </div>
-                                    <p className={`text-sm leading-relaxed ${isActive ? 'text-zinc-300' : 'text-zinc-600'}`}>
+                                    <p className={`text-sm leading-relaxed ${isActive ? 'text-zinc-800 dark:text-zinc-300' : 'text-zinc-500 dark:text-zinc-600'}`}>
                                         {step.description}
                                     </p>
                                 </div>

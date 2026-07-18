@@ -168,7 +168,13 @@
         "title": "Business Lens: Autonomous Risk & Liability",
         "prompt": "<p><strong>Balancing operational cost reduction with the liability risks of deploying autonomous security assets.</strong></p>\n\n<h3 class=\"text-lg font-bold text-slate-800 dark:text-slate-200 mt-4 mb-2\">Core Features & Use Cases</h3>\n<ul class=\"list-disc list-inside space-y-2 ml-4\">\n<li><strong>Attack Surface Discovery:</strong> Continuously and autonomously mapping exposed assets without requiring manual security analyst hours.</li>\n<li><strong>Automated Penetration Testing:</strong> Reducing the cost of compliance testing by deploying tireless LLM agents against staging environments.</li>\n</ul>\n\n<h3 class=\"text-lg font-bold text-slate-800 dark:text-slate-200 mt-6 mb-2\">Critical Pain Points</h3>\n<ul class=\"list-disc list-inside space-y-2 ml-4\">\n<li><strong>Unpredictable Agent Behavior:</strong> Liability issues if an agent aggressively scans or impacts production databases during an operation.</li>\n<li><strong>Out-of-Scope Targeting:</strong> An agent hallucinating IP ranges and accidentally launching attacks against unauthorized third-party infrastructure.</li>\n</ul>",
         "question": "What is a major liability risk when deploying autonomous security agents?",
-        "answer": "Unpredictable agent behavior causing aggressive scanning or impact on production databases.",
+        "options": [
+          "A. High computational cost leading to excessive cloud billing.",
+          "B. Unpredictable agent behavior causing aggressive scanning or impact on production databases.",
+          "C. Agents getting confused and completely stopping their execution.",
+          "D. Inability of the agent to parse HTML responses properly."
+        ],
+        "answer": "B. Unpredictable agent behavior causing aggressive scanning or impact on production databases.",
         "theory_explanation": "When deploying autonomous agents, the enterprise assumes total liability for the actions those agents take. Unlike traditional software that fails predictably, AI agents can dynamically formulate malicious or destructive actions (such as accidentally wiping a database or exposing PII) if their goals are poorly constrained or if they fall victim to prompt injection. Business risk prioritization must focus on 'blast radius' containment, ensuring that the maximum possible damage an agent can cause is strictly limited by immutable infrastructure policies, not just by LLM prompt instructions.",
         "real_world_analogy": "Hiring a brilliant but completely literal intern, giving them the keys to the entire corporate bank account, and telling them to 'optimize our finances' without setting any spending limits."
       }
@@ -206,7 +212,13 @@
         "title": "Developer Lens: Agent Architecture & Sandboxing",
         "prompt": "<p><strong>Optimizing context pipelines, syscall restrictions, and secure execution boundaries for autonomous agents.</strong></p>\n\n<h3 class=\"text-lg font-bold text-slate-800 dark:text-slate-200 mt-4 mb-2\">Core Features & Use Cases</h3>\n<ul class=\"list-disc list-inside space-y-2 ml-4\">\n<li><strong>Perception Loop Engineering:</strong> Implementing asynchronous event listeners that feed environmental data back into the LLM context.</li>\n<li><strong>Syscall Isolation Containers:</strong> Building restricted microVMs and SECCOMP profiles to run agent commands safely.</li>\n</ul>\n\n<h3 class=\"text-lg font-bold text-slate-800 dark:text-slate-200 mt-6 mb-2\">Critical Pain Points</h3>\n<ul class=\"list-disc list-inside space-y-2 ml-4\">\n<li><strong>Context Window Overflows:</strong> Agent parsing massive tool outputs leading to truncation and hallucinated actions.</li>\n<li><strong>Unbounded Loop Execution:</strong> Agents getting stuck in infinite loops when environmental feedback doesn't match expected formats.</li>\n</ul>",
         "question": "What is the primary method for preventing context breakouts in autonomous agents?",
-        "answer": "Building restricted microVMs and SECCOMP profiles.",
+        "options": [
+          "A. Adding 'Do not execute harmful commands' to the system prompt.",
+          "B. Using a strictly typed programming language like Rust or Go.",
+          "C. Building restricted microVMs and SECCOMP profiles.",
+          "D. Limiting the output length of the LLM."
+        ],
+        "answer": "C. Building restricted microVMs and SECCOMP profiles.",
         "theory_explanation": "Modern agentic architectures require a defense-in-depth approach to sandboxing. Developers cannot rely on system prompts (e.g., 'Do not execute harmful commands') because LLMs are fundamentally text prediction engines that can be easily manipulated via jailbreaks or indirect prompt injections. Instead, the execution environment itself (the runtime) must be isolated. This involves using ephemeral Docker containers, strictly scoped IAM roles, minimal network egress capabilities, and strict parsing of tool outputs before they are passed back to the LLM context.",
         "real_world_analogy": "Designing a bomb-defusal robot: You don't just ask the robot politely not to explode; you place it inside a reinforced Kevlar blast chamber so that if it does fail, the surrounding building remains completely untouched."
       }
@@ -244,7 +256,13 @@
         "title": "Security Lens: Prompt Injection & Mitigation",
         "prompt": "<p><strong>Engineered to prevent payload execution, untrusted input hijacking, and privilege escalation vulnerabilities.</strong></p>\n\n<h3 class=\"text-lg font-bold text-slate-800 dark:text-slate-200 mt-4 mb-2\">Core Features & Use Cases</h3>\n<ul class=\"list-disc list-inside space-y-2 ml-4\">\n<li><strong>Payload Sanitization Pipelines:</strong> Applying strict deterministic validation to all external inputs before they reach the LLM.</li>\n<li><strong>Privilege Dropping:</strong> Ensuring the agent runs with the absolute minimum filesystem and network capabilities.</li>\n</ul>\n\n<h3 class=\"text-lg font-bold text-slate-800 dark:text-slate-200 mt-6 mb-2\">Critical Pain Points</h3>\n<ul class=\"list-disc list-inside space-y-2 ml-4\">\n<li><strong>LLM Context Hijacking:</strong> Attackers injecting malicious instructions via HTTP response headers or DNS TXT records.</li>\n<li><strong>Action Exfiltration:</strong> An agent being tricked into curling sensitive local environment variables to an external attacker-controlled server.</li>\n</ul>",
         "question": "How can attackers hijack an agent's context during reconnaissance?",
-        "answer": "By injecting malicious instructions via HTTP response headers or DNS TXT records.",
+        "options": [
+          "A. By exploiting a buffer overflow in the web browser.",
+          "B. By injecting malicious instructions via HTTP response headers or DNS TXT records.",
+          "C. By cracking the agent's SSH key.",
+          "D. By sending phishing emails to the security team."
+        ],
+        "answer": "B. By injecting malicious instructions via HTTP response headers or DNS TXT records.",
         "theory_explanation": "Prompt injection occurs when an attacker manipulates the inputs fed into an LLM, causing the model to override its original system instructions and execute the attacker's payload. In autonomous agents, this is critical because the agent may autonomously invoke external tools (like executing code, sending emails, or querying databases) based on this poisoned context. Mitigation requires separating the control plane (system instructions) from the data plane (user inputs), utilizing strict output parsers, and implementing 'human-in-the-loop' approvals for any destructive actions.",
         "real_world_analogy": "A hypnotist secretly slipping a post-hypnotic suggestion into a teleprompter so that the news anchor unknowingly broadcasts a secret command to the entire city."
       }

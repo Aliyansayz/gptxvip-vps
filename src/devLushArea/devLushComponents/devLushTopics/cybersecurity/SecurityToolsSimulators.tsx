@@ -65,7 +65,12 @@ export const SecurityToolsSimulators: React.FC<ChapterProps> = ({
 
   const interactionContent = (
     <div>
-      <div className="grid grid-cols-1 gap-3">
+            {question?.question && (
+        <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-2">
+          {question.question}
+        </h4>
+      )}
+<div className="grid grid-cols-1 gap-3">
         {question.options.map((opt, i) => {
           const isSelected = selectedAnswer === opt;
           return (
