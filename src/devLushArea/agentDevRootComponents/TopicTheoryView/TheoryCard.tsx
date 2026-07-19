@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { SavedTheory } from '../TheoryCollectionContext';
 import { BookOpenText, Camera, Settings2, ChevronLeft, ChevronRight } from 'lucide-react';
-import html2canvas from 'html2canvas';
+import { toPng } from 'html-to-image';
 import DevLushTheoryBridge from '../../devLushComponents/devLushTopicsView/DevLushTheoryBridge';
 
 interface TheoryCardProps {
@@ -37,19 +37,16 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
       // Add a small delay to ensure rendering is complete before capture
       await new Promise(resolve => setTimeout(resolve, 200));
       
-      const canvas = await html2canvas(cardRef.current, {
-        useCORS: true,
-        allowTaint: true,
+      const image = await toPng(cardRef.current, {
         backgroundColor: document.documentElement.classList.contains('dark') ? '#0f172a' : '#ffffff',
-        scale: 2, // Higher resolution
-        logging: false,
+        pixelRatio: 2, // Higher resolution
       });
-      
-      const image = canvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.href = image;
       link.download = `Theory_${item.chapterTitle.replace(/\s+/g, '_')}_${Date.now()}.png`;
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
       
     } catch (error) {
       console.error('Failed to capture screenshot', error);
@@ -148,7 +145,7 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
                   </button>
                   
                   {showSettings && (
-                    <div className="absolute right-0 top-full mt-2 w-32 bg-card border border-border rounded-xl shadow-xl overflow-hidden z-[100]">
+                    <div className="absolute right-0 top-full mt-2 w-32 bg-white dark:bg-slate-900 border border-border rounded-xl shadow-xl overflow-hidden z-[100]">
                       {(['auto', '16:9', '3:2', '4:3', '1:1'] as AspectRatio[]).map(ratio => (
                         <button
                           key={ratio}

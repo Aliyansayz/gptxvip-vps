@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { SavedTheory } from '../../../agentDevRootComponents/TheoryCollectionContext';
 import { BookOpenText, Camera, Settings2, ChevronLeft, ChevronRight } from 'lucide-react';
-import html2canvas from 'html2canvas';
+import { toPng } from 'html-to-image';
 import DevLushTheoryBridge from '../../devLushTopicsView/DevLushTheoryBridge';
 
 interface DevLushTheoryCardProps {
@@ -15,8 +15,8 @@ interface DevLushTheoryCardProps {
 
 type AspectRatio = 'auto' | '16:9' | '3:2' | '4:3' | '1:1';
 
-const DevLushTheoryCard: React.FC<DevLushTheoryCardProps> = ({ 
-  item, 
+const DevLushTheoryCard: React.FC<DevLushTheoryCardProps> = ({
+  item,
   isSliderMode = false,
   onNext,
   onPrev,
@@ -30,27 +30,24 @@ const DevLushTheoryCard: React.FC<DevLushTheoryCardProps> = ({
 
   const handleScreenshot = async () => {
     if (!cardRef.current) return;
-    
+
     try {
       setIsCapturing(true);
-      
+
       // Add a small delay to ensure rendering is complete before capture
       await new Promise(resolve => setTimeout(resolve, 200));
-      
-      const canvas = await html2canvas(cardRef.current, {
-        useCORS: true,
-        allowTaint: true,
+
+      const image = await toPng(cardRef.current, {
         backgroundColor: document.documentElement.classList.contains('dark') ? '#0f172a' : '#ffffff',
-        scale: 2, // Higher resolution
-        logging: false,
+        pixelRatio: 2, // Higher resolution
       });
-      
-      const image = canvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.href = image;
       link.download = `Theory_${item.chapterTitle.replace(/\s+/g, '_')}_${Date.now()}.png`;
+      document.body.appendChild(link);
       link.click();
-      
+      document.body.removeChild(link);
+
     } catch (error) {
       console.error('Failed to capture screenshot', error);
     } finally {
@@ -70,7 +67,7 @@ const DevLushTheoryCard: React.FC<DevLushTheoryCardProps> = ({
 
   return (
     <div className={`relative group ${isSliderMode ? 'w-full max-w-4xl mx-auto' : 'w-full'}`}>
-      <div 
+      <div
         ref={cardRef}
         className={`bg-card border border-border rounded-2xl ${isCapturing ? 'p-8 shadow-2xl h-auto' : `p-6 shadow-sm transition-all duration-300 overflow-hidden ${getAspectRatioClass()}`} flex flex-col`}
       >
@@ -78,7 +75,7 @@ const DevLushTheoryCard: React.FC<DevLushTheoryCardProps> = ({
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-md bg-indigo-500/10 text-indigo-500">
-                DevLush
+                Gptx
               </span>
               <span className="text-xs font-medium break-words transition-colors text-black dark:text-white group-hover:text-indigo-500">
                 {item.chapterTitle}
@@ -95,17 +92,17 @@ const DevLushTheoryCard: React.FC<DevLushTheoryCardProps> = ({
               <div className="flex items-center gap-1 relative">
                 {isSliderMode && (onNext || onPrev) && (
                   <div className="flex items-center gap-1 mr-2 pr-3 border-r border-border/50">
-                    <button 
-                      onClick={onPrev} 
-                      disabled={!hasPrev} 
+                    <button
+                      onClick={onPrev}
+                      disabled={!hasPrev}
                       className="p-1.5 hover:bg-muted rounded-md text-foreground disabled:opacity-30 transition-colors"
                       title="Previous"
                     >
                       <ChevronLeft className="w-5 h-5" />
                     </button>
-                    <button 
-                      onClick={onNext} 
-                      disabled={!hasNext} 
+                    <button
+                      onClick={onNext}
+                      disabled={!hasNext}
                       className="p-1.5 hover:bg-muted rounded-md text-foreground disabled:opacity-30 transition-colors"
                       title="Next"
                     >
@@ -113,18 +110,18 @@ const DevLushTheoryCard: React.FC<DevLushTheoryCardProps> = ({
                     </button>
                   </div>
                 )}
-                
+
                 <div className="relative">
-                  <button 
+                  <button
                     onClick={() => setShowSettings(!showSettings)}
                     className="p-1.5 hover:bg-muted rounded-md text-muted-foreground hover:text-foreground transition-colors"
                     title="Aspect Ratio Settings"
                   >
                     <Settings2 className="w-5 h-5" />
                   </button>
-                  
+
                   {showSettings && (
-                    <div className="absolute right-0 top-full mt-2 w-32 bg-card border border-border rounded-xl shadow-xl overflow-hidden z-[100]">
+                    <div className="absolute right-0 top-full mt-2 w-32 bg-white dark:bg-slate-900 border border-border rounded-xl shadow-xl overflow-hidden z-[100]">
                       {(['auto', '16:9', '3:2', '4:3', '1:1'] as AspectRatio[]).map(ratio => (
                         <button
                           key={ratio}
@@ -137,8 +134,8 @@ const DevLushTheoryCard: React.FC<DevLushTheoryCardProps> = ({
                     </div>
                   )}
                 </div>
-                
-                <button 
+
+                <button
                   onClick={handleScreenshot}
                   className="p-1.5 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-md transition-colors"
                   title="Take Screenshot"
@@ -153,7 +150,7 @@ const DevLushTheoryCard: React.FC<DevLushTheoryCardProps> = ({
         <div className={`flex-1 overflow-y-auto custom-scrollbar pr-2 ${isCapturing ? 'overflow-visible h-auto' : ''}`}>
           <DevLushTheoryBridge item={item} />
         </div>
-        
+
         {isCapturing && (
           <div className="mt-6 pt-4 border-t border-border/50 flex justify-between items-center text-xs text-muted-foreground">
             <span>Generated from DevLush Sandboxes</span>

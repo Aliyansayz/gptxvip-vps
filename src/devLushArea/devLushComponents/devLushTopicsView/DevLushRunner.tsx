@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense } from "react";
-import { LabData } from "../../../types";
+import { LabData } from "../devLushTypes";
 import { devLushRegistry } from "../devLushRegistry";
 import {
   ChevronLeft,
@@ -233,30 +233,30 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
 
           {/* Active Registered Sandbox Component */}
           <div className="w-full flex-1 flex flex-col min-h-[500px] relative overflow-hidden bg-white dark:bg-slate-900">
-            
+
             {/* Contextual Abstract SVG Visual Background for the Runner */}
             <div className="absolute inset-0 pointer-events-none opacity-10 dark:opacity-[0.15] mix-blend-multiply dark:mix-blend-screen z-0">
-               <svg className="absolute w-full h-full" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <pattern id="gridPattern" width="40" height="40" patternUnits="userSpaceOnUse">
-                      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" className={themeColors.text} opacity="0.3"/>
-                    </pattern>
-                    <linearGradient id="fadeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="currentColor" stopOpacity="0.4" />
-                      <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
-                    </linearGradient>
-                  </defs>
-                  <rect width="100%" height="100%" fill="url(#gridPattern)" />
-                  <rect width="100%" height="100%" fill="url(#fadeGrad)" className={themeColors.text} />
-                  
-                  {/* Floating abstract tech geometry */}
-                  <g className={themeColors.text} opacity="0.6">
-                    <circle cx="10%" cy="20%" r="100" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="5 5" />
-                    <circle cx="90%" cy="80%" r="150" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                    <path d="M -100 300 Q 500 -100, 1100 500" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.4" />
-                    <path d="M -100 400 Q 500 0, 1100 600" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.2" />
-                  </g>
-               </svg>
+              <svg className="absolute w-full h-full" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <pattern id="gridPattern" width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" className={themeColors.text} opacity="0.3" />
+                  </pattern>
+                  <linearGradient id="fadeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="currentColor" stopOpacity="0.4" />
+                    <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#gridPattern)" />
+                <rect width="100%" height="100%" fill="url(#fadeGrad)" className={themeColors.text} />
+
+                {/* Floating abstract tech geometry */}
+                <g className={themeColors.text} opacity="0.6">
+                  <circle cx="10%" cy="20%" r="100" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="5 5" />
+                  <circle cx="90%" cy="80%" r="150" fill="none" stroke="currentColor" strokeWidth="0.5" />
+                  <path d="M -100 300 Q 500 -100, 1100 500" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.4" />
+                  <path d="M -100 400 Q 500 0, 1100 600" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.2" />
+                </g>
+              </svg>
             </div>
 
             <div className="relative z-10 flex-1 flex flex-col p-2 bg-transparent">

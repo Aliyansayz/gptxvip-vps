@@ -28,7 +28,7 @@ export const DevLushTheoryBridge: React.FC<DevLushTheoryBridgeProps> = ({ item }
   return (
     <div className="bg-white dark:bg-slate-900 h-full flex flex-col space-y-4">
       {/* Theory Header / Accordion Toggle */}
-      <div 
+      <div
         className="cursor-pointer w-full flex justify-between items-center text-lg font-bold text-slate-900 dark:text-white"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
@@ -38,10 +38,10 @@ export const DevLushTheoryBridge: React.FC<DevLushTheoryBridgeProps> = ({ item }
           {title}
         </span>
         <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
-          <SaveTheoryButton 
-            theory={item.theory} 
-            labId={item.labId} 
-            exerciseTitle={item.exerciseTitle} 
+          <SaveTheoryButton
+            theory={item.theory}
+            labId={item.labId}
+            exerciseTitle={item.exerciseTitle}
             courseType="devLush"
           />
           <ChevronDownIcon className={`w-6 h-6 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
@@ -51,22 +51,22 @@ export const DevLushTheoryBridge: React.FC<DevLushTheoryBridgeProps> = ({ item }
       {isOpen && (
         <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 animate-fade-in space-y-6">
           <div className="flex items-center gap-2 text-indigo-500 mb-1">
-            <Cpu className="w-4 h-4 animate-pulse" />
-            <span className="text-xs font-bold tracking-wider uppercase">Agent Theory Blueprint</span>
+            {/* <Cpu className="w-4 h-4 animate-pulse" /> */}
+            {/* <span className="text-xs font-bold tracking-wider uppercase">Agent Theory Blueprint</span>  */}
           </div>
 
           {/* Main Narrative/Content */}
           <div className="prose prose-sm dark:prose-invert max-w-none text-slate-700 dark:text-slate-300">
-            <div 
-              className="leading-relaxed space-y-4" 
-              dangerouslySetInnerHTML={{ __html: content }} 
+            <div
+              className="leading-relaxed space-y-4"
+              dangerouslySetInnerHTML={{ __html: content }}
             />
           </div>
 
           {/* Dynamic SVG Visuals (Mirror Pattern) */}
-          <DevLushTheoryVisual 
-             analogyName={title} 
-             keywords={[visual_element || '', title, content, item.exerciseTitle || '']} 
+          <DevLushTheoryVisual
+            analogyName={title}
+            keywords={[visual_element || '', title, content, item.exerciseTitle || '']}
           />
 
           {/* Analogy Card */}
@@ -80,7 +80,7 @@ export const DevLushTheoryBridge: React.FC<DevLushTheoryBridgeProps> = ({ item }
                 "{analogy}"
               </p>
               <div className="mt-4 pt-4 border-t border-amber-200 dark:border-amber-900/30">
-                  <DevLushTheoryVisual analogyName={analogy} keywords={[analogy, title]} />
+                <DevLushTheoryVisual analogyName={analogy} keywords={[analogy, title]} />
               </div>
             </div>
           )}

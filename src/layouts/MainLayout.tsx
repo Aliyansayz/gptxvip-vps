@@ -158,7 +158,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                 <div className="w-8 h-8 bg-emerald-500 rounded flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.4)]">
                   <BarChart3 className="text-white dark:text-black w-5 h-5" />
                 </div>
-                <span className="font-display font-black tracking-tighter text-xl uppercase text-white">
+                <span className={`font-display font-black tracking-tighter text-xl uppercase ${activeTab === "home" && !isDarkMode ? "text-zinc-900" : "text-white"}`}>
                   GPTX.VIP
                 </span>
               </div>
@@ -172,8 +172,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                     setActiveSubTab("");
                   }}
                   style={{ transform: 'skewY(-2deg)' }}
-                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800/80 rounded-none shadow-xl ${
-                    activeTab === "home" ? "text-white hover:text-white/80" : (!isDarkMode ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-white")
+                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br border rounded-none shadow-xl ${
+                    activeTab === "home" 
+                      ? (!isDarkMode ? "from-white to-zinc-50 border-zinc-200 text-zinc-800 hover:text-zinc-600" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-white hover:text-white/80")
+                      : (!isDarkMode ? "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-600 hover:text-zinc-900" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-400 hover:text-white")
                   }`}
                 >
                   <div style={{ transform: 'skewY(2deg)' }}>Docs</div>
@@ -187,8 +189,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                     }
                   }}
                   style={{ transform: 'skewY(-2deg)' }}
-                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800/80 rounded-none shadow-xl ${
-                    activeTab === "home" ? "text-white hover:text-white/80" : (!isDarkMode ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-white")
+                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br border rounded-none shadow-xl ${
+                    activeTab === "home" 
+                      ? (!isDarkMode ? "from-white to-zinc-50 border-zinc-200 text-zinc-800 hover:text-zinc-600" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-white hover:text-white/80")
+                      : (!isDarkMode ? "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-600 hover:text-zinc-900" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-400 hover:text-white")
                   }`}
                 >
                   <div style={{ transform: 'skewY(2deg)' }}>Code Concepts</div>
@@ -199,8 +203,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                     setActiveSubTab("");
                   }}
                   style={{ transform: 'skewY(-2deg)' }}
-                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800/80 rounded-none shadow-xl ${
-                    activeTab === "home" ? "text-white hover:text-white/80" : (!isDarkMode ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-white")
+                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br border rounded-none shadow-xl ${
+                    activeTab === "home" 
+                      ? (!isDarkMode ? "from-white to-zinc-50 border-zinc-200 text-zinc-800 hover:text-zinc-600" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-white hover:text-white/80")
+                      : (!isDarkMode ? "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-600 hover:text-zinc-900" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-400 hover:text-white")
                   }`}
                 >
                   <div style={{ transform: 'skewY(2deg)' }}>Dev Agents</div>
@@ -212,7 +218,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                     setActiveCodeCategory("search");
                   }}
                   className={`p-1.5 transition-colors bg-transparent border-none ${
-                    activeTab === "home" ? "text-white hover:text-white/80" : (!isDarkMode ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-white")
+                    activeTab === "home" ? (!isDarkMode ? "text-zinc-800 hover:text-zinc-600" : "text-white hover:text-white/80") : (!isDarkMode ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-white")
                   }`}
                   title="Search Topics"
                 >
@@ -224,7 +230,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                     setActiveSubTab("");
                   }}
                   className={`px-3 py-1.5 text-[11px] font-bold tracking-widest uppercase transition-colors bg-transparent border-none flex items-center gap-1.5 ${
-                    activeTab === "home" ? "text-white hover:text-white/80" : (!isDarkMode ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-white")
+                    activeTab === "home" ? (!isDarkMode ? "text-zinc-800 hover:text-zinc-600" : "text-white hover:text-white/80") : (!isDarkMode ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-white")
                   }`}
                 >
                   <UserRound className="w-3.5 h-3.5" />
@@ -235,7 +241,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
               <button
                 onClick={() => setIsDarkMode(!isDarkMode)}
                 className={`p-2 transition-colors bg-transparent border-none ${
-                  activeTab === "home" ? "text-white hover:text-white/80" : (!isDarkMode ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-white")
+                  activeTab === "home" ? (!isDarkMode ? "text-zinc-800 hover:text-zinc-600" : "text-white hover:text-white/80") : (!isDarkMode ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-white")
                 }`}
                 title="Toggle Theme"
               >

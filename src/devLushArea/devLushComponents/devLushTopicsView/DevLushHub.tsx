@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LabData, ConceptCourse } from "../../../types";
+import { LabData, ConceptCourse } from "../devLushTypes";
 import {
   Play,
   Bot,
@@ -38,7 +38,7 @@ const DevLushChapterCard: React.FC<{
 }> = ({ chapter, onStart }) => {
   const totalExercises = chapter.interactive_questions.length;
   const themeColors = getThemeColorClass(chapter.course);
-  
+
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
 
@@ -59,7 +59,7 @@ const DevLushChapterCard: React.FC<{
     if (themeColors.bg.includes('blue')) return '37, 99, 235';
     return '99, 102, 241'; // indigo
   };
-  
+
   const spotlightColor = getSpotlightColor();
 
   return (
@@ -71,14 +71,14 @@ const DevLushChapterCard: React.FC<{
       className="group relative overflow-hidden rounded-2xl bg-slate-200 dark:bg-slate-800 p-[2px] shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
     >
       {/* Gradient Spotlight Layer that follows the cursor */}
-      <div 
+      <div
         className="absolute inset-0 z-0 transition-opacity duration-500"
         style={{
           opacity,
           background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(${spotlightColor}, 0.8), transparent 40%)`
         }}
       />
-      
+
       {/* Inner Content Container - solid bg-white masks the center of the spotlight */}
       <div className="relative z-10 flex flex-col h-full bg-white dark:bg-slate-900 rounded-[14px] p-6 overflow-hidden">
         <div className="relative">
@@ -88,30 +88,30 @@ const DevLushChapterCard: React.FC<{
         </div>
 
         <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 mb-4 flex-grow relative z-10 line-clamp-2">
-          {chapter.critical_concepts?.[0]?.elaboration || 
-           (chapter.critical_concepts && chapter.critical_concepts.length > 0 
-             ? `Explores core concepts including ${chapter.critical_concepts.map(c => c.concept).join(', ')}.` 
-             : `Master essential concepts through hands-on scenarios.`)}
+          {chapter.critical_concepts?.[0]?.elaboration ||
+            (chapter.critical_concepts && chapter.critical_concepts.length > 0
+              ? `Explores core concepts including ${chapter.critical_concepts.map(c => c.concept).join(', ')}.`
+              : `Master essential concepts through hands-on scenarios.`)}
         </p>
 
         <div className="flex items-center text-xs text-slate-500 dark:text-slate-400 mb-6 flex-wrap gap-2 relative z-10">
           {chapter.critical_concepts && chapter.critical_concepts.length > 0
             ? chapter.critical_concepts.slice(0, 3).map((c) => (
-                <span
-                  key={c.concept}
-                  className={`${themeColors.bgSoft} ${themeColors.text} px-2.5 py-1 rounded-md font-mono border ${themeColors.borderSoft}`}
-                >
-                  {c.concept}
-                </span>
-              ))
+              <span
+                key={c.concept}
+                className={`${themeColors.bgSoft} ${themeColors.text} px-2.5 py-1 rounded-md font-mono border ${themeColors.borderSoft}`}
+              >
+                {c.concept}
+              </span>
+            ))
             : chapter.tags && chapter.tags.slice(0, 3).map((t) => (
-                <span
-                  key={t}
-                  className={`${themeColors.bgSoft} ${themeColors.text} px-2.5 py-1 rounded-md font-mono border ${themeColors.borderSoft} capitalize`}
-                >
-                  {t}
-                </span>
-              ))}
+              <span
+                key={t}
+                className={`${themeColors.bgSoft} ${themeColors.text} px-2.5 py-1 rounded-md font-mono border ${themeColors.borderSoft} capitalize`}
+              >
+                {t}
+              </span>
+            ))}
         </div>
 
         <button
@@ -178,19 +178,19 @@ const DevLushHub: React.FC<DevLushHubProps> = ({
                     </defs>
                     <g className={themeColors.text}>
                       {/* Grid / Network lines */}
-                      <path d="M0 200 Q 400 0, 800 200 T 1600 200" fill="none" stroke="url(#grad1)" strokeWidth="2" strokeDasharray="10 10"/>
-                      <path d="M0 400 Q 400 200, 800 400 T 1600 400" fill="none" stroke="url(#grad2)" strokeWidth="3" opacity="0.7"/>
-                      <path d="M0 600 Q 400 400, 800 600 T 1600 600" fill="none" stroke="url(#grad1)" strokeWidth="2" strokeDasharray="20 15"/>
-                      
+                      <path d="M0 200 Q 400 0, 800 200 T 1600 200" fill="none" stroke="url(#grad1)" strokeWidth="2" strokeDasharray="10 10" />
+                      <path d="M0 400 Q 400 200, 800 400 T 1600 400" fill="none" stroke="url(#grad2)" strokeWidth="3" opacity="0.7" />
+                      <path d="M0 600 Q 400 400, 800 600 T 1600 600" fill="none" stroke="url(#grad1)" strokeWidth="2" strokeDasharray="20 15" />
+
                       <circle cx="200" cy="400" r="15" fill="url(#grad3)" />
                       <circle cx="200" cy="400" r="4" fill="currentColor" opacity="0.8" />
-                      
+
                       <circle cx="600" cy="200" r="25" fill="url(#grad3)" />
                       <circle cx="600" cy="200" r="6" fill="currentColor" opacity="0.8" />
-                      
+
                       <circle cx="400" cy="600" r="20" fill="url(#grad3)" />
                       <circle cx="400" cy="600" r="5" fill="currentColor" opacity="0.8" />
-                      
+
                       {/* Interconnecting abstract geometric shapes */}
                       <polygon points="200,400 600,200 400,600" fill="url(#grad3)" stroke="url(#grad1)" strokeWidth="1" opacity="0.3" />
                     </g>
