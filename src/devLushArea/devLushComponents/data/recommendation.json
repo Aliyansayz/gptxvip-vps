@@ -28,7 +28,8 @@
           "title": "Contextual Memory in Recommender Systems",
           "content": "Agents equipped with vector databases for memory can store structured and unstructured data about a user over time. When a prompt is given, the agent queries this memory to build a rich context window, allowing the LLM to generate recommendations that account for contradictions, evolving tastes, and specific constraints.",
           "analogy": "A good local bookstore owner who remembers what you bought last year, but also listens when you say you're going on a relaxing beach vacation today.",
-          "application": "Implement RAG (Retrieval-Augmented Generation) pipelines where user profiles, past chat histories, and explicitly stated preferences form the memory context for the generative model."
+          "application": "Implement RAG (Retrieval-Augmented Generation) pipelines where user profiles, past chat histories, and explicitly stated preferences form the memory context for the generative model.",
+          "key_characteristics": "Retains long-term user context and preferences to provide highly personalized, evolving recommendations."
         },
         "nature": "opportunity",
         "tags": [
@@ -99,7 +100,8 @@
           "title": "Pattern Recognition in Financial Data",
           "content": "Financial recommendation agents use clustering and categorization algorithms to group transactions. When multiple recurring transactions fall into the same category (e.g., 'Streaming Audio'), the agent can flag this redundancy and prompt the user with consolidation recommendations.",
           "analogy": "A financial advisor reviewing your monthly bills and pointing out you're paying for three different gym memberships.",
-          "application": "Implement categorization models to classify ledger data, and rules-based logic on top of those categories to suggest optimizations."
+          "application": "Implement categorization models to classify ledger data, and rules-based logic on top of those categories to suggest optimizations.",
+          "key_characteristics": "Identifies subtle correlations in large financial datasets to uncover optimization opportunities."
         },
         "nature": "opportunity",
         "tags": [
@@ -170,7 +172,8 @@
           "title": "Handling Currency in TypeScript",
           "content": "JavaScript and TypeScript use IEEE 754 double-precision floats for all numbers. This can lead to precision errors in financial calculations. The standard industry practice is to store monetary values in the lowest denomination (e.g., cents) as integers and only format to decimals for display.",
           "analogy": "Instead of counting dollars and fractions of dollars, you count every single penny.",
-          "application": "Define a strictly typed `Cents` alias or interface that enforces integers, or use a specialized library to handle currency arithmetic safely."
+          "application": "Define a strictly typed `Cents` alias or interface that enforces integers, or use a specialized library to handle currency arithmetic safely.",
+          "key_characteristics": "Enforces strict type safety when handling monetary values to prevent costly floating-point errors."
         },
         "nature": "vulnerability",
         "tags": [
@@ -283,6 +286,11 @@
         "real_world_analogy": "Collaborative filtering is like asking your friends for a restaurant recommendation; they can't recommend a place that literally just opened and nobody has visited. Content-based filtering is like reading the menu of the new place to see if they serve your favorite food."
       }
     ],
-    "tags": ["devlush", "algorithms", "reading", "recommendation"]
+    "tags": [
+      "devlush",
+      "algorithms",
+      "reading",
+      "recommendation"
+    ]
   }
 ]

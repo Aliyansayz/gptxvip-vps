@@ -293,7 +293,8 @@
           "title": "Async Orchestration Pattern",
           "content": "<p>Independent agents execute concurrently to reduce latency. An orchestrator waits for all results before combining them.</p>",
           "analogy": "A restaurant kitchen where one chef cooks the steak, another makes the salad, and another prepares the dessert, all at the same time.",
-          "application": "An E-commerce Product Monitor that fetches Price, Reviews, Inventory, and Shipping times concurrently to quickly load a dashboard."
+          "application": "An E-commerce Product Monitor that fetches Price, Reviews, Inventory, and Shipping times concurrently to quickly load a dashboard.",
+          "key_characteristics": "Decouples task execution from the main event loop, allowing independent agents to process long-running jobs without blocking."
         },
         "visual_element": "orchestrator"
       }
@@ -371,7 +372,8 @@
           "title": "Coordination Layer Pattern",
           "content": "<p>Coordination becomes an architectural layer responsible for routing, memory, permissions, scheduling, retries, event handling, and communication between agents.</p>",
           "analogy": "The traffic light system and road networks of a city that enable thousands of independent drivers to navigate safely without talking to each other.",
-          "application": "An Autonomous Cybersecurity SOC where a central layer manages the state and events for Recon, Scanner, Threat, and Response agents."
+          "application": "An Autonomous Cybersecurity SOC where a central layer manages the state and events for Recon, Scanner, Threat, and Response agents.",
+          "key_characteristics": "Acts as a central nervous system, intelligently routing tasks and managing state across multiple worker agents."
         },
         "visual_element": "orchestrator"
       }
@@ -495,7 +497,8 @@
           "title": "Handoffs Pattern",
           "content": "<p>Each agent completely transfers ownership of the task to another specialist agent when appropriate, passing the full context along.</p>",
           "analogy": "A patient moving from the Receptionist to the Triage Nurse, and finally to the Specialist Doctor.",
-          "application": "In Bank Customer Support, a user goes from General Support → Auth Agent → Banking Agent → Loan Agent."
+          "application": "In Bank Customer Support, a user goes from General Support → Auth Agent → Banking Agent → Loan Agent.",
+          "key_characteristics": "Maintains strict contextual boundaries and context passing when transferring control between specialized agents."
         },
         "visual_element": "handoff"
       }
@@ -670,7 +673,8 @@
           "title": "Orchestrator Pattern",
           "content": "<p>A <strong>central orchestrator agent</strong> decomposes a complex task into smaller subtasks, delegates them to worker agents, collects their outputs, resolves conflicts, and produces the final result.</p>",
           "analogy": "A Project Manager breaking down a client deliverable into design, engineering, and QA tasks.",
-          "application": "In Insurance Claim Processing, an orchestrator directs image agents, policy agents, and fraud agents to assess a claim."
+          "application": "In Insurance Claim Processing, an orchestrator directs image agents, policy agents, and fraud agents to assess a claim.",
+          "key_characteristics": "A top-level manager agent that delegates sub-tasks to workers and aggregates their outputs into a final cohesive result."
         },
         "visual_element": "orchestrator"
       }
@@ -886,7 +890,8 @@
           "title": "Specialist Teams Pattern",
           "content": "<p>Multiple specialized agents collaborate under a coordinator, each responsible for a specific business capability. This ensures domain mastery within the workflow.</p>",
           "analogy": "A construction crew where the foreman directs the electrician, plumber, and carpenter when their specific skills are needed.",
-          "application": "A Bug Bounty Platform where the coordinator orchestrates Recon, Scanner, Analyzer, and Reporter agents."
+          "application": "A Bug Bounty Platform where the coordinator orchestrates Recon, Scanner, Analyzer, and Reporter agents.",
+          "key_characteristics": "Utilizes highly fine-tuned models and strict toolsets dedicated to a single, narrow domain of expertise."
         },
         "visual_element": "worker"
       }
@@ -973,6 +978,10 @@
         "real_world_analogy": "Hierarchical Agents operate like a construction site. The general contractor (manager agent) doesn't build the house; they analyze the blueprint and delegate specific tasks to the electrician, plumber, and carpenter (worker agents)."
       }
     ],
-    "tags": ["devlush", "agents", "morphology"]
+    "tags": [
+      "devlush",
+      "agents",
+      "morphology"
+    ]
   }
 ]

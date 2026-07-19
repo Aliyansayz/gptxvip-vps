@@ -32,7 +32,8 @@
           "title": "Semantic PR Validation",
           "content": "Modern software engineering leverages agents to act as senior peer reviewers. These agents parse the entirety of the project structure, recognizing patterns like caching strategies or security boundaries, and flag PRs that technically compile but violate system design principles.",
           "analogy": "A spell-checker (linter) ensures all words are spelled correctly, but an editor (autonomous agent) ensures the story makes sense and follows the established plot.",
-          "application": "Integrate an AI agent into the CI/CD pipeline to analyze diffs against the project's 'architecture.md' documentation before allowing merges."
+          "application": "Integrate an AI agent into the CI/CD pipeline to analyze diffs against the project's 'architecture.md' documentation before allowing merges.",
+          "key_characteristics": "Analyzes code changes for logical intent and architectural adherence, not just syntax and linting errors."
         },
         "nature": "pain_point",
         "tags": [
@@ -79,7 +80,8 @@
           "title": "Autonomous TDD (Test-Driven Development)",
           "content": "Writing comprehensive test suites is notoriously time-consuming and prone to human oversight. QA agents parse business requirements, identify edge cases, and programmatically generate the testing scaffolding, freeing human engineers to focus on implementing the core logic to pass those tests.",
           "analogy": "A teacher (QA Agent) writing the exam questions based on the syllabus (PRD) before the students (Engineers) even begin studying the material.",
-          "application": "Configure an agent to subscribe to JIRA ticket creations, outputting comprehensive test files to the repository whenever a feature spec is finalized."
+          "application": "Configure an agent to subscribe to JIRA ticket creations, outputting comprehensive test files to the repository whenever a feature spec is finalized.",
+          "key_characteristics": "Automatically generates and executes test cases based on intended behavior and edge-case boundary conditions."
         },
         "nature": "pain_point",
         "tags": [

@@ -10,6 +10,8 @@ interface TheoryItem {
   analogy?: string;
   application?: string;
   visual_element?: string;
+  critical_failure_vector?: string;
+  key_characteristics?: string;
 }
 
 interface RoadmapTheoryBridgeProps {
@@ -22,7 +24,7 @@ interface RoadmapTheoryBridgeProps {
 
 export const RoadmapTheoryBridge: React.FC<RoadmapTheoryBridgeProps> = ({ item }) => {
   const [isOpen, setIsOpen] = useState(true);
-  const { title, content, analogy, application, visual_element } = item.theory;
+  const { title, content, analogy, application, visual_element, critical_failure_vector, key_characteristics } = item.theory;
 
   return (
     <div className="bg-white dark:bg-slate-900 h-full flex flex-col space-y-4">
@@ -92,16 +94,18 @@ export const RoadmapTheoryBridge: React.FC<RoadmapTheoryBridgeProps> = ({ item }
             </div>
           )}
 
-          {/* AI Agent Danger Notice (Operational Pain Point highlights) */}
-          <div className="p-4 bg-rose-50 dark:bg-rose-950/10 rounded-xl border border-rose-200 dark:border-rose-900/30">
-            <h4 className="text-sm font-bold text-slate-900 dark:text-rose-400 mb-1 flex items-center gap-2 uppercase tracking-wider">
-              <ShieldAlert className="w-4 h-4 text-rose-500" />
-              Critical Failure Vector
-            </h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Uncontrolled agent context loops, injection vulnerabilities, and race conditions account for over 90% of autonomous business agent financial and resource overhead leakages.
-            </p>
-          </div>
+          {/* AI Agent Danger Notice (Operational Pain Point highlights) / Key Characteristics */}
+          {(critical_failure_vector || key_characteristics) && (
+            <div className={`p-4 rounded-xl border ${critical_failure_vector ? 'bg-rose-50 dark:bg-rose-950/10 border-rose-200 dark:border-rose-900/30' : 'bg-indigo-50 dark:bg-indigo-950/10 border-indigo-200 dark:border-indigo-900/30'}`}>
+              <h4 className={`text-sm font-bold mb-1 flex items-center gap-2 uppercase tracking-wider ${critical_failure_vector ? 'text-slate-900 dark:text-rose-400' : 'text-slate-900 dark:text-indigo-400'}`}>
+                {critical_failure_vector ? <ShieldAlert className="w-4 h-4 text-rose-500" /> : <Lightbulb className="w-4 h-4 text-indigo-500" />}
+                {critical_failure_vector ? 'Critical Failure Vector' : 'Key Characteristics'}
+              </h4>
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                {critical_failure_vector || key_characteristics}
+              </p>
+            </div>
+          )}
         </div>
       )}
     </div>

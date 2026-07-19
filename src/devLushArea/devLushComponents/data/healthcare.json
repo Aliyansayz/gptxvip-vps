@@ -32,7 +32,8 @@
           "title": "Automated EHR Structuring",
           "content": "A doctor-patient conversation is unstructured and noisy. Clinical agents utilize advanced Natural Language Processing (NLP) to perform entity extraction (identifying symptoms, dosages, conditions) and map them to standardized medical ontologies (like SNOMED CT or ICD-10), drafting a compliant SOAP (Subjective, Objective, Assessment, and Plan) note.",
           "analogy": "A highly trained medical scribe who sits quietly in the corner, taking perfect notes and filling out all the paperwork while the doctor simply talks with the patient.",
-          "application": "Deploy audio-to-text agents in exam rooms that pipe structured JSON payloads directly into the EHR's API."
+          "application": "Deploy audio-to-text agents in exam rooms that pipe structured JSON payloads directly into the EHR's API.",
+          "key_characteristics": "Transforms unstructured physician notes into structured, queryable data formats compliant with medical standards."
         },
         "nature": "pain_point",
         "tags": [
@@ -79,7 +80,8 @@
           "title": "Continuous Medical Surveillance",
           "content": "Medical knowledge doubles rapidly. Research agents act as continuous surveillance systems, parsing complex journal articles, identifying statistical significance, and matching inclusion criteria against the physician's patient database to flag potential candidates for new therapies.",
           "analogy": "A personal academic librarian who reads every new medical book overnight and places a one-page summary of the most important findings on your desk by morning.",
-          "application": "Configure agents to monitor specific MESH terms and DOI feeds, triggering summarized alerts when novel drug interaction paradigms are published."
+          "application": "Configure agents to monitor specific MESH terms and DOI feeds, triggering summarized alerts when novel drug interaction paradigms are published.",
+          "key_characteristics": "Continuously monitors global health data to rapidly identify epidemiological trends and potential outbreaks."
         },
         "nature": "pain_point",
         "tags": [

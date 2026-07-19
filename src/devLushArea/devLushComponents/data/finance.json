@@ -32,7 +32,8 @@
           "title": "Algorithmic Herd Behavior",
           "content": "Flash crashes occur when high-frequency trading algorithms all decide to sell a security at the same time, often triggered by minor news or price movements. This herd behavior creates a sudden vacuum of liquidity.",
           "analogy": "A crowded theater where someone yells 'Fire!' and everyone rushes the single exit at once.",
-          "application": "Implement circuit breakers and position limits in algorithmic trading systems to prevent catastrophic feedback loops."
+          "application": "Implement circuit breakers and position limits in algorithmic trading systems to prevent catastrophic feedback loops.",
+          "critical_failure_vector": "Correlated automated trading strategies can trigger devastating flash crashes by simultaneously reacting to the same market signals."
         },
         "nature": "weakness",
         "tags": [

@@ -28,7 +28,8 @@
           "title": "Predictive Demand Orchestration",
           "content": "Supply chain agents act as dynamic forecasters and execution engines. They continuously ingest multifaceted data streams (POS data, macroeconomic indicators, weather) to adjust probabilistic demand models, and they have the authority (via APIs) to execute procurement actions.",
           "analogy": "A smart thermostat that checks tomorrow's weather forecast and turns on the heat tonight, rather than waiting for the house to get cold.",
-          "application": "Connect predictive agents to both the ERP inventory database and external supplier APIs for autonomous just-in-time procurement."
+          "application": "Connect predictive agents to both the ERP inventory database and external supplier APIs for autonomous just-in-time procurement.",
+          "key_characteristics": "Anticipates supply chain disruptions and autonomously re-routes inventory to meet predicted regional demand."
         },
         "nature": "pain_point",
         "tags": [
@@ -99,7 +100,8 @@
           "title": "Global Fleet Optimization",
           "content": "Routing agents continuously solve multi-constraint optimization algorithms. When a disruption occurs, the agent doesn't just reroute one truck; it redistributes deliveries across the entire fleet in real-time to ensure SLA (Service Level Agreement) compliance.",
           "analogy": "An air traffic controller managing the airspace for hundreds of planes simultaneously, rerouting multiple flights when a storm closes one runway.",
-          "application": "Implement real-time routing agents that interface with telemetry data from fleet vehicles and live traffic APIs to minimize last-mile delivery costs."
+          "application": "Implement real-time routing agents that interface with telemetry data from fleet vehicles and live traffic APIs to minimize last-mile delivery costs.",
+          "key_characteristics": "Optimizes global logistics networks in real-time, factoring in weather, traffic, and fuel costs."
         },
         "nature": "pain_point",
         "tags": [
@@ -170,7 +172,8 @@
           "title": "Continuous Risk Surveillance and Mitigation",
           "content": "Supply chain resilience requires proactive risk management. AI agents act as continuous intelligence gatherers, utilizing NLP (Natural Language Processing) to analyze global events and financial data. When a risk threshold is breached, the agent autonomously triggers predefined mitigation workflows, such as identifying alternative sourcing options.",
           "analogy": "A financial analyst who reads every newspaper in the world simultaneously, instantly alerting you when a company you invest in faces trouble.",
-          "application": "Deploy risk monitoring agents that integrate with news aggregators, financial databases, and internal supplier networks to automate alternative sourcing strategies."
+          "application": "Deploy risk monitoring agents that integrate with news aggregators, financial databases, and internal supplier networks to automate alternative sourcing strategies.",
+          "key_characteristics": "Continuously evaluates vendor health and geopolitical factors to proactively mitigate supply chain vulnerabilities."
         },
         "nature": "pain_point",
         "tags": [
@@ -241,7 +244,8 @@
           "title": "Multi-Agent System Orchestration",
           "content": "Warehouse robotics relies on Multi-Agent Systems (MAS). The central orchestration agent solves dynamic task allocation and pathfinding problems for the entire swarm. It must constantly recalculate optimal assignments based on shifting variables like new orders, robot status, and floor congestion.",
           "analogy": "A dispatcher for a large taxi fleet, knowing exactly where every car is, how much gas they have, and sending the closest available car to the most urgent passenger.",
-          "application": "Implement central orchestration layers that interface with individual AMR control systems and the Warehouse Management System (WMS) for seamless operational flow."
+          "application": "Implement central orchestration layers that interface with individual AMR control systems and the Warehouse Management System (WMS) for seamless operational flow.",
+          "key_characteristics": "Coordinates fleets of autonomous robots and sensors to maximize warehouse throughput and efficiency."
         },
         "nature": "feature",
         "tags": [

@@ -15,8 +15,8 @@ interface TheoryCardProps {
 
 type AspectRatio = 'auto' | '16:9' | '3:2' | '4:3' | '1:1';
 
-const TheoryCard: React.FC<TheoryCardProps> = ({ 
-  item, 
+const TheoryCard: React.FC<TheoryCardProps> = ({
+  item,
   isSliderMode = false,
   onNext,
   onPrev,
@@ -30,13 +30,13 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
 
   const handleScreenshot = async () => {
     if (!cardRef.current) return;
-    
+
     try {
       setIsCapturing(true);
-      
+
       // Add a small delay to ensure rendering is complete before capture
       await new Promise(resolve => setTimeout(resolve, 200));
-      
+
       const image = await toPng(cardRef.current, {
         backgroundColor: document.documentElement.classList.contains('dark') ? '#0f172a' : '#ffffff',
         pixelRatio: 2, // Higher resolution
@@ -47,7 +47,7 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
+
     } catch (error) {
       console.error('Failed to capture screenshot', error);
     } finally {
@@ -72,7 +72,7 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
       case 'med': default: return 'bg-cyan-500/10 text-cyan-500';
     }
   };
-  
+
   const getCourseTypeName = () => {
     switch (item.courseType) {
       case 'bio': return 'BioLabs';
@@ -80,7 +80,7 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
       case 'med': default: return 'MedCush';
     }
   };
-  
+
   const getHoverColor = () => {
     switch (item.courseType) {
       case 'bio': return 'group-hover:text-emerald-500';
@@ -91,7 +91,7 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
 
   return (
     <div className={`relative group ${isSliderMode ? 'w-full max-w-4xl mx-auto' : 'w-full'}`}>
-      <div 
+      <div
         ref={cardRef}
         className={`bg-card border border-border rounded-2xl ${isCapturing ? 'p-8 shadow-2xl h-auto' : `p-6 shadow-sm transition-all duration-300 overflow-hidden ${getAspectRatioClass()}`} flex flex-col`}
       >
@@ -106,7 +106,7 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
               </span>
             </div>
             <h3 className="text-xl font-heading tracking-wide text-foreground flex items-center gap-2">
-              <BookOpenText className="w-5 h-5 text-muted-foreground" />
+
               {item.theory.title}
             </h3>
           </div>
@@ -116,17 +116,17 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
               <div className="flex items-center gap-1 relative">
                 {isSliderMode && (onNext || onPrev) && (
                   <div className="flex items-center gap-1 mr-2 pr-3 border-r border-border/50">
-                    <button 
-                      onClick={onPrev} 
-                      disabled={!hasPrev} 
+                    <button
+                      onClick={onPrev}
+                      disabled={!hasPrev}
                       className="p-1.5 hover:bg-muted rounded-md text-foreground disabled:opacity-30 transition-colors"
                       title="Previous"
                     >
                       <ChevronLeft className="w-5 h-5" />
                     </button>
-                    <button 
-                      onClick={onNext} 
-                      disabled={!hasNext} 
+                    <button
+                      onClick={onNext}
+                      disabled={!hasNext}
                       className="p-1.5 hover:bg-muted rounded-md text-foreground disabled:opacity-30 transition-colors"
                       title="Next"
                     >
@@ -134,16 +134,16 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
                     </button>
                   </div>
                 )}
-                
+
                 <div className="relative">
-                  <button 
+                  <button
                     onClick={() => setShowSettings(!showSettings)}
                     className="p-1.5 hover:bg-muted rounded-md text-muted-foreground hover:text-foreground transition-colors"
                     title="Aspect Ratio Settings"
                   >
                     <Settings2 className="w-5 h-5" />
                   </button>
-                  
+
                   {showSettings && (
                     <div className="absolute right-0 top-full mt-2 w-32 bg-white dark:bg-slate-900 border border-border rounded-xl shadow-xl overflow-hidden z-[100]">
                       {(['auto', '16:9', '3:2', '4:3', '1:1'] as AspectRatio[]).map(ratio => (
@@ -158,8 +158,8 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
                     </div>
                   )}
                 </div>
-                
-                <button 
+
+                <button
                   onClick={handleScreenshot}
                   className="p-1.5 hover:bg-cyan-50 dark:hover:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 rounded-md transition-colors"
                   title="Take Screenshot"
@@ -174,7 +174,7 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
         <div className={`flex-1 overflow-y-auto custom-scrollbar pr-2 ${isCapturing ? 'overflow-visible h-auto' : ''}`}>
           <DevLushTheoryBridge item={item} />
         </div>
-        
+
         {isCapturing && (
           <div className="mt-6 pt-4 border-t border-border/50 flex justify-between items-center text-xs text-muted-foreground">
             <span>Generated from {getCourseTypeName()}</span>

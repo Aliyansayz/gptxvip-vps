@@ -77,12 +77,9 @@ const DevLushTheoryCard: React.FC<DevLushTheoryCardProps> = ({
               <span className="text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-md bg-indigo-500/10 text-indigo-500">
                 Gptx
               </span>
-              <span className="text-xs font-medium break-words transition-colors text-black dark:text-white group-hover:text-indigo-500">
-                {item.chapterTitle}
-              </span>
+
             </div>
             <h3 className="text-xl font-heading tracking-wide text-foreground flex items-center gap-2">
-              <BookOpenText className="w-5 h-5 text-muted-foreground" />
               {item.theory.title}
             </h3>
           </div>

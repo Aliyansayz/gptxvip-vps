@@ -32,7 +32,8 @@
           "title": "Attack Surface Discovery",
           "content": "Before attacking, a security researcher must map the target's attack surface. This includes finding subdomains, open ports, exposed APIs, and hidden directories.",
           "analogy": "A burglar walking around the perimeter of a building, checking every window and door for weaknesses before attempting entry.",
-          "application": "Use tools like Amass, Sublist3r, or customized scripts to automate the discovery of assets owned by a target organization."
+          "application": "Use tools like Amass, Sublist3r, or customized scripts to automate the discovery of assets owned by a target organization.",
+          "key_characteristics": "Autonomously maps out the digital footprint and exposed endpoints of a target organization."
         },
         "nature": "feature",
         "tags": [
@@ -106,7 +107,8 @@
           "title": "Insecure Direct Object Reference (IDOR)",
           "content": "IDOR is a type of access control vulnerability that arises when an application uses client-supplied input to access objects directly. If the application does not validate whether the user is authorized to access the requested object, an attacker can manipulate the reference (e.g., changing 'user_id=123' to 'user_id=124') to access unauthorized data.",
           "analogy": "A coat check where the attendant gives you whatever coat corresponds to the number you say, without checking your ticket.",
-          "application": "Always implement strict authorization checks on the server-side before returning or modifying any data requested by a client. Use indirect object references or robust permission models."
+          "application": "Always implement strict authorization checks on the server-side before returning or modifying any data requested by a client. Use indirect object references or robust permission models.",
+          "critical_failure_vector": "Insecure Direct Object Reference (IDOR) allows attackers to access unauthorized data by manipulating resource identifiers."
         },
         "nature": "weakness",
         "tags": [
@@ -315,7 +317,8 @@
           "title": "Perception-Reasoning-Action Loops",
           "content": "Dynamic security automation replaces static, deterministic security scripts with open-ended LLM decision trees. An agent perceives its environment (reading tool output), reasons (evaluates priorities), and takes action (invoking next security helper).",
           "analogy": "A security analyst constantly inspecting active console windows and making split-second tool decisions based on host responses.",
-          "application": "Always run autonomous agents inside isolated container sandboxes with strict syscall filters to prevent context breakout."
+          "application": "Always run autonomous agents inside isolated container sandboxes with strict syscall filters to prevent context breakout.",
+          "key_characteristics": "Leverages dynamic feedback loops where the agent continually refines its attack strategy based on system responses."
         },
         "nature": "feature",
         "tags": [
@@ -364,7 +367,8 @@
           "title": "Prompt Injection Containment",
           "content": "When processing arbitrary text returned from remote servers, the text acts as untrusted instructions. If an LLM reads this text into its context window, the text can hijack the reasoning engine and run unauthorized commands.",
           "analogy": "A translator reading aloud a foreign document that suddenly says: \"Scream at the top of your lungs and throw the book.\"",
-          "application": "Never allow agents direct shell execution capabilities. Enforce hardcoded deterministic command wrappers and strict sanitization."
+          "application": "Never allow agents direct shell execution capabilities. Enforce hardcoded deterministic command wrappers and strict sanitization.",
+          "critical_failure_vector": "Malicious prompt injection can hijack the agent's context, forcing it to execute unauthorized commands on behalf of the attacker."
         },
         "nature": "weakness",
         "tags": [
@@ -442,7 +446,8 @@
           "title": "Machine-Speed Threat Containment",
           "content": "Traditional threat hunting requires human analysts to review alerts, resulting in a crucial window where malware can propagate. SecOps agents compress this window by applying predefined quarantine rules instantly when high-confidence threat signatures are matched.",
           "analogy": "A building's fire suppression system that immediately seals fire doors when smoke is detected, rather than waiting for a security guard to review the camera feeds.",
-          "application": "Deploy agent-driven response playbooks that automatically detach suspicious host machines from the corporate network while preserving them for forensics."
+          "application": "Deploy agent-driven response playbooks that automatically detach suspicious host machines from the corporate network while preserving them for forensics.",
+          "key_characteristics": "Identifies and isolates compromised endpoints in milliseconds, drastically reducing the blast radius of a successful breach."
         },
         "nature": "pain_point",
         "tags": [
@@ -490,7 +495,8 @@
           "title": "Agent Orchestration in Forensics",
           "content": "Incident response requires gathering complex, disparate data sets. A hierarchical agent architecture allows a 'coordinator' to manage specialized 'worker' agents, reducing cognitive load on human analysts and accelerating the time-to-remediation.",
           "analogy": "A lead detective (coordinator) assigning a crime scene investigator to dust for prints and a medical examiner to analyze evidence (workers), then compiling their findings into a single case brief.",
-          "application": "Implement a hierarchical agent pattern where the primary responder agent triggers and awaits the completion of specialized forensic routines before drafting the post-mortem report."
+          "application": "Implement a hierarchical agent pattern where the primary responder agent triggers and awaits the completion of specialized forensic routines before drafting the post-mortem report.",
+          "key_characteristics": "Orchestrates complex forensic investigations by coordinating multiple specialized worker agents."
         },
         "nature": "pain_point",
         "tags": [
@@ -571,7 +577,8 @@
           "title": "Direct Input Payloads",
           "content": "This simulator requires direct payload string manipulation to test for vulnerabilities like XSS and IDOR.",
           "analogy": "Slipping a lockpick into a poorly secured door.",
-          "application": "Always sanitize user inputs and validate authorization on the server side."
+          "application": "Always sanitize user inputs and validate authorization on the server side.",
+          "critical_failure_vector": "Direct payload injection into poorly sanitized inputs leads to immediate application compromise, such as XSS or SQLi."
         },
         "nature": "feature",
         "tags": [
@@ -596,7 +603,8 @@
           "title": "Chained Exploits & CSRF",
           "content": "Environmental simulators demonstrate cross-site interactions and chained exploits.",
           "analogy": "Forging a signature on a pre-filled bank transfer form and tricking the victim into mailing it.",
-          "application": "Implement Anti-CSRF tokens to verify that requests originated from your application."
+          "application": "Implement Anti-CSRF tokens to verify that requests originated from your application.",
+          "critical_failure_vector": "Exploiting chained vulnerabilities across multiple systems can bypass isolated defense mechanisms."
         },
         "nature": "feature",
         "tags": [
@@ -621,7 +629,8 @@
           "title": "Conceptual & Tool-Based Simulators",
           "content": "Tool-based simulators focus on utilizing proxies and fuzzers to automate discovery.",
           "analogy": "Trying every key on a keyring until one turns.",
-          "application": "Implement rate-limiting and account lockouts to slow down automated attacks."
+          "application": "Implement rate-limiting and account lockouts to slow down automated attacks.",
+          "key_characteristics": "Utilizes automated fuzzing and analysis tools to discover hidden flaws at a massive scale."
         },
         "nature": "feature",
         "tags": [
@@ -665,7 +674,8 @@
           "title": "Man-in-the-Middle",
           "content": "An attacker places themselves seamlessly between two communicating parties, able to eavesdrop and alter traffic.",
           "analogy": "A rogue postal worker secretly opening your mail, reading or changing the contents, and sealing it back before final delivery.",
-          "application": "Enforce strict end-to-end encryption (TLS) and certificate pinning."
+          "application": "Enforce strict end-to-end encryption (TLS) and certificate pinning.",
+          "critical_failure_vector": "Man-in-the-Middle attacks intercept and modify communications transparently, defeating encryption if certificates aren't pinned."
         }
       }
     ]

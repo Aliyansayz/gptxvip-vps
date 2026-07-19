@@ -28,7 +28,8 @@
           "title": "API-Driven IT Service Management (ITSM)",
           "content": "Internal support agents act as middleware between the ticketing system (e.g., Jira, ServiceNow) and the enterprise's identity and SaaS management platforms. By parsing the natural language intent of a ticket and validating business rules, they can safely execute privileged API actions.",
           "analogy": "An automated toll booth that checks your pass and opens the gate instantly, rather than waiting for a human attendant to manually verify your credentials.",
-          "application": "Deploy helpdesk agents that intercept 'Access Request' tickets, validate organizational charts via HR APIs, and trigger Okta or Azure AD provisioning workflows."
+          "application": "Deploy helpdesk agents that intercept 'Access Request' tickets, validate organizational charts via HR APIs, and trigger Okta or Azure AD provisioning workflows.",
+          "key_characteristics": "Integrates deeply with internal APIs to autonomously resolve common IT requests like password resets and access provisioning."
         },
         "nature": "pain_point",
         "tags": [

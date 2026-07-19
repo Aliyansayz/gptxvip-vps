@@ -56,7 +56,8 @@
           "title": "Reflected XSS",
           "content": "Reflected Cross-Site Scripting (XSS) occurs when an application receives data in an HTTP request and includes that data within the immediate HTTP response in an unsafe way. The attacker must induce the victim to make the malicious request, typically by sending a link. When the victim clicks the link, the payload executes in their browser, allowing the attacker to steal cookies, hijack sessions, or perform actions on behalf of the user.",
           "analogy": "Like handing a parrot a bad word to say immediately back to the next person who walks in the room.",
-          "application": "Always sanitize and contextually encode user input before reflecting it back into the DOM or HTML response."
+          "application": "Always sanitize and contextually encode user input before reflecting it back into the DOM or HTML response.",
+          "critical_failure_vector": "Reflected XSS allows attackers to execute malicious scripts in a victim's browser, stealing session tokens and sensitive data."
         },
         "nature": "weakness",
         "tags": [
@@ -190,7 +191,8 @@
           "title": "SSRF and Cloud Environments",
           "content": "Server-Side Request Forgery (SSRF) allows an attacker to induce the server-side application to make HTTP requests to an arbitrary domain of the attacker's choosing. In modern cloud environments, SSRF is particularly devastating because it can be used to query the internal metadata endpoints, potentially leading to total infrastructure compromise if the machine has high-privilege IAM roles attached.",
           "analogy": "Calling a company switchboard and convincing the operator to dial an internal, highly classified extension on your behalf, bypassing external firewalls.",
-          "application": "Implement strict allowlists for URL fetching, disable following redirects, and require IMDSv2 (metadata v2) which requires specific headers."
+          "application": "Implement strict allowlists for URL fetching, disable following redirects, and require IMDSv2 (metadata v2) which requires specific headers.",
+          "critical_failure_vector": "Server-Side Request Forgery allows attackers to access internal cloud metadata services, often leading to full infrastructure compromise."
         },
         "nature": "weakness",
         "tags": [
@@ -269,7 +271,8 @@
           "title": "Authentication Bypass via SQLi",
           "content": "SQL Injection occurs when user input is unsafely concatenated directly into a database query. By injecting SQL control characters (like quotes) and logic (like OR 1=1), an attacker can alter the intended logic of the query. In authentication scenarios, this can allow logging in without a valid password.",
           "analogy": "A trickster tells the bouncer, 'Let me in, my name is Alice, OR it's a sunny day (ignore anything else).' Since it is sunny, the bouncer lets them in regardless of their name.",
-          "application": "Never concatenate user input directly into SQL strings. Always use parameterized queries or an ORM."
+          "application": "Never concatenate user input directly into SQL strings. Always use parameterized queries or an ORM.",
+          "critical_failure_vector": "Authentication bypass via SQLi permits attackers to log in as administrative users without knowing their passwords."
         },
         "nature": "weakness",
         "tags": [
@@ -428,7 +431,8 @@
           "title": "Attack Surface Discovery",
           "content": "Attack surface discovery is the foundational phase of web bug bounty hunting. It involves enumerating the digital footprint of an application beyond its visible user interface. Researchers analyze JavaScript bundles, discover unlinked API routes, and map the application's underlying architecture. Finding a hidden administrative endpoint is critical, but it only becomes a vulnerability if the endpoint lacks proper authentication and authorization controls, allowing unauthorized entities to execute privileged actions.",
           "analogy": "Discovering a hidden, unmarked service elevator in the back alley of a high-security casino. Finding it isn't the crime; discovering that the elevator doesn't require a keycard to reach the vault floor is the vulnerability.",
-          "application": "Review JavaScript files, API documentation, archived URLs, and HTTP responses for hidden functionality."
+          "application": "Review JavaScript files, API documentation, archived URLs, and HTTP responses for hidden functionality.",
+          "key_characteristics": "Systematically enumerates subdomains, open ports, and hidden directories to define the scope of a penetration test."
         },
         "nature": "feature",
         "tags": [
@@ -470,7 +474,8 @@
           "title": "Authorization Validation",
           "content": "Insecure Direct Object Reference (IDOR) is a catastrophic authorization failure where an application relies entirely on client-provided input (such as a database ID in a URL or API payload) to access a resource, without verifying that the currently authenticated user possesses the privileges to view or modify that specific resource. Robust mitigation requires implementing server-side access control matrixes that validate ownership on every single data retrieval request.",
           "analogy": "A coat check attendant who blindly hands over a diamond necklace just because someone handed them a piece of paper with the number '42' written on it in crayon, without checking if that person actually owns coat #42.",
-          "application": "Test horizontal and vertical privilege boundaries throughout authenticated functionality."
+          "application": "Test horizontal and vertical privilege boundaries throughout authenticated functionality.",
+          "critical_failure_vector": "Broken access control allows lower-privileged users to perform unauthorized administrative actions."
         },
         "nature": "weakness",
         "tags": [
@@ -517,7 +522,8 @@
           "title": "Cross-Site Scripting (XSS)",
           "content": "XSS occurs when an application includes untrusted data in a web page without proper validation or escaping. This allows an attacker to execute malicious scripts in the victim's browser.",
           "analogy": "Slipping a fake instruction manual into a board game box. When other players open it, they follow your malicious rules.",
-          "application": "Always sanitize and escape user input before rendering it in the browser."
+          "application": "Always sanitize and escape user input before rendering it in the browser.",
+          "critical_failure_vector": "Cross-Site Scripting (XSS) compromises the client-side environment, turning the user's browser into a weapon against them."
         },
         "nature": "weakness",
         "tags": [
@@ -563,7 +569,8 @@
           "title": "Cross-Site Request Forgery (CSRF)",
           "content": "CSRF forces an end user to execute unwanted actions on a web application in which they're currently authenticated.",
           "analogy": "Tricking someone into signing a blank check by hiding it under a document they meant to sign.",
-          "application": "Implement unpredictable, user-specific anti-CSRF tokens for all state-changing requests."
+          "application": "Implement unpredictable, user-specific anti-CSRF tokens for all state-changing requests.",
+          "critical_failure_vector": "Cross-Site Request Forgery (CSRF) tricks an authenticated user into executing unwanted actions on a vulnerable web application."
         },
         "nature": "weakness",
         "tags": [
@@ -588,7 +595,8 @@
           "title": "Authentication Flaws & JWTs",
           "content": "Authentication flaws occur when applications incorrectly implement session management or token validation. If a backend fails to verify a JWT's signature, attackers can arbitrarily elevate their privileges.",
           "analogy": "Forging a VIP pass with crayons. It only works if the bouncer doesn't bother checking the official hologram seal.",
-          "application": "Always cryptographically verify JWT signatures using strong, secret keys on the backend."
+          "application": "Always cryptographically verify JWT signatures using strong, secret keys on the backend.",
+          "critical_failure_vector": "Weak JWT signing algorithms or exposed secrets allow attackers to forge valid session tokens and impersonate any user."
         },
         "nature": "weakness",
         "tags": [
@@ -613,7 +621,8 @@
           "title": "Remote Code Execution (RCE)",
           "content": "RCE is one of the most critical vulnerabilities. It allows an attacker to execute arbitrary system commands on the host server, often leading to full system compromise.",
           "analogy": "Asking a robot to 'Bring me coffee, and also hand me the keys to the safe'. If the robot doesn't separate the commands, it does both.",
-          "application": "Avoid calling OS commands directly. If unavoidable, use parameterized execution (like execFile) and strictly validate input against an allowlist."
+          "application": "Avoid calling OS commands directly. If unavoidable, use parameterized execution (like execFile) and strictly validate input against an allowlist.",
+          "critical_failure_vector": "Remote Code Execution (RCE) is the most severe vulnerability, granting attackers full control over the underlying server operating system."
         },
         "nature": "weakness",
         "tags": [
@@ -659,7 +668,8 @@
           "title": "Server-Side Request Forgery (SSRF)",
           "content": "SSRF occurs when a web application fetches a remote resource without validating the user-supplied URL. It allows attackers to pivot through the vulnerable server to attack internal systems behind the firewall.",
           "analogy": "Asking the bank teller (who is already inside the vault area) to reach into the vault and hand you whatever is in box #4.",
-          "application": "Validate URLs against a strict allowlist. Use network-level controls (egress filtering) to block server access to internal IP ranges (like 127.0.0.1, 10.x.x.x, 169.254.169.254)."
+          "application": "Validate URLs against a strict allowlist. Use network-level controls (egress filtering) to block server access to internal IP ranges (like 127.0.0.1, 10.x.x.x, 169.254.169.254).",
+          "critical_failure_vector": "SSRF turns the target server into a proxy, enabling attackers to bypass firewalls and scan internal networks."
         },
         "nature": "weakness",
         "tags": [
@@ -684,7 +694,8 @@
           "title": "Local File Inclusion (LFI)",
           "content": "LFI vulnerabilities occur when an application includes a file based on user input without proper sanitization. This allows attackers to read sensitive files (like configuration files containing passwords or /etc/passwd) and sometimes achieve code execution.",
           "analogy": "Telling the librarian you want the book titled 'Go back three rooms, open the manager's desk, and read the red ledger'.",
-          "application": "Never pass raw user input to filesystem APIs. Use indirect object references (e.g., mapping IDs to files) or strictly enforce that the resolved path is within the intended base directory."
+          "application": "Never pass raw user input to filesystem APIs. Use indirect object references (e.g., mapping IDs to files) or strictly enforce that the resolved path is within the intended base directory.",
+          "critical_failure_vector": "Local File Inclusion (LFI) exposes sensitive system files like /etc/passwd or configuration files containing database credentials."
         },
         "nature": "weakness",
         "tags": [
@@ -709,7 +720,8 @@
           "title": "XML External Entity (XXE)",
           "content": "XXE occurs when weakly configured XML parsers process XML input containing a reference to an external entity. It can lead to the disclosure of confidential data, denial of service, Server Side Request Forgery (SSRF), and port scanning.",
           "analogy": "Sending an invoice that says 'My address is [insert the secret document from the boss's desk here]'. If the automated reader blindly fills it in and sends it back to you, you get the secret document.",
-          "application": "Disable external entity and DTD processing in all XML parsers in your application."
+          "application": "Disable external entity and DTD processing in all XML parsers in your application.",
+          "critical_failure_vector": "XXE vulnerabilities allow attackers to read local files, execute SSRF attacks, or cause Denial of Service via malicious XML parsing."
         },
         "nature": "weakness",
         "tags": [
@@ -755,7 +767,8 @@
           "title": "DNS Zone Transfers (AXFR)",
           "content": "A DNS zone transfer is a mechanism to replicate DNS records across servers. When misconfigured, a server might allow any anonymous user to request a full zone transfer, providing a complete map of the organization's infrastructure.",
           "analogy": "Asking a company's front desk for a list of every employee's name, desk location, and unlisted direct phone number. If they give it to you, you know exactly who to target.",
-          "application": "Restrict AXFR queries strictly to the IP addresses of trusted secondary name servers."
+          "application": "Restrict AXFR queries strictly to the IP addresses of trusted secondary name servers.",
+          "critical_failure_vector": "DNS Zone Transfers reveal the entire internal and external network topology, providing attackers with a roadmap for further exploitation."
         },
         "nature": "weakness",
         "tags": [
@@ -780,7 +793,8 @@
           "title": "WHOIS Data Exposure (OSINT)",
           "content": "WHOIS is a public database containing domain registration details. Prior to GDPR and the widespread adoption of WHOIS privacy services, it was common for personal cell phone numbers and home addresses of domain owners to be publicly accessible.",
           "analogy": "Publishing the personal cell phone numbers and home addresses of your security guards in the local newspaper.",
-          "application": "Always enable WHOIS Privacy Protection (often called Domain Privacy) through your domain registrar."
+          "application": "Always enable WHOIS Privacy Protection (often called Domain Privacy) through your domain registrar.",
+          "critical_failure_vector": "WHOIS data exposure provides attackers with valuable OSINT, including administrative contacts and corporate infrastructure details."
         },
         "nature": "weakness",
         "tags": [
