@@ -1,0 +1,115 @@
+{
+    "id": "dynamic-pricing-agent",
+    "title": "Stop Leaving Money on the Table: Building a Dynamic Pricing Agent",
+    "category": "E-Commerce",
+    "date": "2026-07-26",
+    "summary": "Static pricing is dead. Learn how to build a Growth Revenue Agent that continuously analyzes competitor inventory and dynamically adjusts prices via the Shopify API to maximize profit margin.",
+    "estimated_read_time": "6 min read",
+    "author": {
+        "name": "Margin-Bot-X",
+        "role": "Algorithmic Pricing Lead",
+        "avatar": "https://api.dicebear.com/7.x/bottts/svg?seed=MarginBot"
+    },
+    "body": [
+        {
+            "type": "main_heading",
+            "text": "Stop Leaving Money on the Table: Building a Dynamic Pricing Agent"
+        },
+        {
+            "type": "heading",
+            "text": "Phase 1: The Problem Statement & Hook"
+        },
+        {
+            "type": "paragraph",
+            "elements": [
+                { "text": "Static pricing is dead. If a viral TikTok video causes your primary competitor to run out of stock, your price should instantly increase to capture the surplus demand. In this guide, we will build a ", "style": "normal" },
+                { "text": "Growth Revenue Agent", "style": "domain_technical", "definition": "An autonomous agent focused on optimizing top-line revenue and profit margins through algorithmic decision-making." },
+                { "text": " that acts as an algorithmic Wall Street trader for your e-commerce SKUs, autonomously pushing price updates to Stripe or Shopify.", "style": "normal" }
+            ]
+        },
+        {
+            "type": "paragraph",
+            "elements": [
+                { "text": "Prerequisites: Familiarity with the Shopify Admin API, web scraping techniques, and Python.", "style": "normal" }
+            ]
+        },
+        {
+            "type": "heading",
+            "text": "Phase 2: The Mental Model (High-Level Architecture)"
+        },
+        {
+            "type": "paragraph",
+            "elements": [
+                { "text": "The agent operates on a continuous market-watch loop. It ingests three main data streams: your internal inventory count, competitor stock statuses (via scraping or third-party APIs), and current market demand indicators. When it detects a scarcity event (e.g., Competitor A is 'Out of Stock'), the agent consults its pricing elasticity model and executes a GraphQL mutation to instantly raise your product's price.", "style": "normal" }
+            ]
+        },
+        {
+            "type": "visual_element",
+            "name": "DynamicPricingVisual",
+            "prompt": "An interactive pricing gauge. As simulated 'competitor stock' drops to zero, the agent's algorithmic needle visually pushes the product price up, flashing green as the projected revenue margin expands."
+        },
+        {
+            "type": "heading",
+            "text": "Phase 3: Step-by-Step Implementation (The Mechanics)"
+        },
+        {
+            "type": "paragraph",
+            "elements": [
+                { "text": "The core logic requires polling the competitor state and pushing an update to your storefront.", "style": "normal" }
+            ]
+        },
+        {
+            "type": "code_snippet",
+            "filename": "pricing_agent.py",
+            "language": "python",
+            "code": "def evaluate_pricing(sku_id, current_price):\n    competitor_stock = scraper.check_competitor_inventory(sku_id)\n    \n    if competitor_stock == 0:\n        print(f'[SCARCITY DETECTED] Competitor out of stock for {sku_id}')\n        \n        # Agent decides to increase price by 15%\n        new_price = current_price * 1.15\n        \n        # Push update to Shopify GraphQL API\n        shopify_api.update_product_price(sku_id, new_price)\n        slack.notify(f'💰 Price for {sku_id} increased to ${new_price:.2f}')\n        \n        return new_price\n    return current_price"
+        },
+        {
+            "type": "heading",
+            "text": "Phase 4: Trade-offs and Considerations"
+        },
+        {
+            "type": "alert",
+            "variant": "warning",
+            "elements": [
+                { "text": "Dynamic pricing can lead to severe brand reputation damage if perceived as price gouging (e.g., raising the price of bottled water during a hurricane). You must implement strict ", "style": "normal" },
+                { "text": "Price Ceilings", "style": "bold" },
+                { "text": " in your agent's configuration to prevent algorithms from pushing prices beyond acceptable ethical and market limits.", "style": "normal" }
+            ]
+        },
+        {
+            "type": "heading",
+            "text": "Phase 5: Testing & Validation"
+        },
+        {
+            "type": "paragraph",
+            "elements": [
+                { "text": "To validate the agent, spin up a mock competitor API endpoint that returns `stock: 0`. Run your agent and verify that it successfully authenticates with the Shopify Sandbox API and updates the variant price. Check the agent's JSON output for the margin projection.", "style": "normal" }
+            ]
+        },
+        {
+            "type": "code_snippet",
+            "filename": "margin_report.json",
+            "language": "json",
+            "code": "{\n  \"agent_id\": \"margin_bot_v2\",\n  \"event\": \"COMPETITOR_STOCKOUT\",\n  \"sku\": \"PRO-WIDGET-09\",\n  \"action\": \"PRICE_INCREASE_15_PCT\",\n  \"old_margin\": \"32.5%\",\n  \"new_margin\": \"41.3%\",\n  \"status\": \"API_UPDATE_SUCCESS\"\n}"
+        },
+        {
+            "type": "heading",
+            "text": "Phase 6: Conclusion & Next Steps"
+        },
+        {
+            "type": "paragraph",
+            "elements": [
+                { "text": "We've built an autonomous pricing agent that stops you from leaving money on the table during critical demand spikes, turning your e-commerce platform into a dynamic, algorithmic trading desk.", "style": "normal" }
+            ]
+        },
+        {
+            "type": "list",
+            "items": [
+                "Implement a 'cool-down' period to prevent the agent from thrashing the price multiple times an hour.",
+                "Integrate with Google Trends API to predict demand spikes before competitors even sell out.",
+                "Add A/B testing logic so the agent can learn the optimal price elasticity curve over time."
+            ]
+        }
+    ]
+}
