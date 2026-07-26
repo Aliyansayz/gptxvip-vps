@@ -1,15 +1,23 @@
-# Supplychain Topic Overview
+# Supply Chain Agents: Autonomous Logistics
 
-## Stuff Covered in this Topic
-- GlobalFleetVisual
-- PredictiveDemandVisual
-- RiskSurveillanceVisual
-- SupplyChainInventoryActivity
-- SupplyChainRoutePlanningActivity
-- SupplyChainSupplierRiskActivity
-- SupplyChainWarehouseOrchestrationActivity
-- SwarmOrchestrationVisual
+Supply chain agents handle routing, inventory prediction, and vendor negotiation with superhuman efficiency.
 
-## Blog Prompt
+## 1. Dynamic Logistics Routing
+A routing agent continuously ingests weather data, traffic APIs, and fuel prices to re-route delivery trucks in real time.
+- **Visual Component:** An interactive map showing a delivery route automatically diverting around a red "Storm Warning" zone to maintain delivery SLAs.
 
-Prompt : "Write a detailed prompt to write professional blog related to building something with best practices like it can be a supplychain agent and it's features work in effective way "
+### Routing Payload (JSON)
+```json
+{
+  "agent_id": "logistics_router",
+  "fleet_id": "truck_09",
+  "trigger": "SEVERE_WEATHER_ALERT",
+  "action": "REROUTE",
+  "new_eta": "14:30 EST",
+  "fuel_cost_delta": "+$45.00"
+}
+```
+
+## 2. Autonomous Vendor Negotiation
+When inventory drops, the agent emails multiple suppliers, requesting quotes, comparing prices, and autonomously approving the purchase order for the best bid.
+- **Visual Component:** An email inbox simulation where the agent rapidly reads quotes, highlights the lowest price, and generates a PO document.
