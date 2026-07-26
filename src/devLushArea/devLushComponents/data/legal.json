@@ -418,5 +418,422 @@
       "regulatory",
       "tax"
     ]
+  },
+  {
+    "course": "Legal & Compliance Agents",
+    "chapter_title": "Cross-Border Tax Planning",
+    "labComponentId": "legal-cross-border-tax",
+    "critical_concepts": [
+      {
+        "concept": "Double Taxation Relief",
+        "elaboration": "Agents that analyze international tax treaties to ensure the same income isn't taxed twice when operating in multiple countries."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "legal-cross-border-tax-visual",
+        "concept_tested": "Double Taxation Relief",
+        "type": "visual_element",
+        "title": "Case 7: Structuring Cross-Border Operations",
+        "prompt": "An international business is expanding operations into a new country. A cross-border tax planning agent analyzes the relevant tax treaties and structures the investment to legally minimize tax liabilities and avoid double taxation.",
+        "question": "What is a primary function of an agent specializing in cross-border tax planning?",
+        "options": [
+          "A. It ignores local tax laws to maximize company profits.",
+          "B. It applies tax treaties to ensure income is not taxed twice and structures investments efficiently across multiple jurisdictions.",
+          "C. It automatically pays all foreign taxes without reviewing potential relief options."
+        ],
+        "answer": "B. It applies tax treaties to ensure income is not taxed twice and structures investments efficiently across multiple jurisdictions.",
+        "explanation": "Cross-border tax planning involves structuring investments and transactions to be tax-efficient. A key part of this is applying tax treaties to provide double taxation relief, so the same income isn't unfairly taxed by multiple countries.",
+        "theory": {
+          "title": "International Tax Structuring",
+          "content": "Agents can instantly cross-reference tax codes and bilateral treaties between countries. By identifying the most favorable corporate structures and transfer pricing methods, they provide optimal routing for cross-border investments.",
+          "analogy": "Like a travel agent finding the route with the fewest layovers and lowest ticket prices, but for corporate money crossing international borders.",
+          "application": "Deploy agents to analyze the tax implications of opening a new foreign subsidiary and automatically suggest the most tax-efficient corporate structure based on existing treaties.",
+          "critical_failure_vector": "Failing to account for anti-tax avoidance rules or frequent changes in international tax treaties could lead to non-compliance and heavy penalties."
+        },
+        "nature": "opportunity",
+        "tags": [
+          "business",
+          "finance",
+          "tax"
+        ],
+        "logs": [
+          {
+            "timestamp": "10:00:00",
+            "level": "info",
+            "message": "Initiating analysis for Expansion Project 'Alpha'."
+          },
+          {
+            "timestamp": "10:02:00",
+            "level": "info",
+            "message": "Cross-referencing bilateral tax treaties between Country A and Country B."
+          },
+          {
+            "timestamp": "10:05:00",
+            "level": "success",
+            "message": "Double taxation relief applicable. Withholding tax rate reduced to 5%."
+          },
+          {
+            "timestamp": "10:10:00",
+            "level": "info",
+            "message": "Optimal corporate structure identified: Holding Company in Jurisdiction C."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "business",
+      "finance",
+      "tax",
+      "compliance",
+      "cross-border"
+    ]
+  },
+  {
+    "course": "Legal & Compliance Agents",
+    "chapter_title": "Offshore Assets Reporting",
+    "labComponentId": "legal-offshore-assets",
+    "critical_concepts": [
+      {
+        "concept": "Foreign Asset Disclosure",
+        "elaboration": "Agents that automatically aggregate global asset data and ensure compliance with complex foreign asset disclosure reporting requirements."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "legal-offshore-assets-visual",
+        "concept_tested": "Foreign Asset Disclosure",
+        "type": "visual_element",
+        "title": "Case 8: Offshore Asset Compliance",
+        "prompt": "A high-net-worth individual with foreign assets relies on an agent to compile their global portfolio. The agent cross-references the assets against domestic reporting requirements and automatically prepares the necessary disclosure forms.",
+        "question": "How does an agent facilitate compliance with offshore asset reporting?",
+        "options": [
+          "A. By hiding assets in offshore accounts to avoid detection.",
+          "B. By assuming all foreign assets are exempt from reporting.",
+          "C. By ensuring all foreign assets are properly disclosed according to anti-money laundering and tax authority requirements."
+        ],
+        "answer": "C. By ensuring all foreign assets are properly disclosed according to anti-money laundering and tax authority requirements.",
+        "explanation": "Offshore assets and reporting involve strict rules to prevent tax evasion and money laundering. Agents help ensure that clients comply with foreign asset disclosure requirements by accurately aggregating and reporting global holdings.",
+        "theory": {
+          "title": "Automated Asset Disclosure Mapping",
+          "content": "Reporting foreign assets involves synthesizing data from various international financial institutions and matching it to domestic disclosure forms. Agents can automate this data collection and form preparation, reducing the risk of omission.",
+          "analogy": "Like an automated inventory system that tracks all your possessions stored in different warehouses worldwide and reports them to your insurance company.",
+          "application": "Use agents to continuously monitor offshore account balances and automatically generate compliance reports when thresholds are met.",
+          "critical_failure_vector": "Incomplete data ingestion from unsupported foreign banks can lead to underreporting and severe regulatory penalties."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "business",
+          "finance",
+          "compliance"
+        ],
+        "logs": [
+          {
+            "timestamp": "14:00:00",
+            "level": "info",
+            "message": "Aggregating data from offshore financial institutions."
+          },
+          {
+            "timestamp": "14:05:00",
+            "level": "info",
+            "message": "Asset thresholds crossed for mandatory disclosure reporting."
+          },
+          {
+            "timestamp": "14:10:00",
+            "level": "warn",
+            "message": "Flagging Account #8892 for anti-money laundering (AML) review."
+          },
+          {
+            "timestamp": "14:15:00",
+            "level": "success",
+            "message": "Foreign Asset Disclosure Form compiled and ready for signature."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "finance",
+      "compliance",
+      "offshore",
+      "reporting"
+    ]
+  },
+  {
+    "course": "Legal & Compliance Agents",
+    "chapter_title": "Expatriate Tax Planning",
+    "labComponentId": "legal-global-mobility",
+    "critical_concepts": [
+      {
+        "concept": "Global Mobility Tax",
+        "elaboration": "Agents that advise expats and remote workers on residency, income tax, and reporting obligations based on their physical location and duration of stay."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "legal-global-mobility-visual",
+        "concept_tested": "Global Mobility Tax",
+        "type": "visual_element",
+        "title": "Case 9: Remote Worker Tax Compliance",
+        "prompt": "A company has digital businesses with customers worldwide and remote workers moving between countries. A global mobility tax agent tracks the days spent by employees in different jurisdictions to determine tax residency and income tax obligations.",
+        "question": "What is the primary role of a global mobility tax agent for expats and remote workers?",
+        "options": [
+          "A. To advise individuals working or living abroad on residency, income tax, and reporting obligations to ensure compliance.",
+          "B. To help employees evade taxes by constantly moving them between countries.",
+          "C. To automatically deduct taxes based only on the employer's headquarters location."
+        ],
+        "answer": "A. To advise individuals working or living abroad on residency, income tax, and reporting obligations to ensure compliance.",
+        "explanation": "Global mobility tax involves complex rules about physical presence and residency. Agents help track these metrics and advise expats and remote workers on their specific income tax and reporting obligations.",
+        "theory": {
+          "title": "Dynamic Residency Tracking",
+          "content": "Tax residency is often determined by the number of days spent in a jurisdiction. Agents can track employee movement and automatically calculate residency status, predicting when an employee will trigger a tax obligation in a new country.",
+          "analogy": "A stopwatch that runs differently in every country and alerts you right before you stay long enough to get charged a local fee.",
+          "application": "Deploy agents for remote-first companies to monitor employee locations and proactively adjust payroll withholding to match local tax laws.",
+          "critical_failure_vector": "Relying on self-reported location data without verification can lead to inaccurate residency calculations and compliance failures."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "business",
+          "finance",
+          "tax"
+        ],
+        "logs": [
+          {
+            "timestamp": "08:00:00",
+            "level": "info",
+            "message": "Updating employee location logs."
+          },
+          {
+            "timestamp": "08:05:00",
+            "level": "info",
+            "message": "Employee #402 has spent 180 days in Jurisdiction X."
+          },
+          {
+            "timestamp": "08:10:00",
+            "level": "warn",
+            "message": "Tax residency threshold approaching for Employee #402."
+          },
+          {
+            "timestamp": "08:15:00",
+            "level": "success",
+            "message": "Payroll adjustment recommendation generated. Notifying HR."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "business",
+      "finance",
+      "tax",
+      "expats",
+      "remote-work"
+    ]
+  },
+  {
+    "course": "Legal & Compliance Agents",
+    "chapter_title": "Business Immigration Automation",
+    "labComponentId": "legal-visa-processing",
+    "critical_concepts": [
+      {
+        "concept": "Visa Application Automation",
+        "elaboration": "Agents that assist with work, student, and investor visas by parsing applicant documents and ensuring compliance with complex immigration regulations before submission."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "legal-visa-processing-visual",
+        "concept_tested": "Visa Application Automation",
+        "type": "visual_element",
+        "title": "Case 10: Streamlining Business Immigration",
+        "prompt": "An enterprise needs to transfer 50 engineers internationally. A business immigration agent automates the collection of passports, degrees, and employment letters, instantly validating them against current visa requirements.",
+        "question": "What is the primary advantage of deploying a business immigration agent?",
+        "options": [
+          "A. It bypasses the need for government approval by printing its own visas.",
+          "B. It dramatically accelerates document validation and ensures companies comply with complex immigration regulations when hiring foreign workers.",
+          "C. It advises employees to travel on tourist visas to avoid paperwork."
+        ],
+        "answer": "B. It dramatically accelerates document validation and ensures companies comply with complex immigration regulations when hiring foreign workers.",
+        "explanation": "Business immigration involves rigorous paperwork to comply with immigration regulations. Agents help companies hire and transfer foreign workers by automating the tedious document review process, ensuring that applications are complete and compliant before submission.",
+        "theory": {
+          "title": "Automated Immigration Processing",
+          "content": "Visa applications require precise documentation. Agents use OCR and NLP to extract data from passports and educational certificates, cross-referencing them against the latest immigration criteria to predict application success and flag missing documents.",
+          "analogy": "Like a digital customs officer who pre-clears your luggage before you even arrive at the airport.",
+          "application": "Deploy immigration agents in enterprise HR departments to automatically pre-screen candidate eligibility for specific work visas based on their uploaded credentials.",
+          "critical_failure_vector": "Relying on agents to interpret highly subjective eligibility criteria without human oversight can lead to unexpected visa rejections."
+        },
+        "nature": "opportunity",
+        "tags": [
+          "business",
+          "hr",
+          "immigration"
+        ],
+        "logs": [
+          {
+            "timestamp": "09:00:00",
+            "level": "info",
+            "message": "Initiating batch processing for 50 L-1 Intracompany Transferee visas."
+          },
+          {
+            "timestamp": "09:05:00",
+            "level": "info",
+            "message": "Parsing employment histories and specialized knowledge proofs."
+          },
+          {
+            "timestamp": "09:12:00",
+            "level": "warn",
+            "message": "Applicant #24 missing certified translation for degree."
+          },
+          {
+            "timestamp": "09:15:00",
+            "level": "success",
+            "message": "49 applications validated and ready for consular submission."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "business",
+      "hr",
+      "immigration",
+      "compliance",
+      "visas"
+    ]
+  },
+  {
+    "course": "Legal & Compliance Agents",
+    "chapter_title": "Asylum & Refugee Claims",
+    "labComponentId": "legal-asylum-defense",
+    "critical_concepts": [
+      {
+        "concept": "Humanitarian Case Synthesis",
+        "elaboration": "Agents that assist in representing individuals seeking protection by rapidly analyzing country condition reports and synthesizing evidence of persecution."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "legal-asylum-defense-visual",
+        "concept_tested": "Humanitarian Case Synthesis",
+        "type": "visual_element",
+        "title": "Case 11: Building Asylum Evidence",
+        "prompt": "An immigration attorney is representing a refugee. The agent scours thousands of pages of international human rights reports, news articles, and NGO datasets to build a compelling evidentiary foundation for the asylum claim.",
+        "question": "How does an agent most effectively support asylum and refugee claims?",
+        "options": [
+          "A. By guaranteeing the approval of the asylum application.",
+          "B. By rapidly processing massive volumes of global human rights data to establish the necessary evidence of persecution for the client's home country.",
+          "C. By legally challenging the authority of the immigration judge."
+        ],
+        "answer": "B. By rapidly processing massive volumes of global human rights data to establish the necessary evidence of persecution for the client's home country.",
+        "explanation": "Asylum claims require extensive proof that returning to a home country is unsafe. Agents assist lawyers by rapidly synthesizing thousands of documents, news reports, and NGO data to establish a factual basis for persecution.",
+        "theory": {
+          "title": "Evidentiary Data Synthesis",
+          "content": "Agents can ingest unstructured global data feeds, searching for specific instances of persecution related to a client's demographic or political affiliation. This drastically reduces the time needed to build a Country Conditions report.",
+          "analogy": "Like having a team of researchers read every newspaper in a country simultaneously to find specific proof of an ongoing crisis.",
+          "application": "Use agents in pro-bono legal clinics to instantly generate country condition summaries tailored to the specific grounds of an asylum seeker's claim.",
+          "critical_failure_vector": "Agents may inadvertently rely on biased or unverified news sources, weakening the credibility of the evidentiary packet."
+        },
+        "nature": "pain_point",
+        "tags": [
+          "humanitarian",
+          "immigration",
+          "legal"
+        ],
+        "logs": [
+          {
+            "timestamp": "11:00:00",
+            "level": "info",
+            "message": "Ingesting UN Human Rights reports and verified NGO datasets for Region Y."
+          },
+          {
+            "timestamp": "11:05:00",
+            "level": "info",
+            "message": "Extracting documented incidents targeting specific political affiliations."
+          },
+          {
+            "timestamp": "11:10:00",
+            "level": "info",
+            "message": "Cross-referencing client testimony with timeline of regional unrest."
+          },
+          {
+            "timestamp": "11:15:00",
+            "level": "success",
+            "message": "Country Conditions Evidentiary Index generated."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "humanitarian",
+      "asylum",
+      "refugee",
+      "legal"
+    ]
+  },
+  {
+    "course": "Legal & Compliance Agents",
+    "chapter_title": "Immigration Appeals",
+    "labComponentId": "legal-immigration-appeals",
+    "critical_concepts": [
+      {
+        "concept": "Deportation Defense & Appeals",
+        "elaboration": "Agents that challenge visa refusals or deportation orders by finding obscure legal precedents and procedural errors in the initial immigration decisions."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "legal-immigration-appeals-visual",
+        "concept_tested": "Deportation Defense & Appeals",
+        "type": "visual_element",
+        "title": "Case 12: Challenging Visa Refusals",
+        "prompt": "A client's permanent residency application was unjustly denied. The defense agent instantly compares the refusal notice against decades of immigration tribunal decisions, identifying three precedent cases where identical refusals were successfully overturned.",
+        "question": "What is a critical advantage of using an agent for appeals and deportation defense?",
+        "options": [
+          "A. It physically prevents the client from being deported.",
+          "B. It automatically grants the client citizenship while the appeal is pending.",
+          "C. It can instantaneously surface highly specific legal precedents and procedural errors to build a robust foundation for an appeal."
+        ],
+        "answer": "C. It can instantaneously surface highly specific legal precedents and procedural errors to build a robust foundation for an appeal.",
+        "explanation": "Appeals and deportation defense rely heavily on case law and procedural nuances. Agents can search massive databases of tribunal decisions instantly to find precedent cases that support overturning a refusal.",
+        "theory": {
+          "title": "Algorithmic Precedent Discovery",
+          "content": "Agents utilize semantic search to map the facts of a new refusal against historical tribunal decisions. By finding cases with identical fact patterns that were successfully appealed, they provide lawyers with the exact arguments needed to win.",
+          "analogy": "A librarian who instantly reads millions of court transcripts to find the one obscure case that perfectly matches your situation.",
+          "application": "Deploy legal agents to pre-screen visa refusal letters and automatically draft the initial framework for the appellate brief based on historical success rates.",
+          "critical_failure_vector": "Agents may fail to recognize when a seemingly identical precedent case has been recently overturned by a higher court."
+        },
+        "nature": "opportunity",
+        "tags": [
+          "legal",
+          "appeals",
+          "immigration"
+        ],
+        "logs": [
+          {
+            "timestamp": "14:00:00",
+            "level": "info",
+            "message": "Analyzing Permanent Residency Refusal Notice."
+          },
+          {
+            "timestamp": "14:02:00",
+            "level": "warn",
+            "message": "Procedural Error Detected: Officer failed to consider submitted hardship evidence."
+          },
+          {
+            "timestamp": "14:05:00",
+            "level": "info",
+            "message": "Searching appellate tribunal database for matching fact patterns."
+          },
+          {
+            "timestamp": "14:10:00",
+            "level": "success",
+            "message": "3 precedent cases identified. Appellate brief framework drafted."
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "legal",
+      "appeals",
+      "deportation",
+      "immigration"
+    ]
   }
 ]

@@ -3,7 +3,7 @@ import { HeartPulse, Play, Activity, CheckCircle, XCircle, Terminal } from "luci
 import { DevLushLayout } from "../../devLushTopicsView/DevLushLayout";
 import { DevLushTheoryBridge } from "../../devLushTopicsView/DevLushTheoryBridge";
 import SaveTheoryButton from "../../../agentDevRootComponents/TopicTheoryView/SaveTheoryButton";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { toast } from 'sonner';
 
 const HealthcareActivity: React.FC<{

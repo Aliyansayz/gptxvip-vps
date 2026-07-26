@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import { ReadingView } from './ReadingView';
 import { ArticlesView } from './ArticlesView';
+import { BlogsView } from './BlogsView';
 import DevLushContainer from '../devLushComponents/DevLushContainer';
 import { AgentWorkspace } from '../agentWorkspaceComponents/AgentWorkspace';
 import GeminiChatWidget from './GeminiChatWidget';
@@ -50,7 +51,7 @@ const App: React.FC<AppProps> = ({ onExit }) => {
     const [studyEnergy, setStudyEnergy] = useState(15);
     const [energyLockoutTime, setEnergyLockoutTime] = useState(0);
     
-    const [currentView, setCurrentView] = useState<'devlush-search' | 'reading' | 'articles' | 'favorites' | 'topic-theory' | 'devlush' | 'agent-workspace'>('devlush');
+    const [currentView, setCurrentView] = useState<'devlush-search' | 'reading' | 'articles' | 'blogs' | 'favorites' | 'topic-theory' | 'devlush' | 'agent-workspace'>('devlush');
 
 
 
@@ -214,6 +215,8 @@ const App: React.FC<AppProps> = ({ onExit }) => {
                     {currentView === 'reading' && <ReadingView />}
                     
                     {currentView === 'articles' && <ArticlesView />}
+
+                    {currentView === 'blogs' && <BlogsView />}
 
                     {currentView === 'favorites' && (
                         <FavoritesView onLaunch={() => {}} />

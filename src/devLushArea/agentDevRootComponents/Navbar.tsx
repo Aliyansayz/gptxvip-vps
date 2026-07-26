@@ -4,7 +4,7 @@ import { Lock, Unlock, Sun, Moon, Zap, Infinity, Settings, MessageSquare as Chat
 import { StarIcon } from './icons';
 
 type Theme = 'light' | 'dark';
-type View = 'landing' | 'devlush-search' | 'reading' | 'articles' | 'favorites' | 'topic-theory' | 'devlush' | 'agent-workspace';
+type View = 'landing' | 'devlush-search' | 'reading' | 'articles' | 'blogs' | 'favorites' | 'topic-theory' | 'devlush' | 'agent-workspace';
 
 interface NavbarProps {
     isAppLocked: boolean;
@@ -186,6 +186,9 @@ const Navbar: React.FC<NavbarProps> = ({
                     </button>
                     <button onClick={() => onViewChange('devlush')} className={`${baseButtonClass} ${getButtonStyle('devlush')}`}>
                         devLush Topics
+                    </button>
+                    <button onClick={() => window.location.assign('/blogs')} className={`${baseButtonClass} ${currentView === 'blogs' ? 'bg-primary text-primary-foreground shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-slate-100'}`}>
+                        Blogs
                     </button>
                     <button onClick={() => onViewChange('devlush-search')} className={`p-1.5 rounded-md transition-colors ${currentView === 'devlush-search' ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400' : 'text-muted-foreground hover:bg-muted'}`} title="Search Topics">
                         <Search className="w-4 h-4" />

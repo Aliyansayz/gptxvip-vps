@@ -7,6 +7,9 @@ import BusinessLensActivity from '../devLushTopics/ecommerce/BusinessLensActivit
 import DeveloperLensActivity from '../devLushTopics/ecommerce/DeveloperLensActivity';
 import SecurityLensActivity from '../devLushTopics/ecommerce/SecurityLensActivity';
 import SimilarProductsOnDiscountActivity from '../devLushTopics/ecommerce/SimilarProductsOnDiscountActivity';
+import CartAbandonmentAgentActivity from '../devLushTopics/ecommerce/CartAbandonmentAgentActivity';
+import ReputationManagementActivity from '../devLushTopics/ecommerce/ReputationManagementActivity';
+import FraudDetectionActivity from '../devLushTopics/ecommerce/FraudDetectionActivity';
 
 export const ecommerceRegistry: Record<string, React.ComponentType<any>> = {
   'ecommerce-agents': MultiAgentCheckoutFlow,
@@ -20,4 +23,7 @@ export const ecommerceRegistry: Record<string, React.ComponentType<any>> = {
   'ecommerce-agents-developer-lens': DeveloperLensActivity,
   'ecommerce-agents-security-lens': SecurityLensActivity,
   'ecommerce-agents-similar-discount': SimilarProductsOnDiscountActivity,
+  'ecommerce-agents-cart-abandonment': CartAbandonmentAgentActivity,
+  'ecommerce-agents-reputation': ReputationManagementActivity,
+  'ecommerce-agents-fraud-detection': FraudDetectionActivity,
 };

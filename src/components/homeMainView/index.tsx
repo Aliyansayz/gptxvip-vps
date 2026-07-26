@@ -1,14 +1,16 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react';
+import React, { useRef, useEffect, useState, useMemo, lazy, Suspense } from 'react';
 import { motion } from 'motion/react';
 import { Play, Pause } from 'lucide-react';
-import { CandlestickWithLOB } from './CandlestickWithLOB';
-import { OrderBookLab } from './OrderBookLab';
-import { GlossaryIntro } from './GlossaryIntro';
-import { HorizontalOrderFlow } from './HorizontalOrderFlow';
 import { HeroHeader } from './HeroHeader';
 import { BentoGridFeatures } from './BentoGridFeatures';
 import { MarqueeTicker } from './MarqueeTicker';
-import { CodeExplainerShowcase } from './CodeExplainerShowcase';
+
+// Lazy load below-the-fold heavy components to improve FCP, LCP, TBT, Speed Index
+const CandlestickWithLOB = lazy(() => import('./CandlestickWithLOB').then(m => ({ default: m.CandlestickWithLOB })));
+const OrderBookLab = lazy(() => import('./OrderBookLab').then(m => ({ default: m.OrderBookLab })));
+const GlossaryIntro = lazy(() => import('./GlossaryIntro').then(m => ({ default: m.GlossaryIntro })));
+const HorizontalOrderFlow = lazy(() => import('./HorizontalOrderFlow').then(m => ({ default: m.HorizontalOrderFlow })));
+const CodeExplainerShowcase = lazy(() => import('./CodeExplainerShowcase').then(m => ({ default: m.CodeExplainerShowcase })));
 import { OHLCData } from '../../types';
 import { AssetSlider } from './AssetSlider';
 import { AssetType } from './simulatedDataGenerator';
@@ -113,7 +115,9 @@ export const HomeMainView: React.FC<HomeMainViewProps> = ({ candlestickData, onT
                  Step-by-step interactive breakdowns of complex trading algorithms and optimization techniques, mapped directly to line highlights.
               </p>
             </div>
-            <CodeExplainerShowcase />
+            <Suspense fallback={<div className="h-64 flex items-center justify-center text-zinc-500">Loading Showcase...</div>}>
+              <CodeExplainerShowcase />
+            </Suspense>
           </div>
 
           {/* Zig-Zag Section 1: Liquidity Depth */}
@@ -252,14 +256,16 @@ export const HomeMainView: React.FC<HomeMainViewProps> = ({ candlestickData, onT
               </div>
               
               <div id="liquidity-depth" className="w-full h-[550px] shrink-0 overflow-visible relative z-10 block">
-                <CandlestickWithLOB 
-                  data={candlestickData} 
-                  onPriceChange={setLivePrice} 
-                  isLiveRunning={isLiveRunning} 
-                  assetType={selectedAsset} 
-                  customParams={customParams}
-                  isDarkMode={isDarkMode}
-                />
+                <Suspense fallback={<div className="h-full w-full flex items-center justify-center text-zinc-500">Loading Chart...</div>}>
+                  <CandlestickWithLOB 
+                    data={candlestickData} 
+                    onPriceChange={setLivePrice} 
+                    isLiveRunning={isLiveRunning} 
+                    assetType={selectedAsset} 
+                    customParams={customParams}
+                    isDarkMode={isDarkMode}
+                  />
+                </Suspense>
               </div>
             </div>
           </div>
@@ -276,7 +282,9 @@ export const HomeMainView: React.FC<HomeMainViewProps> = ({ candlestickData, onT
             
             <div id="horizontal-order-flow" className="w-[100vw] ml-[calc(-50vw+50%)] mt-16 bg-white dark:bg-zinc-900 border-y border-zinc-200 dark:border-zinc-800/80 p-8 shadow-2xl overflow-hidden transition-colors" style={{ transform: 'skewY(-5deg)' }}>
               <div className="max-w-6xl mx-auto w-full">
-                <HorizontalOrderFlow externalPrice={livePrice} />
+                <Suspense fallback={<div className="h-64 flex items-center justify-center text-zinc-500">Loading Order Flow...</div>}>
+                  <HorizontalOrderFlow externalPrice={livePrice} />
+                </Suspense>
               </div>
             </div>
           </div>
@@ -292,12 +300,16 @@ export const HomeMainView: React.FC<HomeMainViewProps> = ({ candlestickData, onT
             </div>
 
             <div id="order-book-lab" className="w-full mt-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/80 rounded-3xl p-4 shadow-2xl transition-colors">
-              <OrderBookLab />
+              <Suspense fallback={<div className="h-64 flex items-center justify-center text-zinc-500">Loading Lab...</div>}>
+                <OrderBookLab />
+              </Suspense>
             </div>
           </div>
           
           <div className="w-full relative z-10">
-             <GlossaryIntro />
+             <Suspense fallback={<div className="h-32 flex items-center justify-center text-zinc-500">Loading Glossary...</div>}>
+               <GlossaryIntro />
+             </Suspense>
           </div>
 
           {/* Footer Layout */}

@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { MainLayout } from "./layouts/MainLayout";
 import { generateMockData, generateCandlestickData } from "./functions/mockData";
 import { PriceData, OHLCData } from "./types";
 
-import { TradeTypeView } from "./views/TradeTypeView";
-import { CointegrationView } from "./views/CointegrationView";
-import { KeyTermsView } from "./views/KeyTermsView";
-import { MapView } from "./views/MapView";
-import { ProjectJourneyView } from "./views/ProjectJourneyView";
-import { OverviewView } from "./views/OverviewView";
-import { CodeConceptsView } from "./components/codeConceptsTopics/codeConceptsView/CodeConceptsView";
 import { HomeMainView } from "./components/homeMainView";
-import { ProfileInfo } from "./components/profileInfo";
-import { TradingToolsView } from "./views/TradingToolsView";
-import DevLushApp from "./devLushArea/agentDevRootComponents/devLushAreaApp";
-import RoadmapContainer from "./roadmapArea/roadmapView/RoadmapContainer";
+
+// Lazy loading to improve Core Web Vitals (FCP, LCP, TBT, Speed Index)
+const TradeTypeView = lazy(() => import("./views/TradeTypeView").then(module => ({ default: module.TradeTypeView })));
+const CointegrationView = lazy(() => import("./views/CointegrationView").then(module => ({ default: module.CointegrationView })));
+const KeyTermsView = lazy(() => import("./views/KeyTermsView").then(module => ({ default: module.KeyTermsView })));
+const MapView = lazy(() => import("./views/MapView").then(module => ({ default: module.MapView })));
+const OverviewView = lazy(() => import("./views/OverviewView").then(module => ({ default: module.OverviewView })));
+const CodeConceptsView = lazy(() => import("./components/codeConceptsTopics/codeConceptsView/CodeConceptsView").then(module => ({ default: module.CodeConceptsView })));
+const ProfileInfo = lazy(() => import("./components/profileInfo").then(module => ({ default: module.ProfileInfo })));
+const TradingToolsView = lazy(() => import("./views/TradingToolsView").then(module => ({ default: module.TradingToolsView })));
+const DevLushApp = lazy(() => import("./devLushArea/agentDevRootComponents/devLushAreaApp"));
+const RoadmapContainer = lazy(() => import("./roadmapArea/roadmapView/RoadmapContainer"));
 
 import { Toaster } from 'sonner';
 
@@ -52,9 +53,13 @@ export default function App() {
     <>
       <Toaster position="top-center" />
       {activeTab === "dev-labs-workspace" ? (
-        <DevLushApp onExit={() => setActiveTab("home")} />
+        <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-zinc-500">Loading Workspace...</div>}>
+          <DevLushApp onExit={() => setActiveTab("home")} />
+        </Suspense>
       ) : activeTab === "roadmap-workspace" ? (
-        <RoadmapContainer onExit={() => setActiveTab("home")} />
+        <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-zinc-500">Loading Roadmap...</div>}>
+          <RoadmapContainer onExit={() => setActiveTab("home")} />
+        </Suspense>
       ) : (
         <MainLayout
           activeTab={activeTab}
@@ -65,37 +70,39 @@ export default function App() {
           setActiveCodeCategory={setActiveCodeCategory}
           showUI={showUI}
         >
-          {activeTab === "home" && (
-            <HomeMainView 
-              candlestickData={candlestickData} 
-              onToggleUI={setShowUI} 
-              onInitializeEngine={() => {
-                setActiveTab("trading-tools");
-                setActiveSubTab("leverage-view-v3");
-              }}
-            />
-          )}
-          {activeTab === "trade-type" && (
-            <TradeTypeView
-              silverCandlestickData={silverCandlestickData}
-              chart2Data={chart2Data}
-              candlestickData={candlestickData}
-            />
-          )}
-          {activeTab === "cointegration" && <CointegrationView />}
-          {activeTab === "key-terms" && <KeyTermsView />}
-          {activeTab === "map" && <MapView activeSubTab={activeSubTab} />}
-          {activeTab === "overview" && <OverviewView />}
-          {(activeTab === "trading-tools" || activeTab === "archive-tools") && <TradingToolsView activeSubTab={activeSubTab} />}
-          {activeTab === "profile" && <ProfileInfo />}
-          {activeTab === "code-concepts" && (
-            <CodeConceptsView 
-              activeCategory={activeCodeCategory as any} 
-              setActiveCategory={setActiveCodeCategory as any}
-              onToggleUI={setShowUI}
-              onExitSearch={() => setActiveTab("home")}
-            />
-          )}
+          <Suspense fallback={<div className="h-full w-full flex items-center justify-center text-zinc-500">Loading...</div>}>
+            {activeTab === "home" && (
+              <HomeMainView 
+                candlestickData={candlestickData} 
+                onToggleUI={setShowUI} 
+                onInitializeEngine={() => {
+                  setActiveTab("trading-tools");
+                  setActiveSubTab("leverage-view-v3");
+                }}
+              />
+            )}
+            {activeTab === "trade-type" && (
+              <TradeTypeView
+                silverCandlestickData={silverCandlestickData}
+                chart2Data={chart2Data}
+                candlestickData={candlestickData}
+              />
+            )}
+            {activeTab === "cointegration" && <CointegrationView />}
+            {activeTab === "key-terms" && <KeyTermsView />}
+            {activeTab === "map" && <MapView activeSubTab={activeSubTab} />}
+            {activeTab === "overview" && <OverviewView />}
+            {(activeTab === "trading-tools" || activeTab === "archive-tools") && <TradingToolsView activeSubTab={activeSubTab} />}
+            {activeTab === "profile" && <ProfileInfo />}
+            {activeTab === "code-concepts" && (
+              <CodeConceptsView 
+                activeCategory={activeCodeCategory as any} 
+                setActiveCategory={setActiveCodeCategory as any}
+                onToggleUI={setShowUI}
+                onExitSearch={() => setActiveTab("home")}
+              />
+            )}
+          </Suspense>
         </MainLayout>
       )}
     </>

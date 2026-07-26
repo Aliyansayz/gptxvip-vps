@@ -3,7 +3,7 @@ import { Bot, Play, Activity, CheckCircle, XCircle, DollarSign, Target, Database
 import { DevLushLayout } from "../../devLushTopicsView/DevLushLayout";
 import { DevLushTheoryBridge } from "../../devLushTopicsView/DevLushTheoryBridge";
 import SaveTheoryButton from "../../../agentDevRootComponents/TopicTheoryView/SaveTheoryButton";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { toast } from 'sonner';
 
 const BusinessLensActivity: React.FC<{
@@ -191,27 +191,35 @@ const BusinessLensActivity: React.FC<{
             <h5 className="text-xs font-bold text-slate-500 uppercase mb-2 tracking-wider">
                 Analogy: Automated Pricing Safeguards
             </h5>
-            <div className="relative w-full h-[400px] flex items-center justify-center p-8 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-              <div className="flex flex-col items-center justify-between w-full h-full">
-                  <div className="flex justify-center w-full gap-24 relative z-10">
+            <div className="relative w-full h-[400px] flex items-center justify-center p-8 bg-[radial-gradient(circle_at_center,rgba(245,158,11,0.05)_1px,transparent_1px)] bg-[length:20px_20px] rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden backdrop-blur-xl shadow-inner">
+              <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+                  {/* Agent A to DB */}
+                  <motion.line x1="25%" y1="20%" x2="50%" y2="80%" stroke="#f59e0b" strokeWidth="2" strokeDasharray="4,4" className="opacity-30" />
+                  {/* Agent B to DB */}
+                  <motion.line x1="75%" y1="20%" x2="50%" y2="80%" stroke="#f59e0b" strokeWidth="2" strokeDasharray="4,4" className="opacity-30" />
+              </svg>
+              <div className="flex flex-col items-center justify-between w-full h-full relative z-10">
+                  <div className="flex justify-around w-full relative">
                      <Node id="agentA" label="Our Agent" role="worker" active={activeNodes.includes('agentA')} completed={completedNodes.includes('agentA')} />
                      <Node id="agentB" label="Competitor" role="worker" active={activeNodes.includes('agentB')} completed={completedNodes.includes('agentB')} />
                   </div>
                   <Node id="db" label="Marketplace DB" role="database" active={activeNodes.includes('db')} completed={completedNodes.includes('db')} />
               </div>
 
+              <AnimatePresence>
               {messages.map((m) => (
                  <motion.div
                    key={m.id}
-                   initial={{ opacity: 0, y: -20, scale: 0 }}
+                   initial={{ opacity: 0, y: -40, scale: 0.8 }}
                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                   exit={{ opacity: 0 }}
-                   className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none px-3 py-1 bg-amber-100 border border-amber-300 text-amber-800 font-bold rounded-md shadow-sm text-xs"
-                   transition={{ duration: 0.5, type: 'spring' }}
+                   exit={{ opacity: 0, scale: 0.5 }}
+                   className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none px-4 py-2 bg-amber-950/80 border border-amber-500 text-amber-300 font-bold rounded-xl shadow-2xl backdrop-blur-md text-xs"
+                   transition={{ duration: 0.4, type: 'spring' }}
                  >
                    {m.text}
                  </motion.div>
               ))}
+              </AnimatePresence>
             </div>
           </div>
         </div>

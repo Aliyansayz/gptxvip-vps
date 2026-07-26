@@ -4,6 +4,7 @@ import Navbar from './agentDevRootComponents/Navbar';
 import Footer from './agentDevRootComponents/Footer';
 import { ReadingView } from './agentDevRootComponents/ReadingView';
 import { ArticlesView } from './agentDevRootComponents/ArticlesView';
+import { BlogsView } from './agentDevRootComponents/BlogsView';
 import DevLushContainer from './devLushComponents/DevLushContainer';
 import { AgentWorkspace } from './agentWorkspaceComponents/AgentWorkspace';
 import GeminiChatWidget from './agentDevRootComponents/GeminiChatWidget';
@@ -31,7 +32,7 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
     const [studyEnergy, setStudyEnergy] = useState(15);
     const [energyLockoutTime, setEnergyLockoutTime] = useState(0);
     
-    const [currentView, setCurrentView] = useState<'landing' | 'devlush-search' | 'reading' | 'articles' | 'favorites' | 'topic-theory' | 'devlush' | 'agent-workspace'>('landing');
+    const [currentView, setCurrentView] = useState<'landing' | 'devlush-search' | 'reading' | 'articles' | 'blogs' | 'favorites' | 'topic-theory' | 'devlush' | 'agent-workspace'>('landing');
 
     // Text Selection & AI Prompt State
     const [selectionRect, setSelectionRect] = useState<DOMRect | null>(null);
@@ -185,6 +186,8 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
                     {currentView === 'reading' && <ReadingView />}
                     
                     {currentView === 'articles' && <ArticlesView />}
+
+                    {currentView === 'blogs' && <BlogsView />}
 
                     {currentView === 'favorites' && (
                         <FavoritesView onLaunch={() => {}} />

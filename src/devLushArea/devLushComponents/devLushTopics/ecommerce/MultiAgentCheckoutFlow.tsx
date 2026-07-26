@@ -47,18 +47,18 @@ const CheckoutRaceVisual: React.FC<{ isRunning: boolean; lockingEnabled: boolean
 
         {/* Decorative Sandbox Agents */}
         <div className="absolute top-4 left-1/2 -translate-x-1/2 flex gap-8 z-0">
-          <div className="flex flex-col items-center opacity-60">
-            <div className="w-10 h-10 bg-amber-900/40 border border-amber-500/50 rounded-full flex items-center justify-center text-amber-400 mb-1">
+          <motion.div whileHover={{ scale: 1.1, y: -5 }} className="flex flex-col items-center opacity-80 cursor-pointer">
+            <div className="w-10 h-10 bg-amber-900/40 border border-amber-500/50 rounded-full flex items-center justify-center text-amber-400 mb-1 shadow-[0_0_10px_rgba(245,158,11,0.2)] hover:shadow-[0_0_15px_rgba(245,158,11,0.5)] transition-all">
               <Tag className="w-4 h-4" />
             </div>
             <span className="text-[9px] font-bold text-amber-500/70 uppercase">Promotion</span>
-          </div>
-          <div className="flex flex-col items-center opacity-60">
-            <div className="w-10 h-10 bg-sky-900/40 border border-sky-500/50 rounded-full flex items-center justify-center text-sky-400 mb-1">
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.1, y: -5 }} className="flex flex-col items-center opacity-80 cursor-pointer">
+            <div className="w-10 h-10 bg-sky-900/40 border border-sky-500/50 rounded-full flex items-center justify-center text-sky-400 mb-1 shadow-[0_0_10px_rgba(14,165,233,0.2)] hover:shadow-[0_0_15px_rgba(14,165,233,0.5)] transition-all">
               <MessageCircleQuestion className="w-4 h-4" />
             </div>
             <span className="text-[9px] font-bold text-sky-500/70 uppercase">Customer FAQs</span>
-          </div>
+          </motion.div>
           <div className="flex flex-col items-center opacity-60">
             <div className="w-10 h-10 bg-emerald-900/40 border border-emerald-500/50 rounded-full flex items-center justify-center text-emerald-400 mb-1">
               <Truck className="w-4 h-4" />
@@ -89,7 +89,7 @@ const CheckoutRaceVisual: React.FC<{ isRunning: boolean; lockingEnabled: boolean
         {/* Agents */}
         <div className="absolute left-8 top-1/3 flex flex-col items-center">
           <div className="text-[10px] font-bold text-indigo-400/70 mb-1 uppercase tracking-wider">Checkout Agent 1</div>
-          <div className="w-14 h-14 bg-indigo-900/60 border-2 border-indigo-500 rounded-full flex items-center justify-center text-indigo-300 relative shadow-[0_0_15px_rgba(99,102,241,0.3)]">
+          <motion.div whileHover={{ scale: 1.1 }} className="w-14 h-14 bg-gradient-to-br from-indigo-900/80 to-indigo-800/40 border-2 border-indigo-500 rounded-full flex items-center justify-center text-indigo-300 relative shadow-[0_0_15px_rgba(99,102,241,0.4)] cursor-pointer">
             <ShoppingBag className="w-6 h-6 text-indigo-400" />
             {isRunning && (
               <motion.div
@@ -101,12 +101,12 @@ const CheckoutRaceVisual: React.FC<{ isRunning: boolean; lockingEnabled: boolean
                 <div className="w-2 h-2 bg-white rounded-full"></div>
               </motion.div>
             )}
-          </div>
+          </motion.div>
         </div>
 
         <div className="absolute left-8 bottom-1/4 flex flex-col items-center">
           <div className="text-[10px] font-bold text-purple-400/70 mb-1 uppercase tracking-wider">Checkout Agent 2</div>
-          <div className="w-14 h-14 bg-purple-900/60 border-2 border-purple-500 rounded-full flex items-center justify-center text-purple-300 relative shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+          <motion.div whileHover={{ scale: 1.1 }} className="w-14 h-14 bg-gradient-to-br from-purple-900/80 to-purple-800/40 border-2 border-purple-500 rounded-full flex items-center justify-center text-purple-300 relative shadow-[0_0_15px_rgba(168,85,247,0.4)] cursor-pointer">
             <ShoppingBag className="w-6 h-6 text-purple-400" />
             {isRunning && (
               <motion.div
@@ -118,7 +118,7 @@ const CheckoutRaceVisual: React.FC<{ isRunning: boolean; lockingEnabled: boolean
                 <div className="w-2 h-2 bg-white rounded-full"></div>
               </motion.div>
             )}
-          </div>
+          </motion.div>
         </div>
 
         {stock < 0 && (

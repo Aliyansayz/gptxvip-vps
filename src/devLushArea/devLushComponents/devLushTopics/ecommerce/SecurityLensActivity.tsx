@@ -3,7 +3,7 @@ import { Play, Activity, CheckCircle, XCircle, Database, Lock, ShieldAlert, Cpu 
 import { DevLushLayout } from "../../devLushTopicsView/DevLushLayout";
 import { DevLushTheoryBridge } from "../../devLushTopicsView/DevLushTheoryBridge";
 import SaveTheoryButton from "../../../agentDevRootComponents/TopicTheoryView/SaveTheoryButton";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { toast } from 'sonner';
 
 const SecurityLensActivity: React.FC<{
@@ -204,26 +204,31 @@ const SecurityLensActivity: React.FC<{
             <h5 className="text-xs font-bold text-slate-500 uppercase mb-2 tracking-wider">
                 Analogy: Advisory Lock Defense
             </h5>
-            <div className="relative w-full h-[400px] flex items-center justify-center p-8 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-              <div className="flex flex-col items-center justify-between w-full h-full">
+            <div className="relative w-full h-[450px] flex items-center justify-center p-8 bg-[radial-gradient(circle_at_center,rgba(244,63,94,0.05)_1px,transparent_1px)] bg-[length:20px_20px] rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden backdrop-blur-xl shadow-inner">
+              <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+                  <motion.line x1="50%" y1="15%" x2="50%" y2="85%" stroke="#f43f5e" strokeWidth="2" strokeDasharray="4,4" className="opacity-30" />
+              </svg>
+              <div className="flex flex-col items-center justify-between w-full h-full relative z-10">
                   <Node id="attacker" label="Attacker" role="input" active={activeNodes.includes('attacker')} completed={completedNodes.includes('attacker')} />
                   <Node id="api" label="API Gateway" role="worker" active={activeNodes.includes('api')} completed={completedNodes.includes('api')} />
                   <Node id="lock" label="Advisory Lock" role="layer" active={activeNodes.includes('lock')} completed={completedNodes.includes('lock')} />
                   <Node id="db" label="Database" role="database" active={activeNodes.includes('db')} completed={completedNodes.includes('db')} />
               </div>
 
+              <AnimatePresence>
               {messages.map((m) => (
                  <motion.div
                    key={m.id}
-                   initial={{ opacity: 0, x: -20, scale: 0 }}
-                   animate={{ opacity: 1, x: 0, scale: 1 }}
-                   exit={{ opacity: 0 }}
-                   className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none px-3 py-1 bg-rose-100 border border-rose-300 text-rose-800 font-bold rounded-md shadow-sm text-xs"
-                   transition={{ duration: 0.5, type: 'spring' }}
+                   initial={{ opacity: 0, x: -40, scale: 0.8 }}
+                   animate={{ opacity: 1, x: 50, scale: 1 }}
+                   exit={{ opacity: 0, scale: 0.5 }}
+                   className="absolute top-1/2 left-1/2 -translate-y-1/2 z-50 pointer-events-none px-4 py-2 bg-rose-950/80 border border-rose-500 text-rose-300 font-bold rounded-xl shadow-2xl backdrop-blur-md text-xs"
+                   transition={{ duration: 0.4, type: 'spring' }}
                  >
                    {m.text}
                  </motion.div>
               ))}
+              </AnimatePresence>
             </div>
           </div>
         </div>

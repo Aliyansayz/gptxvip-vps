@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Exercise } from "../../../../types";
+import { Exercise } from "../../devLushTypes";
 import { toast } from "sonner";
 import { CheckCircle, XCircle, Bot, Activity } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 import { LabSettings } from "../../../agentDevRootComponents/LabSettingsMenu";
 import { DevLushLayout } from "../../devLushTopicsView/DevLushLayout";
 import SaveTheoryButton from "../../../agentDevRootComponents/TopicTheoryView/SaveTheoryButton";
@@ -200,11 +201,18 @@ export const GenericAgentActivity: React.FC<ChapterProps> = ({
             {/* Logs Area */}
             <div className="w-1/3 border-l border-slate-800 bg-black/50 p-3 font-mono text-[10px] text-slate-300 overflow-y-auto custom-scrollbar">
                 <div className="text-indigo-400 mb-2 font-bold border-b border-slate-800 pb-1">AGENT_LOGS</div>
+                <AnimatePresence>
                 {logs.map((log, idx) => (
-                    <div key={idx} className={`mb-1 ${log.includes("SUCCESS") ? "text-emerald-400" : log.includes("WARN") ? "text-amber-400" : "text-slate-400"}`}>
+                    <motion.div 
+                        key={idx} 
+                        initial={{ opacity: 0, x: -10, height: 0 }}
+                        animate={{ opacity: 1, x: 0, height: 'auto' }}
+                        className={`mb-1 ${log.includes("SUCCESS") ? "text-emerald-400" : log.includes("WARN") ? "text-amber-400" : "text-slate-400"}`}
+                    >
                         {log}
-                    </div>
+                    </motion.div>
                 ))}
+                </AnimatePresence>
                 {!isRunning && logs.length === 0 && <div className="text-slate-600 italic">Waiting...</div>}
             </div>
         </div>

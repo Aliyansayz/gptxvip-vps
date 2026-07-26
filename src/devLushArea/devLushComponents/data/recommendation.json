@@ -273,7 +273,7 @@
         "componentId": "reading-recommendation-filtering",
         "type": "reading",
         "title": "Recommendation Approaches",
-        "prompt": "<p><strong>Exploring the differences between Content-Based Filtering and Collaborative Filtering.</strong></p>\n\n<h3 class=\"text-lg font-bold text-slate-800 dark:text-slate-200 mt-4 mb-2\">Core Methodologies</h3>\n<ul class=\"list-disc list-inside space-y-2 ml-4\">\n<li><strong>Content-Based Filtering:</strong> Recommends items similar to those the user liked in the past, based on item attributes (metadata, tags).</li>\n<li><strong>Collaborative Filtering:</strong> Recommends items based on the preferences of similar users (user-user) or similar item interaction histories (item-item).</li>\n</ul>\n\n<h3 class=\"text-lg font-bold text-slate-800 dark:text-slate-200 mt-6 mb-2\">Critical Pain Points</h3>\n<ul class=\"list-disc list-inside space-y-2 ml-4\">\n<li><strong>Cold Start Problem:</strong> Collaborative filtering struggles when a new user or a new item is introduced because there is no interaction history.</li>\n<li><strong>Filter Bubbles:</strong> Content-based algorithms can over-specialize, repeatedly recommending the exact same type of content and ignoring serendipitous discovery.</li>\n</ul>",
+        "prompt": "",
         "question": "Which recommendation strategy is most susceptible to the 'Cold Start Problem' when a brand new movie is added to the catalog?",
         "options": [
           "A. Content-Based Filtering, because it needs tags to understand the movie.",

@@ -1067,5 +1067,101 @@
       "competition",
       "retail"
     ]
+  },
+  {
+    "course": "Ecommerce Agents",
+    "chapter_title": "Cart Abandonment Recovery Agent",
+    "labComponentId": "ecommerce-agents-cart-abandonment",
+    "critical_concepts": [
+      {
+        "concept": "Dynamic Incentive Structuring",
+        "elaboration": "Generating personalized offers based on cart contents and user price sensitivity."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "ecommerce-agents-cart-abandonment-ui",
+        "type": "interactive-visual",
+        "title": "Cart Abandonment Recovery",
+        "prompt": "An agent analyzes a user's abandoned cart and calculates the most profitable incentive to offer in an email campaign.",
+        "question": "How does dynamic incentive structuring improve conversion recovery?",
+        "options": [
+          "A. It sends the same 10% discount code to every user.",
+          "B. It threatens the user to complete the purchase.",
+          "C. It analyzes user history and margin to offer personalized incentives like free shipping or bundled discounts to maximize profit.",
+          "D. It removes items from the cart if they are abandoned for too long."
+        ],
+        "answer": "C. It analyzes user history and margin to offer personalized incentives like free shipping or bundled discounts to maximize profit.",
+        "explanation": "Rather than a static discount, the agent balances the likelihood of conversion against product margins to generate an optimal custom offer.",
+        "theory_explanation": "Cart Abandonment Agents analyze the user's historical price sensitivity and the margin of items left in the cart. They compute the mathematically optimal offer—be it a flat discount, free shipping, or a free accessory—to secure the conversion without giving away unnecessary profit.",
+        "real_world_analogy": "Like a salesperson noticing you hesitate at the cash register and offering just the right perk (like throwing in a free pair of socks) to close the deal on a new pair of shoes.",
+        "visual_element": "activity"
+      }
+    ],
+    "tags": ["business", "ecommerce", "agents", "conversion"]
+  },
+  {
+    "course": "Ecommerce Agents",
+    "chapter_title": "Reputation Management Agent",
+    "labComponentId": "ecommerce-agents-reputation",
+    "critical_concepts": [
+      {
+        "concept": "Sentiment Loop Feedback",
+        "elaboration": "Monitoring incoming reviews and automatically adjusting product metadata or alerting supply chain."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "ecommerce-agents-reputation-ui",
+        "type": "interactive-visual",
+        "title": "Automated Reputation Management",
+        "prompt": "A Reputation Agent detects a sudden influx of reviews complaining that a shirt shrinks after washing.",
+        "question": "What is the most effective autonomous action for a Reputation Agent in this scenario?",
+        "options": [
+          "A. Delete all negative reviews to keep the product rating high.",
+          "B. Auto-reply to customers and dynamically update the product page with a 'runs small' or 'hand wash only' warning.",
+          "C. Issue a full refund to all past buyers immediately.",
+          "D. Ignore the reviews until a human manager reads them next month."
+        ],
+        "answer": "B. Auto-reply to customers and dynamically update the product page with a 'runs small' or 'hand wash only' warning.",
+        "explanation": "The agent can quickly mitigate further customer dissatisfaction by updating the product description based on live sentiment data.",
+        "theory_explanation": "Reputation Agents aggregate sentiment across thousands of reviews and social media mentions. By identifying recurring issues, they can automatically augment product metadata (warning future buyers) and alert supply chain managers to manufacturing defects.",
+        "real_world_analogy": "Like a store manager listening to three customers complain about a confusing manual, and immediately printing a quick-start guide to tape to the front of all remaining boxes.",
+        "visual_element": "activity"
+      }
+    ],
+    "tags": ["business", "ecommerce", "agents", "reputation", "feedback"]
+  },
+  {
+    "course": "Ecommerce Agents",
+    "chapter_title": "Intelligent Fraud Detection Agent",
+    "labComponentId": "ecommerce-agents-fraud-detection",
+    "critical_concepts": [
+      {
+        "concept": "Anomaly Scoring",
+        "elaboration": "Evaluating transaction metadata across networks to identify malicious purchasing patterns."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "ecommerce-agents-fraud-detection-ui",
+        "type": "interactive-visual",
+        "title": "Velocity Attack Prevention",
+        "prompt": "A Fraud Detection Agent analyzes a stream of incoming checkout attempts.",
+        "question": "How does the agent identify a 'velocity attack'?",
+        "options": [
+          "A. By looking at how fast the user types their credit card number.",
+          "B. By detecting multiple Rapid checkout attempts using different credit cards from the same IP address or device fingerprint.",
+          "C. By checking if the customer used a discount code.",
+          "D. By calling the customer's phone."
+        ],
+        "answer": "B. By detecting multiple Rapid checkout attempts using different credit cards from the same IP address or device fingerprint.",
+        "explanation": "Velocity attacks are characterized by high-volume, rapid-fire transaction attempts typical of botnets testing stolen card numbers.",
+        "theory_explanation": "Fraud Detection Agents use graph analysis and machine learning to score transactions in real-time. They map the relationships between IP addresses, device fingerprints, shipping addresses, and payment methods. A sudden cluster of activity linking disparate cards to a single node indicates fraud.",
+        "real_world_analogy": "Like a bouncer noticing that five different people tried to enter the club using the exact same fake ID.",
+        "visual_element": "activity"
+      }
+    ],
+    "tags": ["security", "ecommerce", "agents", "fraud"]
   }
 ]
