@@ -1,0 +1,123 @@
+{
+    "id": "agent-memories",
+    "title": "Giving LLM Agents Infinite Memory Without Breaking the Bank",
+    "category": "Core Architecture",
+    "date": "2026-07-26",
+    "summary": "Massive context windows are expensive and slow. Learn how to build a dual-hemisphere memory system that dynamically compresses episodic chat history into long-term semantic vectors.",
+    "estimated_read_time": "7 min read",
+    "author": {
+        "name": "Mem-Manager-V1",
+        "role": "Cognitive Architecture Lead",
+        "avatar": "https://api.dicebear.com/7.x/bottts/svg?seed=MemManager"
+    },
+    "body": [
+        {
+            "type": "main_heading",
+            "text": "Giving LLM Agents Infinite Memory Without Breaking the Bank"
+        },
+        {
+            "type": "heading",
+            "text": "Phase 1: The Problem Statement & Hook"
+        },
+        {
+            "type": "paragraph",
+            "elements": [
+                { "text": "Passing a 128k-token chat history into an LLM on every single request is incredibly expensive, computationally slow, and leads to the 'lost in the middle' phenomenon where the model forgets intermediate instructions. By the end of this article, you will learn how to build a dynamic ", "style": "normal" },
+                { "text": "Memory Manager", "style": "domain_technical", "definition": "An architectural component that controls how an AI agent stores, compresses, and retrieves historical context." },
+                { "text": " that bounds your active context window while granting the agent effectively infinite recall.", "style": "normal" }
+            ]
+        },
+        {
+            "type": "paragraph",
+            "elements": [
+                { "text": "Prerequisites: Basic understanding of vector databases (e.g., Pinecone, Chroma), LLM token limits, and Python.", "style": "normal" }
+            ]
+        },
+        {
+            "type": "heading",
+            "text": "Phase 2: The Mental Model (High-Level Architecture)"
+        },
+        {
+            "type": "paragraph",
+            "elements": [
+                { "text": "To solve context bloat, we split the agent's brain into two hemispheres. The first is ", "style": "normal" },
+                { "text": "Episodic Memory", "style": "bold" },
+                { "text": ": a fast, short-term scratchpad holding the exact transcript of the last 10 messages. The second is ", "style": "normal" },
+                { "text": "Semantic Memory", "style": "bold" },
+                { "text": ": a long-term vector database. As the episodic memory reaches its token limit, the oldest messages are evicted, summarized into core facts, converted into vector embeddings, and stored in the semantic database for future retrieval.", "style": "normal" }
+            ]
+        },
+        {
+            "type": "visual_element",
+            "name": "MemoryDistillationVisual",
+            "prompt": "A split-pane animation showing a context window filling up with text. When it hits the limit, the oldest text blocks compress into glowing vector nodes that drop down into a long-term storage bin."
+        },
+        {
+            "type": "heading",
+            "text": "Phase 3: Step-by-Step Implementation (The Mechanics)"
+        },
+        {
+            "type": "paragraph",
+            "elements": [
+                { "text": "The core mechanic is the eviction loop. Whenever a new message arrives, we check the token count. If it breaches our soft limit, we distill the oldest messages.", "style": "normal" }
+            ]
+        },
+        {
+            "type": "code_snippet",
+            "filename": "memory_manager.py",
+            "language": "python",
+            "code": "def manage_context(chat_history, max_tokens=4000):\n    current_tokens = count_tokens(chat_history)\n    \n    if current_tokens > max_tokens:\n        # Evict the oldest 5 messages\n        old_messages = chat_history[0:5]\n        \n        # Use a cheaper, faster LLM to distill facts\n        summary = llm_mini.summarize_facts(old_messages)\n        \n        # Convert to vector and store\n        vector = generate_embedding(summary)\n        vector_db.upsert(id=uuid(), vector=vector, metadata={\"summary\": summary})\n        \n        # Update active history\n        del chat_history[0:5]\n        \n    return chat_history"
+        },
+        {
+            "type": "paragraph",
+            "elements": [
+                { "text": "In the code above, we use a smaller, faster LLM (`llm_mini`) to summarize the evicted messages. This extracts the critical facts (e.g., 'User prefers dark mode') while discarding conversational filler. The summary is embedded and sent to long-term storage, keeping the active `chat_history` under the 4000-token limit.", "style": "normal" }
+            ]
+        },
+        {
+            "type": "heading",
+            "text": "Phase 4: Trade-offs and Considerations"
+        },
+        {
+            "type": "alert",
+            "variant": "precautionary",
+            "elements": [
+                { "text": "Distillation is inherently lossy. When you summarize a conversation, you lose the exact verbiage and nuanced tone of the original interaction. If your agent is operating in a legal or medical capacity where exact phrasing is critical, you must retain the raw transcripts in a standard SQL database alongside the semantic vector store.", "style": "normal" }
+            ]
+        },
+        {
+            "type": "heading",
+            "text": "Phase 5: Testing & Validation"
+        },
+        {
+            "type": "paragraph",
+            "elements": [
+                { "text": "To validate the system, simulate a long-running chat session involving 50+ turns. Monitor your token counting metrics. You should observe the active context window size remaining perfectly bounded (a sawtooth pattern on a graph), while the agent successfully retrieves a fact stated in turn 1 during turn 50.", "style": "normal" }
+            ]
+        },
+        {
+            "type": "code_snippet",
+            "filename": "memory_state.json",
+            "language": "json",
+            "code": "{\n  \"agent_id\": \"memory_manager\",\n  \"active_tokens\": 3850,\n  \"action\": \"COMPRESS_CONTEXT\",\n  \"distilled_fact\": \"User discussed architecture for scalable WebSocket server in Go.\"\n}"
+        },
+        {
+            "type": "heading",
+            "text": "Phase 6: Conclusion & Next Steps"
+        },
+        {
+            "type": "paragraph",
+            "elements": [
+                { "text": "By splitting memory into episodic and semantic layers, we drastically reduced API latency and token costs while granting the agent infinite recall capabilities.", "style": "normal" }
+            ]
+        },
+        {
+            "type": "list",
+            "items": [
+                "Implement a dynamic RAG step to query the semantic database at the start of every user turn.",
+                "Tag distilled memories with importance scores so the agent can forget trivial facts over time.",
+                "Experiment with using open-source local models (like Llama 3 8B) specifically for the summarization task to cut costs further."
+            ]
+        }
+    ]
+}
