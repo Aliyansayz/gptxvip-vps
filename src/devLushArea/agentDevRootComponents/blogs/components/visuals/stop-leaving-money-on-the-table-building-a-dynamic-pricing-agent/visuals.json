@@ -1,0 +1,18 @@
+[
+    {
+        "element_name": "DynamicPricingVisual",
+        "visual_prompt": "An interactive pricing gauge. As simulated 'competitor stock' drops to zero, the agent's algorithmic needle visually pushes the product price up, flashing green as the projected revenue margin expands."
+    },
+    {
+        "element_name": "MarketDemandHeatmap",
+        "visual_prompt": "A heatmap showing real-time demand spikes across different regions, which the agent uses to localized pricing."
+    },
+    {
+        "element_name": "PriceElasticityCurve",
+        "visual_prompt": "An interactive graph showing how the agent models price elasticity to find the optimal profit-maximizing point."
+    },
+    {
+        "element_name": "RevenueSurgeIconographic",
+        "visual_prompt": "An animated revenue surge dashboard with stockout alert badges (📈 Surge Graph, 🛍️ Product SKU, ⚡ Competitor Stock zero 🛑, 🚀 +15% Price Adjust, 💵 Profit Maximizer), with interactive stock triggers."
+    }
+]

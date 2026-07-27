@@ -42,6 +42,8 @@ export const BlogsView: React.FC = () => {
             {selectedBlog ? (
                 <BlogArticle 
                     blog={selectedBlog} 
+                    allBlogs={blogPosts}
+                    onSelectBlog={handleSelectBlog}
                     onBack={() => handleSelectBlog(null)} 
                 />
             ) : (

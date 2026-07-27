@@ -1,0 +1,18 @@
+[
+    {
+        "element_name": "TaxAgentArchitectureVisual",
+        "visual_prompt": "A flow diagram showing the Tax Agent's core loop: API ingestion -> Compliance Engine -> Return Generation."
+    },
+    {
+        "element_name": "DataInfographicVisual",
+        "visual_prompt": "An interactive infographic displaying cost savings and error reduction metrics when using an International Tax Agent."
+    },
+    {
+        "element_name": "JurisdictionMapVisual",
+        "visual_prompt": "A world map highlighting different tax jurisdictions with dynamic tax rate popovers."
+    },
+    {
+        "element_name": "GlobalJurisdictionIconographic",
+        "visual_prompt": "An interactive 3D-styled SVG globe with emoji badges (🏛️ US, 🇮🇪 IE, 🇪🇺 EU, 🇯🇵 JP), floating tax treaty rates, animated data pathways, and multi-currency badges."
+    }
+]

@@ -1,7 +1,7 @@
 import React, { Suspense, useMemo } from 'react';
 import { BlogBlock, TextSegment } from '../../types/types';
 import { TermTooltip, GlossaryTable, ContextPanel, AlertBlock } from './BlogInteractiveElements';
-import { CodeSnippet, Blockquote, Accordion, ImageCarousel, VideoPlayer } from './PremiumBlocks';
+import { CodeSnippet, Blockquote, Accordion, ImageCarousel, VideoPlayer, HighlightBox, ConclusionCard, StatGrid, TLDRBanner } from './PremiumBlocks';
 import { slugify } from '../../utils';
 
 interface BlogRendererProps {
@@ -36,7 +36,7 @@ export const BlogRenderer: React.FC<BlogRendererProps> = ({ blogId, blocks }) =>
             if (seg.style === 'italic') {
                 return <em key={idx}>{seg.text}</em>;
             }
-            if (seg.style.startsWith('domain_') || seg.style === 'citation') {
+            if (seg?.style?.startsWith('domain_') || seg?.style === 'citation') {
                 return <TermTooltip key={idx} segment={seg} />;
             }
             return <span key={idx}>{seg.text}</span>;
@@ -44,15 +44,62 @@ export const BlogRenderer: React.FC<BlogRendererProps> = ({ blogId, blocks }) =>
     };
 
     return (
-        <div className="prose prose-slate max-w-none prose-headings:font-heading prose-headings:tracking-wide text-slate-800">
+        <section className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-heading prose-headings:tracking-wide text-slate-800 dark:text-slate-200 prose-headings:text-slate-900 dark:prose-headings:text-slate-100 prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-strong:text-slate-900 dark:prose-strong:text-slate-100">
             {blocks.map((block, idx) => {
                 switch (block.type) {
                     case 'main_heading':
-                        return <h1 key={idx} id={slugify(block.text)} className="text-4xl font-heading tracking-wide text-slate-900 mt-2 mb-6 scroll-mt-24">{block.text}</h1>;
+                        return <h1 key={idx} id={slugify(block.text)} className="text-3xl md:text-4xl font-heading tracking-wide text-slate-900 dark:text-slate-100 mt-4 mb-6 scroll-mt-24">{block.text}</h1>;
                     case 'heading':
-                        return <h2 key={idx} id={slugify(block.text)} className="text-2xl font-bold mt-8 mb-4 scroll-mt-24">{block.text}</h2>;
+                        return (
+                            <div key={idx} id={slugify(block.text)} className="mt-12 mb-6 scroll-mt-24 pt-6 border-t border-slate-800/60">
+                                {(block.chapterNumber || block.badge) && (
+                                    <div className="flex items-center gap-2 mb-2">
+                                        {block.chapterNumber && (
+                                            <span className="text-xs font-mono font-bold text-indigo-400 uppercase tracking-widest">
+                                                SECTION {block.chapterNumber}
+                                            </span>
+                                        )}
+                                        {block.badge && (
+                                            <span className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-md bg-indigo-500/10 text-indigo-300 border border-indigo-500/30">
+                                                {block.badge}
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
+                                <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-slate-100 m-0 tracking-tight">
+                                    {block.text}
+                                </h2>
+                                {block.subtitle && (
+                                    <p className="text-sm md:text-base text-slate-400 mt-2 leading-relaxed m-0 font-normal">
+                                        {block.subtitle}
+                                    </p>
+                                )}
+                            </div>
+                        );
+                    case 'sub_heading':
+                        return (
+                            <div key={idx} id={slugify(block.text)} className="mt-8 mb-3 scroll-mt-24">
+                                <h3 className="text-lg md:text-xl font-semibold text-slate-800 dark:text-slate-200 m-0 flex items-center gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 inline-block" />
+                                    {block.text}
+                                </h3>
+                                {block.subtitle && (
+                                    <p className="text-xs md:text-sm text-slate-400 mt-1 m-0 font-normal">
+                                        {block.subtitle}
+                                    </p>
+                                )}
+                            </div>
+                        );
                     case 'paragraph':
-                        return <p key={idx} className="mb-4 leading-relaxed">{renderTextSegments(block.elements)}</p>;
+                        return <p key={idx} className="mb-4 leading-relaxed text-slate-700 dark:text-slate-300">{renderTextSegments(block.elements)}</p>;
+                    case 'tldr_banner':
+                        return <TLDRBanner key={idx} block={block} />;
+                    case 'highlight_box':
+                        return <HighlightBox key={idx} block={block} />;
+                    case 'stat_grid':
+                        return <StatGrid key={idx} block={block} />;
+                    case 'conclusion':
+                        return <ConclusionCard key={idx} block={block} />;
                     case 'list':
                         return (
                             <ul key={idx} className="list-disc pl-6 mb-6 space-y-2">
@@ -87,12 +134,15 @@ export const BlogRenderer: React.FC<BlogRendererProps> = ({ blogId, blocks }) =>
                     case 'video':
                         return <VideoPlayer key={idx} block={block} />;
                     case 'visual_element':
-                        return <DynamicVisualElement key={idx} blogId={blogId} name={block.name} prompt={block.prompt} />;
+                    case 'svg':
+                    case 'chart':
+                    case 'diagram':
+                        return <DynamicVisualElement key={idx} blogId={blogId} name={block.name} prompt={(block as any).prompt || ''} />;
                     default:
                         console.warn(`Unknown block type encountered: ${(block as any).type}`);
                         return null;
                 }
             })}
-        </div>
+        </section>
     );
 };

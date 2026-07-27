@@ -1,0 +1,18 @@
+[
+    {
+        "element_name": "MemoryDistillationVisual",
+        "visual_prompt": "A split-pane animation showing a context window filling up with text. When it hits the limit, the oldest text blocks compress into glowing vector nodes that drop down into a long-term storage bin."
+    },
+    {
+        "element_name": "TokenCostChart",
+        "visual_prompt": "A line chart comparing API costs over time between a naive 128k context approach and the dual-hemisphere memory approach."
+    },
+    {
+        "element_name": "RagRetrievalProcess",
+        "visual_prompt": "A step-by-step diagram of how the agent queries the semantic database at the start of a turn to rebuild context."
+    },
+    {
+        "element_name": "BrainMemoryIconographic",
+        "visual_prompt": "A dual-brain hemisphere graphic featuring glowing emoji nodes (🧠 Active Context, ⚡ Fast Eviction, 📦 Vector Compression, 💎 Long-Term Knowledge, 🔍 Semantic Retrieval), with interactive memory transfer steps."
+    }
+]

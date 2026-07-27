@@ -11,12 +11,12 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ blocks }) => {
     const [activeId, setActiveId] = useState<string>('');
 
     // Extract headings from blocks
-    const headings = blocks.filter((block): block is Extract<BlogBlock, { type: 'heading' | 'main_heading' }> => 
-        block.type === 'heading' || block.type === 'main_heading'
+    const headings = blocks.filter((block): block is Extract<BlogBlock, { type: 'heading' | 'main_heading' | 'sub_heading' }> => 
+        block.type === 'heading' || block.type === 'main_heading' || block.type === 'sub_heading'
     ).map(block => ({
         id: slugify(block.text),
         text: block.text,
-        level: block.type === 'main_heading' ? 1 : 2
+        level: block.type === 'main_heading' ? 1 : block.type === 'heading' ? 2 : 3
     }));
 
     useEffect(() => {
@@ -44,18 +44,21 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ blocks }) => {
     if (headings.length === 0) return null;
 
     return (
-        <nav className="sticky top-24 p-6 bg-white/60 backdrop-blur-md rounded-2xl border border-slate-200/50 shadow-lg shadow-slate-200/20">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-900 mb-4">On this page</h4>
-            <ul className="space-y-3 relative border-l border-slate-200">
+        <nav className="sticky top-24 p-6 bg-slate-900/60 backdrop-blur-xl rounded-2xl border border-slate-800 shadow-xl">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-400 mb-4 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-ping"></span>
+                On this page
+            </h4>
+            <ul className="space-y-3 relative border-l border-slate-800">
                 {headings.map((heading) => (
                     <li key={heading.id} className="relative">
                         <a
                             href={`#${heading.id}`}
-                            className={`block pl-4 text-sm transition-colors duration-200 ${
+                            className={`block pl-4 text-xs transition-colors duration-200 ${
                                 activeId === heading.id
-                                    ? 'text-indigo-600 font-semibold'
-                                    : 'text-slate-500 hover:text-slate-800'
-                            } ${heading.level === 2 ? 'ml-3' : ''}`}
+                                    ? 'text-indigo-400 font-semibold'
+                                    : 'text-slate-400 hover:text-slate-200'
+                            } ${heading.level === 2 ? 'ml-2' : heading.level === 3 ? 'ml-4 text-[11px]' : ''}`}
                             onClick={(e) => {
                                 e.preventDefault();
                                 document.getElementById(heading.id)?.scrollIntoView({ behavior: 'smooth' });
@@ -66,7 +69,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ blocks }) => {
                         {activeId === heading.id && (
                             <motion.div
                                 layoutId="activeToC"
-                                className="absolute left-[-1px] top-0 bottom-0 w-[2px] bg-indigo-600 rounded-full"
+                                className="absolute left-[-1px] top-0 bottom-0 w-[2px] bg-indigo-500 rounded-full"
                                 initial={false}
                                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                             />
@@ -77,3 +80,4 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ blocks }) => {
         </nav>
     );
 };
+

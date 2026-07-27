@@ -1,0 +1,18 @@
+[
+    {
+        "element_name": "NetworkIsolationVisual",
+        "visual_prompt": "A live graph of network nodes. When an anomaly is detected, the agent visually quarantines the infected red node by slicing its connection lines and wrapping it in an amber shield."
+    },
+    {
+        "element_name": "ThreatTriagePipeline",
+        "visual_prompt": "A pipeline graphic illustrating how SIEM alerts are filtered, enriched, and classified by the SOC Agent."
+    },
+    {
+        "element_name": "RemediationTimeline",
+        "visual_prompt": "A timeline comparison showing MTTR (Mean Time To Respond) with and without the autonomous agent."
+    },
+    {
+        "element_name": "ThreatRadarIconographic",
+        "visual_prompt": "A circular radar screen with animated sweeping beam, floating threat alert badges (🚨 Ransomware, 👾 Malware, 🔒 Host Isolated, 📡 Exfiltration), and interactive threat mitigation controls."
+    }
+]

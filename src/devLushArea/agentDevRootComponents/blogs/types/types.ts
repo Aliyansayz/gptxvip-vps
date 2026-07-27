@@ -1,5 +1,12 @@
 export type TextStyle = 'normal' | 'bold' | 'italic' | 'domain_legal' | 'domain_technical' | 'domain_financial' | 'citation';
 
+export interface SEO {
+    metaTitle: string;
+    metaDescription: string;
+    canonicalUrl?: string;
+    schemaMarkup?: string;
+}
+
 export interface TextSegment {
     text: string;
     style: TextStyle;
@@ -17,8 +24,12 @@ export interface BaseBlock {
 }
 
 export interface HeadingBlock extends BaseBlock {
-    type: 'main_heading' | 'heading';
+    type: 'main_heading' | 'heading' | 'sub_heading';
     text: string;
+    subtitle?: string;
+    chapterNumber?: string;
+    badge?: string;
+    accentColor?: string;
 }
 
 export interface ParagraphBlock extends BaseBlock {
@@ -51,6 +62,40 @@ export interface AlertBlock extends BaseBlock {
 }
 
 // --- NEW PREMIUM BLOCKS ---
+
+export interface HighlightBoxBlock extends BaseBlock {
+    type: 'highlight_box';
+    title: string;
+    badge?: string;
+    variant?: 'indigo' | 'rose' | 'emerald' | 'amber';
+    points: (string | TextSegment[])[];
+}
+
+export interface ConclusionBlock extends BaseBlock {
+    type: 'conclusion';
+    title: string;
+    summary: string;
+    keyTakeaways?: string[];
+    cta?: { text: string; link: string };
+}
+
+export interface StatItem {
+    value: string;
+    label: string;
+    change?: string;
+}
+
+export interface StatGridBlock extends BaseBlock {
+    type: 'stat_grid';
+    stats: StatItem[];
+}
+
+export interface TLDRBannerBlock extends BaseBlock {
+    type: 'tldr_banner';
+    title?: string;
+    text: string;
+    highlights?: string[];
+}
 
 export interface ImageCarouselBlock extends BaseBlock {
     type: 'image_carousel';
@@ -94,6 +139,24 @@ export interface VisualElementBlock extends BaseBlock {
     prompt: string;
 }
 
+export interface SVGBlock extends BaseBlock {
+    type: 'svg';
+    name: string;
+    content?: string;
+}
+
+export interface ChartBlock extends BaseBlock {
+    type: 'chart';
+    name: string;
+    data?: any;
+}
+
+export interface DiagramBlock extends BaseBlock {
+    type: 'diagram';
+    name: string;
+    code?: string;
+}
+
 // Discriminated union for all possible blocks
 export type BlogBlock =
     | HeadingBlock
@@ -102,12 +165,19 @@ export type BlogBlock =
     | GlossaryBlock
     | CalloutBlock
     | AlertBlock
+    | HighlightBoxBlock
+    | ConclusionBlock
+    | StatGridBlock
+    | TLDRBannerBlock
     | ImageCarouselBlock
     | VideoBlock
     | CodeSnippetBlock
     | BlockquoteBlock
     | AccordionBlock
-    | VisualElementBlock;
+    | VisualElementBlock
+    | SVGBlock
+    | ChartBlock
+    | DiagramBlock;
 
 export interface Citation {
     id: string;
@@ -132,4 +202,5 @@ export interface BlogPost {
     author?: Author;
     body: BlogBlock[];
     citations?: Citation[];
+    seo?: SEO;
 }

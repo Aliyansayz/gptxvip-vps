@@ -1,0 +1,18 @@
+[
+    {
+        "element_name": "ServerRackVisual",
+        "visual_prompt": "An interactive server rack visualization that glows red as the simulated load increases, followed by an animation of the agent cleanly splitting the database into multiple green sharded instances."
+    },
+    {
+        "element_name": "IopsPredictionGraph",
+        "visual_prompt": "A time-series graph showing current IOPS alongside the agent's predictive trendline indicating an imminent crash."
+    },
+    {
+        "element_name": "TerraformProposalDiff",
+        "visual_prompt": "A split-pane code diff view showcasing the exact Infrastructure-as-Code changes the agent proposes to scale the cluster."
+    },
+    {
+        "element_name": "ClusterInfrastructureIconographic",
+        "visual_prompt": "An interactive cloud cluster infographic featuring glowing server nodes (🖥️ Monolith Core, ⚡ IOPS Spike 💥, 🤖 AI SRE Bot, 🧩 Auto-Sharded Pods, 📊 Healthy Load 35%), demonstrating proactive auto-scaling."
+    }
+]

@@ -7,8 +7,8 @@ interface TheoryVisualProps {
 }
 
 export const TheoryVisual: React.FC<TheoryVisualProps> = ({ analogyName, keywords }) => {
-    const lowerKeywords = keywords.map(k => k.toLowerCase());
-    const has = (k: string) => lowerKeywords.some(kw => kw.includes(k));
+    const lowerKeywords = (keywords || []).map(k => (k ? k.toLowerCase() : ''));
+    const has = (k: string) => lowerKeywords.some(kw => kw && kw.includes(k));
 
     // 1. Cleavage / Division (Mansion to Apartments)
     if (has('cleavage') || has('division')) {
