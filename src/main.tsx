@@ -3,7 +3,12 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { BlogsView } from "./devLushArea/agentDevRootComponents/BlogsView";
 import DevLushApp from "./devLushArea/agentDevRootComponents/devLushAreaApp";
+import { smartNavigate, getAppRoot } from "./utils/navigation";
 import "./index.css";
+
+// Expose navigation utility globally
+(window as any).smartNavigate = smartNavigate;
+(window as any).getAppRoot = getAppRoot;
 
 const path = window.location.pathname;
 
