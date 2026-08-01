@@ -30,6 +30,18 @@ if (path.startsWith('/blogs')) {
       <App initialTab="profile" />
     </StrictMode>,
   );
+} else if (path.startsWith('/math_primer')) {
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <App initialTab="math-primer" />
+    </StrictMode>,
+  );
+} else if (path.startsWith('/core_concepts')) {
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <App initialTab="core-concepts" />
+    </StrictMode>,
+  );
 } else {
   createRoot(document.getElementById("root")!).render(
     <StrictMode>

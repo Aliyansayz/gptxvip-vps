@@ -91,6 +91,14 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   }, [activeTab, setActiveSubTab]);
 
   const handleMainItemClick = (item: any) => {
+    if (item.id === "core-concepts") {
+      window.location.assign('/core_concepts');
+      return;
+    }
+    if (item.id === "math-primer") {
+      window.location.assign('/math_primer');
+      return;
+    }
     setActiveTab(item.id);
     if (item.subItems) {
       setExpandedMenus((prev) =>
@@ -199,6 +207,32 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                 </button>
                 <button
                   onClick={() => {
+                    window.location.assign('/core_concepts');
+                  }}
+                  style={{ transform: 'skewY(-2deg)' }}
+                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br border rounded-none shadow-xl ${
+                    activeTab === "home" 
+                      ? (!isDarkMode ? "from-white to-zinc-50 border-zinc-200 text-zinc-800 hover:text-zinc-600" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-white hover:text-white/80")
+                      : (!isDarkMode ? "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-600 hover:text-zinc-900" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-400 hover:text-white")
+                  }`}
+                >
+                  <div style={{ transform: 'skewY(2deg)' }}>Core Concepts</div>
+                </button>
+                <button
+                  onClick={() => {
+                    window.location.assign('/math_primer');
+                  }}
+                  style={{ transform: 'skewY(-2deg)' }}
+                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br border rounded-none shadow-xl ${
+                    activeTab === "home" 
+                      ? (!isDarkMode ? "from-white to-zinc-50 border-zinc-200 text-zinc-800 hover:text-zinc-600" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-white hover:text-white/80")
+                      : (!isDarkMode ? "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-600 hover:text-zinc-900" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-400 hover:text-white")
+                  }`}
+                >
+                  <div style={{ transform: 'skewY(2deg)' }}>Math Primer</div>
+                </button>
+                <button
+                  onClick={() => {
                     window.location.assign('/agents');
                   }}
                   style={{ transform: 'skewY(-2deg)' }}
@@ -284,10 +318,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
               className="border-r border-zinc-200 dark:border-zinc-800 bg-transparent flex flex-col p-4 gap-2 transition-colors duration-300 overflow-hidden whitespace-nowrap"
             >
               <div className="text-[10px] text-zinc-400 dark:text-zinc-600 uppercase font-bold tracking-widest mb-4 px-2">
-                {activeTab === "code-concepts" ? "Code Concepts" : "Navigation"}
+                {activeTab === "code-concepts" || activeTab === "core-concepts" || activeTab === "math-primer" ? "Code Concepts" : "Navigation"}
               </div>
               <div className="overflow-y-auto scrollbar-hide pr-2 space-y-1">
-                {activeTab === "code-concepts" ? (
+                {activeTab === "code-concepts" || activeTab === "core-concepts" || activeTab === "math-primer" ? (
                    CODE_CONCEPT_CATEGORIES.filter(c => c.id !== "search").map((category) => (
                     <button
                       key={category.id}

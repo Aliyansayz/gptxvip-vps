@@ -16,6 +16,7 @@ interface CodeConceptsViewProps {
   setActiveCategory: (category: CategoryType | 'favorites' | string) => void;
   onToggleUI?: (show: boolean) => void;
   onExitSearch?: () => void;
+  initialActivityId?: string;
 }
 
 // @ts-ignore
@@ -29,7 +30,7 @@ export const CodeConceptsView: React.FC<CodeConceptsViewProps> = (props) => {
   );
 };
 
-const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({ activeCategory, setActiveCategory, onToggleUI, onExitSearch }) => {
+const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({ activeCategory, setActiveCategory, onToggleUI, onExitSearch, initialActivityId }) => {
   const [activeConcept, setActiveConcept] = useState<InteractiveQuestion | null>(null);
   const [activeDifficulty, setActiveDifficulty] = useState<string>("basic");
   const [showFavorites, setShowFavorites] = useState(false);
@@ -88,6 +89,19 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({ activeCatego
     }));
   }, [activeCategory, onToggleUI]);
 
+  useEffect(() => {
+    const activeData = conceptsData[activeCategory as string];
+    if (initialActivityId && activeData && activeData.interactive_questions) {
+      const found = activeData.interactive_questions.find(q => q.componentId === initialActivityId);
+      if (found && !activeConcept) {
+        setActiveConcept(found);
+        if (isFullScreenType(found.type) && onToggleUI) {
+          onToggleUI(false);
+        }
+      }
+    }
+  }, [initialActivityId, activeCategory, conceptsData, onToggleUI, activeConcept]);
+
   const activeData = conceptsData[activeCategory as string];
   const isLoading = false;
 
@@ -104,6 +118,14 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({ activeCatego
           if (isFullScreenType(concept.type) && onToggleUI) {
             onToggleUI(false);
           }
+          
+          let pathPrefix = '/core_concepts';
+          if (window.location.pathname.startsWith('/math_primer')) {
+            pathPrefix = '/math_primer';
+          } else if (window.location.pathname.startsWith('/code_concepts')) {
+            pathPrefix = '/code_concepts';
+          }
+          window.history.pushState({}, '', `${pathPrefix}/${categoryId}/${concept.componentId}`);
         }}
       />
     );
@@ -117,6 +139,15 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({ activeCatego
     if (isFullScreenType(concept.type) && onToggleUI) {
       onToggleUI(false);
     }
+    
+    // Update the URL to reflect the deep link path for the active concept
+    let pathPrefix = '/core_concepts';
+    if (window.location.pathname.startsWith('/math_primer')) {
+      pathPrefix = '/math_primer';
+    } else if (window.location.pathname.startsWith('/code_concepts')) {
+      pathPrefix = '/code_concepts';
+    }
+    window.history.pushState({}, '', `${pathPrefix}/${activeCategory}/${concept.componentId}`);
   };
 
   if (showFavorites) {
@@ -157,6 +188,15 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({ activeCatego
       onToggleUI(true);
     }
     setActiveConcept(null);
+    
+    // Revert the URL to the category base level
+    let pathPrefix = '/core_concepts';
+    if (window.location.pathname.startsWith('/math_primer')) {
+      pathPrefix = '/math_primer';
+    } else if (window.location.pathname.startsWith('/code_concepts')) {
+      pathPrefix = '/code_concepts';
+    }
+    window.history.pushState({}, '', `${pathPrefix}/${activeCategory}`);
   };
 
   // If a Concept Card is clicked, render the individual CoreConceptRunner

@@ -31,7 +31,9 @@ type ActiveTabType =
   | "archive-tools"
   | "profile"
   | "dev-labs-workspace"
-  | "roadmap-workspace";
+  | "roadmap-workspace"
+  | "core-concepts"
+  | "math-primer";
 
 interface AppProps {
   initialTab?: ActiveTabType;
@@ -43,17 +45,33 @@ export default function App({ initialTab }: AppProps = {}) {
   const [candlestickData, setCandlestickData] = useState<OHLCData[]>([]);
   const [silverCandlestickData, setSilverCandlestickData] = useState<OHLCData[]>([]);
   const [activeTab, setActiveTab] = useState<ActiveTabType>(
-    initialTab || (window.location.pathname.startsWith('/profile') ? "profile" : "home")
+    initialTab || (window.location.pathname.startsWith('/profile') ? "profile" : 
+                   window.location.pathname.startsWith('/core_concepts') ? "core-concepts" :
+                   window.location.pathname.startsWith('/math_primer') ? "math-primer" : "home")
   );
   const [activeSubTab, setActiveSubTab] = useState<string>("liquidity-depth");
   const [activeCodeCategory, setActiveCodeCategory] = useState<string>("general");
   const [showUI, setShowUI] = useState(true);
+
+  const [initialDeepLinkActivity, setInitialDeepLinkActivity] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     setChart1Data(generateMockData(150, 2, 30));
     setChart2Data(generateMockData(2800, 15, 30));
     setCandlestickData(generateCandlestickData(100, 100));
     setSilverCandlestickData(generateCandlestickData(25.50, 100, 0.05)); // Silver prices around $25.50, lower absolute volatility
+    
+    // Parse deep links
+    const path = window.location.pathname;
+    if (path.startsWith('/core_concepts/') || path.startsWith('/math_primer/')) {
+      const parts = path.split('/').filter(Boolean);
+      if (parts.length > 1) {
+        setActiveCodeCategory(parts[1]);
+        if (parts.length > 2) {
+          setInitialDeepLinkActivity(parts[2]);
+        }
+      }
+    }
   }, []);
 
   return (
@@ -101,12 +119,13 @@ export default function App({ initialTab }: AppProps = {}) {
             {activeTab === "overview" && <OverviewView />}
             {(activeTab === "trading-tools" || activeTab === "archive-tools") && <TradingToolsView activeSubTab={activeSubTab} />}
             {activeTab === "profile" && <ProfileInfo />}
-            {activeTab === "code-concepts" && (
+            {(activeTab === "code-concepts" || activeTab === "core-concepts" || activeTab === "math-primer") && (
               <CodeConceptsView 
                 activeCategory={activeCodeCategory as any} 
                 setActiveCategory={setActiveCodeCategory as any}
                 onToggleUI={setShowUI}
                 onExitSearch={() => setActiveTab("home")}
+                initialActivityId={initialDeepLinkActivity}
               />
             )}
           </Suspense>

@@ -506,5 +506,15 @@ export const sidebarItems = [
     label: "Dev Labs and Agent Workspace",
     icon: Zap,
   },
+  {
+    id: "core-concepts",
+    label: "Core Concepts",
+    icon: Lightbulb,
+  },
+  {
+    id: "math-primer",
+    label: "Math Primer",
+    icon: Lightbulb,
+  },
   { id: "overview", label: "Strategy Overview", icon: BarChart3 },
 ];
