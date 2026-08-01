@@ -1,0 +1,78 @@
+[
+  {
+    "id": "customer-support-agent",
+    "title": "Customer Support Agent",
+    "course": "Customer Support Topic",
+    "chapter_title": "Customer Support",
+    "labComponentId": "customer-support-agent",
+    "critical_concepts": [
+      {
+        "concept": "Automated Ticket Resolution",
+        "elaboration": "Agents capable of processing user inquiries, checking databases, and resolving issues without human intervention."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "customer-support-agent",
+        "type": "interactive-visual",
+        "title": "Customer Support AI",
+        "prompt": "Understand how AI agents automate customer support.",
+        "question": "What is the primary role of a Customer Support Agent?",
+        "options": [
+          "A. To generate marketing copy.",
+          "B. To autonomously resolve user issues and answer inquiries.",
+          "C. To manage backend databases.",
+          "D. To design user interfaces."
+        ],
+        "answer": "B. To autonomously resolve user issues and answer inquiries.",
+        "explanation": "Customer support agents automate interactions with users, resolving issues quickly.",
+        "theory": {
+          "title": "Customer Support Agents",
+          "content": "Customer support agents handle repetitive user inquiries by connecting to knowledge bases and ticketing systems.",
+          "analogy": "A tireless front-desk receptionist who knows every answer."
+        },
+        "nature": "concept",
+        "tags": ["support", "agents"]
+      }
+    ],
+    "tags": ["support", "agents"]
+  },
+  {
+    "id": "conversational-voice-agent",
+    "title": "Conversational Voice Based Agent",
+    "course": "Customer Support Topic",
+    "chapter_title": "Conversational Voice Based Agent",
+    "labComponentId": "conversational-voice-agent",
+    "critical_concepts": [
+      {
+        "concept": "Realtime Voice Interaction",
+        "elaboration": "Agents capable of interacting with users via real-time spoken language."
+      }
+    ],
+    "interactive_questions": [
+      {
+        "componentId": "conversational-voice-agent",
+        "type": "interactive-visual",
+        "title": "Voice Based Support",
+        "prompt": "Explore how voice AI handles support calls.",
+        "question": "Why are conversational voice agents effective in support?",
+        "options": [
+          "A. They only work during business hours.",
+          "B. They provide instant, natural, and hands-free assistance to users.",
+          "C. They require users to type long descriptions.",
+          "D. They are slower than text chatbots."
+        ],
+        "answer": "B. They provide instant, natural, and hands-free assistance to users.",
+        "explanation": "Voice agents can converse naturally and resolve issues via speech, offering a high-quality user experience.",
+        "theory": {
+          "title": "Conversational Voice Based Agent",
+          "content": "These agents use speech-to-text, LLMs, and text-to-speech to hold fluid conversations with users over the phone or web.",
+          "analogy": "A hyper-efficient call center operator who never puts you on hold."
+        },
+        "nature": "concept",
+        "tags": ["support", "voice", "agents"]
+      }
+    ],
+    "tags": ["support", "voice", "agents"]
+  }
+]

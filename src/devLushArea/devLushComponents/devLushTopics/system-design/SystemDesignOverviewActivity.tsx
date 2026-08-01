@@ -21,7 +21,7 @@ const GlobalTrafficRouterVisual: React.FC = () => {
             <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Global Traffic Routing</h3>
             <svg viewBox="0 0 400 200" className="w-full h-64">
                 {/* Globe / Users */}
-                <circle cx="60" cy="100" r="40" fill="#1e293b" stroke="#334155" strokeWidth="2" />
+                <circle cx="60" cy="100" r="40" fill="#38bdf8" stroke="#334155" strokeWidth="2" />
                 <path d="M 60 60 C 80 80, 80 120, 60 140 M 60 60 C 40 80, 40 120, 60 140 M 20 100 L 100 100" stroke="#334155" fill="none" strokeWidth="1" />
                 <circle cx="50" cy="80" r="3" fill="#3b82f6" className="animate-pulse" />
                 <circle cx="70" cy="120" r="3" fill="#3b82f6" className="animate-pulse" style={{ animationDelay: '0.5s' }} />
@@ -29,7 +29,7 @@ const GlobalTrafficRouterVisual: React.FC = () => {
                 <text x="60" y="155" textAnchor="middle" fontSize="8" fill="#64748b" fontWeight="bold">CLIENTS</text>
 
                 {/* Load Balancer */}
-                <rect x="160" y="80" width="40" height="40" rx="8" fill="#0f172a" stroke="#8b5cf6" strokeWidth="2" />
+                <rect x="160" y="80" width="40" height="40" rx="8" fill="#7dd3fc" stroke="#8b5cf6" strokeWidth="2" />
                 <text x="180" y="103" textAnchor="middle" fontSize="8" fill="#a78bfa" fontWeight="bold">L7 LB</text>
 
                 {/* Traffic paths from clients to LB */}

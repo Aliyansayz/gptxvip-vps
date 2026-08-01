@@ -63,7 +63,7 @@ export const ReinforcementLearningOverviewActivity: React.FC<{
                         <defs>
                             <marker id="arrow-rl" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" /></marker>
                         </defs>
-                        <rect x="50" y="30" width="80" height="40" rx="8" fill="#1e293b" stroke="#3b82f6" strokeWidth="2" className="animate-pulse" />
+                        <rect x="50" y="30" width="80" height="40" rx="8" fill="#38bdf8" stroke="#3b82f6" strokeWidth="2" className="animate-pulse" />
                         <text x="90" y="55" textAnchor="middle" fontSize="10" fill="#60a5fa" fontWeight="bold">AGENT</text>
 
                         <rect x="170" y="30" width="80" height="40" rx="8" fill="#064e3b" stroke="#10b981" strokeWidth="2" />

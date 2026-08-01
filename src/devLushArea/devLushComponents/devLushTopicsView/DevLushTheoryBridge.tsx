@@ -70,20 +70,36 @@ export const DevLushTheoryBridge: React.FC<DevLushTheoryBridgeProps> = ({ item }
           />
 
           {/* Analogy Card */}
-          {analogy && (
-            <div className="p-4 bg-amber-50 dark:bg-amber-950/10 rounded-xl border border-amber-200 dark:border-amber-900/30">
-              <h4 className="text-sm font-bold text-slate-900 dark:text-amber-400 mb-2 flex items-center gap-2 uppercase tracking-wider">
-                <Lightbulb className="w-4 h-4 text-amber-500" />
-                Conceptual Analogy
-              </h4>
-              <p className="text-slate-600 dark:text-slate-400 text-sm italic leading-relaxed mb-3">
-                "{analogy}"
-              </p>
-              <div className="mt-4 pt-4 border-t border-amber-200 dark:border-amber-900/30">
-                <DevLushTheoryVisual analogyName={analogy} keywords={[analogy, title]} />
+          {analogy && (() => {
+            // Hash to select a color theme and icon
+            const hash = Array.from(title).reduce((acc, char) => acc + char.charCodeAt(0), 0);
+            
+            const themes = [
+              { bg: 'bg-amber-50 dark:bg-amber-950/10', border: 'border-amber-200 dark:border-amber-900/30', text: 'text-amber-400', iconColor: 'text-amber-500', Icon: Lightbulb },
+              { bg: 'bg-indigo-50 dark:bg-indigo-950/10', border: 'border-indigo-200 dark:border-indigo-900/30', text: 'text-indigo-400', iconColor: 'text-indigo-500', Icon: Code },
+              { bg: 'bg-emerald-50 dark:bg-emerald-950/10', border: 'border-emerald-200 dark:border-emerald-900/30', text: 'text-emerald-400', iconColor: 'text-emerald-500', Icon: ShieldAlert },
+              { bg: 'bg-sky-50 dark:bg-sky-950/10', border: 'border-sky-200 dark:border-sky-900/30', text: 'text-sky-400', iconColor: 'text-sky-500', Icon: Cpu },
+              { bg: 'bg-fuchsia-50 dark:bg-fuchsia-950/10', border: 'border-fuchsia-200 dark:border-fuchsia-900/30', text: 'text-fuchsia-400', iconColor: 'text-fuchsia-500', Icon: Lightbulb },
+            ];
+            
+            const theme = themes[hash % themes.length];
+            const Icon = theme.Icon;
+            
+            return (
+              <div className={`p-4 rounded-xl border ${theme.bg} ${theme.border}`}>
+                <h4 className={`text-sm font-bold text-slate-900 dark:${theme.text} mb-2 flex items-center gap-2 uppercase tracking-wider`}>
+                  <Icon className={`w-4 h-4 ${theme.iconColor}`} />
+                  Conceptual Analogy
+                </h4>
+                <p className="text-slate-600 dark:text-slate-400 text-sm italic leading-relaxed mb-3">
+                  "{analogy}"
+                </p>
+                <div className={`mt-4 pt-4 border-t ${theme.border}`}>
+                  <DevLushTheoryVisual analogyName={analogy} keywords={[analogy, title]} />
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           {/* Production Application / Architectural Guardrail */}
           {application && (

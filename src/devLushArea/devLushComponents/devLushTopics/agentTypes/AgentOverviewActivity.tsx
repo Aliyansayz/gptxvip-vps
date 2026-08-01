@@ -46,9 +46,9 @@ export const ReActAnimationSlide = () => (
         <path d="M 50 20 L 80 70 L 20 70 Z" stroke="#334155" strokeWidth="1" strokeDasharray="2 2" fill="none" />
 
         {/* Nodes */}
-        <circle cx="50" cy="20" r="12" fill="#1e293b" stroke="#6366f1" strokeWidth="1.5" />
-        <circle cx="80" cy="70" r="12" fill="#1e293b" stroke="#8b5cf6" strokeWidth="1.5" />
-        <circle cx="20" cy="70" r="12" fill="#1e293b" stroke="#ef4444" strokeWidth="1.5" />
+        <circle cx="50" cy="20" r="12" fill="#38bdf8" stroke="#6366f1" strokeWidth="1.5" />
+        <circle cx="80" cy="70" r="12" fill="#38bdf8" stroke="#8b5cf6" strokeWidth="1.5" />
+        <circle cx="20" cy="70" r="12" fill="#38bdf8" stroke="#ef4444" strokeWidth="1.5" />
 
         {/* Signals running along paths */}
         <circle cx="50" cy="20" r="15" fill="none" stroke="#6366f1" strokeWidth="2" className="react-signal" style={{ transformOrigin: '50px 20px' }} />
@@ -87,11 +87,11 @@ export const OrchestratorAnimationSlide = () => (
         <line x1="50" y1="50" x2="50" y2="90" stroke="#334155" strokeWidth="1" strokeDasharray="2 2" />
 
         {/* Worker Nodes */}
-        <rect x="10" y="10" width="20" height="20" rx="4" fill="#0f172a" stroke="#334155" />
+        <rect x="10" y="10" width="20" height="20" rx="4" fill="#7dd3fc" stroke="#334155" />
         <text x="20" y="22" textAnchor="middle" fontSize="5" fill="#94a3b8">W1</text>
-        <rect x="70" y="10" width="20" height="20" rx="4" fill="#0f172a" stroke="#334155" />
+        <rect x="70" y="10" width="20" height="20" rx="4" fill="#7dd3fc" stroke="#334155" />
         <text x="80" y="22" textAnchor="middle" fontSize="5" fill="#94a3b8">W2</text>
-        <rect x="40" y="80" width="20" height="20" rx="4" fill="#0f172a" stroke="#334155" />
+        <rect x="40" y="80" width="20" height="20" rx="4" fill="#7dd3fc" stroke="#334155" />
         <text x="50" y="92" textAnchor="middle" fontSize="5" fill="#94a3b8">W3</text>
 
         {/* Central Orchestrator */}
@@ -145,10 +145,10 @@ export const EvaluatorOptimizerAnimationSlide = () => (
         <path d="M 70 50 Q 50 10 30 50" stroke="rgba(239, 68, 68, 0.5)" fill="none" strokeWidth="2" strokeDasharray="4 2" />
 
         {/* Nodes */}
-        <rect x="15" y="40" width="30" height="20" rx="4" fill="#1e293b" stroke="#6366f1" strokeWidth="1.5" />
+        <rect x="15" y="40" width="30" height="20" rx="4" fill="#38bdf8" stroke="#6366f1" strokeWidth="1.5" />
         <text x="30" y="52" textAnchor="middle" fontSize="6" className="eo-text-forward">Generator</text>
 
-        <rect x="55" y="40" width="30" height="20" rx="4" fill="#1e293b" stroke="#ef4444" strokeWidth="1.5" />
+        <rect x="55" y="40" width="30" height="20" rx="4" fill="#38bdf8" stroke="#ef4444" strokeWidth="1.5" />
         <text x="70" y="52" textAnchor="middle" fontSize="6" className="eo-text-backward">Evaluator</text>
 
         <text x="50" y="30" textAnchor="middle" fontSize="5" className="eo-text-backward">Feedback Loop</text>
@@ -187,11 +187,11 @@ export const ParallelFanoutAnimationSlide = () => (
         <circle cx="85" cy="50" r="8" fill="rgba(139, 92, 246, 0.2)" stroke="#8b5cf6" strokeWidth="1.5" />
 
         {/* Parallel Nodes */}
-        <rect x="40" y="10" width="20" height="20" rx="2" fill="#0f172a" stroke="#334155" />
+        <rect x="40" y="10" width="20" height="20" rx="2" fill="#7dd3fc" stroke="#334155" />
         <text x="50" y="22" textAnchor="middle" fontSize="5" fill="#94a3b8">W1</text>
-        <rect x="40" y="40" width="20" height="20" rx="2" fill="#0f172a" stroke="#334155" />
+        <rect x="40" y="40" width="20" height="20" rx="2" fill="#7dd3fc" stroke="#334155" />
         <text x="50" y="52" textAnchor="middle" fontSize="5" fill="#94a3b8">W2</text>
-        <rect x="40" y="70" width="20" height="20" rx="2" fill="#0f172a" stroke="#334155" />
+        <rect x="40" y="70" width="20" height="20" rx="2" fill="#7dd3fc" stroke="#334155" />
         <text x="50" y="82" textAnchor="middle" fontSize="5" fill="#94a3b8">W3</text>
 
         {/* Outbound Signals */}
@@ -248,7 +248,7 @@ export const AgentOverviewActivity: React.FC<{
                         <rect x="120" y="30" width="60" height="40" rx="5" fill="rgba(167, 139, 250, 0.2)" stroke="#8b5cf6" strokeWidth="2" />
                         <text x="150" y="55" textAnchor="middle" fontSize="10" className="font-bold fill-accent-foreground">Agent</text>
 
-                        <rect x="220" y="30" width="60" height="40" rx="5" fill="#0f172a" stroke="#334155" strokeWidth="2" />
+                        <rect x="220" y="30" width="60" height="40" rx="5" fill="#7dd3fc" stroke="#334155" strokeWidth="2" />
                         <text x="250" y="55" textAnchor="middle" fontSize="10" className="font-bold fill-muted-foreground">Tools</text>
 
                         <path d="M 80 40 L 115 40" stroke="#f8fafc" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-agent)" />
@@ -337,7 +337,7 @@ export const AgentOverviewActivity: React.FC<{
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <ExampleCard title="Customer Support" icon={<Bot className="w-5 h-5 text-green-500" />} visual={
                         <svg viewBox="0 0 100 100" className="w-full h-full">
-                            <rect x="20" y="20" width="60" height="60" rx="8" fill="#1e293b" stroke="#334155" strokeWidth="2" />
+                            <rect x="20" y="20" width="60" height="60" rx="8" fill="#38bdf8" stroke="#334155" strokeWidth="2" />
                             <path d="M 30 40 L 70 40 M 30 60 L 50 60" stroke="#94a3b8" strokeWidth="3" strokeLinecap="round" />
                             <circle cx="70" cy="70" r="12" fill="#6366f1" />
                             <path d="M 66 70 L 70 74 L 76 66" stroke="#ffffff" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
@@ -359,7 +359,7 @@ export const AgentOverviewActivity: React.FC<{
                             <circle cx="80" cy="50" r="8" fill="#8b5cf6" />
                             <circle cx="20" cy="50" r="8" fill="#ef4444" />
                             <circle cx="50" cy="80" r="8" fill="#eab308" />
-                            <circle cx="50" cy="50" r="10" fill="#1e293b" stroke="#f8fafc" strokeWidth="2" />
+                            <circle cx="50" cy="50" r="10" fill="#38bdf8" stroke="#f8fafc" strokeWidth="2" />
                         </svg>}>
                         Parallel Fanout architecture where a single research prompt is dispatched to 5 different agents to search different web sources concurrently, with a final agent aggregating the results.
                     </ExampleCard>

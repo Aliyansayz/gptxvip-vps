@@ -2,7 +2,7 @@ import React from 'react';
 
 export const BlogsLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
-        <div className="min-h-screen w-full bg-slate-50 text-slate-900 overflow-y-auto custom-scrollbar relative selection:bg-indigo-500 selection:text-white">
+        <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 overflow-y-auto custom-scrollbar relative selection:bg-indigo-500 selection:text-white">
             {/* Ambient Background Blur Elements */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
                 <div className="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl animate-pulse" />

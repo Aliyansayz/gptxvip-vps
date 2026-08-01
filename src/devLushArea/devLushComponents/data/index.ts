@@ -15,6 +15,7 @@ import recommendationData from './recommendation.json';
 import agentMemoriesData from './agentMemories.json';
 import marketingData from './marketing.json';
 import voiceAgentsData from './voiceAgents.json';
+import customerSupportData from './customerSupport.json';
 
 const devLushChaptersRaw = [
   ...reinforcementLearningData,
@@ -33,7 +34,8 @@ const devLushChaptersRaw = [
   ...marketingData,
   ...helpdeskData,
   ...recommendationData,
-  ...voiceAgentsData
+  ...voiceAgentsData,
+  ...customerSupportData
 ];
 
 export default devLushChaptersRaw;

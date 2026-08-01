@@ -41,7 +41,7 @@ export const BlogArticle: React.FC<BlogArticleProps> = ({ blog, allBlogs = [], o
         <div className="max-w-7xl mx-auto py-12 px-6">
             <button 
                 onClick={onBack}
-                className="mb-8 text-xs font-semibold text-slate-600 hover:text-indigo-400 transition-colors flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 border border-slate-800 hover:border-indigo-500/40 shadow-lg"
+                className="mb-8 text-xs font-semibold text-slate-600 dark:text-slate-400 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/40 shadow-lg"
             >
                 <ArrowLeft className="w-3.5 h-3.5" /> Back to All Articles
             </button>
@@ -68,21 +68,21 @@ export const BlogArticle: React.FC<BlogArticleProps> = ({ blog, allBlogs = [], o
 
             {/* Other Blogs Section */}
             {relatedBlogs.length > 0 && (
-                <section className="mt-24 pt-16 border-t border-slate-800/80">
+                <section className="mt-24 pt-16 border-t border-slate-200 dark:border-slate-800">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10">
                         <div>
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-2">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-600 text-xs font-bold uppercase tracking-wider mb-2">
                                 <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
                                 Recommended Reads
                             </div>
-                            <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
+                            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">
                                 Explore More Engineering Deep Dives
                             </h2>
                         </div>
 
                         <button
                             onClick={onBack}
-                            className="text-xs font-semibold text-indigo-400 hover:text-indigo-300 flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20 hover:border-indigo-500/40 transition-all"
+                            className="text-xs font-semibold text-indigo-400 hover:text-indigo-600 flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20 hover:border-indigo-500/40 transition-all"
                         >
                             <Grid className="w-3.5 h-3.5" /> Browse All Articles
                         </button>
@@ -101,7 +101,7 @@ export const BlogArticle: React.FC<BlogArticleProps> = ({ blog, allBlogs = [], o
             )}
 
             {/* Bottom Floating Navigation Bar */}
-            <div className="mt-16 pt-8 border-t border-slate-800/60 flex items-center justify-between text-xs text-slate-600">
+            <div className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
                 <div className="flex items-center gap-2">
                     <BookOpen className="w-4 h-4 text-indigo-400" />
                     <span>Published in <strong>devLush Engineering Hub</strong></span>
@@ -116,7 +116,7 @@ export const BlogArticle: React.FC<BlogArticleProps> = ({ blog, allBlogs = [], o
                     </button>
                     <button 
                         onClick={scrollToTop}
-                        className="px-3 py-1.5 rounded-lg bg-white border border-slate-800 hover:border-indigo-500/40 text-slate-700 hover:text-white flex items-center gap-1 transition-all"
+                        className="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/40 dark:hover:border-indigo-500/40 text-slate-700 dark:text-slate-300 hover:text-white dark:hover:text-white flex items-center gap-1 transition-all"
                     >
                         Top <ChevronUp className="w-3.5 h-3.5" />
                     </button>

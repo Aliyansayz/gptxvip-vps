@@ -63,7 +63,7 @@ const TopicTheoryHub: React.FC = () => {
           <defs>
             <radialGradient id="theoryGrad" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="currentColor" className="text-cyan-500" stopOpacity="0.1" />
-              <stop offset="50%" stopColor="currentColor" className="text-blue-500" stopOpacity="0.05" />
+              <stop offset="50%" stopColor="currentColor" className="text-sky-400" stopOpacity="0.05" />
               <stop offset="100%" stopColor="currentColor" className="text-indigo-500" stopOpacity="0" />
             </radialGradient>
           </defs>
@@ -82,7 +82,7 @@ const TopicTheoryHub: React.FC = () => {
           <h1 className="text-4xl md:text-5xl font-heading tracking-wide text-foreground flex items-center gap-4">
             <Library className="w-10 h-10 text-cyan-500" />
             Topic{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 via-blue-600 to-cyan-500 bg-[size:200%_auto] animate-gradient">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 via-sky-400 to-cyan-500 bg-[size:200%_auto] animate-gradient">
               Theory
             </span>
           </h1>
@@ -176,9 +176,9 @@ const TopicTheoryHub: React.FC = () => {
             </div>
 
             {/* Decorative Card Glow */}
-            <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-3xl opacity-0 group-hover:opacity-5 blur-xl transition-opacity duration-500 pointer-events-none" />
+            <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500 to-sky-400 rounded-3xl opacity-0 group-hover:opacity-5 blur-xl transition-opacity duration-500 pointer-events-none" />
 
-            <div className="w-14 h-14 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 dark:from-cyan-500/20 dark:to-blue-500/20 rounded-2xl flex items-center justify-center mb-5 text-cyan-500 border border-cyan-500/20 group-hover:scale-110 transition-transform duration-500">
+            <div className="w-14 h-14 bg-gradient-to-br from-cyan-500/10 to-sky-400/10 dark:from-cyan-500/20 dark:to-sky-400/20 rounded-2xl flex items-center justify-center mb-5 text-cyan-500 border border-cyan-500/20 group-hover:scale-110 transition-transform duration-500">
               <Folder className="w-7 h-7" />
             </div>
 

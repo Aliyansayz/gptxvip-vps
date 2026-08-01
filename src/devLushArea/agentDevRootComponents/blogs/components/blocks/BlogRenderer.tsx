@@ -44,11 +44,11 @@ export const BlogRenderer: React.FC<BlogRendererProps> = ({ blogId, blocks }) =>
     };
 
     return (
-        <section className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-heading prose-headings:tracking-wide text-slate-800 dark:text-slate-800 prose-headings:text-white dark:prose-headings:text-slate-900 prose-p:text-slate-700 dark:prose-p:text-slate-700 prose-strong:text-white dark:prose-strong:text-slate-900">
+        <section className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-heading prose-headings:tracking-wide text-slate-900 dark:text-slate-100 prose-headings:text-slate-900 dark:prose-headings:text-white prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-strong:text-slate-900 dark:prose-strong:text-white">
             {blocks.map((block, idx) => {
                 switch (block.type) {
                     case 'main_heading':
-                        return <h1 key={idx} id={slugify(block.text)} className="text-3xl md:text-4xl font-heading tracking-wide text-white dark:text-slate-900 mt-4 mb-6 scroll-mt-24">{block.text}</h1>;
+                        return <h1 key={idx} id={slugify(block.text)} className="text-3xl md:text-4xl font-heading tracking-wide text-slate-900 dark:text-white mt-4 mb-6 scroll-mt-24">{block.text}</h1>;
                     case 'heading':
                         return (
                             <div key={idx} id={slugify(block.text)} className="mt-12 mb-6 scroll-mt-24 pt-6 border-t border-slate-800/60">
@@ -66,7 +66,7 @@ export const BlogRenderer: React.FC<BlogRendererProps> = ({ blogId, blocks }) =>
                                         )}
                                     </div>
                                 )}
-                                <h2 className="text-2xl md:text-3xl font-extrabold text-white dark:text-slate-900 m-0 tracking-tight">
+                                <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white m-0 tracking-tight">
                                     {block.text}
                                 </h2>
                                 {block.subtitle && (
@@ -79,7 +79,7 @@ export const BlogRenderer: React.FC<BlogRendererProps> = ({ blogId, blocks }) =>
                     case 'sub_heading':
                         return (
                             <div key={idx} id={slugify(block.text)} className="mt-8 mb-3 scroll-mt-24">
-                                <h3 className="text-lg md:text-xl font-semibold text-slate-800 dark:text-slate-800 m-0 flex items-center gap-2">
+                                <h3 className="text-lg md:text-xl font-semibold text-slate-800 dark:text-slate-100 m-0 flex items-center gap-2">
                                     <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 inline-block" />
                                     {block.text}
                                 </h3>
@@ -91,7 +91,7 @@ export const BlogRenderer: React.FC<BlogRendererProps> = ({ blogId, blocks }) =>
                             </div>
                         );
                     case 'paragraph':
-                        return <p key={idx} className="mb-4 leading-relaxed text-slate-700 dark:text-slate-700">{renderTextSegments(block.elements)}</p>;
+                        return <p key={idx} className="mb-4 leading-relaxed text-slate-700 dark:text-slate-300">{renderTextSegments(block.elements)}</p>;
                     case 'tldr_banner':
                         return <TLDRBanner key={idx} block={block} />;
                     case 'highlight_box':

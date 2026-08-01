@@ -25,13 +25,13 @@ const KeywordMarquee: React.FC<{ keywords: string[]; direction: 'ltr' | 'rtl'; o
     const allKeywords = [...displayKeywords, ...displayKeywords]; 
 
     return (
-        <div className={`relative flex overflow-x-hidden group rounded-full border border-indigo-200 bg-indigo-50/50 dark:border-indigo-900/50 dark:bg-indigo-950/20`}>
+        <div className={`relative flex overflow-x-hidden group rounded-full border border-indigo-200 bg-indigo-50/50 dark:border-sky-800/50 dark:bg-sky-900/20`}>
             <div className={`flex w-max ${animationClass} group-hover:[animation-play-state:paused]`}>
                 {allKeywords.map((keyword, index) => (
                     <button 
                         key={`${direction}-${index}-${keyword}`} 
                         onClick={() => onKeywordClick(keyword)}
-                        className={`whitespace-nowrap px-4 py-2 text-sm rounded-full transition-colors text-indigo-700 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-900/50`}
+                        className={`whitespace-nowrap px-4 py-2 text-sm rounded-full transition-colors text-sky-500 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-sky-800/50`}
                     >
                         {keyword}
                     </button>
@@ -56,8 +56,8 @@ export const DevLushSearchView: React.FC<DevLushSearchViewProps> = ({ devLushTop
     const descriptionText = 'Find agent workflows, autonomous simulations, and architectural models.';
     const placeholderText = "Search for 'cybersecurity', 'fraud', 'ecommerce', 'audit'...";
     
-    const primaryColorClass = 'text-indigo-600 dark:text-indigo-400';
-    const bgIconClass = 'bg-indigo-100 dark:bg-indigo-900/30';
+    const primaryColorClass = 'text-sky-500 dark:text-indigo-400';
+    const bgIconClass = 'bg-indigo-100 dark:bg-sky-800/30';
     const ringClass = 'focus:ring-indigo-500';
 
     const searchDictionary = useMemo(() => {
@@ -315,14 +315,14 @@ export const DevLushSearchView: React.FC<DevLushSearchViewProps> = ({ devLushTop
                             {dropdownSuggestions.map((s, idx) => (
                                 <div 
                                     key={s} 
-                                    className={`px-6 py-3 cursor-pointer text-slate-900 dark:text-white flex items-center transition-colors ${idx === selectedIndex ? 'bg-indigo-50 dark:bg-indigo-900/40' : 'hover:bg-slate-50 dark:hover:bg-slate-800'}`}
+                                    className={`px-6 py-3 cursor-pointer text-slate-900 dark:text-white flex items-center transition-colors ${idx === selectedIndex ? 'bg-indigo-50 dark:bg-sky-800/40' : 'hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                                     onClick={() => {
                                         setSearchTerm(s);
                                         setIsFocused(false);
                                     }}
                                     onMouseEnter={() => setSelectedIndex(idx)}
                                 >
-                                    <SearchIcon className={`w-4 h-4 mr-3 ${idx === selectedIndex ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400'}`} />
+                                    <SearchIcon className={`w-4 h-4 mr-3 ${idx === selectedIndex ? 'text-sky-500 dark:text-indigo-400' : 'text-slate-400'}`} />
                                     <span className="font-semibold">
                                         {s.toLowerCase().startsWith(searchTerm.toLowerCase()) ? (
                                             <>
