@@ -50,7 +50,7 @@ export const BlogsView: React.FC = () => {
                 <BlogList 
                     blogs={blogPosts} 
                     onSelectBlog={handleSelectBlog} 
-                    onBackToWorkspace={() => window.location.assign('/')}
+                    onBackToWorkspace={() => window.location.assign('/agents')}
                 />
             )}
         </BlogsLayout>

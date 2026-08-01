@@ -199,8 +199,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                 </button>
                 <button
                   onClick={() => {
-                    setActiveTab("dev-labs-workspace");
-                    setActiveSubTab("");
+                    window.location.assign('/agents');
                   }}
                   style={{ transform: 'skewY(-2deg)' }}
                   className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br border rounded-none shadow-xl ${
@@ -210,6 +209,35 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                   }`}
                 >
                   <div style={{ transform: 'skewY(2deg)' }}>Dev Agents</div>
+                </button>
+                <button
+                  onClick={() => {
+                    window.location.assign('/blogs');
+                  }}
+                  style={{ transform: 'skewY(-2deg)' }}
+                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br border rounded-none shadow-xl ${
+                    activeTab === "home" 
+                      ? (!isDarkMode ? "from-white to-zinc-50 border-zinc-200 text-zinc-800 hover:text-zinc-600" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-white hover:text-white/80")
+                      : (!isDarkMode ? "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-600 hover:text-zinc-900" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-400 hover:text-white")
+                  }`}
+                >
+                  <div style={{ transform: 'skewY(2deg)' }}>Blogs</div>
+                </button>
+                <button
+                  onClick={() => {
+                    window.location.assign('/profile');
+                  }}
+                  style={{ transform: 'skewY(-2deg)' }}
+                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br border rounded-none shadow-xl ${
+                    activeTab === "home" 
+                      ? (!isDarkMode ? "from-white to-zinc-50 border-zinc-200 text-zinc-800 hover:text-zinc-600" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-white hover:text-white/80")
+                      : (!isDarkMode ? "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-600 hover:text-zinc-900" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-400 hover:text-white")
+                  }`}
+                >
+                  <div style={{ transform: 'skewY(2deg)' }} className="flex items-center gap-1.5">
+                    <UserRound className="w-3.5 h-3.5" />
+                    Profile
+                  </div>
                 </button>
                 <button
                   onClick={() => {
@@ -223,18 +251,6 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                   title="Search Topics"
                 >
                   <Search className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => {
-                    setActiveTab("profile");
-                    setActiveSubTab("");
-                  }}
-                  className={`px-3 py-1.5 text-[11px] font-bold tracking-widest uppercase transition-colors bg-transparent border-none flex items-center gap-1.5 ${
-                    activeTab === "home" ? (!isDarkMode ? "text-zinc-800 hover:text-zinc-600" : "text-white hover:text-white/80") : (!isDarkMode ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-white")
-                  }`}
-                >
-                  <UserRound className="w-3.5 h-3.5" />
-                  Profile
                 </button>
               </div>
   

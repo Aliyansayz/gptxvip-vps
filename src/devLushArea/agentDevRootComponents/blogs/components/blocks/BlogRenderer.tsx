@@ -20,7 +20,7 @@ const DynamicVisualElement: React.FC<{ blogId: string; name: string; prompt: str
 
     return (
         <div className="my-10">
-            <Suspense fallback={<div className="h-48 flex items-center justify-center bg-slate-50 border border-slate-200 rounded-2xl animate-pulse text-slate-400">Loading visual {name}...</div>}>
+            <Suspense fallback={<div className="h-48 flex items-center justify-center bg-slate-50 border border-slate-800 rounded-2xl animate-pulse text-slate-600">Loading visual {name}...</div>}>
                 <Component prompt={prompt} />
             </Suspense>
         </div>
@@ -44,11 +44,11 @@ export const BlogRenderer: React.FC<BlogRendererProps> = ({ blogId, blocks }) =>
     };
 
     return (
-        <section className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-heading prose-headings:tracking-wide text-slate-800 dark:text-slate-200 prose-headings:text-slate-900 dark:prose-headings:text-slate-100 prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-strong:text-slate-900 dark:prose-strong:text-slate-100">
+        <section className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-heading prose-headings:tracking-wide text-slate-800 dark:text-slate-800 prose-headings:text-white dark:prose-headings:text-slate-900 prose-p:text-slate-700 dark:prose-p:text-slate-700 prose-strong:text-white dark:prose-strong:text-slate-900">
             {blocks.map((block, idx) => {
                 switch (block.type) {
                     case 'main_heading':
-                        return <h1 key={idx} id={slugify(block.text)} className="text-3xl md:text-4xl font-heading tracking-wide text-slate-900 dark:text-slate-100 mt-4 mb-6 scroll-mt-24">{block.text}</h1>;
+                        return <h1 key={idx} id={slugify(block.text)} className="text-3xl md:text-4xl font-heading tracking-wide text-white dark:text-slate-900 mt-4 mb-6 scroll-mt-24">{block.text}</h1>;
                     case 'heading':
                         return (
                             <div key={idx} id={slugify(block.text)} className="mt-12 mb-6 scroll-mt-24 pt-6 border-t border-slate-800/60">
@@ -66,11 +66,11 @@ export const BlogRenderer: React.FC<BlogRendererProps> = ({ blogId, blocks }) =>
                                         )}
                                     </div>
                                 )}
-                                <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-slate-100 m-0 tracking-tight">
+                                <h2 className="text-2xl md:text-3xl font-extrabold text-white dark:text-slate-900 m-0 tracking-tight">
                                     {block.text}
                                 </h2>
                                 {block.subtitle && (
-                                    <p className="text-sm md:text-base text-slate-400 mt-2 leading-relaxed m-0 font-normal">
+                                    <p className="text-sm md:text-base text-slate-600 mt-2 leading-relaxed m-0 font-normal">
                                         {block.subtitle}
                                     </p>
                                 )}
@@ -79,19 +79,19 @@ export const BlogRenderer: React.FC<BlogRendererProps> = ({ blogId, blocks }) =>
                     case 'sub_heading':
                         return (
                             <div key={idx} id={slugify(block.text)} className="mt-8 mb-3 scroll-mt-24">
-                                <h3 className="text-lg md:text-xl font-semibold text-slate-800 dark:text-slate-200 m-0 flex items-center gap-2">
+                                <h3 className="text-lg md:text-xl font-semibold text-slate-800 dark:text-slate-800 m-0 flex items-center gap-2">
                                     <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 inline-block" />
                                     {block.text}
                                 </h3>
                                 {block.subtitle && (
-                                    <p className="text-xs md:text-sm text-slate-400 mt-1 m-0 font-normal">
+                                    <p className="text-xs md:text-sm text-slate-600 mt-1 m-0 font-normal">
                                         {block.subtitle}
                                     </p>
                                 )}
                             </div>
                         );
                     case 'paragraph':
-                        return <p key={idx} className="mb-4 leading-relaxed text-slate-700 dark:text-slate-300">{renderTextSegments(block.elements)}</p>;
+                        return <p key={idx} className="mb-4 leading-relaxed text-slate-700 dark:text-slate-700">{renderTextSegments(block.elements)}</p>;
                     case 'tldr_banner':
                         return <TLDRBanner key={idx} block={block} />;
                     case 'highlight_box':

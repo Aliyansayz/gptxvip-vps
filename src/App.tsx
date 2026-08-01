@@ -19,25 +19,32 @@ const RoadmapContainer = lazy(() => import("./roadmapArea/roadmapView/RoadmapCon
 
 import { Toaster } from 'sonner';
 
-export default function App() {
+type ActiveTabType =
+  | "home"
+  | "trade-type"
+  | "overview"
+  | "map"
+  | "cointegration"
+  | "key-terms"
+  | "code-concepts"
+  | "trading-tools"
+  | "archive-tools"
+  | "profile"
+  | "dev-labs-workspace"
+  | "roadmap-workspace";
+
+interface AppProps {
+  initialTab?: ActiveTabType;
+}
+
+export default function App({ initialTab }: AppProps = {}) {
   const [chart1Data, setChart1Data] = useState<PriceData[]>([]);
   const [chart2Data, setChart2Data] = useState<PriceData[]>([]);
   const [candlestickData, setCandlestickData] = useState<OHLCData[]>([]);
   const [silverCandlestickData, setSilverCandlestickData] = useState<OHLCData[]>([]);
-  const [activeTab, setActiveTab] = useState<
-    | "home"
-    | "trade-type"
-    | "overview"
-    | "map"
-    | "cointegration"
-    | "key-terms"
-    | "code-concepts"
-    | "trading-tools"
-    | "archive-tools"
-    | "profile"
-    | "dev-labs-workspace"
-    | "roadmap-workspace"
-  >("home");
+  const [activeTab, setActiveTab] = useState<ActiveTabType>(
+    initialTab || (window.location.pathname.startsWith('/profile') ? "profile" : "home")
+  );
   const [activeSubTab, setActiveSubTab] = useState<string>("liquidity-depth");
   const [activeCodeCategory, setActiveCodeCategory] = useState<string>("general");
   const [showUI, setShowUI] = useState(true);

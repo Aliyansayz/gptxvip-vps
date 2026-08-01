@@ -50,11 +50,11 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackT
             <div className="flex items-center justify-between mb-12 border-b border-slate-800/80 pb-6">
                 <button 
                     onClick={onBackToWorkspace}
-                    className="text-xs font-semibold text-slate-400 hover:text-indigo-400 transition-colors flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-indigo-500/40"
+                    className="text-xs font-semibold text-slate-600 hover:text-indigo-400 transition-colors flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 border border-slate-800 hover:border-indigo-500/40"
                 >
                     <ArrowLeft className="w-3.5 h-3.5" /> Back to Workspace
                 </button>
-                <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
+                <div className="flex items-center gap-2 text-xs text-slate-600 font-mono">
                     <BookOpen className="w-4 h-4 text-indigo-400" />
                     <span>{blogs.length} Deep Dives Available</span>
                 </div>
@@ -75,7 +75,7 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackT
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-100 max-w-4xl mx-auto leading-tight"
+                    className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 max-w-4xl mx-auto leading-tight"
                 >
                     Autonomous Intelligence & <br className="hidden sm:inline" />
                     <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
@@ -87,7 +87,7 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackT
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="text-slate-400 text-base md:text-lg mt-4 max-w-2xl mx-auto leading-relaxed"
+                    className="text-slate-600 text-base md:text-lg mt-4 max-w-2xl mx-auto leading-relaxed"
                 >
                     Production-grade agent architectures, security red-teaming, infinite memory patterns, and algorithmic deep dives.
                 </motion.p>
@@ -107,12 +107,12 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackT
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Search topics, agents, security, algorithms..."
-                            className="w-full bg-slate-900/90 border border-slate-800 focus:border-indigo-500/60 rounded-2xl pl-12 pr-10 py-3.5 text-sm text-slate-100 placeholder-slate-500 outline-none shadow-xl transition-all duration-300"
+                            className="w-full bg-white/90 border border-slate-800 focus:border-indigo-500/60 rounded-2xl pl-12 pr-10 py-3.5 text-sm text-slate-900 placeholder-slate-500 outline-none shadow-xl transition-all duration-300"
                         />
                         {searchQuery && (
                             <button 
                                 onClick={() => setSearchQuery('')}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-200"
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800"
                             >
                                 <X className="w-4 h-4" />
                             </button>
@@ -128,7 +128,7 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackT
                                 className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 ${
                                     selectedCategory === cat.name
                                         ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 scale-105'
-                                        : 'bg-slate-900/80 text-slate-400 hover:text-slate-200 border border-slate-800 hover:border-slate-700'
+                                        : 'bg-white/80 text-slate-600 hover:text-slate-800 border border-slate-800 hover:border-slate-700'
                                 }`}
                             >
                                 {cat.name}
@@ -144,7 +144,7 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackT
             </header>
 
             {/* Content Results Stats */}
-            <div className="flex items-center justify-between mb-8 text-xs font-semibold text-slate-400 border-b border-slate-800/60 pb-3">
+            <div className="flex items-center justify-between mb-8 text-xs font-semibold text-slate-600 border-b border-slate-800/60 pb-3">
                 <div className="flex items-center gap-2">
                     <Layers className="w-4 h-4 text-indigo-400" />
                     <span>Showing {filteredBlogs.length} of {blogs.length} Publications</span>
@@ -161,9 +161,9 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackT
 
             {/* Articles List / Grid */}
             {filteredBlogs.length === 0 ? (
-                <div className="text-center py-20 bg-slate-900/40 rounded-3xl border border-slate-800 p-8 my-8">
+                <div className="text-center py-20 bg-white/40 rounded-3xl border border-slate-800 p-8 my-8">
                     <Filter className="w-12 h-12 text-slate-600 mx-auto mb-4 animate-bounce" />
-                    <h3 className="text-xl font-bold text-slate-200 mb-2">No Matching Deep Dives Found</h3>
+                    <h3 className="text-xl font-bold text-slate-800 mb-2">No Matching Deep Dives Found</h3>
                     <p className="text-slate-500 text-sm max-w-md mx-auto mb-6">
                         We couldn't find any articles matching "{searchQuery}". Try searching for another topic or resetting your category filters.
                     </p>

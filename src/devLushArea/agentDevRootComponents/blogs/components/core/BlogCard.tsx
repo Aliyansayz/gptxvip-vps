@@ -55,7 +55,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({ blog, onSelect, featured = f
                 onClick={() => onSelect(blog.id)}
                 className="group cursor-pointer relative rounded-3xl p-[1px] bg-gradient-to-r from-indigo-500/40 via-purple-500/40 to-pink-500/40 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 transition-all duration-500 shadow-2xl shadow-indigo-950/50 mb-12 overflow-hidden"
             >
-                <div className="bg-slate-900/90 backdrop-blur-xl rounded-[23px] p-8 md:p-10 relative overflow-hidden flex flex-col lg:flex-row gap-8 items-start justify-between">
+                <div className="bg-white/90 backdrop-blur-xl rounded-[23px] p-8 md:p-10 relative overflow-hidden flex flex-col lg:flex-row gap-8 items-start justify-between">
                     {/* Glow Accents */}
                     <div className="absolute top-0 right-0 -mt-12 -mr-12 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/20 transition-all duration-500 pointer-events-none" />
 
@@ -70,15 +70,15 @@ export const BlogCard: React.FC<BlogCardProps> = ({ blog, onSelect, featured = f
                             </span>
                         </div>
 
-                        <h2 className="text-2xl md:text-4xl font-extrabold text-slate-100 group-hover:text-indigo-300 transition-colors leading-tight">
+                        <h2 className="text-2xl md:text-4xl font-extrabold text-slate-900 group-hover:text-indigo-300 transition-colors leading-tight">
                             {blog.title}
                         </h2>
 
-                        <p className="text-slate-400 text-base leading-relaxed max-w-3xl line-clamp-3">
+                        <p className="text-slate-600 text-base leading-relaxed max-w-3xl line-clamp-3">
                             {blog.summary}
                         </p>
 
-                        <div className="pt-4 flex flex-wrap items-center gap-6 text-xs text-slate-400">
+                        <div className="pt-4 flex flex-wrap items-center gap-6 text-xs text-slate-600">
                             <div className="flex items-center gap-1.5">
                                 <Calendar className="w-3.5 h-3.5 text-indigo-400" />
                                 <span>{blog.date}</span>
@@ -111,7 +111,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({ blog, onSelect, featured = f
             whileHover={{ y: -4 }}
             transition={{ duration: 0.25 }}
             onClick={() => onSelect(blog.id)}
-            className="group cursor-pointer bg-slate-900/60 backdrop-blur-xl border border-slate-800 hover:border-indigo-500/40 rounded-3xl p-6 transition-all duration-300 relative overflow-hidden flex flex-col justify-between hover:shadow-[0_0_30px_rgba(99,102,241,0.12)]"
+            className="group cursor-pointer bg-white/60 backdrop-blur-xl border border-slate-800 hover:border-indigo-500/40 rounded-3xl p-6 transition-all duration-300 relative overflow-hidden flex flex-col justify-between hover:shadow-[0_0_30px_rgba(99,102,241,0.12)]"
         >
             {/* Ambient Card Header Gradient Strip */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500/0 via-indigo-500/30 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -123,24 +123,24 @@ export const BlogCard: React.FC<BlogCardProps> = ({ blog, onSelect, featured = f
                         {blog.category}
                     </span>
                     {blog.estimated_read_time && (
-                        <span className="text-[11px] font-medium text-slate-400 flex items-center gap-1">
+                        <span className="text-[11px] font-medium text-slate-600 flex items-center gap-1">
                             <Clock className="w-3 h-3 text-indigo-400" />
                             {blog.estimated_read_time}
                         </span>
                     )}
                 </div>
 
-                <h3 className="text-xl font-bold text-slate-100 group-hover:text-indigo-300 transition-colors leading-snug">
+                <h3 className="text-xl font-bold text-slate-900 group-hover:text-indigo-300 transition-colors leading-snug">
                     {blog.title}
                 </h3>
 
-                <p className="text-slate-400 text-sm leading-relaxed line-clamp-3">
+                <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">
                     {blog.summary}
                 </p>
             </div>
 
             <div className="pt-6 mt-4 border-t border-slate-800/80 flex items-center justify-between relative z-10">
-                <div className="flex items-center gap-2 text-xs text-slate-400">
+                <div className="flex items-center gap-2 text-xs text-slate-600">
                     <Calendar className="w-3.5 h-3.5 text-slate-500" />
                     <span>{blog.date}</span>
                 </div>

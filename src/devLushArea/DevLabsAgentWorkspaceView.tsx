@@ -14,7 +14,7 @@ import { FavoritesProvider } from './agentDevRootComponents/FavoritesContext';
 import { TheoryCollectionProvider } from './agentDevRootComponents/TheoryCollectionContext';
 import FavoritesView from './agentDevRootComponents/FavoritesView';
 import TopicTheoryHub from './agentDevRootComponents/TopicTheoryView/TopicTheoryHub';
-import LandingPage from './agentDevRootComponents/LandingPage';
+import LandingPage from './landingPage/LandingPage';
 
 interface Props {
   onExit: () => void;

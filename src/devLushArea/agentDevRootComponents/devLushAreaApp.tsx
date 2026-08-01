@@ -15,6 +15,7 @@ import { FavoritesProvider } from './FavoritesContext';
 import { TheoryCollectionProvider } from './TheoryCollectionContext';
 import FavoritesView from './FavoritesView';
 import TopicTheoryHub from './TopicTheoryView/TopicTheoryHub';
+import LandingPage from '../landingPage/LandingPage';
 
 
 import { motion, AnimatePresence } from 'framer-motion';
@@ -51,7 +52,7 @@ const App: React.FC<AppProps> = ({ onExit }) => {
     const [studyEnergy, setStudyEnergy] = useState(15);
     const [energyLockoutTime, setEnergyLockoutTime] = useState(0);
     
-    const [currentView, setCurrentView] = useState<'devlush-search' | 'reading' | 'articles' | 'blogs' | 'favorites' | 'topic-theory' | 'devlush' | 'agent-workspace'>('devlush');
+    const [currentView, setCurrentView] = useState<'landing' | 'devlush-search' | 'reading' | 'articles' | 'blogs' | 'favorites' | 'topic-theory' | 'devlush' | 'agent-workspace'>('landing');
 
 
 
@@ -190,11 +191,12 @@ const App: React.FC<AppProps> = ({ onExit }) => {
                     onToggleFocusMode={() => setFocusMode(!focusMode)}
                     showAiAssistant={showAiAssistant}
                     onToggleAiAssistant={() => setShowAiAssistant(!showAiAssistant)}
-                    onExit={onExit}
+                    onExit={onExit || (() => window.location.assign('/'))}
                 />
 
                 <main className="flex-1 overflow-hidden relative">
 
+                    {currentView === 'landing' && <LandingPage />}
 
                     {(currentView === 'devlush' || currentView === 'devlush-search') && (
                         <DevLushContainer 
@@ -244,7 +246,7 @@ const App: React.FC<AppProps> = ({ onExit }) => {
 
 
                 </main>
-                {!['devlush', 'devlush-search', 'agent-workspace', 'topic-theory'].includes(currentView as any) && (
+                {!['landing', 'devlush', 'devlush-search', 'agent-workspace', 'topic-theory'].includes(currentView as any) && (
                     <Footer theme={theme} currentView={currentView as any} />
                 )}
             </div>

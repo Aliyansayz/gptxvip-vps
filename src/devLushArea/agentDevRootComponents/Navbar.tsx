@@ -199,8 +199,8 @@ const Navbar: React.FC<NavbarProps> = ({
 
                 {/* Extras Group */}
                 <div className="flex items-center gap-1">
-                    <button onClick={() => onViewChange('topic-theory')} className={`${baseButtonClass} ${getButtonStyle('topic-theory', 'special')}`} title="Topic Theory Library">
-                        <Library className="w-4 h-4" />
+                    <button onClick={() => onViewChange('topic-theory')} className={`${baseButtonClass} ${getButtonStyle('topic-theory')}`}>
+                        Topic Theory
                     </button>
                     <button onClick={() => onViewChange('reading')} className={`${baseButtonClass} ${getButtonStyle('reading')}`}>
                         Reading
