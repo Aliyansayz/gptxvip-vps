@@ -42,6 +42,12 @@ if (path.startsWith('/blogs')) {
       <App initialTab="core-concepts" />
     </StrictMode>,
   );
+} else if (path.startsWith('/finhub')) {
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <App initialTab="home" />
+    </StrictMode>,
+  );
 } else {
   createRoot(document.getElementById("root")!).render(
     <StrictMode>

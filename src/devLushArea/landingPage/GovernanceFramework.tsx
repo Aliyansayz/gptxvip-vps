@@ -36,7 +36,7 @@ export const GovernanceFramework: React.FC = () => {
     };
 
     return (
-        <section className="py-16 sm:py-24 max-w-7xl mx-auto px-6">
+        <section id="governance-framework" className="py-16 sm:py-24 max-w-7xl mx-auto px-6">
             <div className="rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 sm:p-10 space-y-8 shadow-xl">
                 
                 <div className="border-b border-zinc-200 dark:border-zinc-800 pb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">

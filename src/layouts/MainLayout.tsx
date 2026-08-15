@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { sidebarItems } from "../constants";
 import { CODE_CONCEPT_CATEGORIES } from "../constants/codeConcepts";
-import { DotNavigation } from "../components/verticalScrollNav/DotNavigation";
+import { DotNavigation } from "../finhub/verticalScrollNav/DotNavigation";
 import { MainFooter } from "./MainFooter";
 
 interface MainLayoutProps {
@@ -147,11 +147,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
             <div className="flex items-center gap-4">
               <button
                  onClick={() => {
-                   setActiveTab("home");
-                   setActiveSubTab("liquidity-depth");
+                   setActiveTab("root-home");
+                   window.history.pushState({}, '', '/');
                  }}
-                 className="p-2 rounded-lg text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                 className="p-2 rounded-lg text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
                  aria-label="Home"
+                 title="Return to Main Hub"
               >
                  <Home className="w-5 h-5" />
               </button>
@@ -163,12 +164,20 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                 >
                   <Menu className="w-5 h-5" />
                 </button>
-                <div className="w-8 h-8 bg-emerald-500 rounded flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.4)]">
-                  <BarChart3 className="text-white dark:text-black w-5 h-5" />
-                </div>
-                <span className={`font-display font-black tracking-tighter text-xl uppercase ${activeTab === "home" && !isDarkMode ? "text-zinc-900" : "text-white"}`}>
-                  GPTX.VIP
-                </span>
+                <button 
+                  onClick={() => {
+                    setActiveTab("root-home");
+                    window.history.pushState({}, '', '/');
+                  }}
+                  className="flex items-center gap-2 cursor-pointer text-left"
+                >
+                  <div className="w-8 h-8 bg-emerald-500 rounded flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                    <BarChart3 className="text-white dark:text-black w-5 h-5" />
+                  </div>
+                  <span className={`font-display font-black tracking-tighter text-xl uppercase ${activeTab === "home" && !isDarkMode ? "text-zinc-900" : "text-white"}`}>
+                    GPTX.VIP
+                  </span>
+                </button>
               </div>
             </div>
             <div className="flex items-center gap-6">
@@ -205,35 +214,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                 >
                   <div style={{ transform: 'skewY(2deg)' }}>Code Concepts</div>
                 </button>
+
                 <button
                   onClick={() => {
-                    window.location.assign('/core_concepts');
-                  }}
-                  style={{ transform: 'skewY(-2deg)' }}
-                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br border rounded-none shadow-xl ${
-                    activeTab === "home" 
-                      ? (!isDarkMode ? "from-white to-zinc-50 border-zinc-200 text-zinc-800 hover:text-zinc-600" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-white hover:text-white/80")
-                      : (!isDarkMode ? "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-600 hover:text-zinc-900" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-400 hover:text-white")
-                  }`}
-                >
-                  <div style={{ transform: 'skewY(2deg)' }}>Core Concepts</div>
-                </button>
-                <button
-                  onClick={() => {
-                    window.location.assign('/math_primer');
-                  }}
-                  style={{ transform: 'skewY(-2deg)' }}
-                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br border rounded-none shadow-xl ${
-                    activeTab === "home" 
-                      ? (!isDarkMode ? "from-white to-zinc-50 border-zinc-200 text-zinc-800 hover:text-zinc-600" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-white hover:text-white/80")
-                      : (!isDarkMode ? "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-600 hover:text-zinc-900" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-400 hover:text-white")
-                  }`}
-                >
-                  <div style={{ transform: 'skewY(2deg)' }}>Math Primer</div>
-                </button>
-                <button
-                  onClick={() => {
-                    window.location.assign('/agents');
+                    window.location.assign('/agent');
                   }}
                   style={{ transform: 'skewY(-2deg)' }}
                   className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br border rounded-none shadow-xl ${

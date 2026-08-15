@@ -15,6 +15,7 @@ import { TheoryCollectionProvider } from './agentDevRootComponents/TheoryCollect
 import FavoritesView from './agentDevRootComponents/FavoritesView';
 import TopicTheoryHub from './agentDevRootComponents/TopicTheoryView/TopicTheoryHub';
 import LandingPage from './landingPage/LandingPage';
+import AgenticRolesContainer from './agenticRoles/AgenticRolesContainer';
 
 interface Props {
   onExit: () => void;
@@ -32,7 +33,7 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
     const [studyEnergy, setStudyEnergy] = useState(15);
     const [energyLockoutTime, setEnergyLockoutTime] = useState(0);
     
-    const [currentView, setCurrentView] = useState<'landing' | 'devlush-search' | 'reading' | 'articles' | 'blogs' | 'favorites' | 'topic-theory' | 'devlush' | 'agent-workspace'>('landing');
+    const [currentView, setCurrentView] = useState<'landing' | 'devlush-search' | 'reading' | 'articles' | 'blogs' | 'favorites' | 'topic-theory' | 'devlush' | 'agentic-roles' | 'agent-workspace'>('landing');
 
     // Text Selection & AI Prompt State
     const [selectionRect, setSelectionRect] = useState<DOMRect | null>(null);
@@ -183,6 +184,14 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
                         <AgentWorkspace />
                     )}
 
+                    {currentView === 'agentic-roles' && (
+                        <AgenticRolesContainer 
+                            isLocked={isInteractionLocked}
+                            onConsumeEnergy={consumeEnergy}
+                            onExitToDevLush={() => setCurrentView('devlush')}
+                        />
+                    )}
+
                     {currentView === 'reading' && <ReadingView />}
                     
                     {currentView === 'articles' && <ArticlesView />}
@@ -214,7 +223,7 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
                     )}
 
                 </main>
-                {!['landing', 'devlush', 'devlush-search', 'agent-workspace', 'topic-theory'].includes(currentView as any) && (
+                {!['landing', 'devlush', 'devlush-search', 'agentic-roles', 'agent-workspace', 'topic-theory'].includes(currentView as any) && (
                     <Footer theme={theme} currentView={currentView as any} />
                 )}
             </div>

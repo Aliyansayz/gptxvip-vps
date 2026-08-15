@@ -5,7 +5,7 @@ export const VerticalSolutions: React.FC = () => {
     const [marginDrop, setMarginDrop] = useState(12);
 
     return (
-        <section className="py-16 sm:py-24 max-w-7xl mx-auto px-6 border-b border-zinc-200 dark:border-zinc-800 space-y-20">
+        <section id="vertical-solutions" className="py-16 sm:py-24 max-w-7xl mx-auto px-6 border-b border-zinc-200 dark:border-zinc-800 space-y-20">
             
             {/* Section Title */}
             <div className="text-center max-w-3xl mx-auto space-y-2">

@@ -4,7 +4,7 @@ import { calculateVolatilityZScore } from '../functions/api/indicators/exclusive
 import { linearRegressionSystem } from '../functions/api/indicators/exclusive/linearRegression';
 import { calculateSqueeze } from '../functions/api/indicators/exclusive/squeeze_momentum';
 import { checkLinearRegressionAdxEntryConditions } from '../functions/api/indicators/exclusive/exclusive_entry_exit';
-import { generateInitialCandles } from '../../../components/homeMainView/simulatedDataGenerator';
+import { generateInitialCandles } from '../../../finhub/homeMainView/simulatedDataGenerator';
 import { generateDummyCandles } from '../functions/api/data_source/simulated_aggregate_alpha';
 import { Trade } from '../../types/trading';
 import { evaluateTradeEntries, evaluateTradeExits, TradingRulesConfig } from '../functions/api/rules/tradingRules';

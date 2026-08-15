@@ -12,6 +12,7 @@ export function getAppRoot(path: string): string {
   if (path.startsWith('/blogs')) return '/blogs';
   if (path.startsWith('/agent')) return '/agent';
   if (path.startsWith('/profile')) return '/profile';
+  if (path.startsWith('/finhub')) return '/finhub';
   return '/'; // default root
 }
 

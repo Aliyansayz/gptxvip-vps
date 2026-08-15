@@ -1,6 +1,6 @@
 import React from "react";
 import { Scissors, Target } from "lucide-react";
-import { CandlestickChartWidget } from "../components/tradeTopic/CandlestickChartWidget";
+import { CandlestickChartWidget } from "../finhub/tradeTopic/CandlestickChartWidget";
 import { OHLCData } from "../types";
 
 interface BreakevenViewProps {

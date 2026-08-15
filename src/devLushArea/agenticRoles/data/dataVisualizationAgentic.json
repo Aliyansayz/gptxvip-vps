@@ -1,0 +1,368 @@
+[
+  {
+    "id": "visualization-day1",
+    "course": "Data Visualization Agentic Specialist",
+    "roleDomain": "visualization",
+    "day": 1,
+    "day_title": "Day 01: WCAG AAA Perceptual Color Palette Synthesizer",
+    "chapter_title": "WCAG AAA Perceptual Color Palette Synthesizer",
+    "labComponentId": "visualization-day1-color-contrast",
+    "difficulty": "easy",
+    "estimatedMinutes": 25,
+    "prerequisites": ["Color Theory Basics", "WCAG 2.1 Contrast Standards (7:1 for AAA)"],
+    "tags": ["visualization", "accessibility", "wcag", "color-palette", "perceptual-uniformity", "agentic-dataviz"],
+    "critical_concepts": [
+      {
+        "concept": "Perceptually Uniform Color Spaces (Oklab / CIELAB)",
+        "definition": "Color spaces designed so that equal numerical step changes correspond directly to equal human perceptual differences across all hues.",
+        "elaboration": "Autonomous visualization agents synthesize multi-series chart palettes in Oklab space, guaranteeing that no category appears artificially dominant due to uneven luminance.",
+        "industry_application": "Prevents executive dashboards from misleading decision-makers through unintentional visual prominence artifacts."
+      },
+      {
+        "concept": "Colorblind Accessibility & WCAG Contrast Ratio",
+        "definition": "Ensuring all adjacent categorical colors and text labels achieve at least 4.5:1 (AA) or 7.0:1 (AAA) contrast against dark/light canvas backgrounds across Deuteranopia, Protanopia, and Tritanopia simulations.",
+        "elaboration": "Agents simulate color vision deficiencies and inject redundant visual encodings (patterns, line dashes, explicit direct labels).",
+        "industry_application": "Ensures legal ADA compliance and seamless data legibility for 8%+ of the population with color vision differences."
+      }
+    ],
+    "theory_content": {
+      "title": "Perceptually Uniform & Accessible Visual Encodings",
+      "content": "Standard RGB/HSL color pickers produce glaring luminance inconsistencies where yellow appears drastically brighter than blue. A Data Visualization Agentic Specialist synthesizes accessible, colorblind-safe palettes with verified WCAG AAA contrast ratios.",
+      "practical_takeaway": "Never encode critical categorical data using color alone; pair color with direct labels, icons, or dash patterns.",
+      "analogy": "Like a road traffic signal that uses both distinct colors (red/green) and standardized spatial positions (top/bottom) so drivers with colorblindness never get confused.",
+      "industry_case_study": "When a major healthcare analytics provider redesigned its hospital bed occupancy monitor using colorblind-safe palettes and direct text callouts, triage misrouting errors dropped by 24%."
+    },
+    "interactive_questions": [
+      {
+        "id": "viz-ex-101",
+        "componentId": "visualization-day1-color-contrast",
+        "dayNumber": 1,
+        "difficulty": "easy",
+        "title": "Audit Multi-Series Palette for Red-Green Colorblind Accessibility",
+        "prompt": "An executive dashboard uses `#E11D48` (Crimson Red) for 'Q3 Churn' and `#10B981` (Emerald Green) for 'Q3 Expansion'. When viewed under Deuteranopia simulation, both categories appear as identical shades of muted yellowish-brown.",
+        "question": "What is the correct autonomous palette remediation for the agent to execute?",
+        "options": [
+          "Double the font size without changing the colors",
+          "Switch to a perceptually distinct Viridis or Blue-Orange palette (`#2563EB` Cobalt Blue vs `#F59E0B` Amber) and add direct text labels with percentage values on each bar segment",
+          "Remove all bar charts and present raw 5,000-row CSV tables instead",
+          "Tell colorblind executives to adjust their computer monitor settings"
+        ],
+        "answer": "Switch to a perceptually distinct Viridis or Blue-Orange palette (`#2563EB` Cobalt Blue vs `#F59E0B` Amber) and add direct text labels with percentage values on each bar segment",
+        "correctAnswerIndex": 1,
+        "explanation": "Blue-Orange and Viridis palettes remain highly distinguishable across all common forms of colorblindness. Adding direct data labels provides redundant encoding that guarantees clarity.",
+        "wrong_answer_feedback": [
+          { "option": "Double the font size without changing the colors", "feedback": "Increasing font size does not fix color hue indistinguishability between two adjacent chart bars." },
+          { "option": "Remove all bar charts and present raw 5,000-row CSV tables instead", "feedback": "Raw tables destroy rapid visual pattern recognition for executive leadership." }
+        ],
+        "tags": ["wcag", "colorblind-friendly", "accessibility"],
+        "nature": "ux_perception",
+        "logs": [
+          { "timestamp": "15:00:00", "level": "info", "message": "PALETTE_AUDITOR: Testing palette against Deuteranopia / Protanopia filters..." },
+          { "timestamp": "15:00:01", "level": "warn", "message": "CONTRAST_FAIL: Red/Green pairs show Delta-E < 5.0 under green-weak simulation." },
+          { "timestamp": "15:00:02", "level": "success", "message": "PALETTE_AUDITOR: Generated Blue/Amber Oklab palette. WCAG AAA contrast ratio: 8.4:1 against dark slate canvas." }
+        ],
+        "expectedToolCalls": [
+          { "toolName": "audit_palette_wcag_contrast", "args": { "foregroundHex": "#2563EB", "backgroundHex": "#0F172A", "level": "AAA" }, "purpose": "Verify contrast accessibility ratio" }
+        ],
+        "roleSpecificData": {
+          "type": "visualization",
+          "data": {
+            "chartTitle": "Executive SaaS Retention & Churn Breakdown",
+            "chartType": "scatter",
+            "colorPaletteAudits": [
+              { "paletteName": "Accessible Blue-Amber", "hexCodes": ["#2563EB", "#F59E0B", "#10B981", "#8B5CF6"], "contrastRatioAgainstBg": 8.4, "wcagRating": "AAA", "colorblindSafe": true },
+              { "paletteName": "Legacy Red-Green", "hexCodes": ["#E11D48", "#10B981"], "contrastRatioAgainstBg": 4.1, "wcagRating": "FAIL", "colorblindSafe": false }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "visualization-day2",
+    "course": "Data Visualization Agentic Specialist",
+    "roleDomain": "visualization",
+    "day": 2,
+    "day_title": "Day 02: Hierarchical Sankey Diagrams & User Flow Visualizer",
+    "chapter_title": "Hierarchical Sankey Diagrams & User Flow Visualizer",
+    "labComponentId": "visualization-day2-hierarchical-sankey",
+    "difficulty": "medium",
+    "estimatedMinutes": 35,
+    "prerequisites": ["Day 01: Accessible Palettes", "Directed Graphs & Node-Link Layouts"],
+    "tags": ["visualization", "sankey", "flow-diagram", "funnel", "d3", "user-journey"],
+    "critical_concepts": [
+      {
+        "concept": "Sankey Flow Width Conservation",
+        "definition": "Visualizing multi-stage pathway transitions where the width of each link is directly proportional to quantity flowing from source to target nodes.",
+        "elaboration": "Agents compute node layouts with iterative relaxation algorithms to minimize link crossings and prevent optical distortion.",
+        "industry_application": "Visualizes complex customer journey drop-offs, enterprise energy distribution, and multi-tier supply chain logistics."
+      }
+    ],
+    "theory_content": {
+      "title": "Autonomous Flow Topology & Multi-Stage Funnel Visualization",
+      "content": "Standard funnel charts oversimplify multi-pathway customer flows. A Data Visualization Agentic Specialist constructs interactive Sankey diagrams and Alluvial plots that reveal hidden drop-off branches, looping behaviors, and multi-touch conversion attribution.",
+      "practical_takeaway": "Order node layers from left to right chronologically and limit intermediate stages to prevent spaghetti link tangles.",
+      "analogy": "Like a river delta where wide main channels branch into smaller streams, visually highlighting where the majority of water flows.",
+      "industry_case_study": "When a major FinTech company mapped their mobile payment checkout funnel in an interactive Sankey diagram, they discovered 40% of drop-offs were not failing at KYC, but rather getting trapped in an infinite SMS verification loop."
+    },
+    "interactive_questions": [
+      {
+        "id": "viz-ex-201",
+        "componentId": "visualization-day2-hierarchical-sankey",
+        "dayNumber": 2,
+        "difficulty": "medium",
+        "title": "Isolate Hidden Drop-off Branch in SaaS Onboarding Sankey Diagram",
+        "prompt": "An interactive Sankey diagram maps 50,000 signups across 4 onboarding steps: Landing Page (50k) -> Email Verification (44k) -> Team Workspace Setup (12k) -> First API Key Generated (10k).",
+        "question": "Where is the largest structural drop-off bottleneck, and what visual layout optimization should the agent configure?",
+        "options": [
+          "Landing page to Email Verification (6k drop-off)",
+          "Email Verification to Team Workspace Setup: 32,000 users (72.7% of verified users) drop off. The agent should highlight this red drop-off stream with interactive tooltip diagnostics showing the exact friction modal",
+          "Workspace Setup to API Key generation",
+          "Remove the Sankey chart and assume all 50,000 users converted"
+        ],
+        "answer": "Email Verification to Team Workspace Setup: 32,000 users (72.7% of verified users) drop off. The agent should highlight this red drop-off stream with interactive tooltip diagnostics showing the exact friction modal",
+        "correctAnswerIndex": 1,
+        "explanation": "32,000 users dropping off between Email Verification and Workspace Setup represents the catastrophic leak in the funnel. Visually highlighting this thick exit branch guides product teams directly to the friction point.",
+        "wrong_answer_feedback": [
+          { "option": "Landing page to Email Verification (6k drop-off)", "feedback": "6k drop-off out of 50k is normal (88% pass rate), whereas 32k dropping at workspace setup is a 72.7% loss." },
+          { "option": "Remove the Sankey chart and assume all 50,000 users converted", "feedback": "Ignoring funnel leaks blinds product leadership to massive user acquisition loss." }
+        ],
+        "tags": ["sankey", "funnel-optimization", "dropoff-analysis"],
+        "nature": "ux_perception",
+        "logs": [
+          { "timestamp": "11:00:00", "level": "info", "message": "SANKEY_ENGINE: Computing node positions across 4-stage funnel graph (50,000 sessions)..." },
+          { "timestamp": "11:00:01", "level": "warn", "message": "BOTTLENECK_DETECTED: Stage 2->3 exhibits 72.7% drop-off (32,000 exit transitions)." },
+          { "timestamp": "11:00:02", "level": "success", "message": "FLOW_RENDERER: Highlighted exit stream in crimson with friction diagnostics modal." }
+        ],
+        "expectedToolCalls": [
+          { "toolName": "compute_sankey_layout", "args": { "nodesCount": 4, "linksCount": 6, "iterations": 32 }, "purpose": "Calculate link width and minimize edge crossings" }
+        ],
+        "roleSpecificData": {
+          "type": "visualization",
+          "data": {
+            "chartTitle": "User Journey Onboarding Funnel",
+            "chartType": "sankey"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "visualization-day3",
+    "course": "Data Visualization Agentic Specialist",
+    "roleDomain": "visualization",
+    "day": 3,
+    "day_title": "Day 03: High-Density WebGL / Canvas Heatmap Telemetry",
+    "chapter_title": "High-Density WebGL / Canvas Heatmap Telemetry",
+    "labComponentId": "visualization-day3-webgl-heatmaps",
+    "difficulty": "medium",
+    "estimatedMinutes": 40,
+    "prerequisites": ["Day 02: Flow Diagrams", "HTML5 Canvas & WebGL Shaders"],
+    "tags": ["visualization", "webgl", "canvas", "heatmaps", "performance", "high-density"],
+    "critical_concepts": [
+      {
+        "concept": "GPU-Accelerated WebGL Rendering",
+        "definition": "Offloading pixel rasterization of 100,000+ data points to GPU vertex and fragment shaders rather than overloading the DOM with individual SVG elements.",
+        "elaboration": "Agents build dynamic buffer arrays (VBOs) and spatial quadtrees for sub-millisecond hover hit-testing at 60 FPS.",
+        "industry_application": "Powers real-time IoT sensor fleets, financial order book heatmaps, and geospatial fleet telematics."
+      }
+    ],
+    "theory_content": {
+      "title": "Real-Time GPU Telemetry Visualization & Zero UI Freezes",
+      "content": "Rendering more than 2,000 SVG DOM elements causes severe browser frame drops and unresponsive user interfaces. A Data Visualization Agentic Specialist leverages HTML5 Canvas and WebGL shaders to render massive real-time datasets at smooth 60 FPS frame rates.",
+      "practical_takeaway": "Use SVG for clean text labels and interactive legends; use WebGL/Canvas for the underlying data point cloud.",
+      "analogy": "Like a movie projector showing millions of colored light particles at once on a screen rather than manually placing thousands of physical glass stickers by hand.",
+      "industry_case_study": "When Uber Engineering built deck.gl to visualize billions of GPS telemetry points across global driver fleets, migrating from SVG DOM overlays to WebGL shaders transformed laggy 2 FPS map tiles into fluid 60 FPS spatial analytics."
+    },
+    "interactive_questions": [
+      {
+        "id": "viz-ex-301",
+        "componentId": "visualization-day3-webgl-heatmaps",
+        "dayNumber": 3,
+        "difficulty": "medium",
+        "title": "Resolve Browser Main-Thread Freeze on 150,000 IoT Sensor Scatterplot",
+        "prompt": "An engineer implemented a real-time scatterplot rendering 150,000 IoT temperature readings using React and SVG `<circle>` elements. The browser tab freezes for 8 seconds on every filter change (0.5 FPS).",
+        "question": "What architectural migration should the Data Visualization Agentic Specialist deploy?",
+        "options": [
+          "Add more CPU cores to the user's laptop",
+          "Migrate the data layer to an HTML5 Canvas or WebGL buffer using Instanced Rendering with an offscreen Spatial Quadtree for instant O(log N) hover tooltips, maintaining a steady 60 FPS",
+          "Remove the chart and display a loading spinner permanently",
+          "Reduce the number of temperature colors to black and white"
+        ],
+        "answer": "Migrate the data layer to an HTML5 Canvas or WebGL buffer using Instanced Rendering with an offscreen Spatial Quadtree for instant O(log N) hover tooltips, maintaining a steady 60 FPS",
+        "correctAnswerIndex": 1,
+        "explanation": "Replacing 150,000 heavy DOM nodes with a single WebGL/Canvas drawing buffer offloads computation to the GPU, restoring 60 FPS interactivity with quadtree tooltip lookup.",
+        "wrong_answer_feedback": [
+          { "option": "Add more CPU cores to the user's laptop", "feedback": "DOM layout reflow is single-threaded in the browser; adding CPU cores does not fix the DOM node limit." },
+          { "option": "Reduce the number of temperature colors to black and white", "feedback": "DOM node count is the bottleneck, not CSS color styling." }
+        ],
+        "tags": ["webgl", "canvas", "performance", "quadtree"],
+        "nature": "pipeline_optimization",
+        "logs": [
+          { "timestamp": "14:15:00", "level": "error", "message": "DOM_OVERFLOW: 150,000 SVG elements mounted. Main thread frame time: 1,840ms (0.54 FPS)." },
+          { "timestamp": "14:15:02", "level": "info", "message": "WEBGL_SHADER: Compiled vertex/fragment shaders. Bound Instanced Float32Array buffer." },
+          { "timestamp": "14:15:03", "level": "success", "message": "RENDER_OK: 150,000 nodes rendered in 1.2ms (Steady 60.0 FPS). GPU Memory: 18.4MB." }
+        ],
+        "expectedToolCalls": [
+          { "toolName": "profile_webgl_draw_calls", "args": { "pointsCount": 150000, "renderer": "instanced_webgl2" }, "purpose": "Measure draw call latency and memory overhead" }
+        ],
+        "roleSpecificData": {
+          "type": "visualization",
+          "data": {
+            "chartTitle": "Global IoT Telemetry Heatmap",
+            "chartType": "heatmap",
+            "webGlMetrics": {
+              "renderedPointsCount": 150000,
+              "fpsAverage": 60.0,
+              "gpuMemoryAllocatedMb": 18.4
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "visualization-day4",
+    "course": "Data Visualization Agentic Specialist",
+    "roleDomain": "visualization",
+    "day": 4,
+    "day_title": "Day 04: Automated EDA Chart Generation & Chart Junk Critique",
+    "chapter_title": "Automated EDA Chart Generation & Chart Junk Critique",
+    "labComponentId": "visualization-day4-eda-chart-critique",
+    "difficulty": "hard",
+    "estimatedMinutes": 45,
+    "prerequisites": ["Day 03: WebGL & Canvas", "Edward Tufte's Data-Ink Principles"],
+    "tags": ["visualization", "eda", "data-ink-ratio", "tufte", "chart-junk", "critique"],
+    "critical_concepts": [
+      {
+        "concept": "Tufte Data-Ink Ratio Maximization",
+        "definition": "Data-Ink Ratio = (Data-Ink) / (Total Ink used in Graphic). Maximizing the proportion of visual ink dedicated strictly to conveying non-redundant data.",
+        "elaboration": "Agents automatically strip 3D perspective distortions, heavy background gridlines, redundant legends, and decorative bevels from automatically generated analytics charts.",
+        "industry_application": "Transforms cluttered, confusing business intelligence dashboards into clear, high-signal decision tools."
+      }
+    ],
+    "theory_content": {
+      "title": "Autonomous Visual Critique & Data-Ink Optimization",
+      "content": "Automated charting tools frequently produce 'chart junk': pseudo-3D pie charts, truncated non-zero baseline bar charts, and rainbow color clutter. A Data Visualization Agentic Specialist applies automated visual critique heuristics to enforce ethical scales and maximal data clarity.",
+      "practical_takeaway": "Always start quantitative bar chart Y-axes at zero to avoid exaggerating minor percentage differences.",
+      "analogy": "Like an executive speech editor who cuts out all buzzwords and filler phrases so only the essential facts and directives remain.",
+      "industry_case_study": "Edward Tufte famously proved that confusing, cluttered slide graphics contributed directly to the 1986 NASA Space Shuttle Challenger disaster by obscuring the critical relationship between low launch temperature and O-ring failure."
+    },
+    "interactive_questions": [
+      {
+        "id": "viz-ex-401",
+        "componentId": "visualization-day4-eda-chart-critique",
+        "dayNumber": 4,
+        "difficulty": "hard",
+        "title": "Identify Deceptive Baseline Truncation and Chart Junk",
+        "prompt": "A competitor's marketing chart shows two bars: Competitor Score: 98.2%, Our Score: 97.4%. The Y-axis is truncated to start at 97.0% and end at 98.5%, visually making the competitor's bar appear 4x taller than ours.",
+        "question": "What is the ethical visualization critique and correct chart redesign?",
+        "options": [
+          "The chart is completely fair and accurate",
+          "The truncated Y-axis creates a deceptive visual exaggeration of a 0.8% difference. The agent should ground the bar chart baseline at 0%, or convert to a dot plot with explicit confidence intervals and an accurate subtitle stating '+0.8% difference'",
+          "Truncate the axis even further to make the difference look 100x bigger",
+          "Delete the competitor's bar completely"
+        ],
+        "answer": "The truncated Y-axis creates a deceptive visual exaggeration of a 0.8% difference. The agent should ground the bar chart baseline at 0%, or convert to a dot plot with explicit confidence intervals and an accurate subtitle stating '+0.8% difference'",
+        "correctAnswerIndex": 1,
+        "explanation": "Truncating the baseline on bar charts violates the geometric visual area encoding principle. Grounding the baseline or using dot plots with labeled confidence intervals presents ethical, truthful data.",
+        "wrong_answer_feedback": [
+          { "option": "The chart is completely fair and accurate", "feedback": "Truncating bar chart baselines distorts visual proportions and misleads human perceptual judgment." },
+          { "option": "Truncate the axis even further to make the difference look 100x bigger", "feedback": "Exaggerating deceptive scales violates data ethics and scientific standards." }
+        ],
+        "tags": ["tufte", "deceptive-charts", "data-ink"],
+        "nature": "business_governance",
+        "logs": [
+          { "timestamp": "16:30:00", "level": "info", "message": "CRITIQUE_BOT: Ingested SVG bar chart `competitor_comparison.svg`." },
+          { "timestamp": "16:30:01", "level": "warn", "message": "SCALE_ANOMALY: Y-axis baseline begins at 97.0% (Non-zero origin on bar geometry)." },
+          { "timestamp": "16:30:02", "level": "success", "message": "ETHICAL_REDESIGN: Generated grounded zero-baseline dot plot with +/-0.8% delta label." }
+        ],
+        "expectedToolCalls": [
+          { "toolName": "audit_chart_data_ink_ratio", "args": { "chartType": "bar", "yAxisOrigin": 97.0, "minValue": 97.4 }, "purpose": "Flag deceptive visual area scaling" }
+        ],
+        "roleSpecificData": {
+          "type": "visualization",
+          "data": {
+            "chartTitle": "Ethical Benchmark Comparison",
+            "chartType": "scatter"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "visualization-day5",
+    "course": "Data Visualization Agentic Specialist",
+    "roleDomain": "visualization",
+    "day": 5,
+    "day_title": "Day 05: Interactive Model Explainability (SHAP Waterfall Visualizer)",
+    "chapter_title": "Interactive Model Explainability (SHAP Waterfall Visualizer)",
+    "labComponentId": "visualization-day5-shap-waterfall",
+    "difficulty": "hard",
+    "estimatedMinutes": 50,
+    "prerequisites": ["Day 01 - Day 04 Visualization Milestones", "SHAP (SHapley Additive exPlanations)"],
+    "tags": ["visualization", "explainable-ai", "xai", "shap", "waterfall-chart", "feature-attribution"],
+    "critical_concepts": [
+      {
+        "concept": "SHAP Additive Feature Decomposition",
+        "definition": "Visualizing how each individual input feature value pushes a machine learning prediction away from the baseline expected value E[f(x)] to the final score f(x).",
+        "elaboration": "Agents construct interactive waterfall charts where positive feature attributions (red/pink) and negative feature attributions (blue) visually sum to the final model output.",
+        "industry_application": "Mandatory for regulatory compliance in automated loan approvals, medical diagnosis, and hiring algorithms (EU AI Act & Fair Lending compliance)."
+      }
+    ],
+    "theory_content": {
+      "title": "Visual Explainability & Responsible AI (XAI) Communication",
+      "content": "Complex neural networks and gradient boosting models are black boxes without visual explainability. A Data Visualization Agentic Specialist constructs interactive SHAP waterfall and force plots that allow domain experts, regulators, and end-users to understand why an AI model made a specific prediction.",
+      "practical_takeaway": "Sort features by absolute SHAP contribution value so the most decisive factors appear at the top of the waterfall chart.",
+      "analogy": "Like an itemized grocery receipt showing the baseline subtotal, each individual item added or coupon discount subtracted, leading to the exact final checkout total.",
+      "industry_case_study": "Under the European Union AI Act and the US Equal Credit Opportunity Act, automated credit scoring models must issue mathematically verifiable Adverse Action notices explaining exactly which factors caused an applicant's loan denial. Visual SHAP waterfall charts provide this audit trail."
+    },
+    "interactive_questions": [
+      {
+        "id": "viz-ex-501",
+        "componentId": "visualization-day5-shap-waterfall",
+        "dayNumber": 5,
+        "difficulty": "hard",
+        "title": "Interpret SHAP Waterfall Feature Attribution for Denied Loan",
+        "prompt": "An automated credit model baseline approval probability is 65.0%. For applicant #9942, final prediction is 38.0% (Denied). SHAP values: Debt-to-Income (+12.0%), Credit Inquiries (-22.0%), Derogatory Marks (-17.0%).",
+        "question": "What is the primary visual and regulatory explanation to deliver to the loan applicant in the Adverse Action Notice?",
+        "options": [
+          "Tell the applicant that 'The AI computer algorithm made a mystery decision'",
+          "The SHAP waterfall chart reveals that recent Credit Inquiries (-22.0% impact) and Derogatory Public Marks (-17.0% impact) were the decisive factors driving the score down from the 65.0% baseline to 38.0%",
+          "Blame the applicant's zip code without evidence",
+          "Reverse the prediction to 100% approval without checking the data"
+        ],
+        "answer": "The SHAP waterfall chart reveals that recent Credit Inquiries (-22.0% impact) and Derogatory Public Marks (-17.0% impact) were the decisive factors driving the score down from the 65.0% baseline to 38.0%",
+        "correctAnswerIndex": 1,
+        "explanation": "SHAP waterfall decompositions provide mathematically grounded, additive feature attributions that satisfy Adverse Action regulatory requirements by pinpointing the exact factors responsible for the loan denial.",
+        "wrong_answer_feedback": [
+          { "option": "Tell the applicant that 'The AI computer algorithm made a mystery decision'", "feedback": "Black box dismissals violate regulatory Fair Lending compliance laws requiring adverse action rationale." },
+          { "option": "Blame the applicant's zip code without evidence", "feedback": "Using non-causal demographic attributes violates algorithmic fairness regulations." }
+        ],
+        "tags": ["shap", "xai", "regulatory-compliance", "waterfall-chart"],
+        "nature": "business_governance",
+        "logs": [
+          { "timestamp": "18:00:00", "level": "info", "message": "SHAP_ENGINE: Calculating TreeSHAP feature attributions for Applicant #9942..." },
+          { "timestamp": "18:00:01", "level": "info", "message": "BASELINE: E[f(x)] = 0.650 | FINAL_OUTPUT: f(x) = 0.380 (Delta: -0.270)." },
+          { "timestamp": "18:00:02", "level": "success", "message": "XAI_WATERFALL: Rendered interactive waterfall chart. Top negative driver: `credit_inquiries_last_6m` (-0.220)." }
+        ],
+        "expectedToolCalls": [
+          { "toolName": "calculate_shap_waterfall_values", "args": { "applicantId": "9942", "modelId": "credit_xgboost_v4" }, "purpose": "Decompose prediction into additive feature attributions" }
+        ],
+        "roleSpecificData": {
+          "type": "visualization",
+          "data": {
+            "chartTitle": "Credit Decision SHAP Feature Attribution Waterfall",
+            "chartType": "waterfall",
+            "shapWaterfallAttributions": [
+              { "feature": "Baseline Expected Value E[f(x)]", "baselineValue": 0.65, "shapContribution": 0.0, "finalPrediction": 0.65 },
+              { "feature": "Debt-to-Income (DTI = 18%)", "baselineValue": 0.65, "shapContribution": 0.12, "finalPrediction": 0.77 },
+              { "feature": "Credit Inquiries (6 in past 90d)", "baselineValue": 0.77, "shapContribution": -0.22, "finalPrediction": 0.55 },
+              { "feature": "Derogatory Public Records (2)", "baselineValue": 0.55, "shapContribution": -0.17, "finalPrediction": 0.38 }
+            ]
+          }
+        }
+      }
+    ]
+  }
+]

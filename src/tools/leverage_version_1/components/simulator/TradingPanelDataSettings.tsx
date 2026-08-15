@@ -1,8 +1,8 @@
 import React from 'react';
 import { useIndicatorsStore } from '../../stores/indicators_store';
 import { getBaseInterval, formatInterval } from '../../functions/api/rules/dataSourceRules';
-import { AssetSlider } from '../../../../components/homeMainView/AssetSlider';
-import { AssetType, generateInitialCandles } from '../../../../components/homeMainView/simulatedDataGenerator';
+import { AssetSlider } from '../../../../finhub/homeMainView/AssetSlider';
+import { AssetType, generateInitialCandles } from '../../../../finhub/homeMainView/simulatedDataGenerator';
 
 export const TradingPanelDataSettings: React.FC = () => {
   const { dataSettings, setDataSettings } = useIndicatorsStore();

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BookOpen, Activity, Loader2 } from "lucide-react";
 import { TermDefinition } from "../types";
-import { TermCard } from "../components/glossaryTerms/TermCard";
+import { TermCard } from "../finhub/glossaryTerms/TermCard";
 
 type SectionType = "dictionary" | "volatility";
 

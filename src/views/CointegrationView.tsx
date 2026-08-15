@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
-import { CointegrationPage } from "../components/documentationTopics/CointegrationPage";
+import { CointegrationPage } from "../finhub/documentationTopics/CointegrationPage";
 
 export const CointegrationView: React.FC = () => {
   return (

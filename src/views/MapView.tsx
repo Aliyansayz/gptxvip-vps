@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
-import { DocumentationMap } from "../components/documentationTopics/DocumentationMap";
+import { DocumentationMap } from "../finhub/documentationTopics/DocumentationMap";
 import { ProjectJourneyView } from "./ProjectJourneyView";
 
 interface MapViewProps {

@@ -1,8 +1,8 @@
 import React from "react";
 import { Shield } from "lucide-react";
-import { CandlestickChartWidget } from "../components/tradeTopic/CandlestickChartWidget";
+import { CandlestickChartWidget } from "../finhub/tradeTopic/CandlestickChartWidget";
 import { OHLCData } from "../types";
-import { CodeSnippetViewer } from "../components/documentationTopics/CodeSnippetViewer";
+import { CodeSnippetViewer } from "../finhub/documentationTopics/CodeSnippetViewer";
 import { singleTradeSnippets } from "../constants";
 
 interface SingleTradeViewProps {

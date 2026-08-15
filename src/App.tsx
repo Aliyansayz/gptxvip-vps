@@ -3,7 +3,7 @@ import { MainLayout } from "./layouts/MainLayout";
 import { generateMockData, generateCandlestickData } from "./functions/mockData";
 import { PriceData, OHLCData } from "./types";
 
-import { HomeMainView } from "./components/homeMainView";
+import { HomeMainView } from "./finhub/homeMainView";
 
 // Lazy loading to improve Core Web Vitals (FCP, LCP, TBT, Speed Index)
 const TradeTypeView = lazy(() => import("./views/TradeTypeView").then(module => ({ default: module.TradeTypeView })));
@@ -11,15 +11,17 @@ const CointegrationView = lazy(() => import("./views/CointegrationView").then(mo
 const KeyTermsView = lazy(() => import("./views/KeyTermsView").then(module => ({ default: module.KeyTermsView })));
 const MapView = lazy(() => import("./views/MapView").then(module => ({ default: module.MapView })));
 const OverviewView = lazy(() => import("./views/OverviewView").then(module => ({ default: module.OverviewView })));
-const CodeConceptsView = lazy(() => import("./components/codeConceptsTopics/codeConceptsView/CodeConceptsView").then(module => ({ default: module.CodeConceptsView })));
-const ProfileInfo = lazy(() => import("./components/profileInfo").then(module => ({ default: module.ProfileInfo })));
+const CodeConceptsView = lazy(() => import("./finhub/codeConceptsTopics/codeConceptsView/CodeConceptsView").then(module => ({ default: module.CodeConceptsView })));
+const ProfileInfo = lazy(() => import("./finhub/profileInfo").then(module => ({ default: module.ProfileInfo })));
 const TradingToolsView = lazy(() => import("./views/TradingToolsView").then(module => ({ default: module.TradingToolsView })));
 const DevLushApp = lazy(() => import("./devLushArea/agentDevRootComponents/devLushAreaApp"));
 const RoadmapContainer = lazy(() => import("./roadmapArea/roadmapView/RoadmapContainer"));
+const RootHomePage = lazy(() => import("./rootHomePage/RootHomePage").then(module => ({ default: module.RootHomePage })));
 
 import { Toaster } from 'sonner';
 
 type ActiveTabType =
+  | "root-home"
   | "home"
   | "trade-type"
   | "overview"
@@ -47,7 +49,8 @@ export default function App({ initialTab }: AppProps = {}) {
   const [activeTab, setActiveTab] = useState<ActiveTabType>(
     initialTab || (window.location.pathname.startsWith('/profile') ? "profile" : 
                    window.location.pathname.startsWith('/core_concepts') ? "core-concepts" :
-                   window.location.pathname.startsWith('/math_primer') ? "math-primer" : "home")
+                   window.location.pathname.startsWith('/math_primer') ? "math-primer" : 
+                   window.location.pathname.startsWith('/finhub') ? "home" : "root-home")
   );
   const [activeSubTab, setActiveSubTab] = useState<string>("liquidity-depth");
   const [activeCodeCategory, setActiveCodeCategory] = useState<string>("general");
@@ -77,13 +80,34 @@ export default function App({ initialTab }: AppProps = {}) {
   return (
     <>
       <Toaster position="top-center" />
-      {activeTab === "dev-labs-workspace" ? (
+      {activeTab === "root-home" ? (
+        <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-zinc-500">Loading GPTX.VIP...</div>}>
+          <RootHomePage 
+            onNavigateFinhub={() => {
+              setActiveTab("home");
+              window.history.pushState({}, '', '/finhub');
+            }}
+            onNavigateDevLush={() => {
+              setActiveTab("dev-labs-workspace");
+            }}
+            onNavigateBlogs={() => {
+              window.location.assign('/blogs');
+            }}
+          />
+        </Suspense>
+      ) : activeTab === "dev-labs-workspace" ? (
         <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-zinc-500">Loading Workspace...</div>}>
-          <DevLushApp onExit={() => setActiveTab("home")} />
+          <DevLushApp onExit={() => {
+            setActiveTab("root-home");
+            window.history.pushState({}, '', '/');
+          }} />
         </Suspense>
       ) : activeTab === "roadmap-workspace" ? (
         <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-zinc-500">Loading Roadmap...</div>}>
-          <RoadmapContainer onExit={() => setActiveTab("home")} />
+          <RoadmapContainer onExit={() => {
+            setActiveTab("root-home");
+            window.history.pushState({}, '', '/');
+          }} />
         </Suspense>
       ) : (
         <MainLayout
@@ -124,7 +148,10 @@ export default function App({ initialTab }: AppProps = {}) {
                 activeCategory={activeCodeCategory as any} 
                 setActiveCategory={setActiveCodeCategory as any}
                 onToggleUI={setShowUI}
-                onExitSearch={() => setActiveTab("home")}
+                onExitSearch={() => {
+                  setActiveTab("root-home");
+                  window.history.pushState({}, '', '/');
+                }}
                 initialActivityId={initialDeepLinkActivity}
               />
             )}

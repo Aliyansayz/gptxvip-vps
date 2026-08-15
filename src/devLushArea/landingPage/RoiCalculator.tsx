@@ -9,7 +9,7 @@ export const RoiCalculator: React.FC = () => {
     const annualSavings = hoursSaved * hourlyRate;
 
     return (
-        <section className="py-16 sm:py-24 max-w-7xl mx-auto px-6 border-t border-zinc-200 dark:border-zinc-800">
+        <section id="roi-calculator" className="py-16 sm:py-24 max-w-7xl mx-auto px-6 border-t border-zinc-200 dark:border-zinc-800">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 
                 <div className="lg:col-span-5 space-y-4">

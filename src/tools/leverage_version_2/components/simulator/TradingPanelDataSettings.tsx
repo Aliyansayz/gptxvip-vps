@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useIndicatorsStore } from '../../stores/indicators_store';
 import { getBaseInterval, formatInterval } from '../../functions/api/rules/dataSourceRules';
-import { AssetSlider } from '../../../../components/homeMainView/AssetSlider';
-import { AssetType } from '../../../../components/homeMainView/simulatedDataGenerator';
+import { AssetSlider } from '../../../../finhub/homeMainView/AssetSlider';
+import { AssetType } from '../../../../finhub/homeMainView/simulatedDataGenerator';
 import { CsvFileInputMode } from '../../functions/api/data_source/csvFileInputmode';
 import { OHLCSimulationParams, DEFAULT_OHLC_PARAMS } from '../../functions/api/data_source/simulationDataOhlcParameter';
 import { GOLD_ONLY_PRESETS, GoldPresetName, GOLD_PRESET_NAMES } from '../../functions/api/data_source/goldPresetAdjustments';

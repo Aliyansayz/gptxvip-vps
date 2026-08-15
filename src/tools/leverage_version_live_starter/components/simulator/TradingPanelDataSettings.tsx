@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useIndicatorsStore } from '../../stores/indicators_store';
 import { getBaseInterval, formatInterval } from '../../../leverage_version_3/functions/api/rules/dataSourceRules';
-import { AssetSlider } from '../../../../components/homeMainView/AssetSlider';
-import { AssetType } from '../../../../components/homeMainView/simulatedDataGenerator';
+import { AssetSlider } from '../../../../finhub/homeMainView/AssetSlider';
+import { AssetType } from '../../../../finhub/homeMainView/simulatedDataGenerator';
 import { CsvFileInputMode } from '../../../leverage_version_3/functions/api/data_source/csvFileInputmode';
 import { OHLCSimulationParams, DEFAULT_OHLC_PARAMS } from '../../../leverage_version_3/functions/api/data_source/simulationDataOhlcParameter';
 import { GOLD_ONLY_PRESETS, GoldPresetName, GOLD_PRESET_NAMES } from '../../../leverage_version_3/functions/api/data_source/goldPresetAdjustments';

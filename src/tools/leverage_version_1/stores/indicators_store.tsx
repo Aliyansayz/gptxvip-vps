@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { TradingRulesConfig } from '../functions/api/rules/tradingRules';
-import { AssetType } from '../../../components/homeMainView/simulatedDataGenerator';
+import { AssetType } from '../../../finhub/homeMainView/simulatedDataGenerator';
 
 import { LeverageConfig, DEFAULT_LEVERAGE_CONFIG } from '../functions/api/position_sizing/leveragedPositionSizeMetals';
 

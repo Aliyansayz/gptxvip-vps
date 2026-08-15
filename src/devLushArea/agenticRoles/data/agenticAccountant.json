@@ -1,0 +1,381 @@
+[
+  {
+    "id": "accountant-day1",
+    "course": "Agentic Accountant",
+    "roleDomain": "accountant",
+    "day": 1,
+    "day_title": "Day 01: Multi-Currency Double-Entry Ledger Reconciliation",
+    "chapter_title": "Multi-Currency Double-Entry Ledger Reconciliation",
+    "labComponentId": "accountant-day1-ledger-reconciliation",
+    "difficulty": "easy",
+    "estimatedMinutes": 25,
+    "prerequisites": ["Double-Entry Accounting Basics", "Foreign Exchange (FX) Rates"],
+    "tags": ["accounting", "ledger", "double-entry", "forex", "reconciliation", "agentic-accountant"],
+    "critical_concepts": [
+      {
+        "concept": "Double-Entry Invariant",
+        "definition": "The foundational principle that every financial transaction must satisfy Debits = Credits at all times.",
+        "elaboration": "Autonomous accounting agents validate that ledger mutations maintain exact numerical balance across multi-currency journal lines.",
+        "industry_application": "Prevents unclosed general ledger periods and unbalanced balance sheets during high-frequency micro-billing."
+      },
+      {
+        "concept": "Realized vs Unrealized FX Variance",
+        "definition": "Accounting for currency exchange rate fluctuations between invoice creation date and settlement date.",
+        "elaboration": "Agents calculate and post foreign exchange gain/loss adjustment entries automatically upon wire confirmation.",
+        "industry_application": "Ensures multinational enterprise compliance with GAAP and IFRS currency translation standards."
+      }
+    ],
+    "theory_content": {
+      "title": "Autonomous Double-Entry General Ledger Integrity",
+      "content": "In autonomous financial systems, transactions flow across payment gateways, banking APIs, and internal ledgers in real-time. An Agentic Accountant validates that every journal entry maintains strict debit-credit equilibrium while calculating real-time foreign exchange adjustments.",
+      "practical_takeaway": "Never mutate a ledger entry directly; always write offsetting reversal or adjustment entries.",
+      "analogy": "Like a double-pan balance scale where adding weight to one side demands an equal counterweight on the other to stay level.",
+      "industry_case_study": "When a fast-growing B2B SaaS company scaled across 35 countries, manual FX reconciliation lagged by 60 days, hiding a $180,000 currency loss. Implementing real-time agentic double-entry automated settlement eliminated manual month-end closing delays."
+    },
+    "interactive_questions": [
+      {
+        "id": "acc-ex-101",
+        "componentId": "accountant-day1-ledger-reconciliation",
+        "dayNumber": 1,
+        "difficulty": "easy",
+        "title": "Reconcile Multi-Currency Invoice with Exchange Rate Gain/Loss",
+        "prompt": "An EU client was billed €10,000 when EUR/USD was 1.05 ($10,500 Accounts Receivable). The client settles the invoice when EUR/USD is 1.10 ($11,000 received in USD bank account).",
+        "question": "How should the autonomous accounting agent balance the journal entry to close Accounts Receivable?",
+        "options": [
+          "Debit Cash $11,000; Credit Accounts Receivable $10,500; Credit Realized FX Gain $500",
+          "Debit Cash $10,500; Credit Accounts Receivable $11,000; Debit Retained Earnings $500",
+          "Debit Accounts Receivable $11,000; Credit Revenue $11,000",
+          "Delete the original invoice and generate a new one at the 1.10 exchange rate"
+        ],
+        "answer": "Debit Cash $11,000; Credit Accounts Receivable $10,500; Credit Realized FX Gain $500",
+        "correctAnswerIndex": 0,
+        "explanation": "Cash is debited for the actual $11,000 received. Accounts Receivable is credited $10,500 to clear the open balance. The remaining $500 is credited as Realized Foreign Exchange Gain on the income statement.",
+        "wrong_answer_feedback": [
+          { "option": "Debit Cash $10,500; Credit Accounts Receivable $11,000; Debit Retained Earnings $500", "feedback": "Cash must match the actual $11,000 deposited in the bank account; understating cash creates an un-reconciled bank variance." },
+          { "option": "Delete the original invoice and generate a new one at the 1.10 exchange rate", "feedback": "Modifying past historical invoices violates audit compliance and corrupts prior tax reporting periods." }
+        ],
+        "tags": ["double-entry", "fx-gain", "reconciliation"],
+        "nature": "technical_execution",
+        "perspective": "candidate_perspective",
+        "logs": [
+          { "timestamp": "09:30:00", "level": "info", "message": "RECONCILIATION_AGENT: Polling Stripe EUR payout webhook..." },
+          { "timestamp": "09:30:01", "level": "info", "message": "RECONCILIATION_AGENT: Detected receipt of €10,000. Spot rate: 1.10 USD/EUR. USD value: $11,000.00." },
+          { "timestamp": "09:30:02", "level": "success", "message": "RECONCILIATION_AGENT: Generated journal entry balancing $11,000 Cash with $10,500 AR and $500 FX Gain." }
+        ],
+        "expectedToolCalls": [
+          { "toolName": "fetch_spot_forex_rate", "args": { "pair": "EUR/USD", "timestamp": "2026-08-15T09:30:00Z" }, "purpose": "Retrieve authoritative settlement FX rate" }
+        ],
+        "roleSpecificData": {
+          "type": "accountant",
+          "data": {
+            "currencyBase": "USD",
+            "journalEntries": [
+              { "id": "JE-2026-001", "date": "2026-08-01", "account": "Accounts Receivable (EUR)", "debit": 10500, "credit": 0, "currency": "EUR", "rate": 1.05, "verified": true },
+              { "id": "JE-2026-002", "date": "2026-08-15", "account": "Cash - Silicon Valley Bank", "debit": 11000, "credit": 0, "currency": "USD", "rate": 1.0, "verified": true },
+              { "id": "JE-2026-003", "date": "2026-08-15", "account": "Realized FX Gain", "debit": 0, "credit": 500, "currency": "USD", "rate": 1.0, "verified": true }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "accountant-day2",
+    "course": "Agentic Accountant",
+    "roleDomain": "accountant",
+    "day": 2,
+    "day_title": "Day 02: Benford's Law Forensic Fraud Anomaly Scanning",
+    "chapter_title": "Benford's Law Forensic Fraud Anomaly Scanning",
+    "labComponentId": "accountant-day2-benford-fraud",
+    "difficulty": "medium",
+    "estimatedMinutes": 35,
+    "prerequisites": ["Day 01: Multi-Currency Ledger", "Logarithmic Distributions"],
+    "tags": ["accounting", "benfords-law", "forensics", "fraud-detection", "audit"],
+    "critical_concepts": [
+      {
+        "concept": "First-Digit Phenomenon (Benford's Law)",
+        "definition": "In naturally occurring numerical datasets, the probability of the first digit d is P(d) = log10(1 + 1/d).",
+        "elaboration": "Digit 1 should appear ~30.1% of the time, while digit 9 appears only ~4.6%. Human fabricators typically choose uniform digits (e.g. 4, 5, 7) or stay just under approval thresholds.",
+        "industry_application": "Forensic AI audit agents scan thousands of expense reports in seconds to uncover invoice fabrication rings."
+      }
+    ],
+    "theory_content": {
+      "title": "Mathematical Forensic Auditing via Benford's Law",
+      "content": "Fraudulent financial entries rarely follow natural logarithmic distributions. An Agentic Accountant employs Benford's Law scanning algorithms to detect abnormal spikes in leading digit frequencies across vendor invoices and expense claims.",
+      "practical_takeaway": "Investigate transaction clusters that peak right below internal authorization thresholds (e.g. $4,999 when $5,000 requires VP approval).",
+      "analogy": "Like a forensic detective noticing that all suspect signatures were written with the exact same pen pressure and ink formula.",
+      "industry_case_study": "Forensic accountants famously used Benford's Law analysis during the Enron and WorldCom investigations to prove that quarterly financial numbers were fabricated rather than generated by natural market activity."
+    },
+    "interactive_questions": [
+      {
+        "id": "acc-ex-201",
+        "componentId": "accountant-day2-benford-fraud",
+        "dayNumber": 2,
+        "difficulty": "medium",
+        "title": "Detect Leading Digit Anomaly in Vendor Disbursement Dataset",
+        "prompt": "An audit agent processed 5,000 vendor disbursement invoices. The first-digit frequency for '4' is 28.5% (expected: 9.7%), and 85% of those invoices are for $4,950.00 from a newly onboarded vendor.",
+        "question": "What is the correct audit determination and recommended automated agent action?",
+        "options": [
+          "Ignore the finding because digit 4 is a lucky number in certain financial cultures",
+          "Flag the vendor invoices as high-risk threshold evasion (smurfing) and automatically freeze payment pending manager verification",
+          "Immediately delete the vendor without recording the reason in the audit log",
+          "Increase the company-wide approval threshold to $10,000 to eliminate the anomaly"
+        ],
+        "answer": "Flag the vendor invoices as high-risk threshold evasion (smurfing) and automatically freeze payment pending manager verification",
+        "correctAnswerIndex": 1,
+        "explanation": "A severe Benford's Law spike at digit 4 with invoices clustered just beneath the $5,000 manager approval limit ($4,950) is classic threshold evasion. The agent must quarantine the disbursements and flag for forensic audit.",
+        "wrong_answer_feedback": [
+          { "option": "Ignore the finding because digit 4 is a lucky number in certain financial cultures", "feedback": "Financial auditing is governed by statistical controls and compliance laws, not cultural superstitions." },
+          { "option": "Increase the company-wide approval threshold to $10,000 to eliminate the anomaly", "feedback": "Raising thresholds only invites larger fraudulent disbursements beneath the new limit." }
+        ],
+        "tags": ["benfords-law", "fraud-detection", "audit-controls"],
+        "nature": "forensic_audit",
+        "logs": [
+          { "timestamp": "11:00:00", "level": "info", "message": "BENFORD_AGENT: Ingested 5,000 transaction line items." },
+          { "timestamp": "11:00:01", "level": "warn", "message": "BENFORD_ALERT: Digit '4' observed frequency 28.5% vs expected 9.7% (Z-score = 8.42)." },
+          { "timestamp": "11:00:02", "level": "error", "message": "QUARANTINE: Isolated 14 invoices from vendor 'Global Consulting Group' ($4,950.00 each)." }
+        ],
+        "expectedToolCalls": [
+          { "toolName": "calculate_benford_distribution", "args": { "datasetId": "disbursements_2026_q2", "digitPosition": 1 }, "purpose": "Audit first-digit logarithmic compliance" }
+        ],
+        "roleSpecificData": {
+          "type": "accountant",
+          "data": {
+            "currencyBase": "USD",
+            "journalEntries": [],
+            "benfordDistribution": [
+              { "digit": 1, "expectedFreq": 30.1, "observedFreq": 29.8, "anomalyFlag": false },
+              { "digit": 2, "expectedFreq": 17.6, "observedFreq": 18.1, "anomalyFlag": false },
+              { "digit": 3, "expectedFreq": 12.5, "observedFreq": 11.9, "anomalyFlag": false },
+              { "digit": 4, "expectedFreq": 9.7, "observedFreq": 28.5, "anomalyFlag": true },
+              { "digit": 5, "expectedFreq": 7.9, "observedFreq": 4.1, "anomalyFlag": false },
+              { "digit": 6, "expectedFreq": 6.7, "observedFreq": 3.2, "anomalyFlag": false },
+              { "digit": 7, "expectedFreq": 5.8, "observedFreq": 2.1, "anomalyFlag": false },
+              { "digit": 8, "expectedFreq": 5.1, "observedFreq": 1.5, "anomalyFlag": false },
+              { "digit": 9, "expectedFreq": 4.6, "observedFreq": 0.8, "anomalyFlag": false }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "accountant-day3",
+    "course": "Agentic Accountant",
+    "roleDomain": "accountant",
+    "day": 3,
+    "day_title": "Day 03: Multi-Jurisdiction Sales Tax & Nexus Compliance",
+    "chapter_title": "Multi-Jurisdiction Sales Tax & Nexus Compliance",
+    "labComponentId": "accountant-day3-tax-nexus",
+    "difficulty": "medium",
+    "estimatedMinutes": 40,
+    "prerequisites": ["Day 02: Benford Audit", "Economic Nexus Thresholds"],
+    "tags": ["accounting", "tax", "economic-nexus", "sales-tax", "compliance"],
+    "critical_concepts": [
+      {
+        "concept": "Economic Nexus Trailing Liability",
+        "definition": "Legal tax obligation triggered when a remote business exceeds a state's revenue ($100k-$250k) or transaction (200 orders) threshold.",
+        "elaboration": "Agents continuously monitor cumulative rolling 12-month sales per jurisdiction to calculate remittance obligations before penalties accrue.",
+        "industry_application": "Prevents catastrophic retroactive sales tax assessments and interest penalties for scaling ecommerce platforms."
+      }
+    ],
+    "theory_content": {
+      "title": "Autonomous Multi-State Sales Tax Calculation & Remittance",
+      "content": "Following South Dakota v. Wayfair, US businesses must collect sales tax in states where they cross economic nexus thresholds. An Agentic Accountant continuously tracks cross-state transaction streams and calculates accurate destination-based tax rates.",
+      "practical_takeaway": "Automate nexus tracking at the 80% threshold marker to allow registration lead time.",
+      "analogy": "Like an automated highway toll scanner that activates whenever you drive enough miles in a state, calculating rates based on the specific exit you use.",
+      "industry_case_study": "An online retail brand failed to track California economic nexus and accumulated $240,000 in uncollected sales tax liability plus penalties. Implementing automated nexus monitoring agents prevents uncollected tax exposure."
+    },
+    "interactive_questions": [
+      {
+        "id": "acc-ex-301",
+        "componentId": "accountant-day3-tax-nexus",
+        "dayNumber": 3,
+        "difficulty": "medium",
+        "title": "Identify Triggered Economic Nexus and Remittance Obligation",
+        "prompt": "In Colorado, economic nexus is triggered at $100,000 in gross annual sales. In October, your platform reached $104,200 across 180 orders from Colorado buyers.",
+        "question": "What sequence of actions must the Agentic Accountant execute?",
+        "options": [
+          "Halt all sales to Colorado customers permanently",
+          "Notify legal/tax department, initiate Colorado sales tax permit registration, and configure checkout engine to collect destination-based Colorado sales tax on subsequent orders",
+          "Refund all previous Colorado customers $4,200 to drop back under the $100,000 threshold",
+          "Charge Colorado customers an arbitrary flat 25% tax rate retroactively"
+        ],
+        "answer": "Notify legal/tax department, initiate Colorado sales tax permit registration, and configure checkout engine to collect destination-based Colorado sales tax on subsequent orders",
+        "correctAnswerIndex": 1,
+        "explanation": "Crossing the statutory revenue threshold triggers economic nexus. The business must register with the state tax authority and configure real-time tax calculation on future orders to comply with destination sourcing rules.",
+        "wrong_answer_feedback": [
+          { "option": "Halt all sales to Colorado customers permanently", "feedback": "Stopping sales loses revenue and does not erase the tax liability already triggered by crossing the $100k mark." },
+          { "option": "Charge Colorado customers an arbitrary flat 25% tax rate retroactively", "feedback": "Charging unauthorized arbitrary tax rates is illegal and violates consumer protection and state tax laws." }
+        ],
+        "tags": ["economic-nexus", "sales-tax", "state-tax"],
+        "nature": "business_governance",
+        "logs": [
+          { "timestamp": "14:20:00", "level": "info", "message": "NEXUS_MONITOR: Rolling 12-month sales scan across 50 US jurisdictions..." },
+          { "timestamp": "14:20:01", "level": "warn", "message": "THRESHOLD_ALERT: Colorado gross sales reached $104,200.00 (Threshold: $100,000.00)." },
+          { "timestamp": "14:20:02", "level": "success", "message": "COMPLIANCE_BOT: Generated Colorado Department of Revenue registration packet." }
+        ],
+        "expectedToolCalls": [
+          { "toolName": "audit_economic_nexus_thresholds", "args": { "state": "CO", "period": "rolling_12_months" }, "purpose": "Check nexus triggers across states" }
+        ],
+        "roleSpecificData": {
+          "type": "accountant",
+          "data": {
+            "currencyBase": "USD",
+            "journalEntries": [],
+            "taxJurisdictions": [
+              { "stateCode": "CO", "salesThreshold": 100000, "transactionCount": 180, "currentSales": 104200, "nexusReached": true, "rate": 0.029 },
+              { "stateCode": "TX", "salesThreshold": 500000, "transactionCount": 420, "currentSales": 312000, "nexusReached": false, "rate": 0.0625 },
+              { "stateCode": "CA", "salesThreshold": 500000, "transactionCount": 940, "currentSales": 640000, "nexusReached": true, "rate": 0.0725 }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "accountant-day4",
+    "course": "Agentic Accountant",
+    "roleDomain": "accountant",
+    "day": 4,
+    "day_title": "Day 04: Decimal Precision & Floating-Point Leakage Audit",
+    "chapter_title": "Decimal Precision & Floating-Point Leakage Audit",
+    "labComponentId": "accountant-day4-decimal-precision",
+    "difficulty": "hard",
+    "estimatedMinutes": 45,
+    "prerequisites": ["Day 03: Tax Nexus", "IEEE-754 Floating Point Math"],
+    "tags": ["accounting", "decimal-precision", "floating-point", "rounding", "ieee-754"],
+    "critical_concepts": [
+      {
+        "concept": "Binary Floating-Point Financial Drift",
+        "definition": "Cumulative inaccuracy caused by standard IEEE-754 binary floating-point representations (e.g. 0.1 + 0.2 = 0.30000000000000004) in billing systems.",
+        "elaboration": "Agents inspect database column definitions and calculation engines to enforce arbitrary-precision decimal representations (e.g., Decimal128, BigDecimal) and Banker's Rounding (Round-Half-to-Even).",
+        "industry_application": "Eliminates fractional-cent revenue leakage and reconciliation discrepancies across millions of transactions."
+      }
+    ],
+    "theory_content": {
+      "title": "Preventing Financial Leakage from Binary Floating-Point Math",
+      "content": "Standard computing hardware uses binary representation for numbers, causing inexact representations for simple decimal fractions like 0.10. An Agentic Accountant audits financial pipelines to ensure all currency math uses exact fixed-point or arbitrary-precision arithmetic.",
+      "practical_takeaway": "Never use float or double data types for financial ledgers; use integer cents or dedicated Decimal types.",
+      "analogy": "Like trying to measure precise ounces of gold with a rusty bathroom scale that only rounds to the nearest half-pound.",
+      "industry_case_study": "In 1991, an IEEE-754 floating point rounding drift of 0.000000095 seconds in a Patriot missile defense system accumulated over 100 hours into a 0.34-second tracking error, failing to intercept an incoming missile."
+    },
+    "interactive_questions": [
+      {
+        "id": "acc-ex-401",
+        "componentId": "accountant-day4-decimal-precision",
+        "dayNumber": 4,
+        "difficulty": "hard",
+        "title": "Correct Fractional-Cent Rounding Leakage in Micro-Billing",
+        "prompt": "An API billing micro-service computes usage at $0.00035 per request across 10,000,000 requests. Storing prices as standard `float` caused a cumulative $420.18 reconciliation discrepancy against the bank deposit.",
+        "question": "What code architecture fix should the Agentic Accountant require the engineering team to deploy?",
+        "options": [
+          "Ignore the difference and write off the discrepancy as miscellaneous expense every month",
+          "Refactor database columns to `DECIMAL(18, 6)` and use integer-based micro-cent math or arbitrary-precision Decimal libraries with Banker's Rounding",
+          "Switch from JavaScript to Python without changing the `float` data type",
+          "Round every single individual request up to $1.00 immediately"
+        ],
+        "answer": "Refactor database columns to `DECIMAL(18, 6)` and use integer-based micro-cent math or arbitrary-precision Decimal libraries with Banker's Rounding",
+        "correctAnswerIndex": 1,
+        "explanation": "Arbitrary-precision `DECIMAL` types and integer-based arithmetic prevent binary floating-point representation errors. Combined with Banker's Rounding (Half-Even), cumulative rounding bias is eliminated.",
+        "wrong_answer_feedback": [
+          { "option": "Ignore the difference and write off the discrepancy as miscellaneous expense every month", "feedback": "Writing off systematic rounding leakage masks software bugs and fails external financial audits." },
+          { "option": "Switch from JavaScript to Python without changing the `float` data type", "feedback": "Python floats use the exact same IEEE-754 double precision representation and suffer from the same rounding errors." }
+        ],
+        "tags": ["decimal-math", "ieee-754", "rounding-errors"],
+        "nature": "pipeline_optimization",
+        "logs": [
+          { "timestamp": "16:00:00", "level": "info", "message": "CODE_AUDITOR: Auditing SQL schemas across billing database..." },
+          { "timestamp": "16:00:01", "level": "error", "message": "TYPE_VIOLATION: `transactions.unit_price` declared as FLOAT4. Accumulated drift: -$420.18." },
+          { "timestamp": "16:00:02", "level": "success", "message": "MIGRATION_GEN: Created SQL migration `ALTER TABLE transactions ALTER COLUMN unit_price TYPE NUMERIC(18,6)`." }
+        ],
+        "expectedToolCalls": [
+          { "toolName": "audit_schema_numeric_types", "args": { "database": "billing_prod", "table": "transactions" }, "purpose": "Identify unsafe floating point column types" }
+        ],
+        "roleSpecificData": {
+          "type": "accountant",
+          "data": {
+            "currencyBase": "USD",
+            "journalEntries": []
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "accountant-day5",
+    "course": "Agentic Accountant",
+    "roleDomain": "accountant",
+    "day": 5,
+    "day_title": "Day 05: Autonomous Burn Rate & Cash Runway Forecasting",
+    "chapter_title": "Autonomous Burn Rate & Cash Runway Forecasting",
+    "labComponentId": "accountant-day5-cashflow-forecast",
+    "difficulty": "hard",
+    "estimatedMinutes": 50,
+    "prerequisites": ["Day 01 - Day 04 Accounting Milestones", "Monte Carlo Probabilistic Modeling"],
+    "tags": ["accounting", "cash-runway", "burn-rate", "monte-carlo", "forecasting"],
+    "critical_concepts": [
+      {
+        "concept": "Probabilistic Cash Runway Simulation",
+        "definition": "Monte Carlo modeling of future cash positions incorporating revenue volatility, seasonal churn, and headcount growth.",
+        "elaboration": "Agents simulate 10,000 stochastic cash-flow trajectories to determine P50 (median) and P95 (worst-case) zero-cash dates.",
+        "industry_application": "Empowers executive leadership to initiate fundraising or cost reduction months before insolvency risk emerges."
+      }
+    ],
+    "theory_content": {
+      "title": "Autonomous Predictive Treasury & Cash-Flow Runway Management",
+      "content": "Static spreadsheets fail to capture real-world financial volatility. An Agentic Accountant integrates real-time banking data, payroll schedules, and probabilistic forecasting algorithms to give executives continuous visibility into cash runway.",
+      "practical_takeaway": "Plan runway against P95 conservative scenarios rather than optimistic linear extrapolations.",
+      "analogy": "Like an airplane fuel computer that calculates remaining flight time based on headwind variations and reserve requirements rather than calm air assumptions.",
+      "industry_case_study": "Tech startups in 2022 that tracked static linear burn rates were caught unprepared when customer payment cycles lengthened from 30 to 90 days. Companies running stochastic cash-flow simulations adjusted spending 6 months in advance."
+    },
+    "interactive_questions": [
+      {
+        "id": "acc-ex-501",
+        "componentId": "accountant-day5-cashflow-forecast",
+        "dayNumber": 5,
+        "difficulty": "hard",
+        "title": "Evaluate Stochastic Monte Carlo Cash Runway Output",
+        "prompt": "Company Cash: $2,400,000. Current Monthly Net Burn: $200,000. Monte Carlo P50 runway is 12.0 months, but P95 conservative runway drops to 7.2 months due to enterprise customer payment delays.",
+        "question": "What recommendation should the Agentic Accountant deliver to the Board of Directors?",
+        "options": [
+          "Assume 12 months is guaranteed and double marketing expenditure immediately",
+          "Prepare contingency capital measures (revolving credit line or fundraising) starting at Month 4 to ensure solvency against P95 delayed receivable scenarios",
+          "Immediately fire 90% of the engineering team today",
+          "Switch all financial reports to cash-in-hand accounting to hide the receivable delays"
+        ],
+        "answer": "Prepare contingency capital measures (revolving credit line or fundraising) starting at Month 4 to ensure solvency against P95 delayed receivable scenarios",
+        "correctAnswerIndex": 1,
+        "explanation": "Prudent treasury management plans against conservative P95 risk tails. Initiating capital planning at Month 4 ensures the company has months of runway buffer even if enterprise receivables experience maximum modeled delay.",
+        "wrong_answer_feedback": [
+          { "option": "Assume 12 months is guaranteed and double marketing expenditure immediately", "feedback": "Relying on median P50 projections ignores downside receivable risks and accelerates insolvency." },
+          { "option": "Switch all financial reports to cash-in-hand accounting to hide the receivable delays", "feedback": "Manipulating accounting presentations is deceptive and violates GAAP revenue recognition." }
+        ],
+        "tags": ["cash-flow", "monte-carlo", "treasury-management"],
+        "nature": "business_governance",
+        "logs": [
+          { "timestamp": "17:30:00", "level": "info", "message": "TREASURY_BOT: Ingested current SVB and Chase bank balances ($2,400,000.00)." },
+          { "timestamp": "17:30:01", "level": "info", "message": "MONTE_CARLO: Executing 10,000 stochastic cashflow iterations with variable DSO..." },
+          { "timestamp": "17:30:02", "level": "warn", "message": "RUNWAY_RESULTS: P50 (Median) = 12.0 months | P95 (Conservative) = 7.2 months." }
+        ],
+        "expectedToolCalls": [
+          { "toolName": "run_monte_carlo_runway", "args": { "currentCash": 2400000, "baseBurn": 200000, "simulations": 10000 }, "purpose": "Simulate cash insolvency probabilities" }
+        ],
+        "roleSpecificData": {
+          "type": "accountant",
+          "data": {
+            "currencyBase": "USD",
+            "journalEntries": [],
+            "cashFlowForecast": {
+              "currentCash": 2400000,
+              "monthlyBurn": 200000,
+              "runwayMonths": 12.0,
+              "monteCarloP50": 12.0,
+              "monteCarloP95": 7.2
+            }
+          }
+        }
+      }
+    ]
+  }
+]

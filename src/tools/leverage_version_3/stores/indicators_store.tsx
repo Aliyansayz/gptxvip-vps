@@ -1,6 +1,6 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 import { TradingRulesConfig } from '../functions/api/rules/tradingRules';
-import { AssetType } from '../../../components/homeMainView/simulatedDataGenerator';
+import { AssetType } from '../../../finhub/homeMainView/simulatedDataGenerator';
 import { OHLCSimulationParams, DEFAULT_OHLC_PARAMS } from '../functions/api/data_source/simulationDataOhlcParameter';
 import { LeverageConfig, DEFAULT_LEVERAGE_CONFIG } from '../functions/api/position_sizing/leveragedPositionSizeMetals';
 import { FeatureLogEntry } from '../functions/api/indicatorLog/featureLogBook';

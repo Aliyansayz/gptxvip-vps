@@ -1,5 +1,5 @@
 import React from "react"
-import { ProjectJourney } from "../components/ProjectJourney"
+import { ProjectJourney } from "../finhub/ProjectJourney"
 
 export const ProjectJourneyView: React.FC = () => {
   return (

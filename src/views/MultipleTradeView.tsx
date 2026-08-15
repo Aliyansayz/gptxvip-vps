@@ -1,9 +1,9 @@
 import React from "react";
 import { Target } from "lucide-react";
-import { MultiTradeCandlestickWidget } from "../components/tradeTopic/MultiTradeCandlestickWidget";
+import { MultiTradeCandlestickWidget } from "../finhub/tradeTopic/MultiTradeCandlestickWidget";
 import { OHLCData } from "../types";
-import { StoryBlock } from "../components/documentationTopics/StoryBlock";
-import { CodeSnippetViewer } from "../components/documentationTopics/CodeSnippetViewer";
+import { StoryBlock } from "../finhub/documentationTopics/StoryBlock";
+import { CodeSnippetViewer } from "../finhub/documentationTopics/CodeSnippetViewer";
 import { multipleTradeSnippets } from "../constants";
 
 interface MultipleTradeViewProps {

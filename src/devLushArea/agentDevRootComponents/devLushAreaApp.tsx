@@ -16,6 +16,7 @@ import { TheoryCollectionProvider } from './TheoryCollectionContext';
 import FavoritesView from './FavoritesView';
 import TopicTheoryHub from './TopicTheoryView/TopicTheoryHub';
 import LandingPage from '../landingPage/LandingPage';
+import AgenticRolesContainer from '../agenticRoles/AgenticRolesContainer';
 
 
 import { motion, AnimatePresence } from 'framer-motion';
@@ -52,7 +53,7 @@ const App: React.FC<AppProps> = ({ onExit }) => {
     const [studyEnergy, setStudyEnergy] = useState(15);
     const [energyLockoutTime, setEnergyLockoutTime] = useState(0);
     
-    const [currentView, setCurrentView] = useState<'landing' | 'devlush-search' | 'reading' | 'articles' | 'blogs' | 'favorites' | 'topic-theory' | 'devlush' | 'agent-workspace'>('landing');
+    const [currentView, setCurrentView] = useState<'landing' | 'devlush-search' | 'reading' | 'articles' | 'blogs' | 'favorites' | 'topic-theory' | 'devlush' | 'agentic-roles' | 'agent-workspace'>('landing');
 
 
 
@@ -214,6 +215,14 @@ const App: React.FC<AppProps> = ({ onExit }) => {
                         <AgentWorkspace />
                     )}
 
+                    {currentView === 'agentic-roles' && (
+                        <AgenticRolesContainer 
+                            isLocked={isInteractionLocked}
+                            onConsumeEnergy={consumeEnergy}
+                            onExitToDevLush={() => setCurrentView('devlush')}
+                        />
+                    )}
+
                     {currentView === 'reading' && <ReadingView />}
                     
                     {currentView === 'articles' && <ArticlesView />}
@@ -246,7 +255,7 @@ const App: React.FC<AppProps> = ({ onExit }) => {
 
 
                 </main>
-                {!['landing', 'devlush', 'devlush-search', 'agent-workspace', 'topic-theory'].includes(currentView as any) && (
+                {!['landing', 'devlush', 'devlush-search', 'agentic-roles', 'agent-workspace', 'topic-theory'].includes(currentView as any) && (
                     <Footer theme={theme} currentView={currentView as any} />
                 )}
             </div>

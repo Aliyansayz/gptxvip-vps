@@ -1478,7 +1478,7 @@ export const CoreConceptRunner: React.FC<CoreConceptRunnerProps> = ({
                     </div>
 
                     {/* Top Right: Expandable Theory Pane */}
-                    {(concept.type !== 'overview' && !isWalkthrough) && (
+                    {(concept.type !== 'overview' && !isWalkthrough && concept.theory && concept.theory.length > 0) && (
                         <div className={`transition-all duration-300 ease-in-out shrink-0 w-full lg:w-[350px] relative`}>
                             <button 
                                 onClick={() => setIsTheoryOpen(!isTheoryOpen)} 

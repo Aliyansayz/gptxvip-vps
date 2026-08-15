@@ -1,0 +1,414 @@
+[
+  {
+    "id": "seo-day1",
+    "course": "SEO Agentic Analyst",
+    "roleDomain": "seo",
+    "day": 1,
+    "day_title": "Day 01: SERP Intent & Semantic Gap Auditing",
+    "chapter_title": "SERP Intent & Semantic Gap Auditing",
+    "labComponentId": "seo-day1-serp-intent",
+    "difficulty": "easy",
+    "estimatedMinutes": 25,
+    "prerequisites": ["Foundations of Search Engine Indexing", "Basic Keyword Clustering"],
+    "tags": ["seo", "serp", "intent-analysis", "semantic-gap", "clustering", "agentic-analyst"],
+    "critical_concepts": [
+      {
+        "concept": "Search Intent Disambiguation",
+        "definition": "Algorithmic classification of query intent into Informational, Navigational, Commercial, or Transactional.",
+        "elaboration": "Autonomous SEO agents ingest top-20 SERP rankings and tokenize user queries to identify if Google expects tabular comparisons or direct transactional landing pages.",
+        "industry_application": "Prevents building 5,000-word blog posts for queries where searchers expect an interactive pricing calculator."
+      },
+      {
+        "concept": "Semantic Gap Detection",
+        "definition": "Identifying unaddressed subtopics and entity co-occurrences that top-ranking competitors possess.",
+        "elaboration": "Using vector embeddings against competitor corpora, the agent flags missing thematic entities required for topical authority.",
+        "industry_application": "Directly guides generative AI content agents to include required technical entities before publication."
+      }
+    ],
+    "theory_content": {
+      "title": "Autonomous SERP Decomposition & Intent Modeling",
+      "content": "Modern search engines employ neural rankers that prioritize contextual relevance over keyword density. An SEO Agentic Analyst configures multi-agent scrapers to continuously evaluate query intent shifts, identify semantic entity gaps, and trigger automated content restructuring.",
+      "practical_takeaway": "Always cluster keywords by intent archetype first before generating content briefs.",
+      "analogy": "Like an airport information desk that knows whether a traveler wants a quick ticket kiosk (transactional) or a detailed museum guide (informational).",
+      "industry_case_study": "When HubSpot noticed their CRM query ranking drop, an automated intent audit revealed Google had shifted from favoring definition articles to interactive CRM demo sandboxes. Replatforming the page restored #1 ranking in 14 days."
+    },
+    "interactive_questions": [
+      {
+        "id": "seo-ex-101",
+        "componentId": "seo-day1-serp-intent",
+        "dayNumber": 1,
+        "difficulty": "easy",
+        "title": "Audit SERP Competitor Intent Archetype",
+        "prompt": "An autonomous SEO agent scraped the top 10 search results for the target query: 'Enterprise Cloud Backup Cost Comparison'. Review the intent classification output.",
+        "question": "What is the primary search intent archetype for this query, and what format should the agent produce?",
+        "options": [
+          "Transactional: Generate a single product checkout page with a 'Buy Now' button",
+          "Commercial Investigation: Generate a comparative feature breakdown with interactive cost calculator matrix",
+          "Navigational: Redirect the user to the vendor's login portal",
+          "Informational Pure: Write a 10,000-word history of magnetic tape storage"
+        ],
+        "answer": "Commercial Investigation: Generate a comparative feature breakdown with interactive cost calculator matrix",
+        "correctAnswerIndex": 1,
+        "explanation": "Queries containing 'Cost Comparison' indicate Commercial Investigation. Searchers are comparing solutions before purchasing, demanding side-by-side matrices and interactive pricing calculators rather than simple checkout or historical theory.",
+        "wrong_answer_feedback": [
+          { "option": "Transactional: Generate a single product checkout page with a 'Buy Now' button", "feedback": "Users querying comparison terms are not ready for instant checkout; they are evaluating alternatives." },
+          { "option": "Navigational: Redirect the user to the vendor's login portal", "feedback": "Navigational intent is for brand searches like 'Dropbox login', not broad market comparison queries." },
+          { "option": "Informational Pure: Write a 10,000-word history of magnetic tape storage", "feedback": "This ignores the commercial buying intent and fails to provide pricing or feature comparison." }
+        ],
+        "tags": ["intent-analysis", "commercial-intent", "serp-scraping"],
+        "nature": "technical_execution",
+        "perspective": "candidate_perspective",
+        "logs": [
+          { "timestamp": "10:00:01", "level": "info", "message": "SERP_AGENT: Dispatched Google Search API query for 'Enterprise Cloud Backup Cost Comparison'..." },
+          { "timestamp": "10:00:02", "level": "info", "message": "SERP_AGENT: Parsed 10 SERP snippets. Found 8 comparison tables, 2 calculator widgets." },
+          { "timestamp": "10:00:03", "level": "success", "message": "INTENT_CLASSIFIER: Confidence score 0.94 for 'Commercial Investigation'." }
+        ],
+        "expectedToolCalls": [
+          { "toolName": "classify_search_intent", "args": { "query": "Enterprise Cloud Backup Cost Comparison", "topResultsCount": 10 }, "purpose": "Determine user search intent from SERP layout" }
+        ],
+        "roleSpecificData": {
+          "type": "seo",
+          "data": {
+            "targetKeyword": "Enterprise Cloud Backup Cost Comparison",
+            "searchVolume": 14200,
+            "searchIntent": "commercial",
+            "serpCompetitors": [
+              { "rank": 1, "url": "https://techradar.com/cloud-backup-pricing", "title": "Best Cloud Backup 2026: Pricing Compared", "intentScore": 0.95, "domainAuthority": 88 },
+              { "rank": 2, "url": "https://cloudstorage.io/calculator", "title": "Interactive Enterprise Storage Cost Estimator", "intentScore": 0.92, "domainAuthority": 79 },
+              { "rank": 3, "url": "https://forbes.com/advisor/cloud-backup", "title": "Enterprise Cloud Backup Cost Analysis", "intentScore": 0.89, "domainAuthority": 92 }
+            ]
+          }
+        }
+      },
+      {
+        "id": "seo-ex-102",
+        "componentId": "seo-day1-serp-intent",
+        "dayNumber": 1,
+        "difficulty": "easy",
+        "title": "Remediate Missing Entity Vector Gap",
+        "prompt": "Vector embeddings comparison reveals our draft is missing the entities: 'Ransomware Immutability', 'S3 Glacier Deep Archive', and 'RPO/RTO SLAs' which appear in 100% of top 3 ranking competitors.",
+        "question": "How should the autonomous agent update the content brief generation prompt?",
+        "options": [
+          "Repeat the keyword 'Ransomware' 50 times in white text on a white background",
+          "Inject dedicated technical subsections addressing Ransomware Immutability, cold storage tiers, and RPO/RTO SLA benchmarks into the content schema",
+          "Delete the competitor pages via a DDoS attack",
+          "Ignore the missing entities and publish the draft unchanged"
+        ],
+        "answer": "Inject dedicated technical subsections addressing Ransomware Immutability, cold storage tiers, and RPO/RTO SLA benchmarks into the content schema",
+        "correctAnswerIndex": 1,
+        "explanation": "Modern semantic rankers require high entity coverage. Explicitly addressing critical domain entities aligns the page with user expectations and search engine Knowledge Graph nodes.",
+        "wrong_answer_feedback": [
+          { "option": "Repeat the keyword 'Ransomware' 50 times in white text on a white background", "feedback": "Keyword stuffing and hidden text are severe black-hat violations that trigger manual Google penalties." },
+          { "option": "Ignore the missing entities and publish the draft unchanged", "feedback": "Publishing with semantic entity gaps ensures the page will fail to outrank comprehensive competitor content." }
+        ],
+        "tags": ["semantic-gap", "entity-optimization", "content-brief"],
+        "nature": "technical_execution"
+      }
+    ]
+  },
+  {
+    "id": "seo-day2",
+    "course": "SEO Agentic Analyst",
+    "roleDomain": "seo",
+    "day": 2,
+    "day_title": "Day 02: Schema Graph & JSON-LD Entity Extraction",
+    "chapter_title": "Schema Graph & JSON-LD Entity Extraction",
+    "labComponentId": "seo-day2-schema-graph",
+    "difficulty": "medium",
+    "estimatedMinutes": 35,
+    "prerequisites": ["Day 01: SERP Intent & Semantic Gap Auditing", "JSON-LD Structure"],
+    "tags": ["seo", "schema.org", "json-ld", "knowledge-graph", "structured-data"],
+    "critical_concepts": [
+      {
+        "concept": "Knowledge Graph Entity Linking",
+        "definition": "Connecting structured JSON-LD entities to canonical Wikidata and Google Knowledge Graph URIs.",
+        "elaboration": "Agents build disambiguated nested JSON-LD graphs linking Organization, Product, Review, and FAQ entities.",
+        "industry_application": "Unlocks Google Rich Snippets, Merchant Center carousels, and AI Overviews citations."
+      }
+    ],
+    "theory_content": {
+      "title": "Autonomous Knowledge Graph Entity Structuring",
+      "content": "Modern AI search engines use structured linked data to construct knowledge graphs. An SEO Agentic Analyst validates and generates nested Schema.org JSON-LD scripts that explicitly declare entity relationships.",
+      "practical_takeaway": "Always connect nested entities using `@id` references rather than disjoint flat objects.",
+      "analogy": "Like providing a family tree where every relationship is explicitly labeled with birth certificates rather than loose names.",
+      "industry_case_study": "When a major software review aggregator deployed fully connected nested Product and AggregateRating JSON-LD graphs with author verified @ids, search click-through rate jumped 31% from star rating Rich Snippets."
+    },
+    "interactive_questions": [
+      {
+        "id": "seo-ex-201",
+        "componentId": "seo-day2-schema-graph",
+        "dayNumber": 2,
+        "difficulty": "medium",
+        "title": "Validate Nested JSON-LD Product & Review Schema Graph",
+        "prompt": "Inspect the generated Schema.org JSON-LD graph produced by an autonomous crawler for an enterprise software product.",
+        "question": "Which Schema.org entity property is critical to connect the Author node directly to the Review node in a compliant Knowledge Graph?",
+        "options": [
+          "Use a freeform string in the 'description' field naming the author",
+          "Nest a 'Person' or 'Organization' object under the 'author' property with an unambiguous '@id' URI",
+          "Duplicate the entire company biography inside the 'aggregateRating' value",
+          "Declare the author inside a HTML meta tag only"
+        ],
+        "answer": "Nest a 'Person' or 'Organization' object under the 'author' property with an unambiguous '@id' URI",
+        "correctAnswerIndex": 1,
+        "explanation": "Google's Knowledge Graph parser requires nested typed entities (Person or Organization) within the 'author' property, ideally indexed with a canonical '@id' URI to prevent entity hallucination and qualify for Rich Snippets.",
+        "wrong_answer_feedback": [
+          { "option": "Use a freeform string in the 'description' field naming the author", "feedback": "Freeform strings fail structured validation because the parser cannot verify if the author is a verified human or organization." },
+          { "option": "Declare the author inside a HTML meta tag only", "feedback": "Meta tags do not establish structured Knowledge Graph entity relationships." }
+        ],
+        "tags": ["json-ld", "schema-graph", "rich-snippets"],
+        "nature": "technical_execution",
+        "logs": [
+          { "timestamp": "11:15:00", "level": "info", "message": "SCHEMA_VALIDATOR: Ingested JSON-LD payload (14 entities)..." },
+          { "timestamp": "11:15:01", "level": "warn", "message": "SCHEMA_VALIDATOR: Found unlinked author string on Review #4. Upgrading to Person @id node." },
+          { "timestamp": "11:15:02", "level": "success", "message": "SCHEMA_VALIDATOR: Schema graph passed Google Rich Results test with 0 errors." }
+        ],
+        "expectedToolCalls": [
+          { "toolName": "validate_schema_org", "args": { "url": "https://example.com/product/cloud-backup", "format": "json-ld" }, "purpose": "Validate Google Rich Results compliance" }
+        ],
+        "roleSpecificData": {
+          "type": "seo",
+          "data": {
+            "targetKeyword": "Enterprise Cloud Backup",
+            "searchVolume": 22000,
+            "searchIntent": "commercial",
+            "schemaGraph": {
+              "context": "https://schema.org",
+              "type": "Product",
+              "entities": [
+                { "id": "https://example.com/#product", "name": "CloudBackup Pro", "type": "SoftwareApplication", "properties": { "price": "49.00", "currency": "USD" } },
+                { "id": "https://example.com/#author-jane", "name": "Jane Doe, CISSP", "type": "Person", "properties": { "jobTitle": "Lead Security Auditor" } }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "seo-day3",
+    "course": "SEO Agentic Analyst",
+    "roleDomain": "seo",
+    "day": 3,
+    "day_title": "Day 03: Programmatic Link Graph & PageRank Flow",
+    "chapter_title": "Programmatic Link Graph & PageRank Flow",
+    "labComponentId": "seo-day3-link-graph",
+    "difficulty": "medium",
+    "estimatedMinutes": 35,
+    "prerequisites": ["Day 02: Schema Graph", "Directed Graph Principles"],
+    "tags": ["seo", "pagerank", "internal-links", "orphan-pages", "graph-theory"],
+    "critical_concepts": [
+      {
+        "concept": "PageRank Equity Distribution",
+        "definition": "Mathematical calculation of internal link power flowing through a directed website topology.",
+        "elaboration": "Agents build adjacency matrices of internal URLs to identify equity bottlenecks and orphaned high-value money pages.",
+        "industry_application": "Optimizes crawl budget and ensures top-converting pages receive maximum internal link juice."
+      }
+    ],
+    "theory_content": {
+      "title": "Directed Internal Link Architecture & Equity Flow",
+      "content": "Internal link architecture dictates how search engine bots discover content and how PageRank equity is distributed. An SEO Agentic Analyst uses graph algorithms to detect orphan nodes, eliminate internal redirect chains, and maximize equity delivery to high-margin URLs.",
+      "practical_takeaway": "Never allow high-intent commercial pages to sit deeper than 3 clicks from the root domain.",
+      "analogy": "Like a municipal water distribution system where main aqueducts must feed high-demand commercial districts without dead-end pipes.",
+      "industry_case_study": "By building an autonomous internal link optimizer that injected contextual links from top 100 blog posts to deep product categories, an enterprise SaaS platform grew organic trial signups by 44% in 3 months."
+    },
+    "interactive_questions": [
+      {
+        "id": "seo-ex-301",
+        "componentId": "seo-day3-link-graph",
+        "dayNumber": 3,
+        "difficulty": "medium",
+        "title": "Resolve Orphan Page Bottleneck in Directed Link Graph",
+        "prompt": "The internal link crawler identified that `/enterprise-agent-security` has 0 internal incoming links (PageRank score: 0.001) despite being a primary revenue page.",
+        "question": "What is the optimal agentic remediation strategy to boost this page's link equity without diluting site taxonomy?",
+        "options": [
+          "Add 1,000 footer links pointing to the URL from every single tag archive page",
+          "Programmatically inject contextual in-body links from topically relevant high-PageRank pillar articles with semantic anchor text",
+          "Delete the URL and recreate it under a new slug",
+          "Set `rel='nofollow'` on all external outgoing links across the entire website"
+        ],
+        "answer": "Programmatically inject contextual in-body links from topically relevant high-PageRank pillar articles with semantic anchor text",
+        "correctAnswerIndex": 1,
+        "explanation": "Contextual in-body links from high-authority, topically relevant parent articles transfer meaningful PageRank and semantic context to the target page without triggering spam filters associated with site-wide footer blast links.",
+        "wrong_answer_feedback": [
+          { "option": "Add 1,000 footer links pointing to the URL from every single tag archive page", "feedback": "Site-wide footer links carry low semantic weight and can trigger over-optimization link penalty flags." },
+          { "option": "Delete the URL and recreate it under a new slug", "feedback": "Recreating the URL loses any existing external backlinks and does nothing to fix the lack of internal incoming links." }
+        ],
+        "tags": ["link-equity", "orphan-page", "internal-linking"],
+        "nature": "technical_execution",
+        "logs": [
+          { "timestamp": "12:00:00", "level": "info", "message": "GRAPH_CRAWLER: Built directed adjacency matrix across 4,200 site URLs." },
+          { "timestamp": "12:00:01", "level": "warn", "message": "ORPHAN_ALERT: Isolated 14 high-value commercial URLs with zero incoming internal links." },
+          { "timestamp": "12:00:02", "level": "success", "message": "LINK_ROUTER: Identified 6 parent pillar articles with high PageRank ready for contextual injection." }
+        ],
+        "expectedToolCalls": [
+          { "toolName": "compute_internal_pagerank", "args": { "dampingFactor": 0.85, "maxIterations": 100 }, "purpose": "Calculate internal link equity flow" }
+        ],
+        "roleSpecificData": {
+          "type": "seo",
+          "data": {
+            "targetKeyword": "Enterprise Security",
+            "searchVolume": 18000,
+            "searchIntent": "commercial",
+            "linkEquityGraph": {
+              "nodes": [
+                { "id": "home", "url": "https://example.com/", "internalInlinks": 4200, "pageRankScore": 1.0 },
+                { "id": "blog-pillar", "url": "https://example.com/blog/cybersecurity-guide", "internalInlinks": 340, "pageRankScore": 0.42 },
+                { "id": "orphan-money", "url": "https://example.com/enterprise-agent-security", "internalInlinks": 0, "pageRankScore": 0.001 }
+              ],
+              "edges": [
+                { "source": "home", "target": "blog-pillar", "weight": 0.85 }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "seo-day4",
+    "course": "SEO Agentic Analyst",
+    "roleDomain": "seo",
+    "day": 4,
+    "day_title": "Day 04: Core Web Vitals & Hydration Profiling",
+    "chapter_title": "Core Web Vitals & Hydration Profiling",
+    "labComponentId": "seo-day4-web-vitals",
+    "difficulty": "hard",
+    "estimatedMinutes": 45,
+    "prerequisites": ["Day 03: Link Graph", "Browser Rendering Pipeline"],
+    "tags": ["seo", "core-web-vitals", "lcp", "cls", "inp", "hydration", "performance"],
+    "critical_concepts": [
+      {
+        "concept": "LCP & Hydration CPU Contention",
+        "definition": "Measuring Largest Contentful Paint delays caused by excessive client-side JavaScript hydration loops.",
+        "elaboration": "Agents analyze Chrome UX Report (CrUX) and synthetic traces to isolate script execution locking the main thread.",
+        "industry_application": "Prevents mobile search ranking demotions by ensuring sub-2.5s LCP and sub-200ms INP."
+      }
+    ],
+    "theory_content": {
+      "title": "Technical Performance as a Ranking & Conversion Vector",
+      "content": "Google's Page Experience signals directly impact mobile ranking algorithms. An SEO Agentic Analyst diagnoses performance bottlenecks, optimizes image preloading headers, and isolates render-blocking JavaScript chunks.",
+      "practical_takeaway": "Prioritize server-side rendering (SSR) or static generation with lazy hydration for content-first pages.",
+      "analogy": "Like a shop that opens its front doors instantly so customers can view products, rather than making them wait for the entire backroom inventory to finish being counted.",
+      "industry_case_study": "When Vodafone improved their LCP by 31%, they saw an 8% increase in sales and a measurable improvement in organic search visibility across competitive mobile search terms."
+    },
+    "interactive_questions": [
+      {
+        "id": "seo-ex-401",
+        "componentId": "seo-day4-web-vitals",
+        "dayNumber": 4,
+        "difficulty": "hard",
+        "title": "Diagnose Mobile LCP Spike and INP Failure",
+        "prompt": "An autonomous performance monitoring agent detected an LCP spike to 4.8s on mobile devices. Trace inspection reveals a 2.4MB client-side JS bundle hydrating below-the-fold carousel components.",
+        "question": "What architectural change should the agent propose to bring LCP below the 2.5s threshold?",
+        "options": [
+          "Disable all CSS styling across the website",
+          "Convert the hero banner to a responsive WebP/AVIF with `<link rel='preload'>` and code-split the carousel component to hydrate only on scroll",
+          "Increase the server CPU core count while keeping the monolithic 2.4MB bundle unchanged",
+          "Switch from HTTPS back to HTTP to reduce SSL handshake latency"
+        ],
+        "answer": "Convert the hero banner to a responsive WebP/AVIF with `<link rel='preload'>` and code-split the carousel component to hydrate only on scroll",
+        "correctAnswerIndex": 1,
+        "explanation": "Preloading the LCP element with modern image compression (WebP/AVIF) and deferring/code-splitting non-critical client-side bundles unblocks the main browser thread, immediately cutting LCP under 2.5s and improving INP.",
+        "wrong_answer_feedback": [
+          { "option": "Increase the server CPU core count while keeping the monolithic 2.4MB bundle unchanged", "feedback": "Server CPU does not fix client-side browser execution bottlenecks on mobile devices parsing 2.4MB of JavaScript." },
+          { "option": "Switch from HTTPS back to HTTP to reduce SSL handshake latency", "feedback": "Downgrading to HTTP destroys user security and triggers instant Google security penalties in Chrome." }
+        ],
+        "tags": ["lcp", "inp", "code-splitting", "cwv"],
+        "nature": "pipeline_optimization",
+        "logs": [
+          { "timestamp": "14:10:00", "level": "info", "message": "PERF_BOT: Executing headless mobile Chromium lighthouse run..." },
+          { "timestamp": "14:10:02", "level": "error", "message": "CWV_FAIL: LCP=4.8s (Poor), INP=340ms (Needs Improvement), TTFB=410ms (Good)." },
+          { "timestamp": "14:10:03", "level": "warn", "message": "BUNDLE_ANALYZER: 2.4MB monolithic bundle detected. Main thread locked for 1.8s during React hydration." }
+        ],
+        "expectedToolCalls": [
+          { "toolName": "profile_core_web_vitals", "args": { "device": "mobile", "networkThrottling": "4G" }, "purpose": "Measure field CWV metrics" }
+        ],
+        "roleSpecificData": {
+          "type": "seo",
+          "data": {
+            "targetKeyword": "Mobile Speed",
+            "searchVolume": 12000,
+            "searchIntent": "informational",
+            "webVitals": {
+              "lcpMs": 4800,
+              "clsScore": 0.04,
+              "inpMs": 340,
+              "ttfbMs": 410,
+              "payloadKb": 2450
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "seo-day5",
+    "course": "SEO Agentic Analyst",
+    "roleDomain": "seo",
+    "day": 5,
+    "day_title": "Day 05: Agentic Content Generation & Canonical Guardrails",
+    "chapter_title": "Agentic Content Generation & Canonical Guardrails",
+    "labComponentId": "seo-day5-content-optimizer",
+    "difficulty": "hard",
+    "estimatedMinutes": 50,
+    "prerequisites": ["Day 01 - Day 04 SEO Milestones", "LLM Hallucination Guardrails"],
+    "tags": ["seo", "content-generation", "canonicalization", "duplicate-content", "governance"],
+    "critical_concepts": [
+      {
+        "concept": "Self-Referential Canonical Enforcement",
+        "definition": "Programmatic tagging of authoritative URLs to prevent search engine confusion across internationalized or parameterized routes.",
+        "elaboration": "Agents inspect URL parameters and faceted navigation to prevent duplicate content penalties from multiplying indexing bloat.",
+        "industry_application": "Eliminates index bloat where 100,000 filtered pages drain crawl budget from high-value landing pages."
+      }
+    ],
+    "theory_content": {
+      "title": "Autonomous Content Scaling with Quality & Indexing Guardrails",
+      "content": "Scaling content generation with LLM agents requires strict governance: hallucination checks, programmatic entity inclusion, and rigorous canonicalization rules to avoid search quality penalties.",
+      "practical_takeaway": "Never publish programmatic content without automated canonical tagging and entity density verification.",
+      "analogy": "Like a publishing house that stamps official ISBN codes on genuine editions so counterfeit reprints don't confuse libraries.",
+      "industry_case_study": "An online real estate marketplace suffered a 60% traffic drop when faceted filter URLs created 4 million duplicate pages. Deploying automated canonicalization and parameter stripping recovered their index within 6 weeks."
+    },
+    "interactive_questions": [
+      {
+        "id": "seo-ex-501",
+        "componentId": "seo-day5-content-optimizer",
+        "dayNumber": 5,
+        "difficulty": "hard",
+        "title": "Configure Canonical & Faceted Navigation Rules",
+        "prompt": "An ecommerce faceted search catalog generates dynamic URLs like `/products?color=blue&size=xl&sort=price_asc`. Search bots are wasting 65% of crawl budget on duplicate query permutations.",
+        "question": "What is the correct canonicalization and robot directive strategy for the agent to execute?",
+        "options": [
+          "Allow Google to index all 500,000 parameter URLs and set `rel='canonical'` to each unique parameter URL",
+          "Set a self-referential `rel='canonical'` pointing to the root category `/products` on all filtered variants, and add `noindex,follow` on non-essential sorting parameters",
+          "Delete the entire category and disallow all search engines via `robots.txt`",
+          "Redirect all users to the homepage whenever they click a filter"
+        ],
+        "answer": "Set a self-referential `rel='canonical'` pointing to the root category `/products` on all filtered variants, and add `noindex,follow` on non-essential sorting parameters",
+        "correctAnswerIndex": 1,
+        "explanation": "Consolidating parameter URLs back to the primary canonical category page preserves link equity while signaling to search bots not to index infinite filter permutations, protecting crawl budget.",
+        "wrong_answer_feedback": [
+          { "option": "Allow Google to index all 500,000 parameter URLs and set `rel='canonical'` to each unique parameter URL", "feedback": "Index bloat will drain crawl budget, causing search engines to de-index core money pages." },
+          { "option": "Delete the entire category and disallow all search engines via `robots.txt`", "feedback": "Blocking via robots.txt does not remove already indexed URLs and destroys organic category rankings." }
+        ],
+        "tags": ["canonical", "faceted-navigation", "crawl-budget"],
+        "nature": "business_governance",
+        "logs": [
+          { "timestamp": "17:00:00", "level": "info", "message": "CRAWL_AUDITOR: Analyzed server access logs (2.1M bot hits/day)..." },
+          { "timestamp": "17:00:01", "level": "error", "message": "BUDGET_WASTE: 65.4% of Googlebot crawl requests hit parameterized duplicate URLs." },
+          { "timestamp": "17:00:02", "level": "success", "message": "CANONICAL_GUARD: Enforced root category canonicals and generated updated robots.txt rules." }
+        ],
+        "expectedToolCalls": [
+          { "toolName": "audit_crawl_budget_waste", "args": { "parameterRegex": "\\?.*(sort|filter|page)=" }, "purpose": "Isolate parameterized duplicate crawl bloat" }
+        ],
+        "roleSpecificData": {
+          "type": "seo",
+          "data": {
+            "targetKeyword": "Faceted Ecommerce",
+            "searchVolume": 8500,
+            "searchIntent": "transactional"
+          }
+        }
+      }
+    ]
+  }
+]
