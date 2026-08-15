@@ -163,6 +163,7 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
                     onToggleFocusMode={() => setFocusMode(!focusMode)}
                     showAiAssistant={showAiAssistant}
                     onToggleAiAssistant={() => setShowAiAssistant(!showAiAssistant)}
+                    onExit={onExit}
                 />
 
                 <main className="flex-1 overflow-hidden relative">

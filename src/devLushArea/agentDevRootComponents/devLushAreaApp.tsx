@@ -35,12 +35,13 @@ interface EnrichedConceptData extends ConceptCourse {
 }
 interface AppProps {
     onExit?: () => void;
+    onNavigateFinhub?: () => void;
 }
 
 // --- MedLab Container Removed ---
 
 // --- Main App Component ---
-const App: React.FC<AppProps> = ({ onExit }) => {
+const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub }) => {
     // -- Settings & State --
     // Default theme set to light
     const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -193,6 +194,7 @@ const App: React.FC<AppProps> = ({ onExit }) => {
                     showAiAssistant={showAiAssistant}
                     onToggleAiAssistant={() => setShowAiAssistant(!showAiAssistant)}
                     onExit={onExit || (() => window.location.assign('/'))}
+                    onNavigateFinhub={onNavigateFinhub}
                 />
 
                 <main className="flex-1 overflow-hidden relative">

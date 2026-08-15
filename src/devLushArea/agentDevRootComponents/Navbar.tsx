@@ -12,10 +12,6 @@ import {
   Infinity,
   MessageSquare as ChatIcon,
   Cpu,
-  X,
-  Menu,
-  ChevronRight,
-  Sparkles,
   Bot,
   Terminal,
   BookOpen,
@@ -24,6 +20,7 @@ import {
   Layers,
   ArrowLeft,
   ShieldCheck,
+  Check
 } from 'lucide-react';
 import { StarIcon } from './icons';
 
@@ -56,6 +53,7 @@ interface NavbarProps {
   showAiAssistant: boolean;
   onToggleAiAssistant: () => void;
   onExit?: () => void;
+  onNavigateFinhub?: () => void;
 }
 
 const formatTime = (ms: number) => {
@@ -173,9 +171,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   showAiAssistant,
   onToggleAiAssistant,
   onExit,
+  onNavigateFinhub,
 }) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [lockoutRemaining, setLockoutRemaining] = useState(
     energyLockoutTime - Date.now()
   );
@@ -258,11 +256,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   return (
-    <header className="z-50 transition-all duration-200 border-b border-zinc-200/80 dark:border-zinc-800/80 bg-white/85 dark:bg-zinc-950/85 backdrop-blur-xl sticky top-0 w-full flex-shrink-0">
-      <div className="max-w-full mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+    <header className="z-50 transition-all duration-200 border-b border-zinc-200/80 dark:border-zinc-800/80 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-xl sticky top-0 w-full flex-shrink-0">
+      <div className="max-w-full mx-auto px-3 sm:px-6 h-13 sm:h-14 flex items-center justify-between gap-2 sm:gap-4">
         
         {/* Left Section: Back/Home, Logo Badge, Title */}
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <button
             onClick={() => {
               if (currentView === 'landing') {
@@ -275,7 +273,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onViewChange('landing');
               }
             }}
-            className="p-2 rounded-xl text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700"
+            className="p-1.5 sm:p-2 rounded-xl text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700"
             aria-label="Return to Landing / Main Hub"
             title="Return to Main Hub"
           >
@@ -284,24 +282,24 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             onClick={() => onViewChange('landing')}
-            className="flex items-center gap-2.5 cursor-pointer group text-left focus:outline-none"
+            className="flex items-center gap-2 cursor-pointer group text-left focus:outline-none"
           >
-            <div className="w-8 h-8 bg-gradient-to-tr from-cyan-600 to-emerald-500 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.35)] group-hover:scale-105 transition-all">
-              <Bot className="text-white dark:text-zinc-950 w-4.5 h-4.5" />
+            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-tr from-cyan-600 to-emerald-500 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.35)] group-hover:scale-105 transition-all">
+              <Bot className="text-white dark:text-zinc-950 w-4 h-4 sm:w-4.5 sm:h-4.5" />
             </div>
             <div className="flex flex-col">
-              <span className="font-sans font-black tracking-tight text-base sm:text-lg uppercase text-zinc-900 dark:text-white leading-none">
+              <span className="font-sans font-black tracking-tight text-sm sm:text-base uppercase text-zinc-900 dark:text-white leading-none">
                 devLush<span className="text-cyan-500">.OS</span>
               </span>
-              <span className="text-[9px] font-mono text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-wider leading-none mt-0.5">
+              <span className="text-[8px] sm:text-[9px] font-mono text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-wider leading-none mt-0.5">
                 Agent Labs
               </span>
             </div>
           </button>
         </div>
 
-        {/* Center: EXPOSED Navigation Pill Buttons */}
-        <div className="hidden xl:flex items-center gap-1.5 p-1 bg-zinc-100/70 dark:bg-zinc-900/70 rounded-2xl border border-zinc-200/60 dark:border-zinc-800/60">
+        {/* Center: EXPOSED Organic Static Navigation Pills on Desktop */}
+        <nav className="hidden lg:flex items-center gap-1 p-1 bg-zinc-100/70 dark:bg-zinc-900/70 rounded-2xl border border-zinc-200/60 dark:border-zinc-800/60">
           {navItems.map((item) => (
             <button
               key={item.id}
@@ -325,43 +323,23 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span>Blogs</span>
           </button>
 
-          {onExit && (
-            <button
-              onClick={onExit}
-              className="px-3 py-1.5 text-xs font-bold tracking-wide transition-all rounded-xl flex items-center gap-1.5 cursor-pointer text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10"
-              title="Return to Finhub Lab"
-            >
-              <BarChart3 className="w-3.5 h-3.5" />
-              <span>Finhub</span>
-            </button>
-          )}
-        </div>
-
-        {/* Medium Screen Compact Pills (lg to xl) */}
-        <div className="hidden lg:flex xl:hidden items-center gap-1">
-          {navItems.slice(0, 4).map((item) => (
-            <button
-              key={item.id}
-              onClick={item.onClick}
-              className={`px-2.5 py-1.5 text-xs font-bold transition-all rounded-lg flex items-center gap-1 cursor-pointer ${
-                item.isActive
-                  ? 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800'
-              }`}
-            >
-              {item.icon}
-              <span>{item.label}</span>
-            </button>
-          ))}
-        </div>
+          <button
+            onClick={onNavigateFinhub || (() => window.location.assign('/finhub'))}
+            className="px-3 py-1.5 text-xs font-bold tracking-wide transition-all rounded-xl flex items-center gap-1.5 cursor-pointer text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10"
+            title="Launch Finhub Valuation & Accounting Lab"
+          >
+            <BarChart3 className="w-3.5 h-3.5" />
+            <span>Finhub</span>
+          </button>
+        </nav>
 
         {/* Right Section: Utilities (Search, Theme, Settings, Exit) */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           
           {/* Quick Search */}
           <button
             onClick={() => onViewChange('devlush-search')}
-            className={`p-2 rounded-xl transition-colors cursor-pointer border ${
+            className={`p-1.5 sm:p-2 rounded-xl transition-colors cursor-pointer border ${
               currentView === 'devlush-search'
                 ? 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/30'
                 : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white border-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800'
@@ -375,7 +353,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Theme Switcher */}
           <button
             onClick={onToggleTheme}
-            className="p-2 rounded-xl text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700"
+            className="p-1.5 sm:p-2 rounded-xl text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700"
             title="Toggle Light / Dark Mode"
             aria-label="Toggle Theme"
           >
@@ -386,7 +364,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div ref={settingsRef} className="relative">
             <button
               onClick={() => setIsSettingsOpen((prev) => !prev)}
-              className={`p-2 rounded-xl transition-colors cursor-pointer border flex items-center gap-1.5 ${
+              className={`p-1.5 sm:p-2 rounded-xl transition-colors cursor-pointer border flex items-center gap-1.5 ${
                 isSettingsOpen
                   ? 'text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 border-cyan-500/30'
                   : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white border-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800'
@@ -484,77 +462,60 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onExit && (
             <button
               onClick={onExit}
-              className="px-3 py-1.5 text-xs font-bold tracking-wider uppercase transition-all bg-red-500/10 hover:bg-red-500 text-red-600 dark:text-red-400 hover:text-white border border-red-500/30 rounded-xl cursor-pointer ml-1 shadow-sm"
-              title="Exit devLush Workspace"
+              className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-[11px] sm:text-xs font-bold tracking-wider uppercase transition-all bg-red-500/10 hover:bg-red-500 text-red-600 dark:text-red-400 hover:text-white border border-red-500/30 rounded-xl cursor-pointer shadow-sm flex items-center gap-1.5 shrink-0"
+              title="Exit devLush and return to Main Hub"
             >
-              Exit
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Exit</span>
             </button>
           )}
-
-          {/* Mobile Hamburger Toggle */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 rounded-xl text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors lg:hidden cursor-pointer"
-            aria-label="Toggle Mobile Menu"
-          >
-            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
 
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden border-t border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-2xl px-5 py-4 space-y-2 animate-in slide-in-from-top-2 duration-200">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => {
-                item.onClick();
-                setIsMobileMenuOpen(false);
-              }}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wider uppercase transition-all ${
-                item.isActive
-                  ? 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900'
-              }`}
-            >
-              <span className="flex items-center gap-2">
-                {item.icon}
-                <span>{item.label}</span>
-              </span>
-              <ChevronRight className="w-3.5 h-3.5 opacity-50" />
-            </button>
-          ))}
+      {/* Sub Row: Organically Visible Static Navigation Bar on Mobile/Tablet */}
+      <div className="lg:hidden border-t border-zinc-200/60 dark:border-zinc-800/60 bg-zinc-50/90 dark:bg-zinc-900/90 px-3 py-1.5 overflow-x-auto no-scrollbar flex items-center gap-1.5 text-xs font-semibold select-none touch-pan-x">
+        {navItems.map((item) => (
           <button
-            onClick={() => {
-              window.location.assign('/blogs');
-              setIsMobileMenuOpen(false);
-            }}
-            className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wider uppercase text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900"
+            key={item.id}
+            onClick={item.onClick}
+            className={`px-2.5 py-1 rounded-lg flex items-center gap-1 whitespace-nowrap shrink-0 cursor-pointer transition-all ${
+              item.isActive
+                ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 font-bold'
+                : 'text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white'
+            }`}
           >
-            <span className="flex items-center gap-2">
-              <BookOpen className="w-3.5 h-3.5 text-purple-500" />
-              <span>Blogs</span>
-            </span>
-            <ChevronRight className="w-3.5 h-3.5 opacity-50" />
+            {item.icon}
+            <span>{item.label}</span>
           </button>
+        ))}
+
+        <button
+          onClick={() => window.location.assign('/blogs')}
+          className="px-2.5 py-1 rounded-lg text-purple-600 dark:text-purple-400 hover:bg-purple-500/10 flex items-center gap-1 whitespace-nowrap shrink-0 cursor-pointer"
+        >
+          <BookOpen className="w-3 h-3 text-purple-500" />
+          <span>Blogs</span>
+        </button>
+
+        <button
+          onClick={onNavigateFinhub || (() => window.location.assign('/finhub'))}
+          className="px-2.5 py-1 rounded-lg text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 flex items-center gap-1 whitespace-nowrap shrink-0 cursor-pointer"
+        >
+          <BarChart3 className="w-3 h-3 text-emerald-500" />
+          <span>Finhub</span>
+        </button>
+
+        {onExit && (
           <button
-            onClick={() => {
-              if (onExit) onExit();
-              else window.location.assign('/');
-              setIsMobileMenuOpen(false);
-            }}
-            className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wider uppercase text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900"
+            onClick={onExit}
+            className="px-2.5 py-1 rounded-lg text-red-600 dark:text-red-400 bg-red-500/10 border border-red-500/25 flex items-center gap-1 whitespace-nowrap shrink-0 cursor-pointer font-bold"
           >
-            <span className="flex items-center gap-2">
-              <BarChart3 className="w-3.5 h-3.5 text-emerald-500" />
-              <span>Finhub Lab</span>
-            </span>
-            <ChevronRight className="w-3.5 h-3.5 opacity-50" />
+            <ArrowLeft className="w-3 h-3" />
+            <span>Exit</span>
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </header>
   );
 };

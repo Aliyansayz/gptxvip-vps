@@ -597,11 +597,11 @@ Verify and stress-test the entire Agentic Roles implementation.
 ```
 
 ### Acceptance Criteria for Episode 8:
-- [ ] **Zero TypeScript Errors:** `npx tsc --noEmit` compiles all files under `agenticRoles/` with zero type errors.
-- [ ] **End-to-End User Journey:** A candidate can select any role, view the Day 1..Day 5 roadmap, launch an activity, run the agent simulation, answer questions, and proceed to the next day.
-- [ ] **Dark & Light Mode Polish:** All text, badges, borders, terminal windows, and code blocks maintain high contrast (WCAG AA/AAA) in both themes.
-- [ ] **Responsive Viewports:** Layout functions seamlessly across 375px mobile screens, tablets, and wide desktop displays without horizontal scroll overflow.
-- [ ] **Session & State Persistence:** Resuming a mission restores the active step from `sessionStorage`.
+- [x] **Zero TypeScript Errors:** `npx tsc --noEmit` compiles all files under `agenticRoles/` with zero type errors.
+- [x] **End-to-End User Journey:** A candidate can select any role, view the Day 1..Day 5 roadmap, launch an activity, run the agent simulation, answer questions, and proceed to the next day.
+- [x] **Dark & Light Mode Polish:** All text, badges, borders, terminal windows, and code blocks maintain high contrast (WCAG AA/AAA) in both themes.
+- [x] **Responsive Viewports:** Layout functions seamlessly across 375px mobile screens, tablets, and wide desktop displays without horizontal scroll overflow.
+- [x] **Session & State Persistence:** Resuming a mission restores the active step from `sessionStorage`.
 
 ---
 

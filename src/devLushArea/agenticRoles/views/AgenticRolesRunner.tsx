@@ -38,10 +38,30 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
   onBack,
   onCompleteChapter
 }) => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState<number>(() => {
+    try {
+      const saved = sessionStorage.getItem(`agentic_step_${chapter.labComponentId}`);
+      if (saved !== null) {
+        const parsed = parseInt(saved, 10);
+        return isNaN(parsed) ? 0 : parsed;
+      }
+    } catch (e) {
+      // fallback
+    }
+    return 0;
+  });
   const [theoryVisible, setTheoryVisible] = useState(true);
   const [layoutPlacement, setLayoutPlacement] = useState<'side' | 'bottom'>('side');
   const [isTheorySaved, setIsTheorySaved] = useState(false);
+
+  // Sync step progress with sessionStorage
+  React.useEffect(() => {
+    try {
+      sessionStorage.setItem(`agentic_step_${chapter.labComponentId}`, currentStep.toString());
+    } catch (e) {
+      // fallback
+    }
+  }, [chapter.labComponentId, currentStep]);
 
   const theme = getRoleTheme(chapter.roleDomain);
 
@@ -121,7 +141,7 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-slate-950 text-slate-100 animate-in fade-in duration-300">
+    <div className="w-full min-h-full flex flex-col bg-slate-950 text-slate-100 animate-in fade-in duration-300">
       {/* Top Mission Navigation Bar */}
       <header className="sticky top-0 z-40 flex items-center justify-between px-6 py-3.5 bg-slate-900/90 backdrop-blur border-b border-slate-800 shadow-md">
         <div className="flex items-center gap-4">

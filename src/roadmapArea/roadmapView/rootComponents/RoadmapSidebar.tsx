@@ -5,7 +5,8 @@ import {
   ShoppingBag, 
   Calculator,
   Shield,
-  Bot
+  Bot,
+  ArrowLeft
 } from "lucide-react";
 import { getThemeColorClass } from "../shared/themeHelpers";
 
@@ -122,17 +123,19 @@ const RoadmapSidebar: React.FC<RoadmapSidebarProps> = ({
           </ul>
         </nav>
         
-        {!isSidebarOpen && (
-          <div className="flex-1 flex items-center justify-center pt-4">
-            <h2
-              className="font-bold text-slate-700 uppercase tracking-widest text-[10px]"
-              style={{
-                writingMode: "vertical-rl",
-                transform: "rotate(180deg)",
-              }}
+        {/* Exit Button at bottom */}
+        {onExit && (
+          <div className="pt-4 border-t border-slate-800/80 mt-auto">
+            <button
+              onClick={onExit}
+              className={`w-full flex items-center gap-2 p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 hover:text-white hover:bg-red-500 transition-all text-xs font-bold cursor-pointer ${
+                !isSidebarOpen ? 'justify-center' : ''
+              }`}
+              title="Exit to Main Hub"
             >
-              Agent Sandbox
-            </h2>
+              <ArrowLeft className="w-4 h-4 flex-shrink-0" />
+              {isSidebarOpen && <span>Exit to Hub</span>}
+            </button>
           </div>
         )}
       </div>

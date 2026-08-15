@@ -28,44 +28,44 @@ export const FaqSection: React.FC = () => {
     ];
 
     return (
-        <section id="faq" className="py-16 sm:py-24 max-w-4xl mx-auto px-4 sm:px-6 border-t border-zinc-200 dark:border-zinc-800">
-            <div className="text-center space-y-3 mb-12">
+        <section id="faq" className="py-12 sm:py-20 max-w-4xl mx-auto px-4 sm:px-6 border-t border-zinc-200/80 dark:border-zinc-800/80">
+            <div className="text-center space-y-2.5 mb-8 sm:mb-12">
                 <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20 inline-block">
                     Frequently Asked Questions
                 </span>
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight">
-                    Enterprise Architecture & Governance Answers
+                <h2 className="text-2xl sm:text-4xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight">
+                    Enterprise Architecture &amp; Governance Answers
                 </h2>
-                <p className="text-zinc-600 dark:text-zinc-400 text-sm">
+                <p className="text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm">
                     Everything you need to know about security, equity valuation models, and pilot deployment.
                 </p>
             </div>
 
-            <div className="space-y-4 text-left">
+            <div className="space-y-3 sm:space-y-4 text-left">
                 {faqs.map((faq, idx) => {
                     const isOpen = openIndex === idx;
                     return (
                         <div
                             key={idx}
-                            className="rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm transition-all"
+                            className="rounded-xl sm:rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm transition-all"
                         >
                             <button
                                 onClick={() => setOpenIndex(isOpen ? null : idx)}
-                                className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-zinc-900 dark:text-zinc-100 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors cursor-pointer"
+                                className="w-full p-4 sm:p-6 text-left flex items-center justify-between gap-3 font-bold text-xs sm:text-base text-zinc-900 dark:text-zinc-100 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors cursor-pointer"
                             >
-                                <span className="flex items-center gap-3">
+                                <span className="flex items-center gap-2.5 sm:gap-3">
                                     <HelpCircle className="w-4 h-4 text-cyan-500 shrink-0" />
                                     <span>{faq.q}</span>
                                 </span>
                                 <ChevronDown
-                                    className={`w-5 h-5 text-zinc-400 transition-transform duration-200 shrink-0 ${
+                                    className={`w-4 h-4 text-zinc-400 shrink-0 transition-transform duration-200 ${
                                         isOpen ? 'rotate-180 text-cyan-500' : ''
                                     }`}
                                 />
                             </button>
 
                             {isOpen && (
-                                <div className="px-5 sm:px-6 pb-5 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed border-t border-zinc-100 dark:border-zinc-800/80 pt-4">
+                                <div className="px-4 pb-4 sm:px-6 sm:pb-6 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed border-t border-zinc-100 dark:border-zinc-800/80 pt-3">
                                     {faq.a}
                                 </div>
                             )}

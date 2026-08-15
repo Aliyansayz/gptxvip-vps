@@ -34,7 +34,23 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
   const [selectedChapter, setSelectedChapter] = useState<AgenticRoleChapter | null>(null);
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | 'all'>('all');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [completedChapterIds, setCompletedChapterIds] = useState<string[]>([]);
+  const [completedChapterIds, setCompletedChapterIds] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('agentic_completed_chapters');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      // fallback
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('agentic_completed_chapters', JSON.stringify(completedChapterIds));
+    } catch (e) {
+      // fallback
+    }
+  }, [completedChapterIds]);
 
   // Find active role
   const activeRole = roles.find((r) => r.id === activeRoleId) || roles[0];

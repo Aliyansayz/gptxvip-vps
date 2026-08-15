@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
-  Menu,
-  BarChart3,
-  Sun,
-  Moon,
   ChevronDown,
   ChevronRight,
-  Home,
-  Search,
-  UserRound,
 } from "lucide-react";
 import { sidebarItems } from "../constants";
 import { CODE_CONCEPT_CATEGORIES } from "../constants/codeConcepts";
 import { DotNavigation } from "../finhub/verticalScrollNav/DotNavigation";
 import { MainFooter } from "./MainFooter";
+import { FinhubNavbar } from "../finhub/Navbar";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -25,6 +19,8 @@ interface MainLayoutProps {
   activeCodeCategory: string;
   setActiveCodeCategory: (category: string) => void;
   showUI?: boolean;
+  onExit?: () => void;
+  onNavigateDevLush?: () => void;
 }
 
 export const MainLayout: React.FC<MainLayoutProps> = ({
@@ -35,7 +31,9 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   setActiveSubTab,
   activeCodeCategory,
   setActiveCodeCategory,
-  showUI = true
+  showUI = true,
+  onExit,
+  onNavigateDevLush,
 }) => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const shouldShowSidebar = activeTab !== "home" && activeTab !== "profile" && !(activeTab === "code-concepts" && activeCodeCategory === "search");
@@ -140,154 +138,25 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 
   return (
     <div className="min-h-screen bg-white dark:bg-black text-zinc-900 dark:text-zinc-100 font-sans selection:bg-emerald-500/30 flex flex-col transition-colors duration-300">
-      {/* Header */}
+      
+      {/* Finhub Top Navbar */}
       {showUI && (
-        <header className={`z-50 transition-all duration-300 ${activeTab === "home" ? "absolute top-0 left-0 right-0 bg-transparent border-none" : "border-b border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md sticky top-0"}`}>
-          <div className="max-w-full mx-auto px-6 h-12 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <button
-                 onClick={() => {
-                   setActiveTab("root-home");
-                   window.history.pushState({}, '', '/');
-                 }}
-                 className="p-2 rounded-lg text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-                 aria-label="Home"
-                 title="Return to Main Hub"
-              >
-                 <Home className="w-5 h-5" />
-              </button>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                  className="p-2 -ml-2 rounded-lg text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-                  aria-label="Toggle Sidebar"
-                >
-                  <Menu className="w-5 h-5" />
-                </button>
-                <button 
-                  onClick={() => {
-                    setActiveTab("root-home");
-                    window.history.pushState({}, '', '/');
-                  }}
-                  className="flex items-center gap-2 cursor-pointer text-left"
-                >
-                  <div className="w-8 h-8 bg-emerald-500 rounded flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.4)]">
-                    <BarChart3 className="text-white dark:text-black w-5 h-5" />
-                  </div>
-                  <span className={`font-display font-black tracking-tighter text-xl uppercase ${activeTab === "home" && !isDarkMode ? "text-zinc-900" : "text-white"}`}>
-                    GPTX.VIP
-                  </span>
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center gap-6">
-              
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => {
-                    setActiveTab("trade-type");
-                    setActiveSubTab("");
-                  }}
-                  style={{ transform: 'skewY(-2deg)' }}
-                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br border rounded-none shadow-xl ${
-                    activeTab === "home" 
-                      ? (!isDarkMode ? "from-white to-zinc-50 border-zinc-200 text-zinc-800 hover:text-zinc-600" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-white hover:text-white/80")
-                      : (!isDarkMode ? "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-600 hover:text-zinc-900" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-400 hover:text-white")
-                  }`}
-                >
-                  <div style={{ transform: 'skewY(2deg)' }}>Docs</div>
-                </button>
-                <button
-                  onClick={() => {
-                    setActiveTab("code-concepts");
-                    setActiveSubTab("");
-                    if (activeCodeCategory === "search") {
-                      setActiveCodeCategory("general");
-                    }
-                  }}
-                  style={{ transform: 'skewY(-2deg)' }}
-                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br border rounded-none shadow-xl ${
-                    activeTab === "home" 
-                      ? (!isDarkMode ? "from-white to-zinc-50 border-zinc-200 text-zinc-800 hover:text-zinc-600" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-white hover:text-white/80")
-                      : (!isDarkMode ? "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-600 hover:text-zinc-900" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-400 hover:text-white")
-                  }`}
-                >
-                  <div style={{ transform: 'skewY(2deg)' }}>Code Concepts</div>
-                </button>
-
-                <button
-                  onClick={() => {
-                    window.location.assign('/agent');
-                  }}
-                  style={{ transform: 'skewY(-2deg)' }}
-                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br border rounded-none shadow-xl ${
-                    activeTab === "home" 
-                      ? (!isDarkMode ? "from-white to-zinc-50 border-zinc-200 text-zinc-800 hover:text-zinc-600" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-white hover:text-white/80")
-                      : (!isDarkMode ? "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-600 hover:text-zinc-900" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-400 hover:text-white")
-                  }`}
-                >
-                  <div style={{ transform: 'skewY(2deg)' }}>Dev Agents</div>
-                </button>
-                <button
-                  onClick={() => {
-                    window.location.assign('/blogs');
-                  }}
-                  style={{ transform: 'skewY(-2deg)' }}
-                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br border rounded-none shadow-xl ${
-                    activeTab === "home" 
-                      ? (!isDarkMode ? "from-white to-zinc-50 border-zinc-200 text-zinc-800 hover:text-zinc-600" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-white hover:text-white/80")
-                      : (!isDarkMode ? "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-600 hover:text-zinc-900" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-400 hover:text-white")
-                  }`}
-                >
-                  <div style={{ transform: 'skewY(2deg)' }}>Blogs</div>
-                </button>
-                <button
-                  onClick={() => {
-                    window.location.assign('/profile');
-                  }}
-                  style={{ transform: 'skewY(-2deg)' }}
-                  className={`px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors bg-gradient-to-br border rounded-none shadow-xl ${
-                    activeTab === "home" 
-                      ? (!isDarkMode ? "from-white to-zinc-50 border-zinc-200 text-zinc-800 hover:text-zinc-600" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-white hover:text-white/80")
-                      : (!isDarkMode ? "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-600 hover:text-zinc-900" : "from-zinc-900 to-zinc-950 border-zinc-800/80 text-zinc-400 hover:text-white")
-                  }`}
-                >
-                  <div style={{ transform: 'skewY(2deg)' }} className="flex items-center gap-1.5">
-                    <UserRound className="w-3.5 h-3.5" />
-                    Profile
-                  </div>
-                </button>
-                <button
-                  onClick={() => {
-                    setActiveTab("code-concepts");
-                    setActiveSubTab("");
-                    setActiveCodeCategory("search");
-                  }}
-                  className={`p-1.5 transition-colors bg-transparent border-none ${
-                    activeTab === "home" ? (!isDarkMode ? "text-zinc-800 hover:text-zinc-600" : "text-white hover:text-white/80") : (!isDarkMode ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-white")
-                  }`}
-                  title="Search Topics"
-                >
-                  <Search className="w-4 h-4" />
-                </button>
-              </div>
-  
-              <button
-                onClick={() => setIsDarkMode(!isDarkMode)}
-                className={`p-2 transition-colors bg-transparent border-none ${
-                  activeTab === "home" ? (!isDarkMode ? "text-zinc-800 hover:text-zinc-600" : "text-white hover:text-white/80") : (!isDarkMode ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-white")
-                }`}
-                title="Toggle Theme"
-              >
-                {isDarkMode ? (
-                  <Sun className="w-4 h-4" />
-                ) : (
-                  <Moon className="w-4 h-4" />
-                )}
-              </button>
-            </div>
-          </div>
-        </header>
+        <FinhubNavbar
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          setActiveSubTab={setActiveSubTab}
+          activeCodeCategory={activeCodeCategory}
+          setActiveCodeCategory={setActiveCodeCategory}
+          isDarkMode={isDarkMode}
+          onToggleTheme={() => setIsDarkMode((prev) => !prev)}
+          isSidebarOpen={isSidebarOpen}
+          onToggleSidebar={shouldShowSidebar ? () => setIsSidebarOpen(!isSidebarOpen) : undefined}
+          onExit={onExit || (() => {
+            setActiveTab("root-home");
+            window.history.pushState({}, '', '/');
+          })}
+          onNavigateDevLush={onNavigateDevLush || (() => setActiveTab("dev-labs-workspace"))}
+        />
       )}
 
       <div className="flex flex-1 overflow-hidden">
@@ -299,7 +168,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
               animate={{ width: 250, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="border-r border-zinc-200 dark:border-zinc-800 bg-transparent flex flex-col p-4 gap-2 transition-colors duration-300 overflow-hidden whitespace-nowrap"
+              className="border-r border-zinc-200 dark:border-zinc-800 bg-transparent flex flex-col p-4 gap-2 transition-colors duration-300 overflow-hidden whitespace-nowrap shrink-0"
             >
               <div className="text-[10px] text-zinc-400 dark:text-zinc-600 uppercase font-bold tracking-widest mb-4 px-2">
                 {activeTab === "code-concepts" || activeTab === "core-concepts" || activeTab === "math-primer" ? "Code Concepts" : "Navigation"}
@@ -396,27 +265,27 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
               : activeTab === "map" && activeSubTab === "project-journey" 
               ? "w-full h-full overflow-hidden" 
               : activeTab === "map" 
-              ? "w-full mx-auto px-8 py-12 pb-32" 
+              ? "w-full mx-auto px-4 sm:px-8 py-8 sm:py-12 pb-32" 
               : activeTab === "code-concepts"
               ? "w-full h-full"
               : activeTab === "trading-tools" || activeTab === "archive-tools"
               ? "w-full h-full"
-              : "max-w-5xl mx-auto px-8 py-12 pb-32"
+              : "max-w-5xl mx-auto px-4 sm:px-8 py-8 sm:py-12 pb-32"
           }>
             {children}
           </div>
         </main>
       </div>
 
-          {/* Footer */}
-          {showUI && (
-            <MainFooter 
-              setActiveTab={setActiveTab}
-              setActiveSubTab={setActiveSubTab}
-              isDarkMode={isDarkMode}
-              setIsDarkMode={setIsDarkMode}
-            />
-          )}
+      {/* Footer */}
+      {showUI && (
+        <MainFooter 
+          setActiveTab={setActiveTab}
+          setActiveSubTab={setActiveSubTab}
+          isDarkMode={isDarkMode}
+          setIsDarkMode={setIsDarkMode}
+        />
+      )}
     </div>
   );
 };

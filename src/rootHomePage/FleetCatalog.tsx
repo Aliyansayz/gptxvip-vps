@@ -114,39 +114,39 @@ export const FleetCatalog: React.FC<FleetCatalogProps> = ({ onDeployAgent }) => 
     });
 
     return (
-        <section id="fleet-catalog" className="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
+        <section id="fleet-catalog" className="py-12 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
                 <span className="px-3.5 py-1.5 bg-zinc-900 text-cyan-400 dark:bg-zinc-100 dark:text-zinc-900 text-xs font-bold uppercase tracking-wider rounded-full inline-flex items-center gap-1.5 shadow-sm">
                     <Bot className="w-3.5 h-3.5" />
                     Autonomous Fleet Catalog
                 </span>
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight">
+                <h2 className="text-2xl sm:text-4xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight">
                     Specialized Autonomous Enterprise Fleet
                 </h2>
-                <p className="text-zinc-600 dark:text-zinc-400 text-base">
+                <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-base leading-relaxed">
                     Select an operational domain or search capabilities to inspect zero-trust autonomous workers pre-trained for your stack.
                 </p>
 
                 {/* Search and Filter Bar */}
-                <div className="pt-4 max-w-xl mx-auto space-y-4">
+                <div className="pt-2 sm:pt-4 max-w-xl mx-auto space-y-3">
                     <div className="relative">
-                        <Search className="w-4 h-4 text-zinc-400 absolute left-4 top-3.5" />
+                        <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 top-3" />
                         <input
                             type="text"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="Search agents by name, stack, or ERP connector..."
-                            className="w-full pl-11 pr-4 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-cyan-500 transition-colors shadow-sm"
+                            placeholder="Search agents, stack, or ERP connector..."
+                            className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-cyan-500 transition-colors shadow-sm"
                         />
                     </div>
 
                     {/* Filter Tabs */}
-                    <div className="flex flex-wrap justify-center gap-2">
+                    <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
                         {(['all', 'fintech', 'ecommerce', 'legal', 'supply', 'cyber'] as const).map((cat) => (
                             <button
                                 key={cat}
                                 onClick={() => setFilter(cat)}
-                                className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all border cursor-pointer ${
+                                className={`px-3 py-1 text-xs font-bold rounded-full transition-all border cursor-pointer ${
                                     filter === cat
                                         ? 'bg-cyan-500 text-zinc-950 border-cyan-500 shadow-md font-extrabold'
                                         : 'bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800 hover:border-zinc-400'
@@ -160,15 +160,15 @@ export const FleetCatalog: React.FC<FleetCatalogProps> = ({ onDeployAgent }) => 
             </div>
 
             {/* Agent Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 text-left">
                 {filteredFleet.map((agent) => (
                     <div
                         key={agent.id}
-                        className="rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 flex flex-col justify-between hover:border-cyan-500/50 hover:shadow-xl transition-all duration-300 group"
+                        className="rounded-2xl sm:rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-5 sm:p-6 flex flex-col justify-between hover:border-cyan-500/50 hover:shadow-xl transition-all duration-200 group"
                     >
-                        <div className="space-y-4">
+                        <div className="space-y-3.5">
                             <div className="flex items-center justify-between">
-                                <div className="p-3 rounded-2xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 group-hover:scale-105 transition-transform">
+                                <div className="p-2.5 sm:p-3 rounded-2xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 group-hover:scale-105 transition-transform shadow-inner">
                                     {agent.icon}
                                 </div>
                                 <span className={`text-[10px] font-mono font-bold px-2.5 py-1 rounded-full border ${agent.badgeColor}`}>
@@ -177,18 +177,18 @@ export const FleetCatalog: React.FC<FleetCatalogProps> = ({ onDeployAgent }) => 
                             </div>
 
                             <div>
-                                <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+                                <h3 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
                                     {agent.name}
                                 </h3>
-                                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-2 leading-relaxed">
+                                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1.5 leading-relaxed">
                                     {agent.description}
                                 </p>
                             </div>
 
                             {/* Tags */}
-                            <div className="flex flex-wrap gap-1.5 pt-1">
+                            <div className="flex flex-wrap gap-1 pt-1">
                                 {agent.tags.map((tag, idx) => (
-                                    <span key={idx} className="text-[10px] font-mono bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 px-2 py-0.5 rounded-md">
+                                    <span key={idx} className="text-[9px] sm:text-[10px] font-mono bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 px-2 py-0.5 rounded-md">
                                         {tag}
                                     </span>
                                 ))}
@@ -196,9 +196,9 @@ export const FleetCatalog: React.FC<FleetCatalogProps> = ({ onDeployAgent }) => 
                         </div>
 
                         {/* Bottom Stats & Deploy CTA */}
-                        <div className="pt-6 border-t border-zinc-100 dark:border-zinc-800/80 mt-5 space-y-3">
+                        <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800/80 mt-4 space-y-2.5">
                             <div className="flex items-center justify-between text-xs">
-                                <span className="text-zinc-500 font-medium">{agent.statLabel}</span>
+                                <span className="text-zinc-500 font-medium text-[11px]">{agent.statLabel}</span>
                                 <span className="font-mono font-black text-emerald-500">{agent.statValue}</span>
                             </div>
 

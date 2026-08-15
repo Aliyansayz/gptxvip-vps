@@ -97,10 +97,16 @@ export default function App({ initialTab }: AppProps = {}) {
         </Suspense>
       ) : activeTab === "dev-labs-workspace" ? (
         <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-zinc-500">Loading Workspace...</div>}>
-          <DevLushApp onExit={() => {
-            setActiveTab("root-home");
-            window.history.pushState({}, '', '/');
-          }} />
+          <DevLushApp 
+            onExit={() => {
+              setActiveTab("root-home");
+              window.history.pushState({}, '', '/');
+            }} 
+            onNavigateFinhub={() => {
+              setActiveTab("home");
+              window.history.pushState({}, '', '/finhub');
+            }}
+          />
         </Suspense>
       ) : activeTab === "roadmap-workspace" ? (
         <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-zinc-500">Loading Roadmap...</div>}>
@@ -118,6 +124,13 @@ export default function App({ initialTab }: AppProps = {}) {
           activeCodeCategory={activeCodeCategory}
           setActiveCodeCategory={setActiveCodeCategory}
           showUI={showUI}
+          onExit={() => {
+            setActiveTab("root-home");
+            window.history.pushState({}, '', '/');
+          }}
+          onNavigateDevLush={() => {
+            setActiveTab("dev-labs-workspace");
+          }}
         >
           <Suspense fallback={<div className="h-full w-full flex items-center justify-center text-zinc-500">Loading...</div>}>
             {activeTab === "home" && (
