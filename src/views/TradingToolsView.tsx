@@ -2,20 +2,20 @@ import React, { Suspense, lazy } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Loader2 } from 'lucide-react';
 
-const StarterLab = lazy(() => import('../tools/starter_version/components/TradingToolsLab').then(m => ({ default: m.TradingToolsLab })));
-const StarterStore = lazy(() => import('../tools/starter_version/stores/indicators_store').then(m => ({ default: m.IndicatorsStoreProvider })));
+const StarterLab = lazy(() => import('../finhub/tools/starter_version/components/TradingToolsLab').then(m => ({ default: m.TradingToolsLab })));
+const StarterStore = lazy(() => import('../finhub/tools/starter_version/stores/indicators_store').then(m => ({ default: m.IndicatorsStoreProvider })));
 
-const LeverageLab = lazy(() => import('../tools/leverage_version_1/components/TradingToolsLab').then(m => ({ default: m.TradingToolsLab })));
-const LeverageStore = lazy(() => import('../tools/leverage_version_1/stores/indicators_store').then(m => ({ default: m.IndicatorsStoreProvider })));
+const LeverageLab = lazy(() => import('../finhub/tools/leverage_version_1/components/TradingToolsLab').then(m => ({ default: m.TradingToolsLab })));
+const LeverageStore = lazy(() => import('../finhub/tools/leverage_version_1/stores/indicators_store').then(m => ({ default: m.IndicatorsStoreProvider })));
 
-const LeverageLabV2 = lazy(() => import('../tools/leverage_version_2/components/TradingToolsLab').then(m => ({ default: m.TradingToolsLab })));
-const LeverageStoreV2 = lazy(() => import('../tools/leverage_version_2/stores/indicators_store').then(m => ({ default: m.IndicatorsStoreProvider })));
+const LeverageLabV2 = lazy(() => import('../finhub/tools/leverage_version_2/components/TradingToolsLab').then(m => ({ default: m.TradingToolsLab })));
+const LeverageStoreV2 = lazy(() => import('../finhub/tools/leverage_version_2/stores/indicators_store').then(m => ({ default: m.IndicatorsStoreProvider })));
 
-const LeverageLabV3 = lazy(() => import('../tools/leverage_version_3/components/TradingToolsLab').then(m => ({ default: m.TradingToolsLab })));
-const LeverageStoreV3 = lazy(() => import('../tools/leverage_version_3/stores/indicators_store').then(m => ({ default: m.IndicatorsStoreProvider })));
+const LeverageLabV3 = lazy(() => import('../finhub/tools/leverage_version_3/components/TradingToolsLab').then(m => ({ default: m.TradingToolsLab })));
+const LeverageStoreV3 = lazy(() => import('../finhub/tools/leverage_version_3/stores/indicators_store').then(m => ({ default: m.IndicatorsStoreProvider })));
 
-const LeverageLiveStarterLab = lazy(() => import('../tools/leverage_version_live_starter/components/TradingToolsLab').then(m => ({ default: m.TradingToolsLab })));
-const LeverageLiveStarterStore = lazy(() => import('../tools/leverage_version_live_starter/stores/indicators_store').then(m => ({ default: m.IndicatorsStoreProvider })));
+const LeverageLiveStarterLab = lazy(() => import('../finhub/tools/leverage_version_live_starter/components/TradingToolsLab').then(m => ({ default: m.TradingToolsLab })));
+const LeverageLiveStarterStore = lazy(() => import('../finhub/tools/leverage_version_live_starter/stores/indicators_store').then(m => ({ default: m.IndicatorsStoreProvider })));
 
 interface TradingToolsViewProps {
   activeSubTab: string;
@@ -81,4 +81,3 @@ export const TradingToolsView: React.FC<TradingToolsViewProps> = ({ activeSubTab
     </motion.div>
   );
 };
-

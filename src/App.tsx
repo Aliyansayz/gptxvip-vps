@@ -88,7 +88,7 @@ export default function App({ initialTab }: AppProps = {}) {
               window.history.pushState({}, '', '/finhub');
             }}
             onNavigateDevLush={() => {
-              setActiveTab("dev-labs-workspace");
+              window.location.assign('/agents');
             }}
             onNavigateBlogs={() => {
               window.location.assign('/blogs');

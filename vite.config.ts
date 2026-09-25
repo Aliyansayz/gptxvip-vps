@@ -15,7 +15,8 @@ export default defineConfig(({ mode }) => {
 
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
+        // The agent catalog is a self-contained view and uses @/ for its local modules.
+        '@': path.resolve(__dirname, 'src/devLushArea/agentMarketplace'),
       },
     },
 

@@ -5,6 +5,9 @@ import { BlogsView } from "./devLushArea/agentDevRootComponents/BlogsView";
 import DevLushApp from "./devLushArea/agentDevRootComponents/devLushAreaApp";
 import { smartNavigate, getAppRoot } from "./utils/navigation";
 import "./index.css";
+import { BrowserRouter } from "react-router";
+import AgentCatalogApp from "./devLushArea/agentMarketplace/App";
+import "./devLushArea/agentMarketplace/catalog.css";
 
 // Expose navigation utility globally
 (window as any).smartNavigate = smartNavigate;
@@ -18,10 +21,12 @@ if (path.startsWith('/blogs')) {
       <BlogsView />
     </StrictMode>,
   );
-} else if (path.startsWith('/agent')) {
+} else if (path.startsWith('/agents')) {
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
-      <DevLushApp />
+      <BrowserRouter basename="/agents">
+        <AgentCatalogApp />
+      </BrowserRouter>
     </StrictMode>,
   );
 } else if (path.startsWith('/profile')) {

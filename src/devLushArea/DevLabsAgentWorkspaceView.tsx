@@ -26,7 +26,8 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
     const [theme, setTheme] = useState<'light' | 'dark'>('light');
     const [isAppLocked, setIsAppLocked] = useState(false);
     const [focusMode, setFocusMode] = useState(false);
-    const [showAiAssistant, setShowAiAssistant] = useState(true);
+    // Keep the default learning path focused; the helper remains available from contextual tools.
+    const [showAiAssistant, setShowAiAssistant] = useState(false);
     
     // Energy System
     const [isInfiniteEnergy, setIsInfiniteEnergy] = useState(false);
@@ -168,7 +169,7 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
 
                 <main className="flex-1 overflow-hidden relative">
 
-                    {currentView === 'landing' && <LandingPage />}
+                    {currentView === 'landing' && <LandingPage onOpenTopics={() => setCurrentView('devlush')} onOpenTheory={() => setCurrentView('topic-theory')} onOpenSearch={() => setCurrentView('devlush-search')} />}
 
                     {(currentView === 'devlush' || currentView === 'devlush-search') && (
                         <DevLushContainer 

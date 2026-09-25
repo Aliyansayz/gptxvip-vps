@@ -1,0 +1,42 @@
+.agent-catalog {
+  min-height: 100vh;
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+.agent-catalog h1,
+.agent-catalog h2,
+.agent-catalog h3,
+.agent-catalog h4,
+.agent-catalog h5,
+.agent-catalog h6 {
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.agent-catalog button,
+.agent-catalog input,
+.agent-catalog select {
+  font: inherit;
+}
+
+.agent-catalog button:focus-visible,
+.agent-catalog a:focus-visible,
+.agent-catalog input:focus-visible,
+.agent-catalog select:focus-visible {
+  outline: 3px solid rgba(99, 102, 241, 0.35);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-catalog *,
+  .agent-catalog *::before,
+  .agent-catalog *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
