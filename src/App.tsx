@@ -11,7 +11,7 @@ const CointegrationView = lazy(() => import("./views/CointegrationView").then(mo
 const KeyTermsView = lazy(() => import("./views/KeyTermsView").then(module => ({ default: module.KeyTermsView })));
 const MapView = lazy(() => import("./views/MapView").then(module => ({ default: module.MapView })));
 const OverviewView = lazy(() => import("./views/OverviewView").then(module => ({ default: module.OverviewView })));
-const CodeConceptsView = lazy(() => import("./finhub/codeConceptsTopics/codeConceptsView/CodeConceptsView").then(module => ({ default: module.CodeConceptsView })));
+const CodeConceptsView = lazy(() => import("./codeConcepts").then(module => ({ default: module.CodeConceptsView })));
 const ProfileInfo = lazy(() => import("./finhub/profileInfo").then(module => ({ default: module.ProfileInfo })));
 const TradingToolsView = lazy(() => import("./views/TradingToolsView").then(module => ({ default: module.TradingToolsView })));
 const DevLushApp = lazy(() => import("./devLushArea/agentDevRootComponents/devLushAreaApp"));
@@ -50,6 +50,7 @@ export default function App({ initialTab }: AppProps = {}) {
     initialTab || (window.location.pathname.startsWith('/profile') ? "profile" : 
                    window.location.pathname.startsWith('/core_concepts') ? "core-concepts" :
                    window.location.pathname.startsWith('/math_primer') ? "math-primer" : 
+                   window.location.pathname.startsWith('/code_concepts') ? "code-concepts" :
                    window.location.pathname.startsWith('/finhub') ? "home" : "root-home")
   );
   const [activeSubTab, setActiveSubTab] = useState<string>("liquidity-depth");
@@ -66,7 +67,7 @@ export default function App({ initialTab }: AppProps = {}) {
     
     // Parse deep links
     const path = window.location.pathname;
-    if (path.startsWith('/core_concepts/') || path.startsWith('/math_primer/')) {
+    if (path.startsWith('/core_concepts/') || path.startsWith('/math_primer/') || path.startsWith('/code_concepts/')) {
       const parts = path.split('/').filter(Boolean);
       if (parts.length > 1) {
         setActiveCodeCategory(parts[1]);

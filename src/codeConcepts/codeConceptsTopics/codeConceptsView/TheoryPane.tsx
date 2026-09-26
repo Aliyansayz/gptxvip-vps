@@ -45,10 +45,10 @@ export const TheoryPane: React.FC<TheoryPaneProps> = ({ concepts, themeColor = '
         }
 
         return (
-          <div key={idx} className="flex flex-col lg:flex-row gap-8 bg-white dark:bg-zinc-900/50 rounded-2xl p-6 md:p-8 border border-zinc-200 dark:border-zinc-800/80 shadow-sm">
+          <div key={idx} className="flex flex-col gap-5 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800/80 dark:bg-zinc-900/50 sm:gap-8 sm:p-6 lg:flex-row lg:p-8">
             <div className="flex-1 space-y-4">
               <div className="flex items-center gap-3">
-                 <div className={`p-2 rounded-lg bg-${themeColor}-100 dark:bg-${themeColor}-900/30 text-${themeColor}-500`}>
+                 <div className={`p-2 rounded-lg ${themeColor === 'emerald' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-500' : themeColor === 'blue' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-500' : 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-500'}`}>
                    <Lightbulb className="w-5 h-5" />
                  </div>
                  <h3 className="text-xl font-bold dark:text-zinc-100">{concept.concept}</h3>
@@ -64,7 +64,7 @@ export const TheoryPane: React.FC<TheoryPaneProps> = ({ concepts, themeColor = '
             </div>
             
             {(VisualComponent || concept.visual_prompt || concept.visual_interactive_prompt) && (
-              <div className="flex-1 flex items-center justify-center min-w-[300px]">
+              <div className="w-full min-w-0 lg:flex-1 flex items-center justify-center overflow-hidden">
                 {VisualComponent ? <VisualComponent componentId={concept.componentId} exercise={concept} themeColor={themeColor} /> : (
                   <div className="w-full h-48 rounded-xl bg-zinc-100 dark:bg-zinc-800/30 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-400">
                      Visual placeholder for: {concept.concept}

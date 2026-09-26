@@ -42,6 +42,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
   onExit,
   onNavigateDevLush,
 }) => {
+  const isLearningTab = activeTab === 'code-concepts' || activeTab === 'core-concepts' || activeTab === 'math-primer';
   const navItems = [
     {
       id: 'home',
@@ -164,7 +165,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
           {onToggleSidebar && (
             <button
               onClick={onToggleSidebar}
-              className="p-1.5 sm:p-2 rounded-xl text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700"
+              className={`p-1.5 sm:p-2 rounded-xl text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700 ${isLearningTab ? 'hidden md:inline-flex' : ''}`}
               aria-label="Toggle Sidebar"
               title={isSidebarOpen ? "Collapse Sidebar" : "Expand Sidebar"}
             >
@@ -185,14 +186,14 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
             <div className="flex flex-col">
               <div className="flex items-center gap-1">
                 <span className="font-sans font-black tracking-tight text-sm sm:text-base uppercase text-zinc-900 dark:text-white leading-none">
-                  GPTX<span className="text-emerald-500">.FINHUB</span>
+                  GPTX<span className="text-emerald-500">{isLearningTab ? ".LEARN" : ".FINHUB"}</span>
                 </span>
                 <span className="hidden xs:inline-block px-1.5 py-0.2 rounded text-[8px] font-mono font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                   v4.0
                 </span>
               </div>
               <span className="text-[8px] sm:text-[9px] font-mono text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider leading-none mt-0.5">
-                Valuation &amp; Quant Lab
+                {isLearningTab ? "Interactive code lessons" : "Valuation & Quant Lab"}
               </span>
             </div>
           </button>
@@ -291,7 +292,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
       </div>
 
       {/* Sub Row: Organically Visible Static Navigation Bar on Mobile/Tablet */}
-      <div className="lg:hidden border-t border-zinc-200/60 dark:border-zinc-800/60 bg-zinc-50/90 dark:bg-zinc-900/90 px-3 py-1.5 overflow-x-auto no-scrollbar flex items-center gap-1.5 text-xs font-semibold select-none touch-pan-x">
+      <div className={`lg:hidden border-t border-zinc-200/60 dark:border-zinc-800/60 bg-zinc-50/90 dark:bg-zinc-900/90 px-3 py-1.5 overflow-x-auto no-scrollbar flex items-center gap-1.5 text-xs font-semibold select-none touch-pan-x ${isLearningTab ? 'hidden' : ''}`}>
         {navItems.map((item) => (
           <button
             key={item.id}

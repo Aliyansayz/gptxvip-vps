@@ -130,7 +130,7 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
   };
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-[#050505] transition-colors duration-500 overflow-hidden px-6 md:px-12 py-8 relative">
+    <div className="flex flex-col h-full min-h-[70vh] bg-zinc-50 dark:bg-zinc-950 transition-colors duration-500 overflow-hidden px-4 py-5 md:px-12 md:py-8 relative">
         {onExitSearch && (
           <button 
             onClick={onExitSearch}
@@ -140,15 +140,15 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
             <span className="text-sm font-medium pr-1 hidden sm:inline">Exit</span>
           </button>
         )}
-        <div className="max-w-4xl w-full mx-auto pb-20 mt-12 flex flex-col h-full">
-          <div className="text-center mb-12">
-            <div className="inline-block p-4 rounded-2xl shadow-sm mb-4 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">
-                <Search className="w-12 h-12" />
+        <div className="max-w-4xl w-full mx-auto pb-28 md:pb-20 mt-1 md:mt-12 flex flex-col h-full">
+          <div className="text-center mb-6 md:mb-12">
+            <div className="inline-flex p-3 md:p-4 rounded-2xl shadow-sm mb-3 md:mb-4 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">
+                <Search className="w-7 h-7 md:w-12 md:h-12" />
             </div>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tight text-zinc-900 dark:text-zinc-100 m-0">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-black tracking-tight text-zinc-900 dark:text-zinc-100 m-0">
                 Search Code Concepts
             </h2>
-            <p className="text-zinc-500 dark:text-zinc-400 mt-3 text-lg">
+            <p className="text-zinc-500 dark:text-zinc-400 mt-2 md:mt-3 text-sm md:text-lg">
                 Instantly find interactive activities and snippets across all modules.
             </p>
           </div>
@@ -169,7 +169,7 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
             <input
               ref={inputRef}
               type="text"
-              className="block w-full pl-12 pr-12 py-4 bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 rounded-xl text-lg text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-shadow relative z-0 bg-transparent font-medium"
+              className="block w-full pl-11 pr-12 py-3.5 md:py-4 bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 rounded-xl text-base md:text-lg text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-shadow relative z-0 bg-transparent font-medium"
               placeholder="Search concepts, topics, or tags..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -205,7 +205,7 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
             )}
 
             {results.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-20">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 pb-20">
                 {results.map((result, index) => (
                   <div
                     key={`${result.categoryId}-${result.activity.componentId}-${index}`}

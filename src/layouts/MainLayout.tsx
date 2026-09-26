@@ -36,12 +36,13 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   onNavigateDevLush,
 }) => {
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const shouldShowSidebar = activeTab !== "home" && activeTab !== "profile" && !(activeTab === "code-concepts" && activeCodeCategory === "search");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(shouldShowSidebar);
+  const isLearningTab = activeTab === "code-concepts" || activeTab === "core-concepts" || activeTab === "math-primer";
+  const shouldShowSidebar = activeTab !== "home" && activeTab !== "profile" && !(isLearningTab && activeCodeCategory === "search");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => shouldShowSidebar && (typeof window === "undefined" || window.innerWidth >= 768));
   const [expandedMenus, setExpandedMenus] = useState<string[]>(["home"]);
 
   useEffect(() => {
-    setIsSidebarOpen(shouldShowSidebar);
+    setIsSidebarOpen(shouldShowSidebar && (typeof window === "undefined" || window.innerWidth >= 768));
   }, [shouldShowSidebar]);
 
   useEffect(() => {
@@ -161,6 +162,14 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
+        {isSidebarOpen && showUI && (
+          <button
+            type="button"
+            aria-label="Close navigation menu"
+            onClick={() => setIsSidebarOpen(false)}
+            className="fixed inset-x-0 bottom-0 top-[52px] z-50 bg-black/35 backdrop-blur-[1px] md:hidden"
+          />
+        )}
         <AnimatePresence initial={false}>
           {isSidebarOpen && showUI && (
             <motion.aside
@@ -168,13 +177,13 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
               animate={{ width: 250, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="border-r border-zinc-200 dark:border-zinc-800 bg-transparent flex flex-col p-4 gap-2 transition-colors duration-300 overflow-hidden whitespace-nowrap shrink-0"
+              className="fixed inset-y-[52px] left-0 z-[60] border-r border-zinc-200 bg-white p-4 flex flex-col gap-2 shadow-2xl transition-colors duration-300 overflow-hidden whitespace-nowrap shrink-0 dark:border-zinc-800 dark:bg-zinc-950 md:relative md:inset-auto md:z-auto md:bg-transparent md:shadow-none"
             >
               <div className="text-[10px] text-zinc-400 dark:text-zinc-600 uppercase font-bold tracking-widest mb-4 px-2">
-                {activeTab === "code-concepts" || activeTab === "core-concepts" || activeTab === "math-primer" ? "Code Concepts" : "Navigation"}
+                {isLearningTab ? "Code Concepts" : "Navigation"}
               </div>
               <div className="overflow-y-auto scrollbar-hide pr-2 space-y-1">
-                {activeTab === "code-concepts" || activeTab === "core-concepts" || activeTab === "math-primer" ? (
+                {isLearningTab ? (
                    CODE_CONCEPT_CATEGORIES.filter(c => c.id !== "search").map((category) => (
                     <button
                       key={category.id}
@@ -266,7 +275,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
               ? "w-full h-full overflow-hidden" 
               : activeTab === "map" 
               ? "w-full mx-auto px-4 sm:px-8 py-8 sm:py-12 pb-32" 
-              : activeTab === "code-concepts"
+              : isLearningTab
               ? "w-full h-full"
               : activeTab === "trading-tools" || activeTab === "archive-tools"
               ? "w-full h-full"
@@ -278,7 +287,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       </div>
 
       {/* Footer */}
-      {showUI && (
+      {showUI && !isLearningTab && (
         <MainFooter 
           setActiveTab={setActiveTab}
           setActiveSubTab={setActiveSubTab}
