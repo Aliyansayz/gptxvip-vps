@@ -10,6 +10,8 @@ import {
     LineChart,
     Menu,
     Network,
+    Pause,
+    Play,
     ShieldCheck,
     Sparkles,
     X,
@@ -76,9 +78,9 @@ const intentBlocks: Array<{ icon: React.ElementType; title: string; body: string
     },
     {
         icon: Network,
-        title: 'Inspect the system',
-        body: 'Read the assumptions, compare the output, and keep the evidence that helps you decide what to do next.',
-        action: 'Read the notes',
+        title: 'Read the notes',
+        body: 'Explore practical writeups and diagrams about the systems behind the labs and workspaces.',
+        action: 'Browse notes',
         tone: 'violet',
     },
 ];
@@ -98,6 +100,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
     const navigateAgents = onNavigateAgents || onNavigateDevLush || (() => window.location.assign('/agents'));
     const openLabsRuntime = () => window.location.assign('/agents/lab');
     const [slideIndex, setSlideIndex] = useState(0);
+    const [isCarouselPaused, setIsCarouselPaused] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [reducedMotion, setReducedMotion] = useState(false);
     const topicScroller = useRef<HTMLDivElement>(null);
@@ -113,10 +116,10 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
     }, []);
 
     useEffect(() => {
-        if (reducedMotion || window.innerWidth < 768) return;
+        if (reducedMotion || isCarouselPaused || window.innerWidth < 768) return;
         const timer = window.setInterval(() => setSlideIndex((current) => (current + 1) % slides.length), 7000);
         return () => window.clearInterval(timer);
-    }, [reducedMotion]);
+    }, [reducedMotion, isCarouselPaused]);
 
     const moveSlide = (direction: number) => {
         setSlideIndex((current) => (current + direction + slides.length) % slides.length);
@@ -182,10 +185,10 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                             </div>
                         </div>
 
-                        <div className="relative" role="region" aria-roledescription="carousel" aria-label="GPTX.VIP product surfaces" tabIndex={0} onKeyDown={(event) => { if (event.key === 'ArrowRight') moveSlide(1); if (event.key === 'ArrowLeft') moveSlide(-1); }}>
+                        <div className="relative" role="region" aria-roledescription="carousel" aria-label="GPTX.VIP product surfaces" tabIndex={0} onKeyDown={(event) => { if (event.key === 'ArrowRight') moveSlide(1); if (event.key === 'ArrowLeft') moveSlide(-1); }} onFocus={() => setIsCarouselPaused(true)}>
                             <div className={`overflow-hidden rounded-[2rem] border ${slideTone.border} bg-slate-950 p-5 text-white shadow-2xl shadow-slate-900/15 transition-colors sm:p-7`}>
                                 <div className="flex items-center justify-between border-b border-white/10 pb-5 text-xs font-semibold text-slate-300"><span className="flex items-center gap-2"><Bot className="h-4 w-4 text-cyan-300" /> {slide.eyebrow}</span><span className={`rounded-full px-2.5 py-1 text-[10px] uppercase tracking-wider ${slideTone.soft} ${slideTone.text}`}>V2 surface</span></div>
-                                <div className="mt-8 min-h-[230px]" aria-live="polite">
+                                <div className="mt-8 min-h-[230px]" aria-live={isCarouselPaused ? 'polite' : 'off'}>
                                     <div className={`mb-5 flex h-12 w-12 items-center justify-center rounded-2xl ${slideTone.soft} ${slideTone.text}`}><FlaskConical className="h-6 w-6" /></div>
                                     <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">{slide.label}</p>
                                     <h2 className="mt-3 max-w-md font-display text-3xl font-black leading-tight tracking-tight text-white">{slide.title}</h2>
@@ -199,6 +202,10 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                     <span className="ml-2 text-xs font-medium text-slate-500">{slideIndex + 1} / {slides.length}</span>
                                 </div>
                                 <div className="flex gap-2">
+                                    <button onClick={() => setIsCarouselPaused((paused) => !paused)} className="flex h-9 items-center gap-2 rounded-full border border-slate-900/10 bg-white px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50" aria-label={isCarouselPaused ? 'Resume automatic slides' : 'Pause automatic slides'} aria-pressed={isCarouselPaused}>
+                                        {isCarouselPaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
+                                        <span>{isCarouselPaused ? 'Play' : 'Pause'}</span>
+                                    </button>
                                     <button onClick={() => moveSlide(-1)} className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-900/10 bg-white text-slate-700 hover:bg-slate-50" aria-label="Previous slide"><ChevronLeft className="h-4 w-4" /></button>
                                     <button onClick={() => moveSlide(1)} className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-900/10 bg-white text-slate-700 hover:bg-slate-50" aria-label="Next slide"><ChevronRight className="h-4 w-4" /></button>
                                 </div>
@@ -224,7 +231,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                 <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24" aria-labelledby="topics-heading">
                     <div className="flex flex-wrap items-end justify-between gap-5"><div className="max-w-xl"><p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">Agent Labs</p><h2 id="topics-heading" className="mt-3 font-display text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">Start with a real topic.</h2><p className="mt-4 text-slate-600">Short, source-backed topic surfaces for learning how an agent system behaves.</p></div><div className="flex gap-2"><button onClick={() => scrollTopics(-1)} className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-900/10 bg-white text-slate-700 hover:bg-slate-50" aria-label="Scroll topics left"><ChevronLeft className="h-4 w-4" /></button><button onClick={() => scrollTopics(1)} className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-900/10 bg-white text-slate-700 hover:bg-slate-50" aria-label="Scroll topics right"><ChevronRight className="h-4 w-4" /></button></div></div>
                     <div ref={topicScroller} className="mt-8 flex snap-x gap-4 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" tabIndex={0} aria-label="Agent Lab topics">
-                        {agentLabTopics.map((topic, index) => <button key={topic.slug} onClick={openLabsRuntime} className="group min-w-[280px] snap-start rounded-2xl border border-slate-900/10 bg-white p-5 text-left shadow-sm transition-all hover:-translate-y-1 hover:border-cyan-300 hover:shadow-lg sm:min-w-[320px]"><div className="flex items-center justify-between"><span className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">0{index + 1}</span><span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">{topic.family}</span></div><h3 className="mt-10 text-lg font-bold text-slate-950">{topic.title}</h3><p className="mt-2 min-h-12 text-sm leading-6 text-slate-600">{topic.outcome}</p><span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-cyan-700">Open topic <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span></button>)}
+                        {agentLabTopics.map((topic, index) => <button key={topic.slug} onClick={openLabsRuntime} className="group min-w-[280px] snap-start rounded-2xl border border-slate-900/10 bg-white p-5 text-left shadow-sm transition-all hover:-translate-y-1 hover:border-cyan-300 hover:shadow-lg sm:min-w-[320px]"><div className="flex items-center justify-between"><span className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">0{index + 1}</span><span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">{topic.family}</span></div><h3 className="mt-10 text-lg font-bold text-slate-950">{topic.title}</h3><p className="mt-2 min-h-12 text-sm leading-6 text-slate-600">{topic.outcome}</p><span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-cyan-700">Browse in Agent Labs <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span></button>)}
                     </div>
                 </section>
 

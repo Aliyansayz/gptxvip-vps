@@ -17,6 +17,27 @@ import marketingData from './marketing.json';
 import voiceAgentsData from './voiceAgents.json';
 import customerSupportData from './customerSupport.json';
 
+export const devLushTopicFiles = {
+  offensiveAi: offensiveAiData,
+  ecommerce: ecommerceData,
+  accounting: accountingData,
+  finance: financeData,
+  agentTypes: agentTypesData,
+  webBugBounty: webBugBountyData,
+  systemDesign: systemDesignData,
+  reinforcementLearning: reinforcementLearningData,
+  devtools: devtoolsData,
+  healthcare: healthcareData,
+  legal: legalData,
+  supplychain: supplychainData,
+  helpdesk: helpdeskData,
+  voiceAgents: voiceAgentsData,
+  recommendation: recommendationData,
+  agentMemories: agentMemoriesData,
+  marketing: marketingData,
+  customerSupport: customerSupportData,
+};
+
 const devLushChaptersRaw = [
   ...reinforcementLearningData,
   ...offensiveAiData,

@@ -4,6 +4,9 @@ import { FileText, Search, AlertCircle, CheckCircle2, X } from 'lucide-react';
 
 export default function ContractRedlineViewer({ prompt }: { prompt?: string }) {
     const [hoveredClause, setHoveredClause] = useState<number | null>(null);
+    const [redlineStatus, setRedlineStatus] = useState<'pending' | 'applied' | 'ignored'>('pending');
+    const [findingOpen, setFindingOpen] = useState(false);
+    const suggestedClause = 'neither party shall be liable for indirect, incidental, or consequential damages, except in cases of gross negligence or willful misconduct.';
 
     return (
         <div className="w-full rounded-2xl bg-slate-100 p-8 my-8 border border-slate-200 shadow-xl overflow-hidden font-serif relative text-slate-800">
@@ -34,13 +37,16 @@ export default function ContractRedlineViewer({ prompt }: { prompt?: string }) {
                 <h3 className="font-bold mt-6 mb-2">8. Limitation of Liability</h3>
                 <p className="mb-4 text-justify">
                     Except for breaches of confidentiality and indemnification obligations, 
-                    <span 
-                        className="bg-amber-200/60 border-b-2 border-amber-400 cursor-pointer relative px-1 mx-1 rounded-sm transition-colors hover:bg-amber-300/60"
-                        onMouseEnter={() => setHoveredClause(1)}
-                        onMouseLeave={() => setHoveredClause(null)}
+                    <button
+                        type="button"
+                        aria-expanded={findingOpen && redlineStatus === 'pending'}
+                        onClick={() => { if (redlineStatus === 'pending') { setHoveredClause(1); setFindingOpen((open) => !open); } }}
+                        onFocus={() => { setHoveredClause(1); setFindingOpen(true); }}
+                        onMouseEnter={() => { if (redlineStatus === 'pending') { setHoveredClause(1); setFindingOpen(true); } }}
+                        className={`px-1 mx-1 rounded-sm transition-colors text-left ${redlineStatus === 'applied' ? 'bg-emerald-100 border-b-2 border-emerald-500' : redlineStatus === 'ignored' ? 'bg-slate-100 border-b border-slate-300' : 'bg-amber-200/60 border-b-2 border-amber-400 hover:bg-amber-300/60'}`}
                     >
-                        under no circumstances shall either party be liable to the other for any indirect, incidental, or consequential damages.
-                    </span>
+                        {redlineStatus === 'applied' ? suggestedClause : 'under no circumstances shall either party be liable to the other for any indirect, incidental, or consequential damages.'}
+                    </button>
                     The total liability of Service Provider shall not exceed the amount paid by Client in the preceding 12 months.
                 </p>
 
@@ -52,7 +58,7 @@ export default function ContractRedlineViewer({ prompt }: { prompt?: string }) {
 
             {/* AI Agent Popover Overlay */}
             <AnimatePresence>
-                {hoveredClause === 1 && (
+                {hoveredClause === 1 && findingOpen && redlineStatus === 'pending' && (
                     <motion.div
                         initial={{ opacity: 0, y: 10, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -63,7 +69,7 @@ export default function ContractRedlineViewer({ prompt }: { prompt?: string }) {
                             <div className="flex items-center gap-2 text-indigo-400 font-semibold text-xs uppercase tracking-wider">
                                 <AlertCircle className="w-4 h-4" /> Agent Finding: Non-Standard Clause
                             </div>
-                            <X className="w-4 h-4 text-slate-500 cursor-pointer hover:text-slate-300" />
+                            <button type="button" aria-label="Close finding" onClick={() => { setHoveredClause(null); setFindingOpen(false); }} className="text-slate-500 hover:text-slate-300"><X className="w-4 h-4" /></button>
                         </div>
                         <div className="p-4 text-sm text-slate-300">
                             <p className="mb-3 text-xs text-slate-400">
@@ -80,10 +86,10 @@ export default function ContractRedlineViewer({ prompt }: { prompt?: string }) {
                             </div>
 
                             <div className="mt-4 flex gap-2">
-                                <button className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white py-1.5 rounded flex items-center justify-center gap-1 transition-colors text-xs font-semibold">
+                                <button type="button" onClick={() => { setRedlineStatus('applied'); setFindingOpen(false); setHoveredClause(null); }} className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white py-1.5 rounded flex items-center justify-center gap-1 transition-colors text-xs font-semibold">
                                     <CheckCircle2 className="w-3 h-3" /> Apply Redline
                                 </button>
-                                <button className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 py-1.5 rounded flex items-center justify-center gap-1 transition-colors text-xs font-semibold">
+                                <button type="button" onClick={() => { setRedlineStatus('ignored'); setFindingOpen(false); setHoveredClause(null); }} className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 py-1.5 rounded flex items-center justify-center gap-1 transition-colors text-xs font-semibold">
                                     Ignore
                                 </button>
                             </div>
@@ -91,6 +97,12 @@ export default function ContractRedlineViewer({ prompt }: { prompt?: string }) {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {redlineStatus !== 'pending' && (
+                <div role="status" className={`mx-auto mt-3 max-w-2xl text-center text-xs font-sans ${redlineStatus === 'applied' ? 'text-emerald-700' : 'text-slate-500'}`}>
+                    {redlineStatus === 'applied' ? 'Suggested redline applied to this demo document.' : 'Finding ignored for this demo document.'}
+                </div>
+            )}
 
             {prompt && (
                 <div className="mt-8 pt-4 border-t border-slate-300 text-xs text-slate-500 font-mono text-center opacity-70 relative z-10">

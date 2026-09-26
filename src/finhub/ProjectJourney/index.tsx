@@ -7,12 +7,68 @@ import { getCameraTransform } from "./camera";
 import { getStatusFromProgress } from "./status";
 import { ProjectJourneyData, JourneyNode, Particle } from "./types";
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+const isStringArray = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every((item) => typeof item === "string");
+
+const isProjectJourneyData = (value: unknown): value is ProjectJourneyData => {
+  if (!isRecord(value) || !isRecord(value.app) || !isRecord(value.canvas) || !isRecord(value.path)) return false;
+  if (typeof value.app.title !== "string" || typeof value.app.subtitle !== "string") return false;
+  if (!Number.isFinite(value.canvas.width) || Number(value.canvas.width) <= 0 ||
+      !Number.isFinite(value.canvas.height) || Number(value.canvas.height) <= 0 ||
+      !Number.isFinite(value.canvas.camera_scale) || Number(value.canvas.camera_scale) <= 0) return false;
+  if (typeof value.path.svg_path !== "string" || value.path.svg_path.trim().length === 0 ||
+      !Number.isFinite(value.path.track_width) || Number(value.path.track_width) <= 0) return false;
+  if (!Array.isArray(value.nodes) || value.nodes.length === 0 ||
+      !Array.isArray(value.status_mapping) || value.status_mapping.length === 0) return false;
+
+  const nodeIds = new Set<string>();
+  let previousProgress = -1;
+  for (const node of value.nodes) {
+    if (!isRecord(node) || typeof node.id !== "string" || node.id.length === 0 || nodeIds.has(node.id) ||
+        !Number.isFinite(node.progress) || Number(node.progress) < 0 || Number(node.progress) > 1 ||
+        Number(node.progress) < previousProgress ||
+        !isRecord(node.position) || !Number.isFinite(node.position.x_percent) ||
+        Number(node.position.x_percent) < 0 || Number(node.position.x_percent) > 100 ||
+        !Number.isFinite(node.position.y_percent) || Number(node.position.y_percent) < 0 ||
+        Number(node.position.y_percent) > 100 || typeof node.title !== "string" ||
+        typeof node.description !== "string" || typeof node.type !== "string") return false;
+    nodeIds.add(node.id);
+    previousProgress = Number(node.progress);
+
+    if (node.details !== undefined) {
+      if (!Array.isArray(node.details)) return false;
+      for (const detail of node.details) {
+        if (!isRecord(detail) || typeof detail.id !== "string" || typeof detail.title !== "string" ||
+            typeof detail.icon !== "string" || !Array.isArray(detail.content)) return false;
+        for (const content of detail.content) {
+          if (!isRecord(content) || typeof content.type !== "string" ||
+              (content.sentences !== undefined && !isStringArray(content.sentences)) ||
+              (content.items !== undefined && !isStringArray(content.items)) ||
+              (content.type === "paragraph" && !isStringArray(content.sentences))) return false;
+        }
+      }
+    }
+  }
+
+  let previousStatusMax = -1;
+  for (const status of value.status_mapping) {
+    if (!isRecord(status) || !Number.isFinite(status.max) || Number(status.max) < previousStatusMax ||
+        Number(status.max) < 0 || Number(status.max) > 1 || typeof status.text !== "string") return false;
+    previousStatusMax = Number(status.max);
+  }
+  return true;
+};
+
 export const ProjectJourney: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const worldRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
   const ribbonHeadRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<HTMLDivElement>(null);
+  const touchYRef = useRef<number | null>(null);
   
   const [data, setData] = useState<ProjectJourneyData | null>(null);
   const [particles, setParticles] = useState<Particle[]>([]);
@@ -20,21 +76,28 @@ export const ProjectJourney: React.FC = () => {
   const [progress, setProgress] = useState(0);
 
   const [status, setStatus] = useState("Planning");
-  const [activeStep, setActiveStep] = useState<JourneyNode | null>(null);
-  const [activeNodes, setActiveNodes] = useState<string[]>([]);
   const [pathLength, setPathLength] = useState(0);
+  const [loadError, setLoadError] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
 
   const [lockedNode, setLockedNode] = useState<JourneyNode | null>(null);
   const [subScroll, setSubScroll] = useState(0);
 
   // Fetch JSON data
   useEffect(() => {
-    // Add cache busting timestamp so JSON changes reflect immediately
+    let cancelled = false;
+    setLoadError(false);
     fetch(`/project-journey.json?t=${new Date().getTime()}`)
-      .then(res => res.json())
-      .then((json: ProjectJourneyData) => {
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`Project journey request failed (${res.status})`);
+        return res.json();
+      })
+      .then((json: unknown) => {
+        if (!isProjectJourneyData(json)) {
+          throw new Error("Project journey data has an invalid shape");
+        }
+        if (cancelled) return;
         setData(json);
-        setActiveStep(json.nodes[0]);
         setStatus(getStatusFromProgress(0, json.status_mapping));
         
         // Generate stable random particles aligned roughly to canvas size
@@ -48,8 +111,12 @@ export const ProjectJourney: React.FC = () => {
         }));
         setParticles(generatedParticles);
       })
-      .catch(err => console.error("Could not load journey data:", err));
-  }, []);
+      .catch(err => {
+        console.error("Could not load journey data:", err);
+        if (!cancelled) setLoadError(true);
+      });
+    return () => { cancelled = true; };
+  }, [reloadKey]);
 
   // Measure path length safely
   useEffect(() => {
@@ -57,9 +124,16 @@ export const ProjectJourney: React.FC = () => {
     
     const updateLength = () => {
       if (pathRef.current) {
-        const length = pathRef.current.getTotalLength();
-        if (length > 0) {
+        try {
+          const length = pathRef.current.getTotalLength();
+          if (!Number.isFinite(length) || length <= 0) {
+            throw new Error("Project journey SVG has no drawable path");
+          }
           setPathLength(length);
+        } catch (error) {
+          console.error("Project journey path is invalid:", error);
+          setData(null);
+          setLoadError(true);
         }
       }
     };
@@ -75,12 +149,13 @@ export const ProjectJourney: React.FC = () => {
     };
   }, [data]);
 
-  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+  const advanceJourney = (deltaY: number) => {
     if (!data) return;
+    if (deltaY === 0) return;
     
     if (lockedNode) {
       // Sub-scroll logic inside expanded nodes
-      const nextSubScroll = subScroll + (e.deltaY * 0.15); // Adjust sub-scroll speed modifier natively
+      const nextSubScroll = subScroll + (deltaY * 0.15); // Adjust sub-scroll speed modifier natively
 
       if (nextSubScroll > 100) {
         setSubScroll(100);
@@ -97,7 +172,7 @@ export const ProjectJourney: React.FC = () => {
     }
 
     setProgress(prev => {
-      const next = prev + (e.deltaY * 0.0005);
+      const next = prev + (deltaY * 0.0005);
       let triggerNode: JourneyNode | null = null;
       let startSubScroll = 0;
 
@@ -129,6 +204,42 @@ export const ProjectJourney: React.FC = () => {
     });
   };
 
+  const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    if ((event.target as HTMLElement).closest('input[type="range"]')) return;
+    advanceJourney(event.deltaY);
+  };
+
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    if ((event.target as HTMLElement).closest('input[type="range"]')) return;
+    touchYRef.current = event.touches[0]?.clientY ?? null;
+  };
+
+  const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+    if ((event.target as HTMLElement).closest('input[type="range"]')) return;
+    const currentY = event.touches[0]?.clientY;
+    if (currentY === undefined || touchYRef.current === null) return;
+    const deltaY = touchYRef.current - currentY;
+    touchYRef.current = currentY;
+    if (Math.abs(deltaY) >= 2) advanceJourney(deltaY);
+  };
+
+  const handleTouchEnd = () => { touchYRef.current = null; };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget) return;
+    if (event.key === 'ArrowDown' || event.key === 'ArrowRight' || event.key === 'PageDown') {
+      event.preventDefault();
+      advanceJourney(120);
+    } else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft' || event.key === 'PageUp') {
+      event.preventDefault();
+      advanceJourney(-120);
+    }
+  };
+
+  const handleTimelineChange = (nextProgress: number) => {
+    if (!lockedNode) advanceJourney((nextProgress - progress) / 0.0005);
+  };
+
   // Sync camera and ribbon whenever progress changes
   useEffect(() => {
     if (!data) return;
@@ -136,15 +247,6 @@ export const ProjectJourney: React.FC = () => {
     const p = Math.max(0, Math.min(progress, 1)); // Clamp safely
     
     setStatus(getStatusFromProgress(p, data.status_mapping));
-
-    const newActiveNodes = data.nodes
-      .filter(step => p >= step.progress)
-      .map(step => step.id);
-    setActiveNodes(newActiveNodes);
-
-    const currentStepIndex = [...data.nodes].reverse().findIndex(s => p >= s.progress);
-    const currentActive = data.nodes[data.nodes.length - 1 - (currentStepIndex === -1 ? 0 : currentStepIndex)] || data.nodes[0];
-    setActiveStep(currentActive);
 
     // Ensure we trigger coordinate updates even initially when length might just be settling, 
     // or fallback to 0 coordinate if SVG isn't ready
@@ -177,6 +279,14 @@ export const ProjectJourney: React.FC = () => {
   }, [progress, pathLength, data]);
 
   if (!data) {
+    if (loadError) {
+      return (
+        <div role="alert" className="flex min-h-[400px] w-full flex-col items-center justify-center gap-3 bg-slate-50 text-center dark:bg-zinc-950">
+          <p className="font-semibold text-zinc-800 dark:text-zinc-100">Project journey could not be loaded.</p>
+          <button type="button" onClick={() => setReloadKey((key) => key + 1)} className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white">Retry</button>
+        </div>
+      );
+    }
     return (
       <div className="w-full h-full min-h-[400px] flex items-center justify-center bg-slate-50 dark:bg-zinc-950">
         <div className="w-8 h-8 rounded-full border-4 border-emerald-500 border-t-transparent animate-spin"/>
@@ -188,7 +298,17 @@ export const ProjectJourney: React.FC = () => {
     <div 
       ref={containerRef} 
       onWheel={handleWheel}
-      className="relative w-full h-full min-h-[400px] overflow-hidden bg-zinc-50 dark:bg-zinc-950 transition-colors duration-500"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
+      onKeyDown={handleKeyDown}
+      role="region"
+      aria-label="Interactive project journey"
+      aria-describedby="project-journey-help"
+      aria-keyshortcuts="ArrowDown ArrowUp ArrowRight ArrowLeft PageDown PageUp"
+      tabIndex={0}
+      className="relative h-full min-h-[400px] w-full touch-pan-x overflow-hidden bg-zinc-50 transition-colors duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-500 dark:bg-zinc-950"
     >
       
       {/* Main Widget Layer */}
@@ -234,6 +354,8 @@ export const ProjectJourney: React.FC = () => {
         <JourneyOverlays 
           progress={progress} 
           status={status} 
+          onProgressChange={handleTimelineChange}
+          progressDisabled={Boolean(lockedNode)}
         />
       </div>
 

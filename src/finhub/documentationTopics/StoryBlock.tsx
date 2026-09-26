@@ -7,7 +7,10 @@ export const StoryBlock: React.FC = () => {
   >({});
 
   const handleFocus = (e: MouseEvent<HTMLButtonElement>, id: string) => {
-    if (focusedId === id) return;
+    if (focusedId === id) {
+      setFocusedId(null);
+      return;
+    }
 
     const rect = e.currentTarget.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
@@ -25,11 +28,6 @@ export const StoryBlock: React.FC = () => {
 
     setTransforms((prev) => ({ ...prev, [id]: { tx, ty, scale } }));
     setFocusedId(id);
-  };
-
-  const handleClose = (e: MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    setFocusedId(null);
   };
 
   useEffect(() => {
@@ -97,7 +95,7 @@ export const StoryBlock: React.FC = () => {
         .content-card.focused {
             transform: translate(var(--tx, 0), var(--ty, 0)) scale(var(--scale, 1.5));
             z-index: 100;
-            cursor: default;
+            cursor: pointer;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             border-color: var(--tw-colors-zinc-400, #a1a1aa);
         }
@@ -107,32 +105,6 @@ export const StoryBlock: React.FC = () => {
         }
         .grid-hidden { opacity: 0; pointer-events: none; }
         .card-hidden { opacity: 0; transform: scale(0.9); pointer-events: none; }
-        .close-btn {
-            position: absolute;
-            top: 0.75rem;
-            right: 0.75rem;
-            background: #ffffff;
-            color: var(--tw-colors-zinc-500, #71717a);
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            border: 1px solid var(--tw-colors-zinc-200, #e4e4e7);
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.3s ease, background 0.2s, color 0.2s;
-            z-index: 110;
-        }
-        .dark .close-btn {
-            background: #27272a;
-            color: #a1a1aa;
-        }
-        .close-btn:hover { background: var(--tw-colors-zinc-200, #e4e4e7); color: var(--tw-colors-zinc-900, #18181b); }
-        .dark .close-btn:hover { background: #3f3f46; color: #f4f4f5; }
-        .focused .close-btn { opacity: 1; }
         .diagram-container {
             background: #ffffff;
             border-radius: 0.5rem;
@@ -182,11 +154,10 @@ export const StoryBlock: React.FC = () => {
             } as React.CSSProperties
           }
           onClick={(e) => handleFocus(e, "B-01")}
-          aria-label="Expand Take Profit Based Exit"
+          tabIndex={focusedId && focusedId !== "B-01" ? -1 : 0}
+          aria-label={focusedId === "B-01" ? "Collapse Take Profit Based Exit" : "Expand Take Profit Based Exit"}
+          aria-expanded={focusedId === "B-01"}
         >
-          <div className="close-btn" onClick={handleClose}>
-            ×
-          </div>
           <div className="heading-accent bg-blue-500"></div>
           <h2 className="card-title">Take Profit Based</h2>
           <p className="card-text">
@@ -235,11 +206,10 @@ export const StoryBlock: React.FC = () => {
             } as React.CSSProperties
           }
           onClick={(e) => handleFocus(e, "B-02")}
-          aria-label="Expand Indicator Based Exit"
+          tabIndex={focusedId && focusedId !== "B-02" ? -1 : 0}
+          aria-label={focusedId === "B-02" ? "Collapse Indicator Based Exit" : "Expand Indicator Based Exit"}
+          aria-expanded={focusedId === "B-02"}
         >
-          <div className="close-btn" onClick={handleClose}>
-            ×
-          </div>
           <div className="heading-accent bg-purple-500"></div>
           <h2 className="card-title">Indicator Based Exit</h2>
           <p className="card-text">
@@ -286,11 +256,10 @@ export const StoryBlock: React.FC = () => {
             } as React.CSSProperties
           }
           onClick={(e) => handleFocus(e, "B-03")}
-          aria-label="Expand Time Based Exit"
+          tabIndex={focusedId && focusedId !== "B-03" ? -1 : 0}
+          aria-label={focusedId === "B-03" ? "Collapse Time-Based Exit" : "Expand Time-Based Exit"}
+          aria-expanded={focusedId === "B-03"}
         >
-          <div className="close-btn" onClick={handleClose}>
-            ×
-          </div>
           <div className="heading-accent bg-amber-500"></div>
           <h2 className="card-title">Time Based Exit</h2>
           <p className="card-text">
@@ -350,11 +319,10 @@ export const StoryBlock: React.FC = () => {
             } as React.CSSProperties
           }
           onClick={(e) => handleFocus(e, "B-04")}
-          aria-label="Expand Risk Distribution"
+          tabIndex={focusedId && focusedId !== "B-04" ? -1 : 0}
+          aria-label={focusedId === "B-04" ? "Collapse Risk Distribution" : "Expand Risk Distribution"}
+          aria-expanded={focusedId === "B-04"}
         >
-          <div className="close-btn" onClick={handleClose}>
-            ×
-          </div>
           <div className="heading-accent bg-emerald-500"></div>
           <h2 className="card-title">Risk Distribution</h2>
           <p className="card-text">

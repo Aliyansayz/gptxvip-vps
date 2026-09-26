@@ -270,8 +270,10 @@ export const RoadmapSearchView: React.FC<RoadmapSearchViewProps> = ({ roadmapTop
     return (
         <div className="h-full w-full overflow-y-auto custom-scrollbar p-8 bg-slate-50 dark:bg-black relative">
             <button 
+                type="button"
+                aria-label="Close Roadmap search and return to the previous view"
                 onClick={onClose}
-                className="absolute top-6 right-6 p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors z-50 text-slate-500"
+                className="absolute top-6 right-6 rounded-full p-2 text-slate-500 transition-colors hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-500 dark:hover:bg-slate-800"
             >
                 <X className="w-6 h-6" />
             </button>
@@ -281,7 +283,7 @@ export const RoadmapSearchView: React.FC<RoadmapSearchViewProps> = ({ roadmapTop
                     <div className={`inline-block p-4 rounded-2xl shadow-sm mb-4 ${bgIconClass}`}>
                         <SearchIcon className={`w-12 h-12 ${primaryColorClass}`} />
                     </div>
-                    <h1 className="text-6xl font-heading tracking-wide text-slate-900 dark:text-white">{titleText}</h1>
+                    <h1 className="text-3xl font-heading tracking-wide text-slate-900 dark:text-white sm:text-5xl">{titleText}</h1>
                     <p className="text-lg text-slate-600 dark:text-slate-400 mt-2">
                         {descriptionText}
                     </p>
@@ -292,7 +294,15 @@ export const RoadmapSearchView: React.FC<RoadmapSearchViewProps> = ({ roadmapTop
                         <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 z-20" />
                         
                         <input
+                            id="roadmap-search-input"
                             type="text"
+                            autoFocus
+                            role="combobox"
+                            aria-label="Search Roadmap topics and chapters"
+                            aria-autocomplete="list"
+                            aria-expanded={isFocused && dropdownSuggestions.length > 0}
+                            aria-controls={isFocused && dropdownSuggestions.length > 0 ? "roadmap-search-suggestions" : undefined}
+                            aria-activedescendant={selectedIndex >= 0 ? `roadmap-search-suggestion-${selectedIndex}` : undefined}
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             onKeyDown={handleKeyDown}
@@ -311,11 +321,15 @@ export const RoadmapSearchView: React.FC<RoadmapSearchViewProps> = ({ roadmapTop
                     </div>
 
                     {isFocused && dropdownSuggestions.length > 0 && (
-                        <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                        <div id="roadmap-search-suggestions" role="listbox" aria-label="Search suggestions" className="absolute top-full left-0 right-0 mt-2 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                             {dropdownSuggestions.map((s, idx) => (
-                                <div 
+                                <button
                                     key={s} 
-                                    className={`px-6 py-3 cursor-pointer text-slate-900 dark:text-white flex items-center transition-colors ${idx === selectedIndex ? 'bg-indigo-50 dark:bg-indigo-900/40' : 'hover:bg-slate-50 dark:hover:bg-slate-800'}`}
+                                    id={`roadmap-search-suggestion-${idx}`}
+                                    type="button"
+                                    role="option"
+                                    aria-selected={idx === selectedIndex}
+                                    className={`flex w-full items-center px-6 py-3 text-left text-slate-900 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-indigo-500 dark:text-white ${idx === selectedIndex ? 'bg-indigo-50 dark:bg-indigo-900/40' : 'hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                                     onClick={() => {
                                         setSearchTerm(s);
                                         setIsFocused(false);
@@ -333,7 +347,7 @@ export const RoadmapSearchView: React.FC<RoadmapSearchViewProps> = ({ roadmapTop
                                             <span className="text-slate-500 dark:text-slate-400 font-normal">{s}</span>
                                         )}
                                     </span>
-                                </div>
+                                </button>
                             ))}
                         </div>
                     )}
@@ -343,9 +357,11 @@ export const RoadmapSearchView: React.FC<RoadmapSearchViewProps> = ({ roadmapTop
                     <div className="flex items-center justify-between mb-2 px-2">
                         <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Suggested Topics</span>
                         <button 
+                            type="button"
+                            aria-label="Refresh suggested topics"
+                            disabled={isRefreshing}
                             onClick={handleRefreshKeywords}
-                            className={`p-1.5 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors ${isRefreshing ? 'animate-spin' : ''}`}
-                            title="Refresh Topics"
+                            className={`rounded-full p-1.5 transition-colors hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-500 disabled:cursor-wait dark:hover:bg-slate-800 ${isRefreshing ? 'animate-spin' : ''}`}
                         >
                             <RefreshCw className="w-4 h-4 text-slate-500" />
                         </button>
@@ -357,9 +373,13 @@ export const RoadmapSearchView: React.FC<RoadmapSearchViewProps> = ({ roadmapTop
                 </div>
 
                 <div className="space-y-6">
+                    {searchTerm.trim().length >= 2 && results.length > 0 && (
+                        <p role="status" aria-live="polite" className="text-sm text-slate-500 dark:text-slate-400">{results.length} Roadmap chapter{results.length === 1 ? "" : "s"} found.</p>
+                    )}
                     {searchTerm.trim().length >= 2 && results.length === 0 && (
-                        <div className="text-center py-12">
-                            <p className="text-slate-500 dark:text-slate-400">No agents found matching your search.</p>
+                        <div role="status" className="py-12 text-center">
+                            <p className="text-slate-700 dark:text-slate-300">No Roadmap chapters match “{searchTerm.trim()}”.</p>
+                            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">Try a topic name, chapter title, or related concept.</p>
                         </div>
                     )}
                     {results.map(chapter => {
@@ -375,7 +395,7 @@ export const RoadmapSearchView: React.FC<RoadmapSearchViewProps> = ({ roadmapTop
                                     <div className="flex items-center gap-2">
                                         <span className={`text-sm font-semibold ${theme.text}`}>{chapter.course}</span>
                                         <span className={`text-[10px] px-2 py-0.5 rounded-full border ${theme.bgSoft} ${theme.text} ${theme.borderSoft}`}>
-                                            Simulation
+                                            {chapter.readingComponentId ? "Reading" : "Interactive lab"}
                                         </span>
                                     </div>
                                     <h3 className="text-2xl font-heading tracking-wider text-slate-900 dark:text-white mt-1">{chapter.chapter_title}</h3>
@@ -392,11 +412,12 @@ export const RoadmapSearchView: React.FC<RoadmapSearchViewProps> = ({ roadmapTop
                             </div>
                             <div className="pl-12">
                                 <button 
+                                    type="button"
                                     onClick={() => onStartChapter(chapter)} 
-                                    className={`inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-semibold text-white shadow-md transition-shadow hover:shadow-lg bg-gradient-to-r ${theme.gradientFrom} ${theme.gradientTo}`}
+                                    className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-gradient-to-r px-4 py-2 font-semibold text-white shadow-md transition-shadow hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 ${theme.gradientFrom} ${theme.gradientTo}`}
                                 >
                                     <PlayIcon className="w-5 h-5" />
-                                    Launch Agent Sandbox
+                                    Open chapter
                                 </button>
                             </div>
                         </div>

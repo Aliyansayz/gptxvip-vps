@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ExternalLink,
   Mail,
@@ -97,7 +97,7 @@ const EDUCATION_QUALIFICATIONS: EducationQualification[] = [
     metricLabel: "Program Progress",
     metricValue: "50% Completed",
     description: "Advanced learning in systems security, network defense, cryptography, digital forensics, and cybersecurity risk management.",
-    transcriptUrl: "http://credentials.edx.org/records/programs/shared/51f90ae7b2a54a099dbcfd34e79eaae7/",
+    transcriptUrl: "https://credentials.edx.org/records/programs/shared/51f90ae7b2a54a099dbcfd34e79eaae7/",
     icon: Shield,
     colorClass: "cyan",
     bgGradient: "from-cyan-500/10 via-cyan-500/5 to-transparent",
@@ -219,12 +219,26 @@ interface ProfileInfoProps {
 
 export const ProfileInfo: React.FC<ProfileInfoProps> = ({ showYears = false }) => {
   const [copied, setCopied] = useState(false);
+  const copyResetTimeout = useRef<number | null>(null);
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText("aliyan@gptx.vip");
-    setCopied(true);
-    toast.success("Email address copied to clipboard!");
-    setTimeout(() => setCopied(false), 2000);
+  useEffect(() => () => {
+    if (copyResetTimeout.current !== null) window.clearTimeout(copyResetTimeout.current);
+  }, []);
+
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText("aliyan@gptx.vip");
+      setCopied(true);
+      toast.success("Email address copied to clipboard!");
+      if (copyResetTimeout.current !== null) window.clearTimeout(copyResetTimeout.current);
+      copyResetTimeout.current = window.setTimeout(() => {
+        setCopied(false);
+        copyResetTimeout.current = null;
+      }, 2000);
+    } catch {
+      setCopied(false);
+      toast.error("Could not copy the email address. Please copy it manually.");
+    }
   };
 
   return (
@@ -273,7 +287,9 @@ export const ProfileInfo: React.FC<ProfileInfoProps> = ({ showYears = false }) =
           {/* Action and Contact links */}
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto shrink-0">
             <button
+              type="button"
               onClick={handleCopyEmail}
+              aria-label={copied ? "Email address copied" : "Copy email address"}
               className="flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 text-zinc-700 dark:text-zinc-200 text-sm font-semibold transition-all shadow-sm cursor-pointer"
             >
               <Mail className="w-4 h-4" />

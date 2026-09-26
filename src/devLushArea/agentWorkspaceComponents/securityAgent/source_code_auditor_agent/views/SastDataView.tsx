@@ -1,6 +1,7 @@
 import React from 'react';
 import { GitPullRequest, Key, PackageSearch, Settings } from 'lucide-react';
 import { SastSidebarView } from '../components/SastAgentSidebar';
+import AgentPreviewNotice from '../../../components/AgentPreviewNotice';
 
 interface SastDataViewProps {
   viewType: SastSidebarView;
@@ -11,7 +12,7 @@ export default function SastDataView({ viewType }: SastDataViewProps) {
     pr_reviews: {
       title: "Automated Pull Request Reviews",
       icon: GitPullRequest,
-      description: "Code logic flaws and vulnerabilities identified in active Pull Requests.",
+      description: "Example summaries of code findings; source locations and evidence are not attached.",
       items: [
         { label: "PR #1042 (Authentication)", value: "Found hardcoded JWT secret in auth.ts. Status: Blocked." },
         { label: "PR #1045 (User Input)", value: "Potential XSS detected in React dangerouslySetInnerHTML. Suggested fix provided." },
@@ -43,7 +44,7 @@ export default function SastDataView({ viewType }: SastDataViewProps) {
       icon: Settings,
       description: "Configure CI/CD hooks and repository access for the agent.",
       items: [
-        { label: "GitHub App", value: "Connected. Agent has 'Read & Write' access to PRs." },
+        { label: "GitHub App", value: "Example permission label; connection and repository access are not verified." },
         { label: "Blocking Policy", value: "Strict (Block merge if Critical or High vulnerabilities found)." },
         { label: "Language Support", value: "TypeScript, Python, Go, Java." }
       ]
@@ -68,6 +69,7 @@ export default function SastDataView({ viewType }: SastDataViewProps) {
           <p className="text-slate-500 mt-2">{data.description}</p>
         </div>
 
+        <AgentPreviewNotice>These are example analyzer summaries. Line numbers and confidence scores are unavailable, and suggested fixes have not been applied. Verify the file context and keep human review in the merge path.</AgentPreviewNotice>
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="divide-y divide-slate-100">
             {data.items.map((item, idx) => (

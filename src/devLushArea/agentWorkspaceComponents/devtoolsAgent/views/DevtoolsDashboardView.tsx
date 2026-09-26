@@ -1,5 +1,5 @@
 import React from 'react';
-import { GitPullRequest, Search, Zap, Activity, AlertCircle, ArrowRight, Code, Play } from 'lucide-react';
+import { GitPullRequest, Search, Zap, Activity, AlertCircle, Code, Play } from 'lucide-react';
 
 export default function DevtoolsDashboardView() {
   return (
@@ -29,6 +29,10 @@ export default function DevtoolsDashboardView() {
       </div>
 
       <div className="p-6 max-w-7xl mx-auto w-full space-y-8">
+        <aside className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-950">
+          <strong>Repository preview.</strong> Repository names, counts, findings, and activity below are example content. Workflow cards explain possible tasks and do not run an analysis.
+        </aside>
+        <p className="text-sm text-slate-600"><strong>Start here:</strong> inspect the sample findings below, then use the sidebar to open the related workspace panel. Suggested changes still need review.</p>
         
         {/* Actionable Alerts & Financial Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -54,7 +58,7 @@ export default function DevtoolsDashboardView() {
           
           <div className="space-y-4">
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-              <Activity className="w-4 h-4 text-slate-400" /> Live Agent Activity
+              <Activity className="w-4 h-4 text-slate-400" /> Sample activity log
             </h3>
             <div className="p-4 rounded-xl border border-slate-200 bg-white shadow-sm font-mono text-xs text-slate-600 space-y-2 h-[104px] overflow-y-auto">
               <div className="text-emerald-600">[09:14:01] ReviewAgent: Analyzing PR #1043...</div>
@@ -71,30 +75,27 @@ export default function DevtoolsDashboardView() {
               <Play className="w-4 h-4 text-emerald-500" /> Analysis Workflows
            </h3>
            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-             <button className="p-5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-emerald-300 hover:shadow-md transition-all text-left group shadow-sm">
-                <h4 className="font-semibold text-sm mb-1 text-slate-800 group-hover:text-emerald-600 transition-colors">Automated PR Review</h4>
+             <article className="p-5 rounded-xl border border-slate-200 bg-white shadow-sm">
+                <h4 className="font-semibold text-sm mb-1 text-slate-800">Automated PR Review</h4>
                 <p className="text-xs text-slate-500 mb-4 leading-relaxed">Analyze diffs for stylistic consistency, potential bugs, and security vulnerabilities.</p>
                 <div className="text-xs font-mono text-emerald-600 flex items-center justify-between">
-                  <span>Status: Ready</span>
-                  <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span>Workflow concept</span>
                 </div>
-             </button>
-             <button className="p-5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-emerald-300 hover:shadow-md transition-all text-left group shadow-sm">
-                <h4 className="font-semibold text-sm mb-1 text-slate-800 group-hover:text-emerald-600 transition-colors">Dependency Audit</h4>
+             </article>
+             <article className="p-5 rounded-xl border border-slate-200 bg-white shadow-sm">
+                <h4 className="font-semibold text-sm mb-1 text-slate-800">Dependency Audit</h4>
                 <p className="text-xs text-slate-500 mb-4 leading-relaxed">Scan package.json for outdated or vulnerable dependencies and suggest updates.</p>
                 <div className="text-xs font-mono text-emerald-600 flex items-center justify-between">
-                  <span>Status: Ready</span>
-                  <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span>Workflow concept</span>
                 </div>
-             </button>
-             <button className="p-5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-emerald-300 hover:shadow-md transition-all text-left group shadow-sm">
-                <h4 className="font-semibold text-sm mb-1 text-slate-800 group-hover:text-emerald-600 transition-colors">Legacy Refactoring</h4>
+             </article>
+             <article className="p-5 rounded-xl border border-slate-200 bg-white shadow-sm">
+                <h4 className="font-semibold text-sm mb-1 text-slate-800">Legacy Refactoring</h4>
                 <p className="text-xs text-slate-500 mb-4 leading-relaxed">Identify outdated patterns and automatically suggest modernized TypeScript implementations.</p>
                 <div className="text-xs font-mono text-emerald-600 flex items-center justify-between">
-                  <span>Status: Ready</span>
-                  <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span>Workflow concept</span>
                 </div>
-             </button>
+             </article>
            </div>
         </div>
 

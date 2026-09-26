@@ -101,6 +101,7 @@ export const PipelineFlowchartWidget: React.FC = () => {
         <h3 className="text-sm m-0">Pair Evaluation Pipeline</h3>
         <div className="flex items-center gap-2">
           <button 
+            type="button"
             onClick={scrollLeft}
             className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
             aria-label="Scroll left"
@@ -108,6 +109,7 @@ export const PipelineFlowchartWidget: React.FC = () => {
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button 
+            type="button"
             onClick={scrollRight}
             className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
             aria-label="Scroll right"

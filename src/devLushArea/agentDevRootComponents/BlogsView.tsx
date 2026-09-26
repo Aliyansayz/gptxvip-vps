@@ -7,9 +7,20 @@ import { BlogArticle } from './blogs/components/core/BlogArticle';
 
 const blogPosts: BlogPost[] = blogPostsData as BlogPost[];
 
-export const BlogsView: React.FC = () => {
+interface BlogsViewProps {
+    routeByUrl?: boolean;
+    onBackToWorkspace?: () => void;
+    backToWorkspaceLabel?: string;
+}
+
+export const BlogsView: React.FC<BlogsViewProps> = ({
+    routeByUrl = true,
+    onBackToWorkspace = () => window.location.assign('/'),
+    backToWorkspaceLabel = 'Back to GPTX.VIP home',
+}) => {
     // 1. Initial State from URL
     const getBlogIdFromUrl = () => {
+        if (!routeByUrl) return null;
         const pathSegments = window.location.pathname.split('/').filter(Boolean);
         return pathSegments.length > 1 && pathSegments[0] === 'blogs' ? pathSegments[1] : null;
     };
@@ -18,19 +29,40 @@ export const BlogsView: React.FC = () => {
 
     // 2. Listen to PopState for browser Back/Forward buttons
     useEffect(() => {
-        const handlePopState = () => {
-            setSelectedBlogId(getBlogIdFromUrl());
+        if (!routeByUrl) return;
+
+        const syncSelectedBlogFromLocation = () => {
+            const pathSegments = window.location.pathname.split('/').filter(Boolean);
+            const id = getBlogIdFromUrl();
+            const hasInvalidArticleRoute = pathSegments.length > 2 || (id !== null && !blogPosts.some((blog) => blog.id === id));
+
+            if (hasInvalidArticleRoute) {
+                window.history.replaceState({}, '', '/blogs');
+                setSelectedBlogId(null);
+                return;
+            }
+
+            setSelectedBlogId(id);
         };
-        window.addEventListener('popstate', handlePopState);
-        return () => window.removeEventListener('popstate', handlePopState);
-    }, []);
+
+        syncSelectedBlogFromLocation();
+        window.addEventListener('popstate', syncSelectedBlogFromLocation);
+        return () => window.removeEventListener('popstate', syncSelectedBlogFromLocation);
+    }, [routeByUrl]);
 
     // 3. Push state when user clicks a blog or "back to blogs" button
     const handleSelectBlog = (id: string | null) => {
-        if (id) {
-            window.history.pushState({}, '', `/blogs/${id}`);
-        } else {
-            window.history.pushState({}, '', '/blogs');
+        if (routeByUrl) {
+            if (id) {
+                window.history.pushState({ blogArticleEntry: true }, '', `/blogs/${encodeURIComponent(id)}`);
+            } else {
+                if (window.history.state?.blogArticleEntry === true) {
+                    setSelectedBlogId(null);
+                    window.history.back();
+                    return;
+                }
+                window.history.replaceState({}, '', '/blogs');
+            }
         }
         setSelectedBlogId(id);
     };
@@ -50,7 +82,8 @@ export const BlogsView: React.FC = () => {
                 <BlogList 
                     blogs={blogPosts} 
                     onSelectBlog={handleSelectBlog} 
-                    onBackToWorkspace={() => window.location.assign('/agents')}
+                    onBackToWorkspace={onBackToWorkspace}
+                    backToWorkspaceLabel={backToWorkspaceLabel}
                 />
             )}
         </BlogsLayout>

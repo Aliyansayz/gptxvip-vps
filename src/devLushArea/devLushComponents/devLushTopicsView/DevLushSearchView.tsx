@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { LabData, ConceptCourse } from '../../../types';
+import { LabData, ConceptCourse } from '../devLushTypes';
 import { SearchIcon, PlayIcon } from '../../agentDevRootComponents/icons';
 import { CourseIcon } from '../../agentDevRootComponents/CourseIcon';
 import { RefreshCw, X } from 'lucide-react';
@@ -29,6 +29,7 @@ const KeywordMarquee: React.FC<{ keywords: string[]; direction: 'ltr' | 'rtl'; o
             <div className={`flex w-max ${animationClass} group-hover:[animation-play-state:paused]`}>
                 {allKeywords.map((keyword, index) => (
                     <button 
+                        type="button"
                         key={`${direction}-${index}-${keyword}`} 
                         onClick={() => onKeywordClick(keyword)}
                         className={`whitespace-nowrap px-4 py-2 text-sm rounded-full transition-colors text-sky-500 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-sky-800/50`}
@@ -121,6 +122,13 @@ export const DevLushSearchView: React.FC<DevLushSearchViewProps> = ({ devLushTop
         setSelectedIndex(-1);
     }, [searchTerm, searchDictionary]);
 
+    const handleClose = useCallback(() => {
+        onClose();
+        window.requestAnimationFrame(() => {
+            document.querySelector<HTMLButtonElement>('[aria-label="Search Agent Labs topics"]')?.focus();
+        });
+    }, [onClose]);
+
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'ArrowDown') {
             e.preventDefault();
@@ -144,8 +152,8 @@ export const DevLushSearchView: React.FC<DevLushSearchViewProps> = ({ devLushTop
             setIsFocused(false);
             (e.target as HTMLInputElement).blur();
         } else if (e.key === 'Escape') {
-            setIsFocused(false);
-            (e.target as HTMLInputElement).blur();
+            e.preventDefault();
+            handleClose();
         }
     };
 
@@ -268,9 +276,11 @@ export const DevLushSearchView: React.FC<DevLushSearchViewProps> = ({ devLushTop
     }, [searchTerm, allChapters]);
 
     return (
-        <div className="h-full w-full overflow-y-auto custom-scrollbar p-8 bg-slate-50 dark:bg-black relative">
+        <div role="search" aria-label="Agent Labs topic search" className="h-full w-full overflow-y-auto custom-scrollbar p-8 bg-slate-50 dark:bg-black relative">
             <button 
-                onClick={onClose}
+                type="button"
+                onClick={handleClose}
+                aria-label="Close topic search and return to topics"
                 className="absolute top-6 right-6 p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors z-50 text-slate-500"
             >
                 <X className="w-6 h-6" />
@@ -292,7 +302,10 @@ export const DevLushSearchView: React.FC<DevLushSearchViewProps> = ({ devLushTop
                         <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 z-20" />
                         
                         <input
+                            aria-label="Search Agent Labs topic labs"
+                            aria-controls="agent-labs-topic-search-results"
                             type="text"
+                            autoFocus
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             onKeyDown={handleKeyDown}
@@ -313,12 +326,15 @@ export const DevLushSearchView: React.FC<DevLushSearchViewProps> = ({ devLushTop
                     {isFocused && dropdownSuggestions.length > 0 && (
                         <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                             {dropdownSuggestions.map((s, idx) => (
-                                <div 
+                                <button
+                                    type="button"
+                                    tabIndex={-1}
                                     key={s} 
-                                    className={`px-6 py-3 cursor-pointer text-slate-900 dark:text-white flex items-center transition-colors ${idx === selectedIndex ? 'bg-indigo-50 dark:bg-sky-800/40' : 'hover:bg-slate-50 dark:hover:bg-slate-800'}`}
+                                    className={`w-full px-6 py-3 text-left text-slate-900 dark:text-white flex items-center transition-colors ${idx === selectedIndex ? 'bg-indigo-50 dark:bg-sky-800/40' : 'hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                                     onClick={() => {
                                         setSearchTerm(s);
                                         setIsFocused(false);
+                                        document.querySelector<HTMLInputElement>('[aria-label="Search Agent Labs topic labs"]')?.focus();
                                     }}
                                     onMouseEnter={() => setSelectedIndex(idx)}
                                 >
@@ -333,7 +349,7 @@ export const DevLushSearchView: React.FC<DevLushSearchViewProps> = ({ devLushTop
                                             <span className="text-slate-500 dark:text-slate-400 font-normal">{s}</span>
                                         )}
                                     </span>
-                                </div>
+                                </button>
                             ))}
                         </div>
                     )}
@@ -343,6 +359,7 @@ export const DevLushSearchView: React.FC<DevLushSearchViewProps> = ({ devLushTop
                     <div className="flex items-center justify-between mb-2 px-2">
                         <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Suggested Topics</span>
                         <button 
+                            type="button"
                             onClick={handleRefreshKeywords}
                             className={`p-1.5 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors ${isRefreshing ? 'animate-spin' : ''}`}
                             title="Refresh Topics"
@@ -356,10 +373,11 @@ export const DevLushSearchView: React.FC<DevLushSearchViewProps> = ({ devLushTop
                     </div>
                 </div>
 
-                <div className="space-y-6">
+                <div id="agent-labs-topic-search-results" role="region" aria-label="Topic lab search results" className="space-y-6">
                     {searchTerm.trim().length >= 2 && results.length === 0 && (
-                        <div className="text-center py-12">
-                            <p className="text-slate-500 dark:text-slate-400">No agents found matching your search.</p>
+                        <div role="status" aria-live="polite" className="text-center py-12">
+                            <p className="text-slate-500 dark:text-slate-400">No topic labs match “{searchTerm}”. Try a broader term or choose a suggested topic.</p>
+                            <button type="button" onClick={() => setSearchTerm('')} className="mt-3 text-sm font-semibold text-sky-600 hover:underline dark:text-indigo-300">Clear search</button>
                         </div>
                     )}
                     {results.map(chapter => {

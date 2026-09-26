@@ -19,8 +19,10 @@ import { CoreConceptRunner } from "./CoreConceptRunner";
 import { SearchConceptsView } from "../searchFeature/SearchConceptsView";
 import { FavoritesProvider, useFavorites } from "../addtoFavorites/FavoritesContext";
 import { FavoritesView } from "../addtoFavorites/FavoritesView";
+import { CONCEPT_DATA_FILES } from "../courseDataFiles";
 
 interface CodeConceptsViewProps {
+  courseMode?: "code-concepts" | "core-concepts" | "math-primer";
   activeCategory: CategoryType | "favorites" | string;
   setActiveCategory: (category: CategoryType | "favorites" | string) => void;
   onToggleUI?: (show: boolean) => void;
@@ -28,15 +30,12 @@ interface CodeConceptsViewProps {
   initialActivityId?: string;
 }
 
-const CONCEPT_DATA_FILES: Record<string, string[]> = {
-  general: ["index.json"],
-  cpp_hello_world: ["index.json"],
-  cpp_engine_design: ["index.json"],
-  HFT: ["index.json"],
-  python: ["index.json", "advanced_topics.json"],
-};
-
 const COMPLETED_LESSONS_STORAGE_KEY = "code_concepts_completed_lessons";
+const COURSE_MODE_LABELS = {
+  "code-concepts": "Code Concepts",
+  "core-concepts": "Core Concepts",
+  "math-primer": "Math Primer",
+} as const;
 
 const isFullScreenType = (type: string | undefined) =>
   type === "scroll_code_walkthrough" ||
@@ -58,6 +57,21 @@ const readCompletedLessons = (): string[] => {
   }
 };
 
+const createOverviewQuestion = (
+  categoryId: string,
+  categoryData: CodeConceptsPayload | undefined,
+  difficulty: string,
+): InteractiveQuestion => ({
+  componentId: `overview_${categoryId}`,
+  type: "overview",
+  difficulty: categoryId === "general" ? "basic" : difficulty as any,
+  concept_tested: "Theory & Overview",
+  title: "Module Overview",
+  question: "Build a clear foundation before you move into the interactive exercises.",
+  explanation: "Understanding these core principles is essential for mastering the module.",
+  theory: categoryData?.critical_concepts,
+});
+
 const getPathPrefix = () => {
   if (window.location.pathname.startsWith("/math_primer")) return "/math_primer";
   if (window.location.pathname.startsWith("/code_concepts")) return "/code_concepts";
@@ -66,6 +80,7 @@ const getPathPrefix = () => {
 
 const loadConcepts = async () => {
   const payloads: Record<string, CodeConceptsPayload> = {};
+  let failedFileCount = 0;
 
   await Promise.all(
     Object.entries(CONCEPT_DATA_FILES).map(async ([categoryId, files]) => {
@@ -79,7 +94,7 @@ const loadConcepts = async () => {
       await Promise.all(files.map(async (fileName) => {
         try {
           const response = await fetch(`/code_concepts/${categoryId}/${fileName}`);
-          if (!response.ok) return;
+          if (!response.ok) throw new Error(`Curriculum request failed (${response.status})`);
           const fileData = await response.json() as Partial<CodeConceptsPayload>;
           merged.course ||= fileData.course || "";
           merged.chapter_title ||= fileData.chapter_title || "";
@@ -90,7 +105,7 @@ const loadConcepts = async () => {
             merged.interactive_questions.push(...fileData.interactive_questions);
           }
         } catch {
-          // Missing curriculum files are skipped; the remaining course content stays usable.
+          failedFileCount += 1;
         }
       }));
 
@@ -98,8 +113,10 @@ const loadConcepts = async () => {
     }),
   );
 
-  return payloads;
+  return { payloads, failedFileCount };
 };
+
+const TOTAL_CONCEPT_DATA_FILES = Object.values(CONCEPT_DATA_FILES).reduce((count, files) => count + files.length, 0);
 
 type MobileTab = "learn" | "search" | "saved";
 
@@ -153,6 +170,7 @@ export const CodeConceptsView: React.FC<CodeConceptsViewProps> = (props) => (
 );
 
 const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
+  courseMode = "code-concepts",
   activeCategory,
   setActiveCategory,
   onToggleUI,
@@ -164,6 +182,8 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
   const [showFavorites, setShowFavorites] = useState(false);
   const [conceptsData, setConceptsData] = useState<Record<string, CodeConceptsPayload>>({});
   const [isLoading, setIsLoading] = useState(true);
+  const [failedConceptFileCount, setFailedConceptFileCount] = useState(0);
+  const [loadAttempt, setLoadAttempt] = useState(0);
   const [completedLessonIds, setCompletedLessonIds] = useState<string[]>(readCompletedLessons);
   const hasHandledInitialActivity = useRef(false);
   const { collections } = useFavorites();
@@ -171,15 +191,22 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
 
   useEffect(() => {
     let cancelled = false;
-    loadConcepts().then((payloads) => {
-      if (!cancelled) setConceptsData(payloads);
+    setIsLoading(true);
+    loadConcepts().then(({ payloads, failedFileCount }) => {
+      if (!cancelled) {
+        setConceptsData(payloads);
+        setFailedConceptFileCount(failedFileCount);
+      }
+    }).catch((error) => {
+      console.error("Could not load Code Concepts curriculum:", error);
+      if (!cancelled) setFailedConceptFileCount(TOTAL_CONCEPT_DATA_FILES);
     }).finally(() => {
       if (!cancelled) setIsLoading(false);
     });
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [loadAttempt]);
 
   useEffect(() => {
     try {
@@ -206,25 +233,68 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
     }
   }, [initialActivityId, activeData, onToggleUI]);
 
+  useEffect(() => {
+    const syncLessonFromLocation = () => {
+      const pathParts = window.location.pathname.split("/").filter(Boolean);
+      if (!["code_concepts", "core_concepts", "math_primer"].includes(pathParts[0])) return;
+      if (isLoading) return;
+
+      const requestedCategory = pathParts[1];
+      const isValidCategory = requestedCategory === "favorites" || CODE_CONCEPT_CATEGORIES.some((category) => category.id === requestedCategory);
+      const categoryId = isValidCategory && requestedCategory ? requestedCategory : "general";
+      setShowFavorites(categoryId === "favorites" || window.history.state?.codeConceptView === "favorites");
+
+      const activityId = pathParts[2];
+      const categoryData = conceptsData[categoryId];
+      const concept = activityId && isValidCategory && pathParts.length >= 3
+        ? categoryData?.interactive_questions.find((question) => question.componentId === activityId)
+          || (activityId === `overview_${categoryId}` && categoryData?.critical_concepts.length
+            ? createOverviewQuestion(categoryId, categoryData, activeDifficulty)
+            : null)
+        : null;
+      const canValidateActivity = Boolean(categoryData && (categoryData.critical_concepts.length || categoryData.interactive_questions.length));
+      const invalidActivity = Boolean(activityId && (categoryId === "favorites" || categoryId === "search" || (canValidateActivity && !concept)));
+      if (!isValidCategory || invalidActivity || pathParts.length > 3) {
+        const canonicalPath = `${getPathPrefix()}/${categoryId}${concept ? `/${encodeURIComponent(concept.componentId)}` : ""}`;
+        window.history.replaceState({}, "", `${canonicalPath}${window.location.search}${window.location.hash}`);
+      }
+      setActiveConcept(concept);
+      onToggleUI?.(!concept || !isFullScreenType(concept.type));
+    };
+
+    // Also run after lesson data loads so direct links and Back/Forward can resolve IDs.
+    syncLessonFromLocation();
+    window.addEventListener("popstate", syncLessonFromLocation);
+    return () => window.removeEventListener("popstate", syncLessonFromLocation);
+  }, [activeDifficulty, conceptsData, isLoading, onToggleUI]);
+
   const openSearch = () => {
     setShowFavorites(false);
     setActiveCategory("search");
   };
 
-  const openSaved = () => setShowFavorites(true);
+  const openSaved = () => {
+    if (showFavorites) return;
+    setShowFavorites(true);
+    window.history.pushState({ codeConceptView: "favorites" }, "", window.location.href);
+  };
 
   const handleStartConcept = (concept: InteractiveQuestion, categoryId = activeCategory) => {
     setShowFavorites(false);
     if (categoryId !== activeCategory) setActiveCategory(categoryId);
     setActiveConcept(concept);
     if (isFullScreenType(concept.type)) onToggleUI?.(false);
-    window.history.pushState({}, "", `${getPathPrefix()}/${categoryId}/${concept.componentId}`);
+    window.history.pushState({ codeConceptLesson: true }, "", `${getPathPrefix()}/${categoryId}/${encodeURIComponent(concept.componentId)}`);
   };
 
   const handleBackFromConcept = () => {
     if (isFullScreenType(activeConcept?.type)) onToggleUI?.(true);
     setActiveConcept(null);
-    window.history.pushState({}, "", `${getPathPrefix()}/${activeCategory}`);
+    if (window.history.state?.codeConceptLesson === true) {
+      window.history.back();
+      return;
+    }
+    window.history.replaceState({}, "", `${getPathPrefix()}/${activeCategory}`);
   };
 
   const markCurrentLessonComplete = () => {
@@ -234,16 +304,10 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
     handleBackFromConcept();
   };
 
-  const overviewQuestion: InteractiveQuestion = {
-    componentId: `overview_${activeCategory}`,
-    type: "overview",
-    difficulty: activeCategory === "general" ? "basic" : activeDifficulty as any,
-    concept_tested: "Theory & Overview",
-    title: "Module Overview",
-    question: "Build a clear foundation before you move into the interactive exercises.",
-    explanation: "Understanding these core principles is essential for mastering the module.",
-    theory: activeData?.critical_concepts,
-  };
+  const overviewQuestion = useMemo(
+    () => createOverviewQuestion(activeCategory, activeData, activeDifficulty),
+    [activeCategory, activeData, activeDifficulty],
+  );
 
   const allCourseLessons = useMemo(() => {
     if (!activeData) return [];
@@ -316,7 +380,15 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
             )?.[0];
             handleStartConcept(concept, categoryId || activeCategory);
           }}
-          onBack={() => setShowFavorites(false)}
+          onBack={() => {
+            setShowFavorites(false);
+            if (window.history.state?.codeConceptView === "favorites") {
+              window.history.back();
+              return;
+            }
+            if (activeCategory === "favorites") setActiveCategory("general");
+            window.history.replaceState({}, "", `${getPathPrefix()}/${activeCategory === "favorites" ? "general" : activeCategory}`);
+          }}
         />
         {mobileNav("saved")}
       </div>
@@ -329,7 +401,8 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
         <CoreConceptRunner
           concept={activeConcept}
           onBack={handleBackFromConcept}
-          courseId={activeCategoryInfo?.title}
+          onComplete={markCurrentLessonComplete}
+          courseId={`${COURSE_MODE_LABELS[courseMode]} · ${activeCategoryInfo?.title || "Course"}`}
           categoryId={activeCategoryInfo?.id}
           themeColor={themeColor}
         />
@@ -361,8 +434,8 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
                 <Code2 className="h-5 w-5" />
               </div>
               <div className="min-w-0">
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-emerald-600 dark:text-emerald-400">Code learning</p>
-                <h1 className="truncate text-lg font-black tracking-tight sm:text-xl">Your learning path</h1>
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-emerald-600 dark:text-emerald-400">{COURSE_MODE_LABELS[courseMode]}</p>
+                <h1 className="truncate text-lg font-black tracking-tight sm:text-xl">{COURSE_MODE_LABELS[courseMode]} learning path</h1>
               </div>
             </div>
             <div className="flex shrink-0 items-center gap-1.5">
@@ -385,6 +458,26 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
               </button>
             </div>
           </header>
+
+          {failedConceptFileCount > 0 && (
+            <div role="status" aria-live="polite" className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100">
+              <span>
+                {failedConceptFileCount === TOTAL_CONCEPT_DATA_FILES
+                  ? "Course content could not be loaded. Your saved progress is still available."
+                  : `${failedConceptFileCount} course data file${failedConceptFileCount === 1 ? "" : "s"} could not be loaded; some lessons may be missing.`}
+              </span>
+              <button type="button" onClick={() => setLoadAttempt((attempt) => attempt + 1)} disabled={isLoading} className="min-h-9 rounded-lg border border-current/30 px-3 font-bold disabled:cursor-wait disabled:opacity-50">
+                {isLoading ? "Retrying…" : "Retry"}
+              </button>
+            </div>
+          )}
+
+          {courseMode === "math-primer" && (
+            <aside className="mb-5 flex flex-col gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950 sm:flex-row sm:items-center sm:justify-between dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-100">
+              <p><strong>Math Primer uses the shared Code Concepts catalog.</strong> No dedicated math lesson set is loaded yet. For the currently available applied probability and volatility examples, open the HFT course.</p>
+              <button type="button" onClick={() => { setShowFavorites(false); setActiveCategory("HFT"); }} className="min-h-10 shrink-0 rounded-xl border border-amber-300 px-4 text-xs font-bold text-amber-900 hover:bg-amber-100 dark:border-amber-800 dark:text-amber-100 dark:hover:bg-amber-900/40">Open HFT examples</button>
+            </aside>
+          )}
 
           <div className="mb-5 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" role="tablist" aria-label="Choose a course">
             {CODE_CONCEPT_CATEGORIES.filter((category) => category.id !== "search").map((category) => {

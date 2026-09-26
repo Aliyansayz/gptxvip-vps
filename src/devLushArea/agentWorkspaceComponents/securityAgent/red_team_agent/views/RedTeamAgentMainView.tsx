@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import RedTeamAgentSidebar, { RedTeamSidebarView } from '../components/RedTeamAgentSidebar';
 import RedTeamDashboardView from './RedTeamDashboardView';
 import RedTeamToolsView from './RedTeamToolsView';
@@ -17,16 +17,36 @@ export default function RedTeamAgentMainView() {
   const [runTutorial, setRunTutorial] = useState(true);
 
   const [simLogs, setSimLogs] = useState<string[]>([]);
+  const simulationTimers = useRef<number[]>([]);
+
+  const clearSimulationTimers = () => {
+    simulationTimers.current.forEach((timerId) => window.clearTimeout(timerId));
+    simulationTimers.current = [];
+  };
+
+  useEffect(() => () => {
+    simulationTimers.current.forEach((timerId) => window.clearTimeout(timerId));
+    simulationTimers.current = [];
+  }, []);
 
   const startSimulation = () => {
+    clearSimulationTimers();
     setSidebarView('exploitation');
     setSimLogs(['> Initializing APT emulation sequence...', '> Target scope: 10.0.x.x/24']);
     
-    setTimeout(() => setSimLogs(prev => [...prev, '> Scanning perimeter for exposed services...']), 1000);
-    setTimeout(() => setSimLogs(prev => [...prev, '> Identified unpatched Apache Struts instance (10.0.1.45)']), 2500);
-    setTimeout(() => setSimLogs(prev => [...prev, '> Executing payload for CVE-2017-5638...']), 4000);
-    setTimeout(() => setSimLogs(prev => [...prev, '> SUCCESS: Gained low-privilege shell.']), 5500);
-    setTimeout(() => setSimLogs(prev => [...prev, '> Initiating lateral movement and privilege escalation phases...']), 7000);
+    simulationTimers.current = [
+      window.setTimeout(() => setSimLogs(prev => [...prev, '> Scanning perimeter for exposed services...']), 1000),
+      window.setTimeout(() => setSimLogs(prev => [...prev, '> Identified unpatched Apache Struts instance (10.0.1.45)']), 2500),
+      window.setTimeout(() => setSimLogs(prev => [...prev, '> Executing payload for CVE-2017-5638...']), 4000),
+      window.setTimeout(() => setSimLogs(prev => [...prev, '> SUCCESS: Gained low-privilege shell.']), 5500),
+      window.setTimeout(() => setSimLogs(prev => [...prev, '> Initiating lateral movement and privilege escalation phases...']), 7000),
+    ];
+  };
+
+  const stopSimulation = () => {
+    clearSimulationTimers();
+    setSimLogs([]);
+    setSidebarView('dashboard');
   };
 
   const handleSidebarNavigate = (view: RedTeamSidebarView) => {
@@ -65,9 +85,9 @@ export default function RedTeamAgentMainView() {
                     <Terminal className="w-4 h-4" />
                     <span className="text-sm font-medium font-mono uppercase tracking-wider text-slate-700">Exploitation Terminal</span>
                   </div>
-                  <div className="flex items-center gap-2 text-red-600">
-                    <Target className="w-4 h-4 animate-pulse" />
-                    <span className="text-xs font-mono uppercase font-semibold">Simulation Active</span>
+                  <div className="flex items-center gap-3 text-red-600">
+                    <span className="text-xs font-mono uppercase font-semibold">Scripted simulation · no target contacted</span>
+                    <button type="button" onClick={stopSimulation} className="rounded-md border border-red-200 bg-white px-3 py-1.5 text-xs font-bold text-red-700 hover:bg-red-50">Stop scenario</button>
                   </div>
                 </div>
                 <div className="flex-1 p-6 font-mono text-sm text-slate-600 overflow-y-auto space-y-2">

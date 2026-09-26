@@ -1,5 +1,6 @@
 import React from 'react';
 import { Cloud, AlertTriangle, FileWarning, CheckCircle, ArrowRight, ShieldAlert, Key } from 'lucide-react';
+import AgentPreviewNotice from '../../../components/AgentPreviewNotice';
 
 interface CloudPostureDashboardViewProps {
   onAuditResource: () => void;
@@ -8,6 +9,7 @@ interface CloudPostureDashboardViewProps {
 export default function CloudPostureDashboardView({ onAuditResource }: CloudPostureDashboardViewProps) {
   return (
     <div className="p-8 max-w-6xl mx-auto h-full overflow-y-auto custom-scrollbar cloud-posture-dashboard-header">
+      <AgentPreviewNotice>Findings, resource identifiers, account names, and status values are illustrative. Confirm the cloud account and current resource state before changing configuration.</AgentPreviewNotice>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-bold font-heading text-slate-800">Cloud Security Posture (CSPM)</h1>
@@ -18,7 +20,7 @@ export default function CloudPostureDashboardView({ onAuditResource }: CloudPost
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors shadow-sm"
         >
           <AlertTriangle className="w-4 h-4" />
-          Remediate Misconfiguration
+          Review critical finding
         </button>
       </div>
 
@@ -77,8 +79,8 @@ export default function CloudPostureDashboardView({ onAuditResource }: CloudPost
                   <span className="text-slate-600 font-medium">{alert.status}</span>
                 </td>
                 <td className="px-6 py-4 text-right">
-                  <button onClick={alert.sev === 'CRITICAL' ? onAuditResource : undefined} className={`${alert.sev === 'CRITICAL' ? 'text-blue-600 hover:text-blue-800' : 'text-slate-400 cursor-not-allowed'} font-medium flex items-center gap-1 justify-end w-full`}>
-                    Remediate <ArrowRight className="w-4 h-4" />
+                  <button type="button" disabled={alert.sev !== 'CRITICAL'} onClick={alert.sev === 'CRITICAL' ? onAuditResource : undefined} className={`${alert.sev === 'CRITICAL' ? 'text-blue-600 hover:text-blue-800' : 'text-slate-400 cursor-not-allowed'} font-medium flex items-center gap-1 justify-end w-full`}>
+                    Review finding <ArrowRight className="w-4 h-4" />
                   </button>
                 </td>
               </tr>

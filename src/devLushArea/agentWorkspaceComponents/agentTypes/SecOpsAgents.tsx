@@ -15,7 +15,7 @@ export const SecOpsAgents: React.FC<SecOpsAgentsProps> = ({ onNavigate }) => {
         <h2 className="text-2xl font-bold font-heading text-slate-800 group-hover:text-red-600 transition-colors">SecOps Agents</h2>
       </div>
       <p className="text-slate-500 mb-6 flex-1 text-sm leading-relaxed">
-        Autonomous agents dedicated to security posture, attack surface discovery, and exploitation simulation.
+        Explore sample workflows for vulnerability triage, incident response, threat intelligence, and cloud posture review.
       </p>
       <div className="space-y-3">
         <button 
@@ -26,7 +26,7 @@ export const SecOpsAgents: React.FC<SecOpsAgentsProps> = ({ onNavigate }) => {
             <Search className="w-5 h-5 text-red-500" />
             <div>
               <div className="font-semibold text-sm text-slate-800">Scanner Agent</div>
-              <div className="text-[11px] text-slate-500 font-medium">Autonomous endpoint crawler & evaluator</div>
+              <div className="text-[11px] text-slate-500 font-medium">Review example findings and a scripted scan preview</div>
             </div>
           </div>
           <Activity className="w-4 h-4 text-slate-400" />
@@ -40,7 +40,7 @@ export const SecOpsAgents: React.FC<SecOpsAgentsProps> = ({ onNavigate }) => {
             <Lock className="w-5 h-5 text-red-500" />
             <div>
               <div className="font-semibold text-sm text-slate-800">Incident Response (DFIR) Agent</div>
-              <div className="text-[11px] text-slate-500 font-medium">Autonomous incident triage & containment</div>
+              <div className="text-[11px] text-slate-500 font-medium">Walk through a sample incident and evidence views</div>
             </div>
           </div>
           <Activity className="w-4 h-4 text-slate-400" />
@@ -54,7 +54,7 @@ export const SecOpsAgents: React.FC<SecOpsAgentsProps> = ({ onNavigate }) => {
             <Globe className="w-5 h-5 text-purple-500" />
             <div>
               <div className="font-semibold text-sm text-slate-800">Threat Intelligence Agent</div>
-              <div className="text-[11px] text-slate-500 font-medium">Global threat monitoring & OSINT</div>
+              <div className="text-[11px] text-slate-500 font-medium">Inspect example indicators and source context</div>
             </div>
           </div>
           <Activity className="w-4 h-4 text-slate-400" />
@@ -68,7 +68,7 @@ export const SecOpsAgents: React.FC<SecOpsAgentsProps> = ({ onNavigate }) => {
             <Cloud className="w-5 h-5 text-blue-500" />
             <div>
               <div className="font-semibold text-sm text-slate-800">Cloud Security Posture Agent</div>
-              <div className="text-[11px] text-slate-500 font-medium">Multi-cloud CSPM & Auto-remediation</div>
+              <div className="text-[11px] text-slate-500 font-medium">Review sample cloud risks and remediation notes</div>
             </div>
           </div>
           <Activity className="w-4 h-4 text-slate-400" />

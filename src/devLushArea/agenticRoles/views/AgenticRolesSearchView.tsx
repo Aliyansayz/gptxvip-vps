@@ -121,7 +121,7 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
     } else {
       favoritesCtx.addFavorite({
         id: chapter.labComponentId,
-        type: 'devlush_lab',
+        type: 'agentic_role_lab',
         title: `${chapter.day_title} (${chapter.course})`,
         courseId: roleId
       });
@@ -130,12 +130,13 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-12 md:pt-20 bg-slate-950/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="w-full max-w-4xl rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+      <div role="dialog" aria-modal="true" aria-label="Search Agentic Roles chapters" className="w-full max-w-4xl rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
         {/* Top Search Input Header */}
         <div className="p-4 border-b border-slate-800 flex items-center gap-3 bg-slate-900/90">
           <Search className="w-5 h-5 text-blue-400 flex-shrink-0" />
           <input
             autoFocus
+            aria-label="Search roles and chapters"
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -144,6 +145,8 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
           />
           {query && (
             <button
+              type="button"
+              aria-label="Clear search"
               onClick={() => setQuery('')}
               className="p-1 rounded-lg text-slate-400 hover:text-white"
             >
@@ -151,6 +154,8 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
             </button>
           )}
           <button
+            type="button"
+            aria-label="Close Agentic Roles search"
             onClick={onClose}
             className="px-2.5 py-1 rounded-lg bg-slate-800 text-xs font-mono text-slate-400 hover:text-white"
           >
@@ -173,6 +178,8 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
               { id: 'visualization', label: 'Visualization' }
             ].map((domain) => (
               <button
+                type="button"
+                aria-pressed={selectedDomain === domain.id}
                 key={domain.id}
                 onClick={() => setSelectedDomain(domain.id as any)}
                 className={`px-2.5 py-1 rounded-lg text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
@@ -192,6 +199,8 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
               <span className="text-slate-500 text-[11px] mr-1">Difficulty:</span>
               {(['all', 'easy', 'medium', 'hard'] as const).map((diff) => (
                 <button
+                  type="button"
+                  aria-pressed={selectedDifficulty === diff}
                   key={diff}
                   onClick={() => setSelectedDifficulty(diff)}
                   className={`px-2 py-0.5 rounded capitalize transition-all cursor-pointer text-[11px] ${
@@ -205,19 +214,28 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
               ))}
             </div>
 
-            <span className="text-slate-400 text-[11px]">
+            <span aria-live="polite" className="text-slate-400 text-[11px]">
               {results.length} {results.length === 1 ? 'activity' : 'activities'} found
             </span>
           </div>
         </div>
 
         {/* Results Stream */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-2.5 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto p-4 space-y-2.5 custom-scrollbar" aria-label="Search results">
           {results.length === 0 ? (
             <div className="py-16 text-center text-slate-500 text-xs space-y-2">
               <Sparkles className="w-8 h-8 mx-auto text-slate-600" />
               <p className="text-white font-bold">No matching activities found</p>
               <p>Try broadening your search query or clearing the domain filters.</p>
+              {(query || selectedDomain !== 'all' || selectedDifficulty !== 'all') && (
+                <button
+                  type="button"
+                  onClick={() => { setQuery(''); setSelectedDomain('all'); setSelectedDifficulty('all'); }}
+                  className="mt-2 rounded-lg border border-slate-700 px-3 py-2 text-slate-200 hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-400"
+                >
+                  Clear search and filters
+                </button>
+              )}
             </div>
           ) : (
             results.map((res, idx) => {
@@ -225,11 +243,7 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
               const isFav = favoritesCtx?.favorites.some((f) => f.id === res.chapter.labComponentId) || false;
 
               return (
-                <div
-                  key={idx}
-                  onClick={() => onSelectChapter(res.role.id, res.chapter)}
-                  className="p-4 rounded-xl bg-slate-950 border border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/60 transition-all flex items-center justify-between cursor-pointer group"
-                >
+                <article key={`${res.role.id}-${res.chapter.labComponentId}`} className="p-4 rounded-xl bg-slate-950 border border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/60 transition-all flex items-center justify-between group">
                   <div className="space-y-1.5 flex-1 pr-4">
                     <div className="flex items-center gap-2">
                       <span
@@ -250,6 +264,8 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
                     <div className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">
                       {res.chapter.day_title}
                     </div>
+                    <p className="text-xs text-slate-400">Chapter: {res.chapter.chapter_title}</p>
+                    <p className="text-xs text-slate-400">Expected activity: Interactive mission with {res.chapter.interactive_questions?.length || 1} decision {res.chapter.interactive_questions?.length === 1 ? 'step' : 'steps'}.</p>
 
                     {res.matchedField === 'concept' && (
                       <div className="text-xs text-slate-400">
@@ -286,11 +302,11 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
                       <Star className={`w-4 h-4 ${isFav ? 'fill-amber-400' : ''}`} />
                     </button>
 
-                    <div className="p-2 rounded-lg bg-blue-600/10 text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all">
-                      <ArrowRight className="w-4 h-4" />
-                    </div>
+                    <button type="button" onClick={() => onSelectChapter(res.role.id, res.chapter)} className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-300" aria-label={`Open ${res.role.title}, ${res.chapter.day_title}`}>
+                      Open chapter <ArrowRight className="w-4 h-4" />
+                    </button>
                   </div>
-                </div>
+                </article>
               );
             })
           )}

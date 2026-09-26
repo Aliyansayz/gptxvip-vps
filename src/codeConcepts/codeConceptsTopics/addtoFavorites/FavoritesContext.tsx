@@ -19,21 +19,39 @@ const defaultCollections: Collection[] = [
   { id: 'default', name: 'Saved Activities', items: [] }
 ];
 
+const readSavedCollections = (): Collection[] => {
+  try {
+    const stored = window.localStorage.getItem('code_concepts_favorites');
+    if (!stored) return defaultCollections;
+    const parsed: unknown = JSON.parse(stored);
+    if (!Array.isArray(parsed)) return defaultCollections;
+    const valid = parsed.flatMap((collection): Collection[] => {
+      if (!collection || typeof collection !== 'object') return [];
+      const value = collection as Partial<Collection>;
+      if (typeof value.id !== 'string' || typeof value.name !== 'string' || !Array.isArray(value.items)) return [];
+      const items = value.items.filter((item): item is InteractiveQuestion =>
+        !!item && typeof item === 'object' &&
+        typeof (item as InteractiveQuestion).componentId === 'string' &&
+        typeof (item as InteractiveQuestion).type === 'string');
+      return [{ id: value.id, name: value.name, items }];
+    });
+    return valid.length ? valid : defaultCollections;
+  } catch {
+    return defaultCollections;
+  }
+};
+
 const FavoritesContext = createContext<FavoritesContextType | null>(null);
 
 export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [collections, setCollections] = useState<Collection[]>(() => {
-    try {
-      const stored = localStorage.getItem('code_concepts_favorites');
-      if (stored) return JSON.parse(stored);
-    } catch (e) {
-      console.error("Error reading favorites", e);
-    }
-    return defaultCollections;
-  });
+  const [collections, setCollections] = useState<Collection[]>(readSavedCollections);
 
   useEffect(() => {
-    localStorage.setItem('code_concepts_favorites', JSON.stringify(collections));
+    try {
+      window.localStorage.setItem('code_concepts_favorites', JSON.stringify(collections));
+    } catch {
+      // Saved items remain usable for this session when browser storage is unavailable.
+    }
   }, [collections]);
 
   const addCollection = (name: string) => {

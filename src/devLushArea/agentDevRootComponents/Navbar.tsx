@@ -97,7 +97,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header className="sticky top-0 z-50 w-full shrink-0 border-b border-zinc-200/80 bg-white/95 backdrop-blur-xl dark:border-zinc-800/80 dark:bg-zinc-950/95">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-3 px-3 sm:px-6">
         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-          <button onClick={() => currentView === 'landing' ? (onExit || (() => window.location.assign('/')))() : changeView('landing')} className="rounded-lg p-1.5 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950 dark:hover:bg-zinc-900 dark:hover:text-white" aria-label={currentView === 'landing' ? 'Return to GPTX.VIP' : 'Return to Agent Labs overview'}>
+          <button onClick={() => currentView === 'landing' ? (onExit || (() => window.location.assign('/')))() : changeView('landing')} className="rounded-lg p-1.5 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950 dark:hover:bg-zinc-900 dark:hover:text-white" aria-label={currentView === 'landing' ? (onExit ? 'Return to Agent catalog' : 'Return to GPTX.VIP') : 'Return to Agent Labs overview'}>
             <ArrowLeft className="h-4 w-4" />
           </button>
           <button onClick={() => changeView('landing')} className="flex min-w-0 items-center gap-2 text-left">

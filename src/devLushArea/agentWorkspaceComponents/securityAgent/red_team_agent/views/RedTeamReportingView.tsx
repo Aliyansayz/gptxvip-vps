@@ -1,5 +1,6 @@
 import React from 'react';
-import { FileText, Download, GitMerge, AlertCircle } from 'lucide-react';
+import { FileText, Download, GitMerge } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function RedTeamReportingView() {
   const attackPaths = [
@@ -29,6 +30,26 @@ export default function RedTeamReportingView() {
     }
   ];
 
+  const handleExportReport = () => {
+    try {
+      const report = attackPaths.map((path) => [
+        `${path.id} — ${path.target} (${path.severity.toUpperCase()})`,
+        ...path.steps.map((step, index) => `${index + 1}. ${step}`),
+      ].join('\n')).join('\n\n');
+      const url = URL.createObjectURL(new Blob([report], { type: 'text/plain;charset=utf-8' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'red-team-attack-paths.txt';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 0);
+      toast.success('Sample report downloaded.');
+    } catch {
+      toast.error('Could not export the report. Please try again.');
+    }
+  };
+
   return (
     <div className="flex-1 p-8 bg-slate-50 overflow-y-auto">
       <div className="max-w-4xl mx-auto space-y-6">
@@ -40,7 +61,7 @@ export default function RedTeamReportingView() {
             </h2>
             <p className="text-slate-500 mt-2">Documented attack vectors and successful exploitation chains from recent simulations.</p>
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors shadow-sm font-medium">
+          <button type="button" onClick={handleExportReport} className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors shadow-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-500">
             <Download className="w-4 h-4" />
             Export Report
           </button>

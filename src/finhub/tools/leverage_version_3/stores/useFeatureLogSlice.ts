@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FeatureLogEntry } from '../functions/api/indicatorLog/featureLogBook';
-import { loadState } from './utils/storage';
+import { loadState, saveState } from './utils/storage';
 
 const STORAGE_KEY = 'leverage_trading_v1_settings';
 
@@ -17,19 +17,19 @@ export function useFeatureLogSlice() {
   const [indicatorCheckedState, setIndicatorCheckedState] = useState<Record<string, boolean>>(() => loadState(`${STORAGE_KEY}_indicator_checked_state`, {}));
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_feature_log_active`, JSON.stringify(isFeatureLogActive));
+    saveState(`${STORAGE_KEY}_feature_log_active`, isFeatureLogActive);
   }, [isFeatureLogActive]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_feature_log_visible`, JSON.stringify(isVisibilityLogActive));
+    saveState(`${STORAGE_KEY}_feature_log_visible`, isVisibilityLogActive);
   }, [isVisibilityLogActive]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_feature_log_entries`, JSON.stringify(featureLog));
+    saveState(`${STORAGE_KEY}_feature_log_entries`, featureLog);
   }, [featureLog]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_indicator_checked_state`, JSON.stringify(indicatorCheckedState));
+    saveState(`${STORAGE_KEY}_indicator_checked_state`, indicatorCheckedState);
   }, [indicatorCheckedState]);
 
   return {

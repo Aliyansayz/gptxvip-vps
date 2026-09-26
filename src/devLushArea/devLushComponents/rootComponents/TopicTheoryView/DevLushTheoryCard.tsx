@@ -3,6 +3,7 @@ import { SavedTheory } from '../../../agentDevRootComponents/TheoryCollectionCon
 import { BookOpenText, Camera, Settings2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import DevLushTheoryBridge from '../../devLushTopicsView/DevLushTheoryBridge';
+import { toast } from 'sonner';
 
 interface DevLushTheoryCardProps {
   item: SavedTheory;
@@ -47,9 +48,11 @@ const DevLushTheoryCard: React.FC<DevLushTheoryCardProps> = ({
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      toast.success('Theory screenshot downloaded.');
 
     } catch (error) {
       console.error('Failed to capture screenshot', error);
+      toast.error('Could not create the screenshot. Please try again.');
     } finally {
       setIsCapturing(false);
     }
@@ -90,6 +93,8 @@ const DevLushTheoryCard: React.FC<DevLushTheoryCardProps> = ({
                 {isSliderMode && (onNext || onPrev) && (
                   <div className="flex items-center gap-1 mr-2 pr-3 border-r border-border/50">
                     <button
+                      type="button"
+                      aria-label="Previous saved theory"
                       onClick={onPrev}
                       disabled={!hasPrev}
                       className="p-1.5 hover:bg-muted rounded-md text-foreground disabled:opacity-30 transition-colors"
@@ -98,6 +103,8 @@ const DevLushTheoryCard: React.FC<DevLushTheoryCardProps> = ({
                       <ChevronLeft className="w-5 h-5" />
                     </button>
                     <button
+                      type="button"
+                      aria-label="Next saved theory"
                       onClick={onNext}
                       disabled={!hasNext}
                       className="p-1.5 hover:bg-muted rounded-md text-foreground disabled:opacity-30 transition-colors"
@@ -110,6 +117,9 @@ const DevLushTheoryCard: React.FC<DevLushTheoryCardProps> = ({
 
                 <div className="relative">
                   <button
+                    type="button"
+                    aria-label="Aspect ratio settings"
+                    aria-expanded={showSettings}
                     onClick={() => setShowSettings(!showSettings)}
                     className="p-1.5 hover:bg-muted rounded-md text-muted-foreground hover:text-foreground transition-colors"
                     title="Aspect Ratio Settings"
@@ -122,6 +132,8 @@ const DevLushTheoryCard: React.FC<DevLushTheoryCardProps> = ({
                       {(['auto', '16:9', '3:2', '4:3', '1:1'] as AspectRatio[]).map(ratio => (
                         <button
                           key={ratio}
+                          type="button"
+                          aria-pressed={aspectRatio === ratio}
                           onClick={() => { setAspectRatio(ratio); setShowSettings(false); }}
                           className={`w-full text-left px-4 py-2 text-sm hover:bg-muted transition-colors ${aspectRatio === ratio ? 'text-indigo-500 font-medium bg-indigo-500/5' : 'text-foreground'}`}
                         >
@@ -133,6 +145,8 @@ const DevLushTheoryCard: React.FC<DevLushTheoryCardProps> = ({
                 </div>
 
                 <button
+                  type="button"
+                  aria-label={`Take screenshot of ${item.exerciseTitle}`}
                   onClick={handleScreenshot}
                   className="p-1.5 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-md transition-colors"
                   title="Take Screenshot"

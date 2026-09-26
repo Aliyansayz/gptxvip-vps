@@ -52,18 +52,20 @@ export default function RemediationPlanView({ candidate, onBack }: RemediationPl
       {/* Header */}
       <div className="p-5 border-b border-slate-200 bg-white flex items-center justify-between shadow-sm z-10">
         <div className="flex items-center gap-4">
-          <button onClick={onBack} className="p-2 rounded-lg hover:bg-slate-100 transition-colors border border-slate-200">
+          <button type="button" aria-label="Return to findings" onClick={onBack} className="p-2 rounded-lg hover:bg-slate-100 transition-colors border border-slate-200">
             <ArrowLeft className="w-5 h-5 text-slate-600" />
           </button>
           <div>
             <h2 className="text-lg font-heading font-bold text-slate-800 flex items-center gap-2.5">
               <Cpu className="w-5 h-5 text-indigo-600" />
-              Remediation Agent Active
+              Suggested remediation preview
             </h2>
             <p className="text-xs font-medium text-slate-500 mt-0.5">Resolving: <span className="text-slate-700">{candidate.vulnClass}</span> at <span className="font-mono text-slate-700">{candidate.endpoint}</span></p>
           </div>
         </div>
       </div>
+
+      <p className="px-5 py-2 text-xs text-amber-950 bg-amber-50 border-b border-amber-200">Example guidance only. This walkthrough does not edit source code, deploy a patch, or verify a fix.</p>
 
       <div className="flex-1 flex overflow-hidden">
         {/* Progress Sidebar */}
@@ -106,23 +108,24 @@ export default function RemediationPlanView({ candidate, onBack }: RemediationPl
               <div className="p-6 bg-slate-900 rounded-xl border border-slate-800 shadow-lg mt-8">
                 <div className="flex items-center gap-2 mb-4 text-slate-400 text-xs font-bold uppercase tracking-wider border-b border-slate-800 pb-3">
                   <Terminal className="w-4 h-4" />
-                  <span>Agent Execution Context</span>
+                  <span>Sample review context</span>
                 </div>
                 <div className="font-mono text-sm text-emerald-400 space-y-2.5 pt-2">
                   <p className="text-slate-300">&gt; Analyzing context for <span className="text-indigo-400 font-bold">{candidate.vulnClass}</span>...</p>
                   <p className="text-slate-300">&gt; Target parameter: <span className="text-amber-400">{candidate.parameter}</span></p>
-                  {currentStep === 1 && <p className="text-emerald-400">&gt; Generating patch...</p>}
-                  {currentStep === 2 && <p className="text-emerald-400">&gt; Validating fix deployed...</p>}
+                  {currentStep === 1 && <p className="text-emerald-400">&gt; Example patch approach shown; no patch generated.</p>}
+                  {currentStep === 2 && <p className="text-emerald-400">&gt; Verification is not available in this preview.</p>}
                   <p className="animate-pulse text-emerald-500 font-bold">_</p>
                 </div>
               </div>
 
               <div className="pt-8 flex justify-end">
                 <button 
+                  type="button"
                   onClick={() => setCurrentStep(prev => prev + 1)}
                   className="px-8 py-3 bg-indigo-600 text-white rounded-xl font-semibold shadow-sm hover:bg-indigo-700 hover:shadow-md transition-all active:scale-95"
                 >
-                  {currentStep === steps.length - 1 ? 'Complete Remediation' : 'Execute Step'}
+                  {currentStep === steps.length - 1 ? 'Finish reviewing plan' : 'Review next step'}
                 </button>
               </div>
             </div>
@@ -132,14 +135,14 @@ export default function RemediationPlanView({ candidate, onBack }: RemediationPl
                 <CheckCircle2 className="w-16 h-16" />
               </div>
               <div>
-                <h1 className="text-3xl font-heading font-bold mb-3 text-slate-800">Remediation Complete</h1>
-                <p className="text-slate-600 text-lg max-w-md mx-auto">The <span className="font-bold text-slate-800">{candidate.vulnClass}</span> vulnerability has been successfully patched and verified.</p>
+                <h1 className="text-3xl font-heading font-bold mb-3 text-slate-800">Plan review complete</h1>
+                <p className="text-slate-600 text-lg max-w-md mx-auto">This preview has not changed or tested the <span className="font-bold text-slate-800">{candidate.vulnClass}</span> finding. Apply and verify any fix through your normal review process.</p>
               </div>
               <button 
                 onClick={onBack}
                 className="px-8 py-3 bg-white text-slate-700 border border-slate-300 rounded-xl font-semibold hover:bg-slate-50 hover:text-slate-900 shadow-sm transition-all mt-4"
               >
-                Return to Dashboard
+                Return to findings
               </button>
             </div>
           )}

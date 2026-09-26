@@ -1,5 +1,6 @@
 import React from 'react';
 import { FileWarning, Key, Database, FileCode, Settings } from 'lucide-react';
+import AgentPreviewNotice from '../../../components/AgentPreviewNotice';
 
 interface CloudPostureDataViewProps {
   viewType: 'drift' | 'iam_audit' | 'data_security' | 'compliance' | 'settings';
@@ -34,7 +35,7 @@ export default function CloudPostureDataView({ viewType }: CloudPostureDataViewP
       items: [
         { label: "Unencrypted RDS", value: "Database 'legacy-users-db' is missing KMS encryption at rest" },
         { label: "Public Snapshot", value: "RDS snapshot 'backup-2025' is publicly accessible" },
-        { label: "Action Required", value: "Modify snapshot permissions immediately. Schedule downtime to encrypt RDS." }
+        { label: "Suggested review", value: "Verify snapshot exposure, ownership, and change approval before changing permissions or scheduling encryption work." }
       ]
     },
     compliance: {
@@ -52,9 +53,9 @@ export default function CloudPostureDataView({ viewType }: CloudPostureDataViewP
       icon: Settings,
       description: "Configure scanning schedules and cloud provider integrations.",
       items: [
-        { label: "Cloud Provider", value: "AWS (Connected), GCP (Connected), Azure (Disconnected)" },
-        { label: "Scan Frequency", value: "Continuous (Real-time EventBridge triggers)" },
-        { label: "Alerting", value: "Slack #secops-alerts, PagerDuty (High Sev)" }
+        { label: "Cloud Provider", value: "Example labels: AWS and GCP (connection not verified); Azure (not configured in this sample)" },
+        { label: "Scan Frequency", value: "Example schedule: continuous; no live trigger status is available." },
+        { label: "Alerting", value: "Example routing label: Slack #secops-alerts and PagerDuty; delivery is not verified." }
       ]
     }
   };
@@ -73,6 +74,7 @@ export default function CloudPostureDataView({ viewType }: CloudPostureDataViewP
           <p className="text-slate-500 mt-2">{data.description}</p>
         </div>
 
+        <AgentPreviewNotice>Resource names, findings, account configuration, and remediation notes are illustrative. Confirm the account and current cloud state before making changes.</AgentPreviewNotice>
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="divide-y divide-slate-100">
             {data.items.map((item, idx) => (

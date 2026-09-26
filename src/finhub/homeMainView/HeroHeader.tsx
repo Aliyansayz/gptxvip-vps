@@ -7,13 +7,23 @@ const WORDS = ['ENABLE', 'OPTIMIZE', 'VISUALIZE'];
 
 export const HeroHeader: React.FC<{ onInitializeEngine?: () => void }> = ({ onInitializeEngine }) => {
   const [wordIndex, setWordIndex] = useState(0);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+    updatePreference();
+    mediaQuery.addEventListener?.('change', updatePreference);
+    return () => mediaQuery.removeEventListener?.('change', updatePreference);
+  }, []);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
     const interval = setInterval(() => {
       setWordIndex((prev) => (prev + 1) % WORDS.length);
     }, 2800);
     return () => clearInterval(interval);
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
     <div className="relative w-[100vw] ml-[calc(-50vw+50%)] min-h-[640px] sm:min-h-[700px] flex items-center justify-center bg-transparent dark:bg-zinc-950 overflow-hidden border-y border-zinc-200/50 dark:border-zinc-800/50 mb-12 shadow-[0_0_50px_rgba(34,211,238,0.05)] dark:shadow-[0_0_50px_rgba(34,211,238,0.1)] transition-colors">
@@ -56,7 +66,7 @@ export const HeroHeader: React.FC<{ onInitializeEngine?: () => void }> = ({ onIn
                       initial={{ y: '100%', opacity: 0 }}
                       animate={{ y: '0%', opacity: 1 }}
                       exit={{ y: '-100%', opacity: 0 }}
-                      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                      transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                       className="absolute left-0 right-0 text-cyan-600 dark:text-cyan-400 font-black block select-none transition-colors"
                     >
                       {WORDS[wordIndex]}
@@ -74,8 +84,10 @@ export const HeroHeader: React.FC<{ onInitializeEngine?: () => void }> = ({ onIn
 
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full sm:w-auto">
               <button 
+                  type="button"
+                  disabled={!onInitializeEngine}
                   onClick={onInitializeEngine}
-                  className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-zinc-950 font-black rounded-2xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] select-none cursor-pointer flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-zinc-950 font-black rounded-2xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] select-none cursor-pointer flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 <Zap className="w-4 h-4 fill-zinc-950" />
                 <span className="uppercase tracking-widest text-xs sm:text-sm">Initialize Engine</span>
@@ -83,7 +95,7 @@ export const HeroHeader: React.FC<{ onInitializeEngine?: () => void }> = ({ onIn
               </button>
               
               <a
-                  href="#documentation-section"
+                  href="#bento-features"
                   onClick={(e) => {
                     e.preventDefault();
                     const el = document.getElementById('bento-features');

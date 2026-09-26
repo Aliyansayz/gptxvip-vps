@@ -32,14 +32,14 @@ const SunsetBackground = () => (
 
 const MidnightBackground = () => (
     <svg className="absolute inset-0 w-full h-full z-0 pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
-        {Array.from({ length: 50 }).map((_, i) => (
+        {Array.from({ length: 50 }, (_, i) => i).map((i) => (
             <circle
                 key={i}
-                cx={Math.random() * 100}
-                cy={Math.random() * 100}
-                r={Math.random() * 0.5}
+                cx={(i * 37 + 13) % 100}
+                cy={(i * 61 + 29) % 100}
+                r={(i % 5 + 1) / 10}
                 fill="white"
-                opacity={Math.random() * 0.7}
+                opacity={0.2 + (i % 8) * 0.08}
             />
         ))}
         <path d="M 20 20 L 25 35 L 40 40 L 25 45 L 20 60 L 15 45 L 0 40 L 15 35 Z" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="0.2" />
@@ -89,8 +89,9 @@ const topicThemes: Record<string, 'teal' | 'sunset' | 'midnight' | 'forest'> = {
 
 const topicKeys = Object.keys(readingContent);
 
-export const ReadingView: React.FC = () => {
+export const ReadingView: React.FC<{ onBrowseTopics: () => void }> = ({ onBrowseTopics }) => {
     const [selectedTopicKey, setSelectedTopicKey] = useState<string | null>(null);
+    const [readingProgress, setReadingProgress] = useState(0);
 
     const getThemeStyles = (theme: string) => {
         switch (theme) {
@@ -140,6 +141,11 @@ export const ReadingView: React.FC = () => {
                     exit={{ opacity: 0, x: -20 }}
                     transition={{ duration: 0.3 }}
                     className="h-full w-full bg-background overflow-y-auto custom-scrollbar scroll-smooth relative"
+                    onScroll={(event) => {
+                        const element = event.currentTarget;
+                        const scrollableHeight = element.scrollHeight - element.clientHeight;
+                        setReadingProgress(scrollableHeight > 0 ? Math.min(100, Math.round((element.scrollTop / scrollableHeight) * 100)) : 100);
+                    }}
                 >
                     {/* Header */}
                     <div className={`sticky top-0 z-50 ${detailStyles.card} shadow-md transition-all duration-300`}>
@@ -148,9 +154,12 @@ export const ReadingView: React.FC = () => {
                         </div>
                         <div className="relative z-10 max-w-4xl mx-auto px-4 py-6 flex items-center gap-4">
                             <button 
-                                onClick={() => setSelectedTopicKey(null)} 
+                                onClick={() => {
+                                    setSelectedTopicKey(null);
+                                    setReadingProgress(0);
+                                }}
                                 className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
-                                aria-label="Back to Topics"
+                                aria-label="Back to Reading Library topics"
                             >
                                 <ChevronLeft className="w-6 h-6" />
                             </button>
@@ -159,6 +168,22 @@ export const ReadingView: React.FC = () => {
                                     {topicNames[selectedTopicKey] || selectedTopicKey}
                                 </h1>
                                 <p className="text-white/80 text-sm mt-1">Reading Material</p>
+                            </div>
+                        </div>
+                        <div className="relative z-10 mx-auto max-w-4xl px-4 pb-3 text-xs text-white/85">
+                            <div className="mb-1 flex items-center justify-between gap-4">
+                                <span>Reading Library · {Object.keys(currentTopicData).length} sections</span>
+                                <span>{readingProgress}% read</span>
+                            </div>
+                            <div
+                                role="progressbar"
+                                aria-label="Reading progress"
+                                aria-valuemin={0}
+                                aria-valuemax={100}
+                                aria-valuenow={readingProgress}
+                                className="h-1.5 overflow-hidden rounded-full bg-white/20"
+                            >
+                                <div className="h-full rounded-full bg-white transition-[width]" style={{ width: `${readingProgress}%` }} />
                             </div>
                         </div>
                     </div>
@@ -175,26 +200,16 @@ export const ReadingView: React.FC = () => {
                                     transition={{ duration: 0.3 }}
                                     className="space-y-12"
                                 >
-                                    {Object.values(currentTopicData).map((subtopic) => (
-                                        <div key={subtopic.title} className="bg-gradient-to-br from-card via-card to-muted/30 border border-border rounded-2xl p-8 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+                                    {Object.values(currentTopicData).map((subtopic, index) => (
+                                        <section key={subtopic.title} aria-labelledby={`reading-section-${index}`} className="bg-gradient-to-br from-card via-card to-muted/30 border border-border rounded-2xl p-8 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group">
                                             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110" />
-                                            <h3 className="font-heading text-3xl tracking-wide text-card-foreground mb-6 border-b-2 border-primary/10 pb-4 relative z-10">
+                                            <h2 id={`reading-section-${index}`} className="font-heading text-3xl tracking-wide text-card-foreground mb-6 border-b-2 border-primary/10 pb-4 relative z-10">
                                                 {subtopic.title}
-                                            </h3>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 relative z-10">
-                                                {subtopic.sections.map((section) => (
-                                                    <div key={section.heading} className="space-y-3">
-                                                        <h4 className="font-semibold text-lg text-primary flex items-center gap-2">
-                                                            <span className="w-1.5 h-1.5 rounded-full bg-primary/60"></span>
-                                                            {section.heading}
-                                                        </h4>
-                                                        <p className="text-muted-foreground leading-relaxed text-sm">
-                                                            {section.content}
-                                                        </p>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
+                                            </h2>
+                                            <p className="relative z-10 text-muted-foreground leading-relaxed text-sm">
+                                                {subtopic.content}
+                                            </p>
+                                        </section>
                                     ))}
                                 </motion.div>
                             </AnimatePresence>
@@ -219,6 +234,16 @@ export const ReadingView: React.FC = () => {
                             <p className="text-muted-foreground">A concise knowledge base of core biology topics.</p>
                         </div>
 
+                        {topicKeys.length === 0 ? (
+                            <div role="status" className="mx-auto max-w-xl rounded-2xl border border-border bg-card p-8 text-center shadow-sm">
+                                <BookOpenText className="mx-auto mb-4 h-8 w-8 text-primary" />
+                                <h2 className="text-xl font-bold text-foreground">No reading material is published yet</h2>
+                                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">The Reading Library currently has no topic content. Browse Agent Labs topics for available interactive learning.</p>
+                                <button type="button" onClick={onBrowseTopics} className="mt-5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
+                                    Browse Agent Labs topics
+                                </button>
+                            </div>
+                        ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-20">
                             {topicKeys.map((topicKey) => {
                                 const theme = topicThemes[topicKey] || 'teal';
@@ -226,10 +251,12 @@ export const ReadingView: React.FC = () => {
                                 const chapterCount = Object.keys(readingContent[topicKey]).length;
                                 
                                 return (
-                                    <div 
+                                    <button
+                                        type="button"
                                         key={topicKey} 
                                         onClick={() => setSelectedTopicKey(topicKey)}
-                                        className={`relative rounded-3xl shadow-xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl ${styles.card} flex flex-col cursor-pointer min-h-[240px]`}
+                                        aria-label={`Open ${topicNames[topicKey] || topicKey}, ${chapterCount} ${chapterCount === 1 ? 'chapter' : 'chapters'}`}
+                                        className={`relative w-full appearance-none border-0 rounded-3xl shadow-xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary ${styles.card} flex flex-col cursor-pointer min-h-[240px] text-left`}
                                     >
                                         {/* Dynamic Background SVG */}
                                         <div className="absolute inset-0 opacity-50">
@@ -262,15 +289,14 @@ export const ReadingView: React.FC = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </button>
                                 );
                             })}
                         </div>
+                        )}
                     </div>
                 </motion.div>
             )}
         </AnimatePresence>
     );
 };
-
-

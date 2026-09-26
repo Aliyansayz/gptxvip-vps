@@ -31,8 +31,14 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     // Load from localStorage on mount
     useEffect(() => {
-        const storedFavs = localStorage.getItem('life_labs_favorites');
-        const storedCols = localStorage.getItem('life_labs_collections');
+        let storedFavs: string | null = null;
+        let storedCols: string | null = null;
+        try {
+            storedFavs = window.localStorage.getItem('life_labs_favorites');
+            storedCols = window.localStorage.getItem('life_labs_collections');
+        } catch {
+            return;
+        }
 
         if (storedFavs && storedFavs.trim() !== '') {
             try {
@@ -51,7 +57,11 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                 });
                 setFavorites(parsedFavs);
                 if (migrated) {
-                    localStorage.setItem('life_labs_favorites', JSON.stringify(parsedFavs));
+                    try {
+                        window.localStorage.setItem('life_labs_favorites', JSON.stringify(parsedFavs));
+                    } catch {
+                        // Keep migrated values in memory when browser storage is unavailable.
+                    }
                 }
             } catch (e) {
                 console.error('Failed to parse favorites', e);
@@ -69,11 +79,19 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     // Save to localStorage whenever state changes
     useEffect(() => {
-        localStorage.setItem('life_labs_favorites', JSON.stringify(favorites));
+        try {
+            window.localStorage.setItem('life_labs_favorites', JSON.stringify(favorites));
+        } catch {
+            // Favorites remain usable for this session when browser storage is unavailable.
+        }
     }, [favorites]);
 
     useEffect(() => {
-        localStorage.setItem('life_labs_collections', JSON.stringify(collections));
+        try {
+            window.localStorage.setItem('life_labs_collections', JSON.stringify(collections));
+        } catch {
+            // Collections remain usable for this session when browser storage is unavailable.
+        }
     }, [collections]);
 
     const addFavorite = (item: Omit<FavoriteItem, 'timestamp' | 'collection'>, collection: string = 'Favorites') => {

@@ -30,14 +30,26 @@ const RoadmapLabRunner: React.FC<RoadmapLabRunnerProps> = ({
   onComplete,
 }) => {
   const componentId = chapter.labComponentId || "";
+  const totalSteps = chapter.interactive_questions?.length || 1;
 
-  const [step, setStep] = useState(() => {
-    const saved = sessionStorage.getItem(`devlush_step_${componentId}`);
-    return saved ? parseInt(saved, 10) : 0;
-  });
+  const readSavedStep = () => {
+    try {
+      const saved = sessionStorage.getItem(`devlush_step_${componentId}`);
+      const parsed = saved ? Number.parseInt(saved, 10) : 0;
+      return Number.isFinite(parsed) && parsed >= 0 ? Math.min(parsed, totalSteps - 1) : 0;
+    } catch {
+      return 0;
+    }
+  };
+
+  const [step, setStep] = useState(readSavedStep);
 
   useEffect(() => {
-    sessionStorage.setItem(`devlush_step_${componentId}`, step.toString());
+    try {
+      sessionStorage.setItem(`devlush_step_${componentId}`, step.toString());
+    } catch {
+      // The lab remains usable when browser storage is unavailable.
+    }
   }, [step, componentId]);
 
   const [settings, setSettings] = useState<LabSettings>(loadSavedSettings());
@@ -78,7 +90,14 @@ const RoadmapLabRunner: React.FC<RoadmapLabRunnerProps> = ({
     );
   }
 
-  const totalSteps = chapter.interactive_questions?.length || 1;
+  if (chapter.interactive_questions?.length === 0) {
+    return (
+      <div role="alert" className="mx-auto flex w-full max-w-2xl flex-col items-center gap-4 rounded-2xl border border-amber-200 bg-amber-50 p-8 text-center dark:border-amber-900 dark:bg-amber-950/30">
+        <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">This chapter has no activities yet.</h2>
+        <button type="button" onClick={onBack} className="rounded-lg bg-slate-200 px-4 py-2 font-bold text-slate-800 hover:bg-slate-300 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700">Back to Roadmap</button>
+      </div>
+    );
+  }
 
   const handlePrev = () => {
     if (step > 0) setStep((s) => s - 1);
@@ -88,7 +107,11 @@ const RoadmapLabRunner: React.FC<RoadmapLabRunnerProps> = ({
     if (step < totalSteps - 1) {
       setStep((s) => s + 1);
     } else {
-      sessionStorage.removeItem(`devlush_step_${componentId}`);
+      try {
+        sessionStorage.removeItem(`devlush_step_${componentId}`);
+      } catch {
+        // Completion does not depend on browser storage.
+      }
       onComplete();
     }
   };
@@ -102,7 +125,9 @@ const RoadmapLabRunner: React.FC<RoadmapLabRunnerProps> = ({
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-slate-100 dark:border-slate-800 pb-4">
             <div className="flex items-center gap-4">
               <button
+                type="button"
                 onClick={onBack}
+                aria-label="Return to Roadmap chapters"
                 className="flex items-center gap-1.5 px-4 py-3 text-sm font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl transition-all"
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -136,7 +161,10 @@ const RoadmapLabRunner: React.FC<RoadmapLabRunnerProps> = ({
               {!settings.disableTheory && (
                 <div className="flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-1 shadow-sm">
                   <button
+                    type="button"
                     onClick={() => setInfoVisible(!infoVisible)}
+                    aria-label={infoVisible ? "Hide theory blueprint" : "Show theory blueprint"}
+                    aria-expanded={infoVisible}
                     title={
                       infoVisible
                         ? "Hide Theory Blueprint"
@@ -150,14 +178,20 @@ const RoadmapLabRunner: React.FC<RoadmapLabRunnerProps> = ({
                     <>
                       <div className="w-px h-4 bg-slate-200 dark:bg-slate-800 mx-1" />
                       <button
+                        type="button"
                         onClick={() => setInfoPlacement("side")}
+                        aria-label="Place theory in side panel"
+                        aria-pressed={infoPlacement === "side"}
                         title="Split Side Panel"
                         className={`p-2 rounded-lg transition-colors ${infoPlacement === "side" ? `${themeColors.bgSoftGlow} ${themeColors.text}` : "text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
                       >
                         <Columns className="w-4 h-4" />
                       </button>
                       <button
+                        type="button"
                         onClick={() => setInfoPlacement("bottom")}
+                        aria-label="Place theory below the exercise"
+                        aria-pressed={infoPlacement === "bottom"}
                         title="Bottom Panel View"
                         className={`p-2 rounded-lg transition-colors ${infoPlacement === "bottom" ? `${themeColors.bgSoftGlow} ${themeColors.text}` : "text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
                       >
@@ -171,12 +205,15 @@ const RoadmapLabRunner: React.FC<RoadmapLabRunnerProps> = ({
               {!settings.disableQuestion && (
                 <div className="flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-1 shadow-sm">
                   <button
+                    type="button"
                     onClick={() =>
                       setSettings((prev) => ({
                         ...prev,
                         hideQuestionDefault: !prev.hideQuestionDefault,
                       }))
                     }
+                    aria-label={settings.hideQuestionDefault ? "Show verification form" : "Hide verification form"}
+                    aria-pressed={!settings.hideQuestionDefault}
                     title={
                       settings.hideQuestionDefault
                         ? "Maximize Sandbox Visual"
@@ -191,10 +228,10 @@ const RoadmapLabRunner: React.FC<RoadmapLabRunnerProps> = ({
             </div>
           </div>
 
-          <div className="flex justify-between items-center mb-4 px-1.5 mt-2">
+          <div role="group" aria-label="Exercise navigation" className="flex justify-between items-center mb-4 px-1.5 mt-2">
             <div className="flex items-center gap-2">
               {totalSteps > 0 && (
-                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 font-mono tracking-wider">
+                <span aria-live="polite" className="text-xs font-semibold text-slate-500 dark:text-slate-400 font-mono tracking-wider">
                   EXERCISE{" "}
                   <span className={`${themeColors.text} font-bold`}>{step + 1}</span>{" "}
                   OF {totalSteps}
@@ -204,8 +241,10 @@ const RoadmapLabRunner: React.FC<RoadmapLabRunnerProps> = ({
             <div className={`flex items-center gap-1.5 ${themeColors.bgSoft} p-1 rounded-full border ${themeColors.borderSoft} ${themeColors.shadow} shadow-sm`}>
               {totalSteps > 1 && (
                 <button
+                  type="button"
                   onClick={handlePrev}
                   disabled={step === 0}
+                  aria-label="Previous exercise"
                   title="Previous Exercise"
                   className={`p-1.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-full disabled:opacity-40 transition-all border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-center shadow-xs cursor-pointer ${step !== 0 ? themeColors.hoverShadow : ''}`}
                 >
@@ -213,7 +252,9 @@ const RoadmapLabRunner: React.FC<RoadmapLabRunnerProps> = ({
                 </button>
               )}
               <button
+                type="button"
                 onClick={handleNext}
+                aria-label={step >= totalSteps - 1 ? "Complete Roadmap chapter" : "Go to next exercise"}
                 title={
                   step >= totalSteps - 1
                     ? "Complete Workspace"
@@ -227,7 +268,7 @@ const RoadmapLabRunner: React.FC<RoadmapLabRunnerProps> = ({
             </div>
           </div>
 
-          <div className="w-full flex-1 flex flex-col min-h-[500px] relative overflow-hidden bg-white dark:bg-slate-900">
+          <section aria-label={`${chapter.chapter_title} exercise`} className="w-full flex-1 flex flex-col min-h-[500px] relative overflow-hidden bg-white dark:bg-slate-900">
             <div className="absolute inset-0 pointer-events-none opacity-10 dark:opacity-[0.15] mix-blend-multiply dark:mix-blend-screen z-0">
               <svg className="absolute w-full h-full" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
@@ -274,7 +315,7 @@ const RoadmapLabRunner: React.FC<RoadmapLabRunnerProps> = ({
                 />
               </Suspense>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </LabProvider>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import RoadmapSidebar from "./rootComponents/RoadmapSidebar";
 import RoadmapHub from "./rootComponents/RoadmapHub";
 import RoadmapLabRunner from "./rootComponents/RoadmapLabRunner";
@@ -20,6 +20,17 @@ interface RoadmapContainerProps {
 
 // Convert topics data to the format expected
 const rawRoadmapCourseData = [cppTradingHFTData];
+const ROADMAP_COMPLETED_STORAGE_KEY = "gptxvip_roadmap_completed_chapters";
+
+const readCompletedChapterIds = (): string[] => {
+  try {
+    const stored = window.localStorage.getItem(ROADMAP_COMPLETED_STORAGE_KEY);
+    const value: unknown = stored ? JSON.parse(stored) : [];
+    return Array.isArray(value) ? [...new Set(value.filter((id): id is string => typeof id === "string"))] : [];
+  } catch {
+    return [];
+  }
+};
 
 export const RoadmapContainer: React.FC<RoadmapContainerProps> = ({
   onExit,
@@ -28,9 +39,16 @@ export const RoadmapContainer: React.FC<RoadmapContainerProps> = ({
   const [selectedChapter, setSelectedChapter] = useState<LabData | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [completedChapterIds, setCompletedChapterIds] = useState<string[]>(readCompletedChapterIds);
+  const loading = false;
 
-  // Deep linking logic can be added here if needed in the future
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(ROADMAP_COMPLETED_STORAGE_KEY, JSON.stringify(completedChapterIds));
+    } catch {
+      // Keep progress in this session if local storage is unavailable.
+    }
+  }, [completedChapterIds]);
 
   const enrichedTopics: EnrichedConceptData[] = rawRoadmapCourseData.map((course) => ({
     id: course.id,
@@ -49,6 +67,7 @@ export const RoadmapContainer: React.FC<RoadmapContainerProps> = ({
   const handleStartChapter = (chapter: LabData) => {
     setSelectedChapter(chapter);
     setIsSearchOpen(false);
+    window.history.pushState({ roadmapChapterEntry: true }, "", `/roadmap/${activeTopicId}/${encodeURIComponent(chapter.labComponentId)}`);
   };
 
   const sidebarTopics = rawRoadmapCourseData.map((course) => ({
@@ -57,25 +76,63 @@ export const RoadmapContainer: React.FC<RoadmapContainerProps> = ({
     icon: course.icon,
   }));
 
-  const activeTopic = enrichedTopics.find((t) => t.id === activeTopicId);
-
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
   const handleScroll = () => {
     if (!selectedChapter && activeTopicId && scrollContainerRef.current) {
       const currentScroll = scrollContainerRef.current.scrollTop;
-      sessionStorage.setItem(`roadmap-scroll-${activeTopicId}`, currentScroll.toString());
+      try {
+        sessionStorage.setItem(`roadmap-scroll-${activeTopicId}`, currentScroll.toString());
+      } catch {
+        // Keep the roadmap usable when browser storage is disabled.
+      }
     }
   };
 
-  const setScrollRef = (el: HTMLDivElement) => {
+  const setScrollRef = useCallback((el: HTMLDivElement | null) => {
     scrollContainerRef.current = el;
+  }, []);
+
+  const replaceRoadmapRoute = (path: string) => {
+    window.history.replaceState({}, "", `${path}${window.location.search}${window.location.hash}`);
+  };
+
+  const returnFromChapter = () => {
+    setSelectedChapter(null);
+    if (window.history.state?.roadmapChapterEntry === true) {
+      window.history.back();
+      return;
+    }
+    replaceRoadmapRoute(`/roadmap/${activeTopicId}`);
+  };
+
+  const completeSelectedChapter = () => {
+    if (!selectedChapter) return;
+    setCompletedChapterIds((current) => current.includes(selectedChapter.labComponentId)
+      ? current
+      : [...current, selectedChapter.labComponentId]);
+    toast.success("Chapter completed. Your Roadmap progress is saved on this device.");
+    returnFromChapter();
+  };
+
+  const closeSearch = () => {
+    setIsSearchOpen(false);
+    if (window.history.state?.roadmapSearchEntry === true) {
+      window.history.back();
+      return;
+    }
+    replaceRoadmapRoute(`/roadmap/${activeTopicId}`);
   };
 
   useEffect(() => {
     if (selectedChapter) return;
     
-    const savedScroll = sessionStorage.getItem(`roadmap-scroll-${activeTopicId}`);
+    let savedScroll: string | null = null;
+    try {
+      savedScroll = sessionStorage.getItem(`roadmap-scroll-${activeTopicId}`);
+    } catch {
+      // Scrolling still works when a saved position cannot be read.
+    }
     if (savedScroll && scrollContainerRef.current) {
       const scrollTopVal = parseInt(savedScroll, 10);
       scrollContainerRef.current.scrollTop = scrollTopVal;
@@ -86,6 +143,53 @@ export const RoadmapContainer: React.FC<RoadmapContainerProps> = ({
       }, 100);
     }
   }, [activeTopicId, selectedChapter]);
+
+  const syncRoadmapRoute = useCallback(() => {
+    const segments = window.location.pathname.split("/").filter(Boolean);
+    if (segments[0] !== "roadmap") return;
+    const decodeSegment = (segment?: string) => {
+      if (!segment) return "";
+      try {
+        return decodeURIComponent(segment);
+      } catch {
+        return segment;
+      }
+    };
+    const replaceRouteIfNeeded = (path: string) => {
+      if (window.location.pathname !== path) {
+        window.history.replaceState(window.history.state, "", `${path}${window.location.search}${window.location.hash}`);
+      }
+    };
+    if (segments[1] === "search") {
+      replaceRouteIfNeeded("/roadmap/search");
+      setIsSearchOpen(true);
+      setSelectedChapter(null);
+      return;
+    }
+
+    const requestedTopicId = decodeSegment(segments[1]);
+    const requestedChapterId = decodeSegment(segments[2]);
+    const requestedTopic = rawRoadmapCourseData.find((course) =>
+      course.id === requestedTopicId || course.title.toLowerCase() === requestedTopicId.toLowerCase(),
+    ) || rawRoadmapCourseData.find((course) =>
+      course.chapters.some((chapter) => chapter.labComponentId === requestedChapterId),
+    );
+    const topicId = requestedTopic?.id || rawRoadmapCourseData[0]?.id;
+    if (topicId) setActiveTopicId(topicId);
+    setIsSearchOpen(false);
+    const chapter = requestedTopic?.chapters.find((item) => item.labComponentId === requestedChapterId);
+    setSelectedChapter(chapter || null);
+    const canonicalPath = chapter && topicId
+      ? `/roadmap/${topicId}/${chapter.labComponentId}`
+      : topicId ? `/roadmap/${topicId}` : "/roadmap";
+    replaceRouteIfNeeded(canonicalPath);
+  }, []);
+
+  useEffect(() => {
+    syncRoadmapRoute();
+    window.addEventListener("popstate", syncRoadmapRoute);
+    return () => window.removeEventListener("popstate", syncRoadmapRoute);
+  }, [syncRoadmapRoute]);
 
   return (
     <FavoritesProvider>
@@ -98,10 +202,18 @@ export const RoadmapContainer: React.FC<RoadmapContainerProps> = ({
               setActiveTopicId(id);
               setSelectedChapter(null);
               setIsSearchOpen(false);
+              const path = `/roadmap/${id}`;
+              if (window.location.pathname !== path) window.history.pushState({}, "", path);
             }}
             isSidebarOpen={isSidebarOpen}
             setIsSidebarOpen={setIsSidebarOpen}
-            onSearchClick={() => setIsSearchOpen(true)}
+            onSearchClick={() => {
+              setIsSearchOpen(true);
+              setSelectedChapter(null);
+              if (window.location.pathname !== "/roadmap/search") {
+                window.history.pushState({ roadmapSearchEntry: true }, "", "/roadmap/search");
+              }
+            }}
             onExit={onExit}
           />
 
@@ -111,19 +223,17 @@ export const RoadmapContainer: React.FC<RoadmapContainerProps> = ({
                 selectedChapter.readingComponentId ? (
                   <RoadmapReadingView
                     chapter={selectedChapter as any}
-                    onBack={() => setSelectedChapter(null)}
+                    onBack={returnFromChapter}
                     onComplete={() => {
-                      toast.success("Roadmap Reading Activity Completed Successfully!");
-                      setSelectedChapter(null);
+                      completeSelectedChapter();
                     }}
                   />
                 ) : (
                   <RoadmapLabRunner
                     chapter={selectedChapter as any}
-                    onBack={() => setSelectedChapter(null)}
+                    onBack={returnFromChapter}
                     onComplete={() => {
-                      toast.success("Roadmap Lab Activity Completed Successfully!");
-                      setSelectedChapter(null);
+                      completeSelectedChapter();
                     }}
                   />
                 )
@@ -131,7 +241,7 @@ export const RoadmapContainer: React.FC<RoadmapContainerProps> = ({
                 <RoadmapSearchView
                   roadmapTopics={enrichedTopics}
                   onStartChapter={handleStartChapter as any}
-                  onClose={() => setIsSearchOpen(false)}
+                  onClose={closeSearch}
                 />
               ) : (
                 <div
@@ -144,6 +254,7 @@ export const RoadmapContainer: React.FC<RoadmapContainerProps> = ({
                       roadmapTopics={enrichedTopics}
                       isLoading={loading}
                       activeTopicId={activeTopicId}
+                      completedChapterIds={completedChapterIds}
                       onStartChapter={handleStartChapter as any}
                     />
                   </div>

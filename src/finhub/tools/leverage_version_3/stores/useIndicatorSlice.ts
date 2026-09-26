@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { IndicatorSettings } from './indicators_store';
-import { loadState } from './utils/storage';
+import { loadState, saveState } from './utils/storage';
 
 const STORAGE_KEY = 'leverage_trading_v1_settings';
 
@@ -59,7 +59,7 @@ export function useIndicatorSlice() {
   const [indicatorSettings, setIndicatorSettings] = useState<IndicatorSettings>(() => loadState(`${STORAGE_KEY}_indicator`, defaultIndicatorSettings));
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_indicator`, JSON.stringify(indicatorSettings));
+    saveState(`${STORAGE_KEY}_indicator`, indicatorSettings);
   }, [indicatorSettings]);
 
   const getIndicatorDescription = (type: keyof IndicatorSettings | 'conjunction') => {

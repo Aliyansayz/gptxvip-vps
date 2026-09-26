@@ -123,17 +123,13 @@ const TopicTheoryHub: React.FC = () => {
         {collectionList.map((collection) => (
           <div
             key={collection.id}
-            className="group bg-card border border-border rounded-2xl p-6 hover:border-indigo-500/50 hover:shadow-[0_0_15px_rgba(99,102,241,0.15)] transition-all duration-300 flex flex-col cursor-pointer relative"
-            onClick={() => {
-              if (editingId !== collection.id) {
-                setActiveCollectionId(collection.id);
-              }
-            }}
+            className="group bg-card border border-border rounded-2xl p-6 hover:border-indigo-500/50 hover:shadow-[0_0_15px_rgba(99,102,241,0.15)] transition-all duration-300 flex flex-col relative"
           >
-            <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="absolute top-4 right-4 z-20 flex gap-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
               <button
+                type="button"
+                aria-label={`Rename ${collection.name}`}
                 onClick={(e) => {
-                  e.stopPropagation();
                   setEditingId(collection.id);
                   setEditName(collection.name);
                 }}
@@ -143,8 +139,9 @@ const TopicTheoryHub: React.FC = () => {
               </button>
               {collection.id !== "default" && (
                 <button
+                  type="button"
+                  aria-label={`Delete ${collection.name}`}
                   onClick={(e) => {
-                    e.stopPropagation();
                     deleteCollection(collection.id);
                   }}
                   className="p-1.5 text-muted-foreground hover:text-destructive bg-background/80 rounded-md backdrop-blur-sm"
@@ -154,35 +151,45 @@ const TopicTheoryHub: React.FC = () => {
               )}
             </div>
 
-            <div className="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center mb-4 text-indigo-500">
-              <Folder className="w-6 h-6" />
-            </div>
-
             {editingId === collection.id ? (
-              <form
-                onSubmit={(e) => handleRename(collection.id, e)}
-                onClick={(e) => e.stopPropagation()}
-                className="mt-auto"
-              >
-                <input
-                  type="text"
-                  value={editName}
-                  onChange={(e) => setEditName(e.target.value)}
-                  className="w-full bg-background border border-border rounded px-2 py-1 text-foreground mb-2"
-                  autoFocus
-                  onBlur={(e) => handleRename(collection.id, e)}
-                />
-              </form>
+              <>
+                <div className="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center mb-4 text-indigo-500">
+                  <Folder className="w-6 h-6" />
+                </div>
+                <form onSubmit={(e) => handleRename(collection.id, e)} className="mt-auto w-full">
+                  <input
+                    type="text"
+                    aria-label={`Collection name for ${collection.name}`}
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    className="w-full bg-background border border-border rounded px-2 py-1 text-foreground mb-2"
+                    autoFocus
+                    onBlur={(e) => handleRename(collection.id, e)}
+                  />
+                </form>
+                <p className="text-sm text-muted-foreground mt-auto flex items-center justify-between">
+                  <span>{collection.items.length} saved theories</span>
+                </p>
+              </>
             ) : (
-              <h3 className="text-xl font-semibold text-foreground mb-1 group-hover:text-indigo-400 transition-colors line-clamp-2">
-                {collection.name}
-              </h3>
+              <button
+                type="button"
+                aria-label={`Open ${collection.name}, ${collection.items.length} saved theories`}
+                onClick={() => setActiveCollectionId(collection.id)}
+                className="flex min-h-full w-full flex-1 flex-col items-start text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-500 focus-visible:outline-offset-2 rounded-xl"
+              >
+                <div className="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center mb-4 text-indigo-500">
+                  <Folder className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-1 group-hover:text-indigo-400 transition-colors line-clamp-2">
+                  {collection.name}
+                </h3>
+                <p className="text-sm text-muted-foreground mt-auto flex w-full items-center justify-between">
+                  <span>{collection.items.length} saved theories</span>
+                  <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all" />
+                </p>
+              </button>
             )}
-
-            <p className="text-sm text-muted-foreground mt-auto flex items-center justify-between">
-              <span>{collection.items.length} saved theories</span>
-              <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all" />
-            </p>
           </div>
         ))}
       </div>

@@ -1,56 +1,49 @@
-import { StrictMode } from "react";
+import { StrictMode, Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
-import { BlogsView } from "./devLushArea/agentDevRootComponents/BlogsView";
-import DevLushApp from "./devLushArea/agentDevRootComponents/devLushAreaApp";
 import { smartNavigate, getAppRoot } from "./utils/navigation";
 import "./index.css";
 import { BrowserRouter } from "react-router";
-import AgentCatalogApp from "./devLushArea/agentMarketplace/App";
-import "./devLushArea/agentMarketplace/catalog.css";
+
+const BlogsView = lazy(() => import("./devLushArea/agentDevRootComponents/BlogsView").then((module) => ({ default: module.BlogsView })));
+const AgentCatalogApp = lazy(() => import("./devLushArea/agentMarketplace/App"));
+
+const RouteLoading = () => (
+  <div className="flex min-h-screen w-full items-center justify-center bg-white text-sm font-semibold text-slate-500">
+    Loading workspace…
+  </div>
+);
 
 // Expose navigation utility globally
 (window as any).smartNavigate = smartNavigate;
 (window as any).getAppRoot = getAppRoot;
 
-const path = window.location.pathname;
+let path = window.location.pathname;
 
-if (path.startsWith('/blogs')) {
+// Keep the retired singular URL working while the catalog uses `/agents`.
+if (path === "/agent" || path.startsWith("/agent/")) {
+  path = path.replace(/^\/agent(?=\/|$)/, "/agents");
+  window.history.replaceState({}, "", `${path}${window.location.search}${window.location.hash}`);
+}
+
+const appRoot = getAppRoot(path);
+
+if (appRoot === '/blogs') {
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
-      <BlogsView />
+      <Suspense fallback={<RouteLoading />}>
+        <BlogsView />
+      </Suspense>
     </StrictMode>,
   );
-} else if (path.startsWith('/agents')) {
+} else if (appRoot === '/agents') {
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
-      <BrowserRouter basename="/agents">
-        <AgentCatalogApp />
-      </BrowserRouter>
-    </StrictMode>,
-  );
-} else if (path.startsWith('/profile')) {
-  createRoot(document.getElementById("root")!).render(
-    <StrictMode>
-      <App initialTab="profile" />
-    </StrictMode>,
-  );
-} else if (path.startsWith('/math_primer')) {
-  createRoot(document.getElementById("root")!).render(
-    <StrictMode>
-      <App initialTab="math-primer" />
-    </StrictMode>,
-  );
-} else if (path.startsWith('/core_concepts')) {
-  createRoot(document.getElementById("root")!).render(
-    <StrictMode>
-      <App initialTab="core-concepts" />
-    </StrictMode>,
-  );
-} else if (path.startsWith('/finhub')) {
-  createRoot(document.getElementById("root")!).render(
-    <StrictMode>
-      <App initialTab="home" />
+      <Suspense fallback={<RouteLoading />}>
+        <BrowserRouter basename="/agents">
+          <AgentCatalogApp />
+        </BrowserRouter>
+      </Suspense>
     </StrictMode>,
   );
 } else {

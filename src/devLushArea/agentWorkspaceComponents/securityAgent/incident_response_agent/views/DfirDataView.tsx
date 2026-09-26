@@ -1,5 +1,6 @@
 import React from 'react';
 import { Inbox, Activity, Search, Shield, Settings } from 'lucide-react';
+import AgentPreviewNotice from '../../../components/AgentPreviewNotice';
 
 interface DfirDataViewProps {
   viewType: 'queue' | 'activity' | 'iocs' | 'containment' | 'settings';
@@ -18,7 +19,7 @@ export default function DfirDataView({ viewType }: DfirDataViewProps) {
       ]
     },
     activity: {
-      title: "Live DFIR Activity",
+      title: "Sample DFIR Activity",
       icon: Activity,
       description: "Real-time stream of agent investigations and automated actions.",
       items: [
@@ -73,6 +74,7 @@ export default function DfirDataView({ viewType }: DfirDataViewProps) {
           <p className="text-slate-500 mt-2">{data.description}</p>
         </div>
 
+        <AgentPreviewNotice>These are example records; evidence artifacts are not attached. Containment entries describe a playbook pattern and do not show an executed action or approval record.</AgentPreviewNotice>
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="divide-y divide-slate-100">
             {data.items.map((item, idx) => (

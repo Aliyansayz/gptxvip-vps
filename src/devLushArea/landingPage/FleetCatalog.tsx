@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ShoppingCart, Scale, Box, Shield, ArrowRight, Zap, CheckCircle2 } from 'lucide-react';
 
 interface FleetAgent {
@@ -15,10 +15,20 @@ interface FleetAgent {
 
 export const FleetCatalog: React.FC = () => {
     const [filter, setFilter] = useState<'all' | 'ecommerce' | 'legal' | 'supply' | 'cyber'>('all');
+    const [selectedAgent, setSelectedAgent] = useState<FleetAgent | null>(null);
+
+    useEffect(() => {
+        if (!selectedAgent) return;
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') setSelectedAgent(null);
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [selectedAgent]);
 
     const fleet: FleetAgent[] = [
         {
-            id: 'cart- sentinel',
+            id: 'cart-sentinel',
             name: 'Cart Recovery Sentinel',
             category: 'ecommerce',
             categoryLabel: 'ECOMMERCE',
@@ -94,7 +104,9 @@ export const FleetCatalog: React.FC = () => {
                     {(['all', 'ecommerce', 'legal', 'supply', 'cyber'] as const).map((cat) => (
                         <button
                             key={cat}
+                            type="button"
                             onClick={() => setFilter(cat)}
+                            aria-pressed={filter === cat}
                             className={`px-4 py-2 text-xs sm:text-sm font-bold rounded-full transition-all border ${
                                 filter === cat
                                     ? 'bg-cyan-500 text-zinc-950 border-cyan-500 shadow-md'
@@ -141,7 +153,7 @@ export const FleetCatalog: React.FC = () => {
                                     {agent.statValue}
                                 </span>
                             </div>
-                            <button className="w-full py-2 bg-zinc-100 hover:bg-cyan-500 hover:text-zinc-950 dark:bg-zinc-800 dark:hover:bg-cyan-500 dark:hover:text-zinc-950 text-zinc-900 dark:text-zinc-100 text-xs font-bold rounded-xl border border-zinc-200 dark:border-zinc-700 transition-all flex items-center justify-center gap-1.5">
+                            <button type="button" onClick={() => setSelectedAgent(agent)} aria-label={`Inspect ${agent.name} specification`} className="w-full py-2 bg-zinc-100 hover:bg-cyan-500 hover:text-zinc-950 dark:bg-zinc-800 dark:hover:bg-cyan-500 dark:hover:text-zinc-950 text-zinc-900 dark:text-zinc-100 text-xs font-bold rounded-xl border border-zinc-200 dark:border-zinc-700 transition-all flex items-center justify-center gap-1.5">
                                 <span>Inspect Agent Spec</span>
                                 <ArrowRight className="w-3.5 h-3.5" />
                             </button>
@@ -149,6 +161,26 @@ export const FleetCatalog: React.FC = () => {
                     </div>
                 ))}
             </div>
+
+            {selectedAgent && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onMouseDown={(event) => { if (event.target === event.currentTarget) setSelectedAgent(null); }}>
+                    <section role="dialog" aria-modal="true" aria-labelledby="fleet-spec-title" className="w-full max-w-lg rounded-2xl border border-zinc-700 bg-white p-6 shadow-2xl dark:bg-zinc-900">
+                        <div className="flex items-start justify-between gap-4">
+                            <div>
+                                <p className="text-xs font-bold uppercase tracking-wide text-cyan-600">{selectedAgent.categoryLabel} · Demo specification</p>
+                                <h3 id="fleet-spec-title" className="mt-1 text-xl font-bold text-zinc-900 dark:text-white">{selectedAgent.name}</h3>
+                            </div>
+                            <button type="button" autoFocus onClick={() => setSelectedAgent(null)} className="rounded-lg px-3 py-1 text-sm text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800">Close</button>
+                        </div>
+                        <p className="mt-4 text-sm text-zinc-600 dark:text-zinc-300">{selectedAgent.description}</p>
+                        <div className="mt-5 rounded-xl bg-zinc-100 p-4 text-sm dark:bg-zinc-800">
+                            <span className="text-zinc-500 dark:text-zinc-400">{selectedAgent.statLabel}</span>
+                            <strong className="ml-2 text-cyan-700 dark:text-cyan-300">{selectedAgent.statValue}</strong>
+                        </div>
+                        <p className="mt-4 text-xs text-zinc-500">Catalog preview only. Integrations and live agent operations are not connected here.</p>
+                    </section>
+                </div>
+            )}
         </section>
     );
 };

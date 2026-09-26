@@ -3,44 +3,41 @@ import React from "react";
 interface Props {
   progress: number;
   status: string;
+  onProgressChange: (nextProgress: number) => void;
+  progressDisabled?: boolean;
 }
 
-export const JourneyOverlays: React.FC<Props> = ({ progress, status }) => {
+export const JourneyOverlays: React.FC<Props> = ({ progress, status, onProgressChange, progressDisabled = false }) => {
   return (
-    <>
-      {/* STATIC UI (Bottom Bar) */}
-      <div className="absolute bottom-8 left-10 right-10 flex justify-between items-center z-30 pointer-events-auto bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md px-6 py-4 rounded-2xl border border-slate-200 dark:border-zinc-800 shadow-xl transition-all duration-300">
-        <div className="flex gap-6 w-full justify-between items-center">
-          <div className="w-32">
-            <div className="text-[10px] uppercase text-slate-500 dark:text-zinc-400 font-bold tracking-widest">
-              Global Status
-            </div>
-            <div className="text-slate-800 dark:text-zinc-100 font-bold text-lg tracking-tight whitespace-nowrap">
-              {status}
-            </div>
+    <div className="pointer-events-auto absolute inset-x-2 bottom-2 z-30 rounded-2xl border border-slate-200 bg-white/95 px-3 py-3 shadow-xl backdrop-blur-md transition-all duration-300 dark:border-zinc-800 dark:bg-zinc-900/95 sm:inset-x-4 sm:bottom-4 sm:px-5 sm:py-4 lg:inset-x-10 lg:bottom-8">
+      <div className="flex w-full flex-col gap-2">
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <div className="text-[9px] font-bold uppercase tracking-widest text-slate-500 dark:text-zinc-400 sm:text-[10px]">Global Status</div>
+            <div className="truncate text-sm font-bold tracking-tight text-slate-800 dark:text-zinc-100 sm:text-lg">{status}</div>
           </div>
-          
-          {/* Timeline Ribbon Widget */}
-          <div className="flex-1 flex items-center justify-center gap-4 px-6 md:px-12 border-x border-slate-200 dark:border-zinc-800">
-             <input 
-                type="range" 
-                min="0" max="1" step="0.001" 
-                value={progress}
-                readOnly
-                className="flex-1 accent-emerald-500 h-1.5 bg-slate-200 dark:bg-zinc-800 rounded-lg appearance-none cursor-pointer"
-             />
-          </div>
-
-          <div className="text-right w-32">
-            <div className="text-[10px] uppercase text-slate-500 dark:text-zinc-400 font-bold tracking-widest">
-              Track Progress
-            </div>
-            <div className="text-emerald-600 dark:text-emerald-400 font-mono font-bold text-lg">
-              {Math.round(progress * 100)}%
-            </div>
+          <div className="shrink-0 text-right">
+            <div className="text-[9px] font-bold uppercase tracking-widest text-slate-500 dark:text-zinc-400 sm:text-[10px]">Track Progress</div>
+            <div className="font-mono text-sm font-bold text-emerald-600 dark:text-emerald-400 sm:text-lg">{Math.round(progress * 100)}%</div>
           </div>
         </div>
+        <label className="sr-only" htmlFor="project-journey-progress">Journey progress</label>
+        <input
+          id="project-journey-progress"
+          type="range"
+          min="0"
+          max="1"
+          step="0.001"
+          value={progress}
+          disabled={progressDisabled}
+          onChange={(event) => onProgressChange(Number(event.currentTarget.value))}
+          aria-valuetext={`${Math.round(progress * 100)} percent`}
+          className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-slate-200 accent-emerald-500 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc-800"
+        />
+        <p id="project-journey-help" className="text-center text-[9px] leading-tight text-slate-500 dark:text-zinc-400 sm:text-[10px]">
+          Drag the timeline, scroll, swipe, or use the arrow keys to explore.
+        </p>
       </div>
-    </>
+    </div>
   );
 };

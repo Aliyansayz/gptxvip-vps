@@ -65,7 +65,7 @@ export default function Home() {
                 <div className="text-sm font-semibold text-slate-900">{heroTemplate.name}</div>
                 <div className="text-xs text-slate-500">{heroTemplate.components}+ components · v{heroTemplate.version}</div>
               </div>
-              <div className="ml-4 text-sm font-semibold text-indigo-600">Discuss this surface</div>
+              <div className="ml-4 text-sm font-semibold text-indigo-600">View surface details</div>
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import { LabData } from "../devLushTypes";
 import { devLushRegistry } from "../devLushRegistry";
 import {
@@ -29,14 +29,32 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
   onBack,
   onComplete,
 }) => {
+  const runnerTitleRef = useRef<HTMLHeadingElement>(null);
+  const totalSteps = chapter.interactive_questions?.length ?? 0;
+  const stepStorageKey = `devlush_step_${chapter.labComponentId}`;
   const [step, setStep] = useState(() => {
-    const saved = sessionStorage.getItem(`devlush_step_${chapter.labComponentId}`);
-    return saved ? parseInt(saved, 10) : 0;
+    try {
+      const saved = sessionStorage.getItem(stepStorageKey);
+      const parsed = saved ? Number.parseInt(saved, 10) : 0;
+      return Number.isFinite(parsed) && parsed >= 0 && totalSteps > 0
+        ? Math.min(parsed, totalSteps - 1)
+        : 0;
+    } catch {
+      return 0;
+    }
   });
 
   useEffect(() => {
-    sessionStorage.setItem(`devlush_step_${chapter.labComponentId}`, step.toString());
-  }, [step, chapter.labComponentId]);
+    try {
+      sessionStorage.setItem(stepStorageKey, step.toString());
+    } catch {
+      // Progress remains usable for this session when browser storage is unavailable.
+    }
+  }, [step, stepStorageKey]);
+
+  useEffect(() => {
+    runnerTitleRef.current?.focus();
+  }, [chapter.labComponentId]);
   const [settings, setSettings] = useState<LabSettings>(loadSavedSettings());
   const [infoVisible, setInfoVisible] = useState(!settings.hideTheoryDefault);
   const [infoPlacement, setInfoPlacement] = useState<"side" | "bottom">("side");
@@ -76,7 +94,15 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
     );
   }
 
-  const totalSteps = chapter.interactive_questions.length;
+  if (totalSteps === 0) {
+    return (
+      <div role="alert" className="mx-auto flex w-full max-w-2xl flex-col items-center gap-4 rounded-2xl border border-amber-200 bg-amber-50 p-8 text-center dark:border-amber-900 dark:bg-amber-950/30">
+        <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">This lesson has no activities yet.</h2>
+        <button type="button" onClick={onBack} className="rounded-lg bg-slate-200 px-4 py-2 font-bold text-slate-800 hover:bg-slate-300 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700">Back to Module Hub</button>
+      </div>
+    );
+  }
+
   const isMultiStep = totalSteps > 1;
 
   const handlePrev = () => {
@@ -87,7 +113,11 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
     if (step < totalSteps - 1) {
       setStep((s) => s + 1);
     } else {
-      sessionStorage.removeItem(`devlush_step_${chapter.labComponentId}`);
+      try {
+        sessionStorage.removeItem(stepStorageKey);
+      } catch {
+        // Completion does not depend on browser storage.
+      }
       onComplete();
     }
   };
@@ -113,7 +143,7 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
                   <Sparkles className="w-3.5 h-3.5" /> devLush Interactive
                   Workspace
                 </span>
-                <h2 className="text-4xl md:text-5xl font-heading tracking-wide text-slate-900 dark:text-white">
+                <h2 ref={runnerTitleRef} tabIndex={-1} className="text-4xl md:text-5xl font-heading tracking-wide text-slate-900 dark:text-white focus:outline-none">
                   <span className={`text-transparent bg-clip-text bg-gradient-to-r ${themeColors.gradientFrom} ${themeColors.gradientVia} ${themeColors.gradientTo} bg-[size:200%_auto] animate-gradient`}>
                     {chapter.chapter_title}
                   </span>

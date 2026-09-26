@@ -4,7 +4,7 @@ import { useFavorites, FavoriteItem } from './FavoritesContext';
 import { StarIcon, TrashIcon, FolderPlusIcon, PlayIcon, ChevronRightIcon, ClockIcon } from './icons';
 
 interface FavoritesViewProps {
-    onLaunch: (type: 'lab' | 'medlab', labId: string) => void;
+    onLaunch: (item: FavoriteItem) => void;
 }
 
 const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
@@ -26,13 +26,13 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
     };
 
     const handleLaunch = (item: FavoriteItem) => {
-        onLaunch(item.type, item.id);
+        onLaunch(item);
     };
 
     return (
-        <div className="flex-1 flex h-full overflow-hidden bg-background">
+        <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-background md:flex-row">
             {/* Sidebar for Collections */}
-            <aside className="w-72 border-r border-border bg-card/30 flex flex-col">
+            <aside className="flex max-h-56 w-full shrink-0 flex-col border-b border-border bg-card/30 md:max-h-none md:w-72 md:border-b-0 md:border-r">
                 <div className="p-6 border-b border-border">
                     <h2 className="text-xl font-bold flex items-center gap-2 text-foreground">
                         <StarIcon className="w-6 h-6 text-yellow-500" />
@@ -107,11 +107,11 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
             </aside>
 
             {/* Main Content Area */}
-            <main className="flex-1 overflow-y-auto p-10 bg-muted/20 custom-scrollbar">
+            <main className="min-h-0 flex-1 overflow-y-auto bg-muted/20 p-4 custom-scrollbar sm:p-6 md:p-10">
                 <div className="max-w-5xl mx-auto">
-                    <header className="mb-10 flex items-end justify-between">
+                    <header className="mb-8 flex flex-col gap-2 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
                         <div>
-                            <h1 className="text-4xl font-black text-foreground tracking-tight flex items-center gap-3">
+                            <h1 className="flex items-center gap-3 text-2xl font-black tracking-tight text-foreground sm:text-4xl">
                                 {activeCollection}
                                 <span className="text-xl font-medium text-muted-foreground ml-2">/ {filteredItems.length} items</span>
                             </h1>
@@ -125,8 +125,8 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
                                 <div key={item.id} className="group bg-card border border-border rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col">
                                     <div className="p-6 flex-1">
                                         <div className="flex justify-between items-start mb-4">
-                                            <div className={`flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${item.type === 'medlab' ? 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300' : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'}`}>
-                                                {item.type === 'medlab' ? 'MedCush' : 'BioLab'}
+                                            <div className={`flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${item.type !== 'devlush_lab' ? 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300' : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'}`}>
+                                                {item.type === 'roadmap_reading' ? 'Roadmap Reading' : item.type === 'roadmap_lab' ? 'Roadmap Lab' : item.type === 'agentic_role_lab' ? 'Agentic Role Lab' : 'Agent Lab'}
                                             </div>
                                             <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
                                                 <ClockIcon className="w-3 h-3" />

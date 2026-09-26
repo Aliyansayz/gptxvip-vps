@@ -1,5 +1,5 @@
 import React from 'react';
-import { Github, Twitter, Linkedin, Mail, Heart } from 'lucide-react';
+import { Mail, Heart } from 'lucide-react';
 
 interface FooterProps {
     theme?: 'light' | 'dark';
@@ -34,34 +34,13 @@ const Footer: React.FC<FooterProps> = ({ theme, currentView }) => {
                     </span>
                 </div>
 
-                {/* Navigation Links */}
-                <div className="flex flex-col items-center md:items-start gap-4 md:w-1/3">
-                    <span className={`text-xs font-semibold uppercase tracking-[0.2em] ${textHighlight}`}>Platform</span>
-                    <div className="flex flex-col md:flex-row flex-wrap justify-center md:justify-start gap-x-8 gap-y-3 text-sm font-medium opacity-80">
-                        <a href="#" className={`transition-all duration-300 opacity-70 ${linkHover}`}>About Us</a>
-                        <a href="#" className={`transition-all duration-300 opacity-70 ${linkHover}`}>Privacy Policy</a>
-                        <a href="#" className={`transition-all duration-300 opacity-70 ${linkHover}`}>Terms of Service</a>
-                        <a href="#" className={`transition-all duration-300 opacity-70 ${linkHover}`}>Contact</a>
-                    </div>
-                </div>
-
-                {/* Social Icons */}
+                {/* Contact */}
                 <div className="flex flex-col items-center md:items-end gap-4 md:w-1/3">
-                    <span className={`text-xs font-semibold uppercase tracking-[0.2em] ${textHighlight}`}>Connect</span>
-                    <div className="flex items-center gap-5">
-                        <a href="#" className={`p-2 rounded-full border border-transparent hover:border-current transition-all duration-300 opacity-70 ${linkHover}`} aria-label="Twitter">
-                            <Twitter className="w-4 h-4 stroke-[1.5]" />
-                        </a>
-                        <a href="#" className={`p-2 rounded-full border border-transparent hover:border-current transition-all duration-300 opacity-70 ${linkHover}`} aria-label="GitHub">
-                            <Github className="w-4 h-4 stroke-[1.5]" />
-                        </a>
-                        <a href="#" className={`p-2 rounded-full border border-transparent hover:border-current transition-all duration-300 opacity-70 ${linkHover}`} aria-label="LinkedIn">
-                            <Linkedin className="w-4 h-4 stroke-[1.5]" />
-                        </a>
-                        <a href="#" className={`p-2 rounded-full border border-transparent hover:border-current transition-all duration-300 opacity-70 ${linkHover}`} aria-label="Email">
-                            <Mail className="w-4 h-4 stroke-[1.5]" />
-                        </a>
-                    </div>
+                    <span className={`text-xs font-semibold uppercase tracking-[0.2em] ${textHighlight}`}>Contact</span>
+                    <a href="mailto:aliyan@gptx.vip" className={`inline-flex items-center gap-2 text-sm font-medium opacity-80 transition-all duration-300 ${linkHover}`}>
+                        <Mail className="w-4 h-4 stroke-[1.5]" />
+                        aliyan@gptx.vip
+                    </a>
                 </div>
 
             </div>

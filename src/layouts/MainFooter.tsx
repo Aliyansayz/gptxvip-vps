@@ -2,15 +2,17 @@ import React from "react";
 import { BarChart3, ChevronRight, Sun, Moon } from "lucide-react";
 
 interface MainFooterProps {
-  setActiveTab: (tab: any) => void;
-  setActiveSubTab: (subTab: string) => void;
+  setActiveTab: (tab: any, subTab?: string) => void;
+  activeCodeCategory: string;
+  setActiveCodeCategory: (category: string) => void;
   isDarkMode: boolean;
   setIsDarkMode: (isDark: boolean) => void;
 }
 
 export const MainFooter: React.FC<MainFooterProps> = ({
   setActiveTab,
-  setActiveSubTab,
+  activeCodeCategory,
+  setActiveCodeCategory,
   isDarkMode,
   setIsDarkMode,
 }) => {
@@ -18,20 +20,20 @@ export const MainFooter: React.FC<MainFooterProps> = ({
     <footer className="border-t transition-colors duration-300 mt-auto border-zinc-800 bg-zinc-900 relative z-50">
       <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="space-y-4 col-span-1 md:col-span-2">
-          <div className="flex items-center gap-2">
+          <a href="/" aria-label="Return to GPTX.VIP home" className="flex w-fit items-center gap-2 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-500">
             <div className="w-6 h-6 bg-emerald-500 rounded flex items-center justify-center">
               <BarChart3 className="w-3 h-3 text-black" />
             </div>
             <span className="font-display font-black tracking-tighter text-lg uppercase text-zinc-100">
               GPTX.VIP
             </span>
-          </div>
+          </a>
           <p className="text-xs font-mono leading-relaxed max-w-sm text-zinc-400">
             Advanced analytical environment and visual documentation engine for algorithmic trading concepts and execution simulations.
           </p>
-          <p className="text-xs font-mono text-zinc-300">
+          <a href="mailto:aliyan@gptx.vip" className="block w-fit text-xs font-mono text-zinc-300 hover:text-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
             Contact: aliyan@gptx.vip
-          </p>
+          </a>
         </div>
         
         <div className="space-y-4">
@@ -40,8 +42,7 @@ export const MainFooter: React.FC<MainFooterProps> = ({
             <li>
               <button 
                 onClick={() => {
-                  setActiveTab("trading-tools" as any);
-                  setActiveSubTab("leverage-view-v3");
+                  setActiveTab("trading-tools" as any, "leverage-view-v3");
                 }}
                 className="hover:text-emerald-500 transition-colors flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer"
               >
@@ -52,8 +53,7 @@ export const MainFooter: React.FC<MainFooterProps> = ({
             <li>
               <button 
                 onClick={() => {
-                  setActiveTab("trading-tools" as any);
-                  setActiveSubTab("");
+                  setActiveTab("trading-tools" as any, "");
                 }}
                 className="hover:text-emerald-500 transition-colors flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer"
               >
@@ -64,8 +64,7 @@ export const MainFooter: React.FC<MainFooterProps> = ({
             <li>
               <button 
                  onClick={() => {
-                  setActiveTab("trading-tools");
-                  setActiveSubTab("");
+                  setActiveTab("trading-tools", "");
                 }}
                 className="hover:text-emerald-500 transition-colors flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer"
               >
@@ -75,9 +74,12 @@ export const MainFooter: React.FC<MainFooterProps> = ({
             </li>
             <li>
               <button 
-                 onClick={() => {
-                  setActiveTab("code-concepts");
-                  setActiveSubTab("");
+                onClick={() => {
+                  if (activeCodeCategory === "search") {
+                    setActiveCodeCategory("general");
+                  } else {
+                    setActiveTab("code-concepts");
+                  }
                 }}
                 className="hover:text-emerald-500 transition-colors flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer"
               >
@@ -89,7 +91,6 @@ export const MainFooter: React.FC<MainFooterProps> = ({
               <button
                 onClick={() => {
                   setActiveTab("profile");
-                  setActiveSubTab("");
                 }}
                 className="hover:text-emerald-500 transition-colors flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer"
               >
@@ -101,7 +102,6 @@ export const MainFooter: React.FC<MainFooterProps> = ({
               <button
                 onClick={() => {
                   setActiveTab("dev-labs-workspace");
-                  setActiveSubTab("");
                 }}
                 className="hover:text-emerald-500 transition-colors flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer"
               >
@@ -113,7 +113,6 @@ export const MainFooter: React.FC<MainFooterProps> = ({
               <button
                 onClick={() => {
                   setActiveTab("roadmap-workspace");
-                  setActiveSubTab("");
                 }}
                 className="hover:text-emerald-500 transition-colors flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer"
               >

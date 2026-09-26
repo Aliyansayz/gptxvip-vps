@@ -24,12 +24,20 @@ export const CandlestickChartWidget: React.FC<CandlestickChartWidgetProps> = ({
   title = "Partial Close & Breakeven Dynamics",
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const hasValidCandles = data.length > 0 && data.every((candle) =>
+    Number.isFinite(candle.time) && Number.isFinite(candle.open) &&
+    Number.isFinite(candle.high) && Number.isFinite(candle.low) &&
+    Number.isFinite(candle.close) && candle.low <= Math.min(candle.open, candle.close) &&
+    candle.high >= Math.max(candle.open, candle.close));
+  const hasValidLevels = [entryPrice, initialSL, tp1].every(Number.isFinite);
+  const hasValidData = hasValidCandles && hasValidLevels;
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    if (!hasValidData) return;
 
     const resize = () => {
       const parent = canvas.parentElement;
@@ -51,7 +59,7 @@ export const CandlestickChartWidget: React.FC<CandlestickChartWidgetProps> = ({
       if (data.length === 0) return;
 
       const padding = { top: 40, right: 80, bottom: 30, left: 20 };
-      const chartWidth = width - padding.left - padding.right;
+      const chartWidth = Math.max(1, width - padding.left - padding.right);
       const chartHeight = height - padding.top - padding.bottom;
 
       // Find min/max
@@ -59,13 +67,15 @@ export const CandlestickChartWidget: React.FC<CandlestickChartWidgetProps> = ({
       let maxPrice = Math.max(...data.map((d) => d.high), tp1) * 1.005;
 
       const priceRange = maxPrice - minPrice;
+      if (!Number.isFinite(priceRange) || priceRange <= 0) return;
 
       const getY = (price: number) =>
         padding.top +
         chartHeight -
         ((price - minPrice) / priceRange) * chartHeight;
-      const getX = (index: number) =>
-        padding.left + (index / (data.length - 1)) * chartWidth;
+      const getX = (index: number) => data.length === 1
+        ? padding.left + chartWidth / 2
+        : padding.left + (index / (data.length - 1)) * chartWidth;
 
       const candleWidth = Math.max(2, (chartWidth / data.length) * 0.6);
 
@@ -193,7 +203,12 @@ export const CandlestickChartWidget: React.FC<CandlestickChartWidgetProps> = ({
     setTimeout(resize, 50);
 
     return () => window.removeEventListener("resize", resize);
-  }, [data, entryPrice, initialSL, tp1]);
+  }, [data, entryPrice, initialSL, tp1, hasValidData]);
+
+  if (!hasValidData) {
+    const message = data.length === 0 ? "No candle data is available for this chart." : "Candle data or trade levels are invalid and could not be plotted.";
+    return <div role={data.length === 0 ? "status" : "alert"} className="flex min-h-[200px] items-center justify-center rounded-xl border border-dashed border-zinc-300 p-6 text-center text-sm text-zinc-500 dark:border-zinc-700">{message}</div>;
+  }
 
   return (
     <div className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
@@ -216,7 +231,12 @@ export const CandlestickChartWidget: React.FC<CandlestickChartWidgetProps> = ({
         </div>
       </div>
       <div className="p-4 relative w-full h-[400px]">
-        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+        <canvas
+          ref={canvasRef}
+          role="img"
+          aria-label={`${title}. ${data.length} candles; entry ${entryPrice}, stop loss ${initialSL}, take profit ${tp1}.`}
+          className="absolute inset-0 w-full h-full"
+        />
       </div>
     </div>
   );

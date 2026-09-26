@@ -4,28 +4,34 @@ import { ShoppingCart, Coffee, PackagePlus, Sparkles, Loader2, ArrowRight } from
 
 export default function AovBundleVisual() {
     const [phase, setPhase] = useState<'empty' | 'added' | 'analyzing' | 'bundled'>('empty');
+    const [bundleAdded, setBundleAdded] = useState(false);
 
     useEffect(() => {
+        let cancelled = false;
         const sequence = async () => {
             // Initial state
             setPhase('empty');
+            setBundleAdded(false);
             await new Promise(r => setTimeout(r, 1500));
+            if (cancelled) return;
             
             // Add to cart
             setPhase('added');
             await new Promise(r => setTimeout(r, 1500));
+            if (cancelled) return;
             
             // Agent analyzing
             setPhase('analyzing');
             await new Promise(r => setTimeout(r, 2000));
+            if (cancelled) return;
             
             // Bundle generated
             setPhase('bundled');
             await new Promise(r => setTimeout(r, 5000)); // hold
-            
-            sequence(); // loop
+            if (!cancelled) sequence(); // loop
         };
         sequence();
+        return () => { cancelled = true; };
     }, []);
 
     return (
@@ -44,7 +50,7 @@ export default function AovBundleVisual() {
                              <span className="font-bold text-slate-200">Espresso Machine Pro</span>
                              <span className="text-emerald-400 font-mono font-bold">$499.00</span>
                          </div>
-                         <button className={`p-2 rounded-lg transition-colors ${phase !== 'empty' ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : 'bg-amber-500 text-slate-950 shadow-[0_0_15px_rgba(245,158,11,0.4)]'}`}>
+                         <button type="button" aria-label="Add Espresso Machine Pro to cart" disabled={phase !== 'empty'} onClick={() => setPhase('added')} className={`p-2 rounded-lg transition-colors ${phase !== 'empty' ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : 'bg-amber-500 text-slate-950 shadow-[0_0_15px_rgba(245,158,11,0.4)]'}`}>
                              <ShoppingCart className="w-5 h-5" />
                          </button>
                     </div>
@@ -66,7 +72,7 @@ export default function AovBundleVisual() {
                         <ShoppingCart className="w-5 h-5" /> Your Cart
                     </h4>
                     <span className="bg-slate-800 text-slate-400 px-2 py-0.5 rounded text-xs font-bold font-mono">
-                        {phase === 'empty' ? '0 items' : '1 item'}
+                        {phase === 'empty' ? '0 items' : bundleAdded ? '3 items' : '1 item'}
                     </span>
                 </div>
 
@@ -129,8 +135,8 @@ export default function AovBundleVisual() {
                                         </div>
                                     </div>
 
-                                    <button className="w-full bg-fuchsia-500 hover:bg-fuchsia-400 text-white text-sm font-bold py-2 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-lg">
-                                        Add Bundle for +$58.50
+                                    <button type="button" onClick={() => setBundleAdded(true)} disabled={bundleAdded} className="w-full bg-fuchsia-500 hover:bg-fuchsia-400 disabled:bg-emerald-700 disabled:cursor-default text-white text-sm font-bold py-2 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-lg">
+                                        {bundleAdded ? 'Bundle added to demo cart' : 'Add Bundle for +$58.50'}
                                     </button>
                                 </motion.div>
                             )}
@@ -140,7 +146,7 @@ export default function AovBundleVisual() {
                     <div className="mt-4 pt-4 border-t border-slate-800 flex justify-between items-center relative z-20">
                         <span className="font-bold text-slate-400">Total</span>
                         <span className="font-bold font-mono text-emerald-400 text-xl">
-                            {phase === 'empty' ? '$0.00' : '$499.00'}
+                            {phase === 'empty' ? '$0.00' : bundleAdded ? '$557.50' : '$499.00'}
                         </span>
                     </div>
                 </div>

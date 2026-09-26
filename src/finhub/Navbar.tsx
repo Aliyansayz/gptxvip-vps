@@ -17,8 +17,7 @@ import {
 
 interface FinhubNavbarProps {
   activeTab: string;
-  setActiveTab: (tab: any) => void;
-  setActiveSubTab: (subTab: string) => void;
+  setActiveTab: (tab: any, subTab?: string) => void;
   activeCodeCategory: string;
   setActiveCodeCategory: (category: string) => void;
   isDarkMode: boolean;
@@ -32,7 +31,6 @@ interface FinhubNavbarProps {
 export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
   activeTab,
   setActiveTab,
-  setActiveSubTab,
   activeCodeCategory,
   setActiveCodeCategory,
   isDarkMode,
@@ -50,8 +48,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
       icon: <BarChart3 className="w-3.5 h-3.5" />,
       isActive: activeTab === 'home',
       onClick: () => {
-        setActiveTab('home');
-        setActiveSubTab('liquidity-depth');
+        setActiveTab('home', 'liquidity-depth');
       },
     },
     {
@@ -61,7 +58,6 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
       isActive: activeTab === 'trade-type' || activeTab === 'overview',
       onClick: () => {
         setActiveTab('trade-type');
-        setActiveSubTab('');
       },
     },
     {
@@ -70,8 +66,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
       icon: <Zap className="w-3.5 h-3.5" />,
       isActive: activeTab === 'trading-tools' || activeTab === 'archive-tools',
       onClick: () => {
-        setActiveTab('trading-tools');
-        setActiveSubTab('leverage-view-v3');
+        setActiveTab('trading-tools', 'leverage-view-v3');
       },
     },
     {
@@ -81,7 +76,6 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
       isActive: activeTab === 'cointegration',
       onClick: () => {
         setActiveTab('cointegration');
-        setActiveSubTab('');
       },
     },
     {
@@ -93,10 +87,10 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
         activeTab === 'core-concepts' ||
         activeTab === 'math-primer',
       onClick: () => {
-        setActiveTab('code-concepts');
-        setActiveSubTab('');
         if (activeCodeCategory === 'search') {
           setActiveCodeCategory('general');
+        } else {
+          setActiveTab('code-concepts');
         }
       },
     },
@@ -107,7 +101,6 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
       isActive: activeTab === 'key-terms',
       onClick: () => {
         setActiveTab('key-terms');
-        setActiveSubTab('');
       },
     },
     {
@@ -116,15 +109,12 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
       icon: <Network className="w-3.5 h-3.5" />,
       isActive: activeTab === 'map',
       onClick: () => {
-        setActiveTab('map');
-        setActiveSubTab('');
+        setActiveTab('map', 'doc-map');
       },
     },
   ];
 
   const handleSearchClick = () => {
-    setActiveTab('code-concepts');
-    setActiveSubTab('');
     setActiveCodeCategory('search');
   };
 
@@ -132,7 +122,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
     if (onNavigateDevLush) {
       onNavigateDevLush();
     } else {
-      window.location.assign('/agent');
+      window.location.assign('/agents');
     }
   };
 
@@ -142,7 +132,6 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
 
   const handleProfileClick = () => {
     setActiveTab('profile');
-    setActiveSubTab('');
   };
 
   return (
@@ -153,6 +142,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           {onExit && (
             <button
+              type="button"
               onClick={onExit}
               className="p-1.5 sm:p-2 rounded-xl text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700"
               aria-label="Return to Main Hub"
@@ -164,6 +154,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
 
           {onToggleSidebar && (
             <button
+              type="button"
               onClick={onToggleSidebar}
               className={`p-1.5 sm:p-2 rounded-xl text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700 ${isLearningTab ? 'hidden md:inline-flex' : ''}`}
               aria-label="Toggle Sidebar"
@@ -174,11 +165,12 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
           )}
 
           <button
+            type="button"
+            aria-label="Go to Finhub home"
             onClick={() => {
-              setActiveTab('home');
-              setActiveSubTab('liquidity-depth');
+              setActiveTab('home', 'liquidity-depth');
             }}
-            className="flex items-center gap-2 cursor-pointer group text-left focus:outline-none ml-0.5"
+            className="flex items-center gap-2 cursor-pointer group text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 rounded-lg ml-0.5"
           >
             <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-tr from-emerald-600 to-cyan-500 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.35)] group-hover:scale-105 transition-all">
               <BarChart3 className="text-white dark:text-zinc-950 w-4 h-4 sm:w-4.5 sm:h-4.5" />
@@ -204,6 +196,8 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
           {navItems.map((item) => (
             <button
               key={item.id}
+              type="button"
+              aria-current={item.isActive ? 'page' : undefined}
               onClick={item.onClick}
               className={`px-3 py-1.5 text-xs font-bold tracking-wide transition-all rounded-xl flex items-center gap-1.5 cursor-pointer ${
                 item.isActive
@@ -218,6 +212,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
 
           {/* Direct bridge to devLush Swarms */}
           <button
+            type="button"
             onClick={handleDevLushClick}
             className="px-3 py-1.5 text-xs font-bold tracking-wide transition-all rounded-xl flex items-center gap-1.5 cursor-pointer text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/10"
             title="Switch to devLush AgentOS Workspace"
@@ -228,6 +223,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
 
           {/* Direct bridge to Blogs */}
           <button
+            type="button"
             onClick={handleBlogsClick}
             className="px-3 py-1.5 text-xs font-bold tracking-wide transition-all rounded-xl flex items-center gap-1.5 cursor-pointer text-purple-600 dark:text-purple-400 hover:bg-purple-500/10"
             title="Explore Research Papers & Blogs"
@@ -238,6 +234,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
 
           {/* Profile */}
           <button
+            type="button"
             onClick={handleProfileClick}
             className={`px-3 py-1.5 text-xs font-bold tracking-wide transition-all rounded-xl flex items-center gap-1.5 cursor-pointer ${
               activeTab === 'profile'
@@ -255,6 +252,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
           
           {/* Quick Search */}
           <button
+            type="button"
             onClick={handleSearchClick}
             className={`p-1.5 sm:p-2 rounded-xl transition-colors cursor-pointer border ${
               activeTab === 'code-concepts' && activeCodeCategory === 'search'
@@ -269,6 +267,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
 
           {/* Theme Switcher */}
           <button
+            type="button"
             onClick={onToggleTheme}
             className="p-1.5 sm:p-2 rounded-xl text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700"
             title="Toggle Light / Dark Mode"
@@ -280,6 +279,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
           {/* Exit CTA Button */}
           {onExit && (
             <button
+              type="button"
               onClick={onExit}
               className="px-2.5 sm:px-3 py-1 sm:py-1.5 text-[11px] sm:text-xs font-bold tracking-wider uppercase transition-all bg-red-500/10 hover:bg-red-500 text-red-600 dark:text-red-400 hover:text-white border border-red-500/30 rounded-xl cursor-pointer shadow-sm"
               title="Exit Finhub Lab & Return to Main Hub"
@@ -296,6 +296,8 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
         {navItems.map((item) => (
           <button
             key={item.id}
+            type="button"
+            aria-current={item.isActive ? 'page' : undefined}
             onClick={item.onClick}
             className={`px-2.5 py-1 rounded-lg flex items-center gap-1 whitespace-nowrap shrink-0 cursor-pointer transition-all ${
               item.isActive
@@ -309,6 +311,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
         ))}
 
         <button
+          type="button"
           onClick={handleDevLushClick}
           className="px-2.5 py-1 rounded-lg text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/10 flex items-center gap-1 whitespace-nowrap shrink-0 cursor-pointer"
         >
@@ -317,6 +320,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
         </button>
 
         <button
+          type="button"
           onClick={handleBlogsClick}
           className="px-2.5 py-1 rounded-lg text-purple-600 dark:text-purple-400 hover:bg-purple-500/10 flex items-center gap-1 whitespace-nowrap shrink-0 cursor-pointer"
         >
@@ -325,6 +329,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
         </button>
 
         <button
+          type="button"
           onClick={handleProfileClick}
           className={`px-2.5 py-1 rounded-lg flex items-center gap-1 whitespace-nowrap shrink-0 cursor-pointer ${
             activeTab === 'profile'
@@ -338,6 +343,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
 
         {onExit && (
           <button
+            type="button"
             onClick={onExit}
             className="px-2.5 py-1 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-500/10 border border-red-500/20 flex items-center gap-1 whitespace-nowrap shrink-0 cursor-pointer font-bold"
           >

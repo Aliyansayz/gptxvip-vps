@@ -35,6 +35,10 @@ export const CandidateAssessmentWidget: React.FC<CandidateAssessmentWidgetProps>
     }
   };
 
+  const selectedFeedback = exercise.wrong_answer_feedback?.find(
+    (feedback) => feedback.option === selectedOption
+  )?.feedback;
+
   const handleReset = () => {
     setSelectedOption(null);
     setIsEvaluated(false);
@@ -55,12 +59,18 @@ export const CandidateAssessmentWidget: React.FC<CandidateAssessmentWidgetProps>
         </div>
 
         {exercise.prompt && (
+          <div>
+          <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-blue-300">Task prompt</p>
           <p className="text-xs text-slate-400 leading-relaxed bg-slate-950/60 p-3 rounded-lg border border-slate-800">
             {exercise.prompt}
           </p>
+          </div>
         )}
 
-        <h3 className="text-sm font-semibold text-white leading-snug">{exercise.question}</h3>
+        <div>
+          <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-blue-300">Assessment question</p>
+          <h3 className="text-sm font-semibold text-white leading-snug">{exercise.question}</h3>
+        </div>
 
         {/* Options List */}
         <div className="space-y-2 pt-1">
@@ -81,6 +91,8 @@ export const CandidateAssessmentWidget: React.FC<CandidateAssessmentWidgetProps>
             return (
               <button
                 key={idx}
+                type="button"
+                aria-pressed={isSelected}
                 disabled={isEvaluated}
                 onClick={() => setSelectedOption(opt)}
                 className={`w-full p-3 rounded-lg border text-left text-xs transition-all flex items-start gap-2.5 cursor-pointer ${style}`}
@@ -97,6 +109,8 @@ export const CandidateAssessmentWidget: React.FC<CandidateAssessmentWidgetProps>
         {/* Evaluation Diagnostic Banner */}
         {isEvaluated && (
           <div
+            role="status"
+            aria-live="polite"
             className={`p-3 rounded-lg text-xs border space-y-1 animate-in fade-in ${
               isCorrect
                 ? 'bg-emerald-950/30 border-emerald-800 text-emerald-300'
@@ -107,7 +121,8 @@ export const CandidateAssessmentWidget: React.FC<CandidateAssessmentWidgetProps>
               {isCorrect ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <XCircle className="w-4 h-4 text-rose-400" />}
               <span>{isCorrect ? 'Assessment Validated' : 'Technical Misalignment'}</span>
             </div>
-            <p className="text-slate-300 text-[11px] leading-relaxed">{exercise.explanation}</p>
+            <p className="font-semibold">{isCorrect ? 'Why this is correct' : 'Why this needs revision'}</p>
+            <p className="text-slate-300 text-[11px] leading-relaxed">{!isCorrect && selectedFeedback ? selectedFeedback : exercise.explanation}</p>
           </div>
         )}
       </div>
@@ -116,6 +131,7 @@ export const CandidateAssessmentWidget: React.FC<CandidateAssessmentWidgetProps>
       <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
         {isEvaluated ? (
           <button
+            type="button"
             onClick={handleReset}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white bg-slate-800 transition-colors cursor-pointer"
           >
@@ -128,6 +144,7 @@ export const CandidateAssessmentWidget: React.FC<CandidateAssessmentWidgetProps>
 
         {!isEvaluated && (
           <button
+            type="button"
             onClick={handleVerify}
             className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-600/30 transition-all cursor-pointer"
           >

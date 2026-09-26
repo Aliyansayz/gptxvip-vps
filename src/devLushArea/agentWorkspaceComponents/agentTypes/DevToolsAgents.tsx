@@ -15,7 +15,7 @@ export const DevToolsAgents: React.FC<DevToolsAgentsProps> = ({ onNavigate }) =>
         <h2 className="text-2xl font-bold font-heading text-slate-800 group-hover:text-emerald-600 transition-colors">DevTools Agents</h2>
       </div>
       <p className="text-slate-500 mb-6 flex-1 text-sm leading-relaxed">
-        Agents that assist with code reviews, CI/CD pipeline optimization, and automated refactoring.
+        Development workflow examples cover PR review, static analysis, and refactoring ideas; some destinations are still being built.
       </p>
       
       <div className="space-y-3">
@@ -27,7 +27,7 @@ export const DevToolsAgents: React.FC<DevToolsAgentsProps> = ({ onNavigate }) =>
             <GitPullRequest className="w-5 h-5 text-emerald-500" />
             <div>
               <div className="font-semibold text-sm text-slate-800">Code Review Agent</div>
-              <div className="text-[11px] text-slate-500 font-medium">Automated PR analysis & style enforcement</div>
+              <div className="text-[11px] text-slate-500 font-medium">Inspect example code-quality findings</div>
             </div>
           </div>
         </button>
@@ -40,12 +40,14 @@ export const DevToolsAgents: React.FC<DevToolsAgentsProps> = ({ onNavigate }) =>
             <Search className="w-5 h-5 text-emerald-500" />
             <div>
               <div className="font-semibold text-sm text-slate-800">Source Code Auditor (SAST)</div>
-              <div className="text-[11px] text-slate-500 font-medium">Automated vulnerability scanning in CI/CD</div>
+              <div className="text-[11px] text-slate-500 font-medium">Inspect a sample vulnerability finding</div>
             </div>
           </div>
         </button>
         
         <button 
+          type="button"
+          disabled
           className="w-full flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 opacity-70 cursor-not-allowed text-left"
         >
           <div className="flex items-center gap-3">

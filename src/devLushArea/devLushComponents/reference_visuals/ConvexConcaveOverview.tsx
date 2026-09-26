@@ -1,7 +1,7 @@
 import React from 'react';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
-import { Exercise } from '../../../types';
+import { Exercise } from '../devLushTypes';
 import { toast } from 'sonner';
 import { TrendingDown, TrendingUp, GitCompareArrows, Zap, CheckCircleIcon } from 'lucide-react';
 

@@ -19,7 +19,7 @@ export const renderTextWithSnippets = (text: string, isDarkMode: boolean = true)
           return (
             <span 
               key={index} 
-              className={`font-mono text-[0.85em] px-1.5 py-0.5 rounded-md inline-block whitespace-pre align-middle ${
+              className={`inline-block max-w-full overflow-x-auto align-middle whitespace-pre rounded-md px-1.5 py-0.5 font-mono text-[0.85em] ${
                 isDarkMode ? 'bg-[#0f172a] text-indigo-300 border border-indigo-500/20 shadow-inner' : 'bg-zinc-100 text-indigo-700 border border-zinc-200 shadow-sm'
               } mx-1`}
               style={{ lineHeight: '1.2' }}
@@ -1175,6 +1175,7 @@ const WalkthroughMCQ: React.FC<WalkthroughMCQProps & { isDarkMode?: boolean }> =
 interface CoreConceptRunnerProps {
     concept: InteractiveQuestion;
     onBack: () => void;
+    onComplete?: () => void;
     courseId?: string;
     categoryId?: string;
     themeColor?: 'emerald' | 'blue' | 'indigo';
@@ -1183,6 +1184,7 @@ interface CoreConceptRunnerProps {
 export const CoreConceptRunner: React.FC<CoreConceptRunnerProps> = ({ 
     concept, 
     onBack, 
+    onComplete,
     courseId,
     categoryId,
     themeColor = 'indigo'
@@ -1452,7 +1454,7 @@ export const CoreConceptRunner: React.FC<CoreConceptRunnerProps> = ({
                             <h2 className="text-2xl font-black tracking-tight text-zinc-900 dark:text-zinc-100 mb-2 pl-2">
                                 {concept.title}
                             </h2>
-                            <p className="text-zinc-700 dark:text-zinc-300 text-lg leading-relaxed pl-2 whitespace-pre-wrap">
+                                <p className="break-words whitespace-pre-wrap pl-2 text-lg leading-relaxed [overflow-wrap:anywhere] text-zinc-700 dark:text-zinc-300">
                                 {renderTextWithSnippets(concept.question || (concept as any).prompt || '', isDarkMode)}
                             </p>
                         </div>
@@ -1462,7 +1464,7 @@ export const CoreConceptRunner: React.FC<CoreConceptRunnerProps> = ({
                             {concept.type === "overview" && concept.theory ? (
                                 <TheoryPane concepts={concept.theory} categoryId={categoryId} themeColor={themeColor} />
                             ) : VisualComponent ? (
-                                <VisualComponent exercise={concept} onComplete={() => {}} themeColor={themeColor} />
+                                <VisualComponent exercise={concept} onComplete={onComplete || onBack} themeColor={themeColor} />
                             ) : concept.type === "mcq" ? (
                                 <MCQExercise question={concept as MCQQuestion} themeColor={themeColor} isDarkMode={isDarkMode} categoryId={categoryId} />
                             ) : concept.type === "drag_and_drop" ? (
@@ -1480,7 +1482,10 @@ export const CoreConceptRunner: React.FC<CoreConceptRunnerProps> = ({
                     {/* Top Right: Expandable Theory Pane */}
                     {(concept.type !== 'overview' && !isWalkthrough && concept.theory && concept.theory.length > 0) && (
                         <div className={`transition-all duration-300 ease-in-out shrink-0 w-full lg:w-[350px] relative`}>
-                            <button 
+                            <button
+                                type="button"
+                                aria-expanded={isTheoryOpen}
+                                aria-controls="concept-theory-panel"
                                 onClick={() => setIsTheoryOpen(!isTheoryOpen)} 
                                 className="w-full flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors mb-2"
                             >
@@ -1497,7 +1502,10 @@ export const CoreConceptRunner: React.FC<CoreConceptRunnerProps> = ({
                         
                         <AnimatePresence initial={false}>
                             {isTheoryOpen && (
-                                <motion.div 
+                                <motion.div
+                                    id="concept-theory-panel"
+                                    role="region"
+                                    aria-label="Theory and concept details"
                                     initial={{ opacity: 0, height: 0 }}
                                     animate={{ opacity: 1, height: 'auto' }}
                                     exit={{ opacity: 0, height: 0 }}

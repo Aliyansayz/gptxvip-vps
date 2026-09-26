@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { CODE_CONCEPT_CATEGORIES } from '../../../constants/codeConcepts';
 import { InteractiveQuestion } from '../../../types';
 import { FavoriteButton } from '../addtoFavorites/FavoriteButton';
+import { CONCEPT_DATA_FILES } from '../courseDataFiles';
 
 interface SearchConceptsViewProps {
   onSelectTopic: (categoryId: string) => void;
@@ -18,6 +19,20 @@ interface SearchResult {
   activity: InteractiveQuestion;
 }
 
+interface LoadedCourseData {
+  categoryId: string;
+  course: string;
+  chapter_title: string;
+  tags: string[];
+  interactive_questions: InteractiveQuestion[];
+}
+
+const SEARCH_CATEGORY_IDS = CODE_CONCEPT_CATEGORIES.filter((category) => category.id !== 'search').map((category) => category.id);
+const TOTAL_SEARCH_DATA_FILES = SEARCH_CATEGORY_IDS.reduce(
+  (count, categoryId) => count + (CONCEPT_DATA_FILES[categoryId]?.length ?? 0),
+  0,
+);
+
 export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelectTopic, onSelectConcept, onExitSearch }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [autocompleteSuggestion, setAutocompleteSuggestion] = useState('');
@@ -25,40 +40,83 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
   const [isLoading, setIsLoading] = useState(false);
   const [allData, setAllData] = useState<any[]>([]);
   const [allTags, setAllTags] = useState<string[]>([]);
+  const [failedFileCount, setFailedFileCount] = useState(0);
+  const [loadAttempt, setLoadAttempt] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setTimeout(() => inputRef.current?.focus(), 100);
+    let cancelled = false;
+    const focusTimeout = window.setTimeout(() => inputRef.current?.focus(), 100);
     
-    // Fetch all code concepts data
     const fetchAllData = async () => {
       setIsLoading(true);
-      const data: any[] = [];
-      for (const category of CODE_CONCEPT_CATEGORIES) {
-        if (category.id === 'search') continue;
-        try {
-          const response = await fetch(`/code_concepts/${category.id}/index.json`);
-          if (response.ok) {
-            const json = await response.json();
-            data.push({ categoryId: category.id, ...json });
+      const outcomes = await Promise.all(SEARCH_CATEGORY_IDS.map(async (categoryId) => {
+        const files = CONCEPT_DATA_FILES[categoryId] || [];
+        const fileResults = await Promise.all(files.map(async (fileName): Promise<Record<string, unknown> | null> => {
+          try {
+            const response = await fetch(`/code_concepts/${categoryId}/${fileName}`);
+            if (!response.ok) throw new Error(`Request failed (${response.status})`);
+            const json: unknown = await response.json();
+            if (!json || typeof json !== 'object' || Array.isArray(json)) throw new Error('Invalid course data');
+            const payload = json as Record<string, unknown>;
+            if (!Array.isArray(payload.interactive_questions)) throw new Error('Invalid course data');
+            return payload;
+          } catch {
+            return null;
           }
-        } catch (error) {
-          console.error('Error fetching concept data for search:', error);
-        }
-      }
+        }));
+        const loadedFiles = fileResults.filter((payload): payload is Record<string, unknown> => payload !== null);
+        const merged: LoadedCourseData = {
+          categoryId,
+          course: '',
+          chapter_title: '',
+          tags: [],
+          interactive_questions: [],
+        };
+        loadedFiles.forEach((payload) => {
+          merged.course ||= typeof payload.course === 'string' ? payload.course : '';
+          merged.chapter_title ||= typeof payload.chapter_title === 'string' ? payload.chapter_title : '';
+          if (Array.isArray(payload.tags)) {
+            merged.tags.push(...payload.tags.filter((tag): tag is string => typeof tag === 'string'));
+          }
+          const questions = (payload.interactive_questions as unknown[]).filter((question): question is InteractiveQuestion =>
+            !!question && typeof question === 'object' &&
+            typeof (question as InteractiveQuestion).componentId === 'string' &&
+            typeof (question as InteractiveQuestion).type === 'string')
+            .map((question) => ({
+              ...question,
+              title: typeof question.title === 'string' ? question.title : '',
+              concept_tested: typeof question.concept_tested === 'string' ? question.concept_tested : '',
+              prompt: typeof question.prompt === 'string' ? question.prompt : undefined,
+              question: typeof question.question === 'string' ? question.question : undefined,
+              difficulty: typeof question.difficulty === 'string' ? question.difficulty : 'basic',
+            }));
+          merged.interactive_questions.push(...questions);
+        });
+        return { data: loadedFiles.length ? merged : null, failedFiles: files.length - loadedFiles.length };
+      }));
+      const data = outcomes.flatMap((outcome) => outcome.data ? [outcome.data] : []);
+      const failedCount = outcomes.reduce((count, outcome) => count + outcome.failedFiles, 0);
       const tagsSet = new Set<string>();
       data.forEach(d => {
-        if (d.tags) {
+        if (Array.isArray(d.tags)) {
           d.tags.forEach((t: string) => tagsSet.add(t));
         }
       });
-      setAllTags(Array.from(tagsSet));
-      setAllData(data);
-      setIsLoading(false);
+      if (!cancelled) {
+        setAllTags(Array.from(tagsSet));
+        setAllData(data);
+        setFailedFileCount(failedCount);
+        setIsLoading(false);
+      }
     };
 
     fetchAllData();
-  }, []);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(focusTimeout);
+    };
+  }, [loadAttempt]);
 
   useEffect(() => {
     if (!searchQuery.trim()) {
@@ -73,7 +131,7 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
 
     allData.forEach(data => {
       // Collect tags for autocomplete
-      if (data.tags) {
+      if (Array.isArray(data.tags)) {
         data.tags.forEach((tag: string) => {
           if (tag.toLowerCase().startsWith(query)) {
             possibleCompletions.push(tag.toLowerCase());
@@ -95,7 +153,7 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
             qTitle.includes(query) ||
             qConcept.includes(query) ||
             qPrompt.includes(query) ||
-            (data.tags && data.tags.some((tag: string) => tag.toLowerCase().includes(query)))
+            (Array.isArray(data.tags) && data.tags.some((tag: string) => tag.toLowerCase().includes(query)))
           ) {
             matchedResults.push({
               categoryId: data.categoryId,
@@ -133,7 +191,10 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
     <div className="flex flex-col h-full min-h-[70vh] bg-zinc-50 dark:bg-zinc-950 transition-colors duration-500 overflow-hidden px-4 py-5 md:px-12 md:py-8 relative">
         {onExitSearch && (
           <button 
+            type="button"
             onClick={onExitSearch}
+            aria-label="Return from Code Concepts search"
+            title="Return to the previous learning view"
             className="absolute top-6 right-6 z-10 p-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-400 rounded-lg transition-colors flex items-center gap-2 shadow-sm"
           >
             <X className="w-5 h-5" />
@@ -169,6 +230,7 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
             <input
               ref={inputRef}
               type="text"
+              aria-label="Search code concepts"
               className="block w-full pl-11 pr-12 py-3.5 md:py-4 bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 rounded-xl text-base md:text-lg text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-shadow relative z-0 bg-transparent font-medium"
               placeholder="Search concepts, topics, or tags..."
               value={searchQuery}
@@ -187,6 +249,19 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
             )}
           </div>
 
+          {failedFileCount > 0 && (
+            <div role="status" className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
+              <span>
+                {failedFileCount === TOTAL_SEARCH_DATA_FILES
+                  ? "Search data could not be loaded."
+                  : `${failedFileCount} curriculum file${failedFileCount === 1 ? "" : "s"} could not be loaded, so results may be incomplete.`}
+              </span>
+              <button type="button" onClick={() => setLoadAttempt((attempt) => attempt + 1)} disabled={isLoading} className="rounded-lg border border-current/30 px-3 py-1.5 font-bold disabled:opacity-50">
+                {isLoading ? "Retrying…" : "Retry"}
+              </button>
+            </div>
+          )}
+
           <div className="flex-1 overflow-y-auto scrollbar-hide py-2">
             {!searchQuery.trim() && (
               <div className="py-12 flex flex-col items-center">
@@ -200,57 +275,59 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
 
             {searchQuery.trim() && results.length === 0 && !isLoading && (
               <div className="py-20 text-center text-zinc-500">
-                <p className="text-xl">No results found for "{searchQuery}"</p>
+                <p className="text-xl">
+                  {failedFileCount > 0 && failedFileCount < TOTAL_SEARCH_DATA_FILES
+                    ? `No results found in the course data that loaded for "${searchQuery}".`
+                    : failedFileCount === 0
+                    ? `No results found for "${searchQuery}".`
+                    : "Search results are unavailable until course data loads."}
+                </p>
               </div>
             )}
 
             {results.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 pb-20">
                 {results.map((result, index) => (
-                  <div
+                  <article
                     key={`${result.categoryId}-${result.activity.componentId}-${index}`}
-                    onClick={() => {
-                      if (onSelectConcept) {
-                         onSelectConcept(result.categoryId, result.activity);
-                      } else {
-                         onSelectTopic(result.categoryId);
-                      }
-                    }}
-                    className="flex flex-col p-5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl cursor-pointer hover:border-emerald-500/50 hover:shadow-md transition-all relative group"
+                    className="relative flex flex-col rounded-xl border border-zinc-200 bg-white transition-all hover:border-emerald-500/50 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 group"
                   >
-                    <div className="flex justify-between items-start mb-2">
-                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded ${
-                        result.activity.difficulty === 'advanced' ? 'bg-fuchsia-100 dark:bg-fuchsia-900/30 text-fuchsia-600 dark:text-fuchsia-400' :
-                        result.activity.difficulty === 'intermediate' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' :
-                        'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400'
-                      }`}>
-                        {result.activity.difficulty || "basic"}
-                      </span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] text-zinc-400 uppercase tracking-widest font-mono">
-                          {result.activity.type.replace(/_/g, ' ')}
+                    <button
+                      type="button"
+                      aria-label={`Open lesson: ${result.activity.title || result.activity.concept_tested || "Code concept"}`}
+                      onClick={() => onSelectConcept
+                        ? onSelectConcept(result.categoryId, result.activity)
+                        : onSelectTopic(result.categoryId)}
+                      className="absolute inset-0 z-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-500"
+                    />
+                    <div className="pointer-events-none relative z-10 flex flex-col p-5">
+                      <div className="mb-2 flex items-start justify-between">
+                        <span className={`rounded px-2 py-1 text-[10px] font-bold uppercase tracking-wider ${
+                          result.activity.difficulty === 'advanced' ? 'bg-fuchsia-100 dark:bg-fuchsia-900/30 text-fuchsia-600 dark:text-fuchsia-400' :
+                          result.activity.difficulty === 'intermediate' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' :
+                          'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400'
+                        }`}>
+                          {result.activity.difficulty || "basic"}
                         </span>
-                        <div onClick={(e) => e.stopPropagation()}>
-                           <FavoriteButton concept={result.activity} />
-                        </div>
+                        <span className="pr-9 text-[10px] font-mono uppercase tracking-widest text-zinc-400">
+                          {(result.activity.type || "activity").replace(/_/g, ' ')}
+                        </span>
+                      </div>
+                      <h4 className="mb-1 mt-2 text-lg font-bold text-zinc-900 transition-colors group-hover:text-emerald-500 dark:text-zinc-100">
+                        {result.activity.title || result.activity.concept_tested || "Untitled lesson"}
+                      </h4>
+                      <p className="mb-4 line-clamp-2 text-sm text-zinc-500 dark:text-zinc-400">
+                        {result.activity.concept_tested || "Code concept"} — {result.activity.prompt || result.activity.question || "Interactive testing"}
+                      </p>
+                      <div className="mt-auto flex items-center justify-between border-t border-zinc-100 pt-4 dark:border-zinc-800">
+                        <span className="text-[11px] font-mono font-medium text-zinc-500">// {result.course || "Course"} • {result.chapterTitle || "Lessons"}</span>
+                        <ArrowRight className="h-4 w-4 text-zinc-300 transition-all group-hover:translate-x-1 group-hover:text-emerald-500 dark:text-zinc-600" />
                       </div>
                     </div>
-                    
-                    <h4 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-500 transition-colors mt-2 mb-1">
-                      {result.activity.title}
-                    </h4>
-                    
-                    <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-4">
-                      {result.activity.concept_tested} — {result.activity.prompt || result.activity.question || "Interactive testing"}
-                    </p>
-
-                    <div className="mt-auto pt-4 border-t border-zinc-100 dark:border-zinc-800 flex justify-between items-center">
-                       <span className="text-[11px] font-mono text-zinc-500 font-medium">
-                         // {result.course} • {result.chapterTitle}
-                       </span>
-                       <ArrowRight className="w-4 h-4 text-zinc-300 dark:text-zinc-600 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all" />
+                    <div className="absolute right-4 top-4 z-20">
+                      <FavoriteButton concept={result.activity} />
                     </div>
-                  </div>
+                  </article>
                 ))}
               </div>
             )}

@@ -1,11 +1,7 @@
 import { 
-  Menu, 
-  Search, 
-  Terminal, 
-  ShoppingBag, 
-  Calculator,
+  Menu,
+  Search,
   Shield,
-  Bot
 } from "lucide-react";
 import { getThemeColorClass } from "../themeHelpers";
 
@@ -34,14 +30,6 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
   onSearchClick,
   onExit,
 }) => {
-  const handleNavClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    id: string,
-  ) => {
-    e.preventDefault();
-    onTopicSelect(id);
-  };
-
   return (
     <aside
       className={`bg-slate-950 border-r border-slate-800 flex-shrink-0 flex flex-col transition-all duration-300 ${isSidebarOpen ? "w-64 p-6" : "w-20 p-4"}`}
@@ -51,7 +39,10 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
         className={`flex items-center gap-2 mb-8 ${!isSidebarOpen && "justify-center"}`}
       >
         <button
+          type="button"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          aria-label={isSidebarOpen ? "Collapse Agent Labs sidebar" : "Expand Agent Labs sidebar"}
+          aria-expanded={isSidebarOpen}
           className="h-6 w-6 text-indigo-400 hover:text-indigo-300 flex-shrink-0 transition-colors"
         >
           <Menu className="w-6 h-6" />
@@ -67,7 +58,9 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
       {onExit && (
         <div className="mb-6">
           <button
+            type="button"
             onClick={onExit}
+            aria-label="Exit Agent Labs to the Agent catalog"
             className={`flex items-center w-full p-2 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all ${!isSidebarOpen && "justify-center"}`}
             title="Exit Workspace"
           >
@@ -95,7 +88,7 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
 
       {/* Topics Navigation */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <nav className="flex-1 overflow-y-auto custom-scrollbar -mr-2 pr-2">
+        <nav aria-label="Agent Labs topics" className="flex-1 overflow-y-auto custom-scrollbar -mr-2 pr-2">
           <ul className="space-y-2">
             {topics.map((topic) => {
               const isActive = topic.id === activeTopicId;
@@ -103,9 +96,10 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
               const theme = getThemeColorClass(topic.title);
               return (
                 <li key={topic.id}>
-                  <a
-                    href="#"
-                    onClick={(e) => handleNavClick(e, topic.id)}
+                  <button
+                    type="button"
+                    aria-pressed={isActive}
+                    onClick={() => onTopicSelect(topic.id)}
                     className={`flex items-center p-2 text-sm w-full font-bold transition-all duration-300 transform rounded-xl ${isActive ? `${theme.bgSoft} ${theme.text} border ${theme.borderSoft} scale-[1.03] shadow-md ${theme.shadowMd}` : "text-slate-400 border border-transparent hover:bg-slate-900 hover:text-slate-200 scale-100 hover:scale-[1.01]"}`}
                     title={topic.title}
                   >
@@ -115,7 +109,7 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
                     {isSidebarOpen && (
                       <span className="truncate">{topic.title}</span>
                     )}
-                  </a>
+                  </button>
                 </li>
               );
             })}

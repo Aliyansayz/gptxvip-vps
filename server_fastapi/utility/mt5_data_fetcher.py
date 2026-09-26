@@ -1,17 +1,41 @@
 import MetaTrader5 as mt5
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
+from threading import RLock
+
+
+_MT5_LOCK = RLock()
+
+
+def ensure_mt5_initialized():
+    """Connect to the configured MT5 terminal on first use."""
+    with _MT5_LOCK:
+        try:
+            if mt5.terminal_info() is not None:
+                return
+        except Exception:
+            pass
+        if not mt5.initialize():
+            raise RuntimeError(f"MetaTrader5 initialize() failed, error={mt5.last_error()}")
 
 
 def get_broker_symbol(query: str):
     """Resolve a broker symbol by exact/partial name or description."""
     query = query.lower().strip()
+    if not query:
+        raise ValueError("A symbol is required")
+
+    ensure_mt5_initialized()
 
     exact_symbol = None
     exact_description = None
     partial_match = None
 
-    for s in mt5.symbols_get():
+    symbols = mt5.symbols_get()
+    if symbols is None:
+        raise RuntimeError(f"Could not load broker symbols, error={mt5.last_error()}")
+
+    for s in symbols:
         name = s.name.lower()
         desc = (s.description or "").lower()
 
@@ -30,36 +54,61 @@ def get_broker_symbol(query: str):
 
 def fetch_ticks(symbol: str, count: int = 10000):
     """Fetch raw MT5 ticks for symbol up to current time."""
-    resolved_symbol = get_broker_symbol(symbol)
-    if not resolved_symbol:
-        raise ValueError(f"Could not resolve symbol for query: {symbol}")
+    if count < 1:
+        raise ValueError("Tick count must be positive")
 
-    if not mt5.symbol_select(resolved_symbol, True):
-        raise RuntimeError(f"Failed to select {resolved_symbol}, error={mt5.last_error()}")
+    with _MT5_LOCK:
+        resolved_symbol = get_broker_symbol(symbol)
+        if not resolved_symbol:
+            raise ValueError(f"Could not resolve symbol for query: {symbol}")
 
-    ticks = mt5.copy_ticks_from(resolved_symbol, datetime.now(), count, mt5.COPY_TICKS_ALL)
-    if ticks is None:
-        raise RuntimeError(f"copy_ticks_from failed, error={mt5.last_error()}")
+        if not mt5.symbol_select(resolved_symbol, True):
+            raise RuntimeError(f"Failed to select {resolved_symbol}, error={mt5.last_error()}")
 
-    return resolved_symbol, pd.DataFrame(ticks)
+        # Starting at now only returns ticks that arrive after the request. Query
+        # back far enough to build the requested candle history.
+        ticks = mt5.copy_ticks_range(
+            resolved_symbol,
+            datetime.now(timezone.utc) - timedelta(days=1),
+            datetime.now(timezone.utc),
+            mt5.COPY_TICKS_ALL,
+        )
+        if ticks is None:
+            raise RuntimeError(f"copy_ticks_range failed, error={mt5.last_error()}")
+
+        return resolved_symbol, pd.DataFrame(ticks[-count:])
+
+
+def fetch_latest_tick(symbol: str):
+    """Return one real broker tick for a symbol selected by exact/partial name."""
+    with _MT5_LOCK:
+        resolved_symbol = get_broker_symbol(symbol)
+        if not resolved_symbol:
+            raise ValueError(f"Could not resolve symbol for query: {symbol}")
+        if not mt5.symbol_select(resolved_symbol, True):
+            raise RuntimeError(f"Failed to select {resolved_symbol}, error={mt5.last_error()}")
+        tick = mt5.symbol_info_tick(resolved_symbol)
+        if tick is None:
+            raise RuntimeError(f"No live tick available for {resolved_symbol}, error={mt5.last_error()}")
+        return tick
 
 
 def ticks_to_timeframe(df_ticks: pd.DataFrame, timeframe: str = "1s") -> pd.DataFrame:
     """
     Convert tick dataframe to customizable timeframe bars using mid-price OHLC.
-    Supports pandas frequency strings (e.g., '1s', '30s', '500ms') 
+    Supports pandas frequency strings (e.g., '1s', '30s', '500ms')
     as well as fractional strings like '0.5ms' and '0.5s'.
     """
     if df_ticks.empty:
         return pd.DataFrame()
 
-    # Pandas frequency standard requires integer values. 
+    # Pandas frequency standard requires integer values.
     # Map common fractional timeframes to their micro/milli equivalents.
     tf_mapping = {
         "0.5ms": "500us", # 0.5 milliseconds = 500 microseconds
         "0.5s": "500ms"   # 0.5 seconds = 500 milliseconds
     }
-    
+
     clean_tf = timeframe.lower().replace(" ", "")
     resample_freq = tf_mapping.get(clean_tf, clean_tf)
 
@@ -82,7 +131,7 @@ def ticks_to_timeframe(df_ticks: pd.DataFrame, timeframe: str = "1s") -> pd.Data
 
     if "spread" not in df.columns:
         df["spread"] = df["ask"] - df["bid"]
-        
+
     bars["avg_spread"] = df["spread"].resample(resample_freq).mean()
 
     # Drop intervals where there were no ticks
@@ -95,7 +144,7 @@ class DataFetcher:
         """Initialize DataFetcher with primary and optional secondary timeframes.
         Accepts fractional timeframes like '0.5ms' and '0.5s'.
         And '1s', '30s', '500ms' as pandas frequency strings.
-        
+
         Args:
             primary_timeframe (str): Primary timeframe for fetching data.
             secondary_timeframe (str, optional): Secondary timeframe for fetching data. Defaults to None.
@@ -127,20 +176,12 @@ class DataFetcher:
         tertiary_data = ticks_to_timeframe(ticks_df, timeframe=self.tertiary_timeframe)
         return tertiary_data
 
-    def fetch_data_multiple(self, symbol: str):
+    def fetch_data_multiple(self, symbol: str, tick_count: int = 10000):
         """Fetch data for the given symbol at the specified timeframes."""
-        primary_data = None
-        secondary_data = None
-        tertiary_data = None
-        if self.primary_timeframe:
-            _, ticks_df_p = fetch_ticks(symbol, self.primary_timeframe)
-            primary_data  = ticks_to_timeframe(ticks_df_p, timeframe=self.primary_timeframe)
-        if self.secondary_timeframe:
-            _, ticks_df_s  = fetch_ticks(symbol, self.secondary_timeframe)
-            secondary_data = ticks_to_timeframe(ticks_df_s, timeframe=self.secondary_timeframe)
-        if self.tertiary_timeframe:
-            _, ticks_df_t  = fetch_ticks(symbol, self.tertiary_timeframe)
-            tertiary_data = ticks_to_timeframe(ticks_df_t, timeframe=self.tertiary_timeframe)
+        _, ticks_df = fetch_ticks(symbol, tick_count)
+        primary_data = ticks_to_timeframe(ticks_df, timeframe=self.primary_timeframe) if self.primary_timeframe else None
+        secondary_data = ticks_to_timeframe(ticks_df, timeframe=self.secondary_timeframe) if self.secondary_timeframe else None
+        tertiary_data = ticks_to_timeframe(ticks_df, timeframe=self.tertiary_timeframe) if self.tertiary_timeframe else None
         return primary_data, secondary_data, tertiary_data
 
 
@@ -153,7 +194,7 @@ def main():
 
     try:
         symbol, ticks_df = fetch_ticks(symbol_query, tick_count)
-        
+
         # Generate varied timeframes
         bars_0_5ms = ticks_to_timeframe(ticks_df, timeframe="0.5ms") # 0.5 Milliseconds
         bars_500ms = ticks_to_timeframe(ticks_df, timeframe="0.5s")  # 0.5 Seconds (500ms)
@@ -163,16 +204,16 @@ def main():
         print(f"Symbol: {symbol}")
         print(f"Raw ticks fetched: {len(ticks_df)}")
         print("-" * 50)
-        
+
         print("\nLast 5 bars -> [0.5 ms] Timeframe:")
         print(bars_0_5ms.tail(5))
-        
+
         print("\nLast 5 bars -> [0.5 sec] Timeframe:")
         print(bars_500ms.tail(5))
 
         print("\nLast 5 bars -> [1 sec] Timeframe:")
         print(bars_1s.tail(5))
-        
+
         print("\nLast 5 bars -> [30 sec] Timeframe:")
         print(bars_30s.tail(5))
 
@@ -182,52 +223,6 @@ def main():
 
 
 
-
-
-import MetaTrader5 as mt5
-import pandas as pd
-from datetime import datetime
-
-
-def get_broker_symbol(query: str):
-    """Resolve a broker symbol by exact/partial name or description."""
-    query = query.lower().strip()
-
-    exact_symbol = None
-    exact_description = None
-    partial_match = None
-
-    for s in mt5.symbols_get():
-        name = s.name.lower()
-        desc = (s.description or "").lower()
-
-        if query == name:
-            exact_symbol = s.name
-            break
-
-        if query == desc:
-            exact_description = s.name
-
-        if query in name or query in desc:
-            partial_match = s.name
-
-    return exact_symbol or exact_description or partial_match
-
-
-def fetch_ticks(symbol: str, count: int = 10000):
-    """Fetch raw MT5 ticks for symbol up to current time."""
-    resolved_symbol = get_broker_symbol(symbol)
-    if not resolved_symbol:
-        raise ValueError(f"Could not resolve symbol for query: {symbol}")
-
-    if not mt5.symbol_select(resolved_symbol, True):
-        raise RuntimeError(f"Failed to select {resolved_symbol}, error={mt5.last_error()}")
-
-    ticks = mt5.copy_ticks_from(resolved_symbol, datetime.now(), count, mt5.COPY_TICKS_ALL)
-    if ticks is None:
-        raise RuntimeError(f"copy_ticks_from failed, error={mt5.last_error()}")
-
-    return resolved_symbol, pd.DataFrame(ticks)
 
 
 def ticks_to_1s(df_ticks: pd.DataFrame) -> pd.DataFrame:

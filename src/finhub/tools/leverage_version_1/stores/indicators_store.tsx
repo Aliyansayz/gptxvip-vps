@@ -122,6 +122,14 @@ const IndicatorsStoreContext = createContext<IndicatorsStoreContextType | null>(
 
 const STORAGE_KEY = 'leverage_trading_v1_settings';
 
+const saveState = (key: string, value: unknown) => {
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // Simulator settings remain usable in memory when browser storage is unavailable.
+  }
+};
+
 export const IndicatorsStoreProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const loadState = <T,>(key: string, defaultVal: T): T => {
     try {
@@ -139,19 +147,19 @@ export const IndicatorsStoreProvider: React.FC<{ children: ReactNode }> = ({ chi
   const [leverageSettings, setLeverageSettings] = useState<LeverageConfig>(() => loadState('leverage', DEFAULT_LEVERAGE_CONFIG));
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_trading`, JSON.stringify(tradingConfig));
+    saveState(`${STORAGE_KEY}_trading`, tradingConfig);
   }, [tradingConfig]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_indicator`, JSON.stringify(indicatorSettings));
+    saveState(`${STORAGE_KEY}_indicator`, indicatorSettings);
   }, [indicatorSettings]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_data`, JSON.stringify(dataSettings));
+    saveState(`${STORAGE_KEY}_data`, dataSettings);
   }, [dataSettings]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_leverage`, JSON.stringify(leverageSettings));
+    saveState(`${STORAGE_KEY}_leverage`, leverageSettings);
   }, [leverageSettings]);
 
   const getIndicatorDescription = (type: keyof IndicatorSettings) => {

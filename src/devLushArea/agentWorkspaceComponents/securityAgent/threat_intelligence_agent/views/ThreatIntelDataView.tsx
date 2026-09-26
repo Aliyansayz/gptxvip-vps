@@ -1,6 +1,7 @@
 import React from 'react';
 import { Globe, Search, Lock, AlertTriangle, Settings } from 'lucide-react';
 import { ThreatIntelSidebarView } from '../components/ThreatIntelAgentSidebar';
+import AgentPreviewNotice from '../../../components/AgentPreviewNotice';
 
 interface ThreatIntelDataViewProps {
   viewType: ThreatIntelSidebarView;
@@ -11,7 +12,7 @@ export default function ThreatIntelDataView({ viewType }: ThreatIntelDataViewPro
     global_feed: {
       title: "Global Threat Feed",
       icon: Globe,
-      description: "Aggregated live intelligence from top-tier security providers.",
+      description: "Example threat-feed layout; source links and observation times are not provided.",
       items: [
         { label: "APT33 Activity", value: "Increased scanning activity targeting energy sector endpoints. (Confidence: High)" },
         { label: "Zero-Day Exploitation", value: "Active exploitation of CVE-2026-X in the wild by ransomware groups." },
@@ -53,8 +54,8 @@ export default function ThreatIntelDataView({ viewType }: ThreatIntelDataViewPro
       icon: Settings,
       description: "Manage API keys for threat intel platforms and internal routing.",
       items: [
-        { label: "MISP Integration", value: "Connected (Sync frequency: 15 minutes)" },
-        { label: "VirusTotal API", value: "Premium Key Valid (24,500 quota remaining)" },
+        { label: "MISP Integration", value: "Example configuration label; connection and sync state are not verified." },
+        { label: "VirusTotal API", value: "Example quota label; API key and remaining quota are not verified." },
         { label: "Alert Routing", value: "High severity IoCs automatically pushed to Sentinel SIEM." }
       ]
     },
@@ -79,6 +80,7 @@ export default function ThreatIntelDataView({ viewType }: ThreatIntelDataViewPro
           <p className="text-slate-500 mt-2">{data.description}</p>
         </div>
 
+        <AgentPreviewNotice>Indicators and statuses are examples, not verified intelligence. Source timestamps and confidence are not supplied; validate them before acting.</AgentPreviewNotice>
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="divide-y divide-slate-100">
             {data.items.map((item, idx) => (

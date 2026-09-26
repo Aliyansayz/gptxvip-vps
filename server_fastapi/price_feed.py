@@ -1,10 +1,10 @@
 import asyncio
 import json
-import random
-import time
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+import re
+from fastapi import FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
+from starlette.concurrency import run_in_threadpool
 import uvicorn
-from utility.mt5_data_fetcher import DataFetcher
+from utility.mt5_data_fetcher import DataFetcher, fetch_latest_tick
 
 app = FastAPI()
 
@@ -16,36 +16,47 @@ async def live_price_stream(websocket: WebSocket, config: dict):
     Background task that sends live ticks to the connected client.
     It reads 'latency_rate' from the config to determine update frequency.
     """
-    symbol = config.get("symbol_id", "UNKNOWN")
-    latency_rate_ms = config.get("latency_rate", 500)
+    symbol = config["symbol_id"]
+    try:
+        latency_rate_ms = int(config.get("latency_rate", 500))
+    except (TypeError, ValueError):
+        latency_rate_ms = 500
+    latency_rate_ms = max(100, min(latency_rate_ms, 5000))
     sleep_time = latency_rate_ms / 1000.0
-
-    current_price = 100.0
+    last_epoch = None
+    last_price = None
 
     try:
         while True:
-            # Generate simulated tick data
-            old_price = current_price
-            # Random walk for price
-            current_price += random.uniform(-0.05, 0.05)
-            current_price = round(current_price, 5)
-            
-            volume = random.randint(1, 50)
-            side = random.choice(["buy", "sell"])
-            epoch_time = int(time.time() * 1000) # Milliseconds timestamp
+            tick = await run_in_threadpool(fetch_latest_tick, symbol)
+            bid = float(tick.bid or 0)
+            ask = float(tick.ask or 0)
+            current_price = (bid + ask) / 2 if bid and ask else float(tick.last or bid or ask)
+            epoch_time = int(getattr(tick, "time_msc", 0) or (tick.time * 1000))
+
+            # Avoid repeating the same stale broker tick as if it were new data.
+            if epoch_time == last_epoch:
+                await asyncio.sleep(sleep_time)
+                continue
+            last_epoch = epoch_time
+            side = "buy" if int(tick.flags) & 32 else "sell" if int(tick.flags) & 64 else "unknown"
+            volume = int(getattr(tick, "volume_real", 0) or getattr(tick, "volume", 0) or 0)
 
             tick_payload = {
                 "type": "tick",
                 "data": {
                     "price": current_price,
-                    "old_price": old_price,
+                    "old_price": last_price if last_price is not None else current_price,
                     "volume": volume,
                     "side": side,
-                    "epoch": epoch_time
+                    "epoch": epoch_time,
+                    "source": "mt5",
+                    "symbol": symbol,
                 }
             }
 
             await websocket.send_json(tick_payload)
+            last_price = current_price
             await asyncio.sleep(sleep_time)
 
     except asyncio.CancelledError:
@@ -53,6 +64,11 @@ async def live_price_stream(websocket: WebSocket, config: dict):
         pass
     except Exception as e:
         print(f"Error in stream for {symbol}: {e}")
+        try:
+            await websocket.send_json({"type": "error", "message": "The broker feed is unavailable."})
+            await websocket.close(code=1011)
+        except Exception:
+            pass
 
 @app.websocket("/ws/market_feed")
 async def websocket_market_feed(websocket: WebSocket):
@@ -67,6 +83,16 @@ async def websocket_market_feed(websocket: WebSocket):
         # 1. Wait for the initial configuration message sent by frontend onopen
         initial_msg = await websocket.receive_text()
         config = json.loads(initial_msg)
+        if not isinstance(config, dict):
+            await websocket.send_json({"type": "error", "message": "A valid symbol_id is required."})
+            await websocket.close(code=1008)
+            return
+        symbol = config.get("symbol_id")
+        if not isinstance(symbol, str) or not symbol.strip() or len(symbol.strip()) > 64:
+            await websocket.send_json({"type": "error", "message": "A valid symbol_id is required."})
+            await websocket.close(code=1008)
+            return
+        config["symbol_id"] = symbol.strip()
         print(f"Client connected with config: {config}")
 
         # 2. Start the background streaming task based on the config
@@ -75,7 +101,17 @@ async def websocket_market_feed(websocket: WebSocket):
         # 3. Listen for incoming messages (like the 30s ping from frontend)
         while True:
             msg_text = await websocket.receive_text()
-            msg_data = json.loads(msg_text)
+            try:
+                msg_data = json.loads(msg_text)
+            except json.JSONDecodeError:
+                await websocket.send_json({"type": "error", "message": "WebSocket messages must contain valid JSON."})
+                await websocket.close(code=1003)
+                break
+
+            if not isinstance(msg_data, dict):
+                await websocket.send_json({"type": "error", "message": "WebSocket messages must be JSON objects."})
+                await websocket.close(code=1003)
+                break
 
             if msg_data.get("type") == "ping":
                 # Frontend sends { "type": "ping" } every 30 seconds
@@ -85,75 +121,64 @@ async def websocket_market_feed(websocket: WebSocket):
 
     except WebSocketDisconnect:
         print("Client disconnected")
+    except (json.JSONDecodeError, TypeError):
+        await websocket.close(code=1003)
     except Exception as e:
         print(f"WebSocket error: {e}")
     finally:
-        active_connections.remove(websocket)
+        active_connections.discard(websocket)
         if stream_task and not stream_task.done():
             stream_task.cancel()
+            try:
+                await stream_task
+            except asyncio.CancelledError:
+                pass
 
 
 # --- REST route for fetching historical OHLC ---
 @app.get("/api/historical_data")
-async def get_historical_data(symbol: str, limit: int = 300, time_interval:str= "1s"):
+async def get_historical_data(
+    symbol: str = Query(..., min_length=1, max_length=64),
+    limit: int = Query(300, ge=1, le=1000),
+    time_interval: str = Query("1s", min_length=1, max_length=12),
+):
     """
     REST endpoint to fetch initial OHLC candles for the chart.
     This should be called ONCE before connecting to the WebSocket.
     """
+    symbol = symbol.strip()
+    if not symbol:
+        raise HTTPException(status_code=422, detail="A symbol is required")
+    if not re.fullmatch(r"(?:0\.5(?:ms|s)|[1-9]\d*(?:ms|s|m|h|d|w))", time_interval.lower()):
+        raise HTTPException(status_code=422, detail="Unsupported time_interval")
+
     try:
         fetcher = DataFetcher(primary_timeframe=time_interval)
-        # Fetching enough ticks to cover `limit` bars. 
-        # A rough estimate: 100 ticks per minute. So limit * 100
-        df = fetcher.fetch_data_primary(symbol, tick_count=limit * 100)
+        df = await run_in_threadpool(fetcher.fetch_data_primary, symbol, min(limit * 100, 100000))
         
         candles = []
-        if df is not None and not df.empty:
-            df = df.tail(limit)
-            for timestamp, row in df.iterrows():
-                candles.append({
-                    "time": int(timestamp.timestamp()), # epoch in seconds
-                    "open": round(row["open"], 5),
-                    "high": round(row["high"], 5),
-                    "low": round(row["low"], 5),
-                    "close": round(row["close"], 5),
-                    "volume": int(row.get("volume", row.get("tick_volume", 0)))
-                })
+        if df is None or df.empty:
+            raise HTTPException(status_code=503, detail="No historical ticks are available for this symbol")
+
+        df = df.tail(limit)
+        for timestamp, row in df.iterrows():
+            candles.append({
+                "time": int(timestamp.timestamp()), # epoch in seconds
+                "open": round(row["open"], 5),
+                "high": round(row["high"], 5),
+                "low": round(row["low"], 5),
+                "close": round(row["close"], 5),
+                "volume": int(row.get("volume", row.get("tick_volume", 0)))
+            })
         
         return {"symbol": symbol, "data": candles}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e)) from e
+    except HTTPException:
+        raise
     except Exception as e:
         print(f"Error fetching historical data: {e}")
-        return {"symbol": symbol, "data": []}
-
-
-
-# --- Optional REST route for fetching historical OHLC ---
-@app.get("/api/historical_data")
-async def get_historical_data_random(symbol: str, limit: int = 300):
-    """
-    REST endpoint to fetch initial OHLC candles for the chart.
-    This should be called ONCE before connecting to the WebSocket.
-    """
-    # Mock data generation
-    candles = []
-    base_price = 100.0
-    now = int(time.time())
-    for i in range(limit, 0, -1):
-        open_p = base_price + random.uniform(-0.1, 0.1)
-        high_p = open_p + random.uniform(0, 0.2)
-        low_p = open_p - random.uniform(0, 0.2)
-        close_p = open_p + random.uniform(-0.1, 0.1)
-        
-        candles.append({
-            "time": now - (i * 60), # 1 minute intervals
-            "open": round(open_p, 5),
-            "high": round(high_p, 5),
-            "low": round(low_p, 5),
-            "close": round(close_p, 5),
-            "volume": random.randint(100, 1000)
-        })
-        base_price = close_p
-        
-    return {"symbol": symbol, "data": candles}
+        raise HTTPException(status_code=503, detail="Historical market data is unavailable") from e
 
 if __name__ == "__main__":
     uvicorn.run("price_feed:app", host="0.0.0.0", port=8000, reload=True)

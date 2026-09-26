@@ -15,7 +15,7 @@ export const AttackAuditorAgents: React.FC<AttackAuditorAgentsProps> = ({ onNavi
         <h2 className="text-2xl font-bold font-heading text-slate-800 group-hover:text-orange-600 transition-colors">Attack & Auditor Agents</h2>
       </div>
       <p className="text-slate-500 mb-6 flex-1 text-sm leading-relaxed">
-        Offensive security agents focused on source code auditing, red team simulations, and adversarial testing.
+        Explore source review and a bounded, authorized red team training scenario.
       </p>
       <div className="space-y-3">
         <button 
@@ -26,7 +26,7 @@ export const AttackAuditorAgents: React.FC<AttackAuditorAgentsProps> = ({ onNavi
             <Code className="w-5 h-5 text-orange-500" />
             <div>
               <div className="font-semibold text-sm text-slate-800">Source Code Auditor (SAST) Agent</div>
-              <div className="text-[11px] text-slate-500 font-medium">Automated static code analysis & vulnerability discovery</div>
+              <div className="text-[11px] text-slate-500 font-medium">Inspect an example finding with reviewer context</div>
             </div>
           </div>
           <Activity className="w-4 h-4 text-slate-400" />
@@ -40,7 +40,7 @@ export const AttackAuditorAgents: React.FC<AttackAuditorAgentsProps> = ({ onNavi
             <ShieldAlert className="w-5 h-5 text-red-600" />
             <div>
               <div className="font-semibold text-sm text-slate-800">Red Team Simulation Agent</div>
-              <div className="text-[11px] text-slate-500 font-medium">Automated lateral movement & APT emulation</div>
+              <div className="text-[11px] text-slate-500 font-medium">Run scripted events in a fixed lab scenario</div>
             </div>
           </div>
           <Zap className="w-4 h-4 text-slate-400" />

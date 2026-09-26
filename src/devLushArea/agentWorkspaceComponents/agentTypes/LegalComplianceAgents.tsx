@@ -15,7 +15,7 @@ export const LegalComplianceAgents: React.FC<LegalComplianceAgentsProps> = ({ on
         <h2 className="text-2xl font-bold font-heading text-slate-800 group-hover:text-indigo-600 transition-colors">Legal & Compliance Agents</h2>
       </div>
       <p className="text-slate-500 mb-6 flex-1 text-sm leading-relaxed">
-        Examine how enterprise legal agents ingest complex vendor agreements to redline liabilities and continuously monitor global compliance requirements.
+        Review example contract analysis and compliance patterns; proposed wording always needs human review.
       </p>
       
       <div className="space-y-3">
@@ -27,12 +27,14 @@ export const LegalComplianceAgents: React.FC<LegalComplianceAgentsProps> = ({ on
             <FileText className="w-5 h-5 text-indigo-500" />
             <div>
               <div className="font-semibold text-sm text-slate-800">Contract Analysis Agent</div>
-              <div className="text-[11px] text-slate-500 font-medium">Automated redlining & liability detection</div>
+              <div className="text-[11px] text-slate-500 font-medium">Inspect example clause flags and review states</div>
             </div>
           </div>
         </button>
         
         <button 
+          type="button"
+          disabled
           className="w-full flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 opacity-70 cursor-not-allowed text-left"
         >
           <div className="flex items-center gap-3">

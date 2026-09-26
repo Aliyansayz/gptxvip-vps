@@ -29,9 +29,16 @@ export function startAlphaDataSource(
     marketSocket = connectMT5WebSocket(
       config,
       (event) => {
-        const response = JSON.parse(event.data);
+        let response: { type?: string; message?: string; data?: Record<string, any> };
+        try {
+          response = JSON.parse(event.data);
+        } catch {
+          if (onLog) onLog('WARN', 'WebSocket', 'Ignored an invalid market feed message.');
+          return;
+        }
         if (response.type === 'tick') {
           const tick = response.data;
+          if (!tick || !Number.isFinite(Number(tick.price))) return;
           onTickCallback({
             price: tick.price,
             oldPrice: tick.old_price,
@@ -39,6 +46,10 @@ export function startAlphaDataSource(
             side: tick.side,
             time: tick.epoch,
           });
+        } else if (response.type === 'error') {
+          const message = typeof response.message === 'string' ? response.message : 'The broker feed is unavailable.';
+          if (onLog) onLog('ERROR', 'WebSocket', message);
+          systemDeployLog('ERROR', 'WebSocket', message);
         }
       },
       () => {

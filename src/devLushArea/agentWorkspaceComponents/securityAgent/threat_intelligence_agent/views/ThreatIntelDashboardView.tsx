@@ -1,5 +1,6 @@
 import React from 'react';
 import { Globe, AlertTriangle, Activity, CheckCircle, ArrowRight, Rss, Target, HelpCircle } from 'lucide-react';
+import AgentPreviewNotice from '../../../components/AgentPreviewNotice';
 
 interface ThreatIntelDashboardViewProps {
   onInvestigateTarget: () => void;
@@ -9,6 +10,7 @@ interface ThreatIntelDashboardViewProps {
 export default function ThreatIntelDashboardView({ onInvestigateTarget, onRunTutorial }: ThreatIntelDashboardViewProps) {
   return (
     <div className="p-8 max-w-6xl mx-auto h-full overflow-y-auto custom-scrollbar threat-intel-dashboard-header">
+      <AgentPreviewNotice>These feed items are examples, not verified intelligence. Source timestamps and confidence are not supplied; check a trusted source before acting on an indicator.</AgentPreviewNotice>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-bold font-heading text-slate-800">Threat Intelligence Command Center</h1>
@@ -87,7 +89,7 @@ export default function ThreatIntelDashboardView({ onInvestigateTarget, onRunTut
                   <span className="text-slate-600 font-medium">{alert.status}</span>
                 </td>
                 <td className="px-6 py-4 text-right">
-                  <button onClick={alert.relevance.includes('Direct') ? onInvestigateTarget : undefined} className={`${alert.relevance.includes('Direct') ? 'text-purple-600 hover:text-purple-800' : 'text-slate-400 cursor-not-allowed'} font-medium flex items-center gap-1 justify-end w-full`}>
+                  <button type="button" disabled={!alert.relevance.includes('Direct')} onClick={alert.relevance.includes('Direct') ? onInvestigateTarget : undefined} className={`${alert.relevance.includes('Direct') ? 'text-purple-600 hover:text-purple-800' : 'text-slate-400 cursor-not-allowed'} font-medium flex items-center gap-1 justify-end w-full`}>
                     Contextualize <ArrowRight className="w-4 h-4" />
                   </button>
                 </td>

@@ -47,13 +47,15 @@ export const BlogCard: React.FC<BlogCardProps> = ({ blog, onSelect, featured = f
 
     if (featured) {
         return (
-            <motion.div
+            <motion.button
+                type="button"
+                aria-label={`Read featured article: ${blog.title}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 whileHover={{ y: -4 }}
                 transition={{ duration: 0.3 }}
                 onClick={() => onSelect(blog.id)}
-                className="group cursor-pointer relative rounded-3xl p-[1px] bg-gradient-to-r from-indigo-500/40 via-purple-500/40 to-pink-500/40 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 transition-all duration-500 shadow-2xl shadow-indigo-950/50 mb-12 overflow-hidden"
+                className="group w-full cursor-pointer text-left relative rounded-3xl p-[1px] bg-gradient-to-r from-indigo-500/40 via-purple-500/40 to-pink-500/40 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 transition-all duration-500 shadow-2xl shadow-indigo-950/50 mb-12 overflow-hidden"
             >
                 <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-[23px] p-8 md:p-10 relative overflow-hidden flex flex-col lg:flex-row gap-8 items-start justify-between border border-transparent dark:border-slate-800">
                     {/* Glow Accents */}
@@ -100,18 +102,20 @@ export const BlogCard: React.FC<BlogCardProps> = ({ blog, onSelect, featured = f
                         </div>
                     </div>
                 </div>
-            </motion.div>
+            </motion.button>
         );
     }
 
     return (
-        <motion.div
+        <motion.button
+            type="button"
+            aria-label={`Read article: ${blog.title}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ y: -4 }}
             transition={{ duration: 0.25 }}
             onClick={() => onSelect(blog.id)}
-            className="group cursor-pointer bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500/40 dark:hover:border-indigo-500/40 rounded-3xl p-6 transition-all duration-300 relative overflow-hidden flex flex-col justify-between hover:shadow-[0_0_30px_rgba(99,102,241,0.12)]"
+            className="group w-full cursor-pointer text-left bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500/40 dark:hover:border-indigo-500/40 rounded-3xl p-6 transition-all duration-300 relative overflow-hidden flex flex-col justify-between hover:shadow-[0_0_30px_rgba(99,102,241,0.12)]"
         >
             {/* Ambient Card Header Gradient Strip */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500/0 via-indigo-500/30 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -150,7 +154,6 @@ export const BlogCard: React.FC<BlogCardProps> = ({ blog, onSelect, featured = f
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>
             </div>
-        </motion.div>
+        </motion.button>
     );
 };
-

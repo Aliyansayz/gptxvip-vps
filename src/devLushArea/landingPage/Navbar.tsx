@@ -55,13 +55,13 @@ export const Navbar: React.FC<LandingNavbarProps> = ({ onExploreCatalog, onNavig
           <button
             onClick={handleExit}
             className="p-1.5 sm:p-2 rounded-xl text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700"
-            aria-label="Return to Main Hub"
-            title="Return to Main Hub"
+            aria-label={onExit ? "Return to Agent catalog" : "Return to GPTX.VIP home"}
+            title={onExit ? "Return to Agent catalog" : "Return to GPTX.VIP home"}
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.location.assign('/')}>
+          <a href="/" aria-label="Return to GPTX.VIP home" className="flex items-center gap-2">
             <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-tr from-cyan-600 to-emerald-500 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.35)]">
               <Bot className="text-white dark:text-zinc-950 w-4 h-4 sm:w-4.5 sm:h-4.5" />
             </div>
@@ -73,7 +73,7 @@ export const Navbar: React.FC<LandingNavbarProps> = ({ onExploreCatalog, onNavig
                 Agent Labs
               </span>
             </div>
-          </div>
+          </a>
         </div>
 
         {/* Center/Right: Static Organic Navigation Buttons on Desktop */}
@@ -135,7 +135,8 @@ export const Navbar: React.FC<LandingNavbarProps> = ({ onExploreCatalog, onNavig
           <button
             onClick={handleExit}
             className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-[11px] sm:text-xs font-bold tracking-wider uppercase transition-all bg-red-500/10 hover:bg-red-500 text-red-600 dark:text-red-400 hover:text-white border border-red-500/30 rounded-xl cursor-pointer shadow-sm flex items-center gap-1.5 shrink-0"
-            title="Exit to Main Hub"
+            aria-label={onExit ? "Exit to Agent catalog" : "Return to GPTX.VIP home"}
+            title={onExit ? "Exit to Agent catalog" : "Return to GPTX.VIP home"}
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Exit</span>

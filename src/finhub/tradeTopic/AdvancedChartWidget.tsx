@@ -4,6 +4,7 @@ export const AdvancedChartWidget: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentPrice, setCurrentPrice] = useState("$42,069.00");
+  const [tradeMessage, setTradeMessage] = useState("");
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -371,14 +372,20 @@ export const AdvancedChartWidget: React.FC = () => {
           <span className="text-sm font-semibold text-green-500">+4.20%</span>
         </div>
         <div className="ml-auto flex gap-2">
-          <button className="bg-green-600 hover:bg-green-500 px-4 py-1.5 rounded text-sm font-bold transition">
-            BUY
+          <button type="button" aria-label="Record paper buy at displayed price" onClick={() => setTradeMessage(`Paper buy recorded at ${currentPrice}. No live order was sent.`)} className="bg-green-600 hover:bg-green-500 px-4 py-1.5 rounded text-sm font-bold transition">
+            BUY · PAPER
           </button>
-          <button className="bg-red-600 hover:bg-red-500 px-4 py-1.5 rounded text-sm font-bold transition">
-            SELL
+          <button type="button" aria-label="Record paper sell at displayed price" onClick={() => setTradeMessage(`Paper sell recorded at ${currentPrice}. No live order was sent.`)} className="bg-red-600 hover:bg-red-500 px-4 py-1.5 rounded text-sm font-bold transition">
+            SELL · PAPER
           </button>
         </div>
       </div>
+
+      {tradeMessage && (
+        <div role="status" aria-live="polite" className="absolute top-[68px] right-3 z-20 max-w-[min(24rem,90%)] rounded-lg border border-slate-600 bg-slate-950/95 px-3 py-2 text-xs text-slate-200 shadow-lg">
+          {tradeMessage}
+        </div>
+      )}
 
       {/* Chart Legend Overlay */}
       <div className="absolute top-[80px] left-5 bg-slate-900/60 p-2.5 rounded pointer-events-none text-xs z-10">

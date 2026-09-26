@@ -197,6 +197,14 @@ const IndicatorsStoreContext = createContext<IndicatorsStoreContextType | null>(
 
 const STORAGE_KEY = 'leverage_trading_v1_settings';
 
+const saveState = (key: string, value: unknown) => {
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // Simulator settings remain usable in memory when browser storage is unavailable.
+  }
+};
+
 export const IndicatorsStoreProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const loadState = <T,>(key: string, defaultVal: T): T => {
     try {
@@ -228,35 +236,35 @@ export const IndicatorsStoreProvider: React.FC<{ children: ReactNode }> = ({ chi
   const [serialTradingEnabled, setSerialTradingEnabled] = useState<boolean>(() => loadState('serial', false));
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_trading`, JSON.stringify(tradingConfig));
+    saveState(`${STORAGE_KEY}_trading`, tradingConfig);
   }, [tradingConfig]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_indicator`, JSON.stringify(indicatorSettings));
+    saveState(`${STORAGE_KEY}_indicator`, indicatorSettings);
   }, [indicatorSettings]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_data`, JSON.stringify(dataSettings));
+    saveState(`${STORAGE_KEY}_data`, dataSettings);
   }, [dataSettings]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_leverage`, JSON.stringify(leverageSettings));
+    saveState(`${STORAGE_KEY}_leverage`, leverageSettings);
   }, [leverageSettings]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_parallel`, JSON.stringify(parallelAccounts));
+    saveState(`${STORAGE_KEY}_parallel`, parallelAccounts);
   }, [parallelAccounts]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_visibility`, JSON.stringify(visibilitySettings));
+    saveState(`${STORAGE_KEY}_visibility`, visibilitySettings);
   }, [visibilitySettings]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_heikin_ashi`, JSON.stringify(heikinAshiSettings));
+    saveState(`${STORAGE_KEY}_heikin_ashi`, heikinAshiSettings);
   }, [heikinAshiSettings]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_serial`, JSON.stringify(serialTradingEnabled));
+    saveState(`${STORAGE_KEY}_serial`, serialTradingEnabled);
   }, [serialTradingEnabled]);
 
   const getIndicatorDescription = (type: keyof IndicatorSettings) => {

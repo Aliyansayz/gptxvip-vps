@@ -22,6 +22,9 @@ export default function TemplateCard({ template }: { template: Template }) {
           <h3 className="font-semibold text-slate-900 group-hover:text-indigo-700">{template.name}</h3>
         </Link>
         <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-slate-500">{template.tagline}</p>
+        <p className="mt-3 text-xs leading-relaxed text-slate-600">
+          <span className="font-semibold">Example focus: </span>{template.features.slice(0, 2).join(' · ')}
+        </p>
 
         <div className="mt-3 flex flex-wrap items-center gap-1.5">
           <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-[11px] font-medium text-indigo-700">{template.category}</span>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { TradingRulesConfig } from '../functions/api/rules/tradingRules';
 import { ParallelAccount } from './indicators_store';
-import { loadState } from './utils/storage';
+import { loadState, saveState } from './utils/storage';
 import { defaultTimeFilterConfig } from '../functions/api/timeFilter/timeFilterManager';
 import { defaultStopLossModifierConfig } from '../functions/api/stopLossModifier/stopLossModifierConfig';
 import { defaultTakeProfitModifierConfig } from '../functions/api/takeProfitModifier/takeProfitModifierConfig';
@@ -72,15 +72,15 @@ export function useTradingSlice() {
   const [serialTradingEnabled, setSerialTradingEnabled] = useState<boolean>(() => loadState(`${STORAGE_KEY}_serial`, false));
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_trading`, JSON.stringify(tradingConfig));
+    saveState(`${STORAGE_KEY}_trading`, tradingConfig);
   }, [tradingConfig]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_parallel`, JSON.stringify(parallelAccounts));
+    saveState(`${STORAGE_KEY}_parallel`, parallelAccounts);
   }, [parallelAccounts]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_serial`, JSON.stringify(serialTradingEnabled));
+    saveState(`${STORAGE_KEY}_serial`, serialTradingEnabled);
   }, [serialTradingEnabled]);
 
   return {

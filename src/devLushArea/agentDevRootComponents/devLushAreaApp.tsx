@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { ReadingView } from './ReadingView';
@@ -14,9 +15,12 @@ import { Toaster, toast } from 'sonner';
 import { FavoritesProvider } from './FavoritesContext';
 import { TheoryCollectionProvider } from './TheoryCollectionContext';
 import FavoritesView from './FavoritesView';
+import type { FavoriteItem } from './FavoritesContext';
+import type { SavedTheory } from './TheoryCollectionContext';
 import TopicTheoryHub from './TopicTheoryView/TopicTheoryHub';
 import LandingPage from '../landingPage/LandingPage';
 import AgenticRolesContainer from '../agenticRoles/AgenticRolesContainer';
+import { agenticRoleDefinitions } from '../agenticRoles/data';
 
 
 import { motion, AnimatePresence } from 'framer-motion';
@@ -38,10 +42,46 @@ interface AppProps {
     onNavigateFinhub?: () => void;
 }
 
+type DevLushView = 'landing' | 'devlush-search' | 'reading' | 'articles' | 'blogs' | 'favorites' | 'topic-theory' | 'devlush' | 'agentic-roles' | 'agent-workspace';
+const DEV_LUSH_VIEWS: DevLushView[] = ['landing', 'devlush-search', 'reading', 'articles', 'blogs', 'favorites', 'topic-theory', 'devlush', 'agentic-roles', 'agent-workspace'];
+
+const readHistoryView = (state: unknown): DevLushView => {
+    const view = state && typeof state === 'object' ? (state as { devLushView?: unknown }).devLushView : undefined;
+    return typeof view === 'string' && DEV_LUSH_VIEWS.includes(view as DevLushView) ? view as DevLushView : 'landing';
+};
+
+const readHistoryChapterId = (state: unknown): string | undefined => {
+    const chapterId = state && typeof state === 'object'
+        ? (state as { devLushChapterId?: unknown }).devLushChapterId
+        : undefined;
+    return typeof chapterId === 'string' ? chapterId : undefined;
+};
+
+const readHistoryRolesRoleId = (state: unknown): string | undefined => {
+    const roleId = state && typeof state === 'object'
+        ? (state as { devLushRolesRoleId?: unknown }).devLushRolesRoleId
+        : undefined;
+    return typeof roleId === 'string' ? roleId : undefined;
+};
+
+const readHistoryRolesChapterId = (state: unknown): string | undefined => {
+    const chapterId = state && typeof state === 'object'
+        ? (state as { devLushRolesChapterId?: unknown }).devLushRolesChapterId
+        : undefined;
+    return typeof chapterId === 'string' ? chapterId : undefined;
+};
+
+const readHistoryRolesSearchOpen = (state: unknown): boolean => Boolean(
+    state && typeof state === 'object'
+    && (state as { devLushRolesSearchOpen?: unknown }).devLushRolesSearchOpen === true,
+);
+
 // --- MedLab Container Removed ---
 
 // --- Main App Component ---
 const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub }) => {
+    const location = useLocation();
+    const navigate = useNavigate();
     // -- Settings & State --
     // Default theme set to light
     const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -55,7 +95,68 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub }) => {
     const [studyEnergy, setStudyEnergy] = useState(15);
     const [energyLockoutTime, setEnergyLockoutTime] = useState(0);
     
-    const [currentView, setCurrentView] = useState<'landing' | 'devlush-search' | 'reading' | 'articles' | 'blogs' | 'favorites' | 'topic-theory' | 'devlush' | 'agentic-roles' | 'agent-workspace'>('landing');
+    const [currentView, setCurrentView] = useState<DevLushView>(() => readHistoryView(location.state));
+    const [pendingFavoriteChapterId, setPendingFavoriteChapterId] = useState<string | null>(null);
+
+    const navigateView = useCallback((view: DevLushView) => {
+        if (view === currentView) return;
+        setCurrentView(view);
+        const nextState = location.state && typeof location.state === 'object'
+            ? { ...(location.state as Record<string, unknown>) }
+            : {};
+        delete nextState.devLushChapterId;
+        delete nextState.devLushRolesChapterId;
+        delete nextState.devLushRolesSearchOpen;
+        delete nextState.devLushWorkspaceView;
+        navigate(`${location.pathname}${location.search}`, {
+            state: { ...nextState, devLushView: view },
+        });
+    }, [currentView, location.pathname, location.search, location.state, navigate]);
+
+    const pushChapterHistoryEntry = (chapterId: string) => {
+        const currentState = location.state && typeof location.state === 'object'
+            ? { ...(location.state as Record<string, unknown>) }
+            : {};
+        navigate(`${location.pathname}${location.search}`, {
+            state: { ...currentState, devLushView: currentView, devLushChapterId: chapterId },
+        });
+    };
+
+    const pushRolesSearchEntry = () => {
+        if (readHistoryRolesSearchOpen(location.state)) return;
+        const currentState = location.state && typeof location.state === 'object'
+            ? { ...(location.state as Record<string, unknown>) }
+            : {};
+        navigate(`${location.pathname}${location.search}`, {
+            state: { ...currentState, devLushView: currentView, devLushRolesSearchOpen: true },
+        });
+    };
+
+    const pushRolesChapterEntry = (roleId: string, chapterId: string) => {
+        const currentState = location.state && typeof location.state === 'object'
+            ? { ...(location.state as Record<string, unknown>) }
+            : {};
+        navigate(`${location.pathname}${location.search}`, {
+            state: {
+                ...currentState,
+                devLushView: currentView,
+                devLushRolesRoleId: roleId,
+                devLushRolesChapterId: chapterId,
+                devLushRolesSearchOpen: false,
+            },
+        });
+    };
+
+    const pushRolesHubEntry = (roleId: string) => {
+        const currentState = location.state && typeof location.state === 'object'
+            ? { ...(location.state as Record<string, unknown>) }
+            : {};
+        delete currentState.devLushRolesChapterId;
+        delete currentState.devLushRolesSearchOpen;
+        navigate(`${location.pathname}${location.search}`, {
+            state: { ...currentState, devLushView: currentView, devLushRolesRoleId: roleId },
+        });
+    };
 
 
 
@@ -72,6 +173,10 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub }) => {
         root.classList.remove('light', 'dark');
         root.classList.add(theme);
     }, [theme]);
+
+    useEffect(() => {
+        setCurrentView(readHistoryView(location.state));
+    }, [location.key, location.state]);
 
     // Energy Regeneration Logic
     useEffect(() => {
@@ -153,6 +258,41 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub }) => {
 
     const isInteractionLocked = isAppLocked || (!isInfiniteEnergy && studyEnergy <= 0);
 
+    const launchFavoriteAgenticRole = (favorite: FavoriteItem) => {
+        const role = agenticRoleDefinitions.find((item) => item.id === favorite.courseId);
+        if (!role?.chapters.some((chapter) => chapter.labComponentId === favorite.id)) {
+            toast.error('This saved Agentic Role lab is no longer available.');
+            return;
+        }
+        if (isInteractionLocked || !consumeEnergy()) {
+            toast.error('Simulation Locked: Insufficient Energy or App Locked');
+            return;
+        }
+
+        const currentState = location.state && typeof location.state === 'object'
+            ? { ...(location.state as Record<string, unknown>) }
+            : {};
+        delete currentState.devLushChapterId;
+        delete currentState.devLushRolesSearchOpen;
+        delete currentState.devLushWorkspaceView;
+        setCurrentView('agentic-roles');
+        navigate(`${location.pathname}${location.search}`, {
+            state: {
+                ...currentState,
+                devLushView: 'agentic-roles',
+                devLushRolesRoleId: role.id,
+                devLushRolesChapterId: favorite.id,
+                devLushRolesSearchOpen: false,
+            },
+        });
+    };
+
+    const launchFavoriteRoadmapItem = (favorite: FavoriteItem) => {
+        const path = `/roadmap/${encodeURIComponent(favorite.courseId)}/${encodeURIComponent(favorite.id)}`;
+        window.history.pushState({ roadmapChapterEntry: true }, '', path);
+        window.location.reload();
+    };
+
     const handleAskAI = () => {
         setAiPrompt({
             fullPrompt: `Explain this text in the context of biology or medicine: "${selectedText}"`,
@@ -166,9 +306,6 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub }) => {
     const handleClosePopover = () => {
         setSelectionRect(null);
         window.getSelection()?.removeAllRanges();
-    };
-
-    const handleSimulationComplete = () => {
     };
 
     // -- Render --
@@ -189,7 +326,7 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub }) => {
                     onToggleInfiniteEnergy={() => setIsInfiniteEnergy(!isInfiniteEnergy)}
                     energyLockoutTime={energyLockoutTime}
                     currentView={currentView}
-                    onViewChange={(view: any) => setCurrentView(view)}
+                    onViewChange={(view: DevLushView) => navigateView(view)}
                     focusMode={focusMode}
                     onToggleFocusMode={() => setFocusMode(!focusMode)}
                     showAiAssistant={showAiAssistant}
@@ -200,16 +337,20 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub }) => {
 
                 <main className="flex-1 overflow-hidden relative">
 
-                    {currentView === 'landing' && <LandingPage onOpenTopics={() => setCurrentView('devlush')} onOpenTheory={() => setCurrentView('topic-theory')} onOpenSearch={() => setCurrentView('devlush-search')} />}
+                    {currentView === 'landing' && <LandingPage onOpenTopics={() => navigateView('devlush')} onOpenTheory={() => navigateView('topic-theory')} onOpenSearch={() => navigateView('devlush-search')} />}
 
                     {(currentView === 'devlush' || currentView === 'devlush-search') && (
                         <DevLushContainer 
                             isLocked={isInteractionLocked}
                             onConsumeEnergy={consumeEnergy}
-                            initialChapterId={null}
-                            onSimulationComplete={handleSimulationComplete}
-                            onSearchClick={() => setCurrentView('devlush-search')}
+                            initialChapterId={pendingFavoriteChapterId}
+                            onChapterOpened={() => setPendingFavoriteChapterId(null)}
+                            onSearchClick={() => navigateView('devlush-search')}
+                            onSearchClose={() => navigateView('devlush')}
                             initialSearchOpen={currentView === 'devlush-search'}
+                            routeChapterId={readHistoryChapterId(location.state)}
+                            onChapterRoutePush={pushChapterHistoryEntry}
+                            onChapterRouteBack={() => navigate(-1)}
                             onExit={onExit}
                         />
                     )}
@@ -222,27 +363,56 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub }) => {
                         <AgenticRolesContainer 
                             isLocked={isInteractionLocked}
                             onConsumeEnergy={consumeEnergy}
-                            onExitToDevLush={() => setCurrentView('devlush')}
+                            onExitToDevLush={() => navigateView('devlush')}
+                            routeRoleId={readHistoryRolesRoleId(location.state)}
+                            routeChapterId={readHistoryRolesChapterId(location.state)}
+                            routeSearchOpen={readHistoryRolesSearchOpen(location.state)}
+                            onChapterRoutePush={pushRolesChapterEntry}
+                            onChapterRouteBack={() => navigate(-1)}
+                            onSearchRoutePush={pushRolesSearchEntry}
+                            onSearchRouteBack={() => navigate(-1)}
+                            onRoleRoutePush={pushRolesHubEntry}
                         />
                     )}
 
-                    {currentView === 'reading' && <ReadingView />}
+                    {currentView === 'reading' && <ReadingView onBrowseTopics={() => navigateView('devlush')} />}
                     
-                    {currentView === 'articles' && <ArticlesView />}
+                    {currentView === 'articles' && <ArticlesView onBrowseTopics={() => navigateView('devlush')} />}
 
-                    {currentView === 'blogs' && <BlogsView />}
+                    {currentView === 'blogs' && (
+                        <BlogsView
+                            routeByUrl={false}
+                            onBackToWorkspace={() => navigateView('landing')}
+                            backToWorkspaceLabel="Back to Agent Labs"
+                        />
+                    )}
 
                     {currentView === 'favorites' && (
-                        <FavoritesView onLaunch={() => {}} />
+                        <FavoritesView onLaunch={(favorite: FavoriteItem) => {
+                            if (favorite.type === 'roadmap_lab' || favorite.type === 'roadmap_reading') {
+                                launchFavoriteRoadmapItem(favorite);
+                                return;
+                            }
+                            if (favorite.type === 'agentic_role_lab') {
+                                launchFavoriteAgenticRole(favorite);
+                                return;
+                            }
+                            setPendingFavoriteChapterId(favorite.id);
+                            navigateView('devlush');
+                        }} />
                     )}
 
                     {currentView === 'topic-theory' && (
-                        <TopicTheoryHub />
+                        <TopicTheoryHub onOpenSource={(item: SavedTheory) => {
+                            if (item.courseType !== 'devLush' || item.labId === 'unknown') return;
+                            setPendingFavoriteChapterId(item.labId);
+                            navigateView('devlush');
+                        }} />
                     )}
                     
                     <GeminiChatWidget 
                         isActivityOpen={true} 
-                        onOpenChatBook={() => setCurrentView('reading')}
+                        onOpenChatBook={() => navigateView('reading')}
                         initialPrompt={aiPrompt}
                         onPromptHandled={() => setAiPrompt(null)}
                         isVisible={showAiAssistant}

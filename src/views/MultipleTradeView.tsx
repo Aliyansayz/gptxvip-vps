@@ -16,9 +16,9 @@ export const MultipleTradeView: React.FC<MultipleTradeViewProps> = ({
   return (
     <div className="space-y-12">
       <div className="max-w-3xl">
-        <h1 className="text-4xl font-extrabold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-500">
+        <h2 className="mb-4 text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-500 md:text-4xl">
           Multiple Trades Execution
-        </h1>
+        </h2>
         <p className="text-lg text-zinc-500 dark:text-zinc-400 leading-relaxed">
           Advanced multi-threaded execution where the algorithm manages complex
           risk-reward ratios across multiple price targets and stop-loss levels.

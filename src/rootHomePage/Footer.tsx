@@ -110,11 +110,11 @@ export const Footer: React.FC<FooterProps> = ({
                         &copy; {new Date().getFullYear()} GPTX.VIP &bull; devLush AgentOS &bull; All enterprise rights reserved.
                     </p>
                     <div className="flex items-center gap-4 text-zinc-400">
-                        <span className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Security Policy</span>
+                        <span>Security Policy</span>
                         <span>&bull;</span>
-                        <span className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Terms of Service</span>
+                        <span>Terms of Service</span>
                         <span>&bull;</span>
-                        <span className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">SOC 2 Portal</span>
+                        <span>SOC 2 Portal</span>
                     </div>
                 </div>
 

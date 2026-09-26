@@ -4,21 +4,30 @@ import { ShoppingCart, Plus, Sparkles, ChevronRight } from 'lucide-react';
 
 export default function AovBundleVisual({ prompt }: { prompt?: string }) {
     const [step, setStep] = useState(0); // 0: Empty Cart, 1: Base Item added, 2: Agent Analyzing, 3: Bundle Offer
+    const [bundleAdded, setBundleAdded] = useState(false);
+    const [checkoutComplete, setCheckoutComplete] = useState(false);
 
     useEffect(() => {
+        let cancelled = false;
         const sequence = async () => {
-            while (true) {
+            while (!cancelled) {
                 setStep(0);
+                setBundleAdded(false);
+                setCheckoutComplete(false);
                 await new Promise(r => setTimeout(r, 1500));
+                if (cancelled) return;
                 setStep(1);
                 await new Promise(r => setTimeout(r, 1000));
+                if (cancelled) return;
                 setStep(2);
                 await new Promise(r => setTimeout(r, 1500));
+                if (cancelled) return;
                 setStep(3);
                 await new Promise(r => setTimeout(r, 4000));
             }
         };
         sequence();
+        return () => { cancelled = true; };
     }, []);
 
     return (
@@ -108,8 +117,8 @@ export default function AovBundleVisual({ prompt }: { prompt?: string }) {
                                                 <div className="text-slate-500 text-xs line-through">$664.00</div>
                                                 <div className="text-emerald-400 font-bold text-lg">$597.60</div>
                                             </div>
-                                            <button className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2 rounded-full transition-colors">
-                                                Add Bundle
+                                            <button type="button" disabled={bundleAdded} onClick={() => setBundleAdded(true)} className="bg-indigo-600 hover:bg-indigo-500 disabled:bg-emerald-700 disabled:cursor-default text-white text-xs font-semibold px-4 py-2 rounded-full transition-colors">
+                                                {bundleAdded ? 'Bundle added' : 'Add Bundle'}
                                             </button>
                                         </div>
                                     </div>
@@ -120,9 +129,10 @@ export default function AovBundleVisual({ prompt }: { prompt?: string }) {
 
                     {/* Standard Checkout Button */}
                     <div className="mt-4 pt-4 border-t border-slate-800 shrink-0">
-                        <button className={`w-full py-3 rounded-lg flex items-center justify-center gap-2 font-semibold transition-all ${step >= 1 ? 'bg-slate-200 text-slate-900 hover:bg-white' : 'bg-slate-800 text-slate-500 cursor-not-allowed'}`}>
-                            Checkout <ChevronRight className="w-4 h-4" />
+                        <button type="button" disabled={step < 1 || checkoutComplete} onClick={() => setCheckoutComplete(true)} className={`w-full py-3 rounded-lg flex items-center justify-center gap-2 font-semibold transition-all ${step >= 1 && !checkoutComplete ? 'bg-slate-200 text-slate-900 hover:bg-white' : 'bg-slate-800 text-slate-500 cursor-not-allowed'}`}>
+                            {checkoutComplete ? 'Demo checkout complete' : 'Demo checkout'} {!checkoutComplete && <ChevronRight className="w-4 h-4" />}
                         </button>
+                        <p className="mt-2 text-center text-[10px] text-slate-500">Local simulation only. No order is submitted.</p>
                     </div>
 
                 </div>

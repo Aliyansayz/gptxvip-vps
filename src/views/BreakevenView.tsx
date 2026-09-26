@@ -17,7 +17,7 @@ export const BreakevenView: React.FC<BreakevenViewProps> = ({
           <Scissors className="w-4 h-4" />
           Trade Management
         </div>
-        <h1 className="mb-4">Breakeven & Partial Position Running</h1>
+        <h2 className="mb-4 text-3xl font-black tracking-tighter md:text-4xl">Breakeven &amp; Partial Position Running</h2>
         <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl leading-relaxed">
           Secure profits early and eliminate risk. This strategy involves
           closing a portion of your position at a predefined target (TP1) and

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Target, ShieldAlert, Crosshair, Network, FileText, ChevronRight, Play } from 'lucide-react';
+import { Target, ShieldAlert, Crosshair, Network, FileText, Play, Search } from 'lucide-react';
+import AgentPreviewNotice from '../../../components/AgentPreviewNotice';
 
 interface RedTeamDashboardViewProps {
   onStartSimulation: () => void;
@@ -9,6 +10,7 @@ export default function RedTeamDashboardView({ onStartSimulation }: RedTeamDashb
   return (
     <div className="flex-1 overflow-y-auto custom-scrollbar p-8 bg-slate-50">
       <div className="max-w-4xl mx-auto space-y-8">
+        <AgentPreviewNotice>This training preview runs scripted events for the fixed 10.0.x.x/24 scenario; it does not contact a target. Use only in an explicitly authorized lab.</AgentPreviewNotice>
         
         {/* Header Section */}
         <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm relative overflow-hidden group">
@@ -22,18 +24,19 @@ export default function RedTeamDashboardView({ onStartSimulation }: RedTeamDashb
               Advanced Persistent Threat (APT) Simulator
             </div>
             <h2 className="text-3xl font-bold font-heading text-slate-800 mb-4 leading-tight">
-              Continuous Attack Simulation
+              Bounded training scenario
             </h2>
             <p className="text-slate-600 text-lg mb-8 leading-relaxed">
-              Safely emulate real-world adversarial tactics to identify and chain vulnerabilities, test lateral movement, and validate your defense-in-depth architecture.
+              Review a predefined sequence of simulated events and the defensive signals they produce. This preview does not scan a live network or apply changes.
             </p>
             
             <button 
+              type="button"
               onClick={onStartSimulation}
               className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
             >
               <Play className="w-5 h-5 fill-current" />
-              Initialize Attack Sequence
+              Run simulated scenario
             </button>
           </div>
         </div>
@@ -88,6 +91,3 @@ export default function RedTeamDashboardView({ onStartSimulation }: RedTeamDashb
     </div>
   );
 }
-
-// Dummy Search icon to fix undefined, since I forgot to import it from lucide-react. 
-import { Search } from 'lucide-react';

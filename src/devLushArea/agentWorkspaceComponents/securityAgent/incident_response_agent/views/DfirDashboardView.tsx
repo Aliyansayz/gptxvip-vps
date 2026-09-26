@@ -1,5 +1,6 @@
 import React from 'react';
 import { Shield, AlertTriangle, Clock, Activity, CheckCircle, ArrowRight } from 'lucide-react';
+import AgentPreviewNotice from '../../../components/AgentPreviewNotice';
 
 interface DfirDashboardViewProps {
   onStartInvestigation: () => void;
@@ -8,6 +9,7 @@ interface DfirDashboardViewProps {
 export default function DfirDashboardView({ onStartInvestigation }: DfirDashboardViewProps) {
   return (
     <div className="p-8 max-w-6xl mx-auto h-full overflow-y-auto custom-scrollbar dfir-dashboard-header">
+      <AgentPreviewNotice>Incident counts, identities, timestamps, and alerts are sample entries. Verify original event evidence before taking containment action.</AgentPreviewNotice>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-bold font-heading text-slate-800">DFIR Command Center</h1>

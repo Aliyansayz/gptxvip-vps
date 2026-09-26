@@ -13,6 +13,7 @@ export class ReconnectingWebSocket {
   private onErrorCallback?: (err: Event) => void;
   private reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
   private pingInterval: ReturnType<typeof setInterval> | null = null;
+  private stableConnectionTimeout: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
     url: string,
@@ -41,8 +42,11 @@ export class ReconnectingWebSocket {
     this.ws = new WebSocket(this.url);
 
     this.ws.onopen = () => {
-      this.reconnectAttempts = 0;
       console.log("Connected to Python Live Market Feed backend.");
+      this.stableConnectionTimeout = setTimeout(() => {
+        this.reconnectAttempts = 0;
+        this.stableConnectionTimeout = null;
+      }, 30000);
       
       this.ws?.send(JSON.stringify({
         symbol_id: this.config.symbol_id,
@@ -67,6 +71,7 @@ export class ReconnectingWebSocket {
     };
 
     this.ws.onclose = () => {
+      this.clearTimeouts();
       if (this.onCloseCallback) this.onCloseCallback();
 
       if (!this.isIntentionalClose) {
@@ -104,6 +109,10 @@ export class ReconnectingWebSocket {
       clearInterval(this.pingInterval);
       this.pingInterval = null;
     }
+    if (this.stableConnectionTimeout !== null) {
+      clearTimeout(this.stableConnectionTimeout);
+      this.stableConnectionTimeout = null;
+    }
   }
 
   public close() {
@@ -132,8 +141,11 @@ export function connectMT5WebSocket(
   onClose?: () => void,
   onError?: (err: Event) => void
 ): ReconnectingWebSocket {
+  const configuredUrl = import.meta.env.VITE_MARKET_FEED_URL;
+  const defaultProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+  const defaultUrl = `${defaultProtocol}//${window.location.host}/ws/market_feed`;
   return new ReconnectingWebSocket(
-    "ws://localhost:8000/ws/market_feed",
+    configuredUrl || defaultUrl,
     config,
     onMessage,
     onOpen,

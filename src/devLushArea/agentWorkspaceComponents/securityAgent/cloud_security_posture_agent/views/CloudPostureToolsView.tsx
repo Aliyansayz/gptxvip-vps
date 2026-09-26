@@ -1,5 +1,6 @@
 import React from 'react';
 import { Wrench, Search, Shield, Zap, CloudCog, FileText, Activity } from 'lucide-react';
+import AgentPreviewNotice from '../../../components/AgentPreviewNotice';
 
 interface ToolInfo {
   id: string;
@@ -73,6 +74,8 @@ export default function CloudPostureToolsView() {
           </p>
         </div>
       </div>
+
+      <AgentPreviewNotice>Tool descriptions are examples; no cloud account is connected and no remediation is run here. Review and approve any change through your normal change process.</AgentPreviewNotice>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {cloudPostureTools.map((tool) => (

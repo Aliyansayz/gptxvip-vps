@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { VisibilitySettings, HeikinAshiSettings } from './indicators_store';
-import { loadState } from './utils/storage';
+import { loadState, saveState } from './utils/storage';
 
 const STORAGE_KEY = 'leverage_trading_v1_settings';
 
@@ -32,11 +32,11 @@ export function useVisibilitySlice() {
   const [heikinAshiSettings, setHeikinAshiSettings] = useState<HeikinAshiSettings>(() => loadState(`${STORAGE_KEY}_heikin_ashi`, defaultHeikinAshiSettings));
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_visibility`, JSON.stringify(visibilitySettings));
+    saveState(`${STORAGE_KEY}_visibility`, visibilitySettings);
   }, [visibilitySettings]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_heikin_ashi`, JSON.stringify(heikinAshiSettings));
+    saveState(`${STORAGE_KEY}_heikin_ashi`, heikinAshiSettings);
   }, [heikinAshiSettings]);
 
   return {

@@ -1,20 +1,29 @@
-import { LabData } from "../../../../types";
-import { SavedTheory } from "../../../agentDevRootComponents/TheoryCollectionContext";
+import type { SavedTheory } from "../../../agentDevRootComponents/TheoryCollectionContext";
 import devLushChaptersRaw from "../../data/index";
 
-export const fetchDevLushLabsData = async () => {
-  return devLushChaptersRaw;
+interface ImportableExercise {
+  title?: string;
+  concept_tested?: string;
+  theory?: SavedTheory["theory"];
+}
+interface ImportableLab {
+  labComponentId?: string;
+  chapter_title?: string;
+  interactive_questions?: ImportableExercise[];
+}
+
+export const fetchDevLushLabsData = async (): Promise<ImportableLab[]> => {
+  return devLushChaptersRaw as unknown as ImportableLab[];
 };
 
 export const extractTheoriesFromDevLush = (
-  labs: any[]
+  labs: ImportableLab[]
 ): Omit<SavedTheory, "id" | "savedAt">[] => {
   const theories: Omit<SavedTheory, "id" | "savedAt">[] = [];
 
   labs.forEach((lab) => {
-    if (!lab.interactive_questions) return;
     if (Array.isArray(lab.interactive_questions)) {
-      lab.interactive_questions.forEach((exercise: any) => {
+      lab.interactive_questions.forEach((exercise) => {
         if (exercise.theory) {
           theories.push({
             labId: lab.labComponentId || "unknown",

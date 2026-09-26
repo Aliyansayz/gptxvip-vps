@@ -10,11 +10,15 @@ interface SidebarItemProps {
   isActive?: boolean;
   onClick?: () => void;
   badge?: React.ReactNode;
+  id?: string;
 }
 
-const SidebarItem = ({ icon: Icon, label, isActive, onClick, badge }: SidebarItemProps) => (
+const SidebarItem = ({ icon: Icon, label, isActive, onClick, badge, id }: SidebarItemProps) => (
   <button
+    type="button"
+    id={id}
     onClick={onClick}
+    aria-current={isActive ? 'page' : undefined}
     className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors text-sm ${
       isActive 
         ? 'bg-indigo-50 text-indigo-700 font-medium' 
@@ -37,17 +41,21 @@ interface SidebarSectionProps {
 
 const SidebarSection = ({ title, children, defaultExpanded = true }: SidebarSectionProps) => {
   const [expanded, setExpanded] = React.useState(defaultExpanded);
+  const contentId = `legal-sidebar-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   
   return (
     <div className="mb-4">
       <button 
+        type="button"
+        aria-expanded={expanded}
+        aria-controls={contentId}
         onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center justify-between px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-slate-700 transition-colors mb-1"
       >
         {title}
         {expanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
       </button>
-      {expanded && <div className="space-y-0.5">{children}</div>}
+      {expanded && <div id={contentId} className="space-y-0.5">{children}</div>}
     </div>
   );
 };
@@ -61,15 +69,15 @@ interface LegalContractAgentSidebarProps {
 
 export default function LegalContractAgentSidebar({ currentView, onNavigate }: LegalContractAgentSidebarProps) {
   return (
-    <div className="w-64 border-r border-slate-200 bg-white h-full flex flex-col shadow-sm shrink-0 relative z-30">
+    <aside className="w-64 border-r border-slate-200 bg-white h-full flex flex-col shadow-sm shrink-0 relative z-30" aria-label="Legal Contract Agent navigation">
       <div className="p-4 border-b border-slate-200">
         <h2 className="font-bold font-heading text-slate-800 text-lg flex items-center gap-2">
           <FileText className="w-5 h-5 text-indigo-600" />
           Legal Agent
         </h2>
-        <div className="text-xs text-emerald-600 font-medium mt-1 flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          Contract Analysis Active
+        <div className="text-xs text-amber-700 font-medium mt-1 flex items-center gap-1">
+          <div className="w-2 h-2 rounded-full bg-amber-500" />
+          Preview · sample data
         </div>
       </div>
       
@@ -80,19 +88,19 @@ export default function LegalContractAgentSidebar({ currentView, onNavigate }: L
             isActive={currentView === 'dashboard'} onClick={() => onNavigate('dashboard')} 
           />
           <SidebarItem 
-            icon={Edit3} label="Auto-Redlining" 
+            icon={Edit3} label="Redline examples"
             isActive={currentView === 'redlining'} onClick={() => onNavigate('redlining')} 
             badge={<span className="bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded text-[10px] font-bold">New</span>}
           />
           <SidebarItem 
-            icon={ShieldAlert} label="Liability Detection" 
+            icon={ShieldAlert} label="Liability examples"
             isActive={currentView === 'liabilities'} onClick={() => onNavigate('liabilities')} 
           />
         </SidebarSection>
         
         <SidebarSection title="Global Scope">
           <SidebarItem 
-            icon={Globe} label="Compliance Monitor" 
+            icon={Globe} label="Compliance examples"
             isActive={currentView === 'compliance'} onClick={() => onNavigate('compliance')} 
           />
         </SidebarSection>
@@ -111,6 +119,6 @@ export default function LegalContractAgentSidebar({ currentView, onNavigate }: L
           />
         </SidebarSection>
       </div>
-    </div>
+    </aside>
   );
 }

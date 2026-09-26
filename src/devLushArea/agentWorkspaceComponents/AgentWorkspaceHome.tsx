@@ -25,18 +25,42 @@ const AgentWorkspaceHome: React.FC<AgentWorkspaceHomeProps> = ({ onNavigate }) =
             Agent Workspace
           </h1>
           <p className="text-slate-500 text-lg max-w-2xl mx-auto leading-relaxed">
-            Select an autonomous agent category to launch specialized workspaces. Each agent brings specific domain intelligence to the environment.
+            Choose a workspace by the job you want to explore. Each opens a focused product preview with its own dashboard, tools, and example workflows.
           </p>
         </div>
 
-        {/* Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <SecOpsAgents onNavigate={onNavigate} />
-          <AttackAuditorAgents onNavigate={onNavigate} />
-          <ECommerceAgents onNavigate={onNavigate} />
-          <DevToolsAgents onNavigate={onNavigate} />
-          <LegalComplianceAgents onNavigate={onNavigate} />
-          <AgentLabs onNavigate={onNavigate} />
+        {/* Categories are grouped by the user goal they support. */}
+        <div className="space-y-10">
+          <section aria-labelledby="workspace-security-heading" className="space-y-4">
+            <div>
+              <h2 id="workspace-security-heading" className="text-xl font-bold text-slate-800">Secure and investigate systems</h2>
+              <p className="text-sm text-slate-500">Explore security monitoring, incident triage, code auditing, and bounded red team training.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <SecOpsAgents onNavigate={onNavigate} />
+              <AttackAuditorAgents onNavigate={onNavigate} />
+            </div>
+          </section>
+          <section aria-labelledby="workspace-operations-heading" className="space-y-4">
+            <div>
+              <h2 id="workspace-operations-heading" className="text-xl font-bold text-slate-800">Build and operate services</h2>
+              <p className="text-sm text-slate-500">Inspect software delivery, commerce operations, and contract review workflows.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <ECommerceAgents onNavigate={onNavigate} />
+              <DevToolsAgents onNavigate={onNavigate} />
+              <LegalComplianceAgents onNavigate={onNavigate} />
+            </div>
+          </section>
+          <section aria-labelledby="workspace-learning-heading" className="space-y-4">
+            <div>
+              <h2 id="workspace-learning-heading" className="text-xl font-bold text-slate-800">Learn and compare</h2>
+              <p className="text-sm text-slate-500">Open learning activities and inspect how agent patterns are explained.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <AgentLabs onNavigate={onNavigate} />
+            </div>
+          </section>
         </div>
 
       </div>

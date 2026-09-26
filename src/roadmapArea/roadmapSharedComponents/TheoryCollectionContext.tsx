@@ -31,13 +31,26 @@ const TheoryCollectionContext = createContext<TheoryCollectionContextType | unde
 
 export const TheoryCollectionProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [collections, setCollections] = useState<Record<string, TheoryCollection>>(() => {
-    const saved = localStorage.getItem('theoryCollections');
-    if (saved && saved.trim() !== '') {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error('Failed to parse theory collections', e);
+    try {
+      const saved = window.localStorage.getItem('theoryCollections');
+      if (saved && saved.trim() !== '') {
+        const parsed: unknown = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+          const validEntries = Object.entries(parsed).flatMap(([id, value]): Array<[string, TheoryCollection]> => {
+            if (!value || typeof value !== 'object') return [];
+            const collection = value as Partial<TheoryCollection>;
+            if (typeof collection.name !== 'string' || !Array.isArray(collection.items)) return [];
+            const items = collection.items.filter((item) =>
+              !!item && typeof item === 'object' &&
+              typeof item.id === 'string' && typeof item.labId === 'string' &&
+              typeof item.exerciseTitle === 'string');
+            return [[id, { id, name: collection.name, items, createdAt: Number(collection.createdAt) || Date.now() }]];
+          });
+          if (validEntries.length) return Object.fromEntries(validEntries);
+        }
       }
+    } catch {
+      // Use an empty in-memory collection when browser storage is disabled or malformed.
     }
     // Default collection
     return {
@@ -51,7 +64,11 @@ export const TheoryCollectionProvider: React.FC<{ children: ReactNode }> = ({ ch
   });
 
   useEffect(() => {
-    localStorage.setItem('theoryCollections', JSON.stringify(collections));
+    try {
+      window.localStorage.setItem('theoryCollections', JSON.stringify(collections));
+    } catch {
+      // Saved theories remain available for this session when browser storage is unavailable.
+    }
   }, [collections]);
 
   const createCollection = (name: string) => {

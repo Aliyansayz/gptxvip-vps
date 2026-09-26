@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
-import { Routes, Route, useLocation } from 'react-router'
+import { Routes, Route, Navigate, useLocation } from 'react-router'
+import './catalog.css'
 import SiteHeader from '@/components/SiteHeader'
 import SiteFooter from '@/components/SiteFooter'
 import Home from '@/pages/Home'
@@ -8,10 +9,10 @@ import TemplateDetail from '@/pages/TemplateDetail'
 import LabRuntime from '@/pages/LabRuntime'
 
 function ScrollToTop() {
-  const { pathname, search } = useLocation()
+  const { pathname } = useLocation()
   useEffect(() => {
     window.scrollTo({ top: 0 })
-  }, [pathname, search])
+  }, [pathname])
   return null
 }
 
@@ -26,7 +27,7 @@ export default function App() {
           <Route path="/templates" element={<Browse />} />
           <Route path="/templates/:slug" element={<TemplateDetail />} />
           <Route path="/lab" element={<LabRuntime />} />
-          <Route path="*" element={<Home />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
       <SiteFooter />

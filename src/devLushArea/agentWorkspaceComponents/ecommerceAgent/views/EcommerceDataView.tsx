@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tag, Package, Users, TrendingUp, Settings } from 'lucide-react';
 import { EcommerceSidebarView } from '../components/EcommerceAgentSidebar';
+import AgentPreviewNotice from '../../components/AgentPreviewNotice';
 
 interface EcommerceDataViewProps {
   viewType: EcommerceSidebarView;
@@ -53,8 +54,8 @@ export default function EcommerceDataView({ viewType }: EcommerceDataViewProps) 
       icon: Settings,
       description: "Manage API keys and integration settings for various storefronts.",
       items: [
-        { label: "Shopify Integration", value: "Connected (Store: acme-electronics.myshopify.com)" },
-        { label: "Amazon Seller Central", value: "Connected (Marketplace: US)" },
+        { label: "Shopify Integration", value: "Example store label: acme-electronics.myshopify.com (connection not verified)" },
+        { label: "Amazon Seller Central", value: "Example marketplace label: US (connection not verified)" },
         { label: "Pricing Rules", value: "Max margin sacrifice: 15%. Minimum allowed price floor: Cost + 5%." }
       ]
     },
@@ -78,6 +79,7 @@ export default function EcommerceDataView({ viewType }: EcommerceDataViewProps) 
           <p className="text-slate-500 mt-2">{data.description}</p>
         </div>
 
+        <AgentPreviewNotice>Values and recommendations are illustrative records; a source, measurement window, and connected storefront are not provided here.</AgentPreviewNotice>
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="divide-y divide-slate-100">
             {data.items.map((item, idx) => (

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import DevLushSidebar from "./devLushTopicsView/DevLushSidebar";
 import DevLushHub from "./devLushTopicsView/DevLushHub";
 import DevLushRunner from "./devLushTopicsView/DevLushRunner";
 import { DevLushSearchView } from "./devLushTopicsView/DevLushSearchView";
-import { LabData, ConceptCourse } from "../../types";
+import { LabData, ConceptCourse } from "./devLushTypes";
 import { toast } from "sonner";
 import { ShieldAlert, ShoppingBag, Calculator, Bot, Database } from "lucide-react";
 import devLushChaptersRaw from "./data";
@@ -22,9 +22,13 @@ interface DevLushContainerProps {
   onConsumeEnergy: () => boolean;
   initialChapterId?: string | null;
   onChapterOpened?: () => void;
-  onSimulationComplete: () => void;
+  onSimulationComplete?: () => void;
   onSearchClick: () => void;
+  onSearchClose?: () => void;
   initialSearchOpen?: boolean;
+  routeChapterId?: string;
+  onChapterRoutePush?: (chapterId: string) => void;
+  onChapterRouteBack?: () => void;
   onExit?: () => void;
 }
 
@@ -154,6 +158,23 @@ const devLushCourseData = [
 
 const devLushChapters = devLushChaptersRaw as LabData[];
 
+const readTopicScroll = (topicId: string): number => {
+  try {
+    const parsed = Number.parseInt(sessionStorage.getItem(`devlush_scroll_pos_${topicId}`) || "0", 10);
+    return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+  } catch {
+    return 0;
+  }
+};
+
+const saveTopicScroll = (topicId: string, scrollTop: number) => {
+  try {
+    sessionStorage.setItem(`devlush_scroll_pos_${topicId}`, String(Math.max(0, scrollTop)));
+  } catch {
+    // Topic browsing remains usable when browser storage is unavailable.
+  }
+};
+
 export const DevLushContainer: React.FC<DevLushContainerProps> = ({
   isLocked,
   onConsumeEnergy,
@@ -161,7 +182,11 @@ export const DevLushContainer: React.FC<DevLushContainerProps> = ({
   onChapterOpened,
   onSimulationComplete,
   onSearchClick,
+  onSearchClose,
   initialSearchOpen = false,
+  routeChapterId,
+  onChapterRoutePush,
+  onChapterRouteBack,
   onExit,
 }) => {
   const [activeTopicId, setActiveTopicId] = useState<string>(
@@ -171,6 +196,7 @@ export const DevLushContainer: React.FC<DevLushContainerProps> = ({
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSearchOpen, setIsSearchOpen] = useState(initialSearchOpen);
   const [loading, setLoading] = useState(false);
+  const routeChapterEntryRef = useRef<string | undefined>(undefined);
 
   useEffect(() => {
     setIsSearchOpen(initialSearchOpen);
@@ -214,18 +240,49 @@ export const DevLushContainer: React.FC<DevLushContainerProps> = ({
       const foundChapter = devLushChapters.find(
         (c) => c.labComponentId === initialChapterId,
       );
-      if (foundChapter) {
-        const matchedTopic = enrichedTopics.find(
-          (t) => t.title.toLowerCase() === foundChapter.course.toLowerCase(),
-        );
-        if (matchedTopic) {
-          setActiveTopicId(matchedTopic.id);
-          setSelectedChapter(foundChapter);
-          if (onChapterOpened) onChapterOpened();
-        }
+      const matchedTopic = enrichedTopics.find((topic) =>
+        topic.chapters.some((chapter) => chapter.labComponentId === initialChapterId),
+      );
+      if (!foundChapter || !matchedTopic) {
+        toast.error("This saved lab is no longer available.");
+        onChapterOpened?.();
+        return;
       }
+      if (isLocked || !onConsumeEnergy()) {
+        toast.error("Simulation Locked: Insufficient Energy or App Locked");
+        onChapterOpened?.();
+        return;
+      }
+      setActiveTopicId(matchedTopic.id);
+      setSelectedChapter(foundChapter);
+      onChapterOpened?.();
     }
   }, [initialChapterId]);
+
+  useEffect(() => {
+    if (!routeChapterId) {
+      if (routeChapterEntryRef.current) {
+        routeChapterEntryRef.current = undefined;
+        setSelectedChapter(null);
+        setIsSearchOpen(initialSearchOpen);
+      }
+      return;
+    }
+
+    routeChapterEntryRef.current = routeChapterId;
+    const matchedTopic = enrichedTopics.find((topic) =>
+      topic.chapters.some((chapter) => chapter.labComponentId === routeChapterId),
+    );
+    const chapter = matchedTopic?.chapters.find((item) => item.labComponentId === routeChapterId);
+    if (!chapter || !matchedTopic) {
+      setSelectedChapter(null);
+      return;
+    }
+
+    setActiveTopicId(matchedTopic.id);
+    setSelectedChapter(chapter);
+    setIsSearchOpen(false);
+  }, [routeChapterId, initialSearchOpen]);
 
   // Auto sidebar collapse during active runner simulation
   useEffect(() => {
@@ -240,7 +297,13 @@ export const DevLushContainer: React.FC<DevLushContainerProps> = ({
     if (onConsumeEnergy()) {
       setSelectedChapter(chapter);
       setIsSearchOpen(false);
+      onChapterRoutePush?.(chapter.labComponentId);
     }
+  };
+
+  const handleReturnFromChapter = () => {
+    setSelectedChapter(null);
+    if (routeChapterId) onChapterRouteBack?.();
   };
 
   const sidebarTopics = enrichedTopics.map((t) => ({
@@ -253,27 +316,19 @@ export const DevLushContainer: React.FC<DevLushContainerProps> = ({
 
   // Save scroll position when the user scrolls
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    sessionStorage.setItem(
-      "devlush_scroll_pos_" + activeTopicId,
-      e.currentTarget.scrollTop.toString(),
-    );
+    saveTopicScroll(activeTopicId, e.currentTarget.scrollTop);
   };
 
   // Callback ref to restore scroll position as soon as element mounts
   const setScrollRef = (el: HTMLDivElement | null) => {
     if (el) {
       scrollContainerRef.current = el;
-      const savedScroll = sessionStorage.getItem(
-        "devlush_scroll_pos_" + activeTopicId,
-      );
-      if (savedScroll) {
-        const scrollTopVal = parseInt(savedScroll, 10);
-        el.scrollTop = scrollTopVal;
-        // Also schedule a secondary check just in case images/layouts load and shift height
-        setTimeout(() => {
-          if (el) el.scrollTop = scrollTopVal;
-        }, 100);
-      }
+      const scrollTopVal = readTopicScroll(activeTopicId);
+      el.scrollTop = scrollTopVal;
+      // Also schedule a secondary check just in case images/layouts load and shift height
+      setTimeout(() => {
+        if (el) el.scrollTop = scrollTopVal;
+      }, 100);
     } else {
       scrollContainerRef.current = null;
     }
@@ -282,9 +337,7 @@ export const DevLushContainer: React.FC<DevLushContainerProps> = ({
   // Also handle scroll restoration when switching topics
   useEffect(() => {
     if (!selectedChapter && scrollContainerRef.current) {
-      const savedScroll =
-        sessionStorage.getItem("devlush_scroll_pos_" + activeTopicId) || "0";
-      const scrollTopVal = parseInt(savedScroll, 10);
+      const scrollTopVal = readTopicScroll(activeTopicId);
       scrollContainerRef.current.scrollTop = scrollTopVal;
       setTimeout(() => {
         if (scrollContainerRef.current) {
@@ -315,18 +368,21 @@ export const DevLushContainer: React.FC<DevLushContainerProps> = ({
           {selectedChapter ? (
             <DevLushRunner
               chapter={selectedChapter}
-              onBack={() => setSelectedChapter(null)}
+              onBack={handleReturnFromChapter}
               onComplete={() => {
                 toast.success("Simulation Completed Successfully!");
-                setSelectedChapter(null);
-                onSimulationComplete();
+                handleReturnFromChapter();
+                onSimulationComplete?.();
               }}
             />
           ) : isSearchOpen ? (
             <DevLushSearchView
               devLushTopics={enrichedTopics}
               onStartChapter={handleStartChapter}
-              onClose={() => setIsSearchOpen(false)}
+              onClose={() => {
+                setIsSearchOpen(false);
+                onSearchClose?.();
+              }}
             />
           ) : (
             <div

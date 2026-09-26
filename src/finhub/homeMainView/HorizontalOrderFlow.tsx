@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import type { AssetType } from './simulatedDataGenerator';
 import { 
   Zap, 
   ArrowUp, 
@@ -7,7 +8,7 @@ import {
   Layers
 } from 'lucide-react';
 
-export const HorizontalOrderFlow = ({ externalPrice }: { externalPrice?: number }) => {
+export const HorizontalOrderFlow = ({ externalPrice, assetType = 'Anonymous' }: { externalPrice?: number; assetType?: AssetType }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -16,8 +17,9 @@ export const HorizontalOrderFlow = ({ externalPrice }: { externalPrice?: number 
     }
   }, []);
 
-  const [price, setPrice] = useState(externalPrice || 42065.50);
+  const [price, setPrice] = useState(externalPrice ?? 42065.50);
   const [lastTick, setLastTick] = useState('up');
+  const [lastManualOrder, setLastManualOrder] = useState('');
   const [logs, setLogs] = useState([
     { id: '1', type: 'buy', qty: '1.2 Lot', price: '42065.50', time: '12:04:01', aggressive: true },
     { id: '2', type: 'sell', qty: '0.5 Lot', price: '42065.00', time: '12:04:02', aggressive: false },
@@ -35,6 +37,21 @@ export const HorizontalOrderFlow = ({ externalPrice }: { externalPrice?: number 
   // Simulate continuous log generation based on price changes
   const lastPriceRef = useRef<number>(price);
   const logCounterRef = useRef<number>(100);
+
+  const handleManualOrder = (side: 'buy' | 'sell') => {
+    const order = {
+      id: `manual-${Date.now()}-${logCounterRef.current++}`,
+      type: side,
+      qty: '0.50 Lot',
+      price: price.toFixed(2),
+      time: new Date().toISOString().substring(11, 23),
+      aggressive: true
+    };
+    setLogs((previous) => [order, ...previous].slice(0, 50));
+    setLastManualOrder(`Simulated ${side.toUpperCase()} order: ${order.qty} at ${order.price}.`);
+  };
+
+  const instrumentLabel = assetType === 'Anonymous' ? 'SIM' : assetType.toUpperCase();
 
   useEffect(() => {
     if (externalPrice !== undefined && externalPrice !== lastPriceRef.current) {
@@ -78,7 +95,7 @@ export const HorizontalOrderFlow = ({ externalPrice }: { externalPrice?: number 
     return levels;
   };
 
-  const levels = generateLevels();
+  const levels = useMemo(generateLevels, [price]);
 
   return (
     <div className="w-full text-zinc-800 dark:text-cyan-50 flex flex-col font-mono select-none transition-colors">
@@ -129,7 +146,7 @@ export const HorizontalOrderFlow = ({ externalPrice }: { externalPrice?: number 
                   <Layers className="w-4 h-4 text-cyan-600 dark:text-cyan-500 transition-colors" /> Horizontal Liquidity Depth
                 </span>
                 <div className="bg-slate-50/80 dark:bg-zinc-950/80 px-2 py-0.5 rounded text-[10px] text-cyan-900 dark:text-cyan-100 font-bold border border-cyan-200/50 dark:border-cyan-900/50 shadow-inner transition-colors">
-                   BTC: {price.toLocaleString(undefined, {minimumFractionDigits: 2})}
+                   {instrumentLabel}: {price.toLocaleString(undefined, {minimumFractionDigits: 2})}
                 </div>
              </div>
              <div className="flex items-center gap-2">
@@ -186,7 +203,7 @@ export const HorizontalOrderFlow = ({ externalPrice }: { externalPrice?: number 
         <div 
           className="flex gap-4 relative z-20"
         >
-           <div className="flex-1 bg-white/80 dark:bg-zinc-950/60 border border-cyan-200/50 dark:border-cyan-900/50 rounded-lg p-3 flex items-center justify-between backdrop-blur-sm shadow-[0_0_15px_rgba(6,182,212,0.1)] transition-colors">
+           <div className="flex-1 bg-white/80 dark:bg-zinc-950/60 border border-cyan-200/50 dark:border-cyan-900/50 rounded-lg p-3 flex flex-wrap items-center justify-between gap-3 backdrop-blur-sm shadow-[0_0_15px_rgba(6,182,212,0.1)] transition-colors">
               <div 
                 className="flex items-center gap-6 origin-left"
               >
@@ -201,17 +218,20 @@ export const HorizontalOrderFlow = ({ externalPrice }: { externalPrice?: number 
                  </div>
               </div>
               <div className="flex gap-3 pr-2">
-                 <button className="flex items-center justify-center gap-2 w-28 py-2.5 bg-red-50/80 hover:bg-red-100/80 text-red-600 hover:text-red-700 border border-red-200/80 dark:bg-red-950/50 dark:hover:bg-red-900/80 dark:text-red-400 dark:hover:text-red-300 dark:border-red-500/40 rounded font-black text-[12px] tracking-widest transition-all shadow-inner shadow-red-500/5 dark:shadow-red-500/10 origin-right active:translate-y-0.5" style={{ transform: 'skewX(-20deg)' }}>
+                 <button type="button" aria-label="Simulate market sell" onClick={() => handleManualOrder('sell')} className="flex items-center justify-center gap-2 w-28 py-2.5 bg-red-50/80 hover:bg-red-100/80 text-red-600 hover:text-red-700 border border-red-200/80 dark:bg-red-950/50 dark:hover:bg-red-900/80 dark:text-red-400 dark:hover:text-red-300 dark:border-red-500/40 rounded font-black text-[12px] tracking-widest transition-all shadow-inner shadow-red-500/5 dark:shadow-red-500/10 origin-right active:translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-500" style={{ transform: 'skewX(-20deg)' }}>
                    <div className="flex items-center gap-1" style={{ transform: 'skewX(20deg)' }}>
                      SELL <ArrowDown className="w-4 h-4" />
                    </div>
                  </button>
-                 <button className="flex items-center justify-center gap-2 w-28 py-2.5 bg-emerald-50/80 hover:bg-emerald-100/80 text-emerald-600 hover:text-emerald-700 border border-emerald-200/80 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/80 dark:text-emerald-400 dark:hover:text-emerald-300 dark:border-emerald-500/40 rounded font-black text-[12px] tracking-widest transition-all shadow-inner shadow-emerald-500/5 dark:shadow-emerald-500/10 origin-right active:translate-y-0.5" style={{ transform: 'skewX(-20deg)' }}>
+                 <button type="button" aria-label="Simulate market buy" onClick={() => handleManualOrder('buy')} className="flex items-center justify-center gap-2 w-28 py-2.5 bg-emerald-50/80 hover:bg-emerald-100/80 text-emerald-600 hover:text-emerald-700 border border-emerald-200/80 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/80 dark:text-emerald-400 dark:hover:text-emerald-300 dark:border-emerald-500/40 rounded font-black text-[12px] tracking-widest transition-all shadow-inner shadow-emerald-500/5 dark:shadow-emerald-500/10 origin-right active:translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500" style={{ transform: 'skewX(-20deg)' }}>
                    <div className="flex items-center gap-1" style={{ transform: 'skewX(20deg)' }}>
                      <ArrowUp className="w-4 h-4" /> BUY
                    </div>
                  </button>
               </div>
+              <p aria-live="polite" className="w-full min-h-4 text-right text-[10px] text-cyan-700 dark:text-cyan-400">
+                {lastManualOrder || 'Paper trading simulation only.'}
+              </p>
            </div>
         </div>
 

@@ -48,7 +48,7 @@ export const BlogRenderer: React.FC<BlogRendererProps> = ({ blogId, blocks }) =>
             {blocks.map((block, idx) => {
                 switch (block.type) {
                     case 'main_heading':
-                        return <h1 key={idx} id={slugify(block.text)} className="text-3xl md:text-4xl font-heading tracking-wide text-slate-900 dark:text-white mt-4 mb-6 scroll-mt-24">{block.text}</h1>;
+                        return <h2 key={idx} id={slugify(block.text)} className="text-2xl md:text-3xl font-heading tracking-wide text-slate-900 dark:text-white mt-4 mb-6 scroll-mt-24">{block.text}</h2>;
                     case 'heading':
                         return (
                             <div key={idx} id={slugify(block.text)} className="mt-12 mb-6 scroll-mt-24 pt-6 border-t border-slate-800/60">

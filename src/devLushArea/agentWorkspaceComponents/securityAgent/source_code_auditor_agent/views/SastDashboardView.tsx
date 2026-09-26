@@ -1,5 +1,6 @@
 import React from 'react';
 import { Code, GitPullRequest, Search, Zap, CheckCircle, AlertCircle, ArrowRight, Activity, HelpCircle, Shield } from 'lucide-react';
+import AgentPreviewNotice from '../../../components/AgentPreviewNotice';
 
 interface SastDashboardViewProps {
   onRunTutorial: () => void;
@@ -8,6 +9,7 @@ interface SastDashboardViewProps {
 export default function SastDashboardView({ onRunTutorial }: SastDashboardViewProps) {
   return (
     <div className="p-8 max-w-6xl mx-auto h-full overflow-y-auto custom-scrollbar sast-dashboard-header">
+      <AgentPreviewNotice>This is an example finding. The excerpt has no verified line number or confidence score, and no suggested fix has been applied. A reviewer must confirm the surrounding code and analyzer evidence.</AgentPreviewNotice>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-bold font-heading text-slate-800">Source Code Auditor (SAST)</h1>
@@ -28,7 +30,7 @@ export default function SastDashboardView({ onRunTutorial }: SastDashboardViewPr
             <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
               <GitPullRequest className="w-5 h-5" />
             </div>
-            <h2 className="text-lg font-bold text-slate-800">Active PR Scan</h2>
+            <h2 className="text-lg font-bold text-slate-800">Example PR finding · source context incomplete</h2>
           </div>
           <div className="space-y-4">
             <div className="p-4 rounded-lg border border-red-200 bg-red-50 flex flex-col gap-2">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { WebVulnCandidate } from '../utility/schema';
 import WebExploitationDashboard from './WebExploitationDashboard';
 import RemediationPlanView from './RemediationPlanView';
@@ -32,23 +32,38 @@ export default function ScannerAgentMainView() {
   const [targetUrl, setTargetUrl] = useState('https://api.internal-sandbox.com');
   const [scanLogs, setScanLogs] = useState<string[]>([]);
   const [selectedCandidate, setSelectedCandidate] = useState<WebVulnCandidate | null>(null);
+  const scanTimersRef = useRef<number[]>([]);
+  const sidebarViewRef = useRef(sidebarView);
+  sidebarViewRef.current = sidebarView;
+
+  const clearScanTimers = () => {
+    scanTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+    scanTimersRef.current = [];
+  };
+
+  useEffect(() => () => clearScanTimers(), []);
 
   const startScan = (target: string) => {
-    setTargetUrl(target);
+    const normalizedTarget = target.trim();
+    if (!normalizedTarget) return;
+    clearScanTimers();
+    setTargetUrl(normalizedTarget);
     setPhase('SCANNING');
     setSidebarView('scans');
-    setScanLogs(['> Initializing SecOps Scanner Agent...', '> Target acquired: ' + target]);
+    setScanLogs(['> Initializing SecOps Scanner Agent...', '> Target acquired: ' + normalizedTarget]);
     
     // Simulate scan steps
-    setTimeout(() => addLog('> Crawling endpoints... found 42 routes'), 1000);
-    setTimeout(() => addLog('> Initiating payload injection sequence (XSS, SQLi, SSRF, RCE)...'), 2500);
-    setTimeout(() => addLog('> WARN: Suspicious reflection detected at /api/v1/users/profile'), 4000);
-    setTimeout(() => addLog('> CRITICAL: SQL syntax error confirmed on /api/v1/products?id=1\''), 5500);
-    setTimeout(() => addLog('> Aggregating findings... Scan complete.'), 7000);
-    setTimeout(() => {
+    scanTimersRef.current = [
+      window.setTimeout(() => addLog('> Crawling endpoints... found 42 routes'), 1000),
+      window.setTimeout(() => addLog('> Initiating payload injection sequence (XSS, SQLi, SSRF, RCE)...'), 2500),
+      window.setTimeout(() => addLog('> WARN: Suspicious reflection detected at /api/v1/users/profile'), 4000),
+      window.setTimeout(() => addLog('> CRITICAL: SQL syntax error confirmed on /api/v1/products?id=1\''), 5500),
+      window.setTimeout(() => addLog('> Aggregating findings... Scan complete.'), 7000),
+      window.setTimeout(() => {
       setPhase('RESULTS');
-      setSidebarView('exploits');
-    }, 8000);
+        if (sidebarViewRef.current === 'scans') setSidebarView('exploits');
+      }, 8000),
+    ];
   };
 
   const addLog = (msg: string) => {
@@ -64,7 +79,6 @@ export default function ScannerAgentMainView() {
   const handleSidebarNavigate = (view: SidebarView) => {
     setSidebarView(view);
     if (view === 'dashboard') setPhase('DASHBOARD');
-    else if (view === 'scans') setPhase('SCANNING');
     else if (view === 'exploits') setPhase('RESULTS');
     else if (view === 'reports' && selectedCandidate) setPhase('REMEDIATION');
     
@@ -87,6 +101,7 @@ export default function ScannerAgentMainView() {
             <ScannerDashboardView 
               candidates={initialWebVulnCandidates}
               onStartScan={startScan}
+              onTutorialRecap={() => setRunTutorial(true)}
               onViewAllFindings={() => {
                 setPhase('RESULTS');
                 setSidebarView('exploits');
@@ -104,7 +119,7 @@ export default function ScannerAgentMainView() {
                   </div>
                   <div className="flex items-center gap-2 text-emerald-600">
                     <Activity className="w-4 h-4 animate-pulse" />
-                    <span className="text-xs font-mono uppercase font-semibold">Scanning Active</span>
+                    <span className="text-xs font-mono uppercase font-semibold">{phase === 'RESULTS' ? 'Scan Complete' : phase === 'SCANNING' ? 'Scanning Active' : 'No Active Scan'}</span>
                   </div>
                 </div>
                 <div className="flex-1 p-6 font-mono text-sm text-slate-600 overflow-y-auto space-y-2">
@@ -174,7 +189,9 @@ export default function ScannerAgentMainView() {
         {/* Right Side Theory Pane */}
         {showTheoryPane && (
           <div className="w-[450px] border-l border-slate-200 bg-white h-full shadow-2xl shrink-0 overflow-hidden relative z-40 flex flex-col animate-in slide-in-from-right-full duration-300">
-            <button 
+            <button
+              type="button"
+              aria-label="Close theory panel"
               onClick={() => {
                  setIsTheoryPaneOpen(false);
                  if (sidebarView === 'theory') setSidebarView('dashboard');

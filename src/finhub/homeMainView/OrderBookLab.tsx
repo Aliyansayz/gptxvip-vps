@@ -232,6 +232,8 @@ export const OrderBookLab: React.FC = () => {
         <div className="flex items-center gap-6">
           <div className="flex gap-1 bg-slate-100 dark:bg-zinc-800/50 p-1 rounded-xl border border-zinc-200 dark:border-zinc-800 transition-colors">
             <button 
+              type="button"
+              aria-pressed={activeTab === "market"}
               onClick={() => setActiveTab("market")}
               className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'market' ? 'bg-cyan-500 text-white dark:text-black shadow-[0_0_15px_rgba(6,182,212,0.3)] dark:shadow-[0_0_15px_rgba(6,182,212,0.5)]' : 'text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-300'}`}
             >
@@ -239,6 +241,8 @@ export const OrderBookLab: React.FC = () => {
               Market View
             </button>
             <button 
+              type="button"
+              aria-pressed={activeTab === "internals"}
               onClick={() => setActiveTab("internals")}
               className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'internals' ? 'bg-cyan-500 text-white dark:text-black shadow-[0_0_15px_rgba(6,182,212,0.3)] dark:shadow-[0_0_15px_rgba(6,182,212,0.5)]' : 'text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-300'}`}
             >
@@ -302,13 +306,13 @@ export const OrderBookLab: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  <button onClick={() => handleSimulateOrder("bid")} className="col-span-1 p-4 bg-cyan-50 hover:bg-cyan-100 border border-cyan-300 rounded-2xl text-cyan-700 dark:bg-cyan-500/10 dark:hover:bg-cyan-500/20 dark:border-[rgba(34,211,238,1)]/40 dark:text-[rgba(34,211,238,1)] font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95 shadow-[0_0_15px_inset_rgba(34,211,238,0.1)] dark:shadow-[0_0_15px_inset_rgba(34,211,238,0.2)]">
+                  <button type="button" onClick={() => handleSimulateOrder("bid")} className="col-span-1 p-4 bg-cyan-50 hover:bg-cyan-100 border border-cyan-300 rounded-2xl text-cyan-700 dark:bg-cyan-500/10 dark:hover:bg-cyan-500/20 dark:border-[rgba(34,211,238,1)]/40 dark:text-[rgba(34,211,238,1)] font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95 shadow-[0_0_15px_inset_rgba(34,211,238,0.1)] dark:shadow-[0_0_15px_inset_rgba(34,211,238,0.2)]">
                     <TrendingUp className="w-4 h-4" /> Inject Market Buy
                   </button>
-                  <button onClick={() => handleSimulateOrder("ask")} className="col-span-1 p-4 bg-red-50 hover:bg-red-100 border border-red-300 rounded-2xl text-red-700 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/40 dark:text-white font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95 shadow-[0_0_15px_inset_rgba(239,68,68,0.1)] dark:shadow-[0_0_15px_inset_rgba(255,255,255,0.2)]">
+                  <button type="button" onClick={() => handleSimulateOrder("ask")} className="col-span-1 p-4 bg-red-50 hover:bg-red-100 border border-red-300 rounded-2xl text-red-700 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/40 dark:text-white font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95 shadow-[0_0_15px_inset_rgba(239,68,68,0.1)] dark:shadow-[0_0_15px_inset_rgba(255,255,255,0.2)]">
                     <TrendingDown className="w-4 h-4" /> Inject Market Sell
                   </button>
-                  <button onClick={() => setIsAutoActive(!isAutoActive)} className={`col-span-2 md:col-span-1 p-4 border rounded-2xl font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95 ${isAutoActive ? 'bg-indigo-50 border-indigo-200 text-indigo-600 dark:bg-indigo-500/20 dark:border-indigo-500/40 dark:text-indigo-400 shadow-[0_0_15px_inset_rgba(99,102,241,0.1)] dark:shadow-[0_0_15px_inset_rgba(99,102,241,0.2)]' : 'bg-slate-100 border-zinc-300 text-zinc-500 hover:bg-slate-200 dark:bg-zinc-800/50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-700/50'}`}>
+                  <button type="button" aria-pressed={isAutoActive} onClick={() => setIsAutoActive(!isAutoActive)} className={`col-span-2 md:col-span-1 p-4 border rounded-2xl font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95 ${isAutoActive ? 'bg-indigo-50 border-indigo-200 text-indigo-600 dark:bg-indigo-500/20 dark:border-indigo-500/40 dark:text-indigo-400 shadow-[0_0_15px_inset_rgba(99,102,241,0.1)] dark:shadow-[0_0_15px_inset_rgba(99,102,241,0.2)]' : 'bg-slate-100 border-zinc-300 text-zinc-500 hover:bg-slate-200 dark:bg-zinc-800/50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-700/50'}`}>
                     <RefreshCw className={`w-4 h-4 ${isAutoActive ? 'animate-spin' : ''}`} /> {isAutoActive ? 'Auto: ON' : 'Auto: OFF'}
                   </button>
                 </div>

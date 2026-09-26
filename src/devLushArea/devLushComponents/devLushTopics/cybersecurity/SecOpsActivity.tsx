@@ -3,7 +3,7 @@ import { Shield, Play, Activity, CheckCircle, XCircle, Terminal } from "lucide-r
 import { DevLushLayout } from "../../devLushTopicsView/DevLushLayout";
 import { DevLushTheoryBridge } from "../../devLushTopicsView/DevLushTheoryBridge";
 import SaveTheoryButton from "../../../agentDevRootComponents/TopicTheoryView/SaveTheoryButton";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { toast } from 'sonner';
 
 const SecOpsActivity: React.FC<{

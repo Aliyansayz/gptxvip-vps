@@ -15,7 +15,7 @@ export const AgentLabs: React.FC<AgentLabsProps> = ({ onNavigate }) => {
         <h2 className="text-2xl font-bold font-heading text-slate-800 group-hover:text-emerald-600 transition-colors">Agent Labs</h2>
       </div>
       <p className="text-slate-500 mb-6 flex-1 text-sm leading-relaxed">
-        Interactive labs and reading activities focused on the core architecture and theory of autonomous agents.
+        Open learning activities and compare how agent memory patterns are explained.
       </p>
       <div className="space-y-3">
         <button 

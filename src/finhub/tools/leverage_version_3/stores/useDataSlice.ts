@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { DataSettingsConfig } from './indicators_store';
-import { loadState } from './utils/storage';
+import { loadState, saveState } from './utils/storage';
 import { DEFAULT_OHLC_PARAMS } from '../functions/api/data_source/simulationDataOhlcParameter';
 
 const STORAGE_KEY = 'leverage_trading_v1_settings';
@@ -31,7 +31,7 @@ export function useDataSlice() {
   const [dataSettings, setDataSettings] = useState<DataSettingsConfig>(() => loadState(`${STORAGE_KEY}_data`, defaultDataSettings));
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_data`, JSON.stringify(dataSettings));
+    saveState(`${STORAGE_KEY}_data`, dataSettings);
   }, [dataSettings]);
 
   return {

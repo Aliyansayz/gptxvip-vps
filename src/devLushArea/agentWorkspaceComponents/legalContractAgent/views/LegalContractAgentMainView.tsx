@@ -18,7 +18,7 @@ export default function LegalContractAgentMainView() {
         )}
 
         {/* Missing views rendered via data view */}
-        {['redlining', 'liabilities', 'compliance', 'settings'].includes(sidebarView) && (
+        {['redlining', 'liabilities', 'compliance', 'settings', 'theory'].includes(sidebarView) && (
           <LegalContractDataView viewType={sidebarView as any} />
         )}
       </div>

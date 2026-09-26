@@ -12,6 +12,7 @@ interface TokenPayload {
 export default function AuthFlawsSandbox() {
   const [tokenPayload, setTokenPayload] = useState<TokenPayload>({ userId: 101, role: 'user', exp: Math.floor(Date.now() / 1000) + 3600 });
   const [isSignatureChecked, setIsSignatureChecked] = useState(false);
+  const [selectedAdminAction, setSelectedAdminAction] = useState<string | null>(null);
   
   const handleRoleChange = (newRole: UserRole) => {
     setTokenPayload({ ...tokenPayload, role: newRole });
@@ -134,11 +135,20 @@ export default function AuthFlawsSandbox() {
               <p className="text-xs text-slate-500">Strictly accessible by administrators only.</p>
               
               {activeRole === 'admin' ? (
-                <div className="mt-4 grid grid-cols-3 gap-3">
-                  <button className="py-2 bg-purple-600 hover:bg-purple-700 text-white rounded text-xs font-medium transition-colors">Manage Users</button>
-                  <button className="py-2 bg-purple-600 hover:bg-purple-700 text-white rounded text-xs font-medium transition-colors">View System Logs</button>
-                  <button className="py-2 bg-purple-600 hover:bg-purple-700 text-white rounded text-xs font-medium transition-colors">Database Settings</button>
-                </div>
+                <>
+                  <div className="mt-4 grid grid-cols-3 gap-3">
+                    {['Manage Users', 'View System Logs', 'Database Settings'].map((action) => (
+                      <button key={action} type="button" onClick={() => setSelectedAdminAction(action)} className="py-2 bg-purple-600 hover:bg-purple-700 text-white rounded text-xs font-medium transition-colors">
+                        {action}
+                      </button>
+                    ))}
+                  </div>
+                  {selectedAdminAction && (
+                    <p role="status" className="mt-3 rounded border border-purple-500/30 bg-purple-950/40 p-3 text-xs text-purple-200">
+                      {selectedAdminAction} opened in the local demo. No account data or system settings are connected.
+                    </p>
+                  )}
+                </>
               ) : (
                 <div className="mt-6 flex flex-col items-center justify-center text-slate-600 pb-4">
                   <Shield className="w-8 h-8 mb-2 opacity-50" />

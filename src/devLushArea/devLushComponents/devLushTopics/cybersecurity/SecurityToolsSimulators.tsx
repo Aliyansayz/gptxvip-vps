@@ -55,6 +55,12 @@ export const SecurityToolsSimulators: React.FC<ChapterProps> = ({
     }
   };
 
+  const resetSimulation = () => {
+    setSelectedAnswer(null);
+    setShowResult(false);
+    setIsCorrect(false);
+  };
+
   // Select simulator visual based on step
   let visualContent = <DirectInputSimulator />;
   if (step === 1) {
@@ -96,7 +102,9 @@ export const SecurityToolsSimulators: React.FC<ChapterProps> = ({
 
       <div className="flex justify-between items-center gap-4 pt-2">
         <button
-          onClick={() => { }}
+          type="button"
+          onClick={resetSimulation}
+          disabled={!selectedAnswer && !showResult}
           className="px-4 py-2 text-xs font-bold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:underline"
         >
           Reset Simulation

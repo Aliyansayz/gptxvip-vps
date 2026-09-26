@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 import {
   LineChart,
   Line,
@@ -8,6 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   ReferenceLine,
+  ReferenceArea,
   Area,
   AreaChart,
 } from "recharts";
@@ -36,14 +37,24 @@ export const TradingChart: React.FC<TradingChartProps> = ({
   takeProfitMax,
   entryPrice,
 }) => {
+  const gradientId = `colorPrice-${useId().replace(/:/g, "")}`;
+  const hasValidData = data.length > 0 && data.every((point) =>
+    typeof point.time === "string" && Number.isFinite(point.price));
+  const hasTakeProfitRange = takeProfitMin !== undefined && takeProfitMax !== undefined;
+
+  if (!hasValidData) {
+    const message = data.length === 0 ? "No price data is available for this chart." : "Price data is invalid and could not be plotted.";
+    return <div role={data.length === 0 ? "status" : "alert"} className="flex min-h-[200px] items-center justify-center rounded-xl border border-dashed border-zinc-300 p-6 text-center text-sm text-zinc-500 dark:border-zinc-700">{message}</div>;
+  }
+
   return (
-    <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 shadow-2xl transition-colors duration-300">
+    <div role="region" aria-label={title} className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 shadow-2xl transition-colors duration-300">
       <h3 className="text-zinc-500 dark:text-zinc-400 text-xs mb-4">{title}</h3>
       <div className="h-[300px] w-full">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data}>
             <defs>
-              <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
                 <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
               </linearGradient>
@@ -80,35 +91,22 @@ export const TradingChart: React.FC<TradingChartProps> = ({
             />
 
             {/* Take Profit Range Area */}
-            {takeProfitMin && takeProfitMax && (
-              <ReferenceLine
-                y={takeProfitMax}
-                stroke="transparent"
-                label={{
-                  position: "right",
-                  value: "TP Max",
-                  fill: "#10b981",
-                  fontSize: 10,
-                }}
-              />
-            )}
-
             <Area
               type="monotone"
               dataKey="price"
               stroke="#10b981"
               fillOpacity={1}
-              fill="url(#colorPrice)"
+              fill={`url(#${gradientId})`}
               strokeWidth={2}
             />
 
             {/* Take Profit Range Shading */}
-            {takeProfitMin && takeProfitMax && (
-              <ReferenceLine y={takeProfitMin} stroke="transparent" />
+            {hasTakeProfitRange && (
+              <ReferenceArea y1={takeProfitMin} y2={takeProfitMax} fill="#10b981" fillOpacity={0.08} stroke="none" />
             )}
 
             {/* Entry Price */}
-            {entryPrice && (
+            {entryPrice !== undefined && (
               <ReferenceLine
                 y={entryPrice}
                 stroke="#71717a"
@@ -123,7 +121,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
             )}
 
             {/* Stop Loss 1 */}
-            {stopLoss && (
+            {stopLoss !== undefined && (
               <ReferenceLine
                 y={stopLoss}
                 stroke="#ef4444"
@@ -138,7 +136,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
             )}
 
             {/* Stop Loss 2 */}
-            {stopLoss2 && (
+            {stopLoss2 !== undefined && (
               <ReferenceLine
                 y={stopLoss2}
                 stroke="#f87171"
@@ -153,7 +151,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
             )}
 
             {/* Take Profit Min */}
-            {takeProfitMin && (
+            {takeProfitMin !== undefined && (
               <ReferenceLine
                 y={takeProfitMin}
                 stroke="#10b981"
@@ -168,7 +166,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
             )}
 
             {/* Take Profit Max */}
-            {takeProfitMax && (
+            {takeProfitMax !== undefined && (
               <ReferenceLine
                 y={takeProfitMax}
                 stroke="#059669"
@@ -186,7 +184,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
       </div>
 
       <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-        {entryPrice && (
+        {entryPrice !== undefined && (
           <div className="flex flex-col">
             <span className="text-[10px] text-zinc-500 uppercase font-bold">
               Entry
@@ -196,7 +194,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
             </span>
           </div>
         )}
-        {stopLoss && (
+        {stopLoss !== undefined && (
           <div className="flex flex-col">
             <span className="text-[10px] text-red-500/70 uppercase font-bold">
               Stop Loss
@@ -206,7 +204,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
             </span>
           </div>
         )}
-        {takeProfitMin && (
+        {takeProfitMin !== undefined && (
           <div className="flex flex-col">
             <span className="text-[10px] text-emerald-600/70 dark:text-emerald-500/70 uppercase font-bold">
               Target Min
@@ -216,7 +214,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
             </span>
           </div>
         )}
-        {takeProfitMax && (
+        {takeProfitMax !== undefined && (
           <div className="flex flex-col">
             <span className="text-[10px] text-emerald-600 dark:text-emerald-500 uppercase font-bold">
               Target Max

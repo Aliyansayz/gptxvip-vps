@@ -65,7 +65,7 @@ export default function DfirAgentMainView() {
                   </div>
                   <div className="flex items-center gap-2 text-sky-600">
                     <Activity className="w-4 h-4 animate-pulse" />
-                    <span className="text-xs font-mono uppercase font-semibold">Investigation Active</span>
+                    <span className="text-xs font-mono uppercase font-semibold">Scripted preview · no endpoint queried</span>
                   </div>
                 </div>
                 <div className="flex-1 p-6 font-mono text-sm text-slate-600 overflow-y-auto space-y-2">

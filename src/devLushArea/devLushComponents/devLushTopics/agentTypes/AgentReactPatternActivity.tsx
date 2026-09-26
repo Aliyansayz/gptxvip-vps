@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Bot, Play, Activity, CheckCircle, XCircle, Brain, Eye, Zap } from "lucide-react";
+import { Bot, Play, Activity, CheckCircle, XCircle, Brain, Eye, Search, Zap } from "lucide-react";
 import { DevLushLayout } from "../../devLushTopicsView/DevLushLayout";
 import { DevLushTheoryBridge } from "../../devLushTopicsView/DevLushTheoryBridge";
 import SaveTheoryButton from "../../../agentDevRootComponents/TopicTheoryView/SaveTheoryButton";

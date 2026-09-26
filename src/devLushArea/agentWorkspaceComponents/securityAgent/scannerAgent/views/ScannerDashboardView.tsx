@@ -1,14 +1,25 @@
 import React, { useState } from 'react';
 import { WebVulnCandidate } from '../utility/schema';
 import { Shield, Target, DollarSign, Activity, AlertCircle, Play, Bug, Terminal, Zap, ArrowRight, Search, ShieldCheck, HelpCircle } from 'lucide-react';
+import AgentPreviewNotice from '../../../components/AgentPreviewNotice';
 
 interface ScannerDashboardViewProps {
   candidates: WebVulnCandidate[];
   onStartScan: (target: string) => void;
   onViewAllFindings: () => void;
+  onTutorialRecap: () => void;
 }
 
-export default function ScannerDashboardView({ candidates, onStartScan, onViewAllFindings }: ScannerDashboardViewProps) {
+export default function ScannerDashboardView({ candidates, onStartScan, onViewAllFindings, onTutorialRecap }: ScannerDashboardViewProps) {
+  const [customTarget, setCustomTarget] = useState('');
+  const submitCustomTarget = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const target = customTarget.trim();
+    if (!target) return;
+    onStartScan(target);
+    setCustomTarget('');
+  };
+
   return (
     <div className="w-full h-full flex flex-col bg-slate-50 text-slate-900 overflow-y-auto custom-scrollbar">
       
@@ -21,7 +32,7 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
           </div>
           <div className="flex items-center gap-2 px-3 py-1.5 bg-white rounded-md border border-slate-200 shadow-sm">
             <Activity className="w-4 h-4 text-emerald-600 animate-pulse" />
-            <span className="text-sm font-medium text-slate-700">Recon Agent: Active</span>
+            <span className="text-sm font-medium text-slate-700">Recon Agent: Preview</span>
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-6">
@@ -38,6 +49,8 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
             <span>Rank: 42</span>
           </div>
           <button 
+            type="button"
+            onClick={onTutorialRecap}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-md border border-indigo-200 shadow-sm transition-colors text-sm font-medium"
           >
             <HelpCircle className="w-4 h-4" />
@@ -47,6 +60,7 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
       </div>
 
       <div className="p-6 max-w-7xl mx-auto w-full space-y-8">
+        <AgentPreviewNotice>Targets, counters, alerts, and findings are sample data. The scan control plays scripted output and sends no network requests; use it only to inspect the workflow.</AgentPreviewNotice>
         
         {/* Actionable Alerts & Financial Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -83,13 +97,13 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
           </div>
         </div>
 
-        {/* Live Use Cases Examples */}
+        {/* Scripted sample scenarios */}
         <div id="tutorial-quick-start" className="space-y-4">
            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-              <Play className="w-4 h-4 text-emerald-500" /> Live Use Cases / Quick Start
+              <Play className="w-4 h-4 text-emerald-500" /> Sample scenarios / Quick Start
            </h3>
            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-             <button onClick={() => onStartScan('https://ecommerce.example.com/checkout')} className="p-5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-emerald-300 hover:shadow-md transition-all text-left group shadow-sm">
+             <button type="button" onClick={() => onStartScan('https://ecommerce.example.com/checkout')} className="p-5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-emerald-300 hover:shadow-md transition-all text-left group shadow-sm">
                 <h4 className="font-semibold text-sm mb-1 text-slate-800 group-hover:text-emerald-600 transition-colors">E-Commerce Checkout</h4>
                 <p className="text-xs text-slate-500 mb-4 leading-relaxed">Deep SSRF & IDOR scan on payment webhook endpoints.</p>
                 <div className="text-xs font-mono text-emerald-600 flex items-center justify-between">
@@ -97,7 +111,7 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
                   <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
              </button>
-             <button onClick={() => onStartScan('https://api.example.com/graphql')} className="p-5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-emerald-300 hover:shadow-md transition-all text-left group shadow-sm">
+             <button type="button" onClick={() => onStartScan('https://api.example.com/graphql')} className="p-5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-emerald-300 hover:shadow-md transition-all text-left group shadow-sm">
                 <h4 className="font-semibold text-sm mb-1 text-slate-800 group-hover:text-emerald-600 transition-colors">GraphQL Introspection</h4>
                 <p className="text-xs text-slate-500 mb-4 leading-relaxed">Check for introspection, rate limits, and excessive data exposure.</p>
                 <div className="text-xs font-mono text-emerald-600 flex items-center justify-between">
@@ -105,7 +119,7 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
                   <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
              </button>
-             <button onClick={() => onStartScan('https://admin.legacy.example.com')} className="p-5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-emerald-300 hover:shadow-md transition-all text-left group shadow-sm">
+             <button type="button" onClick={() => onStartScan('https://admin.legacy.example.com')} className="p-5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-emerald-300 hover:shadow-md transition-all text-left group shadow-sm">
                 <h4 className="font-semibold text-sm mb-1 text-slate-800 group-hover:text-emerald-600 transition-colors">Legacy Admin Fuzzing</h4>
                 <p className="text-xs text-slate-500 mb-4 leading-relaxed">SQLi and Command Injection payload spray on legacy forms.</p>
                 <div className="text-xs font-mono text-emerald-600 flex items-center justify-between">
@@ -117,28 +131,27 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
         </div>
 
         {/* Custom Target Input */}
-        <div id="tutorial-custom-target" className="flex flex-col sm:flex-row items-center gap-4 p-1.5 rounded-xl border border-slate-200 bg-white shadow-sm">
+        <form id="tutorial-custom-target" onSubmit={submitCustomTarget} className="flex flex-col sm:flex-row items-center gap-4 p-1.5 rounded-xl border border-slate-200 bg-white shadow-sm">
            <div className="flex-1 flex items-center w-full px-3">
              <Search className="w-5 h-5 text-slate-400 mr-2" />
              <input 
+                id="scanner-custom-target"
                 type="text"
+                aria-label="Enter a sample target for the scripted preview"
                 placeholder="Enter custom target URL or IP range..."
                 className="w-full bg-transparent border-none py-3 text-sm focus:outline-none font-mono text-slate-700 placeholder-slate-400"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') onStartScan(e.currentTarget.value);
-                }}
+                value={customTarget}
+                onChange={(event) => setCustomTarget(event.target.value)}
              />
            </div>
-           <button 
-             onClick={(e) => {
-               const input = e.currentTarget.parentElement?.querySelector('input');
-               if (input?.value) onStartScan(input.value);
-             }}
-             className="w-full sm:w-auto px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap shadow-sm"
+           <button
+             type="submit"
+             disabled={!customTarget.trim()}
+             className="w-full sm:w-auto px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap shadow-sm"
            >
              Scan Asset
            </button>
-        </div>
+        </form>
 
         <div className="pt-4">
           
@@ -148,11 +161,11 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
                  <ShieldCheck className="w-4 h-4 text-purple-500" /> Priority Queue (To Verify)
                </h3>
-               <button onClick={onViewAllFindings} className="text-xs text-purple-600 hover:text-purple-700 transition-colors font-medium hover:underline">View All Findings</button>
+               <button type="button" onClick={onViewAllFindings} className="text-xs text-purple-600 hover:text-purple-700 transition-colors font-medium hover:underline">View All Findings</button>
              </div>
              <div className="space-y-3">
                 {candidates.slice(0, 3).map(candidate => (
-                  <div key={candidate.id} className="flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-white hover:border-purple-200 hover:shadow-md transition-all cursor-pointer group shadow-sm" onClick={onViewAllFindings}>
+                  <button type="button" key={candidate.id} aria-label={`Review ${candidate.confidenceScore} confidence ${candidate.vulnClass} finding at ${candidate.endpoint}`} className="w-full text-left flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-white hover:border-purple-200 hover:shadow-md transition-all cursor-pointer group shadow-sm" onClick={onViewAllFindings}>
                     <div className="flex items-center gap-4">
                       <div className={`px-2.5 py-1 rounded-md text-[10px] uppercase tracking-wider font-bold ${
                         candidate.confidenceScore.includes('High') ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
@@ -165,7 +178,7 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
                       </div>
                     </div>
                     <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-purple-500 transition-colors" />
-                  </div>
+                  </button>
                 ))}
              </div>
           </div>

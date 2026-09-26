@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { BlogBlock } from '../../types/types';
 import { slugify } from '../../utils';
 import { motion } from 'motion/react';
@@ -11,15 +11,22 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ blocks }) => {
     const [activeId, setActiveId] = useState<string>('');
 
     // Extract headings from blocks
-    const headings = blocks.filter((block): block is Extract<BlogBlock, { type: 'heading' | 'main_heading' | 'sub_heading' }> => 
-        block.type === 'heading' || block.type === 'main_heading' || block.type === 'sub_heading'
-    ).map(block => ({
-        id: slugify(block.text),
-        text: block.text,
-        level: block.type === 'main_heading' ? 1 : block.type === 'heading' ? 2 : 3
-    }));
+    const headings = useMemo(
+        () => blocks
+            .filter((block): block is Extract<BlogBlock, { type: 'heading' | 'main_heading' | 'sub_heading' }> =>
+                block.type === 'heading' || block.type === 'main_heading' || block.type === 'sub_heading'
+            )
+            .map(block => ({
+                id: slugify(block.text),
+                text: block.text,
+                level: block.type === 'sub_heading' ? 3 : 2
+            })),
+        [blocks]
+    );
 
     useEffect(() => {
+        if (typeof IntersectionObserver === 'undefined') return;
+
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -44,7 +51,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ blocks }) => {
     if (headings.length === 0) return null;
 
     return (
-        <nav className="sticky top-24 p-6 bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl">
+        <nav aria-label="Article contents" className="sticky top-24 p-6 bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl">
             <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-400 mb-4 flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-ping"></span>
                 On this page
@@ -61,7 +68,8 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ blocks }) => {
                             } ${heading.level === 2 ? 'ml-2' : heading.level === 3 ? 'ml-4 text-[11px]' : ''}`}
                             onClick={(e) => {
                                 e.preventDefault();
-                                document.getElementById(heading.id)?.scrollIntoView({ behavior: 'smooth' });
+                                const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                                document.getElementById(heading.id)?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
                             }}
                         >
                             {heading.text}
@@ -80,4 +88,3 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ blocks }) => {
         </nav>
     );
 };
-

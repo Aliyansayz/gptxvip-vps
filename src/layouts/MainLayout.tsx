@@ -14,7 +14,7 @@ interface MainLayoutProps {
   children: React.ReactNode;
   activeTab: string;
   activeSubTab: string;
-  setActiveTab: (tab: any) => void;
+  setActiveTab: (tab: any, subTab?: string) => void;
   setActiveSubTab: (subTab: string) => void;
   activeCodeCategory: string;
   setActiveCodeCategory: (category: string) => void;
@@ -37,6 +37,11 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 }) => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const isLearningTab = activeTab === "code-concepts" || activeTab === "core-concepts" || activeTab === "math-primer";
+  const learningAreaLabel = activeTab === "math-primer"
+    ? "Math Primer"
+    : activeTab === "core-concepts"
+      ? "Core Concepts"
+      : "Code Concepts";
   const shouldShowSidebar = activeTab !== "home" && activeTab !== "profile" && !(isLearningTab && activeCodeCategory === "search");
   const [isSidebarOpen, setIsSidebarOpen] = useState(() => shouldShowSidebar && (typeof window === "undefined" || window.innerWidth >= 768));
   const [expandedMenus, setExpandedMenus] = useState<string[]>(["home"]);
@@ -89,16 +94,20 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     };
   }, [activeTab, setActiveSubTab]);
 
+  const closeMobileSidebar = () => {
+    if (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches) {
+      setIsSidebarOpen(false);
+    }
+  };
+
+  const handleTabChange = (tab: any, subTab?: string) => {
+    setActiveTab(tab, subTab);
+    closeMobileSidebar();
+  };
+
   const handleMainItemClick = (item: any) => {
-    if (item.id === "core-concepts") {
-      window.location.assign('/core_concepts');
-      return;
-    }
-    if (item.id === "math-primer") {
-      window.location.assign('/math_primer');
-      return;
-    }
-    setActiveTab(item.id);
+    const defaultSubTab = item.subItems?.[0]?.id || "";
+    handleTabChange(item.id, defaultSubTab);
     if (item.subItems) {
       setExpandedMenus((prev) =>
         prev.includes(item.id)
@@ -106,7 +115,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
           : [...prev, item.id],
       );
       if (item.subItems.length > 0) {
-        setActiveSubTab(item.subItems[0].id);
+        setActiveSubTab(defaultSubTab);
       }
     } else {
       setActiveSubTab("");
@@ -114,17 +123,11 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   };
 
   const handleSubItemClick = (tabId: string, sectionId: string) => {
-    setActiveTab(tabId as any);
+    handleTabChange(tabId as any, sectionId);
     setActiveSubTab(sectionId);
     if (!expandedMenus.includes(tabId)) {
       setExpandedMenus((prev) => [...prev, tabId]);
     }
-    setTimeout(() => {
-      const el = document.getElementById(sectionId);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 100);
   };
 
   const prefetchData = (tabId: string) => {
@@ -144,8 +147,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       {showUI && (
         <FinhubNavbar
           activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          setActiveSubTab={setActiveSubTab}
+          setActiveTab={handleTabChange}
           activeCodeCategory={activeCodeCategory}
           setActiveCodeCategory={setActiveCodeCategory}
           isDarkMode={isDarkMode}
@@ -180,14 +182,19 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
               className="fixed inset-y-[52px] left-0 z-[60] border-r border-zinc-200 bg-white p-4 flex flex-col gap-2 shadow-2xl transition-colors duration-300 overflow-hidden whitespace-nowrap shrink-0 dark:border-zinc-800 dark:bg-zinc-950 md:relative md:inset-auto md:z-auto md:bg-transparent md:shadow-none"
             >
               <div className="text-[10px] text-zinc-400 dark:text-zinc-600 uppercase font-bold tracking-widest mb-4 px-2">
-                {isLearningTab ? "Code Concepts" : "Navigation"}
+                {isLearningTab ? learningAreaLabel : "Navigation"}
               </div>
               <div className="overflow-y-auto scrollbar-hide pr-2 space-y-1">
                 {isLearningTab ? (
                    CODE_CONCEPT_CATEGORIES.filter(c => c.id !== "search").map((category) => (
                     <button
                       key={category.id}
-                      onClick={() => setActiveCodeCategory(category.id)}
+                      type="button"
+                      aria-current={activeCodeCategory === category.id ? "page" : undefined}
+                      onClick={() => {
+                        setActiveCodeCategory(category.id);
+                        closeMobileSidebar();
+                      }}
                       className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all w-full ${
                         activeCodeCategory === category.id
                           ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
@@ -289,8 +296,9 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       {/* Footer */}
       {showUI && !isLearningTab && (
         <MainFooter 
-          setActiveTab={setActiveTab}
-          setActiveSubTab={setActiveSubTab}
+          setActiveTab={handleTabChange}
+          activeCodeCategory={activeCodeCategory}
+          setActiveCodeCategory={setActiveCodeCategory}
           isDarkMode={isDarkMode}
           setIsDarkMode={setIsDarkMode}
         />

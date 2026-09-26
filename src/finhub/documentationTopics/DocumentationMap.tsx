@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Network, Loader2, Database, Activity, Layers, Box, Shield, Target, Zap, BarChart3, Cpu, Circle } from "lucide-react";
+import { Network, Loader2, Database, Activity, Layers, Box, Shield, Target, Zap, BarChart3, Cpu, Circle, X } from "lucide-react";
 
 const IconMap: Record<string, React.ElementType> = {
   Database, Activity, Layers, Box, Shield, Network, Target, Zap, BarChart3, Cpu, Circle
@@ -33,22 +33,74 @@ const colorStyles = {
   rose: "bg-rose-500 text-white dark:text-rose-950 shadow-rose-500/20",
 };
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+const isPercentPosition = (value: unknown): value is string => {
+  if (typeof value !== "string" || !/^\d+(?:\.\d+)?%$/.test(value)) return false;
+  const numericValue = Number(value.slice(0, -1));
+  return numericValue >= 0 && numericValue <= 100;
+};
+
+const isPhase = (value: unknown): value is Phase => {
+  if (!isRecord(value)) return false;
+  if (!Array.isArray(value.classes)) return false;
+  const classes = value.classes;
+  if (!classes.every((item: unknown) => isRecord(item) &&
+      typeof item.name === "string" && item.name.length > 0 &&
+      typeof item.icon === "string" && typeof item.description === "string")) return false;
+  const classNames = classes.map((item) => (item as Record<string, unknown>).name);
+  return typeof value.id === "string" && value.id.length > 0 &&
+    typeof value.title === "string" && typeof value.subtitle === "string" &&
+    isPercentPosition(value.x) && isPercentPosition(value.y) &&
+    (value.direction === "left" || value.direction === "right") &&
+    typeof value.color === "string" && Object.hasOwn(colorStyles, value.color) &&
+    typeof value.icon === "string" && new Set(classNames).size === classes.length;
+};
+
+const isDocumentationMapData = (value: unknown): value is { phases: Phase[] } =>
+  isRecord(value) && Array.isArray(value.phases) && value.phases.every(isPhase) &&
+  new Set(value.phases.map((phase) => phase.id)).size === value.phases.length;
+
 export const DocumentationMap: React.FC = () => {
   const [phases, setPhases] = useState<Phase[]>([]);
   const [activePhaseId, setActivePhaseId] = useState<string | null>(null);
   const [activeClass, setActiveClass] = useState<ClassNode | null>(null);
+  const classButtonsRef = useRef(new Map<string, HTMLButtonElement>());
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
+    let cancelled = false;
     setIsLoading(true);
+    setLoadError(false);
     fetch(`/documentation-map.json?t=${new Date().getTime()}`)
-      .then(res => res.json())
-      .then(data => setPhases(data.phases || []))
-      .catch(console.error)
-      .finally(() => setIsLoading(false));
-  }, []);
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`Documentation map request failed (${res.status})`);
+        return res.json();
+      })
+      .then((data: unknown) => {
+        if (!isDocumentationMapData(data)) throw new Error("Documentation map data has an invalid shape");
+        if (!cancelled) setPhases(data.phases);
+      })
+      .catch((error) => {
+        console.error("Error loading documentation map:", error);
+        if (!cancelled) setLoadError(true);
+      })
+      .finally(() => { if (!cancelled) setIsLoading(false); });
+    return () => { cancelled = true; };
+  }, [reloadKey]);
 
   const activePhase = phases.find((p) => p.id === activePhaseId);
+
+  const closeClassDetails = () => {
+    const selectedName = activeClass?.name;
+    setActiveClass(null);
+    if (selectedName) {
+      window.requestAnimationFrame(() => classButtonsRef.current.get(selectedName)?.focus());
+    }
+  };
 
   // Reset active class when phase changes
   React.useEffect(() => {
@@ -64,8 +116,24 @@ export const DocumentationMap: React.FC = () => {
     );
   }
 
+  if (loadError) {
+    return (
+      <div role="alert" className="flex min-h-[400px] flex-col items-center justify-center gap-3 text-center text-zinc-600 dark:text-zinc-300">
+        <p className="font-semibold">Documentation map is unavailable.</p>
+        <button type="button" onClick={() => setReloadKey((key) => key + 1)} className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white">Retry</button>
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full h-full min-h-[800px] p-8 md:p-12 flex flex-col items-center justify-center transition-colors duration-300">
+    <div
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && activeClass) {
+          closeClassDetails();
+        }
+      }}
+      className="w-full h-full min-h-[800px] p-8 md:p-12 flex flex-col items-center justify-center transition-colors duration-300"
+    >
       <header className="mb-16 text-center">
         <h1 className="transition-colors duration-300">Documentation Map</h1>
         <p className="text-zinc-500 mt-2 font-mono text-sm transition-colors duration-300">
@@ -73,7 +141,9 @@ export const DocumentationMap: React.FC = () => {
         </p>
       </header>
 
-      <div className="w-full overflow-x-auto pb-12 no-scrollbar flex justify-center">
+      {phases.length === 0 ? (
+        <p role="status" className="rounded-xl border border-dashed border-zinc-300 p-8 text-center text-sm text-zinc-500 dark:border-zinc-700">No documentation phases are published yet.</p>
+      ) : <div className="w-full overflow-x-auto pb-12 no-scrollbar flex justify-center">
         <div className="relative w-full max-w-full min-w-[1000px] aspect-[1.6/1]">
           {/* SVG Circuit Background */}
           <svg
@@ -114,7 +184,11 @@ export const DocumentationMap: React.FC = () => {
                 style={{ left: phase.x, top: phase.y }}
               >
                 <motion.button
-                  onClick={() => setActivePhaseId(isActive ? null : phase.id)}
+                  aria-pressed={isActive}
+                  onClick={() => {
+                    setActivePhaseId(isActive ? null : phase.id);
+                    setActiveClass(null);
+                  }}
                   animate={{
                     scale: isActive ? 0.9 : 1,
                     paddingRight:
@@ -182,8 +256,13 @@ export const DocumentationMap: React.FC = () => {
                     className="flex flex-col gap-3 relative pl-6 border-l-2 border-zinc-200 dark:border-zinc-800 ml-4 transition-colors duration-300 max-h-[240px] overflow-y-auto pr-2"
                     style={{ scrollbarWidth: "thin" }}
                   >
-                    {activePhase.classes.map((cls, idx) => {
+                    {activePhase.classes.length === 0 ? (
+                      <p role="status" className="rounded-lg border border-dashed border-zinc-300 p-4 text-center text-xs text-zinc-500 dark:border-zinc-700">
+                        No classes are listed for this phase yet.
+                      </p>
+                    ) : activePhase.classes.map((cls, idx) => {
                       const ClassIcon = IconMap[cls.icon] || Circle;
+                      const isClassActive = activeClass?.name === cls.name;
                       return (
                         <div key={cls.name} className="relative">
                           <motion.div
@@ -192,23 +271,29 @@ export const DocumentationMap: React.FC = () => {
                             className="absolute -left-6 top-1/2 h-0.5 bg-zinc-200 dark:bg-zinc-800 transition-colors duration-300"
                           />
                           <motion.button
+                            ref={(element) => {
+                              if (element) classButtonsRef.current.set(cls.name, element);
+                              else classButtonsRef.current.delete(cls.name);
+                            }}
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: idx * 0.1 }}
-                            onClick={() => setActiveClass(cls)}
+                            type="button"
+                            aria-pressed={isClassActive}
+                            onClick={() => setActiveClass(isClassActive ? null : cls)}
                             className={`flex items-center gap-3 p-2.5 w-full text-left border rounded-xl transition-all duration-300 ${
-                              activeClass?.name === cls.name
+                              isClassActive
                                 ? "bg-zinc-100 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-600 shadow-sm"
                                 : "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-600"
                             }`}
                           >
                             <div
-                              className={`transition-colors duration-300 ${activeClass?.name === cls.name ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-400"}`}
+                              className={`transition-colors duration-300 ${isClassActive ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-400"}`}
                             >
                               <ClassIcon className="w-4 h-4" />
                             </div>
                             <span
-                              className={`text-xs font-mono transition-colors duration-300 ${activeClass?.name === cls.name ? "text-zinc-900 dark:text-zinc-100 font-bold" : "text-zinc-700 dark:text-zinc-300"}`}
+                              className={`text-xs font-mono transition-colors duration-300 ${isClassActive ? "text-zinc-900 dark:text-zinc-100 font-bold" : "text-zinc-700 dark:text-zinc-300"}`}
                             >
                               {cls.name}
                             </span>
@@ -238,7 +323,7 @@ export const DocumentationMap: React.FC = () => {
 
           {/* Right Contextual Pane */}
           <AnimatePresence>
-            {activeClass && (
+            {activeClass && activePhase && (
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -255,6 +340,14 @@ export const DocumentationMap: React.FC = () => {
                   <h4 className="text-sm font-bold font-mono text-zinc-900 dark:text-zinc-100 uppercase tracking-widest leading-tight">
                     {activeClass.name}
                   </h4>
+                  <button
+                    type="button"
+                    aria-label="Close class details"
+                    onClick={closeClassDetails}
+                    className="ml-auto rounded-lg p-2 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 dark:hover:bg-zinc-800 dark:hover:text-white"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
                 </div>
                 <div className="space-y-4">
                   <div>
@@ -270,8 +363,8 @@ export const DocumentationMap: React.FC = () => {
                       Context
                     </span>
                     <div className="flex items-center gap-2 text-xs font-mono text-zinc-600 dark:text-zinc-400">
-                      <span className={`w-1.5 h-1.5 rounded-full ${colorStyles[activePhase!.color].split(' ')[0]}`}></span>
-                      Active in {activePhase?.title}
+                      <span className={`w-1.5 h-1.5 rounded-full ${colorStyles[activePhase.color].split(' ')[0]}`}></span>
+                      Active in {activePhase.title}
                     </div>
                   </div>
                 </div>
@@ -279,7 +372,7 @@ export const DocumentationMap: React.FC = () => {
             )}
           </AnimatePresence>
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

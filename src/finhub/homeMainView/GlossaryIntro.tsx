@@ -45,22 +45,27 @@ export const GlossaryIntro: React.FC = () => {
 
 const FaqItem = ({ q, a }: { q: string, a: string }) => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const id = React.useId();
+  const triggerId = `glossary-faq-trigger-${id}`;
+  const panelId = `glossary-faq-panel-${id}`;
   return (
     <div className="border border-zinc-200 dark:border-zinc-800 bg-white/40 dark:bg-zinc-900/40 rounded-xl overflow-hidden hover:border-cyan-200 dark:hover:border-zinc-700 transition-colors">
       <button 
+        type="button"
+        id={triggerId}
+        aria-expanded={isOpen}
+        aria-controls={panelId}
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left px-6 py-4 flex items-center justify-between focus:outline-none"
+        className="w-full text-left px-6 py-4 flex items-center justify-between focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-500"
       >
         <h3 className="text-sm font-bold text-zinc-800 dark:text-cyan-50/90 transition-colors">{q}</h3>
         <span className={`text-cyan-600 dark:text-cyan-500 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
           ▼
         </span>
       </button>
-      {isOpen && (
-        <div className="px-6 pb-5 pt-1 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed border-t border-zinc-200/50 dark:border-zinc-800/50 transition-colors">
-          {a}
-        </div>
-      )}
+      <div id={panelId} role="region" aria-labelledby={triggerId} hidden={!isOpen} className="px-6 pb-5 pt-1 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed border-t border-zinc-200/50 dark:border-zinc-800/50 transition-colors">
+        {a}
+      </div>
     </div>
   );
 };

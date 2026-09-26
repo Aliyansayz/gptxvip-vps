@@ -11,8 +11,9 @@ import {
 } from "lucide-react";
 import TheoryPaneGrid from "./TheoryPaneGrid";
 import AutoImportModal from "./AutoImportModal";
+import { SavedTheory } from "../TheoryCollectionContext";
 
-const TopicTheoryHub: React.FC = () => {
+const TopicTheoryHub: React.FC<{ onOpenSource?: (item: SavedTheory) => void }> = ({ onOpenSource }) => {
   const { collections, createCollection, deleteCollection, renameCollection } =
     useTheoryCollections();
   const [activeCollectionId, setActiveCollectionId] = useState<string | null>(
@@ -46,6 +47,7 @@ const TopicTheoryHub: React.FC = () => {
       <TheoryPaneGrid
         collection={collections[activeCollectionId]}
         onBack={() => setActiveCollectionId(null)}
+        onOpenSource={onOpenSource}
       />
     );
   }
@@ -144,17 +146,13 @@ const TopicTheoryHub: React.FC = () => {
         {collectionList.map((collection) => (
           <div
             key={collection.id}
-            className="group bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm border border-slate-200 dark:border-slate-800 rounded-3xl p-6 hover:border-cyan-500/50 hover:shadow-[0_8px_30px_rgb(6,182,212,0.15)] transition-all duration-500 flex flex-col cursor-pointer relative overflow-hidden"
-            onClick={() => {
-              if (editingId !== collection.id) {
-                setActiveCollectionId(collection.id);
-              }
-            }}
+            className="group bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm border border-slate-200 dark:border-slate-800 rounded-3xl p-6 hover:border-cyan-500/50 hover:shadow-[0_8px_30px_rgb(6,182,212,0.15)] transition-all duration-500 flex flex-col relative overflow-hidden"
           >
-            <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="absolute top-4 right-4 z-20 flex gap-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
               <button
+                type="button"
+                aria-label={`Rename ${collection.name}`}
                 onClick={(e) => {
-                  e.stopPropagation();
                   setEditingId(collection.id);
                   setEditName(collection.name);
                 }}
@@ -164,8 +162,9 @@ const TopicTheoryHub: React.FC = () => {
               </button>
               {collection.id !== "default" && (
                 <button
+                  type="button"
+                  aria-label={`Delete ${collection.name}`}
                   onClick={(e) => {
-                    e.stopPropagation();
                     deleteCollection(collection.id);
                   }}
                   className="p-1.5 text-muted-foreground hover:text-destructive bg-background/80 rounded-md backdrop-blur-sm"
@@ -178,35 +177,45 @@ const TopicTheoryHub: React.FC = () => {
             {/* Decorative Card Glow */}
             <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500 to-sky-400 rounded-3xl opacity-0 group-hover:opacity-5 blur-xl transition-opacity duration-500 pointer-events-none" />
 
-            <div className="w-14 h-14 bg-gradient-to-br from-cyan-500/10 to-sky-400/10 dark:from-cyan-500/20 dark:to-sky-400/20 rounded-2xl flex items-center justify-center mb-5 text-cyan-500 border border-cyan-500/20 group-hover:scale-110 transition-transform duration-500">
-              <Folder className="w-7 h-7" />
-            </div>
-
             {editingId === collection.id ? (
-              <form
-                onSubmit={(e) => handleRename(collection.id, e)}
-                onClick={(e) => e.stopPropagation()}
-                className="mt-auto"
-              >
-                <input
-                  type="text"
-                  value={editName}
-                  onChange={(e) => setEditName(e.target.value)}
-                  className="w-full bg-background border border-border rounded px-2 py-1 text-foreground mb-2"
-                  autoFocus
-                  onBlur={(e) => handleRename(collection.id, e)}
-                />
-              </form>
+              <>
+                <div className="w-14 h-14 bg-gradient-to-br from-cyan-500/10 to-sky-400/10 dark:from-cyan-500/20 dark:to-sky-400/20 rounded-2xl flex items-center justify-center mb-5 text-cyan-500 border border-cyan-500/20">
+                  <Folder className="w-7 h-7" />
+                </div>
+                <form onSubmit={(e) => handleRename(collection.id, e)} className="mt-auto w-full">
+                  <input
+                    type="text"
+                    aria-label={`Collection name for ${collection.name}`}
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    className="w-full bg-background border border-border rounded px-2 py-1 text-foreground mb-2"
+                    autoFocus
+                    onBlur={(e) => handleRename(collection.id, e)}
+                  />
+                </form>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-auto flex items-center justify-between font-medium">
+                  <span>{collection.items.length} saved theories</span>
+                </p>
+              </>
             ) : (
-              <h3 className="text-xl font-semibold text-foreground mb-1 group-hover:text-cyan-400 transition-colors line-clamp-2">
-                {collection.name}
-              </h3>
+              <button
+                type="button"
+                aria-label={`Open ${collection.name}, ${collection.items.length} saved theories`}
+                onClick={() => setActiveCollectionId(collection.id)}
+                className="flex min-h-full w-full flex-1 flex-col items-start text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-500 focus-visible:outline-offset-2 rounded-xl"
+              >
+                <div className="w-14 h-14 bg-gradient-to-br from-cyan-500/10 to-sky-400/10 dark:from-cyan-500/20 dark:to-sky-400/20 rounded-2xl flex items-center justify-center mb-5 text-cyan-500 border border-cyan-500/20 group-hover:scale-110 transition-transform duration-500">
+                  <Folder className="w-7 h-7" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-1 group-hover:text-cyan-400 transition-colors line-clamp-2">
+                  {collection.name}
+                </h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-auto flex w-full items-center justify-between font-medium">
+                  <span>{collection.items.length} saved theories</span>
+                  <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all" />
+                </p>
+              </button>
             )}
-
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-auto flex items-center justify-between font-medium">
-              <span>{collection.items.length} saved theories</span>
-              <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all" />
-            </p>
           </div>
         ))}
       </div>

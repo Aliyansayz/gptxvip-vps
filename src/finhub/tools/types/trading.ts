@@ -15,6 +15,10 @@ export interface Trade {
   size: number;
   stopLoss?: number;
   takeProfit?: number;
+  initialStopLoss?: number;
+  initialTakeProfit?: number;
+  entrySystem?: string;
+  systemMode?: string;
   exitPrice?: number;
   exitTime?: number;
   exitIndex?: number;

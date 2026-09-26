@@ -118,7 +118,12 @@ export const ZScoreChartWidget: React.FC = () => {
         const x = i * pointSpacing;
         const y = height / 2 - z * (height / 8);
 
-        if (z >= 2.0 || z <= -2.0) {
+        if (Math.abs(z) >= 3.0) {
+          ctx.beginPath();
+          ctx.arc(x, y, 4, 0, Math.PI * 2);
+          ctx.fillStyle = "#ef4444";
+          ctx.fill();
+        } else if (z >= 2.0 || z <= -2.0) {
           ctx.beginPath();
           ctx.arc(x, y, 3, 0, Math.PI * 2);
           ctx.fillStyle = "#f59e0b";
@@ -127,11 +132,6 @@ export const ZScoreChartWidget: React.FC = () => {
           ctx.beginPath();
           ctx.arc(x, y, 2, 0, Math.PI * 2);
           ctx.fillStyle = "#10b981";
-          ctx.fill();
-        } else if (Math.abs(z) >= 3.0) {
-          ctx.beginPath();
-          ctx.arc(x, y, 4, 0, Math.PI * 2);
-          ctx.fillStyle = "#ef4444";
           ctx.fill();
         }
       }

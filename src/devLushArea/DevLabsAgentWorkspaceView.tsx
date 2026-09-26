@@ -11,6 +11,7 @@ import GeminiChatWidget from './agentDevRootComponents/GeminiChatWidget';
 import { TextSelectionPopover } from './agentDevRootComponents/TextSelectionPopover';
 import { Toaster, toast } from 'sonner';
 import { FavoritesProvider } from './agentDevRootComponents/FavoritesContext';
+import type { FavoriteItem } from './agentDevRootComponents/FavoritesContext';
 import { TheoryCollectionProvider } from './agentDevRootComponents/TheoryCollectionContext';
 import FavoritesView from './agentDevRootComponents/FavoritesView';
 import TopicTheoryHub from './agentDevRootComponents/TopicTheoryView/TopicTheoryHub';
@@ -35,6 +36,8 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
     const [energyLockoutTime, setEnergyLockoutTime] = useState(0);
     
     const [currentView, setCurrentView] = useState<'landing' | 'devlush-search' | 'reading' | 'articles' | 'blogs' | 'favorites' | 'topic-theory' | 'devlush' | 'agentic-roles' | 'agent-workspace'>('landing');
+    const [pendingFavoriteChapterId, setPendingFavoriteChapterId] = useState<string | null>(null);
+    const [pendingFavoriteRoleChapter, setPendingFavoriteRoleChapter] = useState<{ roleId: string; chapterId: string } | null>(null);
 
     // Text Selection & AI Prompt State
     const [selectionRect, setSelectionRect] = useState<DOMRect | null>(null);
@@ -134,9 +137,6 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
         window.getSelection()?.removeAllRanges();
     };
 
-    const handleSimulationComplete = () => {
-    };
-
     const handleViewChange = (view: typeof currentView) => {
         setCurrentView(view);
     };
@@ -175,8 +175,8 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
                         <DevLushContainer 
                             isLocked={isInteractionLocked}
                             onConsumeEnergy={consumeEnergy}
-                            initialChapterId={null}
-                            onSimulationComplete={handleSimulationComplete}
+                            initialChapterId={pendingFavoriteChapterId}
+                            onChapterOpened={() => setPendingFavoriteChapterId(null)}
                             onSearchClick={() => setCurrentView('devlush-search')}
                             initialSearchOpen={currentView === 'devlush-search'}
                         />
@@ -191,17 +191,44 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
                             isLocked={isInteractionLocked}
                             onConsumeEnergy={consumeEnergy}
                             onExitToDevLush={() => setCurrentView('devlush')}
+                            initialRoleId={pendingFavoriteRoleChapter?.roleId}
+                            initialChapterId={pendingFavoriteRoleChapter?.chapterId}
+                            onInitialChapterOpened={() => setPendingFavoriteRoleChapter(null)}
                         />
                     )}
 
-                    {currentView === 'reading' && <ReadingView />}
+                    {currentView === 'reading' && <ReadingView onBrowseTopics={() => setCurrentView('devlush')} />}
                     
-                    {currentView === 'articles' && <ArticlesView />}
+                    {currentView === 'articles' && <ArticlesView onBrowseTopics={() => setCurrentView('devlush')} />}
 
-                    {currentView === 'blogs' && <BlogsView />}
+                    {currentView === 'blogs' && (
+                        <BlogsView
+                            routeByUrl={false}
+                            onBackToWorkspace={() => setCurrentView('landing')}
+                            backToWorkspaceLabel="Back to Agent Labs"
+                        />
+                    )}
 
                     {currentView === 'favorites' && (
-                        <FavoritesView onLaunch={() => {}} />
+                        <FavoritesView onLaunch={(favorite: FavoriteItem) => {
+                            if (favorite.type === 'roadmap_lab' || favorite.type === 'roadmap_reading') {
+                                const path = `/roadmap/${encodeURIComponent(favorite.courseId)}/${encodeURIComponent(favorite.id)}`;
+                                window.history.pushState({ roadmapChapterEntry: true }, '', path);
+                                window.location.reload();
+                                return;
+                            }
+                            if (favorite.type === 'agentic_role_lab') {
+                                if (isInteractionLocked || !consumeEnergy()) {
+                                    toast.error('Simulation Locked: Insufficient Energy or App Locked');
+                                    return;
+                                }
+                                setPendingFavoriteRoleChapter({ roleId: favorite.courseId, chapterId: favorite.id });
+                                setCurrentView('agentic-roles');
+                                return;
+                            }
+                            setPendingFavoriteChapterId(favorite.id);
+                            setCurrentView('devlush');
+                        }} />
                     )}
 
                     {currentView === 'topic-theory' && (

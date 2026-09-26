@@ -3,6 +3,7 @@ import { SavedTheory } from '../TheoryCollectionContext';
 import { BookOpenText, Camera, Settings2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import DevLushTheoryBridge from '../../devLushComponents/devLushTopicsView/DevLushTheoryBridge';
+import { toast } from 'sonner';
 
 interface TheoryCardProps {
   item: SavedTheory;
@@ -11,6 +12,7 @@ interface TheoryCardProps {
   onPrev?: () => void;
   hasNext?: boolean;
   hasPrev?: boolean;
+  onOpenSource?: (item: SavedTheory) => void;
 }
 
 type AspectRatio = 'auto' | '16:9' | '3:2' | '4:3' | '1:1';
@@ -21,7 +23,8 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
   onNext,
   onPrev,
   hasNext = false,
-  hasPrev = false
+  hasPrev = false,
+  onOpenSource
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [aspectRatio, setAspectRatio] = useState<AspectRatio>('auto');
@@ -47,9 +50,11 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      toast.success('Theory screenshot downloaded.');
 
     } catch (error) {
       console.error('Failed to capture screenshot', error);
+      toast.error('Could not create the screenshot. Please try again.');
     } finally {
       setIsCapturing(false);
     }
@@ -117,6 +122,8 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
                 {isSliderMode && (onNext || onPrev) && (
                   <div className="flex items-center gap-1 mr-2 pr-3 border-r border-border/50">
                     <button
+                      type="button"
+                      aria-label="Previous saved theory"
                       onClick={onPrev}
                       disabled={!hasPrev}
                       className="p-1.5 hover:bg-muted rounded-md text-foreground disabled:opacity-30 transition-colors"
@@ -125,6 +132,8 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
                       <ChevronLeft className="w-5 h-5" />
                     </button>
                     <button
+                      type="button"
+                      aria-label="Next saved theory"
                       onClick={onNext}
                       disabled={!hasNext}
                       className="p-1.5 hover:bg-muted rounded-md text-foreground disabled:opacity-30 transition-colors"
@@ -137,6 +146,9 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
 
                 <div className="relative">
                   <button
+                    type="button"
+                    aria-label="Aspect ratio settings"
+                    aria-expanded={showSettings}
                     onClick={() => setShowSettings(!showSettings)}
                     className="p-1.5 hover:bg-muted rounded-md text-muted-foreground hover:text-foreground transition-colors"
                     title="Aspect Ratio Settings"
@@ -149,6 +161,8 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
                       {(['auto', '16:9', '3:2', '4:3', '1:1'] as AspectRatio[]).map(ratio => (
                         <button
                           key={ratio}
+                          type="button"
+                          aria-pressed={aspectRatio === ratio}
                           onClick={() => { setAspectRatio(ratio); setShowSettings(false); }}
                           className={`w-full text-left px-4 py-2 text-sm hover:bg-muted transition-colors ${aspectRatio === ratio ? 'text-cyan-500 font-medium bg-cyan-500/5' : 'text-foreground'}`}
                         >
@@ -160,6 +174,8 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
                 </div>
 
                 <button
+                  type="button"
+                  aria-label={`Take screenshot of ${item.exerciseTitle}`}
                   onClick={handleScreenshot}
                   className="p-1.5 hover:bg-cyan-50 dark:hover:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 rounded-md transition-colors"
                   title="Take Screenshot"
@@ -174,6 +190,19 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
         <div className={`flex-1 overflow-y-auto custom-scrollbar pr-2 ${isCapturing ? 'overflow-visible h-auto' : ''}`}>
           <DevLushTheoryBridge item={item} />
         </div>
+
+        {!isCapturing && onOpenSource && item.courseType === 'devLush' && item.labId !== 'unknown' && (
+          <div className="mt-4 border-t border-border/50 pt-4">
+            <p className="mb-2 text-xs text-muted-foreground">Source: {item.chapterTitle}</p>
+            <button
+              type="button"
+              onClick={() => onOpenSource(item)}
+              className="text-sm font-semibold text-cyan-600 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-500"
+            >
+              Open source topic
+            </button>
+          </div>
+        )}
 
         {isCapturing && (
           <div className="mt-6 pt-4 border-t border-border/50 flex justify-between items-center text-xs text-muted-foreground">

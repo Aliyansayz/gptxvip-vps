@@ -26,6 +26,8 @@ export const ComprehensiveMemoryTypesLab: React.FC = () => {
             
             <div className="flex bg-slate-200 p-1 rounded-lg shrink-0">
               <button
+                type="button"
+                aria-pressed={activeTab === 'detailed'}
                 onClick={() => setActiveTab('detailed')}
                 className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                   activeTab === 'detailed' 
@@ -36,6 +38,8 @@ export const ComprehensiveMemoryTypesLab: React.FC = () => {
                 Detailed View
               </button>
               <button
+                type="button"
+                aria-pressed={activeTab === 'glossary'}
                 onClick={() => setActiveTab('glossary')}
                 className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                   activeTab === 'glossary' 
@@ -86,50 +90,26 @@ export const ComprehensiveMemoryTypesLab: React.FC = () => {
           </div>
         ) : (
           <div className="mt-8 bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[600px]">
+            <table className="w-full text-left border-collapse min-w-[1240px]">
+              <caption className="p-4 text-left text-sm text-slate-600">Compare what each memory type stores, how it is retrieved, and the trade-offs it introduces.</caption>
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200">
                   <th className="p-4 font-semibold text-slate-700 whitespace-nowrap">Memory Type</th>
                   <th className="p-4 font-semibold text-slate-700 whitespace-nowrap">Classification</th>
-                  <th className="p-4 font-semibold text-slate-700">Description</th>
+                  <th className="p-4 font-semibold text-slate-700">Stores</th>
+                  <th className="p-4 font-semibold text-slate-700">Retrieved by</th>
+                  <th className="p-4 font-semibold text-slate-700">Example</th>
+                  <th className="p-4 font-semibold text-slate-700">Limitation and trade-off</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 text-slate-600 text-sm">
-                <tr className="hover:bg-slate-50 transition-colors">
-                  <td className="p-4 font-medium text-slate-800 whitespace-nowrap">Parametric Memory</td>
-                  <td className="p-4 whitespace-nowrap"><span className="inline-flex px-2 py-1 bg-pink-50 text-pink-700 rounded-md text-xs font-medium border border-pink-100">Innate Layer</span></td>
-                  <td className="p-4">The "instincts" and baseline knowledge baked directly into the neural network's weights during pre-training.</td>
-                </tr>
-                <tr className="hover:bg-slate-50 transition-colors">
-                  <td className="p-4 font-medium text-slate-800 whitespace-nowrap">In-Context Memory</td>
-                  <td className="p-4 whitespace-nowrap"><span className="inline-flex px-2 py-1 bg-indigo-50 text-indigo-700 rounded-md text-xs font-medium border border-indigo-100">Working State</span></td>
-                  <td className="p-4">The AI's "working memory" bounded by the context window limit; holds the immediate prompt and transient scratchpad reasoning.</td>
-                </tr>
-                <tr className="hover:bg-slate-50 transition-colors">
-                  <td className="p-4 font-medium text-slate-800 whitespace-nowrap">Semantic Memory</td>
-                  <td className="p-4 whitespace-nowrap"><span className="inline-flex px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-medium border border-blue-100">Archival Storage</span></td>
-                  <td className="p-4">The system's objective worldview backed by knowledge graphs/vector databases, storing facts, concepts, and relationships.</td>
-                </tr>
-                <tr className="hover:bg-slate-50 transition-colors">
-                  <td className="p-4 font-medium text-slate-800 whitespace-nowrap">Episodic Memory</td>
-                  <td className="p-4 whitespace-nowrap"><span className="inline-flex px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-medium border border-blue-100">Archival Storage</span></td>
-                  <td className="p-4">The system's personalized history, recording the chronological "episodes" of user interactions, preferences, and past events.</td>
-                </tr>
-                <tr className="hover:bg-slate-50 transition-colors">
-                  <td className="p-4 font-medium text-slate-800 whitespace-nowrap">External Memory</td>
-                  <td className="p-4 whitespace-nowrap"><span className="inline-flex px-2 py-1 bg-emerald-50 text-emerald-700 rounded-md text-xs font-medium border border-emerald-100">Execution & Action Layer</span></td>
-                  <td className="p-4">The AI's physical filing cabinet; structured integrations with external databases (SQL, NoSQL), APIs, or local file systems.</td>
-                </tr>
-                <tr className="hover:bg-slate-50 transition-colors">
-                  <td className="p-4 font-medium text-slate-800 whitespace-nowrap">Procedural Memory</td>
-                  <td className="p-4 whitespace-nowrap"><span className="inline-flex px-2 py-1 bg-emerald-50 text-emerald-700 rounded-md text-xs font-medium border border-emerald-100">Execution & Action Layer</span></td>
-                  <td className="p-4">The "muscle memory" of the AI; internalized instruction patterns, system prompts, and execution workflows (like ReAct).</td>
-                </tr>
-                <tr className="hover:bg-slate-50 transition-colors">
-                  <td className="p-4 font-medium text-slate-800 whitespace-nowrap">Prospective Memory</td>
-                  <td className="p-4 whitespace-nowrap"><span className="inline-flex px-2 py-1 bg-emerald-50 text-emerald-700 rounded-md text-xs font-medium border border-emerald-100">Execution & Action Layer</span></td>
-                  <td className="p-4">The "future" memory managing scheduled actions, event listeners, and timers to execute tasks at predefined points in time.</td>
-                </tr>
+                <tr><td className="p-4 font-medium text-slate-800">Parametric</td><td className="p-4">Model weights</td><td className="p-4">Patterns encoded during training.</td><td className="p-4">Implicitly during model inference.</td><td className="p-4">Language patterns learned during training.</td><td className="p-4">Fast to use, hard to inspect or update one fact; changes generally require model updates.</td></tr>
+                <tr><td className="p-4 font-medium text-slate-800">In-context</td><td className="p-4">Working state</td><td className="p-4">Current prompt, selected examples, and recent turn context.</td><td className="p-4">Attention over the active context window.</td><td className="p-4">Instructions and retrieved notes included in a request.</td><td className="p-4">Easy to change, but token-limited and usually not persistent across sessions.</td></tr>
+                <tr><td className="p-4 font-medium text-slate-800">Semantic</td><td className="p-4">Long-term knowledge</td><td className="p-4">Facts, concepts, and relationships.</td><td className="p-4">Entity, keyword, vector, or graph queries.</td><td className="p-4">A stored product policy or concept definition.</td><td className="p-4">Reusable and searchable, but needs provenance, freshness, and conflict handling.</td></tr>
+                <tr><td className="p-4 font-medium text-slate-800">Episodic</td><td className="p-4">Long-term event history</td><td className="p-4">Dated interactions, actions, and outcomes.</td><td className="p-4">Time, user, event, or similarity lookup.</td><td className="p-4">The outcome of a previous support session.</td><td className="p-4">Adds personal context, but histories can be incomplete, noisy, or sensitive.</td></tr>
+                <tr><td className="p-4 font-medium text-slate-800">External</td><td className="p-4">Connected storage</td><td className="p-4">Records held in a database, file store, or service.</td><td className="p-4">An authorized API, file, or database query.</td><td className="p-4">Fetching a current order from a database.</td><td className="p-4">Can hold large, current records, but depends on access, availability, and sync.</td></tr>
+                <tr><td className="p-4 font-medium text-slate-800">Procedural</td><td className="p-4">Reusable methods</td><td className="p-4">Instructions, policies, and action sequences.</td><td className="p-4">Task-to-playbook or policy selection.</td><td className="p-4">A reviewed deployment checklist.</td><td className="p-4">Makes repeatable work consistent, but stale steps or poor task matching cause errors.</td></tr>
+                <tr><td className="p-4 font-medium text-slate-800">Prospective</td><td className="p-4">Future intention</td><td className="p-4">A planned action and its time or trigger.</td><td className="p-4">A schedule, event, or condition check.</td><td className="p-4">A reminder to review a renewal on a specified date.</td><td className="p-4">Supports follow-through, but triggers need monitoring and may become stale.</td></tr>
               </tbody>
             </table>
           </div>

@@ -1,8 +1,9 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import { agenticRoleDefinitions } from '../agenticRoles/data';
 
-export type FavoriteItemType = 'devlush_lab';
+export type FavoriteItemType = 'devlush_lab' | 'agentic_role_lab' | 'roadmap_lab' | 'roadmap_reading';
 
 export interface FavoriteItem {
     id: string; // The componentId or labComponentId
@@ -31,27 +32,47 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     // Load from localStorage on mount
     useEffect(() => {
-        const storedFavs = localStorage.getItem('life_labs_favorites');
-        const storedCols = localStorage.getItem('life_labs_collections');
+        let storedFavs: string | null = null;
+        let storedCols: string | null = null;
+        try {
+            storedFavs = window.localStorage.getItem('life_labs_favorites');
+            storedCols = window.localStorage.getItem('life_labs_collections');
+        } catch {
+            return;
+        }
 
         if (storedFavs && storedFavs.trim() !== '') {
             try {
-                let parsedFavs = JSON.parse(storedFavs);
+                const parsed: unknown = JSON.parse(storedFavs);
+                if (!Array.isArray(parsed)) throw new Error('Invalid favorites data');
                 let migrated = false;
-                parsedFavs = parsedFavs.map((fav: any) => {
-                    if (fav.type === 'lab') {
+                const parsedFavs = parsed.flatMap((fav: unknown) => {
+                    if (!fav || typeof fav !== 'object') return [];
+                    const item = fav as Record<string, unknown>;
+                    if (typeof item.id !== 'string' || typeof item.title !== 'string' || typeof item.courseId !== 'string') return [];
+                    const normalized = item as unknown as FavoriteItem;
+                    if (item.type === 'devlush_lab' && agenticRoleDefinitions.some((role) => role.id === item.courseId)) {
                         migrated = true;
-                        return { ...fav, type: 'devlush_lab' };
+                        return [{ ...normalized, type: 'agentic_role_lab' as const }];
                     }
-                    if (fav.type === 'medlab') {
+                    if (item.type === 'lab') {
                         migrated = true;
-                        return { ...fav, type: 'roadmap_lab' };
+                        return [{ ...normalized, type: 'devlush_lab' as const }];
                     }
-                    return fav;
+                    if (item.type === 'medlab') {
+                        migrated = true;
+                        return [{ ...normalized, type: 'roadmap_lab' as const }];
+                    }
+                    if (item.type === 'devlush_lab' || item.type === 'agentic_role_lab' || item.type === 'roadmap_lab' || item.type === 'roadmap_reading') return [normalized];
+                    return [];
                 });
                 setFavorites(parsedFavs);
                 if (migrated) {
-                    localStorage.setItem('life_labs_favorites', JSON.stringify(parsedFavs));
+                    try {
+                        window.localStorage.setItem('life_labs_favorites', JSON.stringify(parsedFavs));
+                    } catch {
+                        // Keep migrated values in memory when browser storage is unavailable.
+                    }
                 }
             } catch (e) {
                 console.error('Failed to parse favorites', e);
@@ -60,7 +81,8 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
         if (storedCols && storedCols.trim() !== '') {
             try {
-                setCollections(JSON.parse(storedCols));
+                const parsed: unknown = JSON.parse(storedCols);
+                if (Array.isArray(parsed)) setCollections(parsed.filter((value): value is string => typeof value === 'string'));
             } catch (e) {
                 console.error('Failed to parse collections', e);
             }
@@ -69,11 +91,19 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     // Save to localStorage whenever state changes
     useEffect(() => {
-        localStorage.setItem('life_labs_favorites', JSON.stringify(favorites));
+        try {
+            window.localStorage.setItem('life_labs_favorites', JSON.stringify(favorites));
+        } catch {
+            // Favorites remain usable for this session when browser storage is unavailable.
+        }
     }, [favorites]);
 
     useEffect(() => {
-        localStorage.setItem('life_labs_collections', JSON.stringify(collections));
+        try {
+            window.localStorage.setItem('life_labs_collections', JSON.stringify(collections));
+        } catch {
+            // Collections remain usable for this session when browser storage is unavailable.
+        }
     }, [collections]);
 
     const addFavorite = (item: Omit<FavoriteItem, 'timestamp' | 'collection'>, collection: string = 'Favorites') => {

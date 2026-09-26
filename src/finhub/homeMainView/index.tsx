@@ -145,7 +145,8 @@ export const HomeMainView: React.FC<HomeMainViewProps> = ({ candlestickData, onT
                   </p>
                 </div>
                 {selectedPreset !== 'default' && (
-                  <button 
+                  <button
+                    type="button"
                     onClick={() => setSelectedPreset('default')}
                     className="text-[10px] bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-850 text-zinc-500 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 border border-zinc-300/60 dark:border-zinc-700/60 transition-all rounded px-3 py-1.5 uppercase font-mono font-bold tracking-wider cursor-pointer"
                   >
@@ -163,9 +164,11 @@ export const HomeMainView: React.FC<HomeMainViewProps> = ({ candlestickData, onT
                 return (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 relative z-10">
                     {/* Default Baseline Card */}
-                    <button
-                      onClick={() => setSelectedPreset('default')}
-                      className={`text-left p-3.5 rounded-xl border transition-all flex flex-col justify-between min-h-[96px] group cursor-pointer ${
+                  <button
+                    type="button"
+                    aria-pressed={selectedPreset === 'default'}
+                    onClick={() => setSelectedPreset('default')}
+                    className={`text-left p-3.5 rounded-xl border transition-all flex flex-col justify-between min-h-[96px] group cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-500 ${
                         selectedPreset === 'default'
                           ? 'bg-cyan-50/50 dark:bg-cyan-500/10 border-cyan-300 dark:border-cyan-500/40 text-cyan-800 dark:text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.1)]'
                           : 'bg-zinc-50/40 dark:bg-zinc-950/40 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-100/60 dark:hover:bg-zinc-900/60 text-zinc-600 dark:text-zinc-350'
@@ -200,8 +203,10 @@ export const HomeMainView: React.FC<HomeMainViewProps> = ({ candlestickData, onT
                       return (
                         <button
                           key={p.name}
+                          type="button"
+                          aria-pressed={isActive}
                           onClick={() => setSelectedPreset(p.name)}
-                          className={`text-left p-3.5 rounded-xl border transition-all flex flex-col justify-between min-h-[96px] group cursor-pointer ${
+                          className={`text-left p-3.5 rounded-xl border transition-all flex flex-col justify-between min-h-[96px] group cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500 ${
                             isActive
                               ? 'bg-amber-50/50 dark:bg-amber-500/10 border-amber-300 dark:border-amber-500/40 text-amber-800 dark:text-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.1)]'
                               : 'bg-zinc-50/40 dark:bg-zinc-950/40 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-100/60 dark:hover:bg-zinc-900/60 text-zinc-600 dark:text-zinc-350'
@@ -246,15 +251,18 @@ export const HomeMainView: React.FC<HomeMainViewProps> = ({ candlestickData, onT
                   selectedPreset={selectedPreset}
                   onPresetChange={setSelectedPreset}
                 />
-                <button 
+                  <button
+                  type="button"
+                  aria-pressed={isLiveRunning}
+                  aria-label={isLiveRunning ? 'Pause simulated price feed' : 'Resume simulated price feed'}
                   className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-900 shadow-lg border border-zinc-200/50 dark:border-zinc-700/50 rounded-lg text-emerald-600 dark:text-emerald-400 font-bold text-xs uppercase tracking-widest transition-all hover:bg-zinc-50 dark:hover:bg-zinc-800"
-                  onClick={() => setIsLiveRunning(!isLiveRunning)}
+                  onClick={() => setIsLiveRunning((running) => !running)}
                 >
                   {isLiveRunning ? <Pause className="w-4 h-4 text-emerald-600 dark:text-emerald-500" /> : <Play className="w-4 h-4 text-emerald-600 dark:text-emerald-500" />}
-                  {isLiveRunning ? 'Live Running' : 'Paused'}
+                  {isLiveRunning ? 'Simulation running' : 'Simulation paused'}
                 </button>
               </div>
-              
+
               <div id="liquidity-depth" className="w-full h-[550px] shrink-0 overflow-visible relative z-10 block">
                 <Suspense fallback={<div className="h-full w-full flex items-center justify-center text-zinc-500">Loading Chart...</div>}>
                   <CandlestickWithLOB 
@@ -283,7 +291,7 @@ export const HomeMainView: React.FC<HomeMainViewProps> = ({ candlestickData, onT
             <div id="horizontal-order-flow" className="w-[100vw] ml-[calc(-50vw+50%)] mt-16 bg-white dark:bg-zinc-900 border-y border-zinc-200 dark:border-zinc-800/80 p-8 shadow-2xl overflow-hidden transition-colors" style={{ transform: 'skewY(-5deg)' }}>
               <div className="max-w-6xl mx-auto w-full">
                 <Suspense fallback={<div className="h-64 flex items-center justify-center text-zinc-500">Loading Order Flow...</div>}>
-                  <HorizontalOrderFlow externalPrice={livePrice} />
+                  <HorizontalOrderFlow externalPrice={livePrice} assetType={selectedAsset} />
                 </Suspense>
               </div>
             </div>

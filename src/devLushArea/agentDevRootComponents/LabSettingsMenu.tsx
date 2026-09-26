@@ -20,8 +20,15 @@ export const DEFAULT_SETTINGS: LabSettings = {
 
 export const loadSavedSettings = (): LabSettings => {
     if (typeof window === 'undefined') return DEFAULT_SETTINGS;
-    const saved = localStorage.getItem('labSettings');
-    return (saved && saved.trim() !== '') ? JSON.parse(saved) : DEFAULT_SETTINGS;
+    try {
+        const saved = window.localStorage.getItem('labSettings');
+        if (!saved || saved.trim() === '') return DEFAULT_SETTINGS;
+        const parsed: unknown = JSON.parse(saved);
+        if (!parsed || typeof parsed !== 'object') return DEFAULT_SETTINGS;
+        return { ...DEFAULT_SETTINGS, ...parsed } as LabSettings;
+    } catch {
+        return DEFAULT_SETTINGS;
+    }
 };
 
 interface LabSettingsMenuProps {
@@ -36,12 +43,14 @@ export const LabSettingsMenu: React.FC<LabSettingsMenuProps> = ({ settings, onSe
         const newSettings = { ...settings, [key]: !settings[key] };
         
         // If "remember settings" is toggled off, clear storage
-        if (key === 'rememberSettings' && !newSettings.rememberSettings) {
-            localStorage.removeItem('labSettings');
-        } 
-        // If "remember settings" is on (or turned on), save
-        else if (newSettings.rememberSettings) {
-            localStorage.setItem('labSettings', JSON.stringify(newSettings));
+        try {
+            if (key === 'rememberSettings' && !newSettings.rememberSettings) {
+                window.localStorage.removeItem('labSettings');
+            } else if (newSettings.rememberSettings) {
+                window.localStorage.setItem('labSettings', JSON.stringify(newSettings));
+            }
+        } catch {
+            // Settings still apply for this session when browser storage is unavailable.
         }
 
         onSettingsChange(newSettings);

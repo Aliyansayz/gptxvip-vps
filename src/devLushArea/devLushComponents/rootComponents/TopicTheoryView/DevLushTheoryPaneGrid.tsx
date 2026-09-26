@@ -19,6 +19,11 @@ const DevLushTheoryPaneGrid: React.FC<DevLushTheoryPaneGridProps> = ({ collectio
 
   // Lazy loading logic
   useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') {
+      setVisibleItems(collection.items.length);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       entries => {
         if (entries[0].isIntersecting) {
@@ -46,8 +51,10 @@ const DevLushTheoryPaneGrid: React.FC<DevLushTheoryPaneGridProps> = ({ collectio
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div className="flex items-center gap-4">
           <button 
+            type="button"
+            aria-label="Back to theory collections"
             onClick={onBack}
-            className="p-2 hover:bg-muted rounded-lg text-muted-foreground hover:text-foreground transition-colors"
+            className="p-2 hover:bg-muted rounded-lg text-muted-foreground hover:text-foreground transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-500"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
@@ -63,6 +70,9 @@ const DevLushTheoryPaneGrid: React.FC<DevLushTheoryPaneGridProps> = ({ collectio
 
         <div className="flex items-center gap-2 bg-card border border-border rounded-lg p-1 shadow-sm">
           <button
+            type="button"
+            aria-label="Grid view"
+            aria-pressed={viewMode === 'grid'}
             onClick={() => setViewMode('grid')}
             className={`p-2 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-indigo-500/10 text-indigo-600' : 'text-muted-foreground hover:bg-muted'}`}
             title="Grid View"
@@ -70,6 +80,9 @@ const DevLushTheoryPaneGrid: React.FC<DevLushTheoryPaneGridProps> = ({ collectio
             <Grid className="w-5 h-5" />
           </button>
           <button
+            type="button"
+            aria-label="Slider view"
+            aria-pressed={viewMode === 'slider'}
             onClick={() => setViewMode('slider')}
             className={`p-2 rounded-md transition-colors ${viewMode === 'slider' ? 'bg-indigo-500/10 text-indigo-600' : 'text-muted-foreground hover:bg-muted'}`}
             title="Slider View"
@@ -91,6 +104,8 @@ const DevLushTheoryPaneGrid: React.FC<DevLushTheoryPaneGridProps> = ({ collectio
               <div key={item.id} className="break-inside-avoid relative group">
                 <DevLushTheoryCard item={item} />
                 <button
+                  type="button"
+                  aria-label={`Remove ${item.exerciseTitle} from ${collection.name}`}
                   onClick={() => removeTheoryFromCollection(collection.id, item.id)}
                   className="absolute top-4 right-4 p-2 bg-destructive/90 text-destructive-foreground rounded-lg opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-destructive"
                   title="Remove from collection"
@@ -101,7 +116,7 @@ const DevLushTheoryPaneGrid: React.FC<DevLushTheoryPaneGridProps> = ({ collectio
             ))}
           </div>
           {visibleItems < collection.items.length && (
-            <div ref={observerTarget} className="h-20 flex items-center justify-center text-muted-foreground">
+            <div ref={observerTarget} role="status" aria-live="polite" className="h-20 flex items-center justify-center text-muted-foreground">
               Loading more...
             </div>
           )}
@@ -120,9 +135,12 @@ const DevLushTheoryPaneGrid: React.FC<DevLushTheoryPaneGridProps> = ({ collectio
           </div>
           
           <div className="mt-8 flex items-center gap-2 overflow-x-auto max-w-full py-2 custom-scrollbar">
-            {collection.items.map((_, idx) => (
+            {collection.items.map((item, idx) => (
               <button
                 key={idx}
+                type="button"
+                aria-label={`Show theory ${idx + 1}: ${item.exerciseTitle}`}
+                aria-pressed={idx === sliderIndex}
                 onClick={() => setSliderIndex(idx)}
                 className={`w-3 h-3 rounded-full transition-all ${idx === sliderIndex ? 'bg-indigo-500 scale-125' : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'}`}
               />

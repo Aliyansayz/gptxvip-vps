@@ -64,12 +64,16 @@ export default function AgentTheorySidebar({ agentType }: AgentTheorySidebarProp
       return;
     }
     
-    saveTopicTheory({
+    const savedTheory = saveTopicTheory({
       theoryId: content.id,
       agentType: agentType,
       title: content.title
     });
-    setSavedTheories(getSavedTopicTheories());
+    if (!savedTheory) {
+      toast.error('Could not save this theory in browser storage.');
+      return;
+    }
+    setSavedTheories((current) => [...current, savedTheory]);
     toast.success(`Saved "${content.title}" to Topic Theory Saves`);
   };
 

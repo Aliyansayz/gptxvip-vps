@@ -4,7 +4,7 @@ import { BookOpen, Activity, Terminal, ShieldAlert } from 'lucide-react';
 
 export const BentoGridFeatures: React.FC = () => {
   return (
-    <div className="w-full max-w-5xl mx-auto mb-24 mt-12">
+    <div id="bento-features" className="w-full max-w-5xl mx-auto mb-24 mt-12 scroll-mt-24">
       <div className="mb-8 font-mono text-xs uppercase tracking-widest text-emerald-500 font-bold flex items-center gap-2">
         <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
         Platform Modules

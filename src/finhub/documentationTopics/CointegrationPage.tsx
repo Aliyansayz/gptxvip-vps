@@ -29,7 +29,7 @@ interface DocumentationSectionProps {
 
 const DocumentationSection: React.FC<DocumentationSectionProps> = ({ id, title, icon: Icon, children, isLast }) => {
   return (
-    <section id={id} className="relative pl-8 md:pl-0 mb-32 scroll-mt-24">
+    <section id={id} aria-labelledby={`${id}-title`} className="relative pl-8 md:pl-0 mb-32 scroll-mt-24">
       {/* Timeline line */}
       {!isLast && (
         <div className="hidden md:block absolute left-0 top-8 bottom-[-128px] w-px bg-zinc-200 dark:bg-zinc-800" />
@@ -42,7 +42,7 @@ const DocumentationSection: React.FC<DocumentationSectionProps> = ({ id, title, 
         <header className="mb-12">
           <div className="flex items-center gap-3 mb-2">
             {Icon && <Icon className="w-5 h-5 text-emerald-500" />}
-            <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-tighter">
+            <h2 id={`${id}-title`} className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-tighter">
               {title}
             </h2>
           </div>
@@ -130,8 +130,28 @@ const LogicBlock: React.FC<{
 };
 
 export const CointegrationPage: React.FC = () => {
+  const sections = [
+    { id: "coint-overview", label: "Overview" },
+    { id: "coint-rules", label: "Trading rules" },
+    { id: "coint-pipeline", label: "Checking pipeline" },
+    { id: "coint-examples", label: "Pair examples" },
+    { id: "coint-actions", label: "Action and exit tables" },
+    { id: "coint-code", label: "Code snippets" },
+  ];
+
   return (
     <div className="max-w-5xl mx-auto">
+      <nav aria-label="Cointegration guide sections" className="mb-12 rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900/60">
+        <p className="mb-3 text-xs font-bold uppercase tracking-[0.16em] text-zinc-500">On this page</p>
+        <div className="flex flex-wrap gap-2">
+          {sections.map((section) => (
+            <a key={section.id} href={`#${section.id}`} className="rounded-full border border-zinc-200 px-3 py-2 text-xs font-semibold text-zinc-700 transition-colors hover:border-emerald-500/50 hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 dark:border-zinc-700 dark:text-zinc-300 dark:hover:text-emerald-300">
+              {section.label}
+            </a>
+          ))}
+        </div>
+      </nav>
+
       <DocumentationSection id="coint-overview" title="Overview" icon={Activity}>
         <p className="text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed">
           Cointegration trading, often referred to as "Pairs Trading," is a market-neutral strategy that exploits the statistical relationship between two historically correlated assets. Unlike simple correlation, cointegration implies a long-term equilibrium where the spread between prices is mean-reverting.
@@ -143,7 +163,7 @@ export const CointegrationPage: React.FC = () => {
               Statistical Edge
             </h4>
             <p className="text-sm text-zinc-500 leading-relaxed">
-              We utilize the Engle-Granger two-step method to identify pairs where the residual spread is stationary, providing a high-probability mean-reversion signal.
+              We use the Engle-Granger two-step method to identify pairs whose residual spread may be stationary and suitable for further mean-reversion analysis.
             </p>
           </div>
           <div className="p-6 bg-blue-500/5 border border-blue-500/10 rounded-2xl">
@@ -152,7 +172,7 @@ export const CointegrationPage: React.FC = () => {
               Risk Neutrality
             </h4>
             <p className="text-sm text-zinc-500 leading-relaxed">
-              By being simultaneously long one asset and short another, the strategy minimizes exposure to broad market movements (Beta).
+              Holding offsetting positions may reduce exposure to broad market moves, but it does not remove market, model, execution, or liquidity risk.
             </p>
           </div>
         </div>
@@ -254,11 +274,12 @@ export const CointegrationPage: React.FC = () => {
             <div className="p-6 bg-zinc-900 rounded-2xl border border-zinc-800 shadow-2xl">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Live Scanner Input</span>
+                <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">Illustrative scanner input · fixed sample</span>
               </div>
               <code className="text-sm text-emerald-400 font-mono leading-relaxed block">
                 [EURUSD, GBPUSD, USDCHF, AUDUSD, NZDUSD, USDCAD]
               </code>
+              <p className="mt-3 text-xs leading-5 text-zinc-400">The symbol list and evaluation values on this page are examples; they are not connected to a live scanner.</p>
             </div>
           </SubSection>
 
@@ -270,7 +291,7 @@ export const CointegrationPage: React.FC = () => {
                 { pair: "EURUSD / USDCHF", status: "failed", reason: "High correlation but non-stationary spread (p=0.15).", metrics: "HL: N/A | Corr: 0.92" },
                 { pair: "GBPUSD / USDCAD", status: "failed", reason: "Insufficient correlation (0.30) for pairs trading.", metrics: "HL: N/A | Corr: 0.30" }
               ].map((ex, i) => (
-                <div key={i} className="flex items-center justify-between p-6 bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800 rounded-2xl hover:shadow-lg transition-all">
+                <div key={i} className="flex flex-col gap-4 rounded-2xl border border-zinc-200 bg-white p-5 transition-all hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900/30 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                   <div className="space-y-1">
                     <div className="flex items-center gap-3">
                       <h4 className="font-bold text-zinc-900 dark:text-zinc-100">{ex.pair}</h4>
@@ -278,8 +299,13 @@ export const CointegrationPage: React.FC = () => {
                     </div>
                     <p className="text-xs text-zinc-500 max-w-md leading-relaxed">{ex.reason}</p>
                   </div>
-                  <div className={`p-2 rounded-full ${ex.status === "passed" ? "bg-emerald-500/10 text-emerald-500" : "bg-red-500/10 text-red-500"}`}>
-                    {ex.status === "passed" ? <CheckCircle2 className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
+                  <div className="flex shrink-0 items-center gap-2">
+                    <div aria-hidden="true" className={`p-2 rounded-full ${ex.status === "passed" ? "bg-emerald-500/10 text-emerald-500" : "bg-red-500/10 text-red-500"}`}>
+                      {ex.status === "passed" ? <CheckCircle2 className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
+                    </div>
+                    <span className={`text-xs font-semibold ${ex.status === "passed" ? "text-emerald-700 dark:text-emerald-400" : "text-red-700 dark:text-red-400"}`}>
+                      Example {ex.status}
+                    </span>
                   </div>
                 </div>
               ))}
@@ -304,6 +330,7 @@ export const CointegrationPage: React.FC = () => {
                 </div>
               </div>
               <div className="p-0 overflow-x-auto">
+                <p className="px-6 pt-4 text-xs leading-5 text-zinc-400">Illustrative rule mapping only; order routing is not running from this table.</p>
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-zinc-900/30 text-[10px] font-bold uppercase tracking-widest text-zinc-500 border-b border-zinc-800">

@@ -36,6 +36,9 @@ export const FallbackRoleActivity: React.FC<ActivityComponentProps> = ({
   onComplete
 }) => {
   const currentExercise = exercises[step] || exercises[0];
+  const selectedFeedback = currentExercise?.wrong_answer_feedback?.find(
+    (feedback) => feedback.option === selectedOption
+  )?.feedback;
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isEvaluated, setIsEvaluated] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -127,7 +130,7 @@ export const FallbackRoleActivity: React.FC<ActivityComponentProps> = ({
             <h2 className="text-lg font-bold text-white tracking-wide">
               {currentExercise?.title || 'Interactive Agentic Sandbox'}
             </h2>
-            <p className="text-xs text-slate-400">
+            <p aria-live="polite" className="text-xs text-slate-400">
               Day {currentExercise?.dayNumber || 1} Mission Sandbox • Step {step + 1} of {exercises.length || 1}
             </p>
           </div>
@@ -139,6 +142,7 @@ export const FallbackRoleActivity: React.FC<ActivityComponentProps> = ({
           </span>
 
           <button
+            type="button"
             onClick={handleRunSimulation}
             disabled={isRunningSimulation}
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
@@ -148,7 +152,7 @@ export const FallbackRoleActivity: React.FC<ActivityComponentProps> = ({
             }`}
           >
             <Play className={`w-3.5 h-3.5 ${isRunningSimulation ? 'animate-spin' : ''}`} />
-            {isRunningSimulation ? 'Simulating...' : 'Run Agent Analysis'}
+            {isRunningSimulation ? 'Simulating...' : 'Run sample analysis'}
           </button>
         </div>
       </div>
@@ -162,7 +166,7 @@ export const FallbackRoleActivity: React.FC<ActivityComponentProps> = ({
             <div className="flex items-center justify-between px-4 py-2 bg-slate-900/80 border-b border-slate-800 text-xs text-slate-400 font-mono">
               <div className="flex items-center gap-2">
                 <Terminal className="w-3.5 h-3.5 text-cyan-400" />
-                <span>agent-runtime-telemetry.log</span>
+                <span>Sample simulation output</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
@@ -210,7 +214,7 @@ export const FallbackRoleActivity: React.FC<ActivityComponentProps> = ({
                   Domain Telemetry Payload
                 </span>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
-                  LIVE BUFFER
+                  ILLUSTRATIVE SAMPLE
                 </span>
               </div>
               <pre className="text-[11px] font-mono text-slate-300 bg-slate-950 p-3 rounded-lg overflow-x-auto max-h-[140px] custom-scrollbar border border-slate-800">
@@ -242,9 +246,7 @@ export const FallbackRoleActivity: React.FC<ActivityComponentProps> = ({
               </div>
 
               <div className="space-y-2">
-                <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                  {currentExercise?.prompt}
-                </p>
+                <p className="text-[10px] uppercase tracking-wider text-indigo-300">Assessment question</p>
                 <h3 className="text-sm font-semibold text-white leading-snug">
                   {currentExercise?.question}
                 </h3>
@@ -268,7 +270,9 @@ export const FallbackRoleActivity: React.FC<ActivityComponentProps> = ({
 
                   return (
                     <button
+                      type="button"
                       key={optIdx}
+                      aria-pressed={isSelected}
                       disabled={isEvaluated}
                       onClick={() => handleSelectOption(opt)}
                       className={`w-full p-3 rounded-lg border text-left text-xs transition-all flex items-start gap-2.5 cursor-pointer ${optStyle}`}
@@ -285,17 +289,17 @@ export const FallbackRoleActivity: React.FC<ActivityComponentProps> = ({
               {/* Explanation Reveal */}
               {isEvaluated && (
                 <div
+                  role="status"
+                  aria-live="polite"
                   className={`p-3.5 rounded-lg text-xs leading-relaxed animate-in fade-in duration-200 border ${
                     isCorrect
                       ? 'bg-emerald-950/30 border-emerald-800/40 text-emerald-300'
                       : 'bg-rose-950/30 border-rose-800/40 text-rose-300'
                   }`}
                 >
-                  <p className="font-semibold mb-1">
-                    {isCorrect ? 'Analysis Confirmed:' : 'Technical Evaluation:'}
-                  </p>
+                  <p className="font-semibold mb-1">{isCorrect ? 'Why this is correct:' : 'Why this needs revision:'}</p>
                   <p className="text-slate-300 text-[11px] leading-relaxed">
-                    {currentExercise.explanation}
+                    {!isCorrect && selectedFeedback ? selectedFeedback : currentExercise.explanation}
                   </p>
                 </div>
               )}
@@ -305,6 +309,7 @@ export const FallbackRoleActivity: React.FC<ActivityComponentProps> = ({
             <div className="pt-4 mt-4 border-t border-slate-800/80 flex items-center justify-between">
               {isEvaluated ? (
                 <button
+                  type="button"
                   onClick={() => {
                     setIsEvaluated(false);
                     setSelectedOption(null);
@@ -322,6 +327,7 @@ export const FallbackRoleActivity: React.FC<ActivityComponentProps> = ({
 
               {!isEvaluated && (
                 <button
+                  type="button"
                   onClick={handleVerifyAnswer}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-md shadow-emerald-600/30 transition-all cursor-pointer"
                 >

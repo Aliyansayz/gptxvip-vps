@@ -8,9 +8,10 @@ interface BlogListProps {
     blogs: BlogPost[];
     onSelectBlog: (id: string) => void;
     onBackToWorkspace: () => void;
+    backToWorkspaceLabel?: string;
 }
 
-export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackToWorkspace }) => {
+export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackToWorkspace, backToWorkspaceLabel = 'Back to workspace' }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
@@ -41,18 +42,16 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackT
         });
     }, [blogs, searchQuery, selectedCategory]);
 
-    const featuredBlog = filteredBlogs.length > 0 ? filteredBlogs[0] : null;
-    const remainingBlogs = filteredBlogs.slice(1);
-
     return (
         <div className="max-w-7xl mx-auto py-12 px-6 md:px-10">
             {/* Top Navigation Bar */}
             <div className="flex items-center justify-between mb-12 border-b border-slate-200 dark:border-slate-800 pb-6">
                 <button 
+                    type="button"
                     onClick={onBackToWorkspace}
                     className="text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/40"
                 >
-                    <ArrowLeft className="w-3.5 h-3.5" /> Back to Workspace
+                    <ArrowLeft className="w-3.5 h-3.5" /> {backToWorkspaceLabel}
                 </button>
                 <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 font-mono">
                     <BookOpen className="w-4 h-4 text-indigo-400" />
@@ -104,6 +103,7 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackT
                         <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-600 dark:group-focus-within:text-indigo-400 transition-colors" />
                         <input 
                             type="text"
+                            aria-label="Search articles"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Search topics, agents, security, algorithms..."
@@ -111,6 +111,8 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackT
                         />
                         {searchQuery && (
                             <button 
+                                type="button"
+                                aria-label="Clear article search"
                                 onClick={() => setSearchQuery('')}
                                 className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800"
                             >
@@ -123,6 +125,8 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackT
                     <div className="flex items-center justify-center flex-wrap gap-2 pt-2">
                         {categories.map((cat) => (
                             <button
+                                type="button"
+                                aria-pressed={selectedCategory === cat.name}
                                 key={cat.name}
                                 onClick={() => setSelectedCategory(cat.name)}
                                 className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 ${
@@ -147,10 +151,11 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackT
             <div className="flex items-center justify-between mb-8 text-xs font-semibold text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
                     <Layers className="w-4 h-4 text-indigo-400" />
-                    <span>Showing {filteredBlogs.length} of {blogs.length} Publications</span>
+                    <span aria-live="polite">Showing {filteredBlogs.length} of {blogs.length} articles</span>
                 </div>
                 {(searchQuery || selectedCategory !== 'All') && (
                     <button 
+                        type="button"
                         onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
                         className="text-indigo-400 hover:underline flex items-center gap-1"
                     >
@@ -168,6 +173,7 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackT
                         We couldn't find any articles matching "{searchQuery}". Try searching for another topic or resetting your category filters.
                     </p>
                     <button 
+                        type="button"
                         onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
                         className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold shadow-lg shadow-indigo-600/30 transition-colors"
                     >
@@ -176,14 +182,9 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackT
                 </div>
             ) : (
                 <div>
-                    {/* Featured Article Card (if no search filter is narrowing down to 1 result) */}
-                    {featuredBlog && selectedCategory === 'All' && !searchQuery && (
-                        <BlogCard blog={featuredBlog} onSelect={onSelectBlog} featured={true} />
-                    )}
-
                     {/* Main Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {(selectedCategory === 'All' && !searchQuery ? remainingBlogs : filteredBlogs).map(blog => (
+                        {filteredBlogs.map(blog => (
                             <BlogCard key={blog.id} blog={blog} onSelect={onSelectBlog} />
                         ))}
                     </div>
@@ -192,4 +193,3 @@ export const BlogList: React.FC<BlogListProps> = ({ blogs, onSelectBlog, onBackT
         </div>
     );
 };
-

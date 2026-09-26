@@ -39,6 +39,11 @@ export default function TemplateDetail() {
         <div>
           <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-100"><TemplateThumb template={template} large interactive /></div>
           <div className="mt-8"><h2 className="text-lg font-semibold text-slate-900">About this surface</h2><p className="mt-3 leading-relaxed text-slate-600">{template.description}</p></div>
+          <section className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-5" aria-labelledby="surface-fit-heading">
+            <h2 id="surface-fit-heading" className="font-semibold text-slate-900">Confirm fit before a project</h2>
+            <p className="mt-2 text-sm leading-relaxed text-slate-700">This listing describes a surface concept and its included patterns. It does not specify a connected data source, deployment readiness, support terms, or compatibility with your environment; confirm those details for your project.</p>
+            <p className="mt-3 text-xs font-semibold text-slate-600">Useful discussion context: your users, data sources, required integrations, and operational constraints.</p>
+          </section>
           <Separator className="my-8" />
           <div>
             <h2 className="text-lg font-semibold text-slate-900">Key capabilities</h2>

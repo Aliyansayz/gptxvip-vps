@@ -1,5 +1,6 @@
 import React from 'react';
 import { Wrench, Search, Radio, Database, Shield, Zap, Globe, FileCode } from 'lucide-react';
+import AgentPreviewNotice from '../../../components/AgentPreviewNotice';
 
 interface ToolInfo {
   id: string;
@@ -73,6 +74,8 @@ export default function ThreatIntelToolsView() {
           </p>
         </div>
       </div>
+
+      <AgentPreviewNotice>Capability descriptions are informational examples; feed sources and integrations are not connected or verified in this preview.</AgentPreviewNotice>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {threatIntelTools.map((tool) => (

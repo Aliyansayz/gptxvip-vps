@@ -26,6 +26,7 @@ export const DotNavigation: React.FC<DotNavigationProps> = ({
           return (
             <button
               key={section.id}
+              type="button"
               onClick={() => onSectionChange(section.id)}
               className={`relative w-1.5 h-1.5 rounded-full transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group ${
                 isActive
@@ -33,6 +34,7 @@ export const DotNavigation: React.FC<DotNavigationProps> = ({
                   : "bg-zinc-400 dark:bg-zinc-500 hover:bg-zinc-500 dark:hover:bg-zinc-400"
               }`}
               aria-label={section.label}
+              aria-current={isActive ? "location" : undefined}
             >
               <div className="hidden sm:block absolute right-[30px] top-1/2 -translate-y-1/2 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white px-2.5 py-1 rounded text-[0.65rem] font-semibold whitespace-nowrap opacity-0 pointer-events-none transition-all duration-200 border border-zinc-200 dark:border-white/10 shadow-sm group-hover:opacity-100 group-hover:right-[25px]">
                 {section.label}

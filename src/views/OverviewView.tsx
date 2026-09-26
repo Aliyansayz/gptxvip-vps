@@ -55,22 +55,39 @@ const ColorMap: Record<string, string> = {
   yellow: "text-yellow-400 bg-yellow-400/10"
 };
 
+const getStrategySectionId = (id: string) => `strategy-section-${id.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
+const getStrategyHeadingId = (id: string) => `strategy-heading-${id.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
+
 export const OverviewView: React.FC = () => {
   const [data, setData] = useState<StrategyData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError(false);
     fetch("/strategy-overview.json")
-      .then(res => res.json())
-      .then(json => {
-        setData(json);
-        setLoading(false);
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`Strategy data request failed (${res.status})`);
+        return res.json();
       })
-      .catch(err => {
+      .then((json: StrategyData) => {
+        if (!json?.strategyArchitecture?.header || !Array.isArray(json.strategyArchitecture.sections)) {
+          throw new Error("Strategy data has an invalid shape");
+        }
+        if (!cancelled) setData(json);
+      })
+      .catch((err) => {
         console.error("Error loading strategy data:", err);
-        setLoading(false);
+        if (!cancelled) setError(true);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
       });
-  }, []);
+    return () => { cancelled = true; };
+  }, [reloadKey]);
 
   if (loading) {
     return (
@@ -80,7 +97,15 @@ export const OverviewView: React.FC = () => {
     );
   }
 
-  if (!data) return null;
+  if (error || !data) {
+    return (
+      <div role="alert" className="mx-auto flex max-w-xl flex-col items-center gap-3 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-8 text-center">
+        <p className="font-semibold text-zinc-800 dark:text-zinc-100">Strategy overview is unavailable.</p>
+        <p className="text-sm text-zinc-600 dark:text-zinc-400">The page could not load its content. Try again in a moment.</p>
+        <button type="button" onClick={() => setReloadKey((key) => key + 1)} className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white">Retry</button>
+      </div>
+    );
+  }
 
   const { header, sections } = data.strategyArchitecture;
 
@@ -100,22 +125,38 @@ export const OverviewView: React.FC = () => {
         </p>
       </div>
 
+      {sections.length > 1 && (
+        <nav aria-label="Strategy overview sections" className="flex flex-wrap gap-2">
+          {sections.map((section) => (
+            <a
+              key={section.id}
+              href={`#${getStrategySectionId(section.id)}`}
+              className="rounded-full border border-zinc-200 bg-white px-3 py-2 text-xs font-semibold text-zinc-700 transition-colors hover:border-emerald-500/40 hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:text-emerald-300"
+            >
+              {section.title}
+            </a>
+          ))}
+        </nav>
+      )}
+
       {/* Article Content */}
       <div className="space-y-20">
         {sections.map((section) => {
           const Icon = IconMap[section.icon] || Activity;
           const colorClasses = ColorMap[section.themeColor] || ColorMap.emerald;
+          const sectionId = getStrategySectionId(section.id);
+          const headingId = getStrategyHeadingId(section.id);
 
           if (section.id === "advance-strategies") {
             return (
-              <section key={section.id} className="p-8 bg-zinc-900 dark:bg-zinc-950 rounded-3xl text-white overflow-hidden relative">
+              <section key={section.id} id={sectionId} aria-labelledby={headingId} className="scroll-mt-24 p-8 bg-zinc-900 dark:bg-zinc-950 rounded-3xl text-white overflow-hidden relative">
                 <div className="absolute top-0 right-0 p-12 opacity-10 pointer-events-none">
                   <Layers className="w-64 h-64" />
                 </div>
                 <div className="relative z-10 max-w-2xl">
                   <div className="flex items-center gap-3 mb-6">
                     <Icon className="w-6 h-6 text-yellow-400 fill-yellow-400" />
-                    <h2 className="text-2xl font-bold">{section.title}</h2>
+                    <h2 id={headingId} className="text-2xl font-bold">{section.title}</h2>
                   </div>
                   <h3 className="text-xl font-medium mb-4 text-zinc-300">
                     {section.subtitle}
@@ -137,12 +178,12 @@ export const OverviewView: React.FC = () => {
 
           if (section.id === "common-indicators") {
             return (
-              <section key={section.id} className="relative">
+              <section key={section.id} id={sectionId} aria-labelledby={headingId} className="relative scroll-mt-24">
                 <div className="flex items-center gap-3 mb-8">
                   <div className={`p-2 rounded-lg ${colorClasses.split(' ')[1]}`}>
                     <Icon className={`w-6 h-6 ${colorClasses.split(' ')[0]}`} />
                   </div>
-                  <h2 className="text-2xl font-bold">{section.title}</h2>
+                  <h2 id={headingId} className="text-2xl font-bold">{section.title}</h2>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -172,12 +213,12 @@ export const OverviewView: React.FC = () => {
 
           if (section.id === "threshold-exits") {
             return (
-              <section key={section.id}>
+              <section key={section.id} id={sectionId} aria-labelledby={headingId} className="scroll-mt-24">
                 <div className="flex items-center gap-3 mb-8">
                   <div className={`p-2 rounded-lg ${colorClasses.split(' ')[1]}`}>
                     <Icon className={`w-6 h-6 ${colorClasses.split(' ')[0]}`} />
                   </div>
-                  <h2 className="text-2xl font-bold">{section.title}</h2>
+                  <h2 id={headingId} className="text-2xl font-bold">{section.title}</h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {section.items?.map(item => (
@@ -196,12 +237,12 @@ export const OverviewView: React.FC = () => {
 
           // Default layout for Indicator and Time Bounded (Side by side in the grid)
           return (
-            <section key={section.id} className="space-y-6">
+            <section key={section.id} id={sectionId} aria-labelledby={headingId} className="space-y-6 scroll-mt-24">
               <div className="flex items-center gap-3">
                 <div className={`p-2 rounded-lg ${colorClasses.split(' ')[1]}`}>
                   <Icon className={`w-6 h-6 ${colorClasses.split(' ')[0]}`} />
                 </div>
-                <h2 className="text-xl font-bold">{section.title}</h2>
+                <h2 id={headingId} className="text-xl font-bold">{section.title}</h2>
               </div>
               <div className="space-y-4">
                 {section.items?.map(item => (

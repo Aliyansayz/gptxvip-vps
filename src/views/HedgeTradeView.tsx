@@ -1,16 +1,32 @@
 import React from "react";
 import { ShieldAlert } from "lucide-react";
+import { TradingChart } from "../finhub/tradeTopic/TradingChart";
+import type { PriceData } from "../finhub/tradeTopic/TradingChart";
 
-export const HedgeTradeView: React.FC = () => {
+interface HedgeTradeViewProps {
+  chartData: PriceData[];
+}
+
+export const HedgeTradeView: React.FC<HedgeTradeViewProps> = ({ chartData }) => {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="mb-4">HEDGE TRADE</h1>
+        <h2 className="mb-4 text-3xl font-black tracking-tighter md:text-4xl">HEDGE TRADE</h2>
         <p className="text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-2xl">
           Hedging involves taking an offsetting position in a related asset to reduce the risk of adverse price movements.
           This strategy is crucial for portfolio protection during volatile market conditions.
         </p>
       </div>
+
+      <TradingChart
+        title="Hedge Position Risk Bands"
+        data={chartData}
+        entryPrice={2800}
+        stopLoss={2760}
+        stopLoss2={2780}
+        takeProfitMin={2820}
+        takeProfitMax={2840}
+      />
 
       <div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl p-8 border border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center gap-4 mb-6">

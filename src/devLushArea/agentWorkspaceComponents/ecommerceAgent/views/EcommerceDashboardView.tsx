@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingCart, TrendingUp, DollarSign, Activity, AlertCircle, ArrowRight, Zap, Target } from 'lucide-react';
+import { ShoppingCart, TrendingUp, DollarSign, Activity, AlertCircle, Zap, Target } from 'lucide-react';
 
 export default function EcommerceDashboardView() {
   return (
@@ -13,22 +13,25 @@ export default function EcommerceDashboardView() {
           </div>
           <div className="flex items-center gap-2 px-3 py-1.5 bg-white rounded-md border border-slate-200 shadow-sm">
             <Activity className="w-4 h-4 text-blue-600 animate-pulse" />
-            <span className="text-sm font-medium text-slate-700">Conversion Agent: Active</span>
+            <span className="text-sm font-medium text-slate-700">Conversion Agent: Preview</span>
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-6">
           <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
             <DollarSign className="w-4 h-4 text-emerald-500" />
-            <span>Revenue Impact: +$12,450</span>
+            <span>Example revenue impact: +$12,450</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
             <ShoppingCart className="w-4 h-4 text-blue-500" />
-            <span>Cart Abandonment: -4.2%</span>
+            <span>Example cart abandonment change: -4.2%</span>
           </div>
         </div>
       </div>
 
       <div className="p-6 max-w-7xl mx-auto w-full space-y-8">
+        <aside className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-950">
+          <strong>Illustrative store preview.</strong> Metrics, alerts, activity entries, and connection names below are example content; no live store source or measurement window is shown.
+        </aside>
         
         {/* Actionable Alerts & Financial Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -54,7 +57,7 @@ export default function EcommerceDashboardView() {
           
           <div className="space-y-4">
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-              <Activity className="w-4 h-4 text-slate-400" /> Live Agent Activity
+              <Activity className="w-4 h-4 text-slate-400" /> Sample activity log
             </h3>
             <div className="p-4 rounded-xl border border-slate-200 bg-white shadow-sm font-mono text-xs text-slate-600 space-y-2 h-[104px] overflow-y-auto">
               <div className="text-blue-600">[14:22:01] ConversionAgent: Analyzing A/B test results for hero CTA...</div>
@@ -65,36 +68,33 @@ export default function EcommerceDashboardView() {
           </div>
         </div>
 
-        {/* Live Use Cases Examples */}
+        {/* Example workflows */}
         <div className="space-y-4">
            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-blue-500" /> Optimization Workflows
            </h3>
            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-             <button className="p-5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-blue-300 hover:shadow-md transition-all text-left group shadow-sm">
+             <article className="p-5 rounded-xl border border-slate-200 bg-white shadow-sm">
                 <h4 className="font-semibold text-sm mb-1 text-slate-800 group-hover:text-blue-600 transition-colors">Checkout Funnel Analysis</h4>
                 <p className="text-xs text-slate-500 mb-4 leading-relaxed">Identify drop-off points and automatically generate A/B test variants to reduce friction.</p>
                 <div className="text-xs font-mono text-blue-600 flex items-center justify-between">
-                  <span>Status: Ready</span>
-                  <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span>Workflow concept</span>
                 </div>
-             </button>
-             <button className="p-5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-blue-300 hover:shadow-md transition-all text-left group shadow-sm">
+             </article>
+             <article className="p-5 rounded-xl border border-slate-200 bg-white shadow-sm">
                 <h4 className="font-semibold text-sm mb-1 text-slate-800 group-hover:text-blue-600 transition-colors">Dynamic Pricing Strategy</h4>
                 <p className="text-xs text-slate-500 mb-4 leading-relaxed">Adjust pricing based on real-time competitor analysis and current inventory levels.</p>
                 <div className="text-xs font-mono text-blue-600 flex items-center justify-between">
-                  <span>Status: Ready</span>
-                  <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span>Workflow concept</span>
                 </div>
-             </button>
-             <button className="p-5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-blue-300 hover:shadow-md transition-all text-left group shadow-sm">
+             </article>
+             <article className="p-5 rounded-xl border border-slate-200 bg-white shadow-sm">
                 <h4 className="font-semibold text-sm mb-1 text-slate-800 group-hover:text-blue-600 transition-colors">Personalized Upselling</h4>
                 <p className="text-xs text-slate-500 mb-4 leading-relaxed">Generate targeted product recommendations based on user browsing history and cart contents.</p>
                 <div className="text-xs font-mono text-blue-600 flex items-center justify-between">
-                  <span>Status: Ready</span>
-                  <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span>Workflow concept</span>
                 </div>
-             </button>
+             </article>
            </div>
         </div>
 

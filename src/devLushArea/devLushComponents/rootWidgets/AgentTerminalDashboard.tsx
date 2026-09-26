@@ -2,6 +2,15 @@ import React, { useState } from 'react';
 
 export default function AgentTerminalDashboard() {
   const [inputValue, setInputValue] = useState('');
+  const [submittedCommand, setSubmittedCommand] = useState('');
+
+  const handleExecute = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const command = inputValue.trim();
+    if (!command) return;
+    setSubmittedCommand(command);
+    setInputValue('');
+  };
 
   return (
     <div className="flex w-full h-full min-h-[600px] bg-[#0a0a0a] text-[#ededed] font-sans overflow-hidden border border-[#2a2a2a] rounded-xl shadow-2xl">
@@ -62,18 +71,24 @@ export default function AgentTerminalDashboard() {
 
         {/* Input Dock */}
         <div className="p-6 px-8 bg-[#141414] border-t border-[#2a2a2a] shrink-0">
-          <div className="flex bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg overflow-hidden transition-colors duration-200 focus-within:border-[#00f0ff]">
+          <form onSubmit={handleExecute} className="flex bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg overflow-hidden transition-colors duration-200 focus-within:border-[#00f0ff]">
             <input 
               type="text" 
+              aria-label="Agent instruction"
               className="flex-1 bg-transparent border-none text-[#ededed] p-4 text-[0.95rem] font-sans outline-none placeholder-[#888888]" 
               placeholder="Instruct the agent or inject context..."
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
             />
-            <button className="bg-transparent text-[#00f0ff] border-none px-6 font-semibold cursor-pointer transition-colors duration-200 hover:bg-[#00f0ff]/10">
+            <button type="submit" disabled={!inputValue.trim()} className="bg-transparent text-[#00f0ff] border-none px-6 font-semibold cursor-pointer transition-colors duration-200 hover:bg-[#00f0ff]/10 disabled:opacity-40 disabled:cursor-not-allowed">
               Execute
             </button>
-          </div>
+          </form>
+          {submittedCommand && (
+            <p role="status" className="mt-3 text-xs text-[#888888]" aria-live="polite">
+              Captured “{submittedCommand}” in this local demo. No agent service is connected.
+            </p>
+          )}
         </div>
       </main>
     </div>

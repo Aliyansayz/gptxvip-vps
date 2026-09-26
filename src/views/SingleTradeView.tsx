@@ -15,7 +15,7 @@ export const SingleTradeView: React.FC<SingleTradeViewProps> = ({
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="mb-4">ONE TRADE AT A TIME</h1>
+        <h2 className="mb-4 text-3xl font-black tracking-tighter md:text-4xl">ONE TRADE AT A TIME</h2>
         <p className="text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-2xl">
           The simplest form of algorithmic execution. The system focuses on a
           single asset, managing a binary risk profile with a hard stop-loss.

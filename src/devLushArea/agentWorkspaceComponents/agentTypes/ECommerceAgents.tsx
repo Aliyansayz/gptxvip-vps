@@ -15,7 +15,7 @@ export const ECommerceAgents: React.FC<ECommerceAgentsProps> = ({ onNavigate }) 
         <h2 className="text-2xl font-bold font-heading text-slate-800 group-hover:text-blue-600 transition-colors">eCommerce Agents</h2>
       </div>
       <p className="text-slate-500 mb-6 flex-1 text-sm leading-relaxed">
-        Intelligent agents focused on conversion rate optimization, inventory syncing, and customer service.
+        Example commerce workflows cover conversion, pricing, inventory, and customer segmentation.
       </p>
       
       <div className="space-y-3">
@@ -27,12 +27,14 @@ export const ECommerceAgents: React.FC<ECommerceAgentsProps> = ({ onNavigate }) 
             <TrendingUp className="w-5 h-5 text-blue-500" />
             <div>
               <div className="font-semibold text-sm text-slate-800">Conversion Agent</div>
-              <div className="text-[11px] text-slate-500 font-medium">Checkout flow optimization & A/B testing</div>
+              <div className="text-[11px] text-slate-500 font-medium">Inspect sample funnel metrics and optimization ideas</div>
             </div>
           </div>
         </button>
         
         <button 
+          type="button"
+          disabled
           className="w-full flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 opacity-70 cursor-not-allowed text-left"
         >
           <div className="flex items-center gap-3">

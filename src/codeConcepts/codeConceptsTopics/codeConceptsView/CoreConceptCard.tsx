@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Activity,
   ArrowRight,
   BookOpen,
   Check,
@@ -33,6 +34,13 @@ const getTypeDetails = (type: string) => {
     case "code_completion": return { label: "Code practice", icon: Code2 };
     case "overview": return { label: "Lesson notes", icon: BookOpen };
     case "custom": return { label: "Interactive lab", icon: Layers };
+    case "scroll_code_walkthrough": return { label: "Code walkthrough", icon: ScrollText };
+    case "simulation_runner": return { label: "Simulation lab", icon: Activity };
+    case "circuit_board": return { label: "Circuit exercise", icon: Workflow };
+    case "code_explainer_plus_visualizer": return { label: "Visual explainer", icon: Workflow };
+    case "code_explainer_drag_drop": return { label: "Code sequencing", icon: MousePointer2 };
+    case "code_rewriter_by_typing": return { label: "Rewrite practice", icon: Code2 };
+    case "code_explainer_production_analogy": return { label: "Production example", icon: Layers };
     case "hft_journey_explainer": return { label: "Guided journey", icon: ScrollText };
     default: return { label: "Interactive lesson", icon: Workflow };
   }

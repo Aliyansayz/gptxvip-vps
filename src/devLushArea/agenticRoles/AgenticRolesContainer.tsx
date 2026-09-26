@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   AgenticRoleDefinition,
   AgenticRoleChapter,
@@ -16,7 +16,16 @@ interface AgenticRolesContainerProps {
   onConsumeEnergy?: () => boolean;
   initialRoleId?: string;
   initialChapterId?: string;
+  onInitialChapterOpened?: () => void;
   onExitToDevLush?: () => void;
+  routeRoleId?: string;
+  routeChapterId?: string;
+  routeSearchOpen?: boolean;
+  onChapterRoutePush?: (roleId: string, chapterId: string) => void;
+  onChapterRouteBack?: () => void;
+  onSearchRoutePush?: () => void;
+  onSearchRouteBack?: () => void;
+  onRoleRoutePush?: (roleId: string) => void;
 }
 
 export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
@@ -24,7 +33,16 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
   onConsumeEnergy,
   initialRoleId,
   initialChapterId,
-  onExitToDevLush
+  onInitialChapterOpened,
+  onExitToDevLush,
+  routeRoleId,
+  routeChapterId,
+  routeSearchOpen = false,
+  onChapterRoutePush,
+  onChapterRouteBack,
+  onSearchRoutePush,
+  onSearchRouteBack,
+  onRoleRoutePush,
 }) => {
   const roles: AgenticRoleDefinition[] = agenticRoleDefinitions;
 
@@ -34,6 +52,8 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
   const [selectedChapter, setSelectedChapter] = useState<AgenticRoleChapter | null>(null);
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | 'all'>('all');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const routeChapterEntryRef = useRef<string | undefined>(undefined);
+  const routeSearchEntryRef = useRef(false);
   const [completedChapterIds, setCompletedChapterIds] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem('agentic_completed_chapters');
@@ -55,31 +75,76 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
   // Find active role
   const activeRole = roles.find((r) => r.id === activeRoleId) || roles[0];
 
+  useEffect(() => {
+    if (routeRoleId && roles.some((role) => role.id === routeRoleId)) {
+      setActiveRoleId(routeRoleId);
+    }
+  }, [routeRoleId, roles]);
+
   // Handle initial chapter deep-linking
   useEffect(() => {
-    if (initialChapterId && activeRole) {
-      const ch = activeRole.chapters.find((c) => c.labComponentId === initialChapterId);
-      if (ch) setSelectedChapter(ch);
+    if (!initialChapterId) return;
+    if (!activeRole) {
+      onInitialChapterOpened?.();
+      return;
     }
-  }, [initialChapterId, activeRole]);
+    const chapter = activeRole.chapters.find((item) => item.labComponentId === initialChapterId);
+    if (chapter) setSelectedChapter(chapter);
+    else toast.error('This saved Agentic Role lab is no longer available.');
+    onInitialChapterOpened?.();
+  }, [initialChapterId, activeRole, onInitialChapterOpened]);
+
+  useEffect(() => {
+    if (!routeChapterId) {
+      if (routeChapterEntryRef.current) {
+        routeChapterEntryRef.current = undefined;
+        setSelectedChapter(null);
+      }
+    } else {
+      routeChapterEntryRef.current = routeChapterId;
+      const role = routeRoleId ? roles.find((item) => item.id === routeRoleId) : undefined;
+      const chapter = role?.chapters.find((item) => item.labComponentId === routeChapterId);
+      if (role && chapter) {
+        setActiveRoleId(role.id);
+        setSelectedChapter(chapter);
+      } else {
+        setSelectedChapter(null);
+      }
+    }
+
+    if (routeSearchOpen) {
+      routeSearchEntryRef.current = true;
+      setIsSearchOpen(true);
+    } else {
+      if (routeSearchEntryRef.current) routeSearchEntryRef.current = false;
+      setIsSearchOpen(false);
+    }
+  }, [routeRoleId, routeChapterId, routeSearchOpen, roles]);
 
   // Global Keyboard listener for ⌘K / Ctrl+K search and Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
-        setIsSearchOpen((prev) => !prev);
+        if (isSearchOpen) {
+          setIsSearchOpen(false);
+          if (routeSearchOpen) onSearchRouteBack?.();
+        } else {
+          setIsSearchOpen(true);
+          onSearchRoutePush?.();
+        }
       }
       if (e.key === 'Escape' && isSearchOpen) {
         setIsSearchOpen(false);
+        if (routeSearchOpen) onSearchRouteBack?.();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isSearchOpen]);
+  }, [isSearchOpen, routeSearchOpen, onSearchRouteBack, onSearchRoutePush]);
 
-  const handleLaunchChapter = (chapter: AgenticRoleChapter) => {
+  const handleLaunchChapter = (chapter: AgenticRoleChapter, roleId = activeRole.id) => {
     if (isLocked) {
       toast.error("Interaction locked! Study energy depleted.");
       return;
@@ -93,7 +158,10 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
       }
     }
 
+    setActiveRoleId(roleId);
     setSelectedChapter(chapter);
+    setIsSearchOpen(false);
+    onChapterRoutePush?.(roleId, chapter.labComponentId);
   };
 
   const handleCompleteChapter = (labComponentId: string) => {
@@ -104,29 +172,49 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
   };
 
   const handleSelectSearchResult = (roleId: string, chapter: AgenticRoleChapter) => {
-    setActiveRoleId(roleId);
-    setSelectedChapter(chapter);
+    handleLaunchChapter(chapter, roleId);
+  };
+
+  const handleSearchOpen = () => {
+    setIsSearchOpen(true);
+    onSearchRoutePush?.();
+  };
+
+  const handleSearchClose = () => {
     setIsSearchOpen(false);
+    if (routeSearchOpen) onSearchRouteBack?.();
+  };
+
+  const handleRoleSelect = (roleId: string) => {
+    const hasNestedView = Boolean(selectedChapter || routeChapterId || isSearchOpen || routeSearchOpen);
+    if (roleId === activeRoleId && !hasNestedView) return;
+
+    setActiveRoleId(roleId);
+    setSelectedChapter(null);
+    setIsSearchOpen(false);
+    onRoleRoutePush?.(roleId);
+  };
+
+  const handleChapterBack = () => {
+    setSelectedChapter(null);
+    if (routeChapterId) onChapterRouteBack?.();
   };
 
   return (
     <AgenticRolesLayout
       roles={roles}
       activeRoleId={activeRoleId}
-      onSelectRole={(roleId) => {
-        setActiveRoleId(roleId);
-        setSelectedChapter(null);
-      }}
+      onSelectRole={handleRoleSelect}
       selectedDifficulty={selectedDifficulty}
       onSelectDifficulty={setSelectedDifficulty}
-      onOpenSearch={() => setIsSearchOpen(true)}
+      onOpenSearch={handleSearchOpen}
       onExitToDevLush={onExitToDevLush}
     >
       {selectedChapter ? (
         <AgenticRolesRunner
           chapter={selectedChapter}
           role={activeRole}
-          onBack={() => setSelectedChapter(null)}
+          onBack={handleChapterBack}
           onCompleteChapter={handleCompleteChapter}
         />
       ) : (
@@ -144,7 +232,7 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
         <AgenticRolesSearchView
           roles={roles}
           onSelectChapter={handleSelectSearchResult}
-          onClose={() => setIsSearchOpen(false)}
+          onClose={handleSearchClose}
         />
       )}
     </AgenticRolesLayout>

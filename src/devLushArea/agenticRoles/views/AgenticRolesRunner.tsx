@@ -43,7 +43,9 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
       const saved = sessionStorage.getItem(`agentic_step_${chapter.labComponentId}`);
       if (saved !== null) {
         const parsed = parseInt(saved, 10);
-        return isNaN(parsed) ? 0 : parsed;
+        return Number.isFinite(parsed)
+          ? Math.min(Math.max(0, parsed), Math.max(0, (chapter.interactive_questions?.length || 1) - 1))
+          : 0;
       }
     } catch (e) {
       // fallback
@@ -91,7 +93,7 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
     } else {
       favoritesCtx.addFavorite({
         id: chapter.labComponentId,
-        type: 'devlush_lab',
+        type: 'agentic_role_lab',
         title: `${chapter.day_title} (${chapter.course})`,
         courseId: role.id
       });
@@ -146,6 +148,8 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
       <header className="sticky top-0 z-40 flex items-center justify-between px-6 py-3.5 bg-slate-900/90 backdrop-blur border-b border-slate-800 shadow-md">
         <div className="flex items-center gap-4">
           <button
+            type="button"
+            aria-label="Return to Agentic Roles hub"
             onClick={onBack}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors text-xs font-semibold cursor-pointer"
           >
@@ -163,7 +167,7 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
                 color: theme.accentHex
               }}
             >
-              DAY 0{chapter.day}
+              {role.shortTitle} · DAY {String(chapter.day).padStart(2, '0')}
             </span>
             <span className="text-xs font-bold text-white tracking-wide truncate max-w-xs md:max-w-md">
               {chapter.day_title}
@@ -176,6 +180,9 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
         <div className="flex items-center gap-3">
           {/* Favorite Toggle Button */}
           <button
+            type="button"
+            aria-label={isFavorite ? 'Remove chapter from favorites' : 'Save chapter to favorites'}
+            aria-pressed={isFavorite}
             onClick={handleToggleFavorite}
             className={`p-2 rounded-xl border transition-all cursor-pointer ${
               isFavorite
@@ -188,12 +195,15 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
           </button>
 
           {/* Step Progress Counter */}
-          <div className="hidden sm:flex items-center gap-1.5 text-xs font-mono text-slate-400 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800">
+          <div role="progressbar" aria-label="Mission progress" aria-valuemin={1} aria-valuemax={Math.max(1, exercises.length)} aria-valuenow={Math.min(currentStep + 1, Math.max(1, exercises.length))} aria-valuetext={`Step ${currentStep + 1} of ${Math.max(1, exercises.length)}`} className="hidden sm:flex items-center gap-1.5 text-xs font-mono text-slate-400 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800">
             <span>Step {currentStep + 1} of {Math.max(1, exercises.length)}</span>
           </div>
 
           {/* Theory Panel Toggle */}
           <button
+            type="button"
+            aria-expanded={theoryVisible}
+            aria-controls="agentic-role-theory"
             onClick={() => setTheoryVisible((prev) => !prev)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
               theoryVisible
@@ -207,6 +217,9 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
 
           {/* Placement Toggle */}
           <button
+            type="button"
+            aria-label={`Move theory panel to ${layoutPlacement === 'side' ? 'bottom' : 'side'}`}
+            aria-pressed={layoutPlacement === 'bottom'}
             onClick={() => setLayoutPlacement((prev) => (prev === 'side' ? 'bottom' : 'side'))}
             className="p-1.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-400 hover:text-white transition-colors cursor-pointer hidden lg:block"
             title={`Switch to ${layoutPlacement === 'side' ? 'Bottom' : 'Side'} Layout`}
@@ -218,7 +231,15 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
 
       {/* Main Workspace Area */}
       <main className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
-        <div
+        <section aria-label="Mission objective" className="mb-6 rounded-xl border border-blue-500/20 bg-blue-950/20 p-4">
+          <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-blue-300">Mission objective · {currentExercise?.title || chapter.chapter_title}</p>
+          <p className="text-sm leading-relaxed text-slate-200">{currentExercise?.prompt || currentExercise?.question || chapter.theory_content?.practical_takeaway || 'Review the scenario, examine the sample output, and complete the assessment.'}</p>
+          <p className="mt-2 text-[10px] uppercase tracking-wider text-slate-500">This role runner uses interactive training scenarios and illustrative agent output.</p>
+        </section>
+              <div
+              id="agentic-role-theory"
+              role="region"
+              aria-label="Mission theory"
           className={`grid gap-6 ${
             theoryVisible && layoutPlacement === 'side'
               ? 'grid-cols-1 lg:grid-cols-12'
