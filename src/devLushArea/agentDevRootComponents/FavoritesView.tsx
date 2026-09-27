@@ -25,6 +25,11 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
         }
     };
 
+    const handleDeleteCollection = (name: string) => {
+        deleteCollection(name);
+        if (activeCollection === name) setActiveCollection('All');
+    };
+
     const handleLaunch = (item: FavoriteItem) => {
         onLaunch(item);
     };
@@ -42,8 +47,10 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
 
                 <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
                     <button
+                        type="button"
                         onClick={() => setActiveCollection('All')}
-                        className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${activeCollection === 'All' ? 'bg-primary text-primary-foreground shadow-lg' : 'hover:bg-muted text-muted-foreground'}`}
+                        aria-pressed={activeCollection === 'All'}
+                        className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${activeCollection === 'All' ? 'bg-primary text-primary-foreground shadow-lg' : 'hover:bg-muted text-muted-foreground'}`}
                     >
                         <span className="font-semibold">All Items</span>
                         <span className={`text-xs px-2 py-0.5 rounded-full ${activeCollection === 'All' ? 'bg-white/20' : 'bg-muted-foreground/10'}`}>
@@ -56,19 +63,23 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
                     {collections.map(col => (
                         <div key={col} className="group relative">
                             <button
+                                type="button"
                                 onClick={() => setActiveCollection(col)}
-                                className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${activeCollection === col ? 'bg-primary text-primary-foreground shadow-lg' : 'hover:bg-muted text-muted-foreground'}`}
+                                aria-pressed={activeCollection === col}
+                                className={`w-full flex items-center justify-between px-4 pr-14 py-3 rounded-xl transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${activeCollection === col ? 'bg-primary text-primary-foreground shadow-lg' : 'hover:bg-muted text-muted-foreground'}`}
                             >
                                 <span className="font-semibold truncate pr-6">{col}</span>
                                 <span className={`text-xs px-2 py-0.5 rounded-full ${activeCollection === col ? 'bg-white/20' : 'bg-muted-foreground/10'}`}>
                                     {favorites.filter(i => i.collection === col).length}
                                 </span>
                             </button>
-                            {col !== 'Favorites' && activeCollection !== col && (
+                            {col !== 'Favorites' && (
                                 <button
-                                    onClick={(e) => { e.stopPropagation(); deleteCollection(col); }}
-                                    className="absolute right-12 top-1/2 -translate-y-1/2 p-1.5 opacity-0 group-hover:opacity-100 hover:text-destructive transition-all"
-                                    title="Delete collection"
+                                    type="button"
+                                    onClick={() => handleDeleteCollection(col)}
+                                    className="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-lg text-muted-foreground opacity-100 transition-all hover:bg-destructive/10 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100"
+                                    aria-label={`Delete ${col} collection`}
+                                    title={`Delete ${col} collection`}
                                 >
                                     <TrashIcon className="w-4 h-4" />
                                 </button>
@@ -79,25 +90,27 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
 
                 <div className="p-4 border-t border-border">
                     {isCreating ? (
-                        <div className="space-y-2 animate-fade-in-down">
+                        <form onSubmit={(e) => { e.preventDefault(); handleCreate(); }} className="space-y-2 animate-fade-in-down">
                             <input
                                 autoFocus
                                 type="text"
-                                className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+                                aria-label="Collection name"
+                                className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                                 placeholder="Collection name..."
+                                required
                                 value={newColName}
                                 onChange={(e) => setNewColName(e.target.value)}
-                                onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
                             />
                             <div className="flex gap-2">
-                                <button onClick={handleCreate} className="flex-1 bg-primary text-primary-foreground py-2 rounded-lg text-sm font-semibold hover:brightness-110 transition-all">Create</button>
-                                <button onClick={() => setIsCreating(false)} className="px-3 py-2 rounded-lg text-sm border border-border hover:bg-muted text-muted-foreground">Cancel</button>
+                                <button type="submit" disabled={!newColName.trim()} className="min-h-11 flex-1 bg-primary text-primary-foreground rounded-lg text-sm font-semibold hover:brightness-110 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">Create</button>
+                                <button type="button" onClick={() => { setIsCreating(false); setNewColName(''); }} className="min-h-11 px-3 rounded-lg text-sm border border-border hover:bg-muted text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Cancel</button>
                             </div>
-                        </div>
+                        </form>
                     ) : (
                         <button
+                            type="button"
                             onClick={() => setIsCreating(true)}
-                            className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-border rounded-xl text-muted-foreground hover:text-primary hover:border-primary/50 hover:bg-primary/5 hover:scale-[1.02] transition-all"
+                            className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-border rounded-xl text-muted-foreground hover:text-primary hover:border-primary/50 hover:bg-primary/5 hover:scale-[1.02] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                         >
                             <FolderPlusIcon className="w-5 h-5" />
                             <span className="font-semibold">New Collection</span>
@@ -146,7 +159,8 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
                                             <select
                                                 value={item.collection}
                                                 onChange={(e) => moveItem(item.id, e.target.value)}
-                                                className="bg-transparent text-xs border-none p-0 font-medium outline-none hover:text-primary text-muted-foreground cursor-pointer focus:ring-0 w-24 truncate"
+                                                aria-label={`Move ${item.title} to collection`}
+                                                className="bg-transparent text-xs border-none p-0 font-medium outline-none hover:text-primary text-muted-foreground cursor-pointer focus-visible:ring-2 focus-visible:ring-primary w-24 truncate"
                                             >
                                                 {collections.map(c => <option key={c} value={c}>{c}</option>)}
                                             </select>
@@ -154,15 +168,18 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
 
                                         <div className="flex gap-2">
                                             <button
+                                                type="button"
                                                 onClick={() => removeFavorite(item.id)}
-                                                className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-all"
-                                                title="Remove"
+                                                className="flex h-11 w-11 items-center justify-center text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                                                aria-label={`Remove ${item.title} from favorites`}
+                                                title={`Remove ${item.title}`}
                                             >
                                                 <TrashIcon className="w-4 h-4" />
                                             </button>
                                             <button
+                                                type="button"
                                                 onClick={() => handleLaunch(item)}
-                                                className="flex items-center gap-2 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg font-bold text-xs hover:brightness-110 transition-all shadow-md active:scale-95"
+                                                className="flex min-h-11 items-center gap-2 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg font-bold text-xs hover:brightness-110 transition-all shadow-md active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                                             >
                                                 <PlayIcon className="w-3 h-3" />
                                                 Launch

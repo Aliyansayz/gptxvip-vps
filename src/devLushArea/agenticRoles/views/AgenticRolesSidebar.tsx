@@ -71,8 +71,10 @@ export const AgenticRolesSidebar: React.FC<AgenticRolesSidebarProps> = ({
           )}
 
           <button
+            type="button"
             onClick={onToggleCollapse}
-            className="p-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+            aria-label={isCollapsed ? 'Expand role sidebar' : 'Collapse role sidebar'}
             title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
           >
             {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
@@ -82,8 +84,9 @@ export const AgenticRolesSidebar: React.FC<AgenticRolesSidebarProps> = ({
         {/* Search Action Trigger */}
         {onOpenSearch && !isCollapsed && (
           <button
+            type="button"
             onClick={onOpenSearch}
-            className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 transition-all text-xs font-mono cursor-pointer group"
+            className="w-full min-h-11 flex items-center justify-between px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 transition-all text-xs font-mono cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
           >
             <span className="flex items-center gap-2">
               <Search className="w-3.5 h-3.5 text-slate-500 group-hover:text-blue-400" />
@@ -102,9 +105,11 @@ export const AgenticRolesSidebar: React.FC<AgenticRolesSidebarProps> = ({
             <div className="grid grid-cols-4 gap-1 p-1 rounded-xl bg-slate-900 border border-slate-800 text-[10px] font-mono">
               {(['all', 'easy', 'medium', 'hard'] as const).map((diff) => (
                 <button
+                  type="button"
                   key={diff}
                   onClick={() => onSelectDifficulty(diff)}
-                  className={`py-1 rounded-lg capitalize transition-all cursor-pointer text-center ${
+                  aria-pressed={selectedDifficulty === diff}
+                  className={`min-h-10 rounded-lg capitalize transition-all cursor-pointer text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
                     selectedDifficulty === diff
                       ? 'bg-blue-600 text-white font-bold shadow-sm'
                       : 'text-slate-400 hover:text-white'
@@ -132,10 +137,12 @@ export const AgenticRolesSidebar: React.FC<AgenticRolesSidebarProps> = ({
 
             return (
               <button
+                type="button"
                 key={role.id}
                 onClick={() => onSelectRole(role.id)}
+                aria-pressed={isActive}
                 title={role.title}
-                className={`w-full flex items-center gap-3 p-2.5 rounded-xl transition-all cursor-pointer text-left ${
+                className={`w-full min-h-12 flex items-center gap-3 p-2.5 rounded-xl transition-all cursor-pointer text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
                   isActive
                     ? 'bg-slate-900 border text-white shadow-lg'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60 border border-transparent'
@@ -173,8 +180,9 @@ export const AgenticRolesSidebar: React.FC<AgenticRolesSidebarProps> = ({
       {onExitToDevLush && (
         <div className="p-4 border-t border-slate-800/80">
           <button
+            type="button"
             onClick={onExitToDevLush}
-            className={`w-full flex items-center gap-2 p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-900 transition-all text-xs font-medium cursor-pointer ${
+            className={`w-full min-h-11 flex items-center gap-2 p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-900 transition-all text-xs font-medium cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
               isCollapsed ? 'justify-center' : ''
             }`}
           >

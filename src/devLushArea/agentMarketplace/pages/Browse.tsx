@@ -27,13 +27,14 @@ export default function Browse() {
 
   useEffect(() => {
     const canonicalParams = new URLSearchParams(serializedParams)
+    if (!q.trim()) canonicalParams.delete('q')
     if (category === 'all') canonicalParams.delete('category')
     if (framework === 'all') canonicalParams.delete('framework')
     if (sort === 'featured') canonicalParams.delete('sort')
     if (canonicalParams.toString() !== serializedParams) {
       setParams(canonicalParams, { replace: true })
     }
-  }, [category, framework, serializedParams, setParams, sort])
+  }, [category, framework, q, serializedParams, setParams, sort])
 
   const setParam = (key: string, value: string) => {
     const next = new URLSearchParams(params)

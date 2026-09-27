@@ -4,4 +4,5 @@ export const CONCEPT_DATA_FILES: Record<string, string[]> = {
   cpp_engine_design: ["index.json"],
   HFT: ["index.json"],
   python: ["index.json", "advanced_topics.json"],
+  algo_trading: ["index.json"],
 };

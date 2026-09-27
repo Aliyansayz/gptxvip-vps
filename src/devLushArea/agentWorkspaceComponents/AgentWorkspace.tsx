@@ -68,8 +68,10 @@ export const AgentWorkspace: React.FC = () => {
             {currentView !== 'home' && (
                 <div className="absolute top-4 left-4 z-10">
                     <button 
+                        type="button"
+                        data-agent-workspace-back
                         onClick={returnToWorkspaceHome}
-                        className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg shadow-sm text-sm font-semibold text-slate-700 transition-colors"
+                        className="flex min-h-11 items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg shadow-sm text-sm font-semibold text-slate-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                     >
                         <ArrowLeft className="w-4 h-4" />
                         Back to Agents

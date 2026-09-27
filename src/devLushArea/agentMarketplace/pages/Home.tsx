@@ -42,7 +42,7 @@ export default function Home() {
                 <Link to="/templates">Explore surfaces <ArrowRight className="ml-2 h-4 w-4" /></Link>
               </Button>
               <Button asChild size="lg" variant="outline">
-                <a href="/agents/lab"><FlaskConical className="mr-2 h-4 w-4" /> Open Agent Labs</a>
+                <Link to="/lab"><FlaskConical className="mr-2 h-4 w-4" /> Open Agent Labs</Link>
               </Button>
               <Button asChild size="lg" variant="outline">
                 <a href={'mailto:' + CONTACT_EMAIL}><Mail className="mr-2 h-4 w-4" /> Contact the owner</a>

@@ -29,7 +29,11 @@ export const SimulationRunner: React.FC<SimulationRunnerProps> = ({
   onBack,
   courseId
 }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() =>
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(min-width: 1024px)').matches,
+  );
   const [simulationKey, setSimulationKey] = useState(0);
 
   const handleReset = () => {
@@ -63,25 +67,28 @@ export const SimulationRunner: React.FC<SimulationRunnerProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-screen w-full bg-[#050505] text-zinc-100 overflow-hidden font-sans">
+    <div className="relative flex h-screen min-h-screen h-[100dvh] min-h-[100svh] w-full flex-col overflow-hidden bg-[#050505] font-sans text-zinc-100">
       {/* Top Header Navigation */}
-      <header className="h-16 border-b border-zinc-800 flex items-center justify-between px-6 shrink-0 bg-zinc-950/50 backdrop-blur-md z-50">
-        <div className="flex items-center gap-6">
+      <header className="z-50 flex h-16 shrink-0 items-center justify-between gap-2 border-b border-zinc-800 bg-zinc-950/50 px-3 backdrop-blur-md sm:px-6">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-6">
           <button
+            type="button"
             onClick={onBack}
-            className="group flex items-center gap-2 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest bg-zinc-900 hover:bg-white text-zinc-400 hover:text-zinc-950 border border-zinc-800 rounded-full transition-all duration-300"
+            aria-label="Exit simulation"
+            className="group inline-flex min-h-10 shrink-0 items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-zinc-400 transition-all duration-300 hover:bg-white hover:text-zinc-950"
           >
             <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-1" />
-            Exit Simulation
+            <span className="hidden sm:inline">Exit Simulation</span>
+            <span className="sm:hidden">Exit</span>
           </button>
           
           <div className="h-4 w-px bg-zinc-800" />
           
-          <div className="flex flex-col">
-            <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em]">
+          <div className="flex min-w-0 flex-col">
+            <span className="hidden truncate text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 sm:block">
               {courseId || 'Module Simulation'} // {question.concept_tested}
             </span>
-            <span className="text-sm font-black tracking-tight text-white">
+            <span className="truncate text-xs font-black tracking-tight text-white sm:text-sm">
               {question.title}
             </span>
           </div>
@@ -89,15 +96,20 @@ export const SimulationRunner: React.FC<SimulationRunnerProps> = ({
 
         <div className="flex items-center gap-3">
           <button 
+            type="button"
             onClick={handleReset}
-            className="p-2 text-zinc-500 hover:text-white transition-colors flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest bg-zinc-900 border border-zinc-800 rounded-lg"
+            aria-label="Reset simulation"
+            className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900 px-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500 transition-colors hover:text-white sm:px-3"
           >
             <RotateCcw className="w-3 h-3" />
-            Reset
+            <span className="hidden sm:inline">Reset</span>
           </button>
           <button 
+            type="button"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className={`p-2 transition-colors rounded-lg border flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest ${
+            aria-expanded={isSidebarOpen}
+            aria-controls="simulation-engine-data"
+            className={`inline-flex min-h-10 shrink-0 items-center gap-2 rounded-lg border px-2 text-[10px] font-bold uppercase tracking-widest transition-colors sm:px-3 ${
               isSidebarOpen ? 'bg-zinc-100 text-zinc-900 border-white' : 'bg-zinc-900 text-zinc-500 border-zinc-800'
             }`}
           >
@@ -109,7 +121,7 @@ export const SimulationRunner: React.FC<SimulationRunnerProps> = ({
 
       <div className="flex flex-1 overflow-hidden relative">
         {/* Main Simulation Viewport */}
-        <main className="flex-1 relative overflow-hidden bg-[radial-gradient(circle_at_center,_#111_0%,_#050505_100%)]">
+        <main className="relative min-w-0 flex-1 overflow-hidden bg-[radial-gradient(circle_at_center,_#111_0%,_#050505_100%)]">
           {/* Subtle Grid Background */}
           <div className="absolute inset-0 opacity-10 pointer-events-none" 
             style={{ 
@@ -118,7 +130,7 @@ export const SimulationRunner: React.FC<SimulationRunnerProps> = ({
             }}
           />
 
-          <div className="absolute inset-0 flex items-center justify-center p-8 lg:p-12 overflow-y-auto">
+          <div className="absolute inset-0 flex items-center justify-center overflow-y-auto p-3 sm:p-8 lg:p-12">
              <div className="w-full max-w-6xl">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -156,7 +168,8 @@ export const SimulationRunner: React.FC<SimulationRunnerProps> = ({
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: 350, opacity: 0 }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="w-[350px] border-l border-zinc-800 bg-[#0a0a0a] flex flex-col z-40"
+              id="simulation-engine-data"
+              className="absolute inset-y-0 right-0 z-40 flex w-full max-w-[350px] flex-col border-l border-zinc-800 bg-[#0a0a0a] lg:relative lg:inset-auto lg:w-[350px] lg:max-w-none"
             >
               <div className="p-6 overflow-y-auto hidden-scrollbar flex-1">
                 <div className="flex items-center gap-2 mb-6">
@@ -238,18 +251,6 @@ export const SimulationRunner: React.FC<SimulationRunnerProps> = ({
         </AnimatePresence>
       </div>
 
-      {/* Floating Control Hint if Sidebar closed */}
-      {!isSidebarOpen && (
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          onClick={() => setIsSidebarOpen(true)}
-          className="absolute bottom-6 right-6 p-4 bg-white text-zinc-950 rounded-2xl shadow-2xl z-50 flex items-center gap-3 font-bold text-xs uppercase tracking-widest"
-        >
-          <Settings2 className="w-4 h-4" />
-          Show Data Panel
-        </motion.button>
-      )}
     </div>
   );
 };

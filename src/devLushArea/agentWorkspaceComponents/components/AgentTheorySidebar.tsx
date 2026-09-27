@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { load } from 'js-yaml';
 import theoriesYamlStr from './wiki_info/theories.yaml?raw';
 
-import { saveTopicTheory, getSavedTopicTheories } from './TopicTheorySaves';
+import { saveTopicTheory, getSavedTopicTheories, removeTopicTheorySave } from './TopicTheorySaves';
 
 interface TheoryTopic {
   id: string;
@@ -52,15 +52,16 @@ export default function AgentTheorySidebar({ agentType }: AgentTheorySidebarProp
   
   const isSaved = savedTheories.some(s => s.theoryId === content?.id && s.agentType === agentType);
 
-  const handleAutoImport = () => {
-    if (!content) return;
-    toast.success(`Successfully imported "${content.title}" to global Topic Theory Library`);
-  };
-
   const handleSaveTheory = () => {
     if (!content) return;
     if (isSaved) {
-      toast.info(`"${content.title}" is already saved.`);
+      const savedTheory = savedTheories.find(s => s.theoryId === content.id && s.agentType === agentType);
+      if (!savedTheory || !removeTopicTheorySave(savedTheory.id)) {
+        toast.error('Could not remove this theory from browser storage.');
+        return;
+      }
+      setSavedTheories((current) => current.filter(s => s.id !== savedTheory.id));
+      toast.success(`Removed "${content.title}" from Topic Theory Saves.`);
       return;
     }
     
@@ -83,17 +84,19 @@ export default function AgentTheorySidebar({ agentType }: AgentTheorySidebarProp
 
   return (
     <div className="w-full h-full bg-white flex flex-col shadow-sm">
-      <div className="p-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+      <div className="p-4 border-b border-slate-200 bg-slate-50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-indigo-600" />
           <h2 className="font-bold text-slate-800 text-sm">Theory Wiki Area</h2>
         </div>
-        <div className="flex items-center gap-4">
-          <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+          <label htmlFor={`theory-topic-select-${agentType}`} className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
             Select Theory Topic:
           </label>
-          <div className="relative w-64">
+          <div className="relative w-full sm:w-64">
             <select 
+              id={`theory-topic-select-${agentType}`}
+              aria-label="Select theory topic"
               className="w-full appearance-none bg-white border border-slate-200 rounded-lg p-2 pr-8 text-sm font-medium text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all shadow-sm"
               value={selectedTheoryId}
               onChange={(e) => setSelectedTheoryId(e.target.value)}
@@ -186,8 +189,11 @@ export default function AgentTheorySidebar({ agentType }: AgentTheorySidebarProp
         
         <div className="pt-6 pb-12 flex justify-end">
           <button 
+            type="button"
+            aria-pressed={isSaved}
+            aria-label={isSaved ? `Remove ${content.title} from Topic Theory Saves` : `Save ${content.title} to Topic Theory Saves`}
             onClick={handleSaveTheory}
-            className={`flex items-center justify-center gap-2 py-3 px-6 rounded-lg font-semibold transition-colors shadow-sm hover:shadow-md border ${
+            className={`min-h-11 flex items-center justify-center gap-2 py-3 px-6 rounded-lg font-semibold transition-colors shadow-sm hover:shadow-md border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
               isSaved
                 ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
                 : 'bg-indigo-600 border-indigo-600 text-white hover:bg-indigo-700 hover:border-indigo-700'

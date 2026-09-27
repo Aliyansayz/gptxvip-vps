@@ -63,7 +63,7 @@ export default function RedTeamSettingsView() {
             <Settings className="w-6 h-6 text-red-600" />
             Simulation Settings
           </h2>
-          <p className="text-slate-500 mt-2">Configure Rules of Engagement (RoE) and simulation parameters.</p>
+          <p className="text-slate-500 mt-2">Edit local demo notes. These settings are saved in this browser and do not change the fixed scripted scenario or contact a target.</p>
         </div>
 
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
@@ -73,7 +73,7 @@ export default function RedTeamSettingsView() {
           </div>
           <div className="p-5 space-y-4">
             <div>
-              <label htmlFor="red-team-in-scope" className="block text-sm font-medium text-slate-700 mb-1">In-Scope IP Ranges (CIDR)</label>
+              <label htmlFor="red-team-in-scope" className="block text-sm font-medium text-slate-700 mb-1">Example in-scope IP ranges (CIDR)</label>
               <textarea 
                 id="red-team-in-scope"
                 className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm font-mono text-slate-600 h-24"
@@ -82,7 +82,7 @@ export default function RedTeamSettingsView() {
               />
             </div>
             <div>
-              <label htmlFor="red-team-out-of-scope" className="block text-sm font-medium text-slate-700 mb-1">Out-of-Scope (Blacklist)</label>
+              <label htmlFor="red-team-out-of-scope" className="block text-sm font-medium text-slate-700 mb-1">Example out-of-scope list</label>
               <input 
                 id="red-team-out-of-scope"
                 type="text"
@@ -101,16 +101,16 @@ export default function RedTeamSettingsView() {
           </div>
           <div className="p-5 space-y-4">
             <label className="flex items-center gap-3">
-              <input type="checkbox" checked={settings.safeMode} onChange={(event) => updateSetting('safeMode', event.target.checked)} className="w-4 h-4 text-red-600 rounded border-slate-300 focus:ring-red-500" />
-              <span className="text-sm font-medium text-slate-700">Enable automated exploitation (Safe Mode)</span>
+              <input type="checkbox" checked={settings.safeMode} onChange={(event) => updateSetting('safeMode', event.target.checked)} className="w-5 h-5 shrink-0 text-red-600 rounded border-slate-300 focus:ring-red-500" />
+              <span className="text-sm font-medium text-slate-700">Safe mode preference (demo only)</span>
             </label>
             <label className="flex items-center gap-3">
-              <input type="checkbox" checked={settings.allowSmb} onChange={(event) => updateSetting('allowSmb', event.target.checked)} className="w-4 h-4 text-red-600 rounded border-slate-300 focus:ring-red-500" />
-              <span className="text-sm font-medium text-slate-700">Allow lateral movement via SMB</span>
+              <input type="checkbox" checked={settings.allowSmb} onChange={(event) => updateSetting('allowSmb', event.target.checked)} className="w-5 h-5 shrink-0 text-red-600 rounded border-slate-300 focus:ring-red-500" />
+              <span className="text-sm font-medium text-slate-700">SMB preference (demo only)</span>
             </label>
             <label className="flex items-center gap-3">
-              <input type="checkbox" checked={settings.simulateDos} onChange={(event) => updateSetting('simulateDos', event.target.checked)} className="w-4 h-4 text-red-600 rounded border-slate-300 focus:ring-red-500" />
-              <span className="text-sm font-medium text-slate-700">Simulate Denial of Service (DoS) conditions</span>
+              <input type="checkbox" checked={settings.simulateDos} onChange={(event) => updateSetting('simulateDos', event.target.checked)} className="w-5 h-5 shrink-0 text-red-600 rounded border-slate-300 focus:ring-red-500" />
+              <span className="text-sm font-medium text-slate-700">DoS preference (demo only)</span>
             </label>
           </div>
         </div>

@@ -807,6 +807,8 @@ const ScrollCodeWalkthrough: React.FC<ScrollCodeWalkthroughProps> = ({
   const codeLines = question.codeSnippet.split('\n');
 
   useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') return;
+
     const observerOptions = {
       root: null,
       rootMargin: '-20% 0px -40% 0px',
@@ -875,12 +877,17 @@ const ScrollCodeWalkthrough: React.FC<ScrollCodeWalkthroughProps> = ({
     const timeoutId = setTimeout(() => requestAnimationFrame(applyScroll), 50);
     
     // Re-apply if container resizes (e.g. initial animation to 45vh)
-    const resizeObserver = new ResizeObserver(() => applyScroll());
-    resizeObserver.observe(viewport);
+    const resizeObserver = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(() => applyScroll());
+    if (resizeObserver) {
+      resizeObserver.observe(viewport);
+    } else {
+      window.addEventListener('resize', applyScroll);
+    }
 
     return () => {
       clearTimeout(timeoutId);
-      resizeObserver.disconnect();
+      if (resizeObserver) resizeObserver.disconnect();
+      else window.removeEventListener('resize', applyScroll);
     };
   }, [activeStep, question.steps, isCodeVisible]);
 
@@ -1295,7 +1302,7 @@ export const CoreConceptRunner: React.FC<CoreConceptRunnerProps> = ({
                  setIsDarkMode={setIsDarkMode}
                  isCodeVisible={isCodeVisible}
                  setIsCodeVisible={setIsCodeVisible}
-                 language={categoryId?.toLowerCase() === 'python' ? 'python' : 'cpp'}
+                 language={['python', 'algo_trading'].includes(categoryId?.toLowerCase() || '') ? 'python' : 'cpp'}
                />
             </div>
         );

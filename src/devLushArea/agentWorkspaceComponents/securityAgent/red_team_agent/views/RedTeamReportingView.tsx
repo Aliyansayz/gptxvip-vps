@@ -53,15 +53,15 @@ export default function RedTeamReportingView() {
   return (
     <div className="flex-1 p-8 bg-slate-50 overflow-y-auto">
       <div className="max-w-4xl mx-auto space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
               <FileText className="w-6 h-6 text-red-600" />
               Attack Paths & Reporting
             </h2>
-            <p className="text-slate-500 mt-2">Documented attack vectors and successful exploitation chains from recent simulations.</p>
+            <p className="text-slate-500 mt-2">Illustrative sample attack paths for study. They are not findings from a scan or recent engagement.</p>
           </div>
-          <button type="button" onClick={handleExportReport} className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors shadow-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-500">
+          <button type="button" onClick={handleExportReport} className="min-h-11 self-start flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors shadow-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-500">
             <Download className="w-4 h-4" />
             Export Report
           </button>

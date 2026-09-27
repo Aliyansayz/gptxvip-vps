@@ -43,7 +43,7 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           aria-label={isSidebarOpen ? "Collapse Agent Labs sidebar" : "Expand Agent Labs sidebar"}
           aria-expanded={isSidebarOpen}
-          className="h-6 w-6 text-indigo-400 hover:text-indigo-300 flex-shrink-0 transition-colors"
+          className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg text-indigo-400 transition-colors hover:bg-slate-900 hover:text-indigo-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
         >
           <Menu className="w-6 h-6" />
         </button>
@@ -61,7 +61,7 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
             type="button"
             onClick={onExit}
             aria-label="Exit Agent Labs to the Agent catalog"
-            className={`flex items-center w-full p-2 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all ${!isSidebarOpen && "justify-center"}`}
+            className={`flex min-h-11 items-center w-full p-2 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 ${!isSidebarOpen && "justify-center"}`}
             title="Exit Workspace"
           >
             <Shield className={`w-5 h-5 flex-shrink-0 ${isSidebarOpen ? "mr-3" : ""}`} />
@@ -75,9 +75,11 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
       {/* Search Actions */}
       <div className="mb-6">
         <button
+          type="button"
           onClick={onSearchClick}
-          className={`flex items-center w-full p-2 rounded-lg bg-indigo-600/10 border border-indigo-500/20 text-indigo-400 hover:bg-indigo-600/20 transition-all ${!isSidebarOpen && "justify-center"}`}
+          className={`flex min-h-11 items-center w-full p-2 rounded-lg bg-indigo-600/10 border border-indigo-500/20 text-indigo-400 hover:bg-indigo-600/20 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${!isSidebarOpen && "justify-center"}`}
           title="Search Simulation"
+          aria-label="Search Agent Labs topics"
         >
           <Search className={`w-5 h-5 flex-shrink-0 ${isSidebarOpen ? "mr-3" : ""}`} />
           {isSidebarOpen && (
@@ -100,7 +102,7 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
                     type="button"
                     aria-pressed={isActive}
                     onClick={() => onTopicSelect(topic.id)}
-                    className={`flex items-center p-2 text-sm w-full font-bold transition-all duration-300 transform rounded-xl ${isActive ? `${theme.bgSoft} ${theme.text} border ${theme.borderSoft} scale-[1.03] shadow-md ${theme.shadowMd}` : "text-slate-400 border border-transparent hover:bg-slate-900 hover:text-slate-200 scale-100 hover:scale-[1.01]"}`}
+                    className={`flex min-h-11 items-center p-2 text-sm w-full font-bold transition-all duration-300 transform rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${isActive ? `${theme.bgSoft} ${theme.text} border ${theme.borderSoft} scale-[1.03] shadow-md ${theme.shadowMd}` : "text-slate-400 border border-transparent hover:bg-slate-900 hover:text-slate-200 scale-100 hover:scale-[1.01]"}`}
                     title={topic.title}
                   >
                     <IconComponent

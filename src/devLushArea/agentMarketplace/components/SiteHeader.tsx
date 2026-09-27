@@ -32,7 +32,7 @@ export default function SiteHeader() {
         <nav className="hidden items-center gap-6 md:flex">
           <NavLink to="/" className={navCls}>Agent Labs</NavLink>
           <NavLink to="/templates" className={navCls}>Project surfaces</NavLink>
-          <a href="/agents/lab" className="text-sm font-medium text-slate-500 transition-colors hover:text-slate-900">Open a lab</a>
+          <Link to="/lab" className="text-sm font-medium text-slate-500 transition-colors hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-500">Open a lab</Link>
         </nav>
 
         <form onSubmit={submit} aria-label="Search agent surfaces" className="ml-auto hidden max-w-xs flex-1 md:block">
@@ -85,7 +85,7 @@ export default function SiteHeader() {
             <a href="/" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm font-semibold text-indigo-700 hover:bg-indigo-50">GPTX.VIP Home</a>
             <Link to="/" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100">Agent Labs</Link>
             <Link to="/templates" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100">Project surfaces</Link>
-            <a href="/agents/lab" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100">Open a lab</a>
+            <Link to="/lab" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-500">Open a lab</Link>
             <a href={`mailto:${CONTACT_EMAIL}`} onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm font-semibold text-indigo-700 hover:bg-indigo-50">Contact {CONTACT_EMAIL}</a>
           </nav>
         </div>

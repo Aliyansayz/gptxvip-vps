@@ -2,7 +2,7 @@ import React from 'react';
 import { Code, Database, GitPullRequest, GitMerge, Search } from 'lucide-react';
 
 interface DevToolsAgentsProps {
-  onNavigate?: (view: string) => void;
+  onNavigate: (view: string) => void;
 }
 
 export const DevToolsAgents: React.FC<DevToolsAgentsProps> = ({ onNavigate }) => {
@@ -20,8 +20,9 @@ export const DevToolsAgents: React.FC<DevToolsAgentsProps> = ({ onNavigate }) =>
       
       <div className="space-y-3">
         <button 
-          onClick={() => onNavigate && onNavigate('devtools-agent')}
-          className="w-full flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-emerald-300 hover:shadow-sm transition-all text-left"
+          type="button"
+          onClick={() => onNavigate('devtools-agent')}
+          className="w-full min-h-11 flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-emerald-300 hover:shadow-sm transition-all text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
         >
           <div className="flex items-center gap-3">
             <GitPullRequest className="w-5 h-5 text-emerald-500" />
@@ -33,8 +34,9 @@ export const DevToolsAgents: React.FC<DevToolsAgentsProps> = ({ onNavigate }) =>
         </button>
         
         <button 
-          onClick={() => onNavigate && onNavigate('sast-agent')}
-          className="w-full flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-emerald-300 hover:shadow-sm transition-all text-left mt-3"
+          type="button"
+          onClick={() => onNavigate('sast-agent')}
+          className="w-full min-h-11 flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-emerald-300 hover:shadow-sm transition-all text-left mt-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
         >
           <div className="flex items-center gap-3">
             <Search className="w-5 h-5 text-emerald-500" />

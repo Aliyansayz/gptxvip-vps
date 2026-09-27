@@ -1,4 +1,4 @@
-import { Code2, Terminal, Cpu, Search } from "lucide-react";
+import { Code2, Terminal, Cpu, Search, TrendingUp } from "lucide-react";
 
 export const CODE_CONCEPT_CATEGORIES = [
   { 
@@ -41,13 +41,21 @@ export const CODE_CONCEPT_CATEGORIES = [
     description: "Ultra-low latency algorithms and kernel-level optimizations.",
     theme: "emerald"
   },
-  { 
+  {
     id: "python", 
     label: "Python", 
     icon: Terminal, 
     title: "Python Fundamentals & Advanced", 
     description: "Data analysis, machine learning, and rapid prototyping workflows.",
     theme: "blue"
+  },
+  {
+    id: "algo_trading",
+    label: "Algo Trading",
+    icon: TrendingUp,
+    title: "Algorithmic Trading Indicators",
+    description: "Learn volatility, trend, pivots, and clustering through an adaptive Supertrend indicator.",
+    theme: "emerald"
   }
 ] as const;
 

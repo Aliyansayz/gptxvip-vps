@@ -121,24 +121,28 @@ const GeminiChatWidget: React.FC<GeminiChatWidgetProps> = ({ initialPrompt, onPr
     return (
         <>
             <button
+                type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="fixed bottom-6 right-6 w-16 h-16 bg-cyan-600 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-cyan-500 transition-transform hover:scale-110 z-50"
-                aria-label="Open AI Chat"
+                className="fixed bottom-6 right-6 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-cyan-600 text-white shadow-lg transition-transform hover:scale-110 hover:bg-cyan-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2"
+                aria-label={isOpen ? 'Close AI chat' : 'Open AI chat'}
+                aria-expanded={isOpen}
+                aria-controls="agent-ai-chat"
             >
                 <ChatIcon className="w-8 h-8" />
             </button>
 
             {isOpen && (
-                <div className="fixed bottom-24 right-6 w-full max-w-sm h-[60vh] bg-popover text-popover-foreground rounded-2xl shadow-2xl flex flex-col transition-all gemini-chat-widget z-50 border border-border">
+                <div id="agent-ai-chat" role="region" aria-label="AI chat" className="fixed inset-x-4 bottom-24 z-50 flex h-[min(60vh,36rem)] max-h-[calc(100dvh-8rem)] w-auto max-w-sm flex-col rounded-2xl border border-border bg-popover text-popover-foreground shadow-2xl transition-all gemini-chat-widget sm:inset-x-auto sm:right-6 sm:w-[calc(100vw-3rem)]">
                     <header className="flex items-center justify-between p-4 border-b border-border bg-cyan-600 text-white rounded-t-2xl">
                         <div className="flex items-center gap-2">
                             <GeminiIcon className="w-6 h-6" />
                             <h3 className="font-bold">MedCush Assistant</h3>
                         </div>
-                        <button onClick={() => setIsOpen(false)} className="text-white/80 hover:text-white text-2xl">&times;</button>
+                        <button type="button" onClick={() => setIsOpen(false)} aria-label="Close AI chat" className="flex h-11 w-11 items-center justify-center rounded-full text-2xl text-white/80 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">&times;</button>
                     </header>
                     <header className="flex items-center justify-between p-2 border-b border-border">
                         <button
+                            type="button"
                             onClick={onOpenChatBook}
                             disabled={!isActivityOpen}
                             className="w-full flex items-center justify-center gap-2 px-3 py-1.5 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
@@ -173,13 +177,14 @@ const GeminiChatWidget: React.FC<GeminiChatWidgetProps> = ({ initialPrompt, onPr
                         <div className="relative">
                             <input
                                 type="text"
+                                aria-label="Ask the AI assistant"
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 placeholder="Ask a question..."
                                 className="w-full p-3 pr-12 rounded-full bg-muted border border-border"
                                 disabled={isLoading}
                             />
-                            <button type="submit" disabled={isLoading || !input.trim()} className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 bg-cyan-600 text-white rounded-full disabled:bg-muted-foreground">
+                            <button type="submit" disabled={isLoading || !input.trim()} aria-label="Send message" className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-cyan-600 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 disabled:bg-muted-foreground">
                                 &#10148;
                             </button>
                         </div>

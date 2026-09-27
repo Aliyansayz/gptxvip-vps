@@ -1,5 +1,6 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { readingContent } from '../../data/readingContent';
 import { BookOpenText, ChevronLeft } from 'lucide-react';
@@ -90,8 +91,41 @@ const topicThemes: Record<string, 'teal' | 'sunset' | 'midnight' | 'forest'> = {
 const topicKeys = Object.keys(readingContent);
 
 export const ReadingView: React.FC<{ onBrowseTopics: () => void }> = ({ onBrowseTopics }) => {
-    const [selectedTopicKey, setSelectedTopicKey] = useState<string | null>(null);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const historyState = location.state && typeof location.state === 'object'
+        ? location.state as Record<string, unknown>
+        : {};
+    const storedTopic = historyState.devLushReadingTopic;
+    const routeTopicKey = typeof storedTopic === 'string' && topicKeys.includes(storedTopic) ? storedTopic : null;
+    const [selectedTopicKey, setSelectedTopicKey] = useState<string | null>(routeTopicKey);
     const [readingProgress, setReadingProgress] = useState(0);
+    const topicButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+    const previousRouteTopic = useRef<string | null>(routeTopicKey);
+    const topicToFocusAfterBack = useRef<string | null>(null);
+
+    useEffect(() => {
+        if (!routeTopicKey && previousRouteTopic.current) {
+            topicToFocusAfterBack.current = previousRouteTopic.current;
+        }
+        previousRouteTopic.current = routeTopicKey;
+        setSelectedTopicKey(routeTopicKey);
+        setReadingProgress(0);
+    }, [location.key, routeTopicKey]);
+
+    useEffect(() => {
+        if (selectedTopicKey || !topicToFocusAfterBack.current) return;
+        const topicKey = topicToFocusAfterBack.current;
+        topicToFocusAfterBack.current = null;
+        window.requestAnimationFrame(() => topicButtonRefs.current[topicKey]?.focus());
+    }, [selectedTopicKey]);
+
+    const handleTopicSelect = (topicKey: string) => {
+        setSelectedTopicKey(topicKey);
+        navigate(`${location.pathname}${location.search}`, {
+            state: { ...historyState, devLushView: 'reading', devLushReadingTopic: topicKey },
+        });
+    };
 
     const getThemeStyles = (theme: string) => {
         switch (theme) {
@@ -154,10 +188,8 @@ export const ReadingView: React.FC<{ onBrowseTopics: () => void }> = ({ onBrowse
                         </div>
                         <div className="relative z-10 max-w-4xl mx-auto px-4 py-6 flex items-center gap-4">
                             <button 
-                                onClick={() => {
-                                    setSelectedTopicKey(null);
-                                    setReadingProgress(0);
-                                }}
+                                type="button"
+                                onClick={() => navigate(-1)}
                                 className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
                                 aria-label="Back to Reading Library topics"
                             >
@@ -254,7 +286,8 @@ export const ReadingView: React.FC<{ onBrowseTopics: () => void }> = ({ onBrowse
                                     <button
                                         type="button"
                                         key={topicKey} 
-                                        onClick={() => setSelectedTopicKey(topicKey)}
+                                        ref={(element) => { topicButtonRefs.current[topicKey] = element; }}
+                                        onClick={() => handleTopicSelect(topicKey)}
                                         aria-label={`Open ${topicNames[topicKey] || topicKey}, ${chapterCount} ${chapterCount === 1 ? 'chapter' : 'chapters'}`}
                                         className={`relative w-full appearance-none border-0 rounded-3xl shadow-xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary ${styles.card} flex flex-col cursor-pointer min-h-[240px] text-left`}
                                     >

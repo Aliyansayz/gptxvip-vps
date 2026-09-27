@@ -1,0 +1,315 @@
+{
+  "course": "Algo Trading",
+  "chapter_title": "Indicator Concepts: Basic to Advanced",
+  "tags": ["Algorithmic Trading", "ATR", "ADX", "Price Range", "Swing Pivots", "Machine Learning", "K-Means", "Supertrend", "Volatility"],
+  "critical_concepts": [
+    {
+      "concept": "Relative Price Range",
+      "elaboration": "Two useful normalizations answer different questions. Relative bar range, 100 × (high − low) / close, compares a candle's size with the asset's price. Close location, (close − low) / (high − low), places the close from 0 (at the low) to 1 (at the high). The supplied indicator does not calculate either measure; they are useful companions for comparing candles and reading where a bar closed."
+    },
+    {
+      "concept": "Average True Range (ATR)",
+      "elaboration": "True Range is the largest of high − low, |high − previous close|, and |low − previous close|, so a gap from the previous close is included. ATR smooths True Range and measures movement size, not direction. This implementation uses Wilder's RMA: an initial simple-average seed followed by prior ATR + (current TR − prior ATR) / period."
+    },
+    {
+      "concept": "Average Directional Index (ADX)",
+      "elaboration": "ADX is a smoothed measure of trend strength. It does not tell whether the trend is up or down; the companion +DI and −DI lines provide directional context. ADX is not calculated in the supplied indicator, so it is presented as a possible regime filter rather than an existing signal input."
+    },
+    {
+      "concept": "Swing Pivots and Classic Pivot Levels",
+      "elaboration": "A swing pivot high is a local high with lower highs around it; a swing pivot low is a local low with higher lows around it. A pivot needs bars after the candidate to confirm, so it is known with a delay. The code uses delayed swing pivots to compare price and oscillator extremes for divergence. Classic daily/weekly pivot levels are separate support/resistance calculations and are not used here."
+    },
+    {
+      "concept": "Machine Learning Clustering",
+      "elaboration": "Clustering is an unsupervised learning task: it groups observations by similarity without pre-labeled answers. The indicator uses ATR observations as its input and asks whether current volatility is closest to a low, middle, or high-volatility group. Those labels describe the recent training window, not fixed market truths."
+    },
+    {
+      "concept": "K-Means Clustering",
+      "elaboration": "K-means alternates between assigning each value to its nearest center and moving each center to the mean of its assigned values. The supplied helper runs one-dimensional K-means with three ordered centers. For each bar, it fits centers using earlier ATR values, assigns the current ATR to the nearest center, and blends the ATR with that center to create an adaptive ATR."
+    },
+    {
+      "concept": "Indicator Pipeline",
+      "elaboration": "The implementation combines Wilder-smoothed ATR, three K-means volatility regimes, ATR-scaled Supertrend bands, a centered momentum oscillator, and pivot-based divergence. A buy or sell flag is only considered after trend confirmation and readiness checks, then filtered by volatility, shock size, entry distance, momentum, and opposing divergence."
+    }
+  ],
+  "interactive_questions": [
+    {
+      "componentId": "algo_trading_basic_indicator_walkthrough",
+      "type": "scroll_code_walkthrough",
+      "difficulty": "basic",
+      "concept_tested": "True Range, ATR, pivots, and K-means",
+      "title": "Build the Indicator's Input Pipeline",
+      "prompt": "Trace how OHLC bars become volatility features and why a swing pivot is confirmed later.",
+      "question": "Follow the source logic from True Range through ATR and the historical volatility clusters.",
+      "explanation": "ATR measures the size of movement. Past ATR values set the three cluster centers, and the current ATR is assigned to its nearest center. The pivot index is shifted back by pivot_len so a local extreme is used only after right-side bars have arrived.",
+      "codeSnippet": "previous_close = np.r_[close[0], close[:-1]]\ntrue_range = np.maximum.reduce([\n    high - low,\n    np.abs(high - previous_close),\n    np.abs(low - previous_close),\n])\natr = _rma(true_range, atr_period)\n\n# A candidate swing point is checked only after right-side bars arrive.\npivot = i - pivot_len\n\n# Fit centers on earlier ATR values, then classify the current ATR.\nwindow = atr[i - training_period:i]\ncenters, _, converged, _ = _kmeans3(window, centroid_seeds, max_iter)\nregime = int(np.abs(centers - atr[i]).argmin())\nadaptive_atr = (1.0 - centroid_weight) * atr[i] + centroid_weight * centers[regime]",
+      "steps": [
+        {
+          "range": [1, 6],
+          "title": "True Range Includes Gaps",
+          "description": "The bar's range is compared with both distances from the previous close. The largest value captures the full movement even when price opens beyond the prior close.",
+          "mcq": {
+            "question": "Why does True Range compare the current high and low with the previous close?",
+            "options": [
+              { "text": "To account for a gap from the previous close.", "isCorrect": true, "reasoning": "A gap can make the true movement larger than the current high minus low." },
+              { "text": "To identify whether the candle closed bullish.", "isCorrect": false, "reasoning": "True Range is non-directional and measures movement size." }
+            ]
+          }
+        },
+        {
+          "range": [7, 7],
+          "title": "ATR Smooths Movement Size",
+          "description": "The source calls _rma on True Range. Its Wilder average reacts to new movement while retaining information from earlier bars. ATR is a distance in price units, not a forecast of up or down."
+        },
+        {
+          "range": [9, 10],
+          "title": "Swing Pivots Need Confirmation",
+          "description": "The candidate is pivot_len bars behind the current bar. Those bars to its right must be available before the code can decide that the candidate is a local high or low. The result is delayed confirmation, not a pivot known at the candidate bar in real time."
+        },
+        {
+          "range": [12, 16],
+          "title": "Cluster Historical Volatility",
+          "description": "The window ends before the current index. K-means learns three centers from recent ATR values; the current ATR is then mapped to the nearest center and blended with that center to form adaptive_atr.",
+          "mcq": {
+            "question": "What does the cluster number describe here?",
+            "options": [
+              { "text": "A recent low, middle, or high ATR regime.", "isCorrect": true, "reasoning": "The clusters are learned from ATR values and sorted by center." },
+              { "text": "A guaranteed prediction that price will rise or fall.", "isCorrect": false, "reasoning": "The feature being clustered is volatility, which has no direction." }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "componentId": "algo_range_atr_lab",
+      "type": "simulation_runner",
+      "difficulty": "basic",
+      "concept_tested": "Relative range and Average True Range",
+      "title": "Explore Bar Range and True Range",
+      "prompt": "Compare a contained candle with gap-up and gap-down candles.",
+      "question": "Change the bar scenario and inspect how the previous close changes True Range and the ATR update.",
+      "explanation": "This visual calculates range percentage, close location, True Range, and one Wilder ATR update from a small set of example OHLC bars.",
+      "theory": {
+        "title": "What the visual is teaching",
+        "summary": "The high-low range describes movement inside one bar. True Range also checks the prior close, so it can capture a gap. ATR smooths True Range and remains non-directional.",
+        "bullets": [
+          "Relative range size compares high-low with the current price.",
+          "Close location measures where the close sits inside that bar's range.",
+          "A larger gap leg can make True Range exceed high-low.",
+          "The slider changes the sensitivity of a single Wilder smoothing update."
+        ]
+      }
+    },
+    {
+      "componentId": "algo_adx_strength_lab",
+      "type": "simulation_runner",
+      "difficulty": "basic",
+      "concept_tested": "Average Directional Index",
+      "title": "Separate Trend Strength from Direction",
+      "prompt": "Switch between rising, falling, and choppy market sketches.",
+      "question": "Compare ADX strength with the directional +DI and −DI lines.",
+      "explanation": "ADX describes trend strength, while the relative position of +DI and −DI gives direction context. Values in this visual are explicitly illustrative.",
+      "theory": {
+        "title": "How to read ADX and DMI",
+        "summary": "ADX smooths directional-movement strength and does not identify bullish or bearish direction by itself. The +DI and −DI lines provide directional context.",
+        "bullets": [
+          "A higher ADX is commonly interpreted as stronger trend conditions.",
+          "+DI above −DI indicates positive directional movement is dominant.",
+          "−DI above +DI indicates negative directional movement is dominant.",
+          "The supplied indicator does not compute ADX; this is a possible extension."
+        ]
+      }
+    },
+    {
+      "componentId": "algo_pivot_confirmation_lab",
+      "type": "simulation_runner",
+      "difficulty": "basic",
+      "concept_tested": "Swing-pivot confirmation and timing",
+      "title": "Reveal the Bars Needed to Confirm a Pivot",
+      "prompt": "Choose how many bars must form on each side, then reveal bars to the right of a candidate high.",
+      "question": "At which bar can a live system know that the candidate is a swing pivot?",
+      "explanation": "A pivot becomes usable only after the required right-side bars arrive. A chart may draw the confirmed marker back on the candidate bar, but a causal signal uses its confirmation time.",
+      "theory": {
+        "title": "Pivot timing",
+        "summary": "A local swing point depends on bars before and after it. This indicator's divergence helper shifts the candidate behind the current bar so it can be checked using already-observed right-side data.",
+        "bullets": [
+          "More bars on each side make the local-extreme definition stricter.",
+          "Confirmation is delayed by the number of required right-side bars.",
+          "Swing pivots are different from classic session pivot support/resistance levels."
+        ]
+      }
+    },
+    {
+      "componentId": "algo_trading_basic_atr_adx",
+      "type": "mcq",
+      "difficulty": "basic",
+      "concept_tested": "ATR and ADX",
+      "title": "Separate Movement Size from Trend Strength",
+      "prompt": "Choose what each indicator measures before using it in a rule.",
+      "question": "Which statement correctly distinguishes ATR from ADX?",
+      "answer": "ATR measures movement size; ADX measures trend strength, not direction.",
+      "options": [
+        "ATR measures movement size; ADX measures trend strength, not direction.",
+        "ATR predicts trend direction; ADX measures the asset's price level.",
+        "Both indicators directly predict whether the next bar closes higher."
+      ],
+      "explanation": "ATR is a volatility measure based on True Range. ADX summarizes directional movement strength; +DI and −DI are used for directional context. The provided indicator computes ATR but does not compute ADX."
+    },
+    {
+      "componentId": "algo_trading_basic_pivots",
+      "type": "mcq",
+      "difficulty": "basic",
+      "concept_tested": "Swing-pivot confirmation",
+      "title": "When Is a Swing Pivot Known?",
+      "prompt": "Reason about the timing of a local high or low.",
+      "question": "A swing high requires lower highs on bars to its right. When can a live algorithm confirm it?",
+      "answer": "After the required right-side bars have closed.",
+      "options": [
+        "At the exact moment the candidate high first forms.",
+        "After the required right-side bars have closed.",
+        "Only after the full backtest has ended."
+      ],
+      "explanation": "A swing pivot depends on bars on both sides. A causal algorithm waits for the right-side bars, then reports the pivot at the confirmation time. Classic pivot levels based on a prior session's OHLC are a different concept."
+    },
+    {
+      "componentId": "algo_trading_intermediate_supertrend",
+      "type": "scroll_code_walkthrough",
+      "difficulty": "intermediate",
+      "concept_tested": "Adaptive ATR and Supertrend state",
+      "title": "Turn Volatility into Trailing Trend Bands",
+      "prompt": "See how the adaptive ATR scales bands and how the indicator confirms a persistent trend.",
+      "question": "Trace the band calculation, trailing update, and multi-bar trend confirmation.",
+      "explanation": "The Supertrend bands use the candle midpoint plus or minus a multiplier times adaptive ATR. The stateful trailing rules prevent the bands from loosening in the active trend; a direction flip occurs when the close crosses the active opposite band. A trend is exposed as confirmed only after the configured number of bars.",
+      "codeSnippet": "midpoint = (high[i] + low[i]) / 2.0\nnew_upper = midpoint + multiplier * adaptive_atr[i]\nnew_lower = midpoint - multiplier * adaptive_atr[i]\n\nif new_upper < upper or close[i - 1] > upper:\n    upper = new_upper\nif new_lower > lower or close[i - 1] < lower:\n    lower = new_lower\n\nif direction == -1 and close[i] > upper:\n    direction = 1\nelif direction == 1 and close[i] < lower:\n    direction = -1\n\nconfirmed = direction if direction_run >= confirmation_bars else 0",
+      "steps": [
+        {
+          "range": [1, 3],
+          "title": "Scale Bands to Recent Volatility",
+          "description": "The midpoint anchors the bands and adaptive_atr sets their distance. A larger volatility regime widens the initial band distance; the multiplier controls that distance."
+        },
+        {
+          "range": [5, 8],
+          "title": "Trail the Active Bands",
+          "description": "The upper band can ratchet downward and the lower band can ratchet upward, unless price has crossed the previous band. This state carries across bars."
+        },
+        {
+          "range": [10, 13],
+          "title": "Flip and Confirm",
+          "description": "A close through the opposite active band flips direction. direction_run then counts consecutive bars in that direction; until it reaches confirmation_bars, the output is zero (wait).",
+          "mcq": {
+            "question": "What does confirmation_bars add?",
+            "options": [
+              { "text": "A requirement for direction to persist before it is marked confirmed.", "isCorrect": true, "reasoning": "It delays the confirmed trend label until a minimum run length is reached." },
+              { "text": "A multiplier that changes the ATR calculation.", "isCorrect": false, "reasoning": "The ATR period and band multiplier are separate parameters." }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "componentId": "algo_kmeans_clustering_lab",
+      "type": "simulation_runner",
+      "difficulty": "intermediate",
+      "concept_tested": "One-dimensional K-means volatility regimes",
+      "title": "Run K-means on a Window of ATR Values",
+      "prompt": "Step through centroid assignment and updates, then classify a current ATR value.",
+      "question": "How do the three centers move as ATR observations are assigned to their nearest cluster?",
+      "explanation": "The visual starts from three seeded centers, recomputes the mean of each assigned group, and classifies a separate current ATR value after each update.",
+      "theory": {
+        "title": "K-means as an unsupervised method",
+        "summary": "The algorithm groups recent ATR observations by distance; it is not trained on labeled profitable or unprofitable trades.",
+        "bullets": [
+          "Assign each observation to its nearest center.",
+          "Update each center to the mean of its assigned observations.",
+          "Repeat until centers stop moving or a limit is reached.",
+          "Low, middle, and high labels are relative to the chosen training window."
+        ]
+      }
+    },
+    {
+      "componentId": "algo_trading_intermediate_filters",
+      "type": "mcq",
+      "difficulty": "intermediate",
+      "concept_tested": "Trend and volatility filters",
+      "title": "Choose a Useful Regime Filter",
+      "prompt": "Combine direction, trend strength, and volatility without confusing their roles.",
+      "question": "If ADX were added to this indicator, which use would fit its meaning?",
+      "answer": "Use ADX as a trend-strength filter and use +DI/-DI or the Supertrend state for direction.",
+      "options": [
+        "Use ADX as a trend-strength filter and use +DI/-DI or the Supertrend state for direction.",
+        "Treat a rising ADX value as proof that price is rising.",
+        "Replace ATR with ADX because both are volatility measures."
+      ],
+      "explanation": "ADX measures trend strength but is direction-neutral. This implementation already has its own Supertrend direction and ATR-based volatility logic; an ADX filter would be an extension, not a current input."
+    },
+    {
+      "componentId": "algo_trading_advanced_causality",
+      "type": "scroll_code_walkthrough",
+      "difficulty": "advanced",
+      "concept_tested": "Causal features and entry risk controls",
+      "title": "Audit the Signal for Timing and Risk",
+      "prompt": "Inspect the historical training window, shock ratio, and entry-distance checks.",
+      "question": "Identify which inputs are known at the current bar and what each guard is protecting against.",
+      "explanation": "The clustering fit uses ATR values strictly before i; the current ATR is only assigned after centers are fitted. The shock ratio compares current True Range with prior ATR. Entry risk is the distance from close to the active Supertrend band, capped in ATR units. A backtest still needs a realistic execution timestamp, fees, slippage, and an explicit rule for filling after a close-based signal.",
+      "codeSnippet": "window = atr[i - training_period:i]\ncenters, _, ok, _ = _kmeans3(window, centroid_seeds, max_iter)\ncluster = int(np.abs(centers - atr[i]).argmin())\n\nshock_ratio = true_range[i] / atr[i - 1]\nshock_ok = shock_ratio <= max_shock_ratio\n\nrisk = close[i] - lower if direction == 1 else upper - close[i]\nrisk_ok = risk > 0 and risk <= max_entry_risk_atr * atr[i]\n\ncan_enter = shock_ok and risk_ok and not opposing_divergence and volatility_ok\nlong_ok = can_enter and direction == 1 and oscillator[i] > momentum_threshold",
+      "steps": [
+        {
+          "range": [1, 3],
+          "title": "Fit on the Past, Classify the Present",
+          "description": "Python's stop-exclusive slice ends at i, so the current bar is not used to fit centers that will classify itself. This avoids one form of look-ahead in the volatility model."
+        },
+        {
+          "range": [5, 6],
+          "title": "Reject Oversized Shocks",
+          "description": "The ratio compares current True Range with the prior ATR. If the move is too large relative to recent movement, the filter can skip a signal instead of entering after a shock bar."
+        },
+        {
+          "range": [8, 9],
+          "title": "Bound Stop Distance",
+          "description": "Risk is the close-to-band distance in the active direction. The ATR cap makes the maximum accepted distance scale with recent volatility."
+        },
+        {
+          "range": [11, 12],
+          "title": "Gate the Entry, Then Test Execution",
+          "description": "A valid entry must pass the non-directional guards and agree with trend and momentum. A backtest should timestamp the decision at the bar close and model the next executable price, costs, and slippage."
+        }
+      ]
+    },
+    {
+      "componentId": "algo_adaptive_signal_lab",
+      "type": "simulation_runner",
+      "difficulty": "advanced",
+      "concept_tested": "Adaptive Supertrend bands and entry gates",
+      "title": "Adjust Volatility and Audit the Entry Gates",
+      "prompt": "Change ATR and the band multiplier, then toggle confirmation and entry filters.",
+      "question": "Why can a confirmed trend still produce no eligible entry?",
+      "explanation": "The visual isolates the initial ATR-scaled band distance and treats confirmation and entry filters as separate gates. The source also applies stateful band trailing; realistic signals require all enabled readiness, risk, momentum, shock, volatility, and divergence checks.",
+      "theory": {
+        "title": "A signal is a pipeline, not one threshold",
+        "summary": "Supertrend direction supplies a trend state. Confirmation reduces immediate flips, while entry guards can veto a trade if conditions are unsuitable.",
+        "bullets": [
+          "Initial band distance is multiplier × adaptive ATR.",
+          "The stateful Supertrend update trails the active band from bar to bar.",
+          "Shock and entry-distance filters use ATR-scaled movement.",
+          "A historical signal still needs a realistic execution price and trading costs."
+        ]
+      }
+    },
+    {
+      "componentId": "algo_trading_advanced_clustering",
+      "type": "mcq",
+      "difficulty": "advanced",
+      "concept_tested": "K-means regime limitations",
+      "title": "Interpret Volatility Clusters Carefully",
+      "prompt": "Think about how rolling K-means behaves when the market changes.",
+      "question": "What is the most important interpretation limit of the 0/1/2 volatility regime labels?",
+      "answer": "They rank ATR relative to the recent training window and can shift as that window changes.",
+      "options": [
+        "They rank ATR relative to the recent training window and can shift as that window changes.",
+        "They are universal volatility categories that mean the same thing across symbols.",
+        "They represent supervised labels learned from profitable trades."
+      ],
+      "explanation": "The algorithm clusters only recent ATR values and sorts the centers from low to high. A regime is relative to that sample, depends on initialization and data quality, and does not predict return direction or profitability."
+    }
+  ]
+}

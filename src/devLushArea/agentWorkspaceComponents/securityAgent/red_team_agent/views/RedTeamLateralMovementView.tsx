@@ -37,7 +37,7 @@ export default function RedTeamLateralMovementView() {
             <Network className="w-6 h-6 text-red-600" />
             Lateral Movement Cheat Sheet
           </h2>
-          <p className="text-slate-500 mt-2">Common techniques for pivoting through a compromised network environment.</p>
+          <p className="text-slate-500 mt-2">Static technique and mitigation notes. Nothing here connects to a network or runs a command.</p>
         </div>
 
         <div className="grid gap-4">

@@ -46,7 +46,7 @@ export default function RedTeamReconView() {
             <Search className="w-6 h-6 text-red-600" />
             Reconnaissance Cheat Sheet
           </h2>
-          <p className="text-slate-500 mt-2">Methodology and automated workflows for initial target acquisition and mapping.</p>
+          <p className="text-slate-500 mt-2">Static methodology notes for an authorized lab. These examples do not discover or contact targets.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

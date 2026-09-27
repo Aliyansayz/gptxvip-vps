@@ -60,7 +60,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 
   useEffect(() => {
     const activeItem = sidebarItems.find((item) => item.id === activeTab);
-    if (!activeItem || !activeItem.subItems) return;
+    if (!activeItem || !activeItem.subItems || typeof IntersectionObserver === "undefined") return;
 
     const observerOptions = {
       root: null,
@@ -209,9 +209,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                   sidebarItems.filter(item => item.id !== "home").map((item) => (
                     <div key={item.id} className="flex flex-col">
                       <button
+                        type="button"
+                        aria-current={activeTab === item.id ? "page" : undefined}
+                        aria-expanded={item.subItems ? expandedMenus.includes(item.id) : undefined}
                         onClick={() => handleMainItemClick(item)}
                         onMouseEnter={() => prefetchData(item.id)}
-                        className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all w-full ${
+                        className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 ${
                           activeTab === item.id
                             ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
                             : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-900 border border-transparent"
@@ -241,11 +244,13 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                               return (
                                 <button
                                   key={subItem.id}
+                                  type="button"
+                                  aria-current={isSubActive ? "location" : undefined}
                                   onClick={() =>
                                     handleSubItemClick(item.id, subItem.id)
                                   }
                                   onMouseEnter={() => prefetchData(item.id)}
-                                  className={`text-left px-2 py-1.5 text-xs rounded-md transition-colors truncate ${
+                                  className={`text-left px-2 py-1.5 text-xs rounded-md transition-colors truncate focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 ${
                                     isSubActive
                                       ? "text-emerald-600 dark:text-emerald-400 font-medium bg-emerald-50 dark:bg-emerald-500/10"
                                       : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800/50"

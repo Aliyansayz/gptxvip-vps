@@ -19,8 +19,9 @@ export const SecOpsAgents: React.FC<SecOpsAgentsProps> = ({ onNavigate }) => {
       </p>
       <div className="space-y-3">
         <button 
+          type="button"
           onClick={() => onNavigate('scanner-agent')}
-          className="w-full flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-red-300 hover:shadow-sm transition-all text-left"
+          className="w-full min-h-11 flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-red-300 hover:shadow-sm transition-all text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
         >
           <div className="flex items-center gap-3">
             <Search className="w-5 h-5 text-red-500" />
@@ -33,8 +34,9 @@ export const SecOpsAgents: React.FC<SecOpsAgentsProps> = ({ onNavigate }) => {
         </button>
         
         <button 
+          type="button"
           onClick={() => onNavigate('dfir-agent')}
-          className="w-full flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-red-300 hover:shadow-sm transition-all text-left mt-3"
+          className="w-full min-h-11 flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-red-300 hover:shadow-sm transition-all text-left mt-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
         >
           <div className="flex items-center gap-3">
             <Lock className="w-5 h-5 text-red-500" />
@@ -47,8 +49,9 @@ export const SecOpsAgents: React.FC<SecOpsAgentsProps> = ({ onNavigate }) => {
         </button>
 
         <button 
+          type="button"
           onClick={() => onNavigate('threat-intel-agent')}
-          className="w-full flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-purple-300 hover:shadow-sm transition-all text-left mt-3"
+          className="w-full min-h-11 flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-purple-300 hover:shadow-sm transition-all text-left mt-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
         >
           <div className="flex items-center gap-3">
             <Globe className="w-5 h-5 text-purple-500" />
@@ -61,8 +64,9 @@ export const SecOpsAgents: React.FC<SecOpsAgentsProps> = ({ onNavigate }) => {
         </button>
 
         <button 
+          type="button"
           onClick={() => onNavigate('cloud-posture-agent')}
-          className="w-full flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-blue-300 hover:shadow-sm transition-all text-left mt-3"
+          className="w-full min-h-11 flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-blue-300 hover:shadow-sm transition-all text-left mt-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         >
           <div className="flex items-center gap-3">
             <Cloud className="w-5 h-5 text-blue-500" />

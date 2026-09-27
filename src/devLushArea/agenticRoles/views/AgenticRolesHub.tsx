@@ -52,6 +52,7 @@ export const AgenticRolesHub: React.FC<AgenticRolesHubProps> = ({
   });
 
   const totalEstimatedMinutes = role.chapters.reduce((acc, ch) => acc + (ch.estimatedMinutes || 25), 0);
+  const completedForRole = role.chapters.filter((chapter) => completedChapterIds.includes(chapter.labComponentId)).length;
 
   return (
     <div className="w-full max-w-7xl mx-auto space-y-8 p-6 md:p-8 animate-in fade-in duration-300">
@@ -110,7 +111,7 @@ export const AgenticRolesHub: React.FC<AgenticRolesHubProps> = ({
             </div>
             <div className="flex items-center gap-2">
               <Award className="w-4 h-4 text-slate-400" />
-              <span>{completedChapterIds.length}/{role.chapters.length} Completed</span>
+              <span>{completedForRole}/{role.chapters.length} Completed</span>
             </div>
           </div>
         </div>
@@ -123,6 +124,7 @@ export const AgenticRolesHub: React.FC<AgenticRolesHubProps> = ({
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
           <input
             type="text"
+            aria-label="Search milestones and concepts"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search milestone skills or concepts..."
@@ -137,9 +139,11 @@ export const AgenticRolesHub: React.FC<AgenticRolesHubProps> = ({
           </span>
           {(['all', 'easy', 'medium', 'hard'] as const).map((diff) => (
             <button
+              type="button"
               key={diff}
               onClick={() => onSelectDifficulty(diff)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold capitalize transition-all cursor-pointer ${
+              aria-pressed={selectedDifficulty === diff}
+              className={`min-h-10 px-3 py-1.5 rounded-xl text-xs font-mono font-bold capitalize transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
                 selectedDifficulty === diff
                   ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
                   : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'

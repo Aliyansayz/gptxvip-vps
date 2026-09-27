@@ -25,6 +25,7 @@ type ScannerPhase = 'DASHBOARD' | 'SCANNING' | 'RESULTS' | 'REMEDIATION';
 export default function ScannerAgentMainView() {
   const [sidebarView, setSidebarView] = useState<SidebarView>('dashboard');
   const [isTheoryPaneOpen, setIsTheoryPaneOpen] = useState(false);
+  const [viewBeforeTheory, setViewBeforeTheory] = useState<SidebarView>('dashboard');
   const [runTutorial, setRunTutorial] = useState(true);
   
   // Phase mapping for the specific Web Exploits / Scanner domain workflows
@@ -83,6 +84,7 @@ export default function ScannerAgentMainView() {
     else if (view === 'reports' && selectedCandidate) setPhase('REMEDIATION');
     
     if (view === 'theory') {
+      if (sidebarView !== 'theory') setViewBeforeTheory(sidebarView);
       setIsTheoryPaneOpen(true);
     }
   };
@@ -188,15 +190,15 @@ export default function ScannerAgentMainView() {
         
         {/* Right Side Theory Pane */}
         {showTheoryPane && (
-          <div className="w-[450px] border-l border-slate-200 bg-white h-full shadow-2xl shrink-0 overflow-hidden relative z-40 flex flex-col animate-in slide-in-from-right-full duration-300">
+          <div className="absolute inset-y-0 right-0 z-40 flex h-full w-full max-w-[450px] flex-col overflow-hidden border-l border-slate-200 bg-white shadow-2xl animate-in slide-in-from-right-full duration-300 lg:relative lg:inset-y-auto lg:right-auto lg:w-[450px] lg:max-w-[40vw] lg:shrink-0">
             <button
               type="button"
               aria-label="Close theory panel"
               onClick={() => {
                  setIsTheoryPaneOpen(false);
-                 if (sidebarView === 'theory') setSidebarView('dashboard');
+                 if (sidebarView === 'theory') setSidebarView(viewBeforeTheory === 'theory' ? 'dashboard' : viewBeforeTheory);
               }}
-              className="absolute top-4 right-4 p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-md z-50 transition-colors"
+              className="absolute top-4 right-4 z-50 flex h-11 w-11 items-center justify-center rounded-md bg-slate-100 text-slate-500 transition-colors hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
             >
               <X className="w-4 h-4" />
             </button>
@@ -208,8 +210,10 @@ export default function ScannerAgentMainView() {
       {/* Fixed Toggle Button when closed */}
       {!showTheoryPane && (
         <button 
+          type="button"
           onClick={() => setIsTheoryPaneOpen(true)}
-          className="theory-wiki-trigger absolute right-0 top-1/2 -translate-y-1/2 bg-indigo-600 hover:bg-indigo-700 text-white p-2.5 rounded-l-lg shadow-[0_0_15px_rgba(79,70,229,0.4)] z-50 flex items-center justify-center transition-transform hover:-translate-x-1"
+          className="theory-wiki-trigger absolute right-0 top-1/2 z-50 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-l-lg bg-indigo-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.4)] transition-transform hover:-translate-x-1 hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300"
+          aria-label="Open Theory Wiki"
           title="Open Theory Wiki"
         >
           <BookOpen className="w-5 h-5" />

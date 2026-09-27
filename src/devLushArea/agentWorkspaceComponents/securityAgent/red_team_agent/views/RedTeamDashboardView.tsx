@@ -41,9 +41,9 @@ export default function RedTeamDashboardView({ onStartSimulation }: RedTeamDashb
           </div>
         </div>
 
-        {/* Capabilities Grid */}
+        {/* Preview topics */}
         <div>
-          <h3 className="text-lg font-bold font-heading text-slate-800 mb-4 px-1">Simulation Capabilities</h3>
+          <h3 className="text-lg font-bold font-heading text-slate-800 mb-4 px-1">Topics in this preview</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-red-300 transition-colors group">
               <div className="w-10 h-10 rounded-lg bg-red-50 text-red-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
@@ -51,7 +51,7 @@ export default function RedTeamDashboardView({ onStartSimulation }: RedTeamDashb
               </div>
               <h4 className="font-bold text-slate-800 mb-1">Advanced Reconnaissance</h4>
               <p className="text-sm text-slate-500 leading-relaxed">
-                Discover exposed assets and services.
+                Example signals that can appear during a reconnaissance exercise.
               </p>
             </div>
             
@@ -61,7 +61,7 @@ export default function RedTeamDashboardView({ onStartSimulation }: RedTeamDashb
               </div>
               <h4 className="font-bold text-slate-800 mb-1">Vulnerability Chaining</h4>
               <p className="text-sm text-slate-500 leading-relaxed">
-                Combine low-severity bugs for high-impact compromise.
+                See how separate weaknesses may form an illustrative attack path.
               </p>
             </div>
 
@@ -71,7 +71,7 @@ export default function RedTeamDashboardView({ onStartSimulation }: RedTeamDashb
               </div>
               <h4 className="font-bold text-slate-800 mb-1">Lateral Movement</h4>
               <p className="text-sm text-slate-500 leading-relaxed">
-                Extract credentials and pivot across the network.
+                Review example lateral-movement signals without accessing a network.
               </p>
             </div>
 
@@ -81,7 +81,7 @@ export default function RedTeamDashboardView({ onStartSimulation }: RedTeamDashb
               </div>
               <h4 className="font-bold text-slate-800 mb-1">Defense Validation</h4>
               <p className="text-sm text-slate-500 leading-relaxed">
-                Generate attack path graphs and verify detection mechanisms.
+                Read sample attack paths; this preview does not validate defenses.
               </p>
             </div>
           </div>

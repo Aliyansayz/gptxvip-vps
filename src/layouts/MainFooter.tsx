@@ -40,22 +40,24 @@ export const MainFooter: React.FC<MainFooterProps> = ({
           <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-100">Lab Tools</h4>
           <ul className="space-y-2 text-sm font-medium font-sans text-zinc-400">
             <li>
-              <button 
+              <button
+                type="button"
                 onClick={() => {
                   setActiveTab("trading-tools" as any, "leverage-view-v3");
                 }}
-                className="hover:text-emerald-500 transition-colors flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer"
+                className="flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer transition-colors hover:text-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
               >
                 <ChevronRight className="w-3 h-3 group-hover:text-emerald-500 transition-colors shrink-0 text-zinc-700" />
                 Leverage Trading Version 3
               </button>
             </li>
             <li>
-              <button 
+              <button
+                type="button"
                 onClick={() => {
                   setActiveTab("trading-tools" as any, "");
                 }}
-                className="hover:text-emerald-500 transition-colors flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer"
+                className="flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer transition-colors hover:text-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
               >
                 <ChevronRight className="w-3 h-3 group-hover:text-emerald-500 transition-colors shrink-0 text-zinc-700" />
                 Trading Simulator Hub
@@ -63,10 +65,11 @@ export const MainFooter: React.FC<MainFooterProps> = ({
             </li>
             <li>
               <button 
-                 onClick={() => {
+                type="button"
+                onClick={() => {
                   setActiveTab("trading-tools", "");
                 }}
-                className="hover:text-emerald-500 transition-colors flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer"
+                className="flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer transition-colors hover:text-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
               >
                  <ChevronRight className="w-3 h-3 group-hover:text-emerald-500 transition-colors shrink-0 text-zinc-700" />
                  Technical Indicators
@@ -74,6 +77,7 @@ export const MainFooter: React.FC<MainFooterProps> = ({
             </li>
             <li>
               <button 
+                type="button"
                 onClick={() => {
                   if (activeCodeCategory === "search") {
                     setActiveCodeCategory("general");
@@ -81,7 +85,7 @@ export const MainFooter: React.FC<MainFooterProps> = ({
                     setActiveTab("code-concepts");
                   }
                 }}
-                className="hover:text-emerald-500 transition-colors flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer"
+                className="flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer transition-colors hover:text-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
               >
                  <ChevronRight className="w-3 h-3 group-hover:text-emerald-500 transition-colors shrink-0 text-zinc-700" />
                  Code Concepts
@@ -89,10 +93,11 @@ export const MainFooter: React.FC<MainFooterProps> = ({
             </li>
             <li>
               <button
+                type="button"
                 onClick={() => {
                   setActiveTab("profile");
                 }}
-                className="hover:text-emerald-500 transition-colors flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer"
+                className="flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer transition-colors hover:text-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
               >
                 <ChevronRight className="w-3 h-3 group-hover:text-emerald-500 transition-colors shrink-0 text-zinc-700" />
                 Owner Profile
@@ -100,10 +105,11 @@ export const MainFooter: React.FC<MainFooterProps> = ({
             </li>
             <li>
               <button
+                type="button"
                 onClick={() => {
                   setActiveTab("dev-labs-workspace");
                 }}
-                className="hover:text-emerald-500 transition-colors flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer"
+                className="flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer transition-colors hover:text-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
               >
                 <ChevronRight className="w-3 h-3 group-hover:text-emerald-500 transition-colors shrink-0 text-zinc-700" />
                 DevLushArea
@@ -111,10 +117,11 @@ export const MainFooter: React.FC<MainFooterProps> = ({
             </li>
             <li>
               <button
+                type="button"
                 onClick={() => {
                   setActiveTab("roadmap-workspace");
                 }}
-                className="hover:text-emerald-500 transition-colors flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer"
+                className="flex items-center gap-2 group text-left font-sans bg-transparent border-none cursor-pointer transition-colors hover:text-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
               >
                 <ChevronRight className="w-3 h-3 group-hover:text-emerald-500 transition-colors shrink-0 text-zinc-700" />
                 Roadmap
@@ -127,7 +134,7 @@ export const MainFooter: React.FC<MainFooterProps> = ({
           <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-100">Environment</h4>
           <ul className="space-y-2 text-sm font-medium text-zinc-400">
             <li>
-              <button onClick={() => setIsDarkMode(!isDarkMode)} className="hover:text-emerald-500 transition-colors flex items-center gap-2 group text-left bg-transparent border-none cursor-pointer">
+              <button type="button" onClick={() => setIsDarkMode(!isDarkMode)} className="flex items-center gap-2 group text-left bg-transparent border-none cursor-pointer transition-colors hover:text-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
                 {isDarkMode ? <Sun className="w-3 h-3 group-hover:text-emerald-500 text-zinc-700" /> : <Moon className="w-3 h-3 group-hover:text-emerald-500 text-zinc-700" />}
                 {isDarkMode ? 'Light Mode' : 'Dark Mode'}
               </button>

@@ -20,7 +20,7 @@ export default function SiteFooter() {
             <li><a href="/" className="text-sm text-slate-500 hover:text-slate-900">GPTX.VIP Home</a></li>
             <li><Link to="/" className="text-sm text-slate-500 hover:text-slate-900">Agent Labs</Link></li>
             <li><Link to="/templates" className="text-sm text-slate-500 hover:text-slate-900">Project surfaces</Link></li>
-            <li><a href="/agents/lab" className="text-sm text-slate-500 hover:text-slate-900">Open a lab</a></li>
+            <li><Link to="/lab" className="text-sm text-slate-500 hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Open a lab</Link></li>
             <li><Link to={'/templates?category=' + encodeURIComponent(CATEGORIES[0])} className="text-sm text-slate-500 hover:text-slate-900">Analytics</Link></li>
           </ul>
         </div>

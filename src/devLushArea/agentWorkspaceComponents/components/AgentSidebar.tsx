@@ -15,8 +15,10 @@ interface SidebarItemProps {
 
 const SidebarItem = ({ icon: Icon, label, isActive, onClick, badge }: SidebarItemProps) => (
   <button
+    type="button"
     onClick={onClick}
-    className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors text-sm ${
+    aria-current={isActive ? 'page' : undefined}
+    className={`w-full min-h-11 flex items-center justify-between px-3 py-2 rounded-lg transition-colors text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
       isActive 
         ? 'bg-indigo-50 text-indigo-700 font-medium' 
         : 'text-slate-600 hover:bg-slate-100'
@@ -38,17 +40,21 @@ interface SidebarSectionProps {
 
 const SidebarSection = ({ title, children, defaultExpanded = true }: SidebarSectionProps) => {
   const [expanded, setExpanded] = React.useState(defaultExpanded);
+  const sectionId = `agent-sidebar-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   
   return (
     <div className="mb-4">
       <button 
+        type="button"
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-slate-700 transition-colors mb-1"
+        aria-expanded={expanded}
+        aria-controls={sectionId}
+        className="w-full min-h-11 flex items-center justify-between px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-slate-700 transition-colors mb-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
       >
         {title}
         {expanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
       </button>
-      {expanded && <div className="space-y-0.5">{children}</div>}
+      <div id={sectionId} className="space-y-0.5" hidden={!expanded}>{children}</div>
     </div>
   );
 };

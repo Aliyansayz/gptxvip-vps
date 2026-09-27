@@ -1,5 +1,7 @@
+import { useNavigate } from 'react-router'
 import DevLushApp from '../../agentDevRootComponents/devLushAreaApp'
 
 export default function LabRuntime() {
-  return <DevLushApp onExit={() => window.location.assign('/agents')} onNavigateFinhub={() => window.location.assign('/finhub')} />
+  const navigate = useNavigate()
+  return <DevLushApp onExit={() => navigate('/')} onNavigateFinhub={() => window.location.assign('/finhub')} />
 }

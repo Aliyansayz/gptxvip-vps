@@ -41,7 +41,7 @@ export default function RedTeamToolsView() {
             Red Team Arsenal
           </h2>
           <p className="text-slate-500 mt-2">
-            A curated collection of offensive security tools utilized by the automated agent during attack simulations.
+            A static reference list for authorized security education. These tools are not launched by this preview.
           </p>
         </div>
 

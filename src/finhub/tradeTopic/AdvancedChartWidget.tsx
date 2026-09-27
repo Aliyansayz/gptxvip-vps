@@ -331,15 +331,18 @@ export const AdvancedChartWidget: React.FC = () => {
     setCurrentPrice(`$${data[data.length - 1].close.toFixed(2)}`);
     resize();
 
-    const resizeObserver = new ResizeObserver(() => {
-      resize();
-    });
-    resizeObserver.observe(container);
+    const resizeObserver = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(resize);
+    if (resizeObserver) {
+      resizeObserver.observe(container);
+    } else {
+      window.addEventListener('resize', resize);
+    }
 
     // Removed setInterval to keep it paused
 
     return () => {
-      resizeObserver.disconnect();
+      if (resizeObserver) resizeObserver.disconnect();
+      else window.removeEventListener('resize', resize);
     };
   }, []);
 

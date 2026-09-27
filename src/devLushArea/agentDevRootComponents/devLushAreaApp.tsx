@@ -105,9 +105,13 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub }) => {
             ? { ...(location.state as Record<string, unknown>) }
             : {};
         delete nextState.devLushChapterId;
+        delete nextState.devLushReadingTopic;
+        delete nextState.devLushRolesRoleId;
         delete nextState.devLushRolesChapterId;
         delete nextState.devLushRolesSearchOpen;
         delete nextState.devLushWorkspaceView;
+        if (view === 'devlush-search') nextState.devLushSearchEntry = true;
+        else delete nextState.devLushSearchEntry;
         navigate(`${location.pathname}${location.search}`, {
             state: { ...nextState, devLushView: view },
         });
@@ -155,6 +159,23 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub }) => {
         delete currentState.devLushRolesSearchOpen;
         navigate(`${location.pathname}${location.search}`, {
             state: { ...currentState, devLushView: currentView, devLushRolesRoleId: roleId },
+        });
+    };
+
+    const replaceWithDevLushTopics = () => {
+        const nextState = location.state && typeof location.state === 'object'
+            ? { ...(location.state as Record<string, unknown>) }
+            : {};
+        delete nextState.devLushChapterId;
+        delete nextState.devLushSearchEntry;
+        delete nextState.devLushReadingTopic;
+        delete nextState.devLushRolesRoleId;
+        delete nextState.devLushRolesChapterId;
+        delete nextState.devLushRolesSearchOpen;
+        delete nextState.devLushWorkspaceView;
+        navigate(`${location.pathname}${location.search}`, {
+            replace: true,
+            state: { ...nextState, devLushView: 'devlush' },
         });
     };
 
@@ -346,11 +367,19 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub }) => {
                             initialChapterId={pendingFavoriteChapterId}
                             onChapterOpened={() => setPendingFavoriteChapterId(null)}
                             onSearchClick={() => navigateView('devlush-search')}
-                            onSearchClose={() => navigateView('devlush')}
+                            onSearchClose={() => {
+                                if (currentView === 'devlush-search' && location.state && typeof location.state === 'object'
+                                    && (location.state as Record<string, unknown>).devLushSearchEntry === true) {
+                                    navigate(-1);
+                                } else {
+                                    navigateView('devlush');
+                                }
+                            }}
                             initialSearchOpen={currentView === 'devlush-search'}
                             routeChapterId={readHistoryChapterId(location.state)}
                             onChapterRoutePush={pushChapterHistoryEntry}
                             onChapterRouteBack={() => navigate(-1)}
+                            onTopicHubReplace={replaceWithDevLushTopics}
                             onExit={onExit}
                         />
                     )}

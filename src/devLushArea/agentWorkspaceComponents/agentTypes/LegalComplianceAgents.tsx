@@ -2,7 +2,7 @@ import React from 'react';
 import { Scale, FileText, Globe } from 'lucide-react';
 
 interface LegalComplianceAgentsProps {
-  onNavigate?: (view: string) => void;
+  onNavigate: (view: string) => void;
 }
 
 export const LegalComplianceAgents: React.FC<LegalComplianceAgentsProps> = ({ onNavigate }) => {
@@ -20,8 +20,9 @@ export const LegalComplianceAgents: React.FC<LegalComplianceAgentsProps> = ({ on
       
       <div className="space-y-3">
         <button 
-          onClick={() => onNavigate && onNavigate('legal-contract-agent')}
-          className="w-full flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-indigo-300 hover:shadow-sm transition-all text-left"
+          type="button"
+          onClick={() => onNavigate('legal-contract-agent')}
+          className="w-full min-h-11 flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-indigo-300 hover:shadow-sm transition-all text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
         >
           <div className="flex items-center gap-3">
             <FileText className="w-5 h-5 text-indigo-500" />

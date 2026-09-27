@@ -29,6 +29,7 @@ interface DevLushContainerProps {
   routeChapterId?: string;
   onChapterRoutePush?: (chapterId: string) => void;
   onChapterRouteBack?: () => void;
+  onTopicHubReplace?: () => void;
   onExit?: () => void;
 }
 
@@ -187,6 +188,7 @@ export const DevLushContainer: React.FC<DevLushContainerProps> = ({
   routeChapterId,
   onChapterRoutePush,
   onChapterRouteBack,
+  onTopicHubReplace,
   onExit,
 }) => {
   const [activeTopicId, setActiveTopicId] = useState<string>(
@@ -356,10 +358,14 @@ export const DevLushContainer: React.FC<DevLushContainerProps> = ({
           setActiveTopicId(id);
           setSelectedChapter(null); // Go back to topic chapters lists
           setIsSearchOpen(false);
+          if (routeChapterId || initialSearchOpen) onTopicHubReplace?.();
         }}
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
-        onSearchClick={() => setIsSearchOpen(true)}
+        onSearchClick={() => {
+          setIsSearchOpen(true);
+          onSearchClick();
+        }}
         onExit={onExit}
       />
 

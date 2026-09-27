@@ -52,7 +52,7 @@ export default function RemediationPlanView({ candidate, onBack }: RemediationPl
       {/* Header */}
       <div className="p-5 border-b border-slate-200 bg-white flex items-center justify-between shadow-sm z-10">
         <div className="flex items-center gap-4">
-          <button type="button" aria-label="Return to findings" onClick={onBack} className="p-2 rounded-lg hover:bg-slate-100 transition-colors border border-slate-200">
+          <button type="button" aria-label="Return to findings" onClick={onBack} className="flex h-11 w-11 items-center justify-center rounded-lg border border-slate-200 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
             <ArrowLeft className="w-5 h-5 text-slate-600" />
           </button>
           <div>
@@ -123,7 +123,7 @@ export default function RemediationPlanView({ candidate, onBack }: RemediationPl
                 <button 
                   type="button"
                   onClick={() => setCurrentStep(prev => prev + 1)}
-                  className="px-8 py-3 bg-indigo-600 text-white rounded-xl font-semibold shadow-sm hover:bg-indigo-700 hover:shadow-md transition-all active:scale-95"
+                  className="min-h-11 px-8 py-3 bg-indigo-600 text-white rounded-xl font-semibold shadow-sm hover:bg-indigo-700 hover:shadow-md transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
                 >
                   {currentStep === steps.length - 1 ? 'Finish reviewing plan' : 'Review next step'}
                 </button>
@@ -139,8 +139,9 @@ export default function RemediationPlanView({ candidate, onBack }: RemediationPl
                 <p className="text-slate-600 text-lg max-w-md mx-auto">This preview has not changed or tested the <span className="font-bold text-slate-800">{candidate.vulnClass}</span> finding. Apply and verify any fix through your normal review process.</p>
               </div>
               <button 
+                type="button"
                 onClick={onBack}
-                className="px-8 py-3 bg-white text-slate-700 border border-slate-300 rounded-xl font-semibold hover:bg-slate-50 hover:text-slate-900 shadow-sm transition-all mt-4"
+                className="min-h-11 px-8 py-3 bg-white text-slate-700 border border-slate-300 rounded-xl font-semibold hover:bg-slate-50 hover:text-slate-900 shadow-sm transition-all mt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
               >
                 Return to findings
               </button>

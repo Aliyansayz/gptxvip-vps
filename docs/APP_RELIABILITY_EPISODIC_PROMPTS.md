@@ -58,6 +58,79 @@ Work only in gptxvip. Inspect src/devLushArea/agentDevRootComponents/blogs/**, s
 Work only in gptxvip. Use the route/control matrices from Episodes 0–7. Re-run the production build and TypeScript check, then exercise direct entry, browser Back/Forward, and visible root-return controls for every listed route. Fix only regressions in the audited slices. Report routes that require a deployed rewrite rule and mark them as environment-dependent. Stop when each matrix row is passing or has one explicit, reproducible external blocker; include the exact command and result for every check.
 ```
 
+## Episode 6 continuation slices — one feature folder per pass
+
+Use these prompts separately and in order. Each pass is limited to its named feature directory plus the shared workspace mount only when an entry or return path is broken. Do not inspect or edit `src/finhub/tools/**`.
+
+### Episode 6A — Legal Contract Agent
+
+```text
+Work only in gptxvip. Audit `src/devLushArea/agentWorkspaceComponents/legalContractAgent/**`. Trace every rendered view's workspace entry, sidebar controls, visible Back/close action, browser-history behavior, and the workspace/root return. Check form fields, empty/error states, and any URL targets. Fix broken front-end behavior only in this feature and the shared mount if required. Stop with a per-view entry/control/return checklist and lint/build/diff results.
+```
+
+### Episode 6B — Memory Types Lab
+
+```text
+Work only in gptxvip. Audit `src/devLushArea/agentWorkspaceComponents/memoryTypesLab/**`. Trace every lesson/tab selector, Back action, workspace/root return, and browser-history behavior. Check empty lesson content, storage use, keyboard operation, and mobile overflow. Fix only this feature's front-end issues. Stop with a per-view checklist and lint/build/diff results.
+```
+
+### Episode 6C — Incident Response / DFIR Agent
+
+```text
+Work only in gptxvip. Audit `src/devLushArea/agentWorkspaceComponents/securityAgent/incident_response_agent/**`. Trace Dashboard/Data/Tools/Tutorial entry, sidebar selection, Back/close, history, and workspace return. Check local data loading and every displayed control for a visible result or explicit disabled state. Fix this feature only. Stop with a per-view checklist and lint/build/diff results.
+```
+
+### Episode 6D — Threat Intelligence Agent
+
+```text
+Work only in gptxvip. Audit `src/devLushArea/agentWorkspaceComponents/securityAgent/threat_intelligence_agent/**`. Trace Dashboard/Data/Tools/Tutorial entry, sidebar selection, Back/close, history, and workspace return. Check local data loading and every displayed control for a visible result or explicit disabled state. Fix this feature only. Stop with a per-view checklist and lint/build/diff results.
+```
+
+### Episode 6E — Cloud Security Posture Agent
+
+```text
+Work only in gptxvip. Audit `src/devLushArea/agentWorkspaceComponents/securityAgent/cloud_security_posture_agent/**`. Trace Dashboard/Data/Tools/Tutorial entry, sidebar selection, Back/close, history, and workspace return. Check local data loading and every displayed control for a visible result or explicit disabled state. Fix this feature only. Stop with a per-view checklist and lint/build/diff results.
+```
+
+### Episode 6F — Source Code Auditor Agent
+
+```text
+Work only in gptxvip. Audit `src/devLushArea/agentWorkspaceComponents/securityAgent/source_code_auditor_agent/**`. Trace Dashboard/Data/Tutorial entry, sidebar selection, Back/close, history, and workspace return. Check forms, sample-data states, and every displayed control for a visible result or explicit disabled state. Fix this feature only. Stop with a per-view checklist and lint/build/diff results.
+```
+
+### Episode 6G — DevTools Agent
+
+```text
+Work only in gptxvip. Audit `src/devLushArea/agentWorkspaceComponents/devtoolsAgent/**`. Trace Dashboard entry, sidebar selection, Back/close, history, and workspace return. Check each launch/action control, local data, and empty/error state. Fix this feature only. Stop with a per-view checklist and lint/build/diff results.
+```
+
+### Episode 6H — E-commerce Agent
+
+```text
+Work only in gptxvip. Audit `src/devLushArea/agentWorkspaceComponents/ecommerceAgent/**`. Trace Dashboard/Data entry, sidebar selection, Back/close, history, and workspace return. Check forms, sample-data states, and every displayed control for a visible result or explicit disabled state. Fix this feature only. Stop with a per-view checklist and lint/build/diff results.
+```
+
+### Episode 6I — Agent Labs root views
+
+```text
+Work only in gptxvip. Finish the remaining source audit for `src/devLushArea/devLushComponents/**` and `src/devLushArea/agentDevRootComponents/**`, excluding views already recorded as source-checked in `resume-bug-fix.md`. Check each exported view's entry, parent/root return, browser-history state, search/filter controls, loading/empty/error states, and visible actions. Fix one top-level feature folder per change set. Stop with the exact folders checked and untouched.
+```
+
+## Audit log — 2026-09-27 Red Team Training Agent continuation
+
+- Theory Wiki now remembers the section that opened it; its close button and Escape return to that section and restore focus. Narrow screens use a full-view dialog with focus trapping, while the sidebar contracts to named icon controls.
+- Tutorial close, Escape, Tab handling, and focus return work; missing tutorial content has a recoverable state. Tutorial copy now describes the local sample instead of implying automated target activity.
+- The scripted run now ends at a visible completion state and stops its activity cursor. Stop/return controls have explicit destinations; report export is labeled as sample data. Recon, lateral movement, Arsenal, Settings, and Reports no longer claim live operations or recent generated findings.
+- Theory Save now toggles saved state and handles browser-storage removal failures. The workspace Back-to-Agents button is the fallback focus target after onboarding closes.
+- Red Team sections remain local view state inside `/agents/lab`; the workspace return goes to Agents and browser Back returns to the entry that launched the workspace. The route matrix documents this distinction.
+
+Checks for this continuation:
+
+- `npm run lint` — passed (`tsc --noEmit`, exit code 0).
+- `npm run build` — passed in 42.82 seconds; Vite continues to warn about chunks larger than 500 kB (the Agent app bundle remains the largest).
+- `git -c core.whitespace=cr-at-eol diff --check` — passed after the documentation update.
+- Browser Back/Forward, focus behavior, and mobile layout remain source-checked only. This environment has no browser executable, and preview cannot bind to localhost (`listen EPERM`).
+
 ## Audit log — 2026-09-26 continuation
 
 This log records findings fixed during one bounded continuation of Episodes 3 and 7. The application still has more source files and controls than this pass inspected, so this is not a whole-repository completion claim.
@@ -74,10 +147,6 @@ Checks for this continuation:
 - `npm run lint` — passed.
 - `npm run build` — passed; Vite still reports existing chunks over 500 kB, including the Agent app chunk.
 - `git -c core.whitespace=cr-at-eol diff --check` — passed.
-- `python3 -m compileall -q server_fastapi` — passed; generated `__pycache__` directories were removed afterward.
-- Interactive browser and Back/Forward behavior were not manually exercised. `vite preview` could not bind to localhost in this restricted environment (`listen EPERM`), and no browser automation is available here.
-
-Next bounded slices remain Episodes 3, 5, 6, 7, and 8, with route-level browser history checks still to be exercised in an environment that permits a browser and local server.
 
 ## Audit log — 2026-09-26 route and return-path continuation
 
@@ -138,9 +207,81 @@ Checks for this pass:
 - Finhub navbar/sidebar tab changes now scroll to their selected section after the new view mounts and cancel stale scroll observers. Every current `sidebarItems` section ID was matched to a rendered section.
 - Code Concepts Saved now returns through its own marked history entry, preserving the Search entry marker when Saved was opened from Search.
 - Roadmap favorites now open their saved chapter directly. The route parser resolves encoded course-title aliases or a valid chapter ID to its topic, then replaces the alias with the canonical topic ID.
+
+## Audit log — 2026-09-27 Agent Labs view and mobile control continuation
+
+- Favorites can now delete the currently selected collection; after deletion, its items are returned to the default collection and the view selects “All Items.” Collection controls expose pressed state, keyboard focus, touch-sized delete actions, and explicit accessible names.
+- Reading topic details now use same-path React Router state entries. Visible Back and browser Back return to the topic list, Forward restores the detail, and focus returns to the topic card.
+- DevLush sidebar Search now enters the same React Router search history state as the navbar; closing it returns to the actual parent entry, and browser Back no longer reopens a dismissed Search view.
+- Choosing a topic from the DevLush sidebar while Search or a lesson runner is open now replaces that nested history state with the Topics hub, preventing the old search/lesson from reappearing on Forward.
+- Switching top-level Agent Labs views clears a stale selected Agentic Role from the new history entry. Browser history retains the role in its earlier entry, so Back can still restore it.
+- Agentic Roles now reports completion counts for the active role instead of counting completed lessons from every role. Its filters, sidebar, and mobile drawer have labeled controls, keyboard focus, Escape close, and focus trapping/return for the drawer.
+- Text selection actions now use viewport coordinates with their fixed positioning, so the “Ask AI” control stays beside selected text after scrolling. Its controls are keyboard visible and touch sized, and Escape closes the popover.
+- The Agent Labs navigation menu now closes on Escape; its toggles expose current state and its controls have explicit button types, focus styles, and touch targets.
+- The AI chat panel now fits narrow viewports, uses dynamic viewport height limits, and exposes expanded state, a named region, and accessible close/send controls.
+
+Checks for this continuation:
+
+- `npm run lint` — passed (`tsc --noEmit`, exit code 0).
+- `npm run build` — passed in 1 minute 56 seconds; Vite still warns about chunks larger than 500 kB.
+- `git -c core.whitespace=cr-at-eol diff --check` — passed.
+- Runtime Back/Forward and mobile visual checks remain unavailable in this environment; see [resume-bug-fix.md](resume-bug-fix.md).
+
+## Audit log — 2026-09-27 Finhub parent-view control inventory
+
+The Episode 3 source pass traced controls in the named Finhub views and kept Trading Tools limited to its parent selection/return shell. Runtime click and route checks are still pending.
+
+| View | Control path checked | Result |
+|---|---|---|
+| Trade Type | Main-layout section links target the four execution examples; the view itself has no form controls and identifies its charts as generated samples. | Source checked; runtime scroll not verified. |
+| Overview | Local JSON loading/error/retry and per-section in-page links. | Retry and anchor targets are present; runtime scroll not verified. |
+| Cointegration | Reused Cointegration article view, in-page section navigation, and global Finhub parent/root navigation. | Source checked; runtime anchors not verified. |
+| Key Terms | Terms/volatility tabs, controlled query input, clear actions, and route subsection selection. | Source checked; empty/error states and tab state are present. |
+| Documentation Map | Local JSON retry, phase/class selection, detail close/Escape, and parent route navigation. | Source checked; map/data errors expose retry. |
+| Project Journey | Local JSON retry, keyboard/touch step selection, progress slider, and parent route navigation. | Source checked; no network service dependency. |
+| Trading Tools | Parent sidebar selects a version; lazy-loaded shell shows a loading state; tab/root navigation stays in MainLayout. | Parent route checked; `src/finhub/tools/**` internals excluded. |
+| Finhub Home | Carousel, preset selection, asset selection, engine start/pause, simulated paper orders, order-book tabs, and order actions. | Active state and local feedback are wired; no live order endpoint is called. |
+| Navbar, layout, footer | Main tabs, subsection links, mobile drawer, root/parent exits, theme, profile, and cross-app links. | Source handlers and rendered destinations matched; runtime history remains open. |
+
+The named Finhub view controls and parent navigation now have a source-level inventory. This does not mark the broader Episodes 5–8 view audit complete.
+
+## Audit log — 2026-09-27 Agent Workspace entry and sidebar continuation
+
+- Matched every Agent Workspace home-card destination to a supported workspace view and render branch. Unknown history view names resolve to the workspace home.
+- The visible “Back to Agents” action returns through the workspace history entry; the app-level Agent Labs overview button remains the root return.
+- Workspace launch cards and the Scanner Agent sidebar now declare button behavior, expose keyboard focus, and use touch-sized targets. Sidebar section controls report their expanded state and control a persistent hidden section region.
+- Optional workspace navigation callbacks are now required where the home always supplies them, so enabled launch buttons cannot silently do nothing.
+- Explicit “Coming soon” cards remain disabled and labeled as future work; preview-only panels continue to state that their sample data/actions are not connected integrations.
+
+This slice is source-checked. Browser Back/Forward and focus restoration after returning to a card remain unverified; other Agent Workspace subviews are still open in Episode 6.
+
+Checks for this continuation:
+
+- `npm run lint` — passed (`tsc --noEmit`, exit code 0).
+- `npm run build` — passed in 2 minutes 9 seconds; Vite still warns about chunks larger than 500 kB.
+- `git -c core.whitespace=cr-at-eol diff --check` — passed.
 - The 17 Python activities across `index.json` and `advanced_topics.json` have unique component IDs, so search results and direct lesson routes resolve without collisions.
 - Checked local data endpoints used by Strategy Overview, Key Terms, Documentation Map, Project Journey, and Code Concepts against files under `public/`; all referenced JSON files exist.
 - Blog heading and citation anchors were checked against their rendered targets; all current articles have unique heading slugs and valid citation references.
+
+## Audit log — 2026-09-27 Scanner Agent view and return continuation
+
+- Closing the Scanner Theory pane now returns to the section that was open before Theory. The fallback Theory Wiki toggle remains available when the panel is closed.
+- Vulnerability findings are keyboard-operable selection buttons with pressed state. The detail panel moves to a full-screen mobile view with a working “Back to findings” action and returns focus to the selected row.
+- Finding-class filters expose selection state and keyboard focus. If a findings view has no remediation callback, the action now reports that state instead of silently doing nothing.
+- The remediation walkthrough's header and completion controls return to findings. Theory panel and remediation controls have keyboard-visible focus; the Theory panel overlays narrow screens instead of forcing a 450px side column.
+- The scanner dashboard controls and local scripted-scan path were reviewed. Its preview notice correctly states that target scans are simulated and send no requests; the Agent Workspace “Back to Agents” control remains the root return.
+
+Checks for this continuation:
+
+- `npm run lint` — passed (`tsc --noEmit`, exit code 0).
+- `npm run build` — passed in 2 minutes 4 seconds; Vite still warns about chunks larger than 500 kB.
+- `git -c core.whitespace=cr-at-eol diff --check` — passed.
+- Runtime browser Back/Forward and phone-size layout checks remain unverified in this environment.
+- `python3 -m compileall -q server_fastapi` — passed; generated `__pycache__` directories were removed afterward.
+- Interactive browser and Back/Forward behavior were not manually exercised. `vite preview` could not bind to localhost in this restricted environment (`listen EPERM`), and no browser automation is available here.
+
+Next bounded slices remain Episodes 3, 5, 6, 7, and 8, with route-level browser history checks still to be exercised in an environment that permits a browser and local server.
 
 Checks for this continuation:
 
@@ -230,6 +371,35 @@ Checks for this continuation:
 - Browser direct-entry and Back/Forward remain unverified. There is no browser executable, and Vite preview cannot bind to localhost (`listen EPERM`).
 
 The wider frontend source audit and runtime matrix remain in progress; open work is tracked in [resume-bug-fix.md](resume-bug-fix.md).
+
+## Audit log — 2026-09-27 Agent catalog route handoff continuation
+
+- Source-checked the Agent marketplace home, browse/search query parameters, detail/not-found routes, header/footer destinations, and standalone Agent Labs entry. Those routes resolve through the existing `/agents` BrowserRouter basename.
+- Converted same-root “Open a lab” actions in the catalog header, footer, and home page from full-page `/agents/lab` loads to React Router links. The Agent Labs Exit control now navigates to the catalog through React Router, preserving the shell and expected browser history. Finhub remains a separate root handoff.
+- Browse now removes a whitespace-only `q` parameter, which otherwise displayed an active Search chip while showing every template.
+- Updated the route matrix and resume checklist. Direct-entry route fallback remains unverified because no deployment rewrite configuration is present in the current repository.
+
+Checks for this continuation:
+
+- `npm run lint`, `npm run build`, and `git -c core.whitespace=cr-at-eol diff --check` — pending.
+- Browser entry, Back/Forward, and mobile menu interaction remain unverified; see [resume-bug-fix.md](resume-bug-fix.md).
+
+## Audit log — 2026-09-27 mobile lesson and indicator interaction continuation
+
+- The shared Code Concepts simulation shell now opens its engine-data panel by default only at desktop widths. On smaller screens the panel overlays the lesson instead of shrinking the chart, and the header control can open or close it. Responsive viewport height and spacing account for mobile browser chrome.
+- Removed the simulation shell's floating data-panel shortcut because it overlapped the fixed “Mark as learned” action on narrow screens. Reset, Exit, and Engine Data controls now have touch-sized targets; the panel toggle exposes expanded state.
+- The Algo Trading pivot lab now checks the required nearest right-side bars instead of requiring an exact count. Revealing more history no longer removes a confirmed pivot. Its slider and Reveal next bar action now cover all five right-side sample bars, and the status describes confirmation timing accurately.
+- Finhub Project Journey's section dots now have 44px targets, visible keyboard focus, focusable labels, and a named navigation landmark.
+- The shared Finhub shell now skips scroll-observer setup when `IntersectionObserver` is unavailable instead of throwing during mount. Sidebar parent and subsection actions expose current/expanded state and keyboard focus.
+- Remaining Code Concepts walkthrough and Finhub chart observers now fall back to window resize or skip scroll highlighting when the observer APIs are unavailable; the source sweep found no other unguarded observer construction outside the excluded tools tree.
+- Finhub footer navigation and theme actions now use explicit button types and consistent keyboard focus styling, preserving their existing section, workspace, and root targets.
+
+Checks for this continuation:
+
+- `npm run lint` — passed (`tsc --noEmit`, exit code 0).
+- `npm run build` — passed in 1 minute 48 seconds; Vite continues to warn about chunks larger than 500 kB.
+- `git -c core.whitespace=cr-at-eol diff --check` — passed.
+- Browser interaction and small-screen visual behavior remain unverified; see [resume-bug-fix.md](resume-bug-fix.md).
 
 ## Audit log — 2026-09-26 demo control interaction continuation
 

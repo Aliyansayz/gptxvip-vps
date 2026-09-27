@@ -19,8 +19,9 @@ export const AgentLabs: React.FC<AgentLabsProps> = ({ onNavigate }) => {
       </p>
       <div className="space-y-3">
         <button 
+          type="button"
           onClick={() => onNavigate('memory-types-lab')}
-          className="w-full flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-emerald-300 hover:shadow-sm transition-all text-left"
+          className="w-full min-h-11 flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-emerald-300 hover:shadow-sm transition-all text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
         >
           <div className="flex items-center gap-3">
             <BrainCircuit className="w-5 h-5 text-emerald-500" />

@@ -19,8 +19,9 @@ export const AttackAuditorAgents: React.FC<AttackAuditorAgentsProps> = ({ onNavi
       </p>
       <div className="space-y-3">
         <button 
+          type="button"
           onClick={() => onNavigate('sast-agent')}
-          className="w-full flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-orange-300 hover:shadow-sm transition-all text-left"
+          className="w-full min-h-11 flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-orange-300 hover:shadow-sm transition-all text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
         >
           <div className="flex items-center gap-3">
             <Code className="w-5 h-5 text-orange-500" />
@@ -33,8 +34,9 @@ export const AttackAuditorAgents: React.FC<AttackAuditorAgentsProps> = ({ onNavi
         </button>
         
         <button 
+          type="button"
           onClick={() => onNavigate('red-team-agent')}
-          className="w-full flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-red-300 hover:shadow-sm transition-all text-left mt-3"
+          className="w-full min-h-11 flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-red-300 hover:shadow-sm transition-all text-left mt-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
         >
           <div className="flex items-center gap-3">
             <ShieldAlert className="w-5 h-5 text-red-600" />
