@@ -19,6 +19,7 @@ import { Terminal, Activity, FileText, BookOpen, X } from 'lucide-react';
 
 import ScannerTutorialTour from '../tutorial/ScannerTutorialTour';
 import { SvgEmptyState, SvgTheoryIllustration } from '../components/ScannerIllustrations';
+import { ActionSummary } from '../../../../../shared/components/ActionSummary';
 
 type ScannerPhase = 'DASHBOARD' | 'SCANNING' | 'RESULTS' | 'REMEDIATION';
 
@@ -51,15 +52,15 @@ export default function ScannerAgentMainView() {
     setTargetUrl(normalizedTarget);
     setPhase('SCANNING');
     setSidebarView('scans');
-    setScanLogs(['> Initializing SecOps Scanner Agent...', '> Target acquired: ' + normalizedTarget]);
+    setScanLogs(['> Starting a scripted preview. No request will be sent.', '> Scenario label: ' + normalizedTarget]);
     
     // Simulate scan steps
     scanTimersRef.current = [
-      window.setTimeout(() => addLog('> Crawling endpoints... found 42 routes'), 1000),
-      window.setTimeout(() => addLog('> Initiating payload injection sequence (XSS, SQLi, SSRF, RCE)...'), 2500),
-      window.setTimeout(() => addLog('> WARN: Suspicious reflection detected at /api/v1/users/profile'), 4000),
-      window.setTimeout(() => addLog('> CRITICAL: SQL syntax error confirmed on /api/v1/products?id=1\''), 5500),
-      window.setTimeout(() => addLog('> Aggregating findings... Scan complete.'), 7000),
+      window.setTimeout(() => addLog('> Example step: inspect a fixed route list.'), 1000),
+      window.setTimeout(() => addLog('> Example step: compare known response patterns.'), 2500),
+      window.setTimeout(() => addLog('> Sample signal: reflection in a prepared response at /api/v1/users/profile.'), 4000),
+      window.setTimeout(() => addLog('> Sample signal: an illustrative SQL error at /api/v1/products.'), 5500),
+      window.setTimeout(() => addLog('> Scripted preview complete. No endpoint was contacted.'), 7000),
       window.setTimeout(() => {
       setPhase('RESULTS');
         if (sidebarViewRef.current === 'scans') setSidebarView('exploits');
@@ -114,26 +115,28 @@ export default function ScannerAgentMainView() {
           {sidebarView === 'scans' && (
             <div className="flex-1 flex flex-col p-6 bg-slate-50">
               <div className="flex-1 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col overflow-hidden">
-                <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+                <div className="p-4 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 bg-slate-50">
                   <div className="flex items-center gap-2 text-slate-500">
                     <Terminal className="w-4 h-4" />
-                    <span className="text-sm font-medium font-mono uppercase tracking-wider text-slate-700">Agent Execution Terminal</span>
+                    <span className="text-sm font-medium font-mono uppercase tracking-wider text-slate-700">Scripted preview output</span>
                   </div>
                   <div className="flex items-center gap-2 text-emerald-600">
-                    <Activity className="w-4 h-4 animate-pulse" />
-                    <span className="text-xs font-mono uppercase font-semibold">{phase === 'RESULTS' ? 'Scan Complete' : phase === 'SCANNING' ? 'Scanning Active' : 'No Active Scan'}</span>
+                    <Activity className="w-4 h-4" />
+                    <span className="text-xs font-mono uppercase font-semibold">{phase === 'RESULTS' ? 'Preview complete' : phase === 'SCANNING' ? 'Preview running' : 'Preview idle'}</span>
                   </div>
+                  <button type="button" onClick={() => { clearScanTimers(); setPhase('DASHBOARD'); setScanLogs([]); setSidebarView('dashboard'); }} className="min-h-11 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">Stop and reset</button>
                 </div>
+                <div className="border-b border-slate-200 p-4"><ActionSummary input={targetUrl} action="Play fixed example steps; no network activity" result="Sample findings are available in Web Exploits" nextStep="Review an example finding and its remediation plan" status={phase === 'SCANNING' ? 'running' : phase === 'RESULTS' ? 'done' : 'idle'} /></div>
                 <div className="flex-1 p-6 font-mono text-sm text-slate-600 overflow-y-auto space-y-2">
                   {scanLogs.length === 0 && (
-                    <div className="text-slate-500 italic">No active scan running. Return to the Command Center to initiate a scan.</div>
+                    <div className="text-slate-500 italic">No preview running. Return to the dashboard to choose an example scenario.</div>
                   )}
                   {scanLogs.map((log, i) => (
                     <div key={i} className={`${log.includes('CRITICAL') || log.includes('WARN') ? 'text-red-600 font-medium' : log.startsWith('>') ? 'text-slate-800' : 'text-slate-500'}`}>
                       {log}
                     </div>
                   ))}
-                  {scanLogs.length > 0 && phase === 'SCANNING' && <div className="animate-pulse text-emerald-600">_</div>}
+                  {scanLogs.length > 0 && phase === 'SCANNING' && <div className="text-emerald-700">Preparing the next sample event…</div>}
                 </div>
               </div>
             </div>

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 
 interface LabContextType {
-    courseType: 'bio' | 'med';
+    courseType: 'bio' | 'med' | 'devLush';
     labId: string;
     chapterTitle: string;
 }

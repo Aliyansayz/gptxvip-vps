@@ -10,6 +10,7 @@ import RedTeamTutorialTour from '../tutorial/RedTeamTutorialTour';
 import AgentTheorySidebar from '../../../components/AgentTheorySidebar';
 import { BookOpen, X, Terminal } from 'lucide-react';
 import { SvgTheoryIllustration } from '../../scannerAgent/components/ScannerIllustrations';
+import { ActionSummary } from '../../../../../shared/components/ActionSummary';
 
 export default function RedTeamAgentMainView() {
   const [sidebarView, setSidebarView] = useState<RedTeamSidebarView>('dashboard');
@@ -92,14 +93,14 @@ export default function RedTeamAgentMainView() {
     clearSimulationTimers();
     setIsSimulationRunning(true);
     setSidebarView('exploitation');
-    setSimLogs(['> Initializing APT emulation sequence...', '> Target scope: 10.0.x.x/24']);
+    setSimLogs(['> Starting a scripted training sequence.', '> Example scope label: 10.0.x.x/24; no target contacted.']);
     
     simulationTimers.current = [
-      window.setTimeout(() => setSimLogs(prev => [...prev, '> Scanning perimeter for exposed services...']), 1000),
+      window.setTimeout(() => setSimLogs(prev => [...prev, '> Example step: review prepared perimeter signals.']), 1000),
       window.setTimeout(() => setSimLogs(prev => [...prev, '> Example finding: simulated Apache Struts service in the fixed sample scope.']), 2500),
-      window.setTimeout(() => setSimLogs(prev => [...prev, '> Executing payload for CVE-2017-5638...']), 4000),
+      window.setTimeout(() => setSimLogs(prev => [...prev, '> Example step: inspect an illustrative exploitation path.']), 4000),
       window.setTimeout(() => setSimLogs(prev => [...prev, '> Example stage: simulated low-privilege shell (no system accessed).']), 5500),
-      window.setTimeout(() => setSimLogs(prev => [...prev, '> Initiating lateral movement and privilege escalation phases...']), 7000),
+      window.setTimeout(() => setSimLogs(prev => [...prev, '> Example step: review lateral-movement and privilege signals.']), 7000),
       window.setTimeout(() => {
         setSimLogs(prev => [...prev, '> Scenario complete. No target was contacted or changed.']);
         setIsSimulationRunning(false);
@@ -154,7 +155,8 @@ export default function RedTeamAgentMainView() {
           )}
 
           {sidebarView === 'exploitation' && (
-            <div className="flex-1 flex flex-col p-6 bg-slate-50">
+            <div className="flex-1 flex flex-col gap-4 overflow-y-auto bg-slate-50 p-4 sm:p-6">
+              <div className="rounded-xl border border-slate-200 bg-white p-4"><p className="mb-3 text-xs font-bold uppercase tracking-wider text-red-700">Scenario boundary · fixed sample · no network activity</p><ActionSummary input="Prepared 10.0.x.x/24 training scenario" action="Play a fixed event sequence" result="Illustrative signals; no target or defense was tested" nextStep="Review the event trace, then open the sample report" status={isSimulationRunning ? 'running' : simLogs.some(log => log.includes('Scenario complete')) ? 'done' : 'idle'} /><div className="mt-4 flex flex-wrap gap-2"><button type="button" onClick={() => setSidebarView('reporting')} className="min-h-11 rounded-lg border border-red-200 px-3 text-sm font-semibold text-red-700 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500">Open report trace</button><button type="button" onClick={stopSimulation} className="min-h-11 rounded-lg border border-slate-200 px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500">Reset scenario</button></div></div>
               <div className="flex-1 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col overflow-hidden">
                 <div className="p-3 sm:p-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-slate-50">
                   <div className="flex items-center gap-2 text-slate-500">
@@ -170,7 +172,7 @@ export default function RedTeamAgentMainView() {
                     )}
                   </div>
                 </div>
-                <div className="flex-1 p-6 font-mono text-sm text-slate-600 overflow-y-auto space-y-2">
+                <div className="min-h-44 max-h-[24rem] flex-1 space-y-2 overflow-y-auto break-words p-4 font-mono text-sm text-slate-600 sm:p-6" aria-live="polite">
                   {simLogs.length === 0 && (
                     <div className="text-slate-500 italic">No active simulation. Return to Command Center to initialize.</div>
                   )}
@@ -179,7 +181,7 @@ export default function RedTeamAgentMainView() {
                       {log}
                     </div>
                   ))}
-                  {isSimulationRunning && <div aria-hidden="true" className="animate-pulse text-red-600">_</div>}
+                  {isSimulationRunning && <div className="text-red-700">Preparing the next sample event…</div>}
                 </div>
               </div>
             </div>
@@ -187,7 +189,7 @@ export default function RedTeamAgentMainView() {
 
           {sidebarView === 'recon' && <RedTeamReconView />}
           {sidebarView === 'lateral_movement' && <RedTeamLateralMovementView />}
-          {sidebarView === 'reporting' && <RedTeamReportingView />}
+          {sidebarView === 'reporting' && <RedTeamReportingView scenarioLogs={simLogs} scenarioComplete={simLogs.some(log => log.includes('Scenario complete'))} onOpenScenario={() => setSidebarView('exploitation')} />}
           {sidebarView === 'settings' && <RedTeamSettingsView />}
           
           {sidebarView === 'theory' && (

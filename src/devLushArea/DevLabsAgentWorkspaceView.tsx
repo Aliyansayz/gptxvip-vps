@@ -38,6 +38,7 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
     const [currentView, setCurrentView] = useState<'landing' | 'devlush-search' | 'reading' | 'articles' | 'blogs' | 'favorites' | 'topic-theory' | 'devlush' | 'agentic-roles' | 'agent-workspace'>('landing');
     const [pendingFavoriteChapterId, setPendingFavoriteChapterId] = useState<string | null>(null);
     const [pendingFavoriteRoleChapter, setPendingFavoriteRoleChapter] = useState<{ roleId: string; chapterId: string } | null>(null);
+    const [landingRoleId, setLandingRoleId] = useState<string | null>(null);
 
     // Text Selection & AI Prompt State
     const [selectionRect, setSelectionRect] = useState<DOMRect | null>(null);
@@ -169,7 +170,7 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
 
                 <main className="flex-1 overflow-hidden relative">
 
-                    {currentView === 'landing' && <LandingPage onOpenTopics={() => setCurrentView('devlush')} onOpenTheory={() => setCurrentView('topic-theory')} onOpenSearch={() => setCurrentView('devlush-search')} />}
+                    {currentView === 'landing' && <LandingPage onOpenTopics={() => setCurrentView('devlush')} onOpenTheory={() => setCurrentView('topic-theory')} onOpenSearch={() => setCurrentView('devlush-search')} onOpenRole={(roleId) => { setLandingRoleId(roleId); setCurrentView('agentic-roles'); }} />}
 
                     {(currentView === 'devlush' || currentView === 'devlush-search') && (
                         <DevLushContainer 
@@ -178,6 +179,8 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
                             initialChapterId={pendingFavoriteChapterId}
                             onChapterOpened={() => setPendingFavoriteChapterId(null)}
                             onSearchClick={() => setCurrentView('devlush-search')}
+                            onSearchClose={() => setCurrentView('devlush')}
+                            onSavedClick={() => setCurrentView('favorites')}
                             initialSearchOpen={currentView === 'devlush-search'}
                         />
                     )}
@@ -191,7 +194,8 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
                             isLocked={isInteractionLocked}
                             onConsumeEnergy={consumeEnergy}
                             onExitToDevLush={() => setCurrentView('devlush')}
-                            initialRoleId={pendingFavoriteRoleChapter?.roleId}
+                            onShowSaved={() => setCurrentView('favorites')}
+                            initialRoleId={pendingFavoriteRoleChapter?.roleId || landingRoleId || undefined}
                             initialChapterId={pendingFavoriteRoleChapter?.chapterId}
                             onInitialChapterOpened={() => setPendingFavoriteRoleChapter(null)}
                         />
@@ -210,7 +214,7 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
                     )}
 
                     {currentView === 'favorites' && (
-                        <FavoritesView onLaunch={(favorite: FavoriteItem) => {
+                        <FavoritesView onBrowseTopics={() => setCurrentView('devlush')} onSearchTopics={() => setCurrentView('devlush-search')} onLaunch={(favorite: FavoriteItem) => {
                             if (favorite.type === 'roadmap_lab' || favorite.type === 'roadmap_reading') {
                                 const path = `/roadmap/${encodeURIComponent(favorite.courseId)}/${encodeURIComponent(favorite.id)}`;
                                 window.history.pushState({ roadmapChapterEntry: true }, '', path);

@@ -41,47 +41,11 @@ const RoadmapChapterCard: React.FC<{
   const totalExercises = chapter.interactive_questions?.length || 0;
   const themeColors = getThemeColorClass(chapter.course);
   
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState(0);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
-  const handleMouseEnter = () => setOpacity(1);
-  const handleMouseLeave = () => setOpacity(0);
-
-  const getSpotlightColor = () => {
-    if (themeColors.bg.includes('fuchsia')) return '192, 38, 211';
-    if (themeColors.bg.includes('violet')) return '124, 58, 237';
-    if (themeColors.bg.includes('emerald')) return '16, 185, 129';
-    if (themeColors.bg.includes('amber')) return '245, 158, 11';
-    if (themeColors.bg.includes('rose')) return '225, 29, 72';
-    if (themeColors.bg.includes('blue')) return '37, 99, 235';
-    return '99, 102, 241'; // indigo
-  };
-  
-  const spotlightColor = getSpotlightColor();
-
   return (
     <article
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className="group relative overflow-hidden rounded-2xl bg-slate-200 p-[2px] shadow-sm transition-all duration-300 hover:shadow-xl dark:bg-slate-800"
+      className={`group relative overflow-hidden rounded-2xl border bg-white shadow-sm transition-[border-color,box-shadow] duration-200 hover:shadow-md dark:bg-slate-900 ${isCompleted ? 'border-emerald-300 dark:border-emerald-700' : 'border-slate-200 hover:border-indigo-300 dark:border-slate-800 dark:hover:border-indigo-700'}`}
     >
-      {/* Gradient Spotlight Layer that follows the cursor */}
-      <div 
-        className="absolute inset-0 z-0 transition-opacity duration-500"
-        style={{
-          opacity,
-          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(${spotlightColor}, 0.8), transparent 40%)`
-        }}
-      />
-      
-      {/* Inner Content Container - solid bg-white masks the center of the spotlight */}
-      <div className="relative z-10 flex h-full flex-col overflow-hidden rounded-[14px] bg-white p-6 dark:bg-slate-900">
+      <div className="relative z-10 flex h-full flex-col p-6">
         <div className="relative">
           {isCompleted && (
             <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-300">
@@ -127,7 +91,7 @@ const RoadmapChapterCard: React.FC<{
         <button
           type="button"
           onClick={(e) => { e.stopPropagation(); onStart(); }}
-          className={`w-full flex min-h-11 items-center justify-center gap-2 rounded-xl p-3 font-bold text-white bg-gradient-to-r ${themeColors.gradientFrom} ${themeColors.gradientTo} shadow-md transition-all opacity-90 hover:opacity-100 hover:${themeColors.shadowMd} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 relative z-10`}
+          className={`w-full flex min-h-11 items-center justify-center gap-2 rounded-xl p-3 font-bold text-white bg-gradient-to-r ${themeColors.gradientFrom} ${themeColors.gradientTo} shadow-sm transition-[filter] duration-200 hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 relative z-10`}
         >
           {isCompleted ? <CheckCircle2 className="h-4 w-4" /> : <Play className="w-4 h-4 fill-current" />}
           <span>{isCompleted ? "Review chapter" : "Start chapter"}</span>
@@ -163,6 +127,7 @@ const RoadmapHub: React.FC<RoadmapHubProps> = ({
     : [];
   const completedCount = activeTopic?.chapters.filter((chapter) => completedChapterIds.includes(chapter.labComponentId)).length || 0;
   const topicProgress = activeTopic?.chapters.length ? Math.round((completedCount / activeTopic.chapters.length) * 100) : 0;
+  const nextChapter = activeTopic?.chapters.find((chapter) => !completedChapterIds.includes(chapter.labComponentId)) || activeTopic?.chapters[0];
 
   if (isLoading) {
     return (
@@ -183,13 +148,13 @@ const RoadmapHub: React.FC<RoadmapHubProps> = ({
   return (
     <div className="w-full bg-slate-50 dark:bg-black h-fit">
       <div className="p-4 md:p-6">
-        <div className="w-full mx-auto">
+        <div className="w-full max-w-[80rem] mx-auto">
           {activeTopic ? (
             <>
-              <header className="mb-12 relative overflow-hidden bg-slate-900/5 dark:bg-slate-900/40 p-6">
+              <header className="mb-8 relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900/40">
                 {/* Abstract SVG Illustration Background */}
                 <div className="absolute inset-0 z-0 opacity-20 pointer-events-none overflow-hidden mix-blend-overlay dark:mix-blend-screen">
-                  <svg className="absolute w-[150%] h-[150%] top-[-25%] left-[-25%] animate-spin-slow" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="absolute w-[150%] h-[150%] top-[-25%] left-[-25%]" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                       <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style={{ stopColor: 'currentColor', stopOpacity: 0.1 }} />
@@ -226,11 +191,10 @@ const RoadmapHub: React.FC<RoadmapHubProps> = ({
                     </g>
                   </svg>
                   {/* Decorative glowing orb */}
-                  <div className={`absolute top-0 right-0 w-96 h-96 bg-gradient-to-br ${themeColors.gradientFrom} ${themeColors.gradientTo} rounded-full blur-[100px] opacity-20 transform translate-x-1/3 -translate-y-1/3`} />
                 </div>
 
                 <div className="relative z-10 flex flex-col items-start gap-4 mb-4">
-                  <div className={`p-4 bg-gradient-to-br ${themeColors.gradientFrom} ${themeColors.gradientTo} text-white rounded-2xl shadow-xl ${themeColors.shadowMd} backdrop-blur-md border border-white/20 transform transition-transform hover:scale-105 duration-300`}>
+                  <div className={`p-4 bg-gradient-to-br ${themeColors.gradientFrom} ${themeColors.gradientTo} text-white rounded-2xl border border-white/20`}>
                     <activeTopic.icon className="w-10 h-10" />
                   </div>
                   
@@ -255,7 +219,7 @@ const RoadmapHub: React.FC<RoadmapHubProps> = ({
                     </div>
                   )}
                   <h2 className="text-5xl md:text-6xl font-heading tracking-wide text-slate-900 dark:text-white mt-2">
-                    <span className={`text-transparent bg-clip-text bg-gradient-to-r ${themeColors.gradientFrom} ${themeColors.gradientVia} ${themeColors.gradientTo} bg-[size:200%_auto] animate-gradient`}>
+                    <span className={`text-transparent bg-clip-text bg-gradient-to-r ${themeColors.gradientFrom} ${themeColors.gradientVia} ${themeColors.gradientTo}`}>
                       {activeTopic.title}
                     </span>
                   </h2>
@@ -272,6 +236,16 @@ const RoadmapHub: React.FC<RoadmapHubProps> = ({
                     <div className={`h-full bg-gradient-to-r ${themeColors.gradientFrom} ${themeColors.gradientTo} transition-[width] duration-500`} style={{ width: `${topicProgress}%` }} />
                   </div>
                 </div>
+                {nextChapter && (
+                  <div className="relative z-10 mt-4 flex flex-col gap-3 rounded-2xl border border-indigo-200 bg-indigo-50 p-4 dark:border-indigo-800 dark:bg-indigo-950/30 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-[0.14em] text-indigo-700 dark:text-indigo-300">{completedCount === activeTopic.chapters.length ? 'Review a chapter' : completedCount > 0 ? 'Continue your topic' : 'Start here'}</p>
+                      <p className="mt-1 text-base font-bold text-slate-900 dark:text-white">{nextChapter.chapter_title}</p>
+                      <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">Day {nextChapter.roadmap || 1} · {nextChapter.readingComponentId ? 'Reading' : 'Interactive lab'}</p>
+                    </div>
+                    <button type="button" onClick={() => onStartChapter(nextChapter)} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-indigo-700 px-5 text-sm font-bold text-white hover:bg-indigo-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 dark:bg-indigo-500 dark:text-slate-950">{completedCount === activeTopic.chapters.length ? 'Review chapter' : 'Open next chapter'} <ArrowRight className="h-4 w-4" /></button>
+                  </div>
+                )}
               </header>
 
               <div className="mb-8">

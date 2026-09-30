@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { LabData, ConceptCourse } from "../devLushTypes";
 import {
   Play,
@@ -30,64 +30,31 @@ interface DevLushHubProps {
   isLoading: boolean;
   onStartChapter: (chapter: LabData) => void;
   activeTopicId: string;
+  completedChapterIds: string[];
 }
 
 const DevLushChapterCard: React.FC<{
   chapter: LabData;
   onStart: () => void;
-}> = ({ chapter, onStart }) => {
+  isCompleted: boolean;
+}> = ({ chapter, onStart, isCompleted }) => {
   const totalExercises = chapter.interactive_questions.length;
   const themeColors = getThemeColorClass(chapter.course);
 
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState(0);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
-  const handleMouseEnter = () => setOpacity(1);
-  const handleMouseLeave = () => setOpacity(0);
-
-  const getSpotlightColor = () => {
-    if (themeColors.bg.includes('fuchsia')) return '192, 38, 211';
-    if (themeColors.bg.includes('violet')) return '124, 58, 237';
-    if (themeColors.bg.includes('emerald')) return '16, 185, 129';
-    if (themeColors.bg.includes('amber')) return '245, 158, 11';
-    if (themeColors.bg.includes('rose')) return '225, 29, 72';
-    if (themeColors.bg.includes('blue')) return '37, 99, 235';
-    return '99, 102, 241'; // indigo
-  };
-
-  const spotlightColor = getSpotlightColor();
-
   return (
-    <div
-      onClick={onStart}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className="group relative overflow-hidden rounded-2xl bg-slate-200 dark:bg-slate-800 p-[2px] shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
+    <article
+      className={`group relative min-w-0 overflow-hidden rounded-2xl border bg-white shadow-sm transition-[border-color,box-shadow] duration-200 hover:shadow-md dark:bg-slate-900 ${isCompleted ? 'border-emerald-400 dark:border-emerald-700' : 'border-slate-200 hover:border-indigo-300 dark:border-slate-800'}`}
     >
-      {/* Gradient Spotlight Layer that follows the cursor */}
-      <div
-        className="absolute inset-0 z-0 transition-opacity duration-500"
-        style={{
-          opacity,
-          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(${spotlightColor}, 0.8), transparent 40%)`
-        }}
-      />
-
-      {/* Inner Content Container - solid bg-white masks the center of the spotlight */}
-      <div className="relative z-10 flex flex-col h-full bg-white dark:bg-slate-900 rounded-[14px] p-6 overflow-hidden">
+      <div className="relative z-10 flex h-full flex-col p-4 sm:p-6">
         <div className="relative">
-          <h4 className={`font-heading text-2xl tracking-wide text-slate-900 dark:text-white transition-colors duration-300 ${themeColors.groupHoverText}`}>
+          {isCompleted && <span className="mb-2 inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200"><CheckCircle2 className="h-3.5 w-3.5" /> Completed</span>}
+          <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">{totalExercises} {totalExercises === 1 ? "exercise" : "exercises"} · interactive lab</p>
+          <h3 className={`break-words font-heading text-xl tracking-wide text-slate-900 transition-colors duration-300 dark:text-white sm:text-2xl ${themeColors.groupHoverText}`}>
             {chapter.chapter_title}
-          </h4>
+          </h3>
         </div>
 
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 mb-4 flex-grow relative z-10 line-clamp-2">
+        <p className="relative z-10 mb-4 mt-2 flex-grow text-sm leading-6 text-slate-600 line-clamp-3 dark:text-slate-300 sm:line-clamp-2">
           {chapter.critical_concepts?.[0]?.elaboration ||
             (chapter.critical_concepts && chapter.critical_concepts.length > 0
               ? `Explores core concepts including ${chapter.critical_concepts.map(c => c.concept).join(', ')}.`
@@ -99,7 +66,7 @@ const DevLushChapterCard: React.FC<{
             ? chapter.critical_concepts.slice(0, 3).map((c) => (
               <span
                 key={c.concept}
-                className={`${themeColors.bgSoft} ${themeColors.text} px-2.5 py-1 rounded-md font-mono border ${themeColors.borderSoft}`}
+                className={`max-w-full break-words ${themeColors.bgSoft} ${themeColors.text} px-2.5 py-1 rounded-md font-mono border ${themeColors.borderSoft}`}
               >
                 {c.concept}
               </span>
@@ -107,7 +74,7 @@ const DevLushChapterCard: React.FC<{
             : chapter.tags && chapter.tags.slice(0, 3).map((t) => (
               <span
                 key={t}
-                className={`${themeColors.bgSoft} ${themeColors.text} px-2.5 py-1 rounded-md font-mono border ${themeColors.borderSoft} capitalize`}
+                className={`max-w-full break-words ${themeColors.bgSoft} ${themeColors.text} px-2.5 py-1 rounded-md font-mono border ${themeColors.borderSoft} capitalize`}
               >
                 {t}
               </span>
@@ -115,14 +82,16 @@ const DevLushChapterCard: React.FC<{
         </div>
 
         <button
-          onClick={(e) => { e.stopPropagation(); onStart(); }}
-          className={`w-full flex items-center justify-center gap-2 p-3 rounded-xl font-bold text-white bg-gradient-to-r ${themeColors.gradientFrom} ${themeColors.gradientTo} shadow-md transition-all opacity-90 hover:opacity-100 hover:${themeColors.shadowMd} relative z-10`}
+          type="button"
+          onClick={onStart}
+          aria-label={`${isCompleted ? 'Review' : 'Start'} ${chapter.chapter_title}`}
+          className={`relative z-10 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r p-3 font-bold text-white shadow-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 ${themeColors.gradientFrom} ${themeColors.gradientTo}`}
         >
           <Play className="w-4 h-4 fill-current" />
-          <span>Launch Agent Sandbox</span>
+          <span>{isCompleted ? 'Review lab' : 'Start lab'}</span>
         </button>
       </div>
-    </div>
+    </article>
   );
 };
 
@@ -131,8 +100,11 @@ const DevLushHub: React.FC<DevLushHubProps> = ({
   isLoading,
   onStartChapter,
   activeTopicId,
+  completedChapterIds,
 }) => {
   const activeTopic = devLushTopics.find((t) => t.id === activeTopicId);
+  const completedCount = activeTopic?.chapters.filter((chapter) => completedChapterIds.includes(chapter.labComponentId)).length || 0;
+  const nextChapter = activeTopic?.chapters.find((chapter) => !completedChapterIds.includes(chapter.labComponentId)) || activeTopic?.chapters[0];
 
   if (isLoading) {
     return (
@@ -151,15 +123,15 @@ const DevLushHub: React.FC<DevLushHubProps> = ({
   const themeColors = activeTopic ? getThemeColorClass(activeTopic.title) : getThemeColorClass("");
 
   return (
-    <div className="w-full bg-slate-50 dark:bg-black h-fit">
-      <div className="p-4 md:p-6">
-        <div className="w-full mx-auto">
+    <div className="h-fit min-w-0 w-full bg-slate-50 dark:bg-black">
+      <div className="p-4 sm:p-6">
+        <div className="mx-auto w-full max-w-7xl">
           {activeTopic ? (
             <>
-              <header className="mb-12 relative overflow-hidden bg-slate-900/5 dark:bg-slate-900/40 p-6">
+              <header className="relative mb-5 min-w-0 overflow-hidden rounded-3xl bg-slate-900/5 p-4 dark:bg-slate-900/40 sm:mb-10 sm:p-6">
                 {/* Abstract SVG Illustration Background */}
                 <div className="absolute inset-0 z-0 opacity-20 pointer-events-none overflow-hidden mix-blend-overlay dark:mix-blend-screen">
-                  <svg className="absolute w-[150%] h-[150%] top-[-25%] left-[-25%] animate-spin-slow" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="absolute w-[150%] h-[150%] top-[-25%] left-[-25%]" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                       <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style={{ stopColor: 'currentColor', stopOpacity: 0.1 }} />
@@ -196,34 +168,47 @@ const DevLushHub: React.FC<DevLushHubProps> = ({
                     </g>
                   </svg>
                   {/* Decorative glowing orb */}
-                  <div className={`absolute top-0 right-0 w-96 h-96 bg-gradient-to-br ${themeColors.gradientFrom} ${themeColors.gradientTo} rounded-full blur-[100px] opacity-20 transform translate-x-1/3 -translate-y-1/3`} />
                 </div>
 
-                <div className="relative z-10 flex flex-col items-start gap-4 mb-4">
-                  <div className={`p-4 bg-gradient-to-br ${themeColors.gradientFrom} ${themeColors.gradientTo} text-white rounded-2xl shadow-xl ${themeColors.shadowMd} backdrop-blur-md border border-white/20 transform transition-transform hover:scale-105 duration-300`}>
-                    <activeTopic.icon className="w-10 h-10" />
+                <div className="relative z-10 mb-3 flex items-center gap-3 sm:mb-4 sm:flex-col sm:items-start sm:gap-4">
+                  <div className={`rounded-2xl border border-white/20 bg-gradient-to-br p-3 text-white shadow-xl backdrop-blur-md sm:p-4 ${themeColors.gradientFrom} ${themeColors.gradientTo} ${themeColors.shadowMd}`}>
+                    <activeTopic.icon className="h-6 w-6 sm:h-10 sm:w-10" />
                   </div>
-                  <h2 className="text-5xl md:text-6xl font-heading tracking-wide text-slate-900 dark:text-white mt-2">
-                    <span className={`text-transparent bg-clip-text bg-gradient-to-r ${themeColors.gradientFrom} ${themeColors.gradientVia} ${themeColors.gradientTo} bg-[size:200%_auto] animate-gradient`}>
+                  <h2 className="min-w-0 break-words font-heading text-2xl leading-tight tracking-wide text-slate-900 dark:text-white sm:mt-2 sm:text-5xl lg:text-6xl">
+                    <span className={`text-transparent bg-clip-text bg-gradient-to-r ${themeColors.gradientFrom} ${themeColors.gradientVia} ${themeColors.gradientTo}`}>
                       {activeTopic.title}
                     </span>
                   </h2>
                 </div>
-                <p className="relative z-10 text-xl text-slate-700 dark:text-slate-300 max-w-3xl leading-relaxed font-medium">
+                <p className="relative z-10 max-w-3xl text-sm font-medium leading-6 text-slate-700 dark:text-slate-300 sm:text-xl sm:leading-relaxed">
                   {activeTopic.longDescription}
                 </p>
+                <div className="relative z-10 mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white/80 p-3 text-sm dark:border-slate-700 dark:bg-slate-950/70 sm:mt-5 sm:max-w-2xl sm:p-4">
+                  <p className="font-semibold text-slate-800 dark:text-slate-100">{completedCount} of {activeTopic.chapters.length} labs completed</p>
+                  {nextChapter && <button type="button" onClick={() => onStartChapter(nextChapter)} className="hidden min-h-11 items-center gap-2 rounded-lg bg-indigo-600 px-4 font-semibold text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 sm:inline-flex">{completedCount === activeTopic.chapters.length ? 'Review a lab' : 'Continue learning'} <ArrowRight className="h-4 w-4" /></button>}
+                </div>
+                <div className="relative z-10 mt-4 flex flex-col gap-3 sm:hidden">
+                  {nextChapter && (
+                    <button type="button" onClick={() => onStartChapter(nextChapter)} className="flex min-h-12 items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2">
+                      <Play className="h-4 w-4" /> {completedCount === activeTopic.chapters.length ? 'Review a lab' : completedCount > 0 ? 'Continue next lab' : 'Start first lab'}
+                    </button>
+                  )}
+                </div>
               </header>
 
-              <div className="mb-8">
+              <div className="mb-8 hidden sm:block">
                 <RandomKeywordsList chapters={activeTopic.chapters || []} />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {activeTopic.chapters &&
-                  activeTopic.chapters.map((chapter, index) => (
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3">
+                {activeTopic.chapters.length === 0 && (
+                  <p role="status" className="rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">This topic has no labs yet. Choose another topic above.</p>
+                )}
+                {activeTopic.chapters.map((chapter, index) => (
                     <DevLushChapterCard
                       key={`${chapter.labComponentId}-${index}`}
                       chapter={chapter}
+                      isCompleted={completedChapterIds.includes(chapter.labComponentId)}
                       onStart={() => onStartChapter(chapter)}
                     />
                   ))}

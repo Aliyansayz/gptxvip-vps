@@ -1,189 +1,152 @@
-import React, { useState } from 'react';
-import {
-  AgenticRoleDefinition,
-  AgenticRoleChapter,
-  Difficulty
-} from '../agenticRoleTypes';
+import React from 'react';
+import { Award, Clock, Layers, Play, Sparkles } from 'lucide-react';
+import { AgenticRoleDefinition, AgenticRoleChapter } from '../agenticRoleTypes';
+import { getRoleTheme } from '../agenticThemeHelpers';
 import RoadmapMilestoneCard from './components/RoadmapMilestoneCard';
-import DifficultyBadge from './components/DifficultyBadge';
-import {
-  Sparkles,
-  Calendar,
-  Clock,
-  Compass,
-  Award,
-  Layers,
-  Search,
-  Filter,
-  ArrowRight
-} from 'lucide-react';
-import { getRoleTheme, getCareerLevelBadge } from '../agenticThemeHelpers';
+import { getAgenticRoleIcon } from './components/roleIcons';
 
 interface AgenticRolesHubProps {
   role: AgenticRoleDefinition;
   onLaunchChapter: (chapter: AgenticRoleChapter) => void;
-  selectedDifficulty: Difficulty | 'all';
-  onSelectDifficulty: (difficulty: Difficulty | 'all') => void;
   completedChapterIds?: string[];
 }
 
 export const AgenticRolesHub: React.FC<AgenticRolesHubProps> = ({
   role,
   onLaunchChapter,
-  selectedDifficulty,
-  onSelectDifficulty,
-  completedChapterIds = []
+  completedChapterIds = [],
 }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-
   const theme = getRoleTheme(role.roleDomain);
-  const careerBadge = getCareerLevelBadge(role.careerLevel);
-
-  // Filter chapters by difficulty and search query
-  const filteredChapters = role.chapters.filter((ch) => {
-    const matchesDifficulty = selectedDifficulty === 'all' || ch.difficulty === selectedDifficulty;
-    const matchesQuery =
-      searchQuery.trim() === '' ||
-      ch.day_title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ch.chapter_title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ch.critical_concepts?.some((c) => (c.concept || '').toLowerCase().includes(searchQuery.toLowerCase()));
-
-    return matchesDifficulty && matchesQuery;
-  });
-
-  const totalEstimatedMinutes = role.chapters.reduce((acc, ch) => acc + (ch.estimatedMinutes || 25), 0);
-  const completedForRole = role.chapters.filter((chapter) => completedChapterIds.includes(chapter.labComponentId)).length;
+  const RoleIcon = getAgenticRoleIcon(role.iconName);
+  const totalEstimatedMinutes = role.chapters.reduce(
+    (total, chapter) => total + (chapter.estimatedMinutes || 25),
+    0,
+  );
+  const completedForRole = role.chapters.filter((chapter) =>
+    completedChapterIds.includes(chapter.labComponentId),
+  ).length;
+  const firstChapter = role.chapters[0];
 
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-8 p-6 md:p-8 animate-in fade-in duration-300">
-      {/* Hero Header Banner */}
-      <div
-        className="relative rounded-3xl bg-slate-900/90 backdrop-blur border p-8 md:p-10 shadow-2xl overflow-hidden"
-        style={{
-          borderColor: `rgba(${theme.spotlightRgb}, 0.3)`,
-          boxShadow: `0 20px 50px rgba(${theme.spotlightRgb}, 0.1)`
-        }}
-      >
-        {/* Ambient Gradient Mesh Background */}
-        <div
-          className="pointer-events-none absolute -top-32 -right-32 w-96 h-96 rounded-full blur-3xl opacity-30"
-          style={{ backgroundColor: theme.accentHex }}
-        />
-
-        <div className="relative z-10 space-y-6 max-w-3xl">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${careerBadge.badgeClass}`}>
-              {careerBadge.label}
-            </span>
-            <span
-              className="px-3 py-1 rounded-full text-xs font-mono font-bold"
-              style={{
-                backgroundColor: `rgba(${theme.spotlightRgb}, 0.15)`,
-                color: theme.accentHex
-              }}
-            >
-              {role.totalDays} Days Curriculum
-            </span>
-          </div>
-
-          <div className="space-y-2">
-            <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-              {role.title}
-            </h1>
-            <p className="text-base text-slate-300 font-medium leading-relaxed">
-              {role.tagline}
-            </p>
-          </div>
-
-          <p className="text-sm text-slate-400 leading-relaxed">
-            {role.description}
-          </p>
-
-          {/* Quick Metrics Bar */}
-          <div className="flex flex-wrap items-center gap-6 pt-2 text-xs font-mono text-slate-300">
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-slate-400" />
-              <span>{role.chapters.length} Progressive Milestones</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-slate-400" />
-              <span>~{Math.round(totalEstimatedMinutes / 60)} Hours Total</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Award className="w-4 h-4 text-slate-400" />
-              <span>{completedForRole}/{role.chapters.length} Completed</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Filter and Search Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-slate-950 border border-slate-800/80 shadow-xl">
-        {/* Search Input */}
-        <div className="relative w-full sm:w-80">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-          <input
-            type="text"
-            aria-label="Search milestones and concepts"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search milestone skills or concepts..."
-            className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
-          />
-        </div>
-
-        {/* Difficulty Filter Pills */}
-        <div className="flex items-center gap-1.5 w-full sm:w-auto justify-end">
-          <span className="text-xs font-mono text-slate-400 mr-2 flex items-center gap-1">
-            <Filter className="w-3.5 h-3.5 text-slate-400" /> Filter:
-          </span>
-          {(['all', 'easy', 'medium', 'hard'] as const).map((diff) => (
-            <button
-              type="button"
-              key={diff}
-              onClick={() => onSelectDifficulty(diff)}
-              aria-pressed={selectedDifficulty === diff}
-              className={`min-h-10 px-3 py-1.5 rounded-xl text-xs font-mono font-bold capitalize transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
-                selectedDifficulty === diff
-                  ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
-                  : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
-              }`}
-            >
-              {diff}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Roadmap Milestone Cards Grid */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between px-1">
-          <h2 className="text-lg font-bold text-white tracking-wide flex items-center gap-2">
-            <span>Roadmap Progression</span>
-            <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400">
-              {filteredChapters.length} {filteredChapters.length === 1 ? 'Milestone' : 'Milestones'}
-            </span>
-          </h2>
-        </div>
-
-        {filteredChapters.length === 0 ? (
-          <div className="p-12 rounded-2xl bg-slate-900/60 border border-slate-800 text-center space-y-3">
-            <Compass className="w-8 h-8 text-slate-500 mx-auto" />
-            <h3 className="text-sm font-bold text-white">No milestones match your search</h3>
-            <p className="text-xs text-slate-400">Try clearing the search input or changing the difficulty filter.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredChapters.map((chapter) => (
-              <RoadmapMilestoneCard
-                key={chapter.day}
-                chapter={chapter}
-                isCompleted={completedChapterIds.includes(chapter.labComponentId)}
-                onLaunch={onLaunchChapter}
+    <div className="h-fit min-w-0 w-full bg-slate-50 dark:bg-black">
+      <div className="p-4 sm:p-6">
+        <div className="mx-auto w-full max-w-7xl">
+          <header className="relative mb-6 min-w-0 overflow-hidden rounded-3xl bg-slate-900/5 p-4 dark:bg-slate-900/40 sm:mb-8 sm:p-6">
+            <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-30 dark:opacity-20">
+              <div
+                className="absolute -right-24 -top-36 h-96 w-96 rounded-full blur-3xl"
+                style={{ backgroundColor: theme.accentHex, opacity: 0.32 }}
               />
-            ))}
-          </div>
-        )}
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${theme.gradientFrom} ${theme.gradientTo} opacity-[0.035]`}
+              />
+            </div>
+
+            <div className="relative z-10 flex min-w-0 flex-col gap-4">
+              <div className="flex min-w-0 items-start gap-3 sm:gap-4">
+                <div
+                  className={`shrink-0 rounded-2xl border border-white/20 bg-gradient-to-br p-3 text-white shadow-xl sm:p-4 ${theme.gradientFrom} ${theme.gradientTo} ${theme.shadowMd}`}
+                >
+                  <RoleIcon className="h-6 w-6 sm:h-10 sm:w-10" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className={`mb-1 flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] sm:text-xs ${theme.text}`}>
+                    <Sparkles className="h-3.5 w-3.5" /> Agentic role · case-based learning
+                  </p>
+                  <h1 className="break-words font-heading text-2xl font-bold leading-tight tracking-wide text-slate-900 dark:text-white sm:text-4xl lg:text-5xl">
+                    <span className={`text-transparent bg-clip-text bg-gradient-to-r ${theme.gradientFrom} ${theme.gradientVia} ${theme.gradientTo} bg-[size:200%_auto] animate-gradient`}>
+                      {role.title}
+                    </span>
+                  </h1>
+                  <p className="mt-2 text-sm font-semibold leading-6 text-slate-700 dark:text-slate-300 sm:text-base">
+                    {role.tagline}
+                  </p>
+                </div>
+              </div>
+
+              <p className="relative z-10 max-w-4xl text-sm leading-6 text-slate-600 dark:text-slate-300 sm:text-base sm:leading-7">
+                {role.longDescription}
+              </p>
+
+              <div className="relative z-10 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-slate-200/70 pt-4 text-xs font-semibold text-slate-600 dark:border-slate-700/70 dark:text-slate-300">
+                <span className="inline-flex items-center gap-1.5">
+                  <Layers className={`h-4 w-4 ${theme.text}`} />
+                  {role.chapters.length} {role.chapters.length === 1 ? 'case' : 'cases'}
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Clock className={`h-4 w-4 ${theme.text}`} />
+                  About {Math.max(1, Math.round(totalEstimatedMinutes / 60))} hours
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Award className={`h-4 w-4 ${theme.text}`} />
+                  {completedForRole} of {role.chapters.length} complete
+                </span>
+                <span className="rounded-full border border-slate-200 bg-white/70 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-300">
+                  {role.careerLevel}
+                </span>
+              </div>
+
+              {role.requiredSkills.length > 0 && (
+                <div className="relative z-10 flex flex-wrap gap-2" aria-label="Role capabilities">
+                  {role.requiredSkills.slice(0, 5).map((skill) => (
+                    <span
+                      key={skill}
+                      className={`rounded-lg border px-2.5 py-1 text-[10px] font-semibold ${theme.bgSoft} ${theme.text} ${theme.borderSoft}`}
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <div className="relative z-10 flex flex-col gap-3 sm:hidden">
+                <p className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+                  {role.chapters.length} {role.chapters.length === 1 ? 'case' : 'cases'} in this role
+                </p>
+                {firstChapter && (
+                  <button
+                    type="button"
+                    onClick={() => onLaunchChapter(firstChapter)}
+                    className={`flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r px-4 text-sm font-bold text-white shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 ${theme.gradientFrom} ${theme.gradientTo}`}
+                  >
+                    <Play className="h-4 w-4 fill-current" /> Start first case
+                  </button>
+                )}
+              </div>
+            </div>
+          </header>
+
+          <section aria-labelledby="agentic-role-cases-heading">
+            <div className="mb-4 flex flex-wrap items-end justify-between gap-2 sm:mb-5">
+              <div>
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Practice path</p>
+                <h2 id="agentic-role-cases-heading" className="mt-1 font-heading text-xl font-bold tracking-wide text-slate-900 dark:text-white sm:text-2xl">
+                  Work through the case files
+                </h2>
+              </div>
+              <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-500 shadow-sm dark:bg-slate-900 dark:text-slate-400">
+                {role.chapters.length} {role.chapters.length === 1 ? 'case' : 'cases'}
+              </span>
+            </div>
+
+            {role.chapters.length === 0 ? (
+              <p role="status" className="rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+                There are no case files in this role yet. Choose another role to keep learning.
+              </p>
+            ) : (
+              <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3">
+                {role.chapters.map((chapter) => (
+                  <RoadmapMilestoneCard
+                    key={chapter.labComponentId}
+                    chapter={chapter}
+                    isCompleted={completedChapterIds.includes(chapter.labComponentId)}
+                    onLaunch={onLaunchChapter}
+                  />
+                ))}
+              </div>
+            )}
+          </section>
+        </div>
       </div>
     </div>
   );

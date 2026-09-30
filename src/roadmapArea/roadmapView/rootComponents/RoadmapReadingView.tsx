@@ -1,9 +1,10 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { LabData, RoadmapActivityLabels } from "../types";
 import { ChevronLeft, BookOpenText } from "lucide-react";
 import FavoriteButton from "../../roadmapSharedComponents/FavoriteButton";
 import { getThemeColorClass } from "../shared/themeHelpers";
 import { roadmapRegistry } from "../../registries/roadmapRegistry";
+import { StatePanel } from "../../../shared/components/StatePanel";
 
 interface RoadmapReadingViewProps {
   chapter: LabData;
@@ -18,26 +19,13 @@ const RoadmapReadingView: React.FC<RoadmapReadingViewProps> = ({
 }) => {
   const componentId = chapter.readingComponentId || "";
   const ReadingComponent = roadmapRegistry[componentId];
+  const [readingProgress, setReadingProgress] = useState(0);
 
   const themeColors = getThemeColorClass(chapter.course);
 
   if (!ReadingComponent) {
     return (
-      <div className="w-full max-w-4xl mx-auto p-8 bg-white dark:bg-slate-900 border border-red-200 dark:border-red-950/30 rounded-2xl shadow-xl">
-        <h2 className="text-2xl font-bold text-rose-500">
-          Error: Reading Component Not Found
-        </h2>
-        <p className="text-slate-500 dark:text-slate-400 mt-2">
-          Content not found for ID: {componentId}
-        </p>
-        <button
-          type="button"
-          onClick={onBack}
-          className="mt-6 rounded-lg bg-slate-100 px-4 py-2 font-bold text-slate-800 transition-all hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
-        >
-          Back to Hub
-        </button>
-      </div>
+      <div className="mx-auto w-full max-w-2xl p-5 sm:p-8"><StatePanel eyebrow={`Roadmap · ${chapter.course}`} title="This reading is unavailable" description="The chapter remains in the roadmap, but its reading content is missing. Return to the topic to choose another chapter." actionLabel="Back to topic" onAction={onBack} /></div>
     );
   }
 
@@ -58,11 +46,7 @@ const RoadmapReadingView: React.FC<RoadmapReadingViewProps> = ({
                 <BookOpenText className="w-3.5 h-3.5" /> {RoadmapActivityLabels.READING} {chapter.roadmap && `| Day ${chapter.roadmap}`}
               </span>
               <p className="mb-1 text-xs font-semibold text-slate-500 dark:text-slate-400">Roadmap · {chapter.course}</p>
-              <h2 className="text-2xl font-heading tracking-wide text-slate-900 dark:text-white sm:text-4xl">
-                <span className={`text-transparent bg-clip-text bg-gradient-to-r ${themeColors.gradientFrom} ${themeColors.gradientVia} ${themeColors.gradientTo} bg-[size:200%_auto] animate-gradient`}>
-                  {chapter.chapter_title}
-                </span>
-              </h2>
+              <h2 className="text-2xl font-heading tracking-wide text-slate-900 dark:text-white sm:text-4xl">{chapter.chapter_title}</h2>
             </div>
           </div>
 
@@ -84,8 +68,10 @@ const RoadmapReadingView: React.FC<RoadmapReadingViewProps> = ({
           </div>
         </div>
 
-        <div className="w-full max-w-5xl mx-auto flex-1 flex flex-col relative overflow-hidden bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
-          <div className="relative z-10 flex-1 flex flex-col overflow-y-auto custom-scrollbar p-6">
+        <div className="relative mx-auto flex w-full max-w-5xl flex-1 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div role="progressbar" aria-label="Reading position" aria-valuemin={0} aria-valuemax={100} aria-valuenow={readingProgress} className="h-1.5 w-full bg-slate-100 dark:bg-slate-800"><div className="h-full bg-emerald-600 transition-[width] duration-150 motion-reduce:transition-none" style={{ width: `${readingProgress}%` }} /></div>
+          <div onScroll={(event) => { const element = event.currentTarget; const total = element.scrollHeight - element.clientHeight; setReadingProgress(total > 0 ? Math.round(element.scrollTop / total * 100) : 100); }} className="relative z-10 flex-1 overflow-y-auto p-5 custom-scrollbar sm:p-8">
+            <div className="mx-auto max-w-[46rem] [&_h2]:scroll-mt-6 [&_h3]:scroll-mt-6 [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto">
             <Suspense fallback={
               <div className="flex-1 flex items-center justify-center p-8">
                 <div className="flex flex-col items-center gap-3">
@@ -101,6 +87,7 @@ const RoadmapReadingView: React.FC<RoadmapReadingViewProps> = ({
                 onBack={onBack}
               />
             </Suspense>
+            </div>
           </div>
         </div>
       </section>

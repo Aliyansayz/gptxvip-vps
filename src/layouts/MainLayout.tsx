@@ -141,7 +141,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-zinc-900 dark:text-zinc-100 font-sans selection:bg-emerald-500/30 flex flex-col transition-colors duration-300">
+    <div className={`bg-white dark:bg-black text-zinc-900 dark:text-zinc-100 font-sans selection:bg-emerald-500/30 flex flex-col transition-colors duration-300 ${isLearningTab ? "h-[100dvh] min-h-0 overflow-hidden" : "min-h-screen"}`}>
       
       {/* Finhub Top Navbar */}
       {showUI && (
@@ -162,7 +162,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         />
       )}
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className={`flex flex-1 overflow-hidden ${isLearningTab ? "min-h-0" : ""}`}>
         {/* Sidebar */}
         {isSidebarOpen && showUI && (
           <button
@@ -272,7 +272,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         </AnimatePresence>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto bg-white dark:bg-zinc-950 transition-colors duration-300 relative scroll-smooth scroll-pt-20">
+        <main className={`relative flex-1 bg-white dark:bg-zinc-950 transition-colors duration-300 scroll-smooth scroll-pt-20 ${isLearningTab ? "flex min-h-0 flex-col overflow-hidden" : "overflow-y-auto"}`}>
           <DotNavigation
             sections={
               sidebarItems.find((item) => item.id === activeTab)?.subItems || []
@@ -288,7 +288,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
               : activeTab === "map" 
               ? "w-full mx-auto px-4 sm:px-8 py-8 sm:py-12 pb-32" 
               : isLearningTab
-              ? "w-full h-full"
+              ? "flex h-full min-h-0 w-full flex-1 flex-col"
               : activeTab === "trading-tools" || activeTab === "archive-tools"
               ? "w-full h-full"
               : "max-w-5xl mx-auto px-4 sm:px-8 py-8 sm:py-12 pb-32"

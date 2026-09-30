@@ -4,6 +4,8 @@ import { BookOpenText, Camera, Settings2, ChevronLeft, ChevronRight } from 'luci
 import { toPng } from 'html-to-image';
 import DevLushTheoryBridge from '../../devLushComponents/devLushTopicsView/DevLushTheoryBridge';
 import { toast } from 'sonner';
+import devLushChaptersRaw from '../../devLushComponents/data';
+import { agenticRoleDefinitions } from '../../agenticRoles/data';
 
 interface TheoryCardProps {
   item: SavedTheory;
@@ -30,6 +32,9 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
   const [aspectRatio, setAspectRatio] = useState<AspectRatio>('auto');
   const [isCapturing, setIsCapturing] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const roleSource = agenticRoleDefinitions.find(role => role.chapters.some(chapter => chapter.labComponentId === item.labId));
+  const topicSource = devLushChaptersRaw.some(chapter => chapter.labComponentId === item.labId);
+  const canOpenSource = Boolean(onOpenSource && (roleSource || (item.courseType === 'devLush' && topicSource)));
 
   const handleScreenshot = async () => {
     if (!cardRef.current) return;
@@ -74,6 +79,8 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
     switch (item.courseType) {
       case 'bio': return 'bg-emerald-500/10 text-emerald-500';
       case 'devLush': return 'bg-indigo-500/10 text-indigo-500';
+      case 'agenticRoles': return 'bg-violet-500/10 text-violet-600 dark:text-violet-300';
+      case 'roadmap': return 'bg-teal-500/10 text-teal-700 dark:text-teal-300';
       case 'med': default: return 'bg-cyan-500/10 text-cyan-500';
     }
   };
@@ -81,7 +88,9 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
   const getCourseTypeName = () => {
     switch (item.courseType) {
       case 'bio': return 'BioLabs';
-      case 'devLush': return 'DevLush';
+      case 'devLush': return roleSource ? 'Agentic Roles' : 'Agent Labs';
+      case 'agenticRoles': return 'Agentic Roles';
+      case 'roadmap': return 'Roadmap';
       case 'med': default: return 'MedCush';
     }
   };
@@ -90,6 +99,8 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
     switch (item.courseType) {
       case 'bio': return 'group-hover:text-emerald-500';
       case 'devLush': return 'group-hover:text-indigo-500';
+      case 'agenticRoles': return 'group-hover:text-violet-500';
+      case 'roadmap': return 'group-hover:text-teal-600';
       case 'med': default: return 'group-hover:text-cyan-500';
     }
   };
@@ -191,16 +202,16 @@ const TheoryCard: React.FC<TheoryCardProps> = ({
           <DevLushTheoryBridge item={item} />
         </div>
 
-        {!isCapturing && onOpenSource && item.courseType === 'devLush' && item.labId !== 'unknown' && (
+        {!isCapturing && (
           <div className="mt-4 border-t border-border/50 pt-4">
-            <p className="mb-2 text-xs text-muted-foreground">Source: {item.chapterTitle}</p>
-            <button
+            <p className="mb-2 text-xs text-muted-foreground">Saved note · source: {item.chapterTitle}</p>
+            {canOpenSource ? <button
               type="button"
-              onClick={() => onOpenSource(item)}
-              className="text-sm font-semibold text-cyan-600 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-500"
+              onClick={() => onOpenSource?.(item)}
+              className="min-h-11 text-sm font-semibold text-cyan-700 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-500 dark:text-cyan-300"
             >
-              Open source topic
-            </button>
+              Open source lesson
+            </button> : <p className="text-xs text-amber-700 dark:text-amber-300">Source lesson is unavailable from this collection. The saved note remains readable.</p>}
           </div>
         )}
 

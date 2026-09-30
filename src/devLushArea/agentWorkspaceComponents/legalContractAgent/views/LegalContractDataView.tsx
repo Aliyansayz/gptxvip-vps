@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Edit3, ShieldAlert, Globe, Settings, Book } from 'lucide-react';
 import { LegalContractSidebarView } from '../components/LegalContractAgentSidebar';
 import AgentPreviewNotice from '../../components/AgentPreviewNotice';
@@ -8,6 +8,8 @@ interface LegalContractDataViewProps {
 }
 
 export default function LegalContractDataView({ viewType }: LegalContractDataViewProps) {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  useEffect(() => setSelectedIndex(0), [viewType]);
   const content = {
     redlining: {
       title: "Automated Redlining Engine",
@@ -55,12 +57,13 @@ export default function LegalContractDataView({ viewType }: LegalContractDataVie
 
   const data = content[viewType];
   const Icon = data?.icon;
+  const selectedItem = data?.items[selectedIndex] || data?.items[0];
 
   if (!Icon) return null;
 
   return (
-    <div className="flex-1 p-8 bg-slate-50 overflow-y-auto">
-      <div className="max-w-3xl mx-auto space-y-6">
+    <div className="flex-1 h-full overflow-y-auto bg-slate-50 px-4 py-6 sm:p-8">
+      <div className="max-w-5xl mx-auto space-y-6">
         <div>
           <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
             <Icon className="w-6 h-6 text-indigo-600" />
@@ -70,23 +73,23 @@ export default function LegalContractDataView({ viewType }: LegalContractDataVie
         </div>
 
         <AgentPreviewNotice>The entries below are example summaries. Source text is not attached and no proposed edit has been applied. Verify the full clause and require qualified human approval before using a change.</AgentPreviewNotice>
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-          {data.items.length > 0 ? <div className="divide-y divide-slate-100">
-            {data.items.map((item, idx) => (
-              <article key={idx} className="p-5 space-y-3">
-                <div className="md:w-1/3">
-                  <h3 className="text-sm font-bold text-slate-700">{item.label}</h3>
-                </div>
-                <div className="grid gap-3 text-sm md:grid-cols-2">
-                  <p><span className="font-semibold text-slate-700">Source / evidence:</span> <span className="text-slate-600">{item.source}</span></p>
-                  <p><span className="font-semibold text-slate-700">Example finding:</span> <span className="text-slate-600">{item.finding}</span></p>
-                  <p><span className="font-semibold text-slate-700">Suggested next step:</span> <span className="text-slate-600">{item.proposal}</span></p>
-                  <p><span className="font-semibold text-slate-700">Review status:</span> <span className="text-slate-600">{item.status}</span></p>
-                </div>
-              </article>
-            ))}
-          </div> : <div role="status" className="p-6 text-sm text-slate-600">No legal reference content is available in this preview.</div>}
-        </div>
+        {selectedItem ? <div className="grid gap-4 md:grid-cols-[minmax(12rem,0.55fr)_minmax(0,1.45fr)]">
+          <nav aria-label="Example clause review queue" className="rounded-xl border border-slate-200 bg-white p-3">
+            <p className="px-2 pb-2 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Review queue · {data.items.length} examples</p>
+            <div className="space-y-1">{data.items.map((item, index) => <button key={item.label} type="button" onClick={() => setSelectedIndex(index)} aria-current={selectedIndex === index ? 'true' : undefined} className={`flex min-h-11 w-full flex-col items-start rounded-lg border px-3 py-2 text-left text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 ${selectedIndex === index ? 'border-indigo-300 bg-indigo-50 text-indigo-900' : 'border-transparent text-slate-700 hover:bg-slate-50'}`}><span className="font-semibold">{item.label}</span><span className="mt-1 text-xs text-slate-500">{item.status}</span></button>)}</div>
+          </nav>
+          <article className="min-w-0 rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6" aria-label={`${selectedItem.label} review detail`}>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-indigo-700">Selected example</p>
+            <h3 className="mt-1 text-xl font-bold text-slate-900">{selectedItem.label}</h3>
+            <dl className="mt-5 grid gap-4 text-sm sm:grid-cols-2">
+              <div className="rounded-lg border border-slate-200 bg-slate-50 p-4"><dt className="font-bold text-slate-900">Source wording and evidence</dt><dd className="mt-2 leading-6 text-slate-600">{selectedItem.source}</dd></div>
+              <div className="rounded-lg border border-amber-200 bg-amber-50/70 p-4"><dt className="font-bold text-slate-900">Example finding</dt><dd className="mt-2 leading-6 text-slate-700">{selectedItem.finding}</dd></div>
+              <div className="rounded-lg border border-indigo-200 bg-indigo-50/60 p-4"><dt className="font-bold text-slate-900">Proposed review step</dt><dd className="mt-2 leading-6 text-slate-700">{selectedItem.proposal}</dd></div>
+              <div className="rounded-lg border border-slate-200 p-4"><dt className="font-bold text-slate-900">Human review status</dt><dd className="mt-2 leading-6 text-slate-600">{selectedItem.status}</dd></div>
+            </dl>
+            <div role="status" className="mt-5 rounded-lg border border-dashed border-slate-300 px-4 py-3 text-sm leading-6 text-slate-600">A source-to-proposal diff is unavailable because no contract clause or approved replacement wording is attached. Attach both before comparing changes.</div>
+          </article>
+        </div> : <div role="status" className="rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-600">No legal reference content is available in this preview.</div>}
       </div>
     </div>
   );

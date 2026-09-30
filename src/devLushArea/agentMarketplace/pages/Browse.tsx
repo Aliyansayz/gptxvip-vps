@@ -2,9 +2,11 @@ import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router'
 import { Search, SlidersHorizontal, X } from 'lucide-react'
 import TemplateCard from '@/components/TemplateCard'
+import TemplateComparison from '@/components/TemplateComparison'
 import { CATEGORIES, FRAMEWORKS, templates } from '@/data/templates'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { StatePanel } from '../../../shared/components/StatePanel'
 
 const SORTS = [
   { value: 'featured', label: 'Featured first' },
@@ -16,6 +18,7 @@ type SortKey = (typeof SORTS)[number]['value']
 export default function Browse() {
   const [params, setParams] = useSearchParams()
   const [mobileFilters, setMobileFilters] = useState(false)
+  const [comparedSlugs, setComparedSlugs] = useState<string[]>([])
   const serializedParams = params.toString()
   const q = params.get('q') ?? ''
   const requestedCategory = params.get('category')
@@ -57,22 +60,29 @@ export default function Browse() {
   }, [q, category, framework, sort])
 
   const hasFilters = Boolean(q) || category !== 'all' || framework !== 'all' || sort !== 'featured'
+  const comparedTemplates = comparedSlugs.flatMap((slug) => {
+    const item = templates.find((template) => template.slug === slug)
+    return item ? [item] : []
+  })
+  const toggleCompare = (slug: string) => {
+    setComparedSlugs((current) => current.includes(slug) ? current.filter((item) => item !== slug) : current.length < 3 ? [...current, slug] : current)
+  }
   const activeFilters = [
     ...(q ? [{ key: 'q', label: `Search: ${q}` }] : []),
     ...(category !== 'all' ? [{ key: 'category', label: `Category: ${category}` }] : []),
     ...(framework !== 'all' ? [{ key: 'framework', label: `Framework: ${framework}` }] : []),
     ...(sort !== 'featured' ? [{ key: 'sort', label: `Sort: ${SORTS.find((item) => item.value === sort)?.label || sort}` }] : []),
   ]
-  const selectedClass = 'flex w-full items-center justify-between rounded-lg px-3 py-1.5 text-sm transition-colors bg-indigo-50 font-medium text-indigo-700'
-  const idleClass = 'flex w-full items-center justify-between rounded-lg px-3 py-1.5 text-sm transition-colors text-slate-600 hover:bg-slate-100'
+  const selectedClass = 'flex min-h-11 w-full items-center justify-between rounded-lg bg-indigo-50 px-3 py-2 text-sm font-medium text-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500'
+  const idleClass = 'flex min-h-11 w-full items-center justify-between rounded-lg px-3 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500'
   const filters = (
     <div className="space-y-7">
       <div>
         <label className="text-xs font-semibold tracking-wide text-slate-500 uppercase">Search</label>
         <div className="relative mt-2">
           <Search className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
-          <input aria-label="Search templates" value={q} onChange={(e) => setParam('q', e.target.value)} placeholder="Name, tag, keyword…" className="h-9 w-full rounded-lg border border-slate-200 bg-white pr-8 pl-9 text-sm outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100" />
-          {q && <button type="button" onClick={() => setParam('q', '')} className="absolute top-1/2 right-2 -translate-y-1/2 text-slate-400 hover:text-slate-600" aria-label="Clear search"><X className="h-4 w-4" /></button>}
+          <input aria-label="Search templates" value={q} onChange={(e) => setParam('q', e.target.value)} placeholder="Name, tag, keyword…" className="h-11 w-full rounded-lg border border-slate-200 bg-white pr-11 pl-9 text-sm outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-500" />
+          {q && <button type="button" onClick={() => setParam('q', '')} className="absolute right-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" aria-label="Clear search"><X className="h-4 w-4" /></button>}
         </div>
       </div>
       <div>
@@ -108,11 +118,13 @@ export default function Browse() {
         {activeFilters.map((filter) => <button key={filter.key} type="button" onClick={() => setParam(filter.key, '')} className="inline-flex items-center gap-1.5 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-800 hover:bg-indigo-100">{filter.label}<X className="h-3 w-3" /><span className="sr-only">Clear this filter</span></button>)}
         <button type="button" onClick={() => setParams({}, { replace: true })} className="text-xs font-medium text-slate-600 underline underline-offset-2">Clear all</button>
       </div>}
+      <p role="status" aria-live="polite" className="sr-only">{comparedSlugs.length} of 3 surfaces selected for comparison</p>
+      <TemplateComparison items={comparedTemplates} onRemove={toggleCompare} onClear={() => setComparedSlugs([])} />
       <div className="mt-8 grid gap-10 lg:grid-cols-[240px_1fr]">
         <aside className="hidden lg:block"><div className="sticky top-24">{filters}</div></aside>
         <div id="browse-mobile-filters" className={`${mobileFilters ? 'rounded-xl border border-slate-200 bg-white p-5' : 'hidden'} lg:hidden`}>{filters}</div>
         <div>
-          {results.length === 0 ? <div className="flex flex-col items-center rounded-xl border border-dashed border-slate-300 py-24 text-center"><Search className="h-8 w-8 text-slate-300" /><h3 className="mt-4 font-semibold text-slate-900">No surfaces match</h3><p className="mt-1 max-w-sm text-sm text-slate-500">Try a different keyword or clear the filters.</p><Button variant="outline" className="mt-6" onClick={() => setParams({}, { replace: true })}>Clear filters</Button></div> : <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">{results.map((template) => <TemplateCard key={template.id} template={template} />)}</div>}
+          {results.length === 0 ? <StatePanel title="No surfaces match" description="Try a different keyword or clear the active filters to see the available project surfaces." actionLabel="Clear filters" onAction={() => setParams({}, { replace: true })} /> : <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">{results.map((template) => <TemplateCard key={template.id} template={template} compared={comparedSlugs.includes(template.slug)} onToggleCompare={toggleCompare} compareDisabled={comparedSlugs.length >= 3} />)}</div>}
         </div>
       </div>
     </div>

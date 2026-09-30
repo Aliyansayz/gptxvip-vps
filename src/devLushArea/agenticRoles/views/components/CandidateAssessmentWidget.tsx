@@ -46,7 +46,7 @@ export const CandidateAssessmentWidget: React.FC<CandidateAssessmentWidgetProps>
   };
 
   return (
-    <div className="rounded-xl bg-slate-900/90 backdrop-blur border border-slate-800 p-5 shadow-2xl space-y-4 flex flex-col justify-between">
+    <div className="flex flex-col justify-between space-y-4 rounded-xl border border-slate-800 bg-slate-900 p-4 sm:p-5">
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1.5 font-mono">
@@ -80,12 +80,12 @@ export const CandidateAssessmentWidget: React.FC<CandidateAssessmentWidgetProps>
 
             if (isEvaluated) {
               if (opt === exercise.answer) {
-                style = 'border-emerald-500 bg-emerald-950/20 text-emerald-300 font-semibold shadow-[0_0_10px_rgba(16,185,129,0.2)]';
+                style = 'border-emerald-500 bg-emerald-950/20 text-emerald-300 font-semibold';
               } else if (isSelected && !isCorrect) {
                 style = 'border-rose-500 bg-rose-950/20 text-rose-300';
               }
             } else if (isSelected) {
-              style = 'border-blue-500 bg-blue-950/20 text-white font-semibold shadow-[0_0_10px_rgba(59,130,246,0.2)]';
+              style = 'border-blue-500 bg-blue-950/20 text-white font-semibold';
             }
 
             return (
@@ -95,7 +95,7 @@ export const CandidateAssessmentWidget: React.FC<CandidateAssessmentWidgetProps>
                 aria-pressed={isSelected}
                 disabled={isEvaluated}
                 onClick={() => setSelectedOption(opt)}
-                className={`w-full p-3 rounded-lg border text-left text-xs transition-all flex items-start gap-2.5 cursor-pointer ${style}`}
+                className={`flex min-h-11 w-full items-start gap-2.5 rounded-lg border p-3 text-left text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 disabled:cursor-default ${style}`}
               >
                 <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 mt-0.5 flex-shrink-0">
                   {String.fromCharCode(65 + idx)}
@@ -111,7 +111,7 @@ export const CandidateAssessmentWidget: React.FC<CandidateAssessmentWidgetProps>
           <div
             role="status"
             aria-live="polite"
-            className={`p-3 rounded-lg text-xs border space-y-1 animate-in fade-in ${
+            className={`space-y-1 rounded-lg border p-3 text-xs ${
               isCorrect
                 ? 'bg-emerald-950/30 border-emerald-800 text-emerald-300'
                 : 'bg-rose-950/30 border-rose-800 text-rose-300'
@@ -128,12 +128,12 @@ export const CandidateAssessmentWidget: React.FC<CandidateAssessmentWidgetProps>
       </div>
 
       {/* Footer Actions */}
-      <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-800 pt-3">
         {isEvaluated ? (
           <button
             type="button"
             onClick={handleReset}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white bg-slate-800 transition-colors cursor-pointer"
+            className="flex min-h-11 items-center gap-1.5 rounded-lg bg-slate-800 px-3 text-xs font-semibold text-slate-300 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             Reset Choice
@@ -146,7 +146,7 @@ export const CandidateAssessmentWidget: React.FC<CandidateAssessmentWidgetProps>
           <button
             type="button"
             onClick={handleVerify}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-600/30 transition-all cursor-pointer"
+            className="flex min-h-11 items-center gap-1.5 rounded-lg bg-blue-600 px-4 text-xs font-bold text-white transition-colors hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
           >
             <ShieldCheck className="w-3.5 h-3.5" />
             Lock In Choice

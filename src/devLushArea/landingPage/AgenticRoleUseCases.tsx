@@ -1,0 +1,117 @@
+import { useEffect, useRef, useState } from 'react';
+import { ArrowRight, ArrowUpRight, BriefcaseBusiness, CheckCircle2 } from 'lucide-react';
+import { agenticRoleDefinitions } from '../agenticRoles/data';
+import { getAgenticRoleIcon } from '../agenticRoles/views/components/roleIcons';
+
+const useCases: Record<string, { situation: string; decision: string; evidence: string }> = {
+  'seo-agentic-analyst': {
+    situation: 'A page loses search visibility as intent and technical signals change.',
+    decision: 'Inspect intent, structured data, internal links, and performance before choosing a fix.',
+    evidence: 'Explain which signal supports the next optimization step.',
+  },
+  'agentic-accountant': {
+    situation: 'A sample ledger has transactions that need reconciliation and review.',
+    decision: 'Check double-entry balance, trace anomalies, and keep the original records visible.',
+    evidence: 'Document the exception and the reason for a human review.',
+  },
+  'agentic-commerce-analyst': {
+    situation: 'A simulated commerce flow must respond to price and inventory pressure.',
+    decision: 'Compare margin limits, stock state, and customer impact before an action.',
+    evidence: 'Show why the chosen path stays within the scenario rules.',
+  },
+  'agentic-recommendation-analyst': {
+    situation: 'A new customer needs relevant suggestions with little prior history.',
+    decision: 'Trace candidate retrieval and ranking while checking diversity trade-offs.',
+    evidence: 'Compare the recommendation with the signals that produced it.',
+  },
+  'data-preprocessing-agentic': {
+    situation: 'An incoming data feed contains missing values or a changed schema.',
+    decision: 'Identify the drift, choose an imputation path, and preserve data contracts.',
+    evidence: 'Record the quality check before the data reaches a model.',
+  },
+  'data-visualization-agentic': {
+    situation: 'Complex data needs a view that a wider audience can interpret.',
+    decision: 'Choose accessible visual encodings and inspect the explanation behind the chart.',
+    evidence: 'Make the key pattern and its uncertainty easy to see.',
+  },
+};
+
+interface AgenticRoleUseCasesProps {
+  onOpenRole: (roleId: string) => void;
+}
+
+export function AgenticRoleUseCases({ onOpenRole }: AgenticRoleUseCasesProps) {
+  const [activeRoleId, setActiveRoleId] = useState(agenticRoleDefinitions[0]?.id || '');
+  const [revealed, setRevealed] = useState(false);
+  const revealRef = useRef<HTMLDivElement>(null);
+  const activeRole = agenticRoleDefinitions.find((role) => role.id === activeRoleId) || agenticRoleDefinitions[0];
+  const activeIndex = agenticRoleDefinitions.findIndex((role) => role.id === activeRole.id);
+  const currentUseCase = useCases[activeRole.id];
+
+  useEffect(() => {
+    const element = revealRef.current;
+    if (!element || !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setRevealed(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setRevealed(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.16 });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section aria-labelledby="agentic-role-use-cases-heading" className="border-y border-zinc-200 bg-[#eef3f4] px-4 py-16 dark:border-zinc-800 dark:bg-[#0a1118] sm:px-8 sm:py-24">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-8 max-w-2xl">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-700 dark:text-cyan-300">Agentic Roles · applied learning</p>
+          <h2 id="agentic-role-use-cases-heading" className="mt-3 text-3xl font-black tracking-tight text-zinc-950 dark:text-white sm:text-4xl">See where an agent role earns its place.</h2>
+          <p className="mt-4 text-base leading-7 text-zinc-600 dark:text-zinc-300">Move through six role-based use cases. Each opens a real case path with sample inputs, a decision to make, and evidence to inspect.</p>
+        </div>
+
+        <div ref={revealRef} className={`relative overflow-hidden rounded-[1.75rem] border border-slate-700/80 bg-[#0d1824] text-white shadow-[0_24px_70px_rgba(15,23,42,0.16)] transition-[opacity,transform] duration-700 ease-out motion-reduce:transition-none ${revealed ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-6 scale-[0.98] opacity-0'}`}>
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_100%_0%,rgba(34,211,238,0.15),transparent_38%),linear-gradient(to_right,rgba(148,163,184,0.04)_1px,transparent_1px)] bg-[size:auto,44px_44px]" />
+          <div className="relative border-b border-white/10 px-5 py-5 sm:px-8">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-cyan-300"><BriefcaseBusiness className="h-4 w-4" /> Use case explorer</span>
+              <span className="text-xs font-medium text-slate-300">{agenticRoleDefinitions.length} roles · {agenticRoleDefinitions.reduce((total, role) => total + role.chapters.length, 0)} case exercises</span>
+            </div>
+          </div>
+
+          <div className="relative grid min-w-0 lg:grid-cols-[minmax(15rem,0.76fr)_minmax(0,1.24fr)]">
+            <div className="border-b border-white/10 p-3 lg:border-b-0 lg:border-r lg:p-4" aria-label="Choose an Agentic Role use case">
+              <div className="flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible lg:pb-0">
+                {agenticRoleDefinitions.map((role, index) => {
+                  const RoleIcon = getAgenticRoleIcon(role.iconName);
+                  const selected = role.id === activeRole.id;
+                  return <button key={role.id} type="button" onClick={() => setActiveRoleId(role.id)} aria-pressed={selected} className={`group flex min-h-14 min-w-[12rem] items-center gap-3 rounded-xl border px-3 py-2 text-left transition-[background-color,border-color,transform] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d1824] lg:min-w-0 ${selected ? 'border-cyan-400/50 bg-cyan-300/10 text-white' : 'border-transparent text-slate-300 hover:border-white/10 hover:bg-white/5 hover:text-white'}`}>
+                    <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${selected ? 'bg-cyan-300 text-slate-950' : 'bg-white/10 text-slate-200'}`}><RoleIcon className="h-4 w-4" /></span>
+                    <span className="min-w-0 flex-1"><span className="block text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">Role {String(index + 1).padStart(2, '0')}</span><span className="block truncate text-sm font-semibold">{role.shortTitle}</span></span>
+                    {selected && <ArrowRight aria-hidden="true" className="hidden h-4 w-4 shrink-0 text-cyan-300 lg:block" />}
+                  </button>;
+                })}
+              </div>
+            </div>
+
+            <div className="min-w-0 p-5 sm:p-8 lg:p-10">
+              <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-bold uppercase tracking-[0.14em]"><span className="text-cyan-300">Case path {String(activeIndex + 1).padStart(2, '0')} / {String(agenticRoleDefinitions.length).padStart(2, '0')}</span><span className="rounded-full border border-white/15 px-3 py-1 text-slate-300">{activeRole.chapters.length} exercises</span></div>
+              <div aria-live="polite" aria-atomic="true">
+                <h3 className="mt-6 max-w-xl text-2xl font-bold tracking-tight text-white sm:text-3xl">{activeRole.title}</h3>
+                <p className="mt-3 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">{activeRole.tagline}</p>
+                <div className="mt-7 grid gap-3 sm:grid-cols-3">
+                  {[['The situation', currentUseCase.situation], ['The decision', currentUseCase.decision], ['What to check', currentUseCase.evidence]].map(([label, body]) => <div key={label} className="rounded-xl border border-white/10 bg-white/[0.04] p-4"><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-cyan-300">{label}</p><p className="mt-2 text-sm leading-6 text-slate-200">{body}</p></div>)}
+                </div>
+                <div className="mt-6 flex items-start gap-3 border-t border-white/10 pt-5 text-sm text-slate-300"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" /><span>First case: <strong className="font-semibold text-white">{activeRole.chapters[0]?.chapter_title || 'Choose a case from this role'}</strong></span></div>
+              </div>
+              <button type="button" onClick={() => onOpenRole(activeRole.id)} className="mt-7 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-cyan-300 px-5 text-sm font-bold text-slate-950 transition-[background-color,transform] duration-200 hover:-translate-y-0.5 hover:bg-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d1824] motion-reduce:transform-none sm:w-auto">Explore this role <ArrowUpRight className="h-4 w-4" /></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ThreatIntelAgentSidebar, { ThreatIntelSidebarView } from '../components/ThreatIntelAgentSidebar';
 import ThreatIntelDashboardView from './ThreatIntelDashboardView';
 import ThreatIntelToolsView from './ThreatIntelToolsView';
@@ -7,6 +7,7 @@ import ThreatIntelTutorialTour from '../tutorial/ThreatIntelTutorialTour';
 import AgentTheorySidebar from '../../../components/AgentTheorySidebar';
 import { BookOpen, X, Terminal, Activity } from 'lucide-react';
 import { SvgTheoryIllustration, SvgEmptyState } from '../../scannerAgent/components/ScannerIllustrations';
+import { ActionSummary } from '../../../../../shared/components/ActionSummary';
 
 export default function ThreatIntelAgentMainView() {
   const [sidebarView, setSidebarView] = useState<ThreatIntelSidebarView>('dashboard');
@@ -14,6 +15,10 @@ export default function ThreatIntelAgentMainView() {
   const [runTutorial, setRunTutorial] = useState(true);
 
   const [intelLogs, setIntelLogs] = useState<string[]>([]);
+  const [intelStatus, setIntelStatus] = useState<'idle' | 'running' | 'done'>('idle');
+  const intelTimers = useRef<number[]>([]);
+  const clearIntelTimers = () => { intelTimers.current.forEach(id => window.clearTimeout(id)); intelTimers.current = []; };
+  useEffect(() => () => clearIntelTimers(), []);
 
   const handleRunTutorial = () => {
     setRunTutorial(false);
@@ -23,16 +28,22 @@ export default function ThreatIntelAgentMainView() {
   };
 
   const investigateTarget = () => {
+    clearIntelTimers();
     setSidebarView('targeted_alerts');
-    setIntelLogs(['> Cross-referencing global chatter with internal Asset Inventory...']);
+    setIntelStatus('running');
+    setIntelLogs(['> Starting a prepared intelligence example. No feed or asset inventory queried.']);
     
     // Simulate investigation steps
-    setTimeout(() => setIntelLogs(prev => [...prev, '> OSINT Match: Detected discussions on Exploit.in regarding CVE-2026-8899.']), 1500);
-    setTimeout(() => setIntelLogs(prev => [...prev, '> Asset Correlation: Found vulnerable Nginx instance (v1.20) on 10.0.0.55 (Web-01).']), 3000);
-    setTimeout(() => setIntelLogs(prev => [...prev, '> Contextualizing: High probability of exploitation within 48 hours.']), 4500);
-    setTimeout(() => setIntelLogs(prev => [...prev, '> Action: Generating WAF block rules (STIX format) for known malicious payloads.']), 6000);
-    setTimeout(() => setIntelLogs(prev => [...prev, '> CRITICAL: Alerting SOC and pushing rules to SIEM/WAF Pipeline.']), 7500);
+    intelTimers.current = [
+      window.setTimeout(() => setIntelLogs(prev => [...prev, '> Example observation: an unverified CVE discussion; original source and date unavailable.']), 1500),
+      window.setTimeout(() => setIntelLogs(prev => [...prev, '> Example asset match: Nginx on Web-01; no internal inventory connected.']), 3000),
+      window.setTimeout(() => setIntelLogs(prev => [...prev, '> Confidence remains unverified without source and asset evidence.']), 4500),
+      window.setTimeout(() => setIntelLogs(prev => [...prev, '> Proposed analyst step: check a verified advisory and asset owner.']), 6000),
+      window.setTimeout(() => { setIntelLogs(prev => [...prev, '> Sample contextualization complete. No alert or WAF rule was sent.']); setIntelStatus('done'); intelTimers.current = []; }, 7500),
+    ];
   };
+
+  const resetIntel = () => { clearIntelTimers(); setIntelStatus('idle'); setIntelLogs([]); setSidebarView('dashboard'); };
 
   const handleSidebarNavigate = (view: ThreatIntelSidebarView) => {
     setSidebarView(view);
@@ -63,19 +74,20 @@ export default function ThreatIntelAgentMainView() {
           )}
 
           {sidebarView === 'targeted_alerts' && (
-            <div className="flex-1 flex flex-col p-6 bg-slate-50">
+            <div className="flex-1 flex flex-col gap-4 overflow-y-auto bg-slate-50 p-4 sm:p-6">
+              <div className="rounded-xl border border-slate-200 bg-white p-4"><ActionSummary input="Built-in indicator and asset example" action="Play a fixed contextualization sequence" result="Unverified observation with no connected source date" nextStep="Check a verified advisory and the affected asset owner" status={intelStatus} /><button type="button" onClick={resetIntel} className="mt-4 min-h-11 rounded-lg border border-slate-200 px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500">Stop and reset sample</button></div>
               <div className="flex-1 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col overflow-hidden">
                 <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
                   <div className="flex items-center gap-2 text-slate-500">
                     <Terminal className="w-4 h-4" />
-                    <span className="text-sm font-medium font-mono uppercase tracking-wider text-slate-700">Intelligence Terminal</span>
+                    <span className="text-sm font-medium font-mono uppercase tracking-wider text-slate-700">Sample indicator trace</span>
                   </div>
                   <div className="flex items-center gap-2 text-purple-600">
-                    <Activity className="w-4 h-4 animate-pulse" />
-                    <span className="text-xs font-mono uppercase font-semibold">Contextualization Active</span>
+                    <Activity className="w-4 h-4" />
+                    <span className="text-xs font-mono uppercase font-semibold">{intelStatus === 'running' ? 'Playing sample' : intelStatus === 'done' ? 'Sample complete' : 'Sample idle'}</span>
                   </div>
                 </div>
-                <div className="flex-1 p-6 font-mono text-sm text-slate-600 overflow-y-auto space-y-2">
+                <div className="max-h-[24rem] min-h-44 flex-1 space-y-2 overflow-y-auto break-words p-4 font-mono text-sm text-slate-600 sm:p-6" aria-live="polite">
                   {intelLogs.length === 0 && (
                     <div className="text-slate-500 italic">No targeted alert currently under analysis. Return to the Command Center.</div>
                   )}
@@ -84,7 +96,7 @@ export default function ThreatIntelAgentMainView() {
                       {log}
                     </div>
                   ))}
-                  {intelLogs.length > 0 && <div className="animate-pulse text-purple-600">_</div>}
+                  {intelStatus === 'running' && <div className="text-purple-700">Preparing the next sample event…</div>}
                 </div>
               </div>
             </div>
@@ -107,13 +119,14 @@ export default function ThreatIntelAgentMainView() {
         
         {/* Right Side Theory Pane */}
         {showTheoryPane && (
-          <div className="w-[450px] border-l border-slate-200 bg-white h-full shadow-2xl shrink-0 overflow-hidden relative z-40 flex flex-col animate-in slide-in-from-right-full duration-300">
+          <div className="absolute inset-0 z-40 flex h-full w-full flex-col overflow-hidden border-l border-slate-200 bg-white shadow-2xl motion-reduce:animate-none lg:relative lg:inset-auto lg:w-[450px] lg:max-w-[40vw] lg:shrink-0">
             <button 
               onClick={() => {
                  setIsTheoryPaneOpen(false);
                  if (sidebarView === 'theory') setSidebarView('dashboard');
               }}
-              className="absolute top-4 right-4 p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-md z-50 transition-colors"
+              aria-label="Close theory panel"
+              className="absolute right-4 top-4 z-50 flex min-h-11 min-w-11 items-center justify-center rounded-md bg-slate-100 text-slate-500 transition-colors hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
             >
               <X className="w-4 h-4" />
             </button>

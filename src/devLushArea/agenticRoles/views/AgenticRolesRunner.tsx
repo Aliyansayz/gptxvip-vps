@@ -1,28 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  AgenticRoleChapter,
-  AgenticRoleDefinition
-} from '../agenticRoleTypes';
+  ArrowLeft,
+  Award,
+  BookOpen,
+  CheckCircle2,
+  Columns,
+  Rows,
+  Sparkles,
+} from 'lucide-react';
+import { AgenticRoleChapter, AgenticRoleDefinition } from '../agenticRoleTypes';
 import { agenticRolesRegistry } from '../agenticRolesRegistry';
 import FallbackRoleActivity from '../activities/FallbackRoleActivity';
 import DifficultyBadge from './components/DifficultyBadge';
-import {
-  ArrowLeft,
-  BookOpen,
-  ChevronDown,
-  ChevronUp,
-  LayoutTemplate,
-  Sparkles,
-  CheckCircle2,
-  HelpCircle,
-  Settings,
-  Star,
-  BookmarkPlus,
-  Check
-} from 'lucide-react';
 import { getRoleTheme } from '../agenticThemeHelpers';
-import { useFavorites } from '../../agentDevRootComponents/FavoritesContext';
 import { useTheoryCollections } from '../../agentDevRootComponents/TheoryCollectionContext';
+import FavoriteButton from '../../agentDevRootComponents/FavoriteButton';
 import { toast } from 'sonner';
 
 interface AgenticRolesRunnerProps {
@@ -36,299 +28,272 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
   chapter,
   role,
   onBack,
-  onCompleteChapter
+  onCompleteChapter,
 }) => {
-  const [currentStep, setCurrentStep] = useState<number>(() => {
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const [currentStep, setCurrentStep] = useState(() => {
     try {
       const saved = sessionStorage.getItem(`agentic_step_${chapter.labComponentId}`);
-      if (saved !== null) {
-        const parsed = parseInt(saved, 10);
-        return Number.isFinite(parsed)
-          ? Math.min(Math.max(0, parsed), Math.max(0, (chapter.interactive_questions?.length || 1) - 1))
-          : 0;
-      }
-    } catch (e) {
-      // fallback
+      const parsed = saved === null ? 0 : Number.parseInt(saved, 10);
+      return Number.isFinite(parsed)
+        ? Math.min(Math.max(0, parsed), Math.max(0, chapter.interactive_questions.length - 1))
+        : 0;
+    } catch {
+      return 0;
     }
-    return 0;
   });
   const [theoryVisible, setTheoryVisible] = useState(true);
   const [layoutPlacement, setLayoutPlacement] = useState<'side' | 'bottom'>('side');
   const [isTheorySaved, setIsTheorySaved] = useState(false);
+  const [isCaseComplete, setIsCaseComplete] = useState(false);
+  const theoryCtx = useTheoryCollections();
+  const theme = getRoleTheme(chapter.roleDomain);
+  const exercises = chapter.interactive_questions || [];
+  const totalSteps = Math.max(1, exercises.length);
+  const currentExercise = exercises[currentStep] || exercises[0];
+  const ActivityComponent = agenticRolesRegistry[chapter.labComponentId] || FallbackRoleActivity;
 
-  // Sync step progress with sessionStorage
-  React.useEffect(() => {
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem(`agentic_step_${chapter.labComponentId}`);
+      const parsed = saved === null ? 0 : Number.parseInt(saved, 10);
+      setCurrentStep(Number.isFinite(parsed) ? Math.min(Math.max(0, parsed), Math.max(0, chapter.interactive_questions.length - 1)) : 0);
+    } catch {
+      setCurrentStep(0);
+    }
+    setIsCaseComplete(false);
+    setIsTheorySaved(false);
+  }, [chapter.labComponentId]);
+
+  useEffect(() => {
+    titleRef.current?.focus();
+  }, [chapter.labComponentId]);
+
+  useEffect(() => {
     try {
       sessionStorage.setItem(`agentic_step_${chapter.labComponentId}`, currentStep.toString());
-    } catch (e) {
-      // fallback
+    } catch {
+      // The current lesson stays usable if session storage is unavailable.
     }
   }, [chapter.labComponentId, currentStep]);
 
-  const theme = getRoleTheme(chapter.roleDomain);
-
-  // Contexts
-  let favoritesCtx: ReturnType<typeof useFavorites> | null = null;
-  let theoryCtx: ReturnType<typeof useTheoryCollections> | null = null;
-
-  try {
-    favoritesCtx = useFavorites();
-  } catch (e) {
-    // Context fallback
-  }
-
-  try {
-    theoryCtx = useTheoryCollections();
-  } catch (e) {
-    // Context fallback
-  }
-
-  const isFavorite = favoritesCtx?.favorites.some((f) => f.id === chapter.labComponentId) || false;
-
-  const handleToggleFavorite = () => {
-    if (!favoritesCtx) return;
-    if (isFavorite) {
-      favoritesCtx.removeFavorite(chapter.labComponentId);
-      toast.info("Removed from saved favorites");
-    } else {
-      favoritesCtx.addFavorite({
-        id: chapter.labComponentId,
-        type: 'agentic_role_lab',
-        title: `${chapter.day_title} (${chapter.course})`,
-        courseId: role.id
-      });
-      toast.success("Saved to career favorites!");
+  const handleStepComplete = () => {
+    if (currentStep < exercises.length - 1) {
+      setCurrentStep((step) => step + 1);
+      return;
+    }
+    if (!isCaseComplete) {
+      setIsCaseComplete(true);
+      onCompleteChapter(chapter.labComponentId);
     }
   };
 
   const handleSaveTheory = () => {
-    if (!theoryCtx) {
-      toast.success("Theory concept saved to local study notes!");
-      setIsTheorySaved(true);
-      return;
-    }
-
     try {
       theoryCtx.addTheoryToCollection('default', {
         labId: chapter.labComponentId,
         chapterTitle: chapter.day_title,
         exerciseTitle: chapter.day_title,
-        courseType: 'devLush',
+        courseType: 'agenticRoles',
         theory: {
           title: chapter.theory_content?.title || chapter.day_title,
           content: chapter.theory_content?.content || '',
-          application: chapter.theory_content?.practical_takeaway || ''
-        }
+          application: chapter.theory_content?.practical_takeaway || '',
+        },
       });
       setIsTheorySaved(true);
-      toast.success("Theory concept added to your Study Notebook!");
-    } catch (err) {
-      toast.success("Theory saved to session notes!");
-      setIsTheorySaved(true);
-    }
-  };
-
-  // Lookup the dedicated activity component from registry
-  const ActivityComponent = agenticRolesRegistry[chapter.labComponentId] || FallbackRoleActivity;
-
-  const exercises = chapter.interactive_questions || [];
-  const currentExercise = exercises[currentStep] || exercises[0];
-
-  const handleStepComplete = () => {
-    if (currentStep < exercises.length - 1) {
-      setCurrentStep((prev) => prev + 1);
-    } else {
-      onCompleteChapter(chapter.labComponentId);
+      toast.success('Case theory saved to your Study Notebook.');
+    } catch {
+      toast.error('Theory could not be saved right now.');
     }
   };
 
   return (
-    <div className="w-full min-h-full flex flex-col bg-slate-950 text-slate-100 animate-in fade-in duration-300">
-      {/* Top Mission Navigation Bar */}
-      <header className="sticky top-0 z-40 flex items-center justify-between px-6 py-3.5 bg-slate-900/90 backdrop-blur border-b border-slate-800 shadow-md">
-        <div className="flex items-center gap-4">
-          <button
-            type="button"
-            aria-label="Return to Agentic Roles hub"
-            onClick={onBack}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors text-xs font-semibold cursor-pointer"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Roadmap Hub</span>
-          </button>
-
-          <div className="h-5 w-px bg-slate-800" />
-
-          <div className="flex items-center gap-2.5">
-            <span
-              className="px-2.5 py-0.5 rounded-lg text-xs font-mono font-bold"
-              style={{
-                backgroundColor: `rgba(${theme.spotlightRgb}, 0.2)`,
-                color: theme.accentHex
-              }}
+    <div className="flex h-full min-h-0 min-w-0 flex-col bg-slate-50 text-slate-900 dark:bg-black dark:text-slate-100">
+      <header className="shrink-0 border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-3 py-3 sm:px-5 sm:py-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex min-w-0 items-start gap-3">
+            <button
+              type="button"
+              onClick={onBack}
+              aria-label="Back to Agentic Role cases"
+              className="flex min-h-11 shrink-0 items-center gap-1.5 rounded-xl bg-slate-100 px-3 text-sm font-bold text-slate-800 transition-colors hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 sm:px-4"
             >
-              {role.shortTitle} · DAY {String(chapter.day).padStart(2, '0')}
-            </span>
-            <span className="text-xs font-bold text-white tracking-wide truncate max-w-xs md:max-w-md">
-              {chapter.day_title}
-            </span>
+              <ArrowLeft className="h-4 w-4" />
+              <span>Cases</span>
+            </button>
+            <div className="min-w-0">
+              <p className={`mb-1 flex flex-wrap items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em] sm:text-xs ${theme.text}`}>
+                <Sparkles className="h-3.5 w-3.5" /> {role.shortTitle} · case {String(chapter.day).padStart(2, '0')}
+              </p>
+              <h1 ref={titleRef} tabIndex={-1} className="break-words font-heading text-lg font-bold leading-tight text-slate-900 focus:outline-none dark:text-white sm:text-2xl">
+                {chapter.chapter_title}
+              </h1>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 lg:justify-end">
             <DifficultyBadge difficulty={chapter.difficulty} size="sm" />
+            <FavoriteButton
+              id={chapter.labComponentId}
+              type="agentic_role_lab"
+              title={`${chapter.day_title} (${chapter.course})`}
+              courseId={role.id}
+              menuAlign="right"
+            />
+            <div
+              role="progressbar"
+              aria-label="Case progress"
+              aria-valuemin={1}
+              aria-valuemax={totalSteps}
+              aria-valuenow={Math.min(currentStep + 1, totalSteps)}
+              aria-valuetext={`Decision ${Math.min(currentStep + 1, totalSteps)} of ${totalSteps}`}
+              className="hidden min-h-11 items-center rounded-lg border border-slate-200 bg-slate-50 px-3 text-xs font-bold text-slate-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400 sm:flex"
+            >
+              Decision <span className={`mx-1 ${theme.text}`}>{Math.min(currentStep + 1, totalSteps)}</span> / {totalSteps}
+            </div>
+            <button
+              type="button"
+              onClick={() => setTheoryVisible((visible) => !visible)}
+              aria-expanded={theoryVisible}
+              aria-controls={theoryVisible ? 'agentic-role-theory' : undefined}
+              className={`flex min-h-11 items-center gap-2 rounded-xl border px-3 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${theoryVisible ? `${theme.bgSoft} ${theme.text} ${theme.borderSoft}` : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'}`}
+            >
+              <BookOpen className="h-4 w-4" /> Theory
+            </button>
+            {theoryVisible && (
+              <div className="hidden items-center gap-1 rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-800 dark:bg-slate-900 lg:flex">
+                <button
+                  type="button"
+                  onClick={() => setLayoutPlacement('side')}
+                  aria-label="Show theory beside the case"
+                  aria-pressed={layoutPlacement === 'side'}
+                  className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${layoutPlacement === 'side' ? `${theme.bgSoft} ${theme.text}` : 'text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                >
+                  <Columns className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLayoutPlacement('bottom')}
+                  aria-label="Show theory below the case"
+                  aria-pressed={layoutPlacement === 'bottom'}
+                  className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${layoutPlacement === 'bottom' ? `${theme.bgSoft} ${theme.text}` : 'text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                >
+                  <Rows className="h-4 w-4" />
+                </button>
+              </div>
+            )}
           </div>
-        </div>
-
-        {/* Right Utility Actions */}
-        <div className="flex items-center gap-3">
-          {/* Favorite Toggle Button */}
-          <button
-            type="button"
-            aria-label={isFavorite ? 'Remove chapter from favorites' : 'Save chapter to favorites'}
-            aria-pressed={isFavorite}
-            onClick={handleToggleFavorite}
-            className={`p-2 rounded-xl border transition-all cursor-pointer ${
-              isFavorite
-                ? 'bg-amber-500/20 border-amber-500/40 text-amber-400 shadow-md shadow-amber-500/10'
-                : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
-            }`}
-            title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-          >
-            <Star className={`w-4 h-4 ${isFavorite ? 'fill-amber-400' : ''}`} />
-          </button>
-
-          {/* Step Progress Counter */}
-          <div role="progressbar" aria-label="Mission progress" aria-valuemin={1} aria-valuemax={Math.max(1, exercises.length)} aria-valuenow={Math.min(currentStep + 1, Math.max(1, exercises.length))} aria-valuetext={`Step ${currentStep + 1} of ${Math.max(1, exercises.length)}`} className="hidden sm:flex items-center gap-1.5 text-xs font-mono text-slate-400 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800">
-            <span>Step {currentStep + 1} of {Math.max(1, exercises.length)}</span>
-          </div>
-
-          {/* Theory Panel Toggle */}
-          <button
-            type="button"
-            aria-expanded={theoryVisible}
-            aria-controls="agentic-role-theory"
-            onClick={() => setTheoryVisible((prev) => !prev)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-              theoryVisible
-                ? 'bg-blue-600/20 border-blue-500/40 text-blue-300'
-                : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
-            }`}
-          >
-            <BookOpen className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">Theory Bridge</span>
-          </button>
-
-          {/* Placement Toggle */}
-          <button
-            type="button"
-            aria-label={`Move theory panel to ${layoutPlacement === 'side' ? 'bottom' : 'side'}`}
-            aria-pressed={layoutPlacement === 'bottom'}
-            onClick={() => setLayoutPlacement((prev) => (prev === 'side' ? 'bottom' : 'side'))}
-            className="p-1.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-400 hover:text-white transition-colors cursor-pointer hidden lg:block"
-            title={`Switch to ${layoutPlacement === 'side' ? 'Bottom' : 'Side'} Layout`}
-          >
-            <LayoutTemplate className="w-4 h-4" />
-          </button>
         </div>
       </header>
 
-      {/* Main Workspace Area */}
-      <main className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
-        <section aria-label="Mission objective" className="mb-6 rounded-xl border border-blue-500/20 bg-blue-950/20 p-4">
-          <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-blue-300">Mission objective · {currentExercise?.title || chapter.chapter_title}</p>
-          <p className="text-sm leading-relaxed text-slate-200">{currentExercise?.prompt || currentExercise?.question || chapter.theory_content?.practical_takeaway || 'Review the scenario, examine the sample output, and complete the assessment.'}</p>
-          <p className="mt-2 text-[10px] uppercase tracking-wider text-slate-500">This role runner uses interactive training scenarios and illustrative agent output.</p>
-        </section>
-              <div
-              id="agentic-role-theory"
-              role="region"
-              aria-label="Mission theory"
-          className={`grid gap-6 ${
-            theoryVisible && layoutPlacement === 'side'
-              ? 'grid-cols-1 lg:grid-cols-12'
-              : 'grid-cols-1'
-          }`}
-        >
-          {/* Interactive Simulation Sandbox (Left or Full) */}
-          <div
-            className={`space-y-6 ${
-              theoryVisible && layoutPlacement === 'side' ? 'lg:col-span-8' : 'w-full'
-            }`}
-          >
-            <ActivityComponent
-              step={currentStep}
-              exercises={exercises}
-              infoVisible={theoryVisible}
-              infoPlacement={layoutPlacement}
-              onComplete={handleStepComplete}
-            />
-          </div>
+      <div className="min-h-0 flex-1 overflow-y-auto custom-scrollbar">
+        <main className="mx-auto w-full max-w-7xl p-3 pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:p-5 sm:pb-8 lg:p-7">
+          <section aria-label="Case briefing" className={`mb-4 rounded-2xl border bg-white p-4 shadow-sm dark:bg-slate-900 sm:mb-5 sm:p-5 ${theme.borderSoft}`}>
+            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+              <p className={`text-[10px] font-extrabold uppercase tracking-[0.16em] ${theme.text}`}>Case briefing · {currentExercise?.title || chapter.chapter_title}</p>
+              {currentExercise && <DifficultyBadge difficulty={currentExercise.difficulty} size="sm" />}
+            </div>
+            <p className="max-w-5xl text-sm leading-6 text-slate-700 dark:text-slate-200 sm:text-base sm:leading-7">
+              {currentExercise?.prompt || chapter.theory_content?.practical_takeaway || 'Review the case evidence, make a role-specific decision, and examine the outcome.'}
+            </p>
+            {currentExercise?.expectedToolCalls?.[0] && (
+              <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
+                Agent action: <span className="font-semibold text-slate-700 dark:text-slate-200">{currentExercise.expectedToolCalls[0].purpose}</span>
+              </p>
+            )}
+            <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+              <div className={`h-full rounded-full bg-gradient-to-r transition-all duration-500 ${theme.gradientFrom} ${theme.gradientTo}`} style={{ width: `${(Math.min(currentStep + 1, totalSteps) / totalSteps) * 100}%` }} />
+            </div>
+          </section>
 
-          {/* Theory Bridge Panel (Right or Bottom) */}
-          {theoryVisible && (
-            <div
-              className={`rounded-2xl bg-slate-900/90 backdrop-blur border border-slate-800 p-6 shadow-2xl space-y-5 animate-in fade-in duration-200 ${
-                layoutPlacement === 'side' ? 'lg:col-span-4 h-fit' : 'w-full'
-              }`}
-            >
-              <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-                <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-400">
-                    <BookOpen className="w-4 h-4" />
+          {isCaseComplete && (
+            <section role="status" className="mb-4 flex flex-col gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-900/50 dark:bg-emerald-950/30 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600 dark:text-emerald-400" />
+                <div>
+                  <h2 className="text-sm font-bold text-emerald-900 dark:text-emerald-200">Case complete</h2>
+                  <p className="mt-1 text-xs leading-5 text-emerald-800 dark:text-emerald-300">Your decision has been added to progress for {role.shortTitle}.</p>
+                </div>
+              </div>
+              <button type="button" onClick={onBack} className="min-h-11 rounded-xl bg-emerald-700 px-4 text-xs font-bold text-white transition-colors hover:bg-emerald-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 dark:bg-emerald-600 dark:hover:bg-emerald-500">
+                Return to cases
+              </button>
+            </section>
+          )}
+
+          <div className={`grid min-w-0 gap-4 sm:gap-5 ${theoryVisible && layoutPlacement === 'side' ? 'grid-cols-1 lg:grid-cols-12' : 'grid-cols-1'}`}>
+            <section aria-label="Interactive case simulation" className={`min-w-0 rounded-2xl border border-slate-200 bg-white p-2 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-4 ${theoryVisible && layoutPlacement === 'side' ? 'lg:col-span-8' : ''}`}>
+              <ActivityComponent
+                step={currentStep}
+                exercises={exercises}
+                infoVisible={theoryVisible}
+                infoPlacement={layoutPlacement}
+                onComplete={handleStepComplete}
+              />
+            </section>
+
+            {theoryVisible && (
+              <aside id="agentic-role-theory" aria-label="Case theory" className={`h-fit min-w-0 space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-5 ${layoutPlacement === 'side' ? 'lg:col-span-4' : ''}`}>
+                <div className="flex items-start justify-between gap-3 border-b border-slate-100 pb-4 dark:border-slate-800">
+                  <div className="flex min-w-0 items-start gap-3">
+                    <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${theme.bgSoft} ${theme.text}`}>
+                      <BookOpen className="h-4 w-4" />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">Theory notes</p>
+                      <h2 className="mt-1 break-words text-sm font-bold leading-5 text-slate-900 dark:text-white">
+                        {chapter.theory_content?.title || 'Role framework'}
+                      </h2>
+                    </div>
                   </div>
-                  <h3 className="text-sm font-bold text-white tracking-wide">
-                    {chapter.theory_content?.title || 'Architectural Theory & Invariants'}
-                  </h3>
+                  <button
+                    type="button"
+                    onClick={handleSaveTheory}
+                    aria-pressed={isTheorySaved}
+                    className={`flex min-h-10 shrink-0 items-center gap-1.5 rounded-lg border px-2.5 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${isTheorySaved ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300' : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'}`}
+                  >
+                    {isTheorySaved ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Award className="h-3.5 w-3.5" />}
+                    {isTheorySaved ? 'Saved' : 'Save'}
+                  </button>
                 </div>
 
-                {/* Save Theory Button */}
-                <button
-                  onClick={handleSaveTheory}
-                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono transition-all cursor-pointer ${
-                    isTheorySaved
-                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                      : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700'
-                  }`}
-                  title="Save Theory to Notebook"
-                >
-                  {isTheorySaved ? <Check className="w-3.5 h-3.5" /> : <BookmarkPlus className="w-3.5 h-3.5" />}
-                  <span>{isTheorySaved ? 'Saved' : 'Save'}</span>
-                </button>
-              </div>
+                <p className="whitespace-pre-line text-sm leading-6 text-slate-600 dark:text-slate-300">
+                  {chapter.theory_content?.content || 'Theory notes for this role case will appear here.'}
+                </p>
 
-              <div className="text-xs text-slate-300 leading-relaxed whitespace-pre-line space-y-3 font-sans">
-                {chapter.theory_content?.content}
-              </div>
-
-              {chapter.theory_content?.practical_takeaway && (
-                <div className="p-3.5 rounded-xl bg-blue-950/20 border border-blue-500/30 text-xs text-blue-300 space-y-1">
-                  <div className="font-bold flex items-center gap-1.5 text-blue-400">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    Practical Enterprise Takeaway
+                {chapter.theory_content?.practical_takeaway && (
+                  <div className={`rounded-xl border p-3 ${theme.bgSoft} ${theme.borderSoft}`}>
+                    <p className={`mb-1 flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider ${theme.text}`}>
+                      <Sparkles className="h-3 w-3" /> Practical takeaway
+                    </p>
+                    <p className="text-xs leading-5 text-slate-700 dark:text-slate-200">{chapter.theory_content.practical_takeaway}</p>
                   </div>
-                  <p className="text-[11px] leading-relaxed text-slate-300">
-                    {chapter.theory_content.practical_takeaway}
-                  </p>
-                </div>
-              )}
+                )}
 
-              {/* Critical Concepts List */}
-              {chapter.critical_concepts && chapter.critical_concepts.length > 0 && (
-                <div className="space-y-2 pt-2 border-t border-slate-800/80">
-                  <span className="text-[10px] font-mono uppercase text-slate-400 tracking-wider block">
-                    Key Formal Concepts
-                  </span>
-                  <div className="space-y-2">
-                    {chapter.critical_concepts.map((concept, idx) => (
-                      <div key={idx} className="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800 space-y-1">
-                        <span className="text-xs font-bold text-white block">{concept.concept}</span>
-                        <p className="text-[11px] text-slate-400 leading-relaxed">{concept.definition}</p>
+                {chapter.theory_content?.analogy && (
+                  <div className="rounded-xl bg-slate-50 p-3 dark:bg-slate-950">
+                    <p className="mb-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Mental model</p>
+                    <p className="text-xs leading-5 text-slate-600 dark:text-slate-300">{chapter.theory_content.analogy}</p>
+                  </div>
+                )}
+
+                {chapter.critical_concepts.length > 0 && (
+                  <div className="space-y-2 border-t border-slate-100 pt-4 dark:border-slate-800">
+                    <h3 className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Key concepts</h3>
+                    {chapter.critical_concepts.map((concept) => (
+                      <div key={concept.concept} className="rounded-xl border border-slate-100 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-950">
+                        <h4 className="text-xs font-bold text-slate-900 dark:text-white">{concept.concept}</h4>
+                        {concept.definition && <p className="mt-1 text-xs leading-5 text-slate-600 dark:text-slate-400">{concept.definition}</p>}
                       </div>
                     ))}
                   </div>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </main>
+                )}
+              </aside>
+            )}
+          </div>
+        </main>
+      </div>
     </div>
   );
 };

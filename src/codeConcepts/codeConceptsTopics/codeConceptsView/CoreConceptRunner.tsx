@@ -801,6 +801,7 @@ const ScrollCodeWalkthrough: React.FC<ScrollCodeWalkthroughProps> = ({
   
   const filmRef = React.useRef<HTMLDivElement>(null);
   const viewportRef = React.useRef<HTMLDivElement>(null);
+  const conceptsScrollerRef = React.useRef<HTMLDivElement>(null);
   const stepRefs = React.useRef<(HTMLElement | null)[]>([]);
 
   // Split lines and prepare them for rendering
@@ -810,8 +811,8 @@ const ScrollCodeWalkthrough: React.FC<ScrollCodeWalkthroughProps> = ({
     if (typeof IntersectionObserver === 'undefined') return;
 
     const observerOptions = {
-      root: null,
-      rootMargin: '-20% 0px -40% 0px',
+      root: conceptsScrollerRef.current,
+      rootMargin: '-30% 0px -40% 0px',
       threshold: 0.1,
     };
 
@@ -910,16 +911,16 @@ const ScrollCodeWalkthrough: React.FC<ScrollCodeWalkthroughProps> = ({
   };
 
   return (
-    <div className={`flex flex-col h-screen overflow-hidden transition-colors duration-500 ${isDarkMode ? 'walkthrough-dark bg-zinc-950' : 'walkthrough-light bg-zinc-50'}`}>
+    <div className={`flex h-full min-h-0 flex-col overflow-hidden transition-colors duration-500 ${isDarkMode ? 'walkthrough-dark bg-zinc-950' : 'walkthrough-light bg-zinc-50'}`}>
       
       {/* Upper top : "code snippet" */}
       <AnimatePresence>
         {isCodeVisible && (
           <motion.div 
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: '45vh', opacity: 1 }}
+            animate={{ height: '40dvh', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className={`relative shrink-0 border-b overflow-hidden group code-snippet-container ${isDarkMode ? 'border-zinc-800 bg-[#020617]' : 'border-zinc-200 bg-white'}`} 
+            className={`relative min-h-40 shrink-0 border-b overflow-hidden group code-snippet-container ${isDarkMode ? 'border-zinc-800 bg-[#020617]' : 'border-zinc-200 bg-white'}`}
             ref={viewportRef}
           >
             {/* Code Header */}
@@ -936,10 +937,10 @@ const ScrollCodeWalkthrough: React.FC<ScrollCodeWalkthroughProps> = ({
             {/* The "Film" */}
             <div 
               ref={filmRef}
-              className="camera-film-container transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] origin-center py-[30vh]"
+              className="camera-film-container origin-center py-[20dvh] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] sm:py-[30vh]"
               style={{ transform: 'translateY(0px)' }}
             >
-              <pre className={`font-mono text-[1.05rem] leading-[1.8] w-full whitespace-pre-wrap break-words ${isDarkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>
+              <pre className={`w-full whitespace-pre-wrap break-words font-mono text-[clamp(0.72rem,2.5vw,1rem)] leading-[1.65] sm:text-base sm:leading-[1.8] ${isDarkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>
                 <code>
                   {codeLines.map((line, idx) => {
                     const lineNum = idx + 1;
@@ -949,7 +950,7 @@ const ScrollCodeWalkthrough: React.FC<ScrollCodeWalkthroughProps> = ({
                     return (
                       <div 
                         key={idx} 
-                        className={`line-wrapper relative px-8 flex items-start transition-colors duration-300 w-full`}
+                        className="line-wrapper relative flex w-full items-start px-3 transition-colors duration-300 sm:px-8"
                         style={{ backgroundColor: isFocused ? getHighlightBgColor() : 'transparent' }}
                       >
                         {isFocused && (
@@ -958,7 +959,7 @@ const ScrollCodeWalkthrough: React.FC<ScrollCodeWalkthroughProps> = ({
                              style={{ backgroundColor: getColorHex() }}
                            />
                         )}
-                        <span className={`w-8 text-right mr-6 font-mono text-xs select-none relative z-10 transition-colors duration-300 shrink-0 ${isFocused ? (isDarkMode ? 'text-indigo-400 font-bold' : 'text-indigo-600 font-bold') : (isDarkMode ? 'text-zinc-500' : 'text-zinc-400')}`}>
+                        <span className={`relative z-10 mr-3 w-6 shrink-0 select-none text-right font-mono text-[10px] transition-colors duration-300 sm:mr-6 sm:w-8 sm:text-xs ${isFocused ? (isDarkMode ? 'font-bold text-indigo-400' : 'font-bold text-indigo-600') : (isDarkMode ? 'text-zinc-500' : 'text-zinc-400')}`}>
                           {lineNum}
                         </span>
                         <span className={`relative z-10 w-full transition-colors duration-300 ${isFocused ? 'drop-shadow-sm' : ''}`}>
@@ -975,29 +976,29 @@ const ScrollCodeWalkthrough: React.FC<ScrollCodeWalkthroughProps> = ({
       </AnimatePresence>
 
       {/* 3- Lower bottom : "code concept scroll view" */}
-      <div className={`flex-1 overflow-y-auto custom-scrollbar-hide relative z-10 ${isDarkMode ? 'bg-zinc-950' : 'bg-zinc-50'}`}>
-        <div className="max-w-4xl mx-auto px-6">
+      <div ref={conceptsScrollerRef} className={`relative z-10 min-h-0 flex-1 overflow-y-auto overscroll-y-contain custom-scrollbar-hide ${isDarkMode ? 'bg-zinc-950' : 'bg-zinc-50'}`}>
+        <div className="mx-auto max-w-4xl px-4 sm:px-6">
           {question.steps.map((step, idx) => (
             <section 
               key={idx}
               data-step-index={idx}
               ref={el => { stepRefs.current[idx] = el; }}
-              className={`min-h-[70vh] flex flex-col justify-center py-20 transition-opacity duration-700 ${activeStep === idx ? 'opacity-100' : 'opacity-20'}`}
+              className={`flex min-h-[62svh] flex-col justify-center py-12 transition-opacity duration-700 sm:min-h-[70vh] sm:py-20 ${activeStep === idx ? 'opacity-100' : 'opacity-20'}`}
             >
-              <div className="relative pl-8">
+               <div className="relative pl-5 sm:pl-8">
                  <div 
                    className="absolute left-0 top-0 bottom-0 w-1 rounded-full opacity-50"
                    style={{ backgroundColor: getColorHex() }}
                  />
                  <h3 className={`text-sm font-bold uppercase tracking-[0.3em] mb-4 ${isDarkMode ? 'text-white/40' : 'text-zinc-400'}`}>{step.title}</h3>
-                 <h2 className={`text-4xl md:text-5xl font-black mb-8 leading-tight tracking-tight ${
+                 <h2 className={`mb-5 text-3xl font-black leading-tight tracking-tight sm:mb-8 sm:text-4xl md:text-5xl ${
                    isDarkMode 
                      ? (themeColor === 'emerald' ? 'text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.2)]' : themeColor === 'blue' ? 'text-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.2)]' : 'text-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.2)]') 
                      : (themeColor === 'emerald' ? 'text-emerald-600' : themeColor === 'blue' ? 'text-blue-600' : 'text-indigo-600')
                  }`}>
                     <HighlightedText text={step.title} themeColor={themeColor as any} />
                  </h2>
-                 <p className={`text-xl md:text-2xl leading-relaxed max-w-2xl mb-12 ${isDarkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
+                 <p className={`mb-8 max-w-2xl text-base leading-relaxed sm:mb-12 sm:text-xl md:text-2xl ${isDarkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
                     <HighlightedText text={step.description} themeColor={themeColor as any} />
                  </p>
 
@@ -1022,7 +1023,7 @@ const ScrollCodeWalkthrough: React.FC<ScrollCodeWalkthroughProps> = ({
       </div>
 
       {/* Control Panel (Top Right) */}
-      <div className="fixed top-4 right-4 z-[110] flex items-center gap-2">
+      <div className="fixed right-3 top-3 z-[110] flex items-center gap-2 sm:right-4 sm:top-4">
          <div className={`flex items-center gap-0.5 p-1 rounded-full border shadow-2xl backdrop-blur-xl transition-colors duration-300 ${isDarkMode ? 'bg-white/10 border-white/20' : 'bg-black/5 border-black/10'}`}>
             <button
                onClick={() => setIsCodeVisible(!isCodeVisible)}
@@ -1043,14 +1044,25 @@ const ScrollCodeWalkthrough: React.FC<ScrollCodeWalkthroughProps> = ({
       </div>
 
       {/* Nav Dots */}
-      <div className="fixed right-6 top-[72vh] -translate-y-1/2 flex flex-col gap-4 z-50">
-         {question.steps.map((_, i) => (
+      <nav aria-label="Walkthrough steps" className="fixed bottom-20 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-full border border-white/10 bg-zinc-900/90 px-4 py-3 shadow-xl backdrop-blur sm:bottom-auto sm:left-auto sm:right-5 sm:top-1/2 sm:-translate-y-1/2 sm:translate-x-0 sm:flex-col sm:gap-4 sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none sm:backdrop-blur-none">
+         {question.steps.map((step, i) => (
            <button
              key={i}
+             type="button"
              onClick={() => {
-                stepRefs.current[i]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                const scroller = conceptsScrollerRef.current;
+                const target = stepRefs.current[i];
+                if (!scroller || !target) return;
+                const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                const scrollerRect = scroller.getBoundingClientRect();
+                const targetRect = target.getBoundingClientRect();
+                const scrollTop = scroller.scrollTop + targetRect.top - scrollerRect.top - (scroller.clientHeight - targetRect.height) / 2;
+                scroller.scrollTo({ top: scrollTop, behavior: reduceMotion ? 'auto' : 'smooth' });
              }}
-             className={`w-2 h-2 rounded-full transition-all duration-300 ${activeStep === i ? 'scale-[2] ring-4' : 'bg-zinc-700 hover:bg-zinc-500'}`}
+             aria-label={`Go to step ${i + 1}: ${step.title}`}
+             aria-current={activeStep === i ? 'step' : undefined}
+             title={step.title}
+             className={`h-2 w-2 rounded-full transition-all duration-300 ${activeStep === i ? 'scale-150 ring-4 sm:scale-[2]' : 'bg-zinc-500 hover:bg-zinc-300'}`}
              style={{ 
                backgroundColor: activeStep === i ? getColorHex() : undefined,
                boxShadow: activeStep === i ? `0 0 10px ${getColorHex()}40` : undefined,
@@ -1058,7 +1070,7 @@ const ScrollCodeWalkthrough: React.FC<ScrollCodeWalkthroughProps> = ({
              }}
            />
          ))}
-      </div>
+      </nav>
     </div>
   );
 };

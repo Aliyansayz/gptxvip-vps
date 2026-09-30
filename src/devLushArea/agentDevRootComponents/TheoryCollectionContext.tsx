@@ -6,7 +6,7 @@ export interface SavedTheory {
   labId: string;
   chapterTitle: string;
   exerciseTitle: string;
-  courseType: 'bio' | 'med' | 'devLush' | 'roadmap';
+  courseType: 'bio' | 'med' | 'devLush' | 'agenticRoles' | 'roadmap';
   theory: Theory;
   savedAt: number;
 }
@@ -31,7 +31,12 @@ const TheoryCollectionContext = createContext<TheoryCollectionContextType | unde
 
 export const TheoryCollectionProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [collections, setCollections] = useState<Record<string, TheoryCollection>>(() => {
-    const saved = localStorage.getItem('theoryCollections');
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem('theoryCollections');
+    } catch {
+      // Keep an in-memory collection if browser storage is disabled.
+    }
     if (saved && saved.trim() !== '') {
       try {
         return JSON.parse(saved);
@@ -51,7 +56,11 @@ export const TheoryCollectionProvider: React.FC<{ children: ReactNode }> = ({ ch
   });
 
   useEffect(() => {
-    localStorage.setItem('theoryCollections', JSON.stringify(collections));
+    try {
+      localStorage.setItem('theoryCollections', JSON.stringify(collections));
+    } catch {
+      // Collection editing remains available for this session.
+    }
   }, [collections]);
 
   const createCollection = (name: string) => {

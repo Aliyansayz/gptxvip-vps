@@ -4,6 +4,7 @@ import { SearchIcon, PlayIcon } from '../../roadmapSharedComponents/icons';
 import { CourseIcon } from '../../roadmapSharedComponents/CourseIcon';
 import { RefreshCw, X } from 'lucide-react';
 import { getThemeColorClass } from '../shared/themeHelpers';
+import { StatePanel } from '../../../shared/components/StatePanel';
 
 interface EnrichedConceptData extends ConceptCourse {
     chapters: LabData[];
@@ -19,24 +20,19 @@ interface RoadmapSearchViewProps {
     onClose: () => void;
 }
 
-const KeywordMarquee: React.FC<{ keywords: string[]; direction: 'ltr' | 'rtl'; onKeywordClick: (keyword: string) => void }> = ({ keywords, direction, onKeywordClick }) => {
-    const animationClass = direction === 'ltr' ? 'animate-slide-ltr' : 'animate-slide-rtl';
-    const displayKeywords = keywords.length > 0 ? keywords : ['Loading...'];
-    const allKeywords = [...displayKeywords, ...displayKeywords]; 
-
+const KeywordSuggestions: React.FC<{ keywords: string[]; onKeywordClick: (keyword: string) => void }> = ({ keywords, onKeywordClick }) => {
     return (
-        <div className={`relative flex overflow-x-hidden group rounded-full border border-indigo-200 bg-indigo-50/50 dark:border-indigo-900/50 dark:bg-indigo-950/20`}>
-            <div className={`flex w-max ${animationClass} group-hover:[animation-play-state:paused]`}>
-                {allKeywords.map((keyword, index) => (
+        <div className="flex max-h-28 flex-wrap gap-2 overflow-y-auto" aria-label="Suggested search terms">
+                {keywords.map((keyword, index) => (
                     <button 
-                        key={`${direction}-${index}-${keyword}`} 
+                        key={`${index}-${keyword}`}
+                        type="button"
                         onClick={() => onKeywordClick(keyword)}
-                        className={`whitespace-nowrap px-4 py-2 text-sm rounded-full transition-colors text-indigo-700 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-900/50`}
+                        className="min-h-10 rounded-full border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm text-indigo-800 transition-colors hover:bg-indigo-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-indigo-800 dark:bg-indigo-950/30 dark:text-indigo-200 dark:hover:bg-indigo-900/50"
                     >
                         {keyword}
                     </button>
                 ))}
-            </div>
         </div>
     );
 };
@@ -53,8 +49,8 @@ export const RoadmapSearchView: React.FC<RoadmapSearchViewProps> = ({ roadmapTop
     const [selectedIndex, setSelectedIndex] = useState(-1);
 
     const titleText = 'Search Roadmap';
-    const descriptionText = 'Find agent workflows, autonomous simulations, and architectural models.';
-    const placeholderText = "Search for 'cybersecurity', 'fraud', 'ecommerce', 'audit'...";
+    const descriptionText = 'Find a trading roadmap chapter by title, activity, or concept.';
+    const placeholderText = "Search for a chapter or trading concept";
     
     const primaryColorClass = 'text-indigo-600 dark:text-indigo-400';
     const bgIconClass = 'bg-indigo-100 dark:bg-indigo-900/30';
@@ -191,8 +187,6 @@ export const RoadmapSearchView: React.FC<RoadmapSearchViewProps> = ({ roadmapTop
         setTimeout(() => setIsRefreshing(false), 500);
     };
 
-    const keywords1 = keywords.slice(0, Math.ceil(keywords.length / 2));
-    const keywords2 = keywords.slice(Math.ceil(keywords.length / 2));
 
     const iconMap = useMemo(() => {
         const map: Record<string, React.ComponentType<any>> = {};
@@ -268,7 +262,7 @@ export const RoadmapSearchView: React.FC<RoadmapSearchViewProps> = ({ roadmapTop
     }, [searchTerm, allChapters]);
 
     return (
-        <div className="h-full w-full overflow-y-auto custom-scrollbar p-8 bg-slate-50 dark:bg-black relative">
+        <div className="h-full w-full overflow-y-auto custom-scrollbar px-4 py-6 sm:p-8 bg-slate-50 dark:bg-black relative">
             <button 
                 type="button"
                 aria-label="Close Roadmap search and return to the previous view"
@@ -278,7 +272,7 @@ export const RoadmapSearchView: React.FC<RoadmapSearchViewProps> = ({ roadmapTop
                 <X className="w-6 h-6" />
             </button>
 
-            <div className="max-w-4xl mx-auto pt-4">
+            <div className="max-w-4xl mx-auto pt-12 sm:pt-4">
                 <header className="text-center mb-8">
                     <div className={`inline-block p-4 rounded-2xl shadow-sm mb-4 ${bgIconClass}`}>
                         <SearchIcon className={`w-12 h-12 ${primaryColorClass}`} />
@@ -366,22 +360,14 @@ export const RoadmapSearchView: React.FC<RoadmapSearchViewProps> = ({ roadmapTop
                             <RefreshCw className="w-4 h-4 text-slate-500" />
                         </button>
                     </div>
-                    <div className="space-y-3">
-                        <KeywordMarquee keywords={keywords1} direction="ltr" onKeywordClick={setSearchTerm} />
-                        <KeywordMarquee keywords={keywords2} direction="rtl" onKeywordClick={setSearchTerm} />
-                    </div>
+                    <KeywordSuggestions keywords={keywords} onKeywordClick={setSearchTerm} />
                 </div>
 
                 <div className="space-y-6">
                     {searchTerm.trim().length >= 2 && results.length > 0 && (
                         <p role="status" aria-live="polite" className="text-sm text-slate-500 dark:text-slate-400">{results.length} Roadmap chapter{results.length === 1 ? "" : "s"} found.</p>
                     )}
-                    {searchTerm.trim().length >= 2 && results.length === 0 && (
-                        <div role="status" className="py-12 text-center">
-                            <p className="text-slate-700 dark:text-slate-300">No Roadmap chapters match “{searchTerm.trim()}”.</p>
-                            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">Try a topic name, chapter title, or related concept.</p>
-                        </div>
-                    )}
+                    {searchTerm.trim().length >= 2 && results.length === 0 && <StatePanel title={`No chapters match “${searchTerm.trim()}”`} description="Try a topic name, chapter title, or related concept." actionLabel="Clear search" onAction={() => setSearchTerm('')} />}
                     {results.map(chapter => {
                         const theme = getThemeColorClass(chapter.course);
                         const SpecificIcon = iconMap[chapter.course];

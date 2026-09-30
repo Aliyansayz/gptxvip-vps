@@ -19,7 +19,7 @@ import { CoreConceptRunner } from "./CoreConceptRunner";
 import { SearchConceptsView } from "../searchFeature/SearchConceptsView";
 import { FavoritesProvider, useFavorites } from "../addtoFavorites/FavoritesContext";
 import { FavoritesView } from "../addtoFavorites/FavoritesView";
-import { CONCEPT_DATA_FILES } from "../courseDataFiles";
+import { fetchCodeConceptTopic } from "../../api";
 
 interface CodeConceptsViewProps {
   courseMode?: "code-concepts" | "core-concepts" | "math-primer";
@@ -80,43 +80,29 @@ const getPathPrefix = () => {
 
 const loadConcepts = async () => {
   const payloads: Record<string, CodeConceptsPayload> = {};
-  let failedFileCount = 0;
+  let failedTopicCount = 0;
 
   await Promise.all(
-    Object.entries(CONCEPT_DATA_FILES).map(async ([categoryId, files]) => {
-      const merged: CodeConceptsPayload = {
-        course: "",
-        chapter_title: "",
-        critical_concepts: [],
-        interactive_questions: [],
-      };
-
-      await Promise.all(files.map(async (fileName) => {
-        try {
-          const response = await fetch(`/code_concepts/${categoryId}/${fileName}`);
-          if (!response.ok) throw new Error(`Curriculum request failed (${response.status})`);
-          const fileData = await response.json() as Partial<CodeConceptsPayload>;
-          merged.course ||= fileData.course || "";
-          merged.chapter_title ||= fileData.chapter_title || "";
-          if (Array.isArray(fileData.critical_concepts)) {
-            merged.critical_concepts.push(...fileData.critical_concepts);
-          }
-          if (Array.isArray(fileData.interactive_questions)) {
-            merged.interactive_questions.push(...fileData.interactive_questions);
-          }
-        } catch {
-          failedFileCount += 1;
-        }
-      }));
-
-      payloads[categoryId] = merged;
+    CODE_CONCEPT_CATEGORIES.filter((category) => category.id !== "search").map(async ({ id: categoryId }) => {
+      try {
+        const topic = await fetchCodeConceptTopic(categoryId);
+        payloads[categoryId] = topic;
+      } catch {
+        failedTopicCount += 1;
+        payloads[categoryId] = {
+          course: "",
+          chapter_title: "",
+          critical_concepts: [],
+          interactive_questions: [],
+        };
+      }
     }),
   );
 
-  return { payloads, failedFileCount };
+  return { payloads, failedTopicCount };
 };
 
-const TOTAL_CONCEPT_DATA_FILES = Object.values(CONCEPT_DATA_FILES).reduce((count, files) => count + files.length, 0);
+const TOTAL_CONCEPT_TOPICS = CODE_CONCEPT_CATEGORIES.filter((category) => category.id !== "search").length;
 
 type MobileTab = "learn" | "search" | "saved";
 
@@ -182,7 +168,7 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
   const [showFavorites, setShowFavorites] = useState(false);
   const [conceptsData, setConceptsData] = useState<Record<string, CodeConceptsPayload>>({});
   const [isLoading, setIsLoading] = useState(true);
-  const [failedConceptFileCount, setFailedConceptFileCount] = useState(0);
+  const [failedTopicCount, setFailedTopicCount] = useState(0);
   const [loadAttempt, setLoadAttempt] = useState(0);
   const [completedLessonIds, setCompletedLessonIds] = useState<string[]>(readCompletedLessons);
   const hasHandledInitialActivity = useRef(false);
@@ -192,14 +178,14 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
   useEffect(() => {
     let cancelled = false;
     setIsLoading(true);
-    loadConcepts().then(({ payloads, failedFileCount }) => {
+    loadConcepts().then(({ payloads, failedTopicCount }) => {
       if (!cancelled) {
         setConceptsData(payloads);
-        setFailedConceptFileCount(failedFileCount);
+        setFailedTopicCount(failedTopicCount);
       }
     }).catch((error) => {
       console.error("Could not load Code Concepts curriculum:", error);
-      if (!cancelled) setFailedConceptFileCount(TOTAL_CONCEPT_DATA_FILES);
+      if (!cancelled) setFailedTopicCount(TOTAL_CONCEPT_TOPICS);
     }).finally(() => {
       if (!cancelled) setIsLoading(false);
     });
@@ -311,11 +297,14 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
 
   const allCourseLessons = useMemo(() => {
     if (!activeData) return [];
+    const lessonsForPace = activeData.interactive_questions.filter((lesson) =>
+      activeCategory === "general" || (lesson.difficulty || "basic").toLowerCase() === activeDifficulty,
+    );
     return [
       ...(activeData.critical_concepts.length ? [overviewQuestion] : []),
-      ...activeData.interactive_questions,
+      ...lessonsForPace,
     ];
-  }, [activeData, activeCategory, activeDifficulty]);
+  }, [activeData, activeCategory, activeDifficulty, overviewQuestion]);
 
   const displayQuestions = useMemo(() => {
     if (!activeData) return [];
@@ -356,7 +345,7 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
 
   if (activeCategory === "search" && !activeConcept) {
     return (
-      <div className="relative h-full min-h-[70vh] bg-zinc-50 dark:bg-zinc-950">
+    <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-zinc-50 dark:bg-zinc-950">
         <SearchConceptsView
           onSelectTopic={(categoryId) => {
             setShowFavorites(false);
@@ -372,7 +361,7 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
 
   if (showFavorites && !activeConcept) {
     return (
-      <div className="relative h-full min-h-[70vh] bg-zinc-50 dark:bg-zinc-950">
+      <div className="relative h-full min-h-0 overflow-hidden bg-zinc-50 dark:bg-zinc-950">
         <FavoritesView
           onStartConcept={(concept) => {
             const categoryId = Object.entries(conceptsData).find(([, data]) =>
@@ -397,7 +386,7 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
 
   if (activeConcept) {
     return (
-      <div className="relative h-full min-h-[70vh] bg-zinc-50 dark:bg-zinc-950">
+      <div className="relative h-full min-h-0 overflow-hidden bg-zinc-50 dark:bg-zinc-950">
         <CoreConceptRunner
           concept={activeConcept}
           onBack={handleBackFromConcept}
@@ -424,9 +413,9 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
   const chapterTitle = activeData?.chapter_title || activeCategoryInfo?.description || "Choose a lesson and build a new skill.";
 
   return (
-    <div className="relative h-full min-h-[70vh] overflow-hidden bg-zinc-50 text-zinc-900 transition-colors dark:bg-zinc-950 dark:text-zinc-100">
+    <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-zinc-50 text-zinc-900 transition-colors dark:bg-zinc-950 dark:text-zinc-100">
       <div className="absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.12),transparent_68%)] pointer-events-none" />
-      <div className="relative h-full overflow-y-auto overscroll-y-contain pb-28 md:pb-12">
+      <div className="relative min-h-0 flex-1 overflow-y-auto overscroll-y-contain pb-28 md:pb-12">
         <div className="mx-auto w-full max-w-5xl px-4 pb-10 pt-5 sm:px-6 md:pt-8">
           <header className="mb-5 flex items-center justify-between gap-4">
             <div className="flex min-w-0 items-center gap-3">
@@ -459,12 +448,12 @@ const CodeConceptsViewContent: React.FC<CodeConceptsViewProps> = ({
             </div>
           </header>
 
-          {failedConceptFileCount > 0 && (
+          {failedTopicCount > 0 && (
             <div role="status" aria-live="polite" className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100">
               <span>
-                {failedConceptFileCount === TOTAL_CONCEPT_DATA_FILES
+                {failedTopicCount === TOTAL_CONCEPT_TOPICS
                   ? "Course content could not be loaded. Your saved progress is still available."
-                  : `${failedConceptFileCount} course data file${failedConceptFileCount === 1 ? "" : "s"} could not be loaded; some lessons may be missing.`}
+                  : `${failedTopicCount} topic endpoint${failedTopicCount === 1 ? "" : "s"} could not be loaded; some lessons may be missing.`}
               </span>
               <button type="button" onClick={() => setLoadAttempt((attempt) => attempt + 1)} disabled={isLoading} className="min-h-9 rounded-lg border border-current/30 px-3 font-bold disabled:cursor-wait disabled:opacity-50">
                 {isLoading ? "Retrying…" : "Retry"}

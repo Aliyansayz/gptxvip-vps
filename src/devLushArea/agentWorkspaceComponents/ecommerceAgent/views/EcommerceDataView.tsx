@@ -2,6 +2,7 @@ import React from 'react';
 import { Tag, Package, Users, TrendingUp, Settings } from 'lucide-react';
 import { EcommerceSidebarView } from '../components/EcommerceAgentSidebar';
 import AgentPreviewNotice from '../../components/AgentPreviewNotice';
+import SourceStatus from '../../components/SourceStatus';
 
 interface EcommerceDataViewProps {
   viewType: EcommerceSidebarView;
@@ -12,47 +13,47 @@ export default function EcommerceDataView({ viewType }: EcommerceDataViewProps) 
     pricing: {
       title: "Dynamic Pricing Engine",
       icon: Tag,
-      description: "Automated price adjustments based on competitor analysis and demand.",
+      description: "Illustrative pricing decisions; no price was changed.",
       items: [
-        { label: "Premium Noise Cancelling Headphones", value: "Price increased +$15.00 (Competitor stockout detected)" },
-        { label: "Wireless Ergonomic Mouse", value: "Price decreased -$2.50 (Match Amazon Buy Box)" },
-        { label: "Mechanical Keyboard (Blue Switch)", value: "Price held steady at $129.99 (Optimal margin reached)" }
+        { label: "Premium Noise Cancelling Headphones", value: "Example proposal: raise price $15 if a competitor stockout is verified." },
+        { label: "Wireless Ergonomic Mouse", value: "Example proposal: review a $2.50 decrease after margin and competitor checks." },
+        { label: "Mechanical Keyboard (Blue Switch)", value: "Example proposal: hold a $129.99 price while validating margin assumptions." }
       ]
     },
     inventory: {
       title: "Inventory Synchronization",
       icon: Package,
-      description: "Multi-channel inventory tracking and low-stock alerts.",
+      description: "Illustrative inventory records; no channel is connected.",
       items: [
         { label: "Warehouse A (East Coast)", value: "SKU: MAC-M2-16GB (Low Stock: 4 remaining)" },
-        { label: "Shopify Storefront", value: "Sync Status: Healthy. Last sync 2 minutes ago." },
-        { label: "Amazon FBA", value: "Inbound shipment receiving. +200 units added to pool." }
+        { label: "Shopify Storefront", value: "Example storefront record. Connection and last sync are unavailable." },
+        { label: "Amazon FBA", value: "Example inbound shipment of 200 units; receipt is unverified." }
       ]
     },
     customer_segmentation: {
       title: "Customer Segmentation",
       icon: Users,
-      description: "AI-driven grouping of customers based on purchasing behavior.",
+      description: "Illustrative customer groups for exploring possible actions.",
       items: [
-        { label: "High-LTV 'Whales'", value: "Segment Size: 245. Average Order Value: $450. Action: VIP Early Access." },
-        { label: "Discount Chasers", value: "Segment Size: 1,420. Action: Target with clearance sale email." },
-        { label: "Cart Abandoners (72hr)", value: "Segment Size: 89. Action: Trigger 10% recovery discount." }
+        { label: "High-value repeat buyers", value: "Example group size: 245 and average order value: $450. Possible action: review early-access eligibility." },
+        { label: "Discount-focused buyers", value: "Example group size: 1,420. Possible action: review clearance eligibility before a campaign." },
+        { label: "Cart abandoners (72 hr)", value: "Example group size: 89. Possible action: test a recovery offer after consent and margin review." }
       ]
     },
     forecasting: {
       title: "Demand Forecasting",
       icon: TrendingUp,
-      description: "Predictive analytics for upcoming sales velocity and stock requirements.",
+      description: "Illustrative demand scenarios without a connected forecast model.",
       items: [
-        { label: "Q4 Holiday Spike", value: "Predicted +45% YoY growth in Consumer Electronics." },
-        { label: "Stockout Risk", value: "SKU: 4K-MON-27. Projected to stock out in 14 days based on current run rate." },
-        { label: "Procurement Recommendation", value: "Generate PO for 500 units of SKU: 4K-MON-27 from Supplier B." }
+        { label: "Q4 Holiday Spike", value: "Example assumption: 45% year-over-year growth in consumer electronics." },
+        { label: "Stockout Risk", value: "Example projection: SKU 4K-MON-27 could stock out in 14 days if the assumed run rate holds." },
+        { label: "Procurement Review", value: "Example next step: verify demand and supplier terms before considering an order for SKU 4K-MON-27." }
       ]
     },
     settings: {
       title: "Store Connections",
       icon: Settings,
-      description: "Manage API keys and integration settings for various storefronts.",
+      description: "Example connection and pricing-rule labels; this preview cannot configure integrations.",
       items: [
         { label: "Shopify Integration", value: "Example store label: acme-electronics.myshopify.com (connection not verified)" },
         { label: "Amazon Seller Central", value: "Example marketplace label: US (connection not verified)" },
@@ -69,7 +70,7 @@ export default function EcommerceDataView({ viewType }: EcommerceDataViewProps) 
   if (!Icon) return null;
 
   return (
-    <div className="flex-1 p-8 bg-slate-50 overflow-y-auto">
+    <div className="flex-1 h-full overflow-y-auto bg-slate-50 px-4 py-6 sm:p-8">
       <div className="max-w-3xl mx-auto space-y-6">
         <div>
           <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
@@ -89,6 +90,7 @@ export default function EcommerceDataView({ viewType }: EcommerceDataViewProps) 
                 </div>
                 <div className="md:w-2/3">
                   <p className="text-sm text-slate-600 font-medium">{item.value}</p>
+                  <SourceStatus source="Built-in commerce record" freshness="No connected storefront or measurement window" />
                 </div>
               </div>
             ))}

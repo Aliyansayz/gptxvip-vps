@@ -44,8 +44,10 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
     if (isFav) {
         return (
             <button
+                type="button"
                 onClick={() => removeFavorite(id)}
-                className="p-2 rounded-lg bg-yellow-100 text-yellow-600 border border-yellow-200 hover:bg-yellow-200 transition-colors"
+                aria-label={`Remove ${title} from favorites`}
+                className="flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-yellow-200 bg-yellow-100 text-yellow-600 transition-colors hover:bg-yellow-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
                 title="Remove from Favorites"
             >
                 <StarFilledIcon className="w-5 h-5" />
@@ -59,8 +61,11 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
     return (
         <div className="relative">
             <button
+                type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 rounded-lg bg-muted text-muted-foreground border border-border hover:bg-muted/80 hover:text-foreground transition-colors"
+                aria-label={`Save ${title} to favorites`}
+                aria-expanded={isOpen}
+                className="flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-border bg-muted text-muted-foreground transition-colors hover:bg-muted/80 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 title="Add to Favorites"
             >
                 <StarIcon className="w-5 h-5" />
@@ -75,8 +80,9 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
                         {collections.map(col => (
                             <button
                                 key={col}
+                                type="button"
                                 onClick={() => handleSave(col)}
-                                className="w-full text-left px-4 py-2 text-sm hover:bg-muted flex items-center justify-between group text-foreground"
+                                className="group flex min-h-11 w-full items-center justify-between px-4 py-2 text-left text-sm text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                             >
                                 <span>{col}</span>
                                 <CheckIcon className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -89,23 +95,27 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
                                 <input
                                     autoFocus
                                     type="text"
-                                    className="flex-1 bg-background border border-border rounded px-2 py-1 text-xs outline-none focus:ring-1 focus:ring-primary text-foreground"
+                                    aria-label="New favorites collection name"
+                                    className="min-h-11 min-w-0 flex-1 rounded border border-border bg-background px-2 text-xs text-foreground outline-none focus:ring-1 focus:ring-primary"
                                     placeholder="Collection name..."
                                     value={newCollectionName}
                                     onChange={(e) => setNewCollectionName(e.target.value)}
                                     onKeyDown={(e) => e.key === 'Enter' && handleCreateAndSave()}
                                 />
                                 <button
+                                    type="button"
                                     onClick={handleCreateAndSave}
-                                    className="p-1 rounded bg-primary text-primary-foreground"
+                                    aria-label="Create collection and save lab"
+                                    className="flex min-h-11 min-w-11 items-center justify-center rounded bg-primary text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                                 >
                                     <CheckIcon className="w-4 h-4" />
                                 </button>
                             </div>
                         ) : (
                             <button
+                                type="button"
                                 onClick={() => setShowNewInput(true)}
-                                className="w-full text-left px-2 py-1.5 text-xs text-primary hover:bg-primary/10 rounded flex items-center gap-2 transition-colors font-medium"
+                                className="flex min-h-11 w-full items-center gap-2 rounded px-2 text-left text-xs font-medium text-primary transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                             >
                                 <FolderPlusIcon className="w-3.5 h-3.5" />
                                 Create New Collection
@@ -113,7 +123,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
                         )}
                     </div>
                     <div className="bg-muted p-1 flex justify-end">
-                        <button onClick={() => setIsOpen(false)} className="text-[10px] text-muted-foreground hover:text-foreground px-2">Cancel</button>
+                        <button type="button" onClick={() => setIsOpen(false)} className="min-h-11 rounded px-3 text-xs text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Cancel</button>
                     </div>
                 </div>
             )}

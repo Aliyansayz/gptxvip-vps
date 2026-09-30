@@ -5,7 +5,7 @@ import type { Template } from '@/data/templates'
 import { getContactHref } from '@/data/templates'
 import TemplateThumb from '@/components/TemplateThumb'
 
-export default function TemplateCard({ template }: { template: Template }) {
+export default function TemplateCard({ template, compared = false, onToggleCompare, compareDisabled = false }: { template: Template; compared?: boolean; onToggleCompare?: (slug: string) => void; compareDisabled?: boolean }) {
   return (
     <article className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-lg hover:shadow-slate-200/60">
       <Link to={'/templates/' + template.slug} className="relative block">
@@ -32,6 +32,8 @@ export default function TemplateCard({ template }: { template: Template }) {
             <span key={framework} className="rounded-md border border-slate-200 px-1.5 py-0.5 text-[11px] text-slate-500">{framework}</span>
           ))}
         </div>
+
+        {onToggleCompare && <button type="button" onClick={() => onToggleCompare(template.slug)} aria-pressed={compared} disabled={compareDisabled && !compared} className={`mt-4 min-h-11 rounded-lg border px-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 disabled:cursor-not-allowed disabled:opacity-50 ${compared ? 'border-indigo-500 bg-indigo-50 text-indigo-800' : 'border-slate-200 text-slate-700 hover:border-indigo-300 hover:bg-indigo-50'}`}>{compared ? 'Remove from comparison' : 'Add to comparison'}</button>}
 
         <div className="mt-4 flex gap-2 pt-1">
           <Button asChild variant="outline" className="flex-1">

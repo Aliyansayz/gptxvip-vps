@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Terminal, Copy, Check, Trash2, Maximize2, Minimize2, ArrowDown } from 'lucide-react';
+import { Terminal, Copy, Check, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 export interface TerminalLogEntry {
@@ -19,7 +19,7 @@ interface AgentTerminalLogProps {
 
 export const AgentTerminalLog: React.FC<AgentTerminalLogProps> = ({
   logs,
-  title = "Agent Telemetry Stream",
+  title = "Sample agent output",
   isStreaming = false,
   maxHeight = "240px",
   onClear
@@ -35,14 +35,18 @@ export const AgentTerminalLog: React.FC<AgentTerminalLogProps> = ({
     }
   }, [logs, autoScroll]);
 
-  const handleCopy = () => {
+  const handleCopy = async () => {
     const rawText = logs
       .map((l) => `[${l.timestamp}] [${l.level.toUpperCase()}] ${l.message}`)
       .join('\n');
-    navigator.clipboard.writeText(rawText);
-    setCopied(true);
-    toast.success("Terminal logs copied to clipboard!");
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(rawText);
+      setCopied(true);
+      toast.success("Sample output copied.");
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error("Copy failed. Select the output text and copy it manually.");
+    }
   };
 
   const filteredLogs = logs.filter((l) => {
@@ -65,28 +69,30 @@ export const AgentTerminalLog: React.FC<AgentTerminalLogProps> = ({
   };
 
   return (
-    <div className="w-full rounded-xl bg-slate-950 border border-slate-800 shadow-2xl overflow-hidden font-mono text-xs">
+    <div className="w-full min-w-0 overflow-hidden rounded-xl border border-slate-800 bg-slate-950 font-mono text-xs">
       {/* Top Header Bar */}
-      <div className="flex items-center justify-between px-3.5 py-2.5 bg-slate-900/90 border-b border-slate-800 text-slate-400">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 bg-slate-900/90 px-3.5 py-2.5 text-slate-400">
         <div className="flex items-center gap-2">
           <Terminal className="w-4 h-4 text-cyan-400" />
           <span className="font-bold text-white tracking-wide text-xs">{title}</span>
+          <span className="rounded-full border border-slate-700 px-2 py-0.5 text-[10px] font-semibold text-slate-300">Scripted example</span>
           {isStreaming && (
-            <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-[10px] text-cyan-300 font-bold animate-pulse">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-              LIVE
+            <span role="status" className="rounded-full border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 text-[10px] font-bold text-cyan-300">
+              Generating sample
             </span>
           )}
         </div>
 
         <div className="flex items-center gap-2">
           {/* Level Filter Tabs */}
-          <div className="flex bg-slate-950 rounded-lg p-0.5 border border-slate-800 text-[10px]">
+          <div className="flex rounded-lg border border-slate-800 bg-slate-950 p-0.5 text-[10px]" aria-label="Filter sample output">
             {(['all', 'info', 'warn', 'error'] as const).map((lvl) => (
               <button
                 key={lvl}
+                type="button"
                 onClick={() => setSelectedFilter(lvl)}
-                className={`px-2 py-0.5 rounded capitalize transition-all cursor-pointer ${
+                aria-pressed={selectedFilter === lvl}
+                className={`min-h-9 rounded px-2 capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${
                   selectedFilter === lvl
                     ? 'bg-slate-800 text-white font-bold'
                     : 'text-slate-500 hover:text-slate-300'
@@ -98,18 +104,22 @@ export const AgentTerminalLog: React.FC<AgentTerminalLogProps> = ({
           </div>
 
           <button
+            type="button"
             onClick={handleCopy}
-            title="Copy Logs"
-            className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            title="Copy sample output"
+            aria-label="Copy sample output"
+            className="flex min-h-9 min-w-9 items-center justify-center rounded text-slate-400 transition-colors hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
           </button>
 
           {onClear && (
             <button
+              type="button"
               onClick={onClear}
-              title="Clear Terminal"
-              className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-rose-400 transition-colors cursor-pointer"
+              title="Clear sample output"
+              aria-label="Clear sample output"
+              className="flex min-h-9 min-w-9 items-center justify-center rounded text-slate-400 transition-colors hover:bg-slate-800 hover:text-rose-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
             >
               <Trash2 className="w-3.5 h-3.5" />
             </button>
@@ -121,7 +131,7 @@ export const AgentTerminalLog: React.FC<AgentTerminalLogProps> = ({
       <div
         ref={scrollRef}
         style={{ maxHeight }}
-        className="p-3 overflow-y-auto space-y-1.5 font-mono text-[11px] leading-relaxed custom-scrollbar"
+        className="space-y-1.5 overflow-y-auto break-words p-3 font-mono text-[11px] leading-relaxed custom-scrollbar"
       >
         {filteredLogs.length === 0 ? (
           <div className="text-slate-600 italic py-4 text-center">No terminal logs recorded yet.</div>
@@ -132,7 +142,7 @@ export const AgentTerminalLog: React.FC<AgentTerminalLogProps> = ({
               <span className={`uppercase text-[10px] px-1.5 py-0.2 rounded border border-slate-800 select-none ${getLevelStyle(log.level)}`}>
                 {log.level}
               </span>
-              <span className="text-slate-300 break-words flex-1">{log.message}</span>
+              <span className="min-w-0 flex-1 break-words text-slate-300">{log.message}{log.source && <span className="ml-1 text-slate-400">Source: {log.source}</span>}</span>
             </div>
           ))
         )}

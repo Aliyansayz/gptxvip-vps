@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { BlogPost } from '../../types/types';
 import { BlogRenderer } from '../blocks/BlogRenderer';
 import { CitationFooter } from '../blocks/BlogInteractiveElements';
@@ -6,7 +6,6 @@ import { TableOfContents } from '../blocks/TableOfContents';
 import { BlogHero } from '../blocks/BlogHero';
 import { BlogCard } from './BlogCard';
 import { ArrowLeft, Sparkles, ChevronUp, Grid, BookOpen } from 'lucide-react';
-import { motion } from 'motion/react';
 
 interface BlogArticleProps {
     blog: BlogPost;
@@ -16,6 +15,8 @@ interface BlogArticleProps {
 }
 
 export const BlogArticle: React.FC<BlogArticleProps> = ({ blog, allBlogs = [], onSelectBlog, onBack }) => {
+    const articleRef = useRef<HTMLElement>(null);
+    const [readingProgress, setReadingProgress] = useState(0);
     // Curate other related blogs (prefer same category, max 3)
     const relatedBlogs = useMemo(() => {
         if (!allBlogs || allBlogs.length === 0) return [];
@@ -26,23 +27,45 @@ export const BlogArticle: React.FC<BlogArticleProps> = ({ blog, allBlogs = [], o
         return [...sameCategory, ...differentCategory].slice(0, 3);
     }, [allBlogs, blog]);
 
+    useEffect(() => {
+        const article = articleRef.current;
+        if (!article) return;
+        const candidate = article.closest<HTMLElement>('[data-blog-scroll]');
+        const scroller = candidate && candidate.scrollHeight > candidate.clientHeight + 1 ? candidate : window;
+        const update = () => {
+            const rect = article.getBoundingClientRect();
+            const top = scroller === window ? 0 : (scroller as HTMLElement).getBoundingClientRect().top;
+            const height = scroller === window ? window.innerHeight : (scroller as HTMLElement).clientHeight;
+            const fraction = (top - rect.top) / Math.max(rect.height - height, 1);
+            setReadingProgress(Math.max(0, Math.min(100, Math.round(fraction * 100))));
+        };
+        update();
+        scroller.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+        return () => {
+            scroller.removeEventListener('scroll', update);
+            window.removeEventListener('resize', update);
+        };
+    }, [blog.id]);
+
     const handleSelectRelated = (id: string) => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
         if (onSelectBlog) {
             onSelectBlog(id);
         }
     };
 
     const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     };
 
     return (
-        <div className="max-w-7xl mx-auto py-12 px-6">
+        <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 md:py-12">
+            <div role="progressbar" aria-label="Article reading progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={readingProgress} className="sticky top-0 z-20 -mx-4 mb-6 h-1 bg-slate-200 dark:bg-slate-800 sm:-mx-6"><div className="h-full bg-indigo-600 transition-[width] duration-150 motion-reduce:transition-none" style={{ width: `${readingProgress}%` }} /></div>
             <button 
                 type="button"
                 onClick={onBack}
-                className="mb-8 text-xs font-semibold text-slate-600 dark:text-slate-400 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/40 shadow-lg"
+                className="mb-8 min-h-11 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
             >
                 <ArrowLeft className="w-3.5 h-3.5" /> Back to All Articles
             </button>
@@ -51,9 +74,9 @@ export const BlogArticle: React.FC<BlogArticleProps> = ({ blog, allBlogs = [], o
                 <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: blog.seo.schemaMarkup }} />
             )}
             
-            <div className="flex flex-col lg:flex-row gap-12 items-start">
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
                 {/* Main Content Column */}
-                <article className="flex-1 max-w-4xl">
+                <article ref={articleRef} className="min-w-0 w-full max-w-[46rem] flex-1">
                     <BlogHero blog={blog} />
 
                     <details className="lg:hidden mb-8 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/70">

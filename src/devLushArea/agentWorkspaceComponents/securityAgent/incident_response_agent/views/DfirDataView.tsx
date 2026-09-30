@@ -1,6 +1,7 @@
 import React from 'react';
 import { Inbox, Activity, Search, Shield, Settings } from 'lucide-react';
 import AgentPreviewNotice from '../../../components/AgentPreviewNotice';
+import SourceStatus from '../../../components/SourceStatus';
 
 interface DfirDataViewProps {
   viewType: 'queue' | 'activity' | 'iocs' | 'containment' | 'settings';
@@ -21,11 +22,11 @@ export default function DfirDataView({ viewType }: DfirDataViewProps) {
     activity: {
       title: "Sample DFIR Activity",
       icon: Activity,
-      description: "Real-time stream of agent investigations and automated actions.",
+      description: "Prepared sequence of example investigation events; no live event stream is connected.",
       items: [
-        { label: "09:42:12 UTC", value: "Agent acquiring memory dump from 'WS-Finance-04'." },
-        { label: "09:44:05 UTC", value: "YARA scan completed. 2 matches found for 'TrickBot' signatures." },
-        { label: "09:45:30 UTC", value: "Automated network isolation triggered for 'WS-Finance-04'." }
+        { label: "Step 1 · sample time 09:42:12", value: "Example collection request for 'WS-Finance-04'; no memory artifact is attached." },
+        { label: "Step 2 · sample time 09:44:05", value: "Example YARA result: two illustrative signature matches; evidence is not attached." },
+        { label: "Step 3 · sample time 09:45:30", value: "Example containment proposal for 'WS-Finance-04'; no isolation was executed." }
       ]
     },
     iocs: {
@@ -35,13 +36,13 @@ export default function DfirDataView({ viewType }: DfirDataViewProps) {
       items: [
         { label: "File Hash (SHA-256)", value: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (TrickBot payload)" },
         { label: "C2 Domain", value: "malicious-update-server[.]xyz" },
-        { label: "Action", value: "Pushed IoCs to perimeter firewall blocklist." }
+        { label: "Possible action", value: "Review and validate the indicators before considering a firewall blocklist change." }
       ]
     },
     containment: {
       title: "Containment & Remediation",
       icon: Shield,
-      description: "Automated playbooks for neutralizing active threats.",
+      description: "Illustrative containment playbooks that require evidence, approval, and a connected system.",
       items: [
         { label: "Endpoint Isolation", value: "Uses CrowdStrike Falcon API to quarantine infected hosts." },
         { label: "Account Suspension", value: "Revokes active Okta sessions and forces password reset." },
@@ -51,7 +52,7 @@ export default function DfirDataView({ viewType }: DfirDataViewProps) {
     settings: {
       title: "DFIR Agent Settings",
       icon: Settings,
-      description: "Configure integrations, playbooks, and evidence preservation.",
+      description: "Example integration and preservation settings; no connection is verified.",
       items: [
         { label: "Evidence Storage", value: "AWS S3 (arn:aws:s3:::dfir-evidence-vault) with WORM lock enabled." },
         { label: "Automation Level", value: "Semi-Automated (Requires human approval for network isolation)" },
@@ -64,7 +65,7 @@ export default function DfirDataView({ viewType }: DfirDataViewProps) {
   const Icon = data.icon;
 
   return (
-    <div className="flex-1 p-8 bg-slate-50 overflow-y-auto">
+    <div className="flex-1 overflow-y-auto bg-slate-50 p-4 sm:p-8">
       <div className="max-w-3xl mx-auto space-y-6">
         <div>
           <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
@@ -78,12 +79,13 @@ export default function DfirDataView({ viewType }: DfirDataViewProps) {
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="divide-y divide-slate-100">
             {data.items.map((item, idx) => (
-              <div key={idx} className="p-5 flex flex-col md:flex-row md:items-start gap-2 md:gap-6">
+              <div key={idx} className="flex flex-col gap-2 p-4 sm:p-5 md:flex-row md:items-start md:gap-6">
                 <div className="md:w-1/3">
                   <h4 className="text-sm font-bold text-slate-700">{item.label}</h4>
                 </div>
                 <div className="md:w-2/3">
-                  <p className="text-sm text-slate-600 font-medium">{item.value}</p>
+                  <p className="break-words text-sm font-medium text-slate-600">{item.value}</p>
+                  <SourceStatus source="Built-in DFIR scenario" freshness="No evidence artifact or verified event time" confidence="Unverified" />
                 </div>
               </div>
             ))}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { ArrowLeft, Search } from "lucide-react";
 import RoadmapSidebar from "./rootComponents/RoadmapSidebar";
 import RoadmapHub from "./rootComponents/RoadmapHub";
 import RoadmapLabRunner from "./rootComponents/RoadmapLabRunner";
@@ -76,6 +77,22 @@ export const RoadmapContainer: React.FC<RoadmapContainerProps> = ({
     icon: course.icon,
   }));
 
+  const selectTopic = (id: string) => {
+    setActiveTopicId(id);
+    setSelectedChapter(null);
+    setIsSearchOpen(false);
+    const path = `/roadmap/${id}`;
+    if (window.location.pathname !== path) window.history.pushState({}, "", path);
+  };
+
+  const openSearch = () => {
+    setIsSearchOpen(true);
+    setSelectedChapter(null);
+    if (window.location.pathname !== "/roadmap/search") {
+      window.history.pushState({ roadmapSearchEntry: true }, "", "/roadmap/search");
+    }
+  };
+
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
   const handleScroll = () => {
@@ -117,6 +134,12 @@ export const RoadmapContainer: React.FC<RoadmapContainerProps> = ({
 
   const closeSearch = () => {
     setIsSearchOpen(false);
+    window.requestAnimationFrame(() => {
+      const triggerId = window.matchMedia("(max-width: 1023px)").matches
+        ? "roadmap-mobile-search-trigger"
+        : "roadmap-desktop-search-trigger";
+      document.getElementById(triggerId)?.focus();
+    });
     if (window.history.state?.roadmapSearchEntry === true) {
       window.history.back();
       return;
@@ -198,26 +221,22 @@ export const RoadmapContainer: React.FC<RoadmapContainerProps> = ({
           <RoadmapSidebar
             topics={sidebarTopics}
             activeTopicId={activeTopicId}
-            onTopicSelect={(id) => {
-              setActiveTopicId(id);
-              setSelectedChapter(null);
-              setIsSearchOpen(false);
-              const path = `/roadmap/${id}`;
-              if (window.location.pathname !== path) window.history.pushState({}, "", path);
-            }}
+            onTopicSelect={selectTopic}
             isSidebarOpen={isSidebarOpen}
             setIsSidebarOpen={setIsSidebarOpen}
-            onSearchClick={() => {
-              setIsSearchOpen(true);
-              setSelectedChapter(null);
-              if (window.location.pathname !== "/roadmap/search") {
-                window.history.pushState({ roadmapSearchEntry: true }, "", "/roadmap/search");
-              }
-            }}
+            onSearchClick={openSearch}
             onExit={onExit}
           />
 
           <div className="flex-1 overflow-hidden relative flex flex-col">
+            <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 bg-white px-3 py-2 dark:border-slate-800 dark:bg-slate-950 lg:hidden">
+              <button type="button" onClick={onExit} aria-label="Exit Roadmap to GPTX.VIP home" className="flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-slate-200 text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-700 dark:text-slate-200"><ArrowLeft className="h-4 w-4" /></button>
+              <label className="sr-only" htmlFor="roadmap-mobile-topic">Roadmap topic</label>
+              <select id="roadmap-mobile-topic" value={activeTopicId} onChange={(event) => selectTopic(event.target.value)} className="min-h-11 min-w-0 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white">
+                {sidebarTopics.map((topic) => <option key={topic.id} value={topic.id}>{topic.title}</option>)}
+              </select>
+              <button id="roadmap-mobile-search-trigger" type="button" onClick={openSearch} aria-label="Search Roadmap" className="flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-slate-200 text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-700 dark:text-slate-200"><Search className="h-4 w-4" /></button>
+            </div>
             <main className="flex-1 bg-slate-50 dark:bg-black overflow-hidden relative flex flex-col">
               {selectedChapter ? (
                 selectedChapter.readingComponentId ? (

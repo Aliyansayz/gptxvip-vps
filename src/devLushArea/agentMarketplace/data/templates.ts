@@ -28,7 +28,7 @@ export const CONTACT_EMAIL = 'aliyan@gptx.vip'
 
 export const getContactHref = (template: Pick<Template, 'name' | 'slug'>) => {
   const subject = encodeURIComponent(`Project inquiry: ${template.name}`)
-  const body = encodeURIComponent(`Hello,\n\nI would like to discuss the ${template.name} surface (${template.slug}).\n\nProject details:\n`)
+  const body = encodeURIComponent(`Hello,\n\nI would like to discuss the ${template.name} surface (${template.slug}).\n\nWho will use it:\nData sources available:\nIntegrations required:\nDeployment or support constraints:\nDesired outcome:\n`)
   return `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`
 }
 

@@ -17,6 +17,7 @@ import {
 } from "../../agentDevRootComponents/LabSettingsMenu";
 import { LabProvider } from "../../agentDevRootComponents/LabContext";
 import { getThemeColorClass } from "../themeHelpers";
+import { StatePanel } from "../../../shared/components/StatePanel";
 
 interface DevLushRunnerProps {
   chapter: LabData;
@@ -46,6 +47,16 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
 
   useEffect(() => {
     try {
+      const saved = sessionStorage.getItem(stepStorageKey);
+      const parsed = saved ? Number.parseInt(saved, 10) : 0;
+      setStep(Number.isFinite(parsed) && parsed >= 0 && totalSteps > 0 ? Math.min(parsed, totalSteps - 1) : 0);
+    } catch {
+      setStep(0);
+    }
+  }, [stepStorageKey, totalSteps]);
+
+  useEffect(() => {
+    try {
       sessionStorage.setItem(stepStorageKey, step.toString());
     } catch {
       // Progress remains usable for this session when browser storage is unavailable.
@@ -60,7 +71,7 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
   const [infoPlacement, setInfoPlacement] = useState<"side" | "bottom">("side");
 
   const labContextValue = {
-    courseType: "med" as const, // Maps nicely inside standard favorite lists
+    courseType: "devLush" as const,
     labId: chapter.labComponentId,
     chapterTitle: chapter.chapter_title,
   };
@@ -76,30 +87,13 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
 
   if (!LabComponent) {
     return (
-      <div className="w-full max-w-4xl mx-auto p-8 bg-white dark:bg-slate-900 border border-red-200 dark:border-red-950/30 rounded-2xl shadow-xl">
-        <h2 className="text-2xl font-bold text-rose-500">
-          Error: Simulation Core Not Found
-        </h2>
-        <p className="text-slate-500 dark:text-slate-400 mt-2">
-          Sandbox component not found for simulation ID:{" "}
-          {chapter.labComponentId}
-        </p>
-        <button
-          onClick={onBack}
-          className="mt-6 px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold rounded-lg transition-all"
-        >
-          Back to Module Hub
-        </button>
-      </div>
+      <div className="mx-auto w-full max-w-2xl p-5 sm:p-8"><StatePanel eyebrow={`Agent Labs · ${chapter.course}`} title="This activity is unavailable" description="The lesson exists in the curriculum, but its interactive component could not be loaded. Return to the topic to choose an available chapter." actionLabel="Back to topics" onAction={onBack} /></div>
     );
   }
 
   if (totalSteps === 0) {
     return (
-      <div role="alert" className="mx-auto flex w-full max-w-2xl flex-col items-center gap-4 rounded-2xl border border-amber-200 bg-amber-50 p-8 text-center dark:border-amber-900 dark:bg-amber-950/30">
-        <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">This lesson has no activities yet.</h2>
-        <button type="button" onClick={onBack} className="rounded-lg bg-slate-200 px-4 py-2 font-bold text-slate-800 hover:bg-slate-300 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700">Back to Module Hub</button>
-      </div>
+      <div className="mx-auto w-full max-w-2xl p-5 sm:p-8"><StatePanel eyebrow={`Agent Labs · ${chapter.course}`} title="This lesson has no activity yet" description="Return to the topic to choose a chapter with an available interactive activity." actionLabel="Back to topics" onAction={onBack} /></div>
     );
   }
 
@@ -126,38 +120,38 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
 
   return (
     <LabProvider value={labContextValue}>
-      <div className="w-full h-full flex flex-col">
-        <div className="flex-1 overflow-y-auto custom-scrollbar w-full p-6 pb-20">
+      <div className="flex h-full min-w-0 w-full flex-col">
+        <div className="min-h-0 w-full flex-1 overflow-y-auto p-3 pb-[max(1rem,env(safe-area-inset-bottom))] custom-scrollbar sm:p-6 sm:pb-20">
           {/* Simulation Header Panel */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-slate-100 dark:border-slate-800 pb-4">
-            <div className="flex items-center gap-4">
+          <div className="mb-4 flex flex-col items-start justify-between gap-3 border-b border-slate-100 pb-4 dark:border-slate-800 sm:mb-6 sm:gap-4 lg:flex-row lg:items-center">
+            <div className="flex min-w-0 items-start gap-2 sm:gap-4">
               <button
+                type="button"
                 onClick={onBack}
-                className="flex items-center gap-1.5 px-4 py-3 text-sm font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl transition-all"
+                aria-label="Back to Agent Labs topics"
+                className="flex min-h-11 shrink-0 items-center gap-1 rounded-xl bg-slate-100 px-3 text-sm font-bold text-slate-800 transition-all hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 sm:px-4"
               >
                 <ChevronLeft className="w-4 h-4" />
-                Hub
+                Topics
               </button>
-              <div className="flex flex-col">
-                <span className={`text-xs font-bold ${themeColors.text} uppercase tracking-widest mb-1 flex items-center gap-1`}>
-                  <Sparkles className="w-3.5 h-3.5" /> devLush Interactive
-                  Workspace
+              <div className="flex min-w-0 flex-col">
+                <span className={`mb-1 flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest sm:text-xs ${themeColors.text}`}>
+                  <Sparkles className="w-3.5 h-3.5" /> Agent Labs · {chapter.course}
                 </span>
-                <h2 ref={runnerTitleRef} tabIndex={-1} className="text-4xl md:text-5xl font-heading tracking-wide text-slate-900 dark:text-white focus:outline-none">
-                  <span className={`text-transparent bg-clip-text bg-gradient-to-r ${themeColors.gradientFrom} ${themeColors.gradientVia} ${themeColors.gradientTo} bg-[size:200%_auto] animate-gradient`}>
-                    {chapter.chapter_title}
-                  </span>
+                <h2 ref={runnerTitleRef} tabIndex={-1} className="break-words font-heading text-xl leading-tight tracking-wide text-slate-900 focus:outline-none dark:text-white sm:text-2xl lg:text-4xl xl:text-5xl">
+                  {chapter.chapter_title}
                 </h2>
               </div>
             </div>
 
             {/* Simulation Controls Menu */}
-            <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex w-full flex-wrap items-center gap-2 sm:gap-3 lg:w-auto">
               <FavoriteButton
                 id={chapter.labComponentId}
                 type="devlush_lab"
                 title={chapter.chapter_title}
                 courseId={chapter.course}
+                menuAlign="left"
               />
 
               <LabSettingsMenu
@@ -168,30 +162,39 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
               {!settings.disableTheory && (
                 <div className="flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-1 shadow-sm">
                   <button
+                    type="button"
                     onClick={() => setInfoVisible(!infoVisible)}
+                    aria-label={infoVisible ? "Hide theory blueprint" : "Show theory blueprint"}
+                    aria-pressed={infoVisible}
                     title={
                       infoVisible
                         ? "Hide Theory Blueprint"
                         : "Show Theory Blueprint"
                     }
-                    className={`p-2 rounded-lg transition-colors ${infoVisible ? `${themeColors.bgSoftGlow} ${themeColors.text}` : "text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
+                    className={`flex min-h-11 min-w-11 items-center justify-center rounded-lg transition-colors ${infoVisible ? `${themeColors.bgSoftGlow} ${themeColors.text}` : "text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
                   >
                     <BookOpen className="w-4 h-4" />
                   </button>
                   {infoVisible && (
                     <>
-                      <div className="w-px h-4 bg-slate-200 dark:bg-slate-800 mx-1" />
+                      <div className="mx-1 hidden h-4 w-px bg-slate-200 dark:bg-slate-800 lg:block" />
                       <button
+                        type="button"
                         onClick={() => setInfoPlacement("side")}
+                        aria-label="Show theory beside the lab on wide screens"
+                        aria-pressed={infoPlacement === "side"}
                         title="Split Side Panel"
-                        className={`p-2 rounded-lg transition-colors ${infoPlacement === "side" ? `${themeColors.bgSoftGlow} ${themeColors.text}` : "text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
+                        className={`hidden min-h-11 min-w-11 items-center justify-center rounded-lg transition-colors lg:flex ${infoPlacement === "side" ? `${themeColors.bgSoftGlow} ${themeColors.text}` : "text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
                       >
                         <Columns className="w-4 h-4" />
                       </button>
                       <button
+                        type="button"
                         onClick={() => setInfoPlacement("bottom")}
+                        aria-label="Show theory below the lab"
+                        aria-pressed={infoPlacement === "bottom"}
                         title="Bottom Panel View"
-                        className={`p-2 rounded-lg transition-colors ${infoPlacement === "bottom" ? `${themeColors.bgSoftGlow} ${themeColors.text}` : "text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
+                        className={`hidden min-h-11 min-w-11 items-center justify-center rounded-lg transition-colors lg:flex ${infoPlacement === "bottom" ? `${themeColors.bgSoftGlow} ${themeColors.text}` : "text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
                       >
                         <Rows className="w-4 h-4" />
                       </button>
@@ -204,6 +207,7 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
               {!settings.disableQuestion && (
                 <div className="flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-1 shadow-sm">
                   <button
+                    type="button"
                     onClick={() =>
                       setSettings((prev) => ({
                         ...prev,
@@ -215,7 +219,9 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
                         ? "Maximize Sandbox Visual"
                         : "Show Verification Form"
                     }
-                    className={`p-2 px-3 rounded-lg text-xs font-bold transition-all ${!settings.hideQuestionDefault ? `${themeColors.bgSoftGlow} ${themeColors.text}` : "text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
+                    aria-label={settings.hideQuestionDefault ? 'Show verification form' : 'Hide verification form'}
+                    aria-pressed={!settings.hideQuestionDefault}
+                    className={`min-h-11 rounded-lg px-3 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${!settings.hideQuestionDefault ? `${themeColors.bgSoftGlow} ${themeColors.text}` : "text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
                   >
                     Form
                   </button>
@@ -224,8 +230,10 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
             </div>
           </div>
 
-          {/* Sleek Navigation Bar */}
-          <div className="flex justify-between items-center mb-4 px-1.5 mt-2">
+          <section aria-label="Current activity task" className="mb-4 max-w-4xl rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-5"><p className="text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">Step {step + 1} of {totalSteps} · {chapter.interactive_questions[step]?.title || 'Interactive activity'}</p><p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">{chapter.interactive_questions[step]?.prompt || 'Explore the activity and review its feedback before moving to the next step.'}</p><p className="mt-2 text-xs text-slate-500">Activity feedback appears in the panel below. Advancing the chapter records progress; it does not grade this step.</p></section>
+
+          {/* Activity navigation */}
+          <div className="mb-4 mt-2 flex min-w-0 items-center justify-between gap-2 px-1 sm:px-1.5">
             <div className="flex items-center gap-2">
               {totalSteps > 0 && (
                 <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 font-mono tracking-wider">
@@ -238,22 +246,24 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
             <div className={`flex items-center gap-1.5 ${themeColors.bgSoft} p-1 rounded-full border ${themeColors.borderSoft} ${themeColors.shadow} shadow-sm`}>
               {totalSteps > 1 && (
                 <button
+                  type="button"
                   onClick={handlePrev}
                   disabled={step === 0}
                   title="Previous Exercise"
-                  className={`p-1.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-full disabled:opacity-40 transition-all border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-center shadow-xs cursor-pointer ${step !== 0 ? themeColors.hoverShadow : ''}`}
+                  className={`flex min-h-11 min-w-11 items-center justify-center rounded-full border border-slate-200/60 bg-white text-slate-700 shadow-xs transition-all hover:bg-slate-50 disabled:opacity-40 dark:border-slate-700/60 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 ${step !== 0 ? themeColors.hoverShadow : ''}`}
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
               )}
               <button
+                type="button"
                 onClick={handleNext}
                 title={
                   step >= totalSteps - 1
                     ? "Complete Workspace"
                     : "Next Exercise"
                 }
-                className={`pl-3 pr-2 py-1 ${themeColors.bg} ${themeColors.hoverBg} text-white rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all shadow-md ${themeColors.shadowMd} cursor-pointer`}
+                className={`flex min-h-11 items-center gap-1.5 rounded-full px-4 text-xs font-semibold text-white shadow-md transition-all ${themeColors.bg} ${themeColors.hoverBg} ${themeColors.shadowMd}`}
               >
                 <span>{step >= totalSteps - 1 ? "Complete" : "Next"}</span>
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -262,7 +272,7 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
           </div>
 
           {/* Active Registered Sandbox Component */}
-          <div className="w-full flex-1 flex flex-col min-h-[500px] relative overflow-hidden bg-white dark:bg-slate-900">
+          <div className="relative flex min-h-[55vh] min-w-0 w-full flex-1 flex-col overflow-auto rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 sm:min-h-[500px]">
 
             {/* Contextual Abstract SVG Visual Background for the Runner */}
             <div className="absolute inset-0 pointer-events-none opacity-10 dark:opacity-[0.15] mix-blend-multiply dark:mix-blend-screen z-0">
@@ -289,7 +299,7 @@ const DevLushRunner: React.FC<DevLushRunnerProps> = ({
               </svg>
             </div>
 
-            <div className="relative z-10 flex-1 flex flex-col p-2 bg-transparent">
+            <div className="relative z-10 flex min-w-0 flex-1 flex-col bg-transparent p-2">
               <Suspense fallback={
                 <div className="flex-1 flex items-center justify-center p-8">
                   <div className="flex flex-col items-center gap-3">

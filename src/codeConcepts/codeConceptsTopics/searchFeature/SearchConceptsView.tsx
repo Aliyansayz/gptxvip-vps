@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { CODE_CONCEPT_CATEGORIES } from '../../../constants/codeConcepts';
 import { InteractiveQuestion } from '../../../types';
 import { FavoriteButton } from '../addtoFavorites/FavoriteButton';
-import { CONCEPT_DATA_FILES } from '../courseDataFiles';
+import { fetchCodeConceptTopic } from '../../api';
 
 interface SearchConceptsViewProps {
   onSelectTopic: (categoryId: string) => void;
@@ -28,10 +28,7 @@ interface LoadedCourseData {
 }
 
 const SEARCH_CATEGORY_IDS = CODE_CONCEPT_CATEGORIES.filter((category) => category.id !== 'search').map((category) => category.id);
-const TOTAL_SEARCH_DATA_FILES = SEARCH_CATEGORY_IDS.reduce(
-  (count, categoryId) => count + (CONCEPT_DATA_FILES[categoryId]?.length ?? 0),
-  0,
-);
+const TOTAL_SEARCH_TOPICS = SEARCH_CATEGORY_IDS.length;
 
 export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelectTopic, onSelectConcept, onExitSearch }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -40,7 +37,7 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
   const [isLoading, setIsLoading] = useState(false);
   const [allData, setAllData] = useState<any[]>([]);
   const [allTags, setAllTags] = useState<string[]>([]);
-  const [failedFileCount, setFailedFileCount] = useState(0);
+  const [failedTopicCount, setFailedTopicCount] = useState(0);
   const [loadAttempt, setLoadAttempt] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -51,35 +48,9 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
     const fetchAllData = async () => {
       setIsLoading(true);
       const outcomes = await Promise.all(SEARCH_CATEGORY_IDS.map(async (categoryId) => {
-        const files = CONCEPT_DATA_FILES[categoryId] || [];
-        const fileResults = await Promise.all(files.map(async (fileName): Promise<Record<string, unknown> | null> => {
-          try {
-            const response = await fetch(`/code_concepts/${categoryId}/${fileName}`);
-            if (!response.ok) throw new Error(`Request failed (${response.status})`);
-            const json: unknown = await response.json();
-            if (!json || typeof json !== 'object' || Array.isArray(json)) throw new Error('Invalid course data');
-            const payload = json as Record<string, unknown>;
-            if (!Array.isArray(payload.interactive_questions)) throw new Error('Invalid course data');
-            return payload;
-          } catch {
-            return null;
-          }
-        }));
-        const loadedFiles = fileResults.filter((payload): payload is Record<string, unknown> => payload !== null);
-        const merged: LoadedCourseData = {
-          categoryId,
-          course: '',
-          chapter_title: '',
-          tags: [],
-          interactive_questions: [],
-        };
-        loadedFiles.forEach((payload) => {
-          merged.course ||= typeof payload.course === 'string' ? payload.course : '';
-          merged.chapter_title ||= typeof payload.chapter_title === 'string' ? payload.chapter_title : '';
-          if (Array.isArray(payload.tags)) {
-            merged.tags.push(...payload.tags.filter((tag): tag is string => typeof tag === 'string'));
-          }
-          const questions = (payload.interactive_questions as unknown[]).filter((question): question is InteractiveQuestion =>
+        try {
+          const payload = await fetchCodeConceptTopic(categoryId);
+          const questions = payload.interactive_questions.filter((question): question is InteractiveQuestion =>
             !!question && typeof question === 'object' &&
             typeof (question as InteractiveQuestion).componentId === 'string' &&
             typeof (question as InteractiveQuestion).type === 'string')
@@ -91,9 +62,17 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
               question: typeof question.question === 'string' ? question.question : undefined,
               difficulty: typeof question.difficulty === 'string' ? question.difficulty : 'basic',
             }));
-          merged.interactive_questions.push(...questions);
-        });
-        return { data: loadedFiles.length ? merged : null, failedFiles: files.length - loadedFiles.length };
+          const data: LoadedCourseData = {
+            categoryId,
+            course: payload.course,
+            chapter_title: payload.chapter_title,
+            tags: payload.tags || [],
+            interactive_questions: questions,
+          };
+          return { data, failedFiles: 0 };
+        } catch {
+          return { data: null, failedFiles: 1 };
+        }
       }));
       const data = outcomes.flatMap((outcome) => outcome.data ? [outcome.data] : []);
       const failedCount = outcomes.reduce((count, outcome) => count + outcome.failedFiles, 0);
@@ -106,7 +85,7 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
       if (!cancelled) {
         setAllTags(Array.from(tagsSet));
         setAllData(data);
-        setFailedFileCount(failedCount);
+        setFailedTopicCount(failedCount);
         setIsLoading(false);
       }
     };
@@ -188,7 +167,7 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
   };
 
   return (
-    <div className="flex flex-col h-full min-h-[70vh] bg-zinc-50 dark:bg-zinc-950 transition-colors duration-500 overflow-hidden px-4 py-5 md:px-12 md:py-8 relative">
+    <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-zinc-50 px-4 py-5 transition-colors duration-500 dark:bg-zinc-950 md:px-12 md:py-8">
         {onExitSearch && (
           <button 
             type="button"
@@ -201,7 +180,7 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
             <span className="text-sm font-medium pr-1 hidden sm:inline">Exit</span>
           </button>
         )}
-        <div className="max-w-4xl w-full mx-auto pb-28 md:pb-20 mt-1 md:mt-12 flex flex-col h-full">
+        <div className="mx-auto mt-1 flex h-full min-h-0 w-full max-w-4xl flex-col pb-28 md:mt-12 md:pb-20">
           <div className="text-center mb-6 md:mb-12">
             <div className="inline-flex p-3 md:p-4 rounded-2xl shadow-sm mb-3 md:mb-4 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">
                 <Search className="w-7 h-7 md:w-12 md:h-12" />
@@ -249,12 +228,12 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
             )}
           </div>
 
-          {failedFileCount > 0 && (
+          {failedTopicCount > 0 && (
             <div role="status" className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
               <span>
-                {failedFileCount === TOTAL_SEARCH_DATA_FILES
+                {failedTopicCount === TOTAL_SEARCH_TOPICS
                   ? "Search data could not be loaded."
-                  : `${failedFileCount} curriculum file${failedFileCount === 1 ? "" : "s"} could not be loaded, so results may be incomplete.`}
+                  : `${failedTopicCount} topic endpoint${failedTopicCount === 1 ? "" : "s"} could not be loaded, so results may be incomplete.`}
               </span>
               <button type="button" onClick={() => setLoadAttempt((attempt) => attempt + 1)} disabled={isLoading} className="rounded-lg border border-current/30 px-3 py-1.5 font-bold disabled:opacity-50">
                 {isLoading ? "Retrying…" : "Retry"}
@@ -276,9 +255,9 @@ export const SearchConceptsView: React.FC<SearchConceptsViewProps> = ({ onSelect
             {searchQuery.trim() && results.length === 0 && !isLoading && (
               <div className="py-20 text-center text-zinc-500">
                 <p className="text-xl">
-                  {failedFileCount > 0 && failedFileCount < TOTAL_SEARCH_DATA_FILES
+                  {failedTopicCount > 0 && failedTopicCount < TOTAL_SEARCH_TOPICS
                     ? `No results found in the course data that loaded for "${searchQuery}".`
-                    : failedFileCount === 0
+                    : failedTopicCount === 0
                     ? `No results found for "${searchQuery}".`
                     : "Search results are unavailable until course data loads."}
                 </p>

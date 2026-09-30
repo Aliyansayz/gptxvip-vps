@@ -16,8 +16,8 @@ export const FavoritesView: React.FC<FavoritesViewProps> = ({ onStartConcept, on
   const activeCollection = collections.find(c => c.id === activeCollectionId);
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-[#050505] overflow-hidden">
-      <div className="flex flex-1 overflow-hidden">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-white dark:bg-[#050505]">
+      <div className="flex min-h-0 flex-1 overflow-hidden">
         {/* Collections Sidebar */}
         <div className="w-64 border-r border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950/20 overflow-y-auto hidden md:block">
           <div className="p-6">
@@ -40,7 +40,7 @@ export const FavoritesView: React.FC<FavoritesViewProps> = ({ onStartConcept, on
         </div>
 
         {/* Collection Content */}
-        <div className="flex-1 overflow-y-auto px-4 py-5 pb-28 sm:px-6 md:px-12 md:py-8 md:pb-12 relative">
+        <div className="relative min-h-0 flex-1 overflow-y-auto px-4 py-5 pb-28 sm:px-6 md:px-12 md:py-8 md:pb-12">
           <div className="max-w-5xl mx-auto">
              <header className="mb-6 flex justify-between items-start gap-3 sm:mb-10 sm:items-end">
                <div>

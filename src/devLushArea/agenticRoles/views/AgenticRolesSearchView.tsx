@@ -1,30 +1,20 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
+import { ArrowLeft, ArrowRight, Clock, Search, Star, X } from 'lucide-react';
 import {
   AgenticRoleDefinition,
   AgenticRoleChapter,
   Difficulty,
-  RoleDomain
+  RoleDomain,
 } from '../agenticRoleTypes';
 import DifficultyBadge from './components/DifficultyBadge';
-import {
-  Search,
-  X,
-  ArrowRight,
-  Layers,
-  Clock,
-  Sparkles,
-  Star,
-  Filter,
-  Check
-} from 'lucide-react';
 import { getRoleTheme } from '../agenticThemeHelpers';
 import { useFavorites } from '../../agentDevRootComponents/FavoritesContext';
-import { toast } from 'sonner';
+import { StatePanel } from '../../../shared/components/StatePanel';
 
 interface SearchResultItem {
   role: AgenticRoleDefinition;
   chapter: AgenticRoleChapter;
-  matchedField: 'title' | 'concept' | 'tag' | 'domain' | 'description';
+  matchedField: 'title' | 'concept' | 'scenario' | 'role';
   matchedValue: string;
 }
 
@@ -34,10 +24,12 @@ interface AgenticRolesSearchViewProps {
   onClose: () => void;
 }
 
+const difficultyOptions: Array<Difficulty | 'all'> = ['all', 'easy', 'medium', 'hard'];
+
 export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
   roles,
   onSelectChapter,
-  onClose
+  onClose,
 }) => {
   const [query, setQuery] = useState('');
   const [selectedDomain, setSelectedDomain] = useState<RoleDomain | 'all'>('all');
@@ -46,64 +38,48 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
   let favoritesCtx: ReturnType<typeof useFavorites> | null = null;
   try {
     favoritesCtx = useFavorites();
-  } catch (e) {
-    // Context fallback
+  } catch {
+    // Search remains available if embedded outside the saved-items provider.
   }
 
   const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const normalizedQuery = query.trim().toLowerCase();
     const items: SearchResultItem[] = [];
 
     for (const role of roles) {
-      if (selectedDomain !== 'all' && role.roleDomain !== selectedDomain) {
-        continue;
-      }
+      if (selectedDomain !== 'all' && role.roleDomain !== selectedDomain) continue;
 
       for (const chapter of role.chapters) {
-        if (selectedDifficulty !== 'all' && chapter.difficulty !== selectedDifficulty) {
+        if (selectedDifficulty !== 'all' && chapter.difficulty !== selectedDifficulty) continue;
+
+        if (!normalizedQuery) {
+          items.push({ role, chapter, matchedField: 'role', matchedValue: role.title });
           continue;
         }
 
-        if (!q) {
-          // If no query string, return all filtered by domain/difficulty
-          items.push({
-            role,
-            chapter,
-            matchedField: 'domain',
-            matchedValue: role.title
-          });
-          continue;
-        }
+        const titleMatch = `${chapter.day_title} ${chapter.chapter_title}`.toLowerCase().includes(normalizedQuery);
+        const conceptMatch = chapter.critical_concepts.find((concept) =>
+          concept.concept.toLowerCase().includes(normalizedQuery),
+        );
+        const scenarioMatch = chapter.interactive_questions.find((exercise) =>
+          `${exercise.prompt} ${exercise.question} ${exercise.title}`.toLowerCase().includes(normalizedQuery),
+        );
+        const theoryMatch = chapter.theory_content.content.toLowerCase().includes(normalizedQuery);
+        const tagMatch = chapter.tags.some((tag) => tag.toLowerCase().includes(normalizedQuery));
 
-        if (chapter.day_title.toLowerCase().includes(q) || chapter.chapter_title.toLowerCase().includes(q)) {
+        if (titleMatch) {
+          items.push({ role, chapter, matchedField: 'title', matchedValue: chapter.chapter_title });
+        } else if (conceptMatch) {
+          items.push({ role, chapter, matchedField: 'concept', matchedValue: conceptMatch.concept });
+        } else if (scenarioMatch || theoryMatch || tagMatch) {
           items.push({
             role,
             chapter,
-            matchedField: 'title',
-            matchedValue: chapter.day_title
+            matchedField: 'scenario',
+            matchedValue: scenarioMatch ? 'Case scenario' : theoryMatch ? 'Role theory' : 'Case capability',
           });
-        } else if (chapter.critical_concepts?.some((c) => (c.concept || '').toLowerCase().includes(q))) {
-          const match = chapter.critical_concepts.find((c) => (c.concept || '').toLowerCase().includes(q));
-          items.push({
-            role,
-            chapter,
-            matchedField: 'concept',
-            matchedValue: match?.concept || ''
-          });
-        } else if (chapter.theory_content?.content?.toLowerCase().includes(q)) {
-          items.push({
-            role,
-            chapter,
-            matchedField: 'description',
-            matchedValue: 'Found in theoretical framework'
-          });
-        } else if (role.title.toLowerCase().includes(q)) {
-          items.push({
-            role,
-            chapter,
-            matchedField: 'domain',
-            matchedValue: role.title
-          });
+        } else if (role.title.toLowerCase().includes(normalizedQuery)) {
+          items.push({ role, chapter, matchedField: 'role', matchedValue: role.title });
         }
       }
     }
@@ -111,204 +87,164 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
     return items;
   }, [roles, query, selectedDomain, selectedDifficulty]);
 
-  const toggleFavorite = (e: React.MouseEvent, chapter: AgenticRoleChapter, roleId: string) => {
-    e.stopPropagation();
+  const toggleFavorite = (chapter: AgenticRoleChapter, roleId: string) => {
     if (!favoritesCtx) return;
-
-    const isFav = favoritesCtx.favorites.some((f) => f.id === chapter.labComponentId);
-    if (isFav) {
+    const isFavorite = favoritesCtx.favorites.some((favorite) => favorite.id === chapter.labComponentId);
+    if (isFavorite) {
       favoritesCtx.removeFavorite(chapter.labComponentId);
     } else {
       favoritesCtx.addFavorite({
         id: chapter.labComponentId,
         type: 'agentic_role_lab',
         title: `${chapter.day_title} (${chapter.course})`,
-        courseId: roleId
+        courseId: roleId,
       });
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-12 md:pt-20 bg-slate-950/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div role="dialog" aria-modal="true" aria-label="Search Agentic Roles chapters" className="w-full max-w-4xl rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
-        {/* Top Search Input Header */}
-        <div className="p-4 border-b border-slate-800 flex items-center gap-3 bg-slate-900/90">
-          <Search className="w-5 h-5 text-blue-400 flex-shrink-0" />
-          <input
-            autoFocus
-            aria-label="Search roles and chapters"
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search across all 30 activities, algorithms, theories, concepts..."
-            className="flex-1 bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none"
-          />
-          {query && (
-            <button
-              type="button"
-              aria-label="Clear search"
-              onClick={() => setQuery('')}
-              className="p-1 rounded-lg text-slate-400 hover:text-white"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
-          <button
-            type="button"
-            aria-label="Close Agentic Roles search"
-            onClick={onClose}
-            className="px-2.5 py-1 rounded-lg bg-slate-800 text-xs font-mono text-slate-400 hover:text-white"
-          >
-            ESC
-          </button>
-        </div>
-
-        {/* Multi-Dimensional Filter Bar */}
-        <div className="px-4 py-2.5 bg-slate-950/80 border-b border-slate-800/80 space-y-2 text-xs font-mono">
-          {/* Domain Chips */}
-          <div className="flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-1">
-            <span className="text-slate-500 text-[11px] mr-1">Role:</span>
-            {[
-              { id: 'all', label: 'All Roles' },
-              { id: 'seo', label: 'SEO' },
-              { id: 'accountant', label: 'Accounting' },
-              { id: 'commerce', label: 'Commerce' },
-              { id: 'recommendation', label: 'Recommender' },
-              { id: 'preprocessing', label: 'Preprocessing' },
-              { id: 'visualization', label: 'Visualization' }
-            ].map((domain) => (
+    <div role="search" aria-label="Explore Agentic Role cases" className="min-h-full w-full bg-slate-50 dark:bg-black">
+      <div className="p-4 sm:p-6">
+        <div className="mx-auto w-full max-w-7xl">
+          <header className="mb-5 flex flex-col gap-4 sm:mb-7 sm:flex-row sm:items-end sm:justify-between">
+            <div className="min-w-0">
               <button
                 type="button"
-                aria-pressed={selectedDomain === domain.id}
-                key={domain.id}
-                onClick={() => setSelectedDomain(domain.id as any)}
-                className={`px-2.5 py-1 rounded-lg text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
-                  selectedDomain === domain.id
-                    ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
-                    : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-white'
-                }`}
+                onClick={onClose}
+                className="mb-4 inline-flex min-h-11 items-center gap-2 rounded-xl bg-white px-3 text-sm font-bold text-slate-700 shadow-sm transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
               >
-                {domain.label}
+                <ArrowLeft className="h-4 w-4" /> Roles
               </button>
-            ))}
-          </div>
-
-          {/* Difficulty Chips */}
-          <div className="flex items-center justify-between pt-0.5">
-            <div className="flex items-center gap-1.5">
-              <span className="text-slate-500 text-[11px] mr-1">Difficulty:</span>
-              {(['all', 'easy', 'medium', 'hard'] as const).map((diff) => (
-                <button
-                  type="button"
-                  aria-pressed={selectedDifficulty === diff}
-                  key={diff}
-                  onClick={() => setSelectedDifficulty(diff)}
-                  className={`px-2 py-0.5 rounded capitalize transition-all cursor-pointer text-[11px] ${
-                    selectedDifficulty === diff
-                      ? 'bg-blue-600 text-white font-bold'
-                      : 'text-slate-500 hover:text-slate-300'
-                  }`}
-                >
-                  {diff}
-                </button>
-              ))}
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-300">Agentic Roles · Explore</p>
+              <h1 className="mt-1 font-heading text-2xl font-bold tracking-wide text-slate-900 dark:text-white sm:text-4xl">Find a case to work through</h1>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-400">
+                Search role stories, decisions, tools, and concepts across every case file.
+              </p>
             </div>
+            <p aria-live="polite" className="shrink-0 text-sm font-semibold text-slate-500 dark:text-slate-400">
+              {results.length} {results.length === 1 ? 'case' : 'cases'}
+            </p>
+          </header>
 
-            <span aria-live="polite" className="text-slate-400 text-[11px]">
-              {results.length} {results.length === 1 ? 'activity' : 'activities'} found
-            </span>
-          </div>
-        </div>
-
-        {/* Results Stream */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-2.5 custom-scrollbar" aria-label="Search results">
-          {results.length === 0 ? (
-            <div className="py-16 text-center text-slate-500 text-xs space-y-2">
-              <Sparkles className="w-8 h-8 mx-auto text-slate-600" />
-              <p className="text-white font-bold">No matching activities found</p>
-              <p>Try broadening your search query or clearing the domain filters.</p>
-              {(query || selectedDomain !== 'all' || selectedDifficulty !== 'all') && (
+          <section aria-label="Search and filter cases" className="mb-5 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:mb-7 sm:p-4">
+            <label className="flex min-h-12 items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 dark:border-slate-700 dark:bg-slate-950">
+              <Search className="h-4 w-4 shrink-0 text-indigo-500" />
+              <input
+                autoFocus
+                aria-label="Search role cases, scenarios, and concepts"
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Search scenarios, case titles, tools, concepts..."
+                className="min-w-0 flex-1 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-500"
+              />
+              {query && (
                 <button
                   type="button"
-                  onClick={() => { setQuery(''); setSelectedDomain('all'); setSelectedDifficulty('all'); }}
-                  className="mt-2 rounded-lg border border-slate-700 px-3 py-2 text-slate-200 hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-400"
+                  onClick={() => setQuery('')}
+                  aria-label="Clear search"
+                  className="flex h-9 w-9 items-center justify-center rounded-full text-slate-500 hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:hover:bg-slate-800"
                 >
-                  Clear search and filters
+                  <X className="h-4 w-4" />
                 </button>
               )}
+            </label>
+
+            <div className="mt-4 space-y-3">
+              <div className="flex items-center gap-2 overflow-x-auto pb-1">
+                <span className="shrink-0 text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Role</span>
+                {[
+                  { id: 'all', label: 'All roles' },
+                  ...roles.map((role) => ({ id: role.roleDomain, label: role.shortTitle })),
+                ].map((option) => (
+                  <button
+                    key={option.id}
+                    type="button"
+                    aria-pressed={selectedDomain === option.id}
+                    onClick={() => setSelectedDomain(option.id as RoleDomain | 'all')}
+                    className={`min-h-9 shrink-0 rounded-full border px-3 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${selectedDomain === option.id ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-500'}`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="mr-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Difficulty</span>
+                {difficultyOptions.map((difficulty) => (
+                  <button
+                    key={difficulty}
+                    type="button"
+                    aria-pressed={selectedDifficulty === difficulty}
+                    onClick={() => setSelectedDifficulty(difficulty)}
+                    className={`min-h-9 rounded-full border px-3 text-xs font-bold capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${selectedDifficulty === difficulty ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-500'}`}
+                  >
+                    {difficulty === 'all' ? 'Any level' : difficulty}
+                  </button>
+                ))}
+              </div>
             </div>
+          </section>
+
+          {!query && <div className="mb-5 flex flex-wrap items-center gap-2" aria-label="Suggested role filters"><span className="mr-1 text-xs font-semibold text-slate-500">Try a role:</span>{roles.slice(0, 4).map(role => <button key={role.id} type="button" onClick={() => { setSelectedDomain(role.roleDomain); setQuery(''); }} className="min-h-9 rounded-full border border-indigo-200 bg-white px-3 text-xs font-semibold text-indigo-700 hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">{role.shortTitle}</button>)}</div>}
+
+          {results.length === 0 ? (
+            <StatePanel title="No cases match those filters" description="Try a broader search or clear the filters to see all available role scenarios." actionLabel="Clear filters" onAction={() => { setQuery(''); setSelectedDomain('all'); setSelectedDifficulty('all'); }} />
           ) : (
-            results.map((res, idx) => {
-              const theme = getRoleTheme(res.role.roleDomain);
-              const isFav = favoritesCtx?.favorites.some((f) => f.id === res.chapter.labComponentId) || false;
+            <div className="grid min-w-0 max-w-4xl grid-cols-1 gap-3 sm:gap-4" aria-label="Role case results">
+              {results.map(({ role, chapter, matchedField, matchedValue }) => {
+                const theme = getRoleTheme(role.roleDomain);
+                const isFavorite = favoritesCtx?.favorites.some((favorite) => favorite.id === chapter.labComponentId) || false;
+                const storyBrief = chapter.interactive_questions[0]?.prompt || chapter.theory_content.practical_takeaway || chapter.chapter_title;
 
-              return (
-                <article key={`${res.role.id}-${res.chapter.labComponentId}`} className="p-4 rounded-xl bg-slate-950 border border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/60 transition-all flex items-center justify-between group">
-                  <div className="space-y-1.5 flex-1 pr-4">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className="px-2 py-0.5 rounded text-[10px] font-mono font-bold"
-                        style={{
-                          backgroundColor: `rgba(${theme.spotlightRgb}, 0.15)`,
-                          color: theme.accentHex
-                        }}
-                      >
-                        {res.role.title} • DAY 0{res.chapter.day}
+                return (
+                  <article key={`${role.id}-${chapter.labComponentId}`} className="flex min-w-0 flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:border-slate-300 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 sm:p-5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className={`rounded-full border px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider ${theme.bgSoft} ${theme.text} ${theme.borderSoft}`}>
+                        {role.shortTitle} · Case {String(chapter.day).padStart(2, '0')}
                       </span>
-                      <DifficultyBadge difficulty={res.chapter.difficulty} size="sm" />
-                      <span className="text-[10px] text-slate-500 font-mono">
-                        {res.chapter.estimatedMinutes || 25}m
-                      </span>
+                      <DifficultyBadge difficulty={chapter.difficulty} size="sm" />
                     </div>
-
-                    <div className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">
-                      {res.chapter.day_title}
-                    </div>
-                    <p className="text-xs text-slate-400">Chapter: {res.chapter.chapter_title}</p>
-                    <p className="text-xs text-slate-400">Expected activity: Interactive mission with {res.chapter.interactive_questions?.length || 1} decision {res.chapter.interactive_questions?.length === 1 ? 'step' : 'steps'}.</p>
-
-                    {res.matchedField === 'concept' && (
-                      <div className="text-xs text-slate-400">
-                        Matched Capability: <span className="text-blue-300 font-mono font-semibold">{res.matchedValue}</span>
-                      </div>
+                    <h2 className="mt-3 font-heading text-lg font-bold leading-6 text-slate-900 dark:text-white">{chapter.chapter_title}</h2>
+                    <p className="mt-2 line-clamp-3 text-sm leading-5 text-slate-600 dark:text-slate-300">{storyBrief}</p>
+                    {matchedField !== 'role' && (
+                      <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Match: <span className="font-semibold text-slate-700 dark:text-slate-200">{matchedValue}</span></p>
                     )}
-
-                    {/* Concept tags */}
-                    {res.chapter.critical_concepts && res.chapter.critical_concepts.length > 0 && (
-                      <div className="flex flex-wrap gap-1 pt-0.5">
-                        {res.chapter.critical_concepts.slice(0, 3).map((c, cIdx) => (
-                          <span
-                            key={cIdx}
-                            className="px-1.5 py-0.2 rounded bg-slate-900 border border-slate-800 text-[10px] text-slate-400 font-mono"
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {chapter.critical_concepts.slice(0, 3).map((concept) => (
+                        <span key={concept.concept} className="rounded-md bg-slate-100 px-2 py-1 text-[10px] font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{concept.concept}</span>
+                      ))}
+                    </div>
+                    <div className="mt-auto flex items-center justify-between gap-2 border-t border-slate-100 pt-4 dark:border-slate-800 sm:mt-5">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                        <Clock className="h-3.5 w-3.5" /> {chapter.estimatedMinutes || 25} min
+                      </span>
+                      <div className="flex items-center gap-2">
+                        {favoritesCtx && (
+                          <button
+                            type="button"
+                            onClick={() => toggleFavorite(chapter, role.id)}
+                            aria-label={isFavorite ? `Remove ${chapter.chapter_title} from saved cases` : `Save ${chapter.chapter_title}`}
+                            aria-pressed={isFavorite}
+                            className={`flex h-11 w-11 items-center justify-center rounded-xl border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${isFavorite ? 'border-amber-300 bg-amber-50 text-amber-600 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-300' : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'}`}
                           >
-                            {c.concept}
-                          </span>
-                        ))}
+                            <Star className={`h-4 w-4 ${isFavorite ? 'fill-current' : ''}`} />
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => onSelectChapter(role.id, chapter)}
+                          aria-label={`Open ${role.title}: ${chapter.chapter_title}`}
+                          className={`inline-flex min-h-11 items-center gap-2 rounded-xl bg-gradient-to-r px-3 text-xs font-bold text-white shadow-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 ${theme.gradientFrom} ${theme.gradientTo}`}
+                        >
+                          Open case <ArrowRight className="h-3.5 w-3.5" />
+                        </button>
                       </div>
-                    )}
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    {/* Favorite Star Button */}
-                    <button
-                      onClick={(e) => toggleFavorite(e, res.chapter, res.role.id)}
-                      className={`p-2 rounded-lg border transition-all cursor-pointer ${
-                        isFav
-                          ? 'bg-amber-500/20 border-amber-500/40 text-amber-400'
-                          : 'bg-slate-900 border-slate-800 text-slate-500 hover:text-white'
-                      }`}
-                      title={isFav ? 'Remove from favorites' : 'Add to favorites'}
-                    >
-                      <Star className={`w-4 h-4 ${isFav ? 'fill-amber-400' : ''}`} />
-                    </button>
-
-                    <button type="button" onClick={() => onSelectChapter(res.role.id, res.chapter)} className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-300" aria-label={`Open ${res.role.title}, ${res.chapter.day_title}`}>
-                      Open chapter <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                </article>
-              );
-            })
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
           )}
         </div>
       </div>

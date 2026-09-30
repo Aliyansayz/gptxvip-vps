@@ -3,6 +3,7 @@ import { SavedTheory, TheoryCollection, useTheoryCollections } from '../TheoryCo
 import { ChevronLeft, Grid, Maximize2, Trash2 } from 'lucide-react';
 import TheoryCard from './TheoryCard';
 import SaveTheoryButton from './SaveTheoryButton';
+import { StatePanel } from '../../../shared/components/StatePanel';
 
 interface TheoryPaneGridProps {
   collection: TheoryCollection;
@@ -49,7 +50,7 @@ const TheoryPaneGrid: React.FC<TheoryPaneGridProps> = ({ collection, onBack, onO
   const displayedItems = collection.items.slice(0, visibleItems);
 
   return (
-    <div className="w-full h-full flex flex-col p-6 md:p-10 overflow-y-auto custom-scrollbar">
+    <div className="flex h-full w-full flex-col overflow-y-auto p-4 pb-20 custom-scrollbar sm:p-6 md:p-10">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div className="flex items-center gap-4">
           <button 
@@ -65,7 +66,7 @@ const TheoryPaneGrid: React.FC<TheoryPaneGridProps> = ({ collection, onBack, onO
               {collection.name}
             </h1>
             <p className="text-muted-foreground mt-1">
-              {collection.items.length} saved theories
+              {collection.items.length} saved theory {collection.items.length === 1 ? 'note' : 'notes'} · personal copies; source links appear when available
             </p>
           </div>
         </div>
@@ -95,13 +96,10 @@ const TheoryPaneGrid: React.FC<TheoryPaneGridProps> = ({ collection, onBack, onO
       </div>
 
       {collection.items.length === 0 ? (
-        <div className="flex-1 flex flex-col items-center justify-center text-center p-10">
-          <p className="text-muted-foreground text-lg">This collection is empty.</p>
-          <p className="text-sm text-muted-foreground mt-2">Save theories from DevLush to see them here.</p>
-        </div>
+        <StatePanel title="This collection is empty" description="Open an Agent Labs or Agentic Roles lesson and save a theory note, then return here to read it." actionLabel="Back to collections" onAction={onBack} />
       ) : viewMode === 'grid' ? (
         <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
-          <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
+          <div className="columns-1 gap-5 space-y-5 lg:columns-2">
             {displayedItems.map(item => (
               <div key={item.id} className="break-inside-avoid relative group">
                 <TheoryCard item={item} onOpenSource={onOpenSource} />
@@ -109,7 +107,7 @@ const TheoryPaneGrid: React.FC<TheoryPaneGridProps> = ({ collection, onBack, onO
                   type="button"
                   aria-label={`Remove ${item.exerciseTitle} from ${collection.name}`}
                   onClick={() => removeTheoryFromCollection(collection.id, item.id)}
-                  className="absolute top-4 right-4 p-2 bg-destructive/90 text-destructive-foreground rounded-lg opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-destructive"
+                  className="absolute right-4 top-4 flex min-h-11 min-w-11 items-center justify-center rounded-lg bg-destructive/90 text-destructive-foreground opacity-100 transition-opacity hover:bg-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100"
                   title="Remove from collection"
                 >
                   <Trash2 className="w-4 h-4" />

@@ -2,12 +2,25 @@
 import React, { useState } from 'react';
 import { useFavorites, FavoriteItem } from './FavoritesContext';
 import { StarIcon, TrashIcon, FolderPlusIcon, PlayIcon, ChevronRightIcon, ClockIcon } from './icons';
+import { AgentLabsMobileLearningNav } from './AgentLabsMobileLearningNav';
+import devLushChaptersRaw from '../devLushComponents/data';
+import { agenticRoleDefinitions } from '../agenticRoles/data';
+import { cppTradingHFTData } from '../../roadmapArea/roadmapTopics/C++_Trading_HFT';
+import { StatePanel } from '../../shared/components/StatePanel';
+
+const isAvailableFavorite = (item: FavoriteItem): boolean => {
+    if (item.type === 'devlush_lab') return devLushChaptersRaw.some(chapter => chapter.labComponentId === item.id);
+    if (item.type === 'agentic_role_lab') return agenticRoleDefinitions.some(role => role.id === item.courseId && role.chapters.some(chapter => chapter.labComponentId === item.id));
+    return cppTradingHFTData.chapters.some(chapter => (item.type === 'roadmap_reading' ? chapter.readingComponentId : chapter.labComponentId) === item.id);
+};
 
 interface FavoritesViewProps {
     onLaunch: (item: FavoriteItem) => void;
+    onBrowseTopics?: () => void;
+    onSearchTopics?: () => void;
 }
 
-const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
+const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch, onBrowseTopics, onSearchTopics }) => {
     const { favorites, collections, createCollection, deleteCollection, removeFavorite, moveItem } = useFavorites();
     const [activeCollection, setActiveCollection] = useState<string>('All');
     const [isCreating, setIsCreating] = useState(false);
@@ -16,6 +29,7 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
     const filteredItems = activeCollection === 'All'
         ? favorites
         : favorites.filter(item => item.collection === activeCollection);
+    const staleItems = filteredItems.filter(item => !isAvailableFavorite(item));
 
     const handleCreate = () => {
         if (newColName.trim()) {
@@ -35,9 +49,9 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
     };
 
     return (
-        <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-background md:flex-row">
+        <div className="relative flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-background pb-[calc(4.25rem+env(safe-area-inset-bottom))] lg:flex-row lg:pb-0">
             {/* Sidebar for Collections */}
-            <aside className="flex max-h-56 w-full shrink-0 flex-col border-b border-border bg-card/30 md:max-h-none md:w-72 md:border-b-0 md:border-r">
+            <aside className="flex max-h-56 w-full shrink-0 flex-col border-b border-border bg-card/30 lg:max-h-none lg:w-72 lg:border-b-0 lg:border-r">
                 <div className="p-6 border-b border-border">
                     <h2 className="text-xl font-bold flex items-center gap-2 text-foreground">
                         <StarIcon className="w-6 h-6 text-yellow-500" />
@@ -120,7 +134,7 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
             </aside>
 
             {/* Main Content Area */}
-            <main className="min-h-0 flex-1 overflow-y-auto bg-muted/20 p-4 custom-scrollbar sm:p-6 md:p-10">
+            <main className="min-h-0 flex-1 overflow-y-auto bg-muted/20 p-4 custom-scrollbar sm:p-6 lg:p-10">
                 <div className="max-w-5xl mx-auto">
                     <header className="mb-8 flex flex-col gap-2 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
                         <div>
@@ -132,10 +146,11 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
                         </div>
                     </header>
 
+                    {staleItems.length > 0 && <StatePanel eyebrow="Saved list maintenance" title={`${staleItems.length} saved item${staleItems.length === 1 ? '' : 's'} no longer open`} description="These entries point to lessons that are no longer in the current curriculum. Remove an unavailable entry below, or browse the current topics for a replacement." tone="warning" actionLabel="Browse current topics" onAction={onBrowseTopics} className="mb-6" />}
                     {filteredItems.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                             {filteredItems.map(item => (
-                                <div key={item.id} className="group bg-card border border-border rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col">
+                                <div key={item.id} className="group bg-card border border-border rounded-2xl shadow-sm transition-colors hover:border-primary/40 overflow-hidden flex flex-col">
                                     <div className="p-6 flex-1">
                                         <div className="flex justify-between items-start mb-4">
                                             <div className={`flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${item.type !== 'devlush_lab' ? 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300' : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'}`}>
@@ -148,6 +163,7 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
                                         </div>
 
                                         <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">{item.title}</h3>
+                                        {!isAvailableFavorite(item) && <p className="mt-2 text-sm font-semibold text-amber-700 dark:text-amber-300">Unavailable in the current curriculum</p>}
                                         
                                         <div className="flex items-center gap-2 text-xs text-muted-foreground mt-2">
                                             <span className="capitalize font-medium">{item.courseId.replace(/-/g, ' ')}</span>
@@ -179,10 +195,11 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
                                             <button
                                                 type="button"
                                                 onClick={() => handleLaunch(item)}
-                                                className="flex min-h-11 items-center gap-2 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg font-bold text-xs hover:brightness-110 transition-all shadow-md active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                                                disabled={!isAvailableFavorite(item)}
+                                                className="flex min-h-11 items-center gap-2 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg font-bold text-xs hover:brightness-110 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                                             >
                                                 <PlayIcon className="w-3 h-3" />
-                                                Launch
+                                                {isAvailableFavorite(item) ? 'Open lesson' : 'Unavailable'}
                                             </button>
                                         </div>
                                     </div>
@@ -190,18 +207,19 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({ onLaunch }) => {
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-32 bg-card rounded-3xl border-2 border-dashed border-border">
-                            <div className="inline-block p-6 bg-muted rounded-full mb-6">
-                                <StarIcon className="w-12 h-12 text-muted-foreground/30" />
-                            </div>
-                            <h2 className="text-2xl font-bold text-foreground">No favorites yet</h2>
-                            <p className="text-muted-foreground mt-2 max-w-sm mx-auto">
-                                Browse labs and click the star icon to save them here.
-                            </p>
-                        </div>
+                        <StatePanel title={activeCollection === 'All' ? 'No saved lessons yet' : `No lessons in ${activeCollection}`} description="Browse an available topic and save a chapter to collect it here." actionLabel="Browse topics" onAction={onBrowseTopics} />
                     )}
                 </div>
             </main>
+            {onBrowseTopics && onSearchTopics && (
+                <AgentLabsMobileLearningNav
+                    activeTab="saved"
+                    savedCount={favorites.length}
+                    onLearn={onBrowseTopics}
+                    onSearch={onSearchTopics}
+                    onSaved={() => {}}
+                />
+            )}
         </div>
     );
 };

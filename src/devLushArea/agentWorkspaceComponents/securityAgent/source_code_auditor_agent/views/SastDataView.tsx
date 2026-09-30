@@ -2,6 +2,7 @@ import React from 'react';
 import { GitPullRequest, Key, PackageSearch, Settings } from 'lucide-react';
 import { SastSidebarView } from '../components/SastAgentSidebar';
 import AgentPreviewNotice from '../../../components/AgentPreviewNotice';
+import SourceStatus from '../../../components/SourceStatus';
 
 interface SastDataViewProps {
   viewType: SastSidebarView;
@@ -59,7 +60,7 @@ export default function SastDataView({ viewType }: SastDataViewProps) {
   if (!Icon) return null;
 
   return (
-    <div className="flex-1 p-8 bg-slate-50 overflow-y-auto">
+    <div className="flex-1 h-full overflow-y-auto bg-slate-50 px-4 py-6 sm:p-8">
       <div className="max-w-3xl mx-auto space-y-6">
         <div>
           <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
@@ -79,6 +80,8 @@ export default function SastDataView({ viewType }: SastDataViewProps) {
                 </div>
                 <div className="md:w-2/3">
                   <p className="text-sm text-slate-600 font-medium">{item.value}</p>
+                  <SourceStatus source="Built-in analyzer summary" freshness="No connected repository or scan date" confidence="Unverified" />
+                  <p className="mt-2 text-xs leading-5 text-slate-500">Confirm file and line context, severity, and current dependency guidance before preparing a change.</p>
                 </div>
               </div>
             ))}

@@ -59,18 +59,21 @@ export const LabSettingsMenu: React.FC<LabSettingsMenuProps> = ({ settings, onSe
     return (
         <div className="relative z-50">
             <button 
+                type="button"
                 onClick={() => setIsOpen(!isOpen)} 
-                className={`p-2 rounded-md transition-colors ${isOpen ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}
+                aria-label="Lab settings"
+                aria-expanded={isOpen}
+                className={`flex min-h-11 min-w-11 items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${isOpen ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}
                 title="Lab Settings"
             >
                 <Settings className="w-4 h-4" />
             </button>
 
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-72 bg-card border rounded-xl shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 origin-top-right">
+                <div className="absolute left-0 mt-2 w-60 overflow-hidden rounded-xl border bg-card shadow-xl animate-in fade-in zoom-in-95 duration-200 sm:w-72 lg:left-auto lg:right-0">
                     <div className="p-4 border-b bg-muted/30 flex justify-between items-center">
                         <h3 className="font-semibold text-sm">Lab Settings</h3>
-                        <button onClick={() => setIsOpen(false)} className="text-muted-foreground hover:text-foreground">
+                        <button type="button" onClick={() => setIsOpen(false)} aria-label="Close lab settings" className="flex h-11 w-11 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
                             <X className="w-4 h-4" />
                         </button>
                     </div>
@@ -111,8 +114,10 @@ export const LabSettingsMenu: React.FC<LabSettingsMenuProps> = ({ settings, onSe
 
 const SettingItem: React.FC<{ label: string; checked: boolean; onChange: () => void }> = ({ label, checked, onChange }) => (
     <button 
+        type="button"
         onClick={onChange}
-        className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-muted/50 transition-colors text-sm"
+        aria-pressed={checked}
+        className="flex min-h-11 w-full items-center justify-between rounded-lg p-2 text-sm transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
     >
         <span className="text-foreground/80">{label}</span>
         <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${checked ? 'bg-primary border-primary text-primary-foreground' : 'border-muted-foreground/30'}`}>

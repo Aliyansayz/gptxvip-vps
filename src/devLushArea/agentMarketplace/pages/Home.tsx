@@ -2,9 +2,9 @@ import { Link } from 'react-router'
 import { ArrowRight, Check, Code2, FlaskConical, Mail, MessageSquare, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import TemplateCard from '@/components/TemplateCard'
-import TemplateThumb from '@/components/TemplateThumb'
 import { CATEGORIES, CONTACT_EMAIL, templates } from '@/data/templates'
 import { agentLabTopics } from '../../agentLabsData'
+import AgentTopicPreview from '../../components/AgentTopicPreview'
 
 const categoryIcons: Record<string, string> = {
   Analytics: '📈',
@@ -19,7 +19,6 @@ const categoryIcons: Record<string, string> = {
 
 export default function Home() {
   const featured = templates.filter((template) => template.featured)
-  const heroTemplate = templates[0]
 
   return (
     <div>
@@ -28,21 +27,21 @@ export default function Home() {
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700">
               <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
-              Agent Labs · project surfaces
+              Agent Labs · interactive learning
             </div>
             <h1 className="mt-6 text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl lg:text-[3.4rem] lg:leading-[1.1]">
-              Start with the topic or surface
-              <span className="text-indigo-600"> closest to your question.</span>
+              Understand agent systems
+              <span className="text-indigo-600"> by exploring a real lesson.</span>
             </h1>
             <p className="mt-5 max-w-lg text-lg leading-relaxed text-slate-600">
-              Explore lab topics and focused workflow surfaces, then contact the site owner directly when you are ready to discuss a project fit.
+              Choose a focused topic, run its interactive lesson, and inspect the patterns behind the result. Browse project surfaces separately when you need a product starting point.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg" className="bg-indigo-600 hover:bg-indigo-700">
-                <Link to="/templates">Explore surfaces <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                <Link to="/lab">Open Agent Labs <ArrowRight className="ml-2 h-4 w-4" /></Link>
               </Button>
               <Button asChild size="lg" variant="outline">
-                <Link to="/lab"><FlaskConical className="mr-2 h-4 w-4" /> Open Agent Labs</Link>
+                <Link to="/templates">Browse project surfaces</Link>
               </Button>
               <Button asChild size="lg" variant="outline">
                 <a href={'mailto:' + CONTACT_EMAIL}><Mail className="mr-2 h-4 w-4" /> Contact the owner</a>
@@ -57,16 +56,7 @@ export default function Home() {
 
           <div className="relative">
             <div className="absolute -inset-6 -z-10 rounded-3xl bg-gradient-to-tr from-indigo-100 via-sky-50 to-transparent blur-2xl" />
-            <Link to={'/templates/' + heroTemplate.slug} className="block">
-              <TemplateThumb template={heroTemplate} large />
-            </Link>
-            <div className="absolute -bottom-4 left-6 flex items-center gap-3 rounded-xl border border-slate-200 bg-white/95 px-4 py-3 shadow-lg backdrop-blur">
-              <div>
-                <div className="text-sm font-semibold text-slate-900">{heroTemplate.name}</div>
-                <div className="text-xs text-slate-500">{heroTemplate.components}+ components · v{heroTemplate.version}</div>
-              </div>
-              <div className="ml-4 text-sm font-semibold text-indigo-600">View surface details</div>
-            </div>
+            <AgentTopicPreview topic={agentLabTopics[0]} />
           </div>
         </div>
       </section>
@@ -75,21 +65,14 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-600">Agent Labs</p>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-600">Interactive curriculum</p>
               <h2 id="lab-topics-heading" className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Choose a real topic</h2>
-              <p className="mt-1 text-slate-500">Use the lab-topic hierarchy before browsing the broader surface catalog.</p>
+              <p className="mt-1 text-slate-500">Every topic opens a lesson in the Agent and its Types curriculum.</p>
             </div>
             <FlaskConical className="hidden h-8 w-8 text-indigo-300 sm:block" />
           </div>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {agentLabTopics.map((topic, index) => (
-              <div key={topic.title} className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
-                <div className="flex items-center justify-between"><span className="text-xs font-bold text-slate-400">0{index + 1}</span><span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">{topic.family}</span></div>
-                <h3 className="mt-7 font-semibold text-slate-900">{topic.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-500">{topic.outcome}</p>
-                <Link to={'/templates?q=' + encodeURIComponent(topic.query)} className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-800">Explore related surfaces <ArrowRight className="h-4 w-4" /></Link>
-              </div>
-            ))}
+            {agentLabTopics.map((topic) => <AgentTopicPreview key={topic.slug} topic={topic} compact />)}
           </div>
         </div>
       </section>

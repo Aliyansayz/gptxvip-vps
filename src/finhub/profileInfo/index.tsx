@@ -20,12 +20,12 @@ import {
   Layers,
   Fingerprint
 } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { toast } from "sonner";
 
 // Static profile data extracted and curated from profile.md
 const BIO_TEXT =
-  "Highly adaptive and versatile professional. Done work mainly in Python programming and data science to build complex, high-performance applications. By leveraging advanced AI technologies, Aliyan has developed deep expertise across multiple domains, including visual UI/UX design, prompt engineering, and intelligent information summarization. Passionate about system engineering, technical writing, and travel blogging.";
+  "I build learning interfaces and agent-oriented product examples, drawing on Python, data science, and frontend design. This site brings together interactive lessons, agent system walkthroughs, and project surface examples. My current focus is making complex workflows easier to inspect and explain.";
 
 interface FocusGroup {
   label: string;
@@ -219,6 +219,7 @@ interface ProfileInfoProps {
 
 export const ProfileInfo: React.FC<ProfileInfoProps> = ({ showYears = false }) => {
   const [copied, setCopied] = useState(false);
+  const reducedMotion = useReducedMotion();
   const copyResetTimeout = useRef<number | null>(null);
 
   useEffect(() => () => {
@@ -245,10 +246,10 @@ export const ProfileInfo: React.FC<ProfileInfoProps> = ({ showYears = false }) =
     <div className="max-w-6xl mx-auto px-4 py-8 md:py-16 space-y-10">
       {/* Hero Header Card */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={reducedMotion ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative rounded-[2rem] border border-zinc-200 dark:border-zinc-800 bg-white/40 dark:bg-zinc-950/40 backdrop-blur-xl shadow-[0_25px_100px_rgba(0,0,0,0.06)] dark:shadow-[0_25px_100px_rgba(0,0,0,0.3)] overflow-hidden"
+        className="relative rounded-[2rem] border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-sm overflow-hidden"
       >
         {/* Dynamic mesh gradients for aesthetic backdrop */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.12),transparent_40%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.1),transparent_35%)] pointer-events-none" />
@@ -257,7 +258,7 @@ export const ProfileInfo: React.FC<ProfileInfoProps> = ({ showYears = false }) =
           <div className="flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
             {/* Visual Avatar Element */}
             <div className="relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-500" />
+              <div className="absolute -inset-0.5 rounded-full border border-emerald-500/30" />
               <div className="relative w-24 h-24 rounded-full bg-zinc-100 dark:bg-zinc-900 border-2 border-white dark:border-zinc-950 flex items-center justify-center shadow-inner overflow-hidden">
                 <UserRound className="w-12 h-12 text-zinc-400 dark:text-zinc-500" />
               </div>
@@ -290,7 +291,7 @@ export const ProfileInfo: React.FC<ProfileInfoProps> = ({ showYears = false }) =
               type="button"
               onClick={handleCopyEmail}
               aria-label={copied ? "Email address copied" : "Copy email address"}
-              className="flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 text-zinc-700 dark:text-zinc-200 text-sm font-semibold transition-all shadow-sm cursor-pointer"
+              className="flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 text-zinc-700 dark:text-zinc-200 text-sm font-semibold transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2"
             >
               <Mail className="w-4 h-4" />
               <span>aliyan@gptx.vip</span>
@@ -305,7 +306,7 @@ export const ProfileInfo: React.FC<ProfileInfoProps> = ({ showYears = false }) =
               href="https://www.credly.com/users/aliyan-anwar"
               target="_blank"
               rel="noreferrer"
-              className="flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 hover:bg-zinc-900 dark:hover:bg-zinc-50 text-sm font-semibold transition-all shadow-md cursor-pointer"
+              className="flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 hover:bg-zinc-900 dark:hover:bg-zinc-50 text-sm font-semibold transition-colors shadow-md cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2"
             >
               <Award className="w-4 h-4" />
               <span>Credly Profile</span>
@@ -313,13 +314,26 @@ export const ProfileInfo: React.FC<ProfileInfoProps> = ({ showYears = false }) =
             </a>
           </div>
         </div>
+        <p role="status" aria-live="polite" className="sr-only">{copied ? "Email address copied to clipboard" : ""}</p>
       </motion.div>
+
+      <section aria-labelledby="profile-current-focus" className="grid gap-5 rounded-3xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:p-8">
+        <div className="max-w-2xl">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700 dark:text-emerald-400">Current focus</p>
+          <h2 id="profile-current-focus" className="mt-2 text-2xl font-bold tracking-tight text-zinc-950 dark:text-white">Inspect the work behind the profile</h2>
+          <p className="mt-2 leading-7 text-zinc-600 dark:text-zinc-300">Explore an interactive agent lesson or review the structure and fit of a project surface. Public credential records are linked on the cards below when available.</p>
+        </div>
+        <div className="flex flex-col gap-2 sm:flex-row md:flex-col">
+          <a href="/agents/lab" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-zinc-950 px-4 py-2 text-sm font-semibold text-white hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2 dark:bg-white dark:text-zinc-950">Explore Agent Labs <ArrowUpRight className="h-4 w-4" /></a>
+          <a href="/agents/templates" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2 dark:border-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-900">View project surfaces <ArrowUpRight className="h-4 w-4" /></a>
+        </div>
+      </section>
 
       {/* Grid of Profile Bio & Skill Categories */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Profile Bio */}
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
+          initial={reducedMotion ? false : { opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
           className="lg:col-span-7 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/30 dark:bg-zinc-900/30 p-8 flex flex-col justify-between shadow-sm relative overflow-hidden group hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
@@ -337,14 +351,14 @@ export const ProfileInfo: React.FC<ProfileInfoProps> = ({ showYears = false }) =
           </div>
 
           <div className="mt-8 pt-6 border-t border-zinc-200/60 dark:border-zinc-800/60 flex items-center gap-2 text-xs text-zinc-500 font-mono">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Versatile execution skillset across engineering & layout designs</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span>Current work: learning interfaces, agent systems, and product examples</span>
           </div>
         </motion.div>
 
         {/* Skill Matrix */}
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
+          initial={reducedMotion ? false : { opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
           className="lg:col-span-5 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/30 dark:bg-zinc-900/30 p-8 shadow-sm hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
@@ -366,7 +380,7 @@ export const ProfileInfo: React.FC<ProfileInfoProps> = ({ showYears = false }) =
                     {category.skills.map((skill, sIdx) => (
                       <span
                         key={sIdx}
-                        className="px-3 py-1.5 rounded-xl text-xs font-medium bg-zinc-100 hover:bg-emerald-500/10 hover:text-emerald-600 dark:hover:text-emerald-400 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border border-zinc-200/50 dark:border-zinc-800/50 transition-all duration-300 transform hover:scale-[1.03] select-none"
+                        className="px-3 py-1.5 rounded-xl text-xs font-medium bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border border-zinc-200/50 dark:border-zinc-800/50 select-none"
                       >
                         {skill}
                       </span>
@@ -387,7 +401,7 @@ export const ProfileInfo: React.FC<ProfileInfoProps> = ({ showYears = false }) =
               ACADEMIC & PROFESSIONAL CREDENTIALS
             </h2>
             <p className="text-zinc-500 dark:text-zinc-400 text-sm">
-              Verified education history and certifications acquired or in progress.
+              Qualifications and progress, with public record links where available.
             </p>
           </div>
         </div>
@@ -399,23 +413,14 @@ export const ProfileInfo: React.FC<ProfileInfoProps> = ({ showYears = false }) =
             return (
               <motion.div
                 key={item.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={reducedMotion ? false : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 * idx }}
-                whileHover={{ y: -4, boxShadow: "0 20px 40px rgba(0,0,0,0.04)" }}
-                className={`relative rounded-3xl border ${item.borderClass} bg-white/40 dark:bg-zinc-950/40 p-6 md:p-8 flex flex-col justify-between transition-all duration-300 overflow-hidden group`}
+                className={`relative rounded-3xl border ${item.borderClass} bg-white dark:bg-zinc-950 p-6 md:p-8 flex flex-col justify-between overflow-hidden group`}
                 style={{
                   boxShadow: `0 4px 30px rgba(0,0,0,0.01)`
                 }}
               >
-                {/* Accent glow on hover */}
-                <div
-                  className="absolute inset-0 bg-gradient-to-b opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  style={{
-                    backgroundImage: `linear-gradient(to bottom, ${item.glowColor}, transparent)`
-                  }}
-                />
-
                 <div className="relative z-10 space-y-4">
                   {/* Top line with Icon and badge */}
                   <div className="flex items-start justify-between gap-4">
@@ -511,8 +516,8 @@ export const ProfileInfo: React.FC<ProfileInfoProps> = ({ showYears = false }) =
                         <ExternalLink className="w-3.5 h-3.5" />
                       </a>
                     ) : (
-                      <span className="text-zinc-400 dark:text-zinc-600 font-medium flex items-center gap-1">
-                        <Check className="w-3.5 h-3.5 text-emerald-500" /> Verified Record
+                      <span className="text-zinc-500 dark:text-zinc-400 font-medium flex items-center gap-1">
+                        No public record link
                       </span>
                     )}
                   </div>

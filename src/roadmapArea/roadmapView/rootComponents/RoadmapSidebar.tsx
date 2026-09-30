@@ -32,7 +32,7 @@ const RoadmapSidebar: React.FC<RoadmapSidebarProps> = ({
 }) => {
   return (
     <aside
-      className={`bg-slate-950 border-r border-slate-800 flex-shrink-0 flex flex-col transition-all duration-300 ${isSidebarOpen ? "w-64 p-6" : "w-20 p-4"}`}
+      className={`hidden bg-slate-950 border-r border-slate-800 flex-shrink-0 lg:flex flex-col transition-[width,padding] duration-200 ${isSidebarOpen ? "w-64 p-6" : "w-20 p-4"}`}
     >
       {/* Sidebar Header */}
       <div
@@ -43,7 +43,7 @@ const RoadmapSidebar: React.FC<RoadmapSidebarProps> = ({
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           aria-label={isSidebarOpen ? "Collapse Roadmap sidebar" : "Expand Roadmap sidebar"}
           aria-expanded={isSidebarOpen}
-          className="h-6 w-6 text-indigo-400 hover:text-indigo-300 flex-shrink-0 transition-colors"
+          className="flex h-11 w-11 items-center justify-center rounded-lg text-indigo-400 hover:bg-slate-900 hover:text-indigo-300 flex-shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
         >
           <Menu className="w-6 h-6" />
         </button>
@@ -57,8 +57,9 @@ const RoadmapSidebar: React.FC<RoadmapSidebarProps> = ({
       {/* Search Actions */}
       <div className="mb-6">
         <button
+          id="roadmap-desktop-search-trigger"
           onClick={onSearchClick}
-          className={`flex items-center w-full p-2 rounded-lg bg-indigo-600/10 border border-indigo-500/20 text-indigo-400 hover:bg-indigo-600/20 transition-all ${!isSidebarOpen && "justify-center"}`}
+          className={`flex min-h-11 items-center w-full p-2 rounded-lg bg-indigo-600/10 border border-indigo-500/20 text-indigo-300 hover:bg-indigo-600/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${!isSidebarOpen && "justify-center"}`}
           title="Search Roadmap"
         >
           <Search className={`w-5 h-5 flex-shrink-0 ${isSidebarOpen ? "mr-3" : ""}`} />
@@ -80,9 +81,9 @@ const RoadmapSidebar: React.FC<RoadmapSidebarProps> = ({
                 <li key={topic.id}>
                   <button
                     type="button"
-                    aria-pressed={isActive}
+                    aria-current={isActive ? "page" : undefined}
                     onClick={() => onTopicSelect(topic.id)}
-                    className={`flex items-center p-2 text-sm w-full font-bold transition-all duration-300 transform rounded-xl ${isActive ? `${theme.bgSoft} ${theme.text} border ${theme.borderSoft} scale-[1.03] shadow-md ${theme.shadowMd}` : "text-slate-400 border border-transparent hover:bg-slate-900 hover:text-slate-200 scale-100 hover:scale-[1.01]"}`}
+                    className={`flex min-h-11 items-center p-2 text-sm w-full font-bold transition-colors rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${isActive ? `${theme.bgSoft} ${theme.text} border ${theme.borderSoft}` : "text-slate-300 border border-transparent hover:bg-slate-900 hover:text-white"}`}
                     title={topic.title}
                   >
                     <IconComponent

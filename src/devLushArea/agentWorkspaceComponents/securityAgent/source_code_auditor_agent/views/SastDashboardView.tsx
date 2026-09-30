@@ -1,6 +1,8 @@
 import React from 'react';
 import { Code, GitPullRequest, Search, Zap, CheckCircle, AlertCircle, ArrowRight, Activity, HelpCircle, Shield } from 'lucide-react';
 import AgentPreviewNotice from '../../../components/AgentPreviewNotice';
+import SourceStatus from '../../../components/SourceStatus';
+import ResponsiveDataFrame from '../../../components/ResponsiveDataFrame';
 
 interface SastDashboardViewProps {
   onRunTutorial: () => void;
@@ -8,7 +10,7 @@ interface SastDashboardViewProps {
 
 export default function SastDashboardView({ onRunTutorial }: SastDashboardViewProps) {
   return (
-    <div className="p-8 max-w-6xl mx-auto h-full overflow-y-auto custom-scrollbar sast-dashboard-header">
+    <div className="px-4 py-6 sm:p-8 max-w-6xl mx-auto h-full overflow-y-auto custom-scrollbar sast-dashboard-header">
       <AgentPreviewNotice>This is an example finding. The excerpt has no verified line number or confidence score, and no suggested fix has been applied. A reviewer must confirm the surrounding code and analyzer evidence.</AgentPreviewNotice>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
@@ -35,14 +37,19 @@ export default function SastDashboardView({ onRunTutorial }: SastDashboardViewPr
           <div className="space-y-4">
             <div className="p-4 rounded-lg border border-red-200 bg-red-50 flex flex-col gap-2">
               <div className="flex items-center gap-2 text-red-700 font-semibold text-sm">
-                <AlertCircle className="w-4 h-4" /> SQL Injection Vulnerability Detected
+                <AlertCircle className="w-4 h-4" /> Example SQL injection pattern
               </div>
               <p className="text-sm text-red-600">
-                Improper input sanitization found in `src/db/queries.ts`. Attackers could exploit this to execute arbitrary SQL commands.
+                The built-in excerpt concatenates input into a SQL string. The file label is illustrative; inspect the real repository before calling this a finding.
               </p>
-              <div className="bg-white rounded border border-red-100 p-2 mt-2 font-mono text-xs text-slate-800 overflow-x-auto">
+              <SourceStatus source="Built-in code example" freshness="No repository scan or verified line number" confidence="Unverified" />
+              <ResponsiveDataFrame label="Example unsafe SQL excerpt" className="bg-white rounded border border-red-100 p-2 mt-2 font-mono text-xs text-slate-800">
                 <span className="text-red-500">- </span>
                 <span>{`const query = "SELECT * FROM users WHERE username = '" + req.body.username + "';"`}</span>
+              </ResponsiveDataFrame>
+              <div className="mt-2 grid gap-3 sm:grid-cols-2">
+                <p className="rounded-lg bg-white p-3 text-xs leading-5 text-slate-700"><strong>Severity basis:</strong> Input is concatenated into SQL in this example. Impact depends on the real query path and database permissions.</p>
+                <p className="rounded-lg bg-white p-3 text-xs leading-5 text-slate-700"><strong>Safe next step:</strong> Use a parameterized query, then verify behavior with a test against the actual repository and review the surrounding code.</p>
               </div>
             </div>
           </div>

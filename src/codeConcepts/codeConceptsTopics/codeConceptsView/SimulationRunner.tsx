@@ -67,7 +67,7 @@ export const SimulationRunner: React.FC<SimulationRunnerProps> = ({
   };
 
   return (
-    <div className="relative flex h-screen min-h-screen h-[100dvh] min-h-[100svh] w-full flex-col overflow-hidden bg-[#050505] font-sans text-zinc-100">
+    <div className="relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#050505] font-sans text-zinc-100">
       {/* Top Header Navigation */}
       <header className="z-50 flex h-16 shrink-0 items-center justify-between gap-2 border-b border-zinc-800 bg-zinc-950/50 px-3 backdrop-blur-md sm:px-6">
         <div className="flex min-w-0 items-center gap-2 sm:gap-6">
@@ -148,15 +148,12 @@ export const SimulationRunner: React.FC<SimulationRunnerProps> = ({
           </div>
 
           {/* Status Overlay */}
-          <div className="absolute bottom-6 left-6 flex flex-col gap-2 pointer-events-none">
+          <div className="pointer-events-none absolute bottom-4 left-4 flex flex-col gap-1.5 sm:bottom-6 sm:left-6">
              <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${themeClasses.bg} animate-pulse shadow-[0_0_8px_rgba(0,0,0,0.5)]`} style={{ boxShadow: `0 0 12px ${themeClasses.bg}` }} />
-                <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Engine_Status: ONLINE</span>
+                <div className={`h-2 w-2 rounded-full ${themeClasses.bg}`} />
+                <span className="text-[9px] font-mono uppercase tracking-widest text-zinc-400 sm:text-[10px]">Interactive example</span>
              </div>
-             <div className="flex items-center gap-2">
-                <Activity className="w-3 h-3 text-zinc-700" />
-                <span className="text-[10px] font-mono text-zinc-700 uppercase tracking-widest">Telemetry_Recv: 247.2 MB/s</span>
-             </div>
+             <span className="pl-4 text-[9px] font-mono text-zinc-500 sm:text-[10px]">Values are illustrative</span>
           </div>
         </main>
 
@@ -238,12 +235,10 @@ export const SimulationRunner: React.FC<SimulationRunnerProps> = ({
               <div className="p-6 border-t border-zinc-800 bg-zinc-950/80">
                  <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between">
-                       <span className="text-[10px] font-bold text-zinc-600 uppercase tracking-[0.1em]">Execution Loop:</span>
-                       <span className="text-[10px] font-mono text-emerald-500">OPTIMIZED</span>
+                       <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-zinc-500">Scenario data</span>
+                       <span className="text-[10px] font-mono text-zinc-400">LOCAL EXAMPLE</span>
                     </div>
-                    <div className="p-1 bg-zinc-900 rounded-lg border border-zinc-800">
-                       <div className={`h-1 rounded-full ${themeClasses.bg} w-[65%]`} />
-                    </div>
+                    <p className="text-[11px] leading-relaxed text-zinc-500">This lesson uses example inputs; it is not connected to a live market feed.</p>
                  </div>
               </div>
             </motion.aside>

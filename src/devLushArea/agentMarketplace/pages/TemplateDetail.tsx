@@ -61,11 +61,20 @@ export default function TemplateDetail() {
         </div>
 
         <aside>
-          <div className="sticky top-24 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:sticky lg:top-24">
             <div className="flex flex-wrap gap-1.5"><Badge variant="outline">{template.category}</Badge>{template.featured && <Badge className="bg-slate-900 text-white hover:bg-slate-900">Featured</Badge>}</div>
             <h1 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900">{template.name}</h1>
             <p className="mt-1 text-sm text-slate-500">{template.tagline}</p>
             <p className="mt-5 text-sm leading-relaxed text-slate-600">Interested in adapting this surface? Contact the site owner with your project context and requirements.</p>
+            <div className="mt-5 rounded-xl border border-indigo-100 bg-indigo-50/60 p-4">
+              <h2 className="text-sm font-semibold text-slate-900">Prepare your project brief</h2>
+              <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-slate-600">
+                <li>Who will use this surface?</li>
+                <li>Which data sources and integrations are available?</li>
+                <li>What outcome, deployment, and support do you need?</li>
+              </ul>
+              <p className="mt-3 text-xs text-slate-600">The email action includes these prompts so you can explain the fit.</p>
+            </div>
             <Button asChild size="lg" className="mt-6 w-full bg-indigo-600 hover:bg-indigo-700"><a href={getContactHref(template)}><Mail className="mr-2 h-4 w-4" /> Contact {CONTACT_EMAIL}</a></Button>
             <p className="mt-3 text-center text-xs text-slate-400">Project conversations happen directly by email.</p>
             <Separator className="my-5" />

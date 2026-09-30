@@ -7,6 +7,9 @@ import { LabData, ConceptCourse } from "./devLushTypes";
 import { toast } from "sonner";
 import { ShieldAlert, ShoppingBag, Calculator, Bot, Database } from "lucide-react";
 import devLushChaptersRaw from "./data";
+import { useFavorites } from "../agentDevRootComponents/FavoritesContext";
+import { AgentLabsMobileLearningNav } from "../agentDevRootComponents/AgentLabsMobileLearningNav";
+import { AgentLabsMobileTopicRail } from "../agentDevRootComponents/AgentLabsMobileTopicRail";
 
 interface EnrichedConceptData {
   id: string;
@@ -15,15 +18,18 @@ interface EnrichedConceptData {
   longDescription: string;
   icon: React.ComponentType<{ className?: string }>;
   chapters: LabData[];
+  group: string;
 }
 
 interface DevLushContainerProps {
   isLocked: boolean;
   onConsumeEnergy: () => boolean;
   initialChapterId?: string | null;
+  initialTopicId?: string;
   onChapterOpened?: () => void;
   onSimulationComplete?: () => void;
   onSearchClick: () => void;
+  onSavedClick: () => void;
   onSearchClose?: () => void;
   initialSearchOpen?: boolean;
   routeChapterId?: string;
@@ -158,6 +164,50 @@ const devLushCourseData = [
 ];
 
 const devLushChapters = devLushChaptersRaw as LabData[];
+const COMPLETED_LABS_STORAGE_KEY = 'gptxvip_agent_labs_completed_chapters';
+const TOPIC_GOAL_GROUPS: Record<string, string> = {
+  'reinforcement-learning': 'Foundations',
+  'agent-and-its-types': 'Foundations',
+  'recommendation-agents': 'Foundations',
+  'web-bugbounty': 'Build and secure',
+  'offensive-ai-cybersecurity': 'Build and secure',
+  'devtools-agents': 'Build and secure',
+  'system-design': 'Build and secure',
+  'ecommerce-agents': 'Applied work',
+  'accounting-agents': 'Applied work',
+  'finance-agents': 'Applied work',
+  'healthcare-agents': 'Applied work',
+  'legal-agents': 'Applied work',
+  'supplychain-agents': 'Applied work',
+  'marketing-agents': 'Applied work',
+  'helpdesk-agents': 'Applied work',
+};
+const TOPIC_GROUP_ORDER = ['Foundations', 'Build and secure', 'Applied work'];
+
+const readCompletedLabs = (): string[] => {
+  try {
+    const stored: unknown = JSON.parse(window.localStorage.getItem(COMPLETED_LABS_STORAGE_KEY) || '[]');
+    return Array.isArray(stored) ? stored.filter((id): id is string => typeof id === 'string') : [];
+  } catch {
+    return [];
+  }
+};
+
+const MOBILE_TOPIC_LABELS: Record<string, string> = {
+  "agent-and-its-types": "Agent Types",
+  "recommendation-agents": "Recommendations",
+  "offensive-ai-cybersecurity": "AI Security",
+  "ecommerce-agents": "Ecommerce",
+  "accounting-agents": "Accounting",
+  "finance-agents": "Finance",
+  "devtools-agents": "DevTools",
+  "healthcare-agents": "Healthcare",
+  "legal-agents": "Legal",
+  "supplychain-agents": "Supply Chain",
+  "marketing-agents": "Marketing",
+  "helpdesk-agents": "Helpdesk",
+  "system-design": "System Design",
+};
 
 const readTopicScroll = (topicId: string): number => {
   try {
@@ -180,9 +230,11 @@ export const DevLushContainer: React.FC<DevLushContainerProps> = ({
   isLocked,
   onConsumeEnergy,
   initialChapterId,
+  initialTopicId,
   onChapterOpened,
   onSimulationComplete,
   onSearchClick,
+  onSavedClick,
   onSearchClose,
   initialSearchOpen = false,
   routeChapterId,
@@ -198,7 +250,14 @@ export const DevLushContainer: React.FC<DevLushContainerProps> = ({
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSearchOpen, setIsSearchOpen] = useState(initialSearchOpen);
   const [loading, setLoading] = useState(false);
+  const [completedChapterIds, setCompletedChapterIds] = useState<string[]>(readCompletedLabs);
   const routeChapterEntryRef = useRef<string | undefined>(undefined);
+  const mobileTopicRailRef = useRef<HTMLDivElement>(null);
+  const { favorites } = useFavorites();
+
+  useEffect(() => {
+    try { window.localStorage.setItem(COMPLETED_LABS_STORAGE_KEY, JSON.stringify(completedChapterIds)); } catch { /* Progress remains available in this session. */ }
+  }, [completedChapterIds]);
 
   useEffect(() => {
     setIsSearchOpen(initialSearchOpen);
@@ -229,12 +288,25 @@ export const DevLushContainer: React.FC<DevLushContainerProps> = ({
   const enrichedTopics: EnrichedConceptData[] = devLushCourseData.map(
     (course) => ({
       ...course,
+      group: TOPIC_GOAL_GROUPS[course.id] || 'Applied work',
       icon: topicIcons[course.id] || Bot,
       chapters: devLushChapters.filter(
         (ch) => ch.course.toLowerCase() === course.title.toLowerCase(),
       ),
     }),
-  );
+  ).sort((a, b) => TOPIC_GROUP_ORDER.indexOf(a.group) - TOPIC_GROUP_ORDER.indexOf(b.group));
+
+  useEffect(() => {
+    if (!initialTopicId) return;
+    const topicExists = enrichedTopics.some((topic) => topic.id === initialTopicId);
+    if (!topicExists) {
+      toast.error("This Agent Labs topic is no longer available.");
+      return;
+    }
+    setActiveTopicId(initialTopicId);
+    setSelectedChapter(null);
+    setIsSearchOpen(false);
+  }, [initialTopicId]);
 
   // Deep linking from search/favorites
   useEffect(() => {
@@ -312,7 +384,32 @@ export const DevLushContainer: React.FC<DevLushContainerProps> = ({
     id: t.id,
     title: t.title,
     icon: t.icon,
+    group: t.group,
   }));
+
+  const selectTopic = (id: string) => {
+    setActiveTopicId(id);
+    setSelectedChapter(null);
+    setIsSearchOpen(false);
+    if (routeChapterId || initialSearchOpen) onTopicHubReplace?.();
+  };
+
+  const showTopicHub = () => {
+    setSelectedChapter(null);
+    setIsSearchOpen(false);
+    if (initialSearchOpen || routeChapterId) {
+      if (onTopicHubReplace) onTopicHubReplace();
+      else onSearchClose?.();
+    }
+  };
+
+  useEffect(() => {
+    if (selectedChapter || isSearchOpen) return;
+    mobileTopicRailRef.current?.querySelector<HTMLElement>('[aria-current="page"]')?.scrollIntoView({
+      block: "nearest",
+      inline: "center",
+    });
+  }, [activeTopicId, isSearchOpen, selectedChapter]);
 
   const scrollContainerRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -350,16 +447,11 @@ export const DevLushContainer: React.FC<DevLushContainerProps> = ({
   }, [activeTopicId, selectedChapter]);
 
   return (
-    <div className="flex h-full overflow-hidden bg-slate-50 dark:bg-black w-full relative">
+    <div className="relative flex h-full w-full min-w-0 overflow-hidden bg-slate-50 dark:bg-black">
       <DevLushSidebar
         topics={sidebarTopics}
         activeTopicId={activeTopicId}
-        onTopicSelect={(id) => {
-          setActiveTopicId(id);
-          setSelectedChapter(null); // Go back to topic chapters lists
-          setIsSearchOpen(false);
-          if (routeChapterId || initialSearchOpen) onTopicHubReplace?.();
-        }}
+        onTopicSelect={selectTopic}
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
         onSearchClick={() => {
@@ -369,13 +461,24 @@ export const DevLushContainer: React.FC<DevLushContainerProps> = ({
         onExit={onExit}
       />
 
-      <div className="flex-1 overflow-hidden relative flex flex-col">
-        <main className="flex-1 bg-slate-50 dark:bg-black overflow-hidden relative flex flex-col">
+      <div className="relative flex min-w-0 flex-1 flex-col overflow-hidden">
+        {!selectedChapter && !isSearchOpen && (
+          <AgentLabsMobileTopicRail
+            topics={sidebarTopics}
+            activeTopicId={activeTopicId}
+            onTopicSelect={selectTopic}
+            onSearchClick={() => { setIsSearchOpen(true); onSearchClick(); }}
+            topicLabels={MOBILE_TOPIC_LABELS}
+            containerRef={mobileTopicRailRef}
+          />
+        )}
+        <main className={`relative flex min-h-0 flex-1 flex-col overflow-hidden bg-slate-50 dark:bg-black ${selectedChapter ? "" : "pb-[calc(4.25rem+env(safe-area-inset-bottom))] lg:pb-0"}`}>
           {selectedChapter ? (
             <DevLushRunner
               chapter={selectedChapter}
               onBack={handleReturnFromChapter}
               onComplete={() => {
+                setCompletedChapterIds((current) => current.includes(selectedChapter.labComponentId) ? current : [...current, selectedChapter.labComponentId]);
                 toast.success("Simulation Completed Successfully!");
                 handleReturnFromChapter();
                 onSimulationComplete?.();
@@ -401,12 +504,22 @@ export const DevLushContainer: React.FC<DevLushContainerProps> = ({
                   devLushTopics={enrichedTopics}
                   isLoading={loading}
                   activeTopicId={activeTopicId}
+                  completedChapterIds={completedChapterIds}
                   onStartChapter={handleStartChapter}
                 />
               </div>
             </div>
           )}
         </main>
+        {!selectedChapter && (
+          <AgentLabsMobileLearningNav
+            activeTab={isSearchOpen ? "search" : "learn"}
+            savedCount={favorites.length}
+            onLearn={showTopicHub}
+            onSearch={() => { if (!isSearchOpen) { setIsSearchOpen(true); onSearchClick(); } }}
+            onSaved={onSavedClick}
+          />
+        )}
       </div>
     </div>
   );

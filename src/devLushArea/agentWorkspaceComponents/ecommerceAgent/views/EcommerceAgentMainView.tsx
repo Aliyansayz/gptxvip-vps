@@ -13,7 +13,7 @@ export default function EcommerceAgentMainView() {
       
       <div className="flex-1 overflow-hidden relative">
         {sidebarView === 'dashboard' && (
-          <EcommerceDashboardView />
+          <EcommerceDashboardView onOpenData={setSidebarView} />
         )}
         
         {sidebarView === 'theory' && (

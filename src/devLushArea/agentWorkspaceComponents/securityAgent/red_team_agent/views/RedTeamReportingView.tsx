@@ -2,7 +2,13 @@ import React from 'react';
 import { FileText, Download, GitMerge } from 'lucide-react';
 import { toast } from 'sonner';
 
-export default function RedTeamReportingView() {
+interface RedTeamReportingViewProps {
+  scenarioLogs: string[];
+  scenarioComplete: boolean;
+  onOpenScenario: () => void;
+}
+
+export default function RedTeamReportingView({ scenarioLogs, scenarioComplete, onOpenScenario }: RedTeamReportingViewProps) {
   const attackPaths = [
     {
       id: "PATH-01",
@@ -32,10 +38,14 @@ export default function RedTeamReportingView() {
 
   const handleExportReport = () => {
     try {
-      const report = attackPaths.map((path) => [
+      const report = [
+        'Scripted training preview. No target was contacted or defense validated.',
+        scenarioLogs.length ? `Current scenario trace:\n${scenarioLogs.join('\n')}` : 'Current scenario trace: no scenario run yet.',
+        'Reference paths below are illustrative examples, not findings from this trace.',
+        ...attackPaths.map((path) => [
         `${path.id} — ${path.target} (${path.severity.toUpperCase()})`,
         ...path.steps.map((step, index) => `${index + 1}. ${step}`),
-      ].join('\n')).join('\n\n');
+      ].join('\n'))].join('\n\n');
       const url = URL.createObjectURL(new Blob([report], { type: 'text/plain;charset=utf-8' }));
       const link = document.createElement('a');
       link.href = url;
@@ -67,7 +77,15 @@ export default function RedTeamReportingView() {
           </button>
         </div>
 
+        <section aria-labelledby="red-team-trace-title" className="rounded-xl border border-red-200 bg-white p-5">
+          <p className="text-xs font-bold uppercase tracking-wider text-red-700">Current scenario · sample evidence</p>
+          <h3 id="red-team-trace-title" className="mt-1 text-lg font-semibold text-slate-900">Evidence-to-report trace</h3>
+          <p className="mt-1 text-sm text-slate-600">{scenarioComplete ? 'The scripted sequence is complete. These are the exact events shown in the terminal.' : scenarioLogs.length ? 'The scripted sequence is still in progress or was stopped. Its trace is partial.' : 'No scenario has run. The reference paths below are separate examples.'}</p>
+          {scenarioLogs.length > 0 ? <ol className="mt-4 space-y-2 rounded-lg bg-slate-950 p-4 font-mono text-xs text-slate-100">{scenarioLogs.map((log, index) => <li key={`${index}-${log}`} className="break-words">{log}</li>)}</ol> : <button type="button" onClick={onOpenScenario} className="mt-4 min-h-11 rounded-lg border border-red-200 px-4 text-sm font-semibold text-red-700 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500">Open sample scenario</button>}
+        </section>
+
         <div className="space-y-6">
+          <h3 className="text-lg font-semibold text-slate-900">Separate reference paths</h3>
           {attackPaths.map((path) => (
             <div key={path.id} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
               <div className="bg-slate-50 px-5 py-4 border-b border-slate-200 flex items-center justify-between">

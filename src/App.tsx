@@ -3,6 +3,7 @@ import { MainLayout } from "./layouts/MainLayout";
 import { generateMockData, generateCandlestickData } from "./functions/mockData";
 import { PriceData, OHLCData } from "./types";
 import { sidebarItems } from "./constants";
+import { CODE_CONCEPT_CATEGORIES } from "./constants/codeConcepts";
 
 // Lazy loading to improve Core Web Vitals (FCP, LCP, TBT, Speed Index)
 const HomeMainView = lazy(() => import("./finhub/homeMainView").then(module => ({ default: module.HomeMainView })));
@@ -59,7 +60,7 @@ function readAppRoute(pathname: string) {
   const segments = pathname.split("/").filter(Boolean);
   const prefix = segments[0];
   const category = segments[1] || "general";
-  const knownCategory = ["search", "favorites", "general", "cpp_hello_world", "cpp_engine_design", "HFT", "python"].includes(category)
+  const knownCategory = (category === "favorites" || CODE_CONCEPT_CATEGORIES.some((item) => item.id === category))
     ? category
     : "general";
 
@@ -178,6 +179,14 @@ export default function App({ initialTab }: AppProps = {}) {
     scheduleSectionScroll(path);
   };
 
+  const navigateCodeConcepts = (category = "general") => {
+    setActiveTabState("code-concepts");
+    setActiveSubTab("");
+    setActiveCodeCategoryState(category);
+    const path = `/code_concepts/${category}`;
+    if (window.location.pathname !== path) window.history.pushState({}, "", path);
+  };
+
   const setActiveCodeCategory = (category: string) => {
     setActiveCodeCategoryState(category);
     setActiveSubTab("");
@@ -264,6 +273,8 @@ export default function App({ initialTab }: AppProps = {}) {
             onNavigateFinhub={() => {
               navigateTab("home");
             }}
+            onNavigateCodeConcepts={() => navigateCodeConcepts()}
+            onNavigateAlgoTrading={() => navigateCodeConcepts("algo_trading")}
             onNavigateDevLush={() => {
               window.location.assign('/agents');
             }}

@@ -39,21 +39,24 @@ export const DevLushLayout: React.FC<DevLushLayoutProps> = ({
 
     const containerStyle = {};
 
-    const containerClasses = "bg-white dark:bg-slate-900 h-full flex flex-col relative overflow-y-auto overflow-x-hidden";
+    const containerClasses = "relative flex min-h-[320px] min-w-0 max-w-full flex-col bg-white dark:bg-slate-900 lg:h-full lg:overflow-y-auto lg:overflow-x-hidden";
 
     const Content = exerciseContent || (
         <div className={containerClasses} style={containerStyle}>
             {title && (
-                <div className="flex items-center justify-between mb-2 flex-shrink-0">
-                     <h3 className="font-heading text-3xl tracking-wider text-center flex-1">
+                <div className="mb-2 flex flex-shrink-0 items-center justify-between gap-2">
+                     <h3 className="min-w-0 flex-1 break-words text-center font-heading text-xl tracking-wider sm:text-2xl lg:text-3xl">
                           <span className={`text-transparent bg-clip-text bg-gradient-to-r ${titleGradient} bg-[size:200%_auto] animate-gradient font-bold`}>
                                {title}
                           </span>
                      </h3>
                      {!settings?.disableQuestion && (prompt || interactionContent) && (
                         <button 
+                            type="button"
                             onClick={() => setQuestionExpanded(!questionExpanded)}
-                            className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-500 dark:text-slate-400"
+                            aria-label={questionExpanded ? "Hide action workspace" : "Show action workspace"}
+                            aria-expanded={questionExpanded}
+                            className="flex min-h-11 min-w-11 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800"
                             title={questionExpanded ? "Hide Action Workspace" : "Show Action Workspace"}
                         >
                             {questionExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
@@ -68,7 +71,7 @@ export const DevLushLayout: React.FC<DevLushLayoutProps> = ({
                 </p>
             )}
 
-            <div className={`flex-none min-h-0 flex flex-col justify-start`}>
+            <div className="flex min-h-0 min-w-0 flex-none flex-col justify-start">
                 {visualContent}
             </div>
 
@@ -81,19 +84,19 @@ export const DevLushLayout: React.FC<DevLushLayoutProps> = ({
     );
 
     return (
-        <div className="w-full h-full animate-fade-in">
+        <div className="min-h-full min-w-0 w-full animate-fade-in lg:h-full">
             {infoVisible && infoPlacement === 'side' ? (
-                <div className="grid lg:grid-cols-3 gap-4 lg:gap-6 h-full">
-                    <div className="lg:col-span-2 w-full min-w-0 h-full">
+                <div className="grid min-w-0 gap-4 lg:h-full lg:grid-cols-3 lg:gap-6">
+                    <div className="min-w-0 w-full lg:col-span-2 lg:h-full">
                         {Content}
                     </div>
-                    <aside className="lg:col-span-1 h-full overflow-y-auto min-w-0">
+                    <aside className="min-w-0 lg:col-span-1 lg:h-full lg:overflow-y-auto">
                         {theoryContent}
                     </aside>
                 </div>
             ) : (
-                <div className="flex flex-col gap-4 lg:gap-6 w-full h-full">
-                    <div className="w-full min-w-0 flex-1">
+                <div className="flex min-w-0 w-full flex-col gap-4 lg:h-full lg:gap-6">
+                    <div className="min-w-0 w-full lg:min-h-0 lg:flex-1">
                         {Content}
                     </div>
                     {infoVisible && infoPlacement === 'bottom' && (

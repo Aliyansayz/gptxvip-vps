@@ -1,6 +1,5 @@
 import React from 'react';
 import { BlogPost } from '../../types/types';
-import { motion } from 'motion/react';
 import { Clock, Calendar, ArrowRight, Sparkles, Shield, Cpu, Scale, Coins, ShoppingBag } from 'lucide-react';
 
 interface BlogCardProps {
@@ -47,23 +46,17 @@ export const BlogCard: React.FC<BlogCardProps> = ({ blog, onSelect, featured = f
 
     if (featured) {
         return (
-            <motion.button
+            <button
                 type="button"
                 aria-label={`Read featured article: ${blog.title}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.3 }}
                 onClick={() => onSelect(blog.id)}
-                className="group w-full cursor-pointer text-left relative rounded-3xl p-[1px] bg-gradient-to-r from-indigo-500/40 via-purple-500/40 to-pink-500/40 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 transition-all duration-500 shadow-2xl shadow-indigo-950/50 mb-12 overflow-hidden"
+                className="group mb-4 w-full cursor-pointer overflow-hidden rounded-3xl border border-indigo-200 bg-white text-left shadow-sm transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:border-indigo-400 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 motion-reduce:transform-none dark:border-indigo-800 dark:bg-slate-900"
             >
-                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-[23px] p-8 md:p-10 relative overflow-hidden flex flex-col lg:flex-row gap-8 items-start justify-between border border-transparent dark:border-slate-800">
-                    {/* Glow Accents */}
-                    <div className="absolute top-0 right-0 -mt-12 -mr-12 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/20 transition-all duration-500 pointer-events-none" />
+                <div className="rounded-3xl bg-gradient-to-br from-indigo-50/60 via-white to-white p-6 dark:from-slate-900 dark:via-slate-900 dark:to-slate-950 sm:p-8 relative overflow-hidden flex flex-col lg:flex-row gap-8 items-start justify-between">
 
                     <div className="flex-1 space-y-4 z-10">
                         <div className="flex flex-wrap items-center gap-3">
-                            <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider bg-indigo-500 text-white rounded-full flex items-center gap-1.5 shadow-lg shadow-indigo-500/30">
+                            <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider bg-indigo-700 text-white rounded-full flex items-center gap-1.5">
                                 <Sparkles className="w-3.5 h-3.5" /> Featured Article
                             </span>
                             <span className={`px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-full border flex items-center gap-1.5 ${badgeStyle.bg}`}>
@@ -96,26 +89,22 @@ export const BlogCard: React.FC<BlogCardProps> = ({ blog, onSelect, featured = f
                     </div>
 
                     <div className="z-10 shrink-0 self-end lg:self-center">
-                        <div className="px-6 py-3 rounded-2xl bg-indigo-600/20 hover:bg-indigo-600 border border-indigo-500/40 hover:border-indigo-500 text-indigo-600 hover:text-white font-semibold text-sm flex items-center gap-2 group-hover:shadow-[0_0_20px_rgba(99,102,241,0.4)] transition-all duration-300">
+                        <div className="px-5 py-3 rounded-xl bg-indigo-700 text-white font-semibold text-sm flex items-center gap-2 transition-colors duration-200 group-hover:bg-indigo-800">
                             Read Deep Dive
                             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </div>
                     </div>
                 </div>
-            </motion.button>
+            </button>
         );
     }
 
     return (
-        <motion.button
+        <button
             type="button"
             aria-label={`Read article: ${blog.title}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            whileHover={{ y: -4 }}
-            transition={{ duration: 0.25 }}
             onClick={() => onSelect(blog.id)}
-            className="group w-full cursor-pointer text-left bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500/40 dark:hover:border-indigo-500/40 rounded-3xl p-6 transition-all duration-300 relative overflow-hidden flex flex-col justify-between hover:shadow-[0_0_30px_rgba(99,102,241,0.12)]"
+            className="group w-full cursor-pointer text-left bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-500 rounded-3xl p-6 transition-[border-color,box-shadow,transform] duration-200 relative overflow-hidden flex flex-col justify-between hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 motion-reduce:transform-none"
         >
             {/* Ambient Card Header Gradient Strip */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500/0 via-indigo-500/30 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -154,6 +143,6 @@ export const BlogCard: React.FC<BlogCardProps> = ({ blog, onSelect, featured = f
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>
             </div>
-        </motion.button>
+        </button>
     );
 };

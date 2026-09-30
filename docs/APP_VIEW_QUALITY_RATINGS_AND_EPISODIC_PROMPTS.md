@@ -1,12 +1,16 @@
 # GPTX.VIP View Quality Ratings and Episodic Prompts
 
-**Review date:** 2026-09-26  
+**Review date:** 2026-09-26; Agent Labs mobile update 2026-09-28
 **Scope:** User-facing GPTX.VIP routes and the principal views mounted inside them.  
 **Rating basis:** Source-level UX and component-structure review; no browser session or visual screenshot review was available.
+
+**9.0–9.5 target plan:** [NON_FINHUB_VIEW_QUALITY_90_TO_95_PLAN.md](./NON_FINHUB_VIEW_QUALITY_90_TO_95_PLAN.md) gives endpoint-by-endpoint component changes, proposed components, layouts, CSS effects, and completion gates for the main home, profile, Roadmap, Blogs, Agent catalog, Agent Labs, Agentic Roles, and Agent Workspace. It excludes Finhub and the shared Code/Core Concepts and Math Primer course routes. Its scores are targets, not achieved ratings. The current implementation also exposes `/agents/lab/:topicSlug`, which is covered there alongside `/agents/lab`.
 
 ## How to read the ratings
 
 Scores are out of 10. They estimate how well each surface communicates its purpose, organizes its content, supports the main interaction, handles feedback and states, and fits the app's component architecture. A score is a prioritization aid, not a usability-test result. The owning component and named child components are scored separately where the code gives them a distinct user-facing responsibility. A range means closely related screens share a shell or implementation and need a runtime pass before finer ranking.
+
+The three Agent Labs topic rows were re-rated after the 2026-09-28 mobile source changes. Their new scores are provisional until the topic hub, search, and runner are viewed on phones. Other rows retain the original source review scores.
 
 The route inventory follows [APP_FRONTEND_ROUTE_MATRIX.md](./APP_FRONTEND_ROUTE_MATRIX.md). It includes mounted route views, meaningful internal screens, and the major Agent Workspace applications. It does not individually rate data records, every activity lesson, icon, primitive control, or Finhub simulator-engine utility. Those are called out in the episodes when they affect the parent view.
 
@@ -48,7 +52,7 @@ The review follows the repository instruction in `AGENTS.md`: preserve the exist
 |---|---:|---|---|---|
 | `/blogs` — Blog index | **7.3** | `BlogsView` **7.2** | `BlogsLayout` 7.1; `BlogList` 7.4; `BlogCard` 7.2 | Clear editorial surface and article selection. Improve topic filtering, reading-time scanning, and the distinction between featured and regular posts. |
 | `/blogs/:id` — Blog article | **7.2** | `BlogsView` **7.2** | `BlogArticle` 7.3; `BlogRenderer` 7.2; `BlogHero` 7.3; table of contents 7.0; interactive blocks 7.1 | Rich article patterns support technical topics. Check reading width, heading rhythm, interactive-block affordances, and return-to-index orientation. |
-| `/agents` — Agent catalog home | **7.3** | Catalog `App` **7.2**; `Home` **7.4** | `SiteHeader` 7.3; `TemplateCard` 7.3; `TemplateThumb` 7.1; `SiteFooter` 7.0 | Multiple paths into learning and the catalog are available. Reduce duplicated calls to action and state plainly what a project surface is before asking users to browse. |
+| `/agents` — Agent catalog home | **7.3** | Catalog `App` **7.2**; `Home` **7.4** | Shared root `Navbar` / `Footer` (replaced the catalog-only header/footer after this rating); `TemplateCard` 7.3; `TemplateThumb` 7.1 | Multiple paths into learning and the catalog are available. Reduce duplicated calls to action and state plainly what a project surface is before asking users to browse. |
 | `/agents/templates` — Template catalog | **7.5** | `Browse` **7.5** | Search and filter panel 7.5; `TemplateCard` 7.3; filter selects 7.2 | URL-backed search, filters, and sorting are strong foundations. Improve comparison between results and make active filters and result counts more prominent. |
 | `/agents/templates/:slug` — Template detail | **7.2** | `TemplateDetail` **7.2** | `TemplateThumb` 7.1; feature/stack summary 7.2; contact action 7.2; related cards 7.0 | Good space for a decision, but users need a stronger summary of fit, limitations, and what happens after the contact action. |
 
@@ -57,14 +61,27 @@ The review follows the repository instruction in `AGENTS.md`: preserve the exist
 | Route / internal view | View | Owning component and score | Principal component scores | Review note |
 |---|---:|---|---|---|
 | `/agents/lab` — Agent Labs landing | **6.9** | `LandingPage` **6.9** | `Navbar` 7.0; landing sections 6.9; `Footer` 6.8 | The shell exposes several useful destinations. Make the first learning action and the difference between Topics, Roles, Workspace, and reference content more explicit. |
-| Agent Labs Topics hub | **7.0** | `DevLushContainer` **7.0** | `DevLushHub` 7.1; `DevLushSidebar` 7.0; `DevLushLayout` 7.0 | Broad topic coverage is a strength. Improve topic grouping, level/outcome labels, and visual consistency between topic families. |
-| Agent Labs topic search | **7.0** | `DevLushSearchView` **7.0** | Result cards / search controls 7.0 | Keep result labels tied to a topic and expected activity, and improve empty-state and keyboard focus behavior. |
-| Agent Labs topic chapter | **6.9** | `DevLushRunner` **6.9** | `DevLushTheoryBridge` 7.0; `DevLushTheoryVisual` 7.0; activity registry panels 6.7–7.1 | Interactive breadth is high. Make task instructions, current state, and success feedback more uniform across registered activities. |
+| `/agents/lab/:topicSlug` — direct topic entry | **7.1 provisional** | `LabRuntime` and shared `DevLushContainer` **7.1 provisional** | Topic resolution, `DevLushHub` / `DevLushRunner`, and missing-topic state; no separate rendered review yet | The new slug route starts at a selected topic and can launch its chapter. Check direct-entry context, return behavior, and the invalid-slug recovery in a browser before assigning a measured score. |
+| Agent Labs Topics hub | **7.4** | `DevLushContainer` **7.4** | `DevLushHub` 7.4; `DevLushSidebar` 7.2; mobile topic rail/navigation 7.4; `DevLushLayout` 7.2 | Phone layout now uses a horizontal topic picker, a compact topic hero, a first-lab action, and Learn/Explore/Saved navigation. Topic grouping and completed-lab progress remain opportunities. |
+| Agent Labs topic search | **7.3** | `DevLushSearchView` **7.3** | Result cards / search controls 7.3; mobile learning navigation 7.4 | Header, input, suggestions, result cards, and launch controls now scale to a narrow screen. Check the keyboard and screen-reader suggestion flow in a browser. |
+| Agent Labs topic chapter | **7.1** | `DevLushRunner` **7.1** | `DevLushLayout` 7.2; `DevLushTheoryBridge` 7.0; `DevLushTheoryVisual` 7.0; activity registry panels 6.7–7.1 | Shared runner controls and theory placement now fit a phone width. Individual activity widgets still need a viewport-by-viewport overflow and touch pass. |
 | Agent Labs Reading | **6.9** | `ReadingView` **6.9** | Reading shell and progress 6.9 | Improve reading landmarks, progress context, and return links so the reference remains connected to the active course. |
 | Agent Labs Articles | **6.5** | `ArticlesView` **6.5** | Article cards 6.5 | Treat this as an explicit article index with clear availability and next actions; avoid implying full articles exist when only summaries are available. |
 | Agent Labs Blogs | **7.1** | Embedded `BlogsView` **7.2** | `BlogList` 7.4; `BlogArticle` 7.3; embedded return control 6.9 | The reusable blog system works inside the lab shell. Keep the return destination and embedded-vs-standalone behavior obvious. |
 | Agent Labs Favorites | **7.0** | `FavoritesView` **7.0** | Favorite cards / launch actions 7.0 | Saved items span more than one learning system. Make item type, origin, and launch destination visible before opening. |
 | Agent Labs Topic Theory | **6.9** | `TopicTheoryHub` **6.9** | Theory cards/grid 6.9; save/collection actions 7.0 | Collections help retain reference material. Improve empty states, collection context, and the path back to the originating topic. |
+
+#### Agent Labs mobile screen improvement
+
+The Code Concepts phone layout provides the reference pattern: a horizontal course picker, a compact course summary, large lesson actions, and a three-destination learning bar. The Agent Labs topic flow now applies that pattern while retaining its topic sidebar on wide screens.
+
+| Screen | Previous source score | Updated provisional score | Next mobile improvement |
+|---|---:|---:|---|
+| Topic browse | 7.0 | **7.4** | Group the fifteen topics by learner goal and add completed-lab progress once completion data is persisted. Keep the selected topic centered in the horizontal picker. |
+| Topic search | 7.0 | **7.3** | Review suggestion announcement and keyboard selection in a phone browser and screen reader; keep result launch visible above the bottom navigation. |
+| Chapter runner | 6.9 | **7.1** | Audit the registered simulations one family at a time for fixed-width charts, terminals, forms, and drag targets at 360, 390, and 768 CSS px. Keep theory below the activity on phones and preserve access to Back/Next/Complete. |
+
+The mobile implementation uses one-column chapter cards, 44 px or larger primary controls, a bottom Learn/Explore/Saved bar with safe-area padding, and a saved-view return path. The remaining scores require a rendered viewport and touch/keyboard review before they can be treated as measured mobile quality.
 
 ### Agentic Roles
 
@@ -374,13 +391,19 @@ Work only in gptxvip. Improve LegalContractAgentMainView, LegalContractDashboard
 Work only in gptxvip. Improve ComprehensiveMemoryTypesLab and the Episodic, Semantic, Procedural, Prospective, Parametric, In-Context, and External Memory examples. Give every type the same comparison structure: what it stores, how it is retrieved, a concrete example, a limitation, and a trade-off. Reuse common visual primitives and keep examples technically distinct. Stop when a learner can compare the types without navigating away to reconstruct the distinctions.
 ```
 
+### Episode 46 — Agent Labs phone viewport audit
+
+```text
+Work only in gptxvip. Review the Agent Labs Topics hub, topic search, saved view, and chapter runner at 360, 390, and 768 CSS px, including a short landscape viewport. Use the Code Concepts mobile learning path as the interaction reference. Verify the horizontal topic picker, Learn/Explore/Saved navigation, safe-area padding, chapter launch, search close/Back, energy-lock feedback, and runner controls with touch and keyboard. Inspect a representative activity from each topic family for fixed-width content; adapt the activity itself where the shared shell cannot solve overflow. Stop when no page-wide horizontal scroll or covered primary action remains and a learner can select, launch, return, search, and reopen a saved lab on a phone.
+```
+
 ## Suggested execution order
 
-Start with Episodes 01–11 for the main site and Finhub, then Episodes 12–20 for learning and editorial content, Episodes 21–34 for the catalog and Agent Labs, and Episodes 35–45 for Agent Workspace. Re-rate a surface after its episode is implemented and reviewed in a browser; keep the source-review score as historical context rather than treating it as a test result.
+Start with Episodes 01–11 for the main site and Finhub, then Episodes 12–20 for learning and editorial content, Episodes 21–34 for the catalog and Agent Labs, and Episodes 35–45 for Agent Workspace. Run Episode 46 after the Agent Labs mobile source pass. Re-rate a surface after its episode is implemented and reviewed in a browser; keep the source-review score as historical context rather than treating it as a test result.
 
 ## Fast execution strategy
 
-The 45 episodes describe acceptance goals, not 45 separate code passes. Several views share one mounted root, so implement their common behavior together and handle mode-specific content in the same change. This reduces repeated file reads, styling passes, and route regressions without dropping any surface from scope.
+The 46 episodes describe acceptance goals, not 46 separate code passes. Several views share one mounted root, so implement their common behavior together and handle mode-specific content in the same change. This reduces repeated file reads, styling passes, and route regressions without dropping any surface from scope.
 
 | Pass | Episodes | Shared implementation to inspect first | Fast completion gate |
 |---|---:|---|---|
@@ -391,7 +414,7 @@ The 45 episodes describe acceptance goals, not 45 separate code passes. Several 
 | E. Roadmap | 15–18 | `RoadmapContainer`, `RoadmapSidebar`, hub/search/reading/lab roots | Topic, search, reading, and lab states retain one context and consistent setup/progress/return behavior. |
 | F. Blog system | 19–20 and 29 | `BlogsView`, `BlogList`, `BlogArticle`, `BlogRenderer`, `BlogsLayout` | Standalone and embedded views share presentation, while each keeps the correct URL and parent return behavior. |
 | G. Agent catalog | 21–23 | Catalog `App`, `SiteHeader`/`SiteFooter`, cards, browse and detail roots | Home, filters, details, and contact actions form one coherent discovery path; query state and unknown-slug behavior remain intact. |
-| H. Agent Labs learning shell | 24–31 | `devLushAreaApp`, Navbar, `DevLushContainer`, topic/theory/reading/favorite roots | Top-level destinations are clear; topic hub/search/runner and reference/favorite views share consistent context and feedback. |
+| H. Agent Labs learning shell | 24–31, 46 | `devLushAreaApp`, Navbar, `DevLushContainer`, topic/theory/reading/favorite roots | Top-level destinations are clear; topic hub/search/runner and reference/favorite views share consistent context and feedback at desktop and phone widths. |
 | I. Agentic Roles | 32–34 | `AgenticRolesContainer`, layout, hub, search, runner | Role selection, search launch, and chapter completion share one role/chapter/progress model. |
 | J. Agent Workspace | 35–45 | `AgentWorkspace`, `AgentWorkspaceHome`, `AgentSidebar` patterns, then each domain app root | The workspace entry compares choices; each of the ten apps makes its first task, evidence, status, and exit legible using existing domain logic. |
 
@@ -408,8 +431,12 @@ For each pass, use this three-step loop: (1) compare the current worktree to tha
 | E. Roadmap | Complete at source level | Episodes 15–18 retain topic/chapter route context and local completion state, improve search and reading orientation, and add resilient saved-step handling plus accessible lab controls. Browser keyboard, storage, and responsive review remain open. |
 | F. Blog system | Complete at source level | Episodes 19–20 and 29 share the standalone/embedded renderer, improve article metadata and section navigation, and identify the correct return destination for each parent. Direct URL and mobile table-of-contents behavior still need browser review. |
 | G. Agent catalog | Complete at source level | Episodes 21–23 clarify learning/catalog/contact paths, show active filters and result counts, improve empty recovery, and describe template fit/assumptions from available data. Browser query-string and unknown-slug checks remain open. |
-| H. Agent Labs learning shell | Source improvements complete; reference content is unavailable | Episodes 24–26 clarify top-level destinations, topic search/result recovery, keyboard close/focus, and runner focus. Episodes 27–28 now show reading progress when content exists, identify the empty Reading Library honestly, mark article cards as previews, and offer a route to topic labs. Episode 30 exposes mixed favorite types and stale-launch feedback; Episode 31 shows saved theory provenance and opens its DevLush source chapter when available. The reading dataset is empty and the article cards have no full-article routes, so those content gaps remain visible rather than being represented as completed material. |
+| H. Agent Labs learning shell | Mobile source pass complete; phone viewport audit pending; reference content unavailable | Episodes 24–26 clarify top-level destinations, topic search/result recovery, keyboard close/focus, and runner focus. The 2026-09-28 mobile pass adds a short-label horizontal topic picker, compact hub/search/runner layouts, a shared Learn/Explore/Saved bar, and saved-view return navigation. Episode 46's rendered phone and activity-widget audit remains open. Episodes 27–28 identify the empty Reading Library and article previews honestly; Episode 30 exposes mixed favorites and stale-launch feedback; Episode 31 shows saved theory provenance. The reading dataset and full-article routes remain unavailable. |
 | I. Agentic Roles | Complete at source level | Episodes 32–34 clarify role/chapter outcomes, enrich search result context and no-match recovery, and separate sample runner output from the learner task and assessment feedback. Browser route-history, energy-lock, and completion checks remain open. |
 | J. Agent Workspace | Complete at source level with sample-data limitations | Episodes 35–45 group agents by goal and label preview data across Scanner, E-commerce, DevTools, DFIR, Threat Intelligence, Cloud Posture, SAST, Red Team, Legal Contract, and Memory Types. Domain views distinguish example findings from source evidence and suggested action; Legal Contract now separates clause availability, example finding, proposed next step, and review status. No live connectors, real contract clauses, or verified domain datasets are present in these screens. Browser review remains open. |
 
-**Validation note:** These statuses record source implementation and source inspection only. No tests/build or browser session was run for this execution, so the original ratings remain source-review estimates and responsive/runtime gates remain pending.
+**Validation note:** The 2026-09-28 mobile update passed `npm run lint` (`tsc --noEmit`) and `npm run build`. No phone browser session or touch review was available, so its updated scores are provisional and Episode 46 remains open. The other ratings remain source-review estimates from the original review.
+
+### 2026-09-30 non-Finhub continuation
+
+The source pass in [NON_FINHUB_VIEW_QUALITY_90_TO_95_PLAN.md](NON_FINHUB_VIEW_QUALITY_90_TO_95_PLAN.md) now records each H/R/B/C/L/A/W episode individually. It includes the scroll-revealed Agentic Roles use-case widget on public home and the Agent Labs landing page, real first-lesson navigation, shared empty/provenance/task-state components, saved-theory source recovery, phone icon rails, and sample-status corrections across the workspace. The plan's checkpoint lists the remaining gate for every episode. `npm run lint` and `npm run build` passed on 2026-09-30; Vite still warns about the large main bundle. **No rating has been raised to 9.0–9.5 on source changes alone.** The prior “Complete at source level” ledger labels describe the earlier implementation pass; they do not certify a rendered 9.x result or Episode 46's phone audit.

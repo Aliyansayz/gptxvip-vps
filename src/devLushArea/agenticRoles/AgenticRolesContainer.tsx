@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  AgenticRoleDefinition,
-  AgenticRoleChapter,
-  Difficulty
-} from './agenticRoleTypes';
+import { AgenticRoleDefinition, AgenticRoleChapter } from './agenticRoleTypes';
 import { agenticRoleDefinitions } from './data';
 import AgenticRolesLayout from './views/AgenticRolesLayout';
 import AgenticRolesHub from './views/AgenticRolesHub';
 import AgenticRolesRunner from './views/AgenticRolesRunner';
 import AgenticRolesSearchView from './views/AgenticRolesSearchView';
 import { toast } from 'sonner';
+import { useFavorites } from '../agentDevRootComponents/FavoritesContext';
 
 interface AgenticRolesContainerProps {
   isLocked?: boolean;
@@ -26,6 +23,7 @@ interface AgenticRolesContainerProps {
   onSearchRoutePush?: () => void;
   onSearchRouteBack?: () => void;
   onRoleRoutePush?: (roleId: string) => void;
+  onShowSaved?: () => void;
 }
 
 export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
@@ -43,6 +41,7 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
   onSearchRoutePush,
   onSearchRouteBack,
   onRoleRoutePush,
+  onShowSaved,
 }) => {
   const roles: AgenticRoleDefinition[] = agenticRoleDefinitions;
 
@@ -50,10 +49,10 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
     initialRoleId || roles[0]?.id || 'seo-agentic-analyst'
   );
   const [selectedChapter, setSelectedChapter] = useState<AgenticRoleChapter | null>(null);
-  const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | 'all'>('all');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const routeChapterEntryRef = useRef<string | undefined>(undefined);
   const routeSearchEntryRef = useRef(false);
+  const searchOpenerRef = useRef<HTMLElement | null>(null);
   const [completedChapterIds, setCompletedChapterIds] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem('agentic_completed_chapters');
@@ -74,6 +73,17 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
 
   // Find active role
   const activeRole = roles.find((r) => r.id === activeRoleId) || roles[0];
+
+  useEffect(() => {
+    if (initialRoleId && roles.some(role => role.id === initialRoleId)) setActiveRoleId(initialRoleId);
+  }, [initialRoleId, roles]);
+
+  let favoritesCtx: ReturnType<typeof useFavorites> | null = null;
+  try {
+    favoritesCtx = useFavorites();
+  } catch {
+    // The role explorer can still run when mounted outside the saved-items provider.
+  }
 
   useEffect(() => {
     if (routeRoleId && roles.some((role) => role.id === routeRoleId)) {
@@ -123,13 +133,20 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
 
   // Global Keyboard listener for ⌘K / Ctrl+K search and Escape
   useEffect(() => {
+    const restoreSearchFocus = () => window.requestAnimationFrame(() => {
+      const opener = searchOpenerRef.current;
+      if (opener?.isConnected && opener.getClientRects().length > 0) opener.focus();
+      else document.querySelector<HTMLButtonElement>('[aria-label="Explore Agentic Roles"]')?.focus();
+    });
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
         if (isSearchOpen) {
           setIsSearchOpen(false);
           if (routeSearchOpen) onSearchRouteBack?.();
+          restoreSearchFocus();
         } else {
+          searchOpenerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
           setIsSearchOpen(true);
           onSearchRoutePush?.();
         }
@@ -137,6 +154,7 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
       if (e.key === 'Escape' && isSearchOpen) {
         setIsSearchOpen(false);
         if (routeSearchOpen) onSearchRouteBack?.();
+        restoreSearchFocus();
       }
     };
 
@@ -167,7 +185,7 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
   const handleCompleteChapter = (labComponentId: string) => {
     if (!completedChapterIds.includes(labComponentId)) {
       setCompletedChapterIds((prev) => [...prev, labComponentId]);
-      toast.success("Mission Milestone Completed! Progression saved to career portfolio.");
+      toast.success("Case completed. Your role progress has been saved.");
     }
   };
 
@@ -176,13 +194,25 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
   };
 
   const handleSearchOpen = () => {
+    if (isSearchOpen) return;
+    searchOpenerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setIsSearchOpen(true);
     onSearchRoutePush?.();
   };
 
   const handleSearchClose = () => {
+    if (!isSearchOpen) return;
     setIsSearchOpen(false);
     if (routeSearchOpen) onSearchRouteBack?.();
+    window.requestAnimationFrame(() => {
+      const opener = searchOpenerRef.current;
+      if (opener?.isConnected && opener.getClientRects().length > 0) opener.focus();
+      else document.querySelector<HTMLButtonElement>('[aria-label="Explore Agentic Roles"]')?.focus();
+    });
+  };
+
+  const handleShowHub = () => {
+    if (isSearchOpen) handleSearchClose();
   };
 
   const handleRoleSelect = (roleId: string) => {
@@ -205,10 +235,13 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
       roles={roles}
       activeRoleId={activeRoleId}
       onSelectRole={handleRoleSelect}
-      selectedDifficulty={selectedDifficulty}
-      onSelectDifficulty={setSelectedDifficulty}
       onOpenSearch={handleSearchOpen}
+      onShowHub={handleShowHub}
+      onShowSaved={onShowSaved || (() => undefined)}
       onExitToDevLush={onExitToDevLush}
+      isSearchOpen={isSearchOpen}
+      isRunning={Boolean(selectedChapter)}
+      savedCount={favoritesCtx?.favorites.length || 0}
     >
       {selectedChapter ? (
         <AgenticRolesRunner
@@ -217,22 +250,17 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
           onBack={handleChapterBack}
           onCompleteChapter={handleCompleteChapter}
         />
-      ) : (
-        <AgenticRolesHub
-          role={activeRole}
-          onLaunchChapter={handleLaunchChapter}
-          selectedDifficulty={selectedDifficulty}
-          onSelectDifficulty={setSelectedDifficulty}
-          completedChapterIds={completedChapterIds}
-        />
-      )}
-
-      {/* Global Search Dialog Modal */}
-      {isSearchOpen && (
+      ) : isSearchOpen ? (
         <AgenticRolesSearchView
           roles={roles}
           onSelectChapter={handleSelectSearchResult}
           onClose={handleSearchClose}
+        />
+      ) : (
+        <AgenticRolesHub
+          role={activeRole}
+          onLaunchChapter={handleLaunchChapter}
+          completedChapterIds={completedChapterIds}
         />
       )}
     </AgenticRolesLayout>

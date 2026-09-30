@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { WebVulnCandidate } from '../utility/schema';
 import { Shield, Target, DollarSign, Activity, AlertCircle, Play, Bug, Terminal, Zap, ArrowRight, Search, ShieldCheck, HelpCircle } from 'lucide-react';
 import AgentPreviewNotice from '../../../components/AgentPreviewNotice';
+import SourceStatus from '../../../components/SourceStatus';
 
 interface ScannerDashboardViewProps {
   candidates: WebVulnCandidate[];
@@ -28,25 +29,25 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-2 px-3 py-1.5 bg-white rounded-md border border-slate-200 shadow-sm">
             <Target className="w-4 h-4 text-emerald-600" />
-            <span className="text-sm font-mono text-slate-700">Target: *.internal-sandbox.com</span>
+            <span className="text-sm font-mono text-slate-700">Example scope: *.internal-sandbox.com</span>
           </div>
           <div className="flex items-center gap-2 px-3 py-1.5 bg-white rounded-md border border-slate-200 shadow-sm">
-            <Activity className="w-4 h-4 text-emerald-600 animate-pulse" />
-            <span className="text-sm font-medium text-slate-700">Recon Agent: Preview</span>
+            <Activity className="w-4 h-4 text-emerald-600" />
+            <span className="text-sm font-medium text-slate-700">Scripted preview · idle</span>
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-6">
           <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
             <DollarSign className="w-4 h-4 text-emerald-500" />
-            <span>Pending: $4,250</span>
+            <span>Example pending: $4,250</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
             <Bug className="w-4 h-4 text-purple-500" />
-            <span>Resolved: 12</span>
+            <span>Example resolved: 12</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
             <Shield className="w-4 h-4 text-blue-500" />
-            <span>Rank: 42</span>
+            <span>Example rank: 42</span>
           </div>
           <button 
             type="button"
@@ -66,33 +67,35 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div id="tutorial-alerts" className="md:col-span-2 space-y-4">
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-              <Zap className="w-4 h-4 text-amber-500" /> Actionable Alerts
+              <Zap className="w-4 h-4 text-amber-500" /> Example signals to review
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                <div className="p-4 rounded-xl border border-red-200 bg-red-50 flex flex-col gap-2 shadow-sm">
                  <div className="flex items-center gap-2 text-red-700 font-semibold text-sm">
                    <AlertCircle className="w-4 h-4" /> Critical SSRF Candidate
                  </div>
-                 <p className="text-xs text-red-600/80">Found on /api/webhook/test. Immediate verification required.</p>
+                 <p className="text-xs text-red-700">Prepared example at /api/webhook/test. Inspect the evidence before any real-world decision.</p>
+                 <SourceStatus source="Built-in scanner scenario" freshness="No connected target or discovery time" />
                </div>
                <div className="p-4 rounded-xl border border-blue-200 bg-blue-50 flex flex-col gap-2 shadow-sm">
                  <div className="flex items-center gap-2 text-blue-700 font-semibold text-sm">
                    <Search className="w-4 h-4" /> 3 New Subdomains
                  </div>
-                 <p className="text-xs text-blue-600/80">Discovered via passive enumeration. Ready for active scanning.</p>
+                 <p className="text-xs text-blue-700">Illustrative subdomains in the prepared scenario.</p>
+                 <SourceStatus source="Built-in scanner scenario" freshness="No connected target or discovery time" />
                </div>
             </div>
           </div>
           
           <div id="tutorial-activity" className="space-y-4">
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-              <Terminal className="w-4 h-4 text-slate-400" /> Activity Stream
+              <Terminal className="w-4 h-4 text-slate-400" /> Scripted activity example
             </h3>
             <div className="p-4 rounded-xl border border-slate-200 bg-white shadow-sm font-mono text-xs text-slate-600 space-y-2 h-[104px] overflow-y-auto">
               <div className="text-emerald-600">[10:42:01] ReconAgent: Enumerating staging.internal...</div>
               <div className="text-slate-500">[10:42:05] ReconAgent: Found 14 alive endpoints.</div>
               <div className="text-slate-500">[10:43:12] VulnAgent: Starting fuzzing on auth service.</div>
-              <div className="animate-pulse text-emerald-600">_</div>
+              <div className="text-slate-500">No process is currently running.</div>
             </div>
           </div>
         </div>
@@ -105,7 +108,7 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
              <button type="button" onClick={() => onStartScan('https://ecommerce.example.com/checkout')} className="p-5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-emerald-300 hover:shadow-md transition-all text-left group shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">
                 <h4 className="font-semibold text-sm mb-1 text-slate-800 group-hover:text-emerald-600 transition-colors">E-Commerce Checkout</h4>
-                <p className="text-xs text-slate-500 mb-4 leading-relaxed">Deep SSRF & IDOR scan on payment webhook endpoints.</p>
+                <p className="text-xs text-slate-500 mb-4 leading-relaxed">Play a prepared checkout finding sequence.</p>
                 <div className="text-xs font-mono text-emerald-600 flex items-center justify-between">
                   <span>Target: /checkout/api</span>
                   <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -113,7 +116,7 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
              </button>
              <button type="button" onClick={() => onStartScan('https://api.example.com/graphql')} className="p-5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-emerald-300 hover:shadow-md transition-all text-left group shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">
                 <h4 className="font-semibold text-sm mb-1 text-slate-800 group-hover:text-emerald-600 transition-colors">GraphQL Introspection</h4>
-                <p className="text-xs text-slate-500 mb-4 leading-relaxed">Check for introspection, rate limits, and excessive data exposure.</p>
+                <p className="text-xs text-slate-500 mb-4 leading-relaxed">Play a prepared API review sequence.</p>
                 <div className="text-xs font-mono text-emerald-600 flex items-center justify-between">
                   <span>Target: /graphql</span>
                   <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -121,7 +124,7 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
              </button>
              <button type="button" onClick={() => onStartScan('https://admin.legacy.example.com')} className="p-5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-emerald-300 hover:shadow-md transition-all text-left group shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">
                 <h4 className="font-semibold text-sm mb-1 text-slate-800 group-hover:text-emerald-600 transition-colors">Legacy Admin Fuzzing</h4>
-                <p className="text-xs text-slate-500 mb-4 leading-relaxed">SQLi and Command Injection payload spray on legacy forms.</p>
+                <p className="text-xs text-slate-500 mb-4 leading-relaxed">Play a prepared legacy form review sequence.</p>
                 <div className="text-xs font-mono text-emerald-600 flex items-center justify-between">
                   <span>Target: admin.legacy</span>
                   <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -138,7 +141,7 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
                 id="scanner-custom-target"
                 type="text"
                 aria-label="Enter a sample target for the scripted preview"
-                placeholder="Enter custom target URL or IP range..."
+                placeholder="Name this sample scenario..."
                 className="w-full bg-transparent border-none py-3 text-sm focus:outline-none font-mono text-slate-700 placeholder-slate-400"
                 value={customTarget}
                 onChange={(event) => setCustomTarget(event.target.value)}
@@ -149,7 +152,7 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
              disabled={!customTarget.trim()}
              className="min-h-11 w-full sm:w-auto px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
            >
-             Scan Asset
+             Run scripted preview
            </button>
         </form>
 
@@ -159,7 +162,7 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
           <div id="tutorial-priority-queue" className="space-y-4">
              <div className="flex items-center justify-between">
                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-                 <ShieldCheck className="w-4 h-4 text-purple-500" /> Priority Queue (To Verify)
+                 <ShieldCheck className="w-4 h-4 text-purple-500" /> Sample findings to inspect
                </h3>
                <button type="button" onClick={onViewAllFindings} className="min-h-11 px-2 text-xs text-purple-600 hover:text-purple-700 transition-colors font-medium hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500">View All Findings</button>
              </div>
@@ -174,7 +177,8 @@ export default function ScannerDashboardView({ candidates, onStartScan, onViewAl
                       </div>
                       <div>
                         <div className="text-sm font-semibold text-slate-800">{candidate.vulnClass}</div>
-                        <div className="text-xs text-slate-500 font-mono mt-0.5">{candidate.endpoint}</div>
+                        <div className="text-xs text-slate-500 font-mono mt-0.5 break-all">{candidate.endpoint}</div>
+                        <SourceStatus source="Built-in scanner candidate" confidence={candidate.confidenceScore} />
                       </div>
                     </div>
                     <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-purple-500 transition-colors" />
