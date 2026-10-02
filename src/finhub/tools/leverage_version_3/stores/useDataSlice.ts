@@ -28,10 +28,23 @@ const defaultDataSettings: DataSettingsConfig = {
 };
 
 export function useDataSlice() {
-  const [dataSettings, setDataSettings] = useState<DataSettingsConfig>(() => loadState(`${STORAGE_KEY}_data`, defaultDataSettings));
+  const [dataSettings, setDataSettings] = useState<DataSettingsConfig>(() => {
+    const saved = loadState(`${STORAGE_KEY}_data`, defaultDataSettings);
+    // Imported CSV candles are session data. Older persisted CSV settings may
+    // point to an empty stream after a storage quota failure.
+    return saved.dataSourceType === 'csv' && !saved.csvRawData?.length
+      ? { ...saved, dataSourceType: 'simulation' }
+      : saved;
+  });
 
   useEffect(() => {
-    saveState(`${STORAGE_KEY}_data`, dataSettings);
+    // A 100k-row M1 file exceeds typical localStorage quotas. Keep the active
+    // candles in React state and persist only lightweight simulation settings.
+    saveState(`${STORAGE_KEY}_data`, {
+      ...dataSettings,
+      csvRawData: [],
+      dataSourceType: dataSettings.dataSourceType === 'csv' ? 'simulation' : dataSettings.dataSourceType
+    });
   }, [dataSettings]);
 
   return {

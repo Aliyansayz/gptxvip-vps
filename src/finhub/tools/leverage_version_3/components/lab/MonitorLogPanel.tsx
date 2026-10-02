@@ -32,6 +32,9 @@ export const MonitorLogPanel: React.FC<MonitorLogPanelProps> = ({ activeTab }) =
       case 'divergence': return 'Divergence';
       case 'linear_regression': return 'Linear Regression';
       case 'bollinger_bands': return 'Bollinger Bands';
+      case 'ichimoku': return 'Ichimoku';
+      case 'three_candle_strike': return '3 Candle Strike';
+      case 'turtle_trading': return 'Turtle Trading';
       case 'supertrend_regime': return 'Supertrend Regime';
       case 'heikin_ashi_smoothed': return 'Heikin Ashi Smoothed';
       case 'candlestick_pattern': return 'Candlestick Pattern';
@@ -108,6 +111,27 @@ export const MonitorLogPanel: React.FC<MonitorLogPanelProps> = ({ activeTab }) =
       if (b !== undefined) {
         trend = sigObj.direction?.[idx] === 1 ? 'LONG' : (sigObj.direction?.[idx] === -1 ? 'SHORT' : 'NEUTRAL');
         values = `Upper: ${b.upper.toFixed(2)} | Lower: ${b.lower.toFixed(2)}`;
+      }
+    } else if (baseId === 'ichimoku') {
+      const ich = sigObj.ichimoku;
+      const direction = ich?.trend?.[idx];
+      if (direction !== undefined) {
+        trend = direction === 1 ? 'LONG' : direction === -1 ? 'SHORT' : 'NEUTRAL';
+        values = `Tenkan: ${ich.tenkan[idx]?.toFixed(2)} | Kijun: ${ich.kijun[idx]?.toFixed(2)}`;
+      }
+    } else if (baseId === 'three_candle_strike') {
+      const strike = sigObj.strike;
+      const direction = strike?.trend?.[idx];
+      if (direction !== undefined) {
+        trend = direction === 1 ? 'LONG' : direction === -1 ? 'SHORT' : 'NEUTRAL';
+        values = `Fast SMMA: ${strike.fast[idx]?.toFixed(2)} | Slope: ${strike.smoothSlope[idx]?.toFixed(4)}`;
+      }
+    } else if (baseId === 'turtle_trading') {
+      const turtle = sigObj.turtle;
+      const direction = turtle?.trend?.[idx];
+      if (direction !== undefined) {
+        trend = direction === 1 ? 'LONG' : direction === -1 ? 'SHORT' : 'NEUTRAL';
+        values = `Entry: ${turtle.entryUpper[idx]?.toFixed(2)} / ${turtle.entryLower[idx]?.toFixed(2)} | N: ${turtle.n[idx]?.toFixed(3)}`;
       }
     } else if (baseId === 'supertrend_regime') {
       const sig = sigObj.supertrend_regime?.signal?.[idx];

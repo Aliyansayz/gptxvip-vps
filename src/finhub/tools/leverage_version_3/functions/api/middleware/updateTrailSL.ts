@@ -10,7 +10,8 @@ export function updateTrailSL(
   currentIndex: number,
   data: Ohlc[],
   config: TradingRulesConfig,
-  stops?: { lowerBand: number[]; upperBand: number[] }
+  stops?: { lowerBand: number[]; upperBand: number[] },
+  assetType: string = 'gold'
 ): Trade[] {
   if (currentIndex < 0) return trades;
 
@@ -82,7 +83,8 @@ export function updateTrailSL(
       entryPrice: trade.entryPrice,
       latestPrice: currentCandle.close,
       proposedNewSL,
-      direction: trade.side
+      direction: trade.side,
+      assetType
     };
 
     const finalSL = evaluateStopLossModification(ctx, config.stopLossModifier);

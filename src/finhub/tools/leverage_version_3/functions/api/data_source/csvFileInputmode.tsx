@@ -1,13 +1,18 @@
 import React, { useState, useRef } from 'react';
 import { useIndicatorsStore } from '../../../stores/indicators_store';
-import { normalizeCSV } from '../middleware/normalizeCsvFile';
-import { Ohlc } from '../indicators/baseline';
+import { decodeCsvBytes, inferCsvFileMetadata, parseCsvCandles } from '../middleware/normalizeCsvFile';
 
 export const CsvFileInputMode: React.FC = () => {
-    const { dataSettings, setDataSettings } = useIndicatorsStore();
-    const [assetName, setAssetName] = useState('CustomAsset');
-    const [timeframeValue, setTimeframeValue] = useState<number>(1);
-    const [timeframeUnit, setTimeframeUnit] = useState<'s' | 'm' | 'h'>('m');
+    const { dataSettings, setDataSettings, tradingConfig } = useIndicatorsStore();
+    const [assetName, setAssetName] = useState(() => dataSettings.dataSourceType === 'csv' ? String(dataSettings.asset) : 'CustomAsset');
+    const [timeframeValue, setTimeframeValue] = useState<number>(() => dataSettings.dataSourceType === 'csv' ? Number.parseInt(dataSettings.timeframe, 10) || 1 : 1);
+    const [timeframeUnit, setTimeframeUnit] = useState<'s' | 'm' | 'h'>(() => {
+        const unit = dataSettings.timeframe?.slice(-1);
+        return dataSettings.dataSourceType === 'csv' && (unit === 's' || unit === 'm' || unit === 'h') ? unit : 'm';
+    });
+    const [assetNameEdited, setAssetNameEdited] = useState(false);
+    const [timeframeEdited, setTimeframeEdited] = useState(false);
+    const [loadedFileName, setLoadedFileName] = useState('');
     const [fileError, setFileError] = useState<string>('');
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -17,45 +22,35 @@ export const CsvFileInputMode: React.FC = () => {
 
         try {
             setFileError('');
-            const text = await file.text();
-            const normalized = normalizeCSV(text);
-            
-            // normalized csv format: "datetime,open,high,low,close,volume"
-            const lines = normalized.split('\n').filter(l => l.trim() !== '');
-            const parsedData: Ohlc[] = [];
-            
-            for (let i = 1; i < lines.length; i++) {
-                const cols = lines[i].split(',');
-                if (cols.length === 6) {
-                    parsedData.push({
-                        time: new Date(cols[0]).getTime(), // Attempt to parse datetime
-                        open: Number(cols[1]),
-                        high: Number(cols[2]),
-                        low: Number(cols[3]),
-                        close: Number(cols[4]),
-                        volume: Number(cols[5]) 
-                    });
-                }
+            const text = decodeCsvBytes(new Uint8Array(await file.arrayBuffer()));
+            const csvTimezone = tradingConfig.timeFilter?.csv_file_timezone || 'GMT+3';
+            const parsedData = parseCsvCandles(text, csvTimezone);
+            const inferred = inferCsvFileMetadata(file.name);
+            const resolvedAsset = (assetNameEdited ? assetName : inferred.asset || assetName).trim() || 'CustomAsset';
+            const resolvedTimeframe = timeframeEdited ? `${timeframeValue}${timeframeUnit}` : inferred.timeframe || `${timeframeValue}${timeframeUnit}`;
+            const timeframeMatch = /^(\d+)([smh])$/.exec(resolvedTimeframe);
+            if (timeframeMatch) {
+                setTimeframeValue(Number(timeframeMatch[1]));
+                setTimeframeUnit(timeframeMatch[2] as 's' | 'm' | 'h');
             }
-
-            if (parsedData.length === 0) {
-                setFileError('No valid data found in CSV.');
-                return;
-            }
+            setAssetName(resolvedAsset);
+            setLoadedFileName(file.name);
 
             // Successfully parsed
             setDataSettings(prev => ({
                 ...prev,
                 dataSourceType: 'csv',
-                asset: assetName,
-                timeframe: `${timeframeValue}${timeframeUnit}`,
-                simulationMode: `${assetName}_${timeframeValue}${timeframeUnit}`,
+                asset: resolvedAsset,
+                timeframe: resolvedTimeframe,
+                simulationMode: `${resolvedAsset}_${resolvedTimeframe}`,
                 csvRawData: parsedData,
                 showAlpha: true
             }));
             
-        } catch (err: any) {
-            setFileError(err.message || 'Error processing CSV file');
+        } catch (err) {
+            setFileError(err instanceof Error ? err.message : 'Error processing CSV file');
+        } finally {
+            if (fileInputRef.current) fileInputRef.current.value = '';
         }
     };
 
@@ -87,7 +82,7 @@ export const CsvFileInputMode: React.FC = () => {
                     <input 
                         type="text" 
                         value={assetName}
-                        onChange={e => setAssetName(e.target.value)}
+                        onChange={e => { setAssetName(e.target.value); setAssetNameEdited(true); }}
                         className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-xs rounded-md px-2 py-1.5 focus:ring-cyan-500 focus:border-cyan-500"
                     />
                 </div>
@@ -98,7 +93,7 @@ export const CsvFileInputMode: React.FC = () => {
                         type="number" 
                         min={1}
                         value={timeframeValue}
-                        onChange={e => setTimeframeValue(parseInt(e.target.value) || 1)}
+                        onChange={e => { setTimeframeValue(parseInt(e.target.value) || 1); setTimeframeEdited(true); }}
                         className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-xs rounded-md px-2 py-1.5 focus:ring-cyan-500 focus:border-cyan-500"
                     />
                 </div>
@@ -107,7 +102,7 @@ export const CsvFileInputMode: React.FC = () => {
                     <label className="text-[10px] text-zinc-400 font-bold uppercase">Timeframe Unit</label>
                     <select 
                         value={timeframeUnit}
-                        onChange={e => setTimeframeUnit(e.target.value as any)}
+                        onChange={e => { setTimeframeUnit(e.target.value as 's' | 'm' | 'h'); setTimeframeEdited(true); }}
                         className="bg-zinc-900 border border-zinc-700 text-zinc-300 text-xs rounded-md px-2 py-1.5 focus:ring-cyan-500 focus:border-cyan-500"
                     >
                         <option value="s">Seconds</option>
@@ -122,16 +117,18 @@ export const CsvFileInputMode: React.FC = () => {
                 <div className="flex items-center gap-3">
                     <input 
                         type="file" 
-                        accept=".csv"
+                        accept=".csv,text/csv,text/plain"
                         ref={fileInputRef}
                         onChange={handleFileChange}
                         className="text-xs text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-zinc-800 file:text-cyan-400 hover:file:bg-zinc-700"
                     />
                     {dataSettings.dataSourceType === 'csv' && dataSettings.csvRawData && dataSettings.csvRawData.length > 0 && (
-                        <span className="text-[10px] text-emerald-400 font-bold">Loaded {dataSettings.csvRawData.length} records</span>
+                        <span className="text-[10px] text-emerald-400 font-bold">Loaded {dataSettings.csvRawData.length} candles{loadedFileName ? ` from ${loadedFileName}` : ''}</span>
                     )}
                 </div>
                 {fileError && <span className="text-[10px] text-red-500 mt-1">{fileError}</span>}
+                <span className="text-[10px] text-zinc-500">Accepts datetime/open/high/low/close (volume optional) or MetaTrader &lt;DATE&gt;/&lt;TIME&gt;/&lt;OPEN&gt;/&lt;HIGH&gt;/&lt;LOW&gt;/&lt;CLOSE&gt; exports. Times without an offset use CSV File Timezone ({tradingConfig.timeFilter?.csv_file_timezone || 'GMT+3'}).</span>
+                <span className="text-[10px] text-zinc-500">Imported candles remain available until this page is reloaded. Re-import the file after a reload.</span>
             </div>
         </div>
     );

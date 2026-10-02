@@ -5,6 +5,9 @@ import { calculateVolatilityZScore } from '../../functions/api/indicators/exclus
 import { linearRegressionSystem } from '../../functions/api/indicators/exclusive/linearRegression';
 import { calculateSqueeze } from '../../functions/api/indicators/integral/squeeze_momentum';
 import { calculateBollingerBands } from '../../functions/api/indicators/exclusive/bollingerBands';
+import { calculateIchimoku } from '../../functions/api/classicSystem/ichimoku';
+import { calculateThreeCandleStrike } from '../../functions/api/classicSystem/threeCandleStrike';
+import { calculateTurtleTrading } from '../../functions/api/classicSystem/turtleTrading';
 import { supertrendRegimeSystem } from '../../functions/api/indicators/exclusive/supertrend_regime';
 
 interface Config {
@@ -72,7 +75,16 @@ export const useIndicatorCalculations = (
       result.supertrend_regime = supertrendRegimeSystem(fullHighs, fullLows, fullClosePrices, config.stPeriod || 10, config.atrMultiplier || 3, config.regimePeriod || 30, config.zPeriod || 20, config.zUpper || 1.5, config.zLower || -1.5);
     }
     if (config.type === 'bollinger_bands') {
-      result.bb = calculateBollingerBands(data, config.bbPeriod || 20, config.bbStdDev || 2);
+      result.bb = calculateBollingerBands(data, config.bbPeriod ?? (config as any).period ?? 55, config.bbStdDev ?? (config as any).stdDev ?? 1);
+    }
+    if (config.type === 'ichimoku') {
+      result.ichimoku = calculateIchimoku(data, config as any);
+    }
+    if (config.type === 'three_candle_strike') {
+      result.strike = calculateThreeCandleStrike(data, config as any);
+    }
+    if (config.type === 'turtle_trading') {
+      result.turtle = calculateTurtleTrading(data, config as any);
     }
     if (indicators.includes('stochastic')) {
       result.stochastic = calculateStochastic(data, config.stochK || 14, 3, config.stochD || 3);

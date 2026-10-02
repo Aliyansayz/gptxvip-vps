@@ -10,7 +10,10 @@ const defaultIndicatorSettings: IndicatorSettings = {
   supertrend: { period: 10, multiplier: 3, dataSource: 'alpha' },
   divergence: { stochK: 14, stochD: 3, dataSource: 'alpha' },
   linear_regression: { slopePeriod: 20, volPeriod: 20, regimePeriod: 30, dataSource: 'alpha' },
-  bollinger_bands: { period: 20, stdDev: 2, dataSource: 'alpha' },
+  bollinger_bands: { period: 55, stdDev: 1, dataSource: 'alpha' },
+  ichimoku: { tenkanPeriod: 9, kijunPeriod: 26, senkouBPeriod: 52, displacement: 26, dataSource: 'alpha' },
+  three_candle_strike: { fastEma: 8, fastSmma: 21, mediumSmma: 50, slowSmma: 200, regressionPeriod: 50, slopeSmooth: 50, trendThreshold: 0.03, dataSource: 'alpha' },
+  turtle_trading: { entryPeriod: 20, exitPeriod: 10, nPeriod: 20, stopMultiple: 2, dataSource: 'alpha' },
   supertrend_regime: { stPeriod: 10, atrMultiplier: 3, regimePeriod: 30, zPeriod: 20, zUpper: 1.5, zLower: -1.5, dataSource: 'alpha' },
   heikin_ashi_smoothed: { smoothLen: 10, dataSource: 'alpha' },
   candlestick_pattern: { dataSource: 'alpha' },
@@ -56,7 +59,10 @@ const defaultIndicatorSettings: IndicatorSettings = {
 };
 
 export function useIndicatorSlice() {
-  const [indicatorSettings, setIndicatorSettings] = useState<IndicatorSettings>(() => loadState(`${STORAGE_KEY}_indicator`, defaultIndicatorSettings));
+  const [indicatorSettings, setIndicatorSettings] = useState<IndicatorSettings>(() => {
+    const saved = loadState(`${STORAGE_KEY}_indicator`, defaultIndicatorSettings);
+    return { ...defaultIndicatorSettings, ...saved };
+  });
 
   useEffect(() => {
     saveState(`${STORAGE_KEY}_indicator`, indicatorSettings);
@@ -78,7 +84,13 @@ export function useIndicatorSlice() {
       case 'linear_regression':
         return `Simulates a Linear Regression System with Slope (${indicatorSettings.linear_regression.slopePeriod}), Volatility (${indicatorSettings.linear_regression.volPeriod}), and Regime (${indicatorSettings.linear_regression.regimePeriod}). Generates signals based on trend decay and mean reversion.`;
       case 'bollinger_bands':
-        return `Simulates Bollinger Bands (${indicatorSettings.bollinger_bands?.period || 20} period, ${indicatorSettings.bollinger_bands?.stdDev || 2} std dev). LONG triggered when candle opens below lower band and closes above. SHORT triggered when candle opens above upper band and closes below.`;
+        return `Bollinger breakout (${indicatorSettings.bollinger_bands?.period || 55} SMA, ${indicatorSettings.bollinger_bands?.stdDev || 1} standard deviation). A close beyond the upper or lower band changes the trade direction.`;
+      case 'ichimoku':
+        return 'Ichimoku trend requires Tenkan/Kijun alignment, price beyond the displaced cloud, and Chikou confirmation.';
+      case 'three_candle_strike':
+        return 'Three Candle Strike requires three opposite candles followed by a reversal close, with smoothed moving average and regression trend filters.';
+      case 'turtle_trading':
+        return `Turtle channel breakout: ${indicatorSettings.turtle_trading.entryPeriod} prior bars for entry and ${indicatorSettings.turtle_trading.exitPeriod} prior bars for exit. N uses ${indicatorSettings.turtle_trading.nPeriod} true ranges. Use a daily timeframe for the original day-based periods.`;
       case 'supertrend_regime':
         return `Simulates a Hybrid Supertrend Regime System. Combines Adaptive Supertrend (StPeriod: ${indicatorSettings.supertrend_regime?.stPeriod || 10}, AtrMult: ${indicatorSettings.supertrend_regime?.atrMultiplier || 3}) with Regime (RegPeriod: ${indicatorSettings.supertrend_regime?.regimePeriod || 30}) and Z-Score Reversion (ZPeriod: ${indicatorSettings.supertrend_regime?.zPeriod || 20}, High: ${indicatorSettings.supertrend_regime?.zUpper || 1.5}, Low: ${indicatorSettings.supertrend_regime?.zLower || -1.5}).`;
       case 'heikin_ashi_smoothed':

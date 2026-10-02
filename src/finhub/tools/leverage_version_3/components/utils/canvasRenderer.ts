@@ -346,8 +346,8 @@ export const drawOverlays = (context: RenderContext) => {
     ctx.stroke();
   }
 
-  if (mainIndicatorVisible && config.type === 'bollinger_bands' && computedIndicators?.entrySignal?.bb) {
-     const bb = computedIndicators.entrySignal.bb;
+  if (mainIndicatorVisible && config.type === 'bollinger_bands' && computedIndicators?.bb) {
+     const bb = computedIndicators.bb;
      
      ctx.strokeStyle = '#3b82f6';
      ctx.lineWidth = 1.5;
@@ -382,6 +382,73 @@ export const drawOverlays = (context: RenderContext) => {
         else ctx.lineTo(getX(i), getY(val));
      }
      ctx.stroke();
+  }
+  if (mainIndicatorVisible && (config.type === 'ichimoku' || config.type === 'three_candle_strike' || config.type === 'turtle_trading')) {
+    const indicator = config.type === 'ichimoku' ? computedIndicators?.ichimoku : config.type === 'three_candle_strike' ? computedIndicators?.strike : computedIndicators?.turtle;
+    if (indicator) {
+      if (config.type === 'ichimoku') {
+        for (let i = Math.max(startIdx + 1, 1); i <= effectiveEndIdx; i++) {
+          const a0 = indicator.cloudA[i - 1], b0 = indicator.cloudB[i - 1];
+          const a1 = indicator.cloudA[i], b1 = indicator.cloudB[i];
+          if (![a0, b0, a1, b1].every(Number.isFinite)) continue;
+          ctx.fillStyle = a1 >= b1 ? 'rgba(34,197,94,0.12)' : 'rgba(239,68,68,0.12)';
+          ctx.beginPath();
+          ctx.moveTo(getX(i - 1), getY(a0));
+          ctx.lineTo(getX(i), getY(a1));
+          ctx.lineTo(getX(i), getY(b1));
+          ctx.lineTo(getX(i - 1), getY(b0));
+          ctx.closePath();
+          ctx.fill();
+        }
+      }
+      const lines: [string, string][] = config.type === 'ichimoku'
+        ? [['tenkan', '#22d3ee'], ['kijun', '#f59e0b'], ['cloudA', '#22c55e'], ['cloudB', '#ef4444']]
+        : config.type === 'three_candle_strike'
+        ? [['ema', '#f8fafc'], ['fast', '#facc15'], ['medium', '#fb923c'], ['slow', '#ef4444']]
+        : [['entryUpper', '#22c55e'], ['entryLower', '#ef4444'], ['exitUpper', '#86efac'], ['exitLower', '#fca5a5']];
+      for (const [key, color] of lines) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = key === 'cloudA' || key === 'cloudB' ? 1 : 1.5;
+        ctx.beginPath();
+        let started = false;
+        for (let i = startIdx; i <= effectiveEndIdx; i++) {
+          const value = indicator[key]?.[i];
+          if (!Number.isFinite(value)) { started = false; continue; }
+          if (!started) { ctx.moveTo(getX(i), getY(value)); started = true; }
+          else ctx.lineTo(getX(i), getY(value));
+        }
+        ctx.stroke();
+      }
+      for (let i = startIdx; i <= effectiveEndIdx; i++) {
+        const isLong = indicator.longEntry?.[i];
+        const isShort = indicator.shortEntry?.[i];
+        if (!isLong && !isShort) continue;
+        const candle = context.data[i];
+        if (!candle) continue;
+        ctx.fillStyle = isLong ? '#22c55e' : '#ef4444';
+        ctx.beginPath();
+        const y = getY(isLong ? candle.low : candle.high) + (isLong ? 8 : -8);
+        ctx.moveTo(getX(i), y + (isLong ? -5 : 5));
+        ctx.lineTo(getX(i) - 4, y + (isLong ? 3 : -3));
+        ctx.lineTo(getX(i) + 4, y + (isLong ? 3 : -3));
+        ctx.closePath();
+        ctx.fill();
+      }
+      if (config.type === 'turtle_trading') {
+        ctx.lineWidth = 1.5;
+        for (let i = startIdx; i <= effectiveEndIdx; i++) {
+          const exitLong = indicator.exitLong?.[i];
+          const exitShort = indicator.exitShort?.[i];
+          if (!exitLong && !exitShort) continue;
+          const candle = context.data[i];
+          if (!candle) continue;
+          ctx.strokeStyle = exitLong ? '#ef4444' : '#22c55e';
+          ctx.beginPath();
+          ctx.arc(getX(i), getY(candle.close), 4, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
+    }
   }
 };
 

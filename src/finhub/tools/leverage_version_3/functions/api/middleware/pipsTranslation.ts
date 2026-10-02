@@ -10,6 +10,10 @@ export function pipsToPrice(pips: number, assetType: string = 'gold', currentPri
   if (type.includes('jpy')) {
     return pips * 0.01;
   }
+
+  if (['eurusd', 'audusd', 'usdcad', 'eurcad'].includes(type)) {
+    return pips * 0.0001;
+  }
   
   if (currentPrice && currentPrice > 1000) {
     if (type.includes('btc') || type === 'bitcoin') {
@@ -35,6 +39,10 @@ export function priceToPips(priceDiff: number, assetType: string = 'gold', curre
   if (type.includes('jpy')) {
     // 1 pip = 0.01
     return priceDiff / 0.01;
+  }
+
+  if (['eurusd', 'audusd', 'usdcad', 'eurcad'].includes(type)) {
+    return priceDiff / 0.0001;
   }
   
   // Default for most major forex pairs (EURUSD, GBPUSD)

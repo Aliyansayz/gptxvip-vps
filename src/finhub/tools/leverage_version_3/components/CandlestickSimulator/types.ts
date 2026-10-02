@@ -1,7 +1,11 @@
 import { Ohlc } from '../../functions/api/indicators/baseline';
 
 export interface Config {
-  type: 'ma_crossover' | 'stochastic' | 'supertrend' | 'divergence' | 'linear_regression' | 'bollinger_bands' | 'supertrend_regime' | 'heikin_ashi_smoothed' | 'candlestick_pattern';
+  type: 'ma_crossover' | 'stochastic' | 'supertrend' | 'divergence' | 'linear_regression' | 'bollinger_bands' | 'ichimoku' | 'three_candle_strike' | 'turtle_trading' | 'supertrend_regime' | 'heikin_ashi_smoothed' | 'candlestick_pattern';
+  entryPeriod?: number;
+  exitPeriod?: number;
+  nPeriod?: number;
+  stopMultiple?: number;
   fastMa?: number;
   slowMa?: number;
   stochK?: number;

@@ -2,6 +2,7 @@ import React, { createContext, useContext, ReactNode } from 'react';
 import { TradingRulesConfig } from '../functions/api/rules/tradingRules';
 import { AssetType } from '../../../homeMainView/simulatedDataGenerator';
 import { OHLCSimulationParams, DEFAULT_OHLC_PARAMS } from '../functions/api/data_source/simulationDataOhlcParameter';
+import { Ohlc } from '../functions/api/indicators/baseline';
 import { LeverageConfig, DEFAULT_LEVERAGE_CONFIG } from '../functions/api/position_sizing/leveragedPositionSizeMetals';
 import { FeatureLogEntry } from '../functions/api/indicatorLog/featureLogBook';
 import { systemDeployLog } from '../functions/api/developerLogConsole';
@@ -38,6 +39,9 @@ export interface IndicatorSettings {
   divergence: BaseIndicatorSettings & { stochK: number; stochD: number; alphaParams?: {stochK: number; stochD: number}; betaParams?: {stochK: number; stochD: number}; deltaParams?: {stochK: number; stochD: number}; }; 
   linear_regression: BaseIndicatorSettings & { slopePeriod: number; volPeriod: number; regimePeriod: number; alphaParams?: {slopePeriod: number; volPeriod: number; regimePeriod: number}; betaParams?: {slopePeriod: number; volPeriod: number; regimePeriod: number}; deltaParams?: {slopePeriod: number; volPeriod: number; regimePeriod: number}; };
   bollinger_bands: BaseIndicatorSettings & { period: number; stdDev: number; alphaParams?: {period: number; stdDev: number}; betaParams?: {period: number; stdDev: number}; deltaParams?: {period: number; stdDev: number}; };
+  ichimoku: BaseIndicatorSettings & { tenkanPeriod: number; kijunPeriod: number; senkouBPeriod: number; displacement: number };
+  three_candle_strike: BaseIndicatorSettings & { fastEma: number; fastSmma: number; mediumSmma: number; slowSmma: number; regressionPeriod: number; slopeSmooth: number; trendThreshold: number };
+  turtle_trading: BaseIndicatorSettings & { entryPeriod: number; exitPeriod: number; nPeriod: number; stopMultiple: number };
   supertrend_regime: BaseIndicatorSettings & { stPeriod: number; atrMultiplier: number; regimePeriod: number; zPeriod: number; zUpper: number; zLower: number; alphaParams?: {stPeriod: number; atrMultiplier: number; regimePeriod: number; zPeriod: number; zUpper: number; zLower: number}; betaParams?: {stPeriod: number; atrMultiplier: number; regimePeriod: number; zPeriod: number; zUpper: number; zLower: number}; deltaParams?: {stPeriod: number; atrMultiplier: number; regimePeriod: number; zPeriod: number; zUpper: number; zLower: number}; };
   heikin_ashi_smoothed: BaseIndicatorSettings & { smoothLen: number; alphaParams?: {smoothLen: number}; betaParams?: {smoothLen: number}; deltaParams?: {smoothLen: number}; };
   candlestick_pattern: BaseIndicatorSettings;
@@ -89,7 +93,7 @@ export interface DataSettingsConfig {
   deltaAggregateSource: 'alpha' | 'beta';
   deltaAggregateFactor: number; // 1 means off
   dataSourceType?: 'simulation' | 'csv' | 'live';
-  csvRawData?: any[];
+  csvRawData?: Ohlc[];
   ohlcParams?: Record<string, OHLCSimulationParams>;
   liveSettings?: {
     assetName: string;

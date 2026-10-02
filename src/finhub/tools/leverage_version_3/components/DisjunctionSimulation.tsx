@@ -18,6 +18,9 @@ export const DisjunctionSimulation: React.FC = () => {
     'divergence', 
     'linear_regression', 
     'bollinger_bands', 
+    'ichimoku',
+    'three_candle_strike',
+    'turtle_trading',
     'supertrend_regime', 
     'heikin_ashi_smoothed', 
     'candlestick_pattern'

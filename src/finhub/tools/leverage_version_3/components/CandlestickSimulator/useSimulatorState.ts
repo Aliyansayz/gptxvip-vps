@@ -5,6 +5,7 @@ import { generateOHLC, DEFAULT_OHLC_PARAMS } from '../../functions/api/data_sour
 import { aggregateData } from './types';
 import { startAlphaDataSource, stopAlphaDataSource } from '../../functions/api/data_source/liveDataFetchMode';
 import { systemDeployLog } from '../../functions/api/developerLogConsole';
+import { pipsToPrice } from '../../functions/api/middleware/pipsTranslation';
 
 export function useSimulatorState(
   simulationMode: string,
@@ -26,8 +27,10 @@ export function useSimulatorState(
       return;
     }
     if (dataSourceType === 'csv') {
+      setIsPlaying(false);
       setData(csvRawData || []);
-      setTradingConfig((c: any) => c.pipMultiplier === 0.1 ? c : { ...c, pipMultiplier: 0.1 });
+      const pipMultiplier = pipsToPrice(1, asset, csvRawData?.[0]?.close);
+      setTradingConfig((c: any) => c.pipMultiplier === pipMultiplier ? c : { ...c, pipMultiplier });
       setSimulationIndex(Math.min(50, Math.max(0, (csvRawData?.length || 0) - 1)));
       return;
     }

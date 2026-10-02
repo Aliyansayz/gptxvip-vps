@@ -6,6 +6,9 @@ import { SupertrendSimulation } from "./SupertrendSimulation";
 import { DivergenceSimulation } from "./DivergenceSimulation";
 import { LinearRegressionSimulation } from "./LinearRegressionSimulation";
 import { BollingerBandsSimulation } from "./BollingerBandsSimulation";
+import { IchimokuSimulation } from "./IchimokuSimulation";
+import { ThreeCandleStrikeSimulation } from "./ThreeCandleStrikeSimulation";
+import { TurtleTradingSimulation } from "./TurtleTradingSimulation";
 import { SupertrendRegimeSimulation } from "./SupertrendRegimeSimulation";
 import { HeikinAshiSmoothedSimulation } from "./HeikinAshiSmoothedSimulation";
 import { CandlestickPatternSimulation } from "./CandlestickPatternSimulation";
@@ -88,6 +91,9 @@ export const TradingToolsLab: React.FC<TradingToolsLabProps> = ({ isParallelMode
                  {activeTab === 'divergence' && <DivergenceSimulation />}
                  {activeTab === 'linear_regression' && <LinearRegressionSimulation />}
                  {activeTab === 'bollinger_bands' && <BollingerBandsSimulation />}
+                 {activeTab === 'ichimoku' && <IchimokuSimulation />}
+                 {activeTab === 'three_candle_strike' && <ThreeCandleStrikeSimulation />}
+                 {activeTab === 'turtle_trading' && <TurtleTradingSimulation />}
                  {activeTab === 'supertrend_regime' && <SupertrendRegimeSimulation />}
                  {activeTab === 'heikin_ashi_smoothed' && <HeikinAshiSmoothedSimulation />}
                  {activeTab === 'candlestick_pattern' && <CandlestickPatternSimulation />}

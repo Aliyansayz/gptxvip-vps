@@ -50,7 +50,7 @@ export interface TradingRulesConfig {
   exitSignalSystemMode?: 'classic' | 'conjunction' | 'disjunction';
   exitActiveConjunctionSystems?: string[];
   exitActiveDisjunctionSystems?: string[];
-  exitSignalSystemType?: 'ma_crossover' | 'stochastic' | 'supertrend' | 'divergence' | 'linear_regression' | 'bollinger_bands' | 'supertrend_regime' | 'heikin_ashi_smoothed' | 'candlestick_pattern';
+  exitSignalSystemType?: 'ma_crossover' | 'stochastic' | 'supertrend' | 'divergence' | 'linear_regression' | 'bollinger_bands' | 'ichimoku' | 'three_candle_strike' | 'turtle_trading' | 'supertrend_regime' | 'heikin_ashi_smoothed' | 'candlestick_pattern';
   exitSignalSystemParams?: Record<string, number>;
   exitUseExplicitParams?: boolean;
   exitConjunctionParams?: Record<string, Record<string, number>>;
@@ -537,4 +537,3 @@ export function evaluateTradeExits(
 
   return [...finalRootTrades, ...evaluatedParallelTrades] as Trade[];
 }
-

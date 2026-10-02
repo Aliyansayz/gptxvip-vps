@@ -1,21 +1,13 @@
 import React from 'react';
 import { useIndicatorsStore } from '../../stores/indicators_store';
-import { StopLossModifierConfig } from '../../functions/api/stopLossModifier/stopLossModifierConfig';
+import { StopLossModifierConfig, defaultStopLossModifierConfig } from '../../functions/api/stopLossModifier/stopLossModifierConfig';
 import { TakeProfitModifierConfig } from '../../functions/api/takeProfitModifier/takeProfitModifierConfig';
+import { ProfitPipsStopControls } from './ProfitPipsStopControls';
 import { Settings2 } from 'lucide-react';
 
 export const TradingPanelStopLossModifier: React.FC = () => {
   const { tradingConfig, setTradingConfig } = useIndicatorsStore();
-  const config = tradingConfig.stopLossModifier || {
-    activateTrailAfterBreakeven: false,
-    trailTillBreakevenOnly: false,
-    enableConditionalTrailingThreshold: false,
-    trailThresholdRewardFactor: 2.0,
-    isStopLossModification: false,
-    explicitAdjustFactor: 0.68,
-    lowerBoundTarget: 2.0,
-    upperBoundTarget: 4.0
-  };
+  const config = { ...defaultStopLossModifierConfig, ...tradingConfig.stopLossModifier };
 
   const tpConfig = tradingConfig.takeProfitModifier || {
     enableUpdateTpAtTarget: false,
@@ -28,9 +20,11 @@ export const TradingPanelStopLossModifier: React.FC = () => {
     setTradingConfig(prev => ({
       ...prev,
       stopLossModifier: {
-        ...(prev.stopLossModifier as StopLossModifierConfig),
+        ...defaultStopLossModifierConfig,
+        ...prev.stopLossModifier,
         ...updates
-      }
+      },
+      useSmoothAtrStopLossTrailing: updates.enableTrailAfterProfitPips ? true : prev.useSmoothAtrStopLossTrailing
     }));
   };
 
@@ -75,6 +69,11 @@ export const TradingPanelStopLossModifier: React.FC = () => {
               Activate the stop loss trail initially and trail till stop loss value reaches breakeven
             </label>
           </div>
+        </div>
+
+        <div className="mb-6 pb-6 border-b border-zinc-800/50">
+          <h5 className="text-xs font-bold text-zinc-300 mb-3 uppercase">Pip Profit Trailing</h5>
+          <ProfitPipsStopControls config={config} onChange={updateConfig} disabled={!tradingConfig.useStopLoss} />
         </div>
 
         {/* Conditional Trailing SL Threshold */}

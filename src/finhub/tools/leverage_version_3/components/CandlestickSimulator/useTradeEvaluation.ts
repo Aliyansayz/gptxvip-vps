@@ -64,7 +64,7 @@ export function useTradeEvaluation(
       const time = data[simulationIndex].time;
       const dataset = source === 'beta' ? betaData : deltaData;
       
-      if (!dataset || dataset.length === 0) return 0;
+      if (!dataset || dataset.length === 0 || dataset[0].time > time) return -1;
       
       let left = 0;
       let right = dataset.length - 1;
@@ -102,6 +102,7 @@ export function useTradeEvaluation(
     const tsIndex = getMappedIndex(tsDataSource);
 
     const getSignalForComputed = (sysType: string, computedSig: any, idx: number, sourceData: Ohlc[]) => {
+      if (idx < 0) return null;
       let signal: 'LONG' | 'SHORT' | null = null;
       if (sysType === 'ma_crossover' && computedSig?.fastLine) {
         const fastLine = computedSig.fastLine;
@@ -141,18 +142,18 @@ export function useTradeEvaluation(
         if (entry.status === 'long') signal = 'LONG';
         else if (entry.status === 'short') signal = 'SHORT';
       } else if (sysType === 'bollinger_bands' && computedSig?.bb) {
-        const bb = computedSig.bb;
-        if (bb && bb.length > idx) {
-          const lastBb = bb[idx];
-          const lastCandle = sourceData[idx];
-          if (lastCandle && lastBb && !isNaN(lastBb.lower) && !isNaN(lastBb.upper)) {
-            if (lastCandle.open < lastBb.lower && lastCandle.close > lastBb.lower) {
-              signal = 'LONG';
-            } else if (lastCandle.open > lastBb.upper && lastCandle.close < lastBb.upper) {
-              signal = 'SHORT';
-            }
-          }
-        }
+        if (computedSig.longEntry?.[idx]) signal = 'LONG';
+        else if (computedSig.shortEntry?.[idx]) signal = 'SHORT';
+      } else if (sysType === 'ichimoku' && computedSig?.ichimoku) {
+        if (computedSig.ichimoku.longEntry[idx]) signal = 'LONG';
+        else if (computedSig.ichimoku.shortEntry[idx]) signal = 'SHORT';
+      } else if (sysType === 'three_candle_strike' && computedSig?.strike) {
+        if (computedSig.strike.longEntry[idx]) signal = 'LONG';
+        else if (computedSig.strike.shortEntry[idx]) signal = 'SHORT';
+      } else if (sysType === 'turtle_trading' && computedSig?.turtle) {
+        const isNewSourceBar = sourceData[idx]?.time > (data[simulationIndex - 1]?.time ?? -Infinity);
+        if (isNewSourceBar && computedSig.turtle.longEntry[idx]) signal = 'LONG';
+        else if (isNewSourceBar && computedSig.turtle.shortEntry[idx]) signal = 'SHORT';
       } else if (sysType === 'supertrend_regime' && computedSig?.supertrend_regime) {
         const sr = computedSig.supertrend_regime;
         if (sr && sr.signal && sr.signal.length > idx) {
@@ -183,6 +184,7 @@ export function useTradeEvaluation(
     };
 
     const getTrendForComputed = (sysType: string, computedSig: any, idx: number, sourceData: Ohlc[]) => {
+      if (idx < 0) return null;
       let trend: 'LONG' | 'SHORT' | null = null;
       if (sysType === 'ma_crossover' && computedSig?.fastLine) {
         const fastLine = computedSig.fastLine;
@@ -211,14 +213,17 @@ export function useTradeEvaluation(
              else if (dir === -1) trend = 'SHORT';
          }
       } else if (sysType === 'bollinger_bands' && computedSig?.bb) {
-         const bb = computedSig.bb;
-         const lastCandle = sourceData[idx];
-         if (bb && bb.length > idx && lastCandle) {
-             const lastBb = bb[idx];
-             const middle = (lastBb.upper + lastBb.lower) / 2;
-             if (lastCandle.close > middle) trend = 'LONG';
-             else if (lastCandle.close < middle) trend = 'SHORT';
-         }
+         if (computedSig.trend?.[idx] === 1) trend = 'LONG';
+         else if (computedSig.trend?.[idx] === -1) trend = 'SHORT';
+      } else if (sysType === 'ichimoku' && computedSig?.ichimoku) {
+         if (computedSig.ichimoku.trend[idx] === 1) trend = 'LONG';
+         else if (computedSig.ichimoku.trend[idx] === -1) trend = 'SHORT';
+      } else if (sysType === 'three_candle_strike' && computedSig?.strike) {
+         if (computedSig.strike.trend[idx] === 1) trend = 'LONG';
+         else if (computedSig.strike.trend[idx] === -1) trend = 'SHORT';
+      } else if (sysType === 'turtle_trading' && computedSig?.turtle) {
+         if (computedSig.turtle.trend[idx] === 1) trend = 'LONG';
+         else if (computedSig.turtle.trend[idx] === -1) trend = 'SHORT';
       } else if (sysType === 'supertrend_regime' && computedSig?.supertrend_regime) {
         const sr = computedSig.supertrend_regime;
         if (sr && sr.signal && sr.signal.length > idx) {
@@ -264,9 +269,9 @@ export function useTradeEvaluation(
          return getTrendForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysEntrySource));
       });
       let trigSignal: 'LONG' | 'SHORT' | null = null;
-      if (signals.some(s => s === 'LONG') && trends.every(t => t === 'LONG')) {
+      if (activeSystems.length > 0 && signals.some(s => s === 'LONG') && trends.every(t => t === 'LONG')) {
           trigSignal = 'LONG';
-      } else if (signals.some(s => s === 'SHORT') && trends.every(t => t === 'SHORT')) {
+      } else if (activeSystems.length > 0 && signals.some(s => s === 'SHORT') && trends.every(t => t === 'SHORT')) {
           trigSignal = 'SHORT';
       }
       currentEntrySignal = trigSignal;
@@ -278,9 +283,7 @@ export function useTradeEvaluation(
          const sysIndex = getMappedIndex(sysEntrySource);
          return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysEntrySource));
       });
-      if (signals.some(s => s === 'LONG')) currentEntrySignal = 'LONG';
-      else if (signals.some(s => s === 'SHORT')) currentEntrySignal = 'SHORT';
-      else currentEntrySignal = null;
+      currentEntrySignal = evaluateDisjunctionSystem(signals);
     } else {
       const sysEntrySource = (indicatorSettings[config.type as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[config.type as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
       const sysIndex = getMappedIndex(sysEntrySource);
@@ -290,18 +293,26 @@ export function useTradeEvaluation(
     // Evaluate Exit Signal
     if (!tradingConfig.useDifferentSignalSystemOnExit) {
       currentExitSignal = currentEntrySignal;
+      if (tradingConfig.activeSystemMode === 'classic' && config.type === 'turtle_trading') {
+        const source = indicatorSettings?.turtle_trading?.entrySignalSource || indicatorSettings?.turtle_trading?.dataSource || entryDataSource;
+        const turtleIndex = getMappedIndex(source);
+        const turtle = ind.entrySignal?.turtle;
+        if (turtleIndex >= 0 && turtle?.exitLong?.[turtleIndex]) currentExitSignal = 'SHORT';
+        else if (turtleIndex >= 0 && turtle?.exitShort?.[turtleIndex]) currentExitSignal = 'LONG';
+        else currentExitSignal = null;
+      }
     } else if (tradingConfig.exitSignalSystemMode === 'conjunction' && ind.exitSignal?.type === 'conjunction') {
       const activeExitSystems = tradingConfig.exitActiveConjunctionSystems || [];
       const signals = activeExitSystems.map((sysId: string) => {
          const comp = ind.exitSignal.conjunctionSignals[sysId];
-         const cfg = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any) || {};
+         const cfg = tradingConfig.exitUseExplicitParams ? (tradingConfig.exitConjunctionParams?.[sysId] || {}) : ((indicatorSettings[sysId as keyof typeof indicatorSettings] as any) || {});
          const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
          const sysIndex = getMappedIndex(sysExitSource);
          return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysExitSource));
       });
       const trends = activeExitSystems.map((sysId: string) => {
          const comp = ind.exitSignal.conjunctionSignals[sysId];
-         const cfg = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any) || {};
+         const cfg = tradingConfig.exitUseExplicitParams ? (tradingConfig.exitConjunctionParams?.[sysId] || {}) : ((indicatorSettings[sysId as keyof typeof indicatorSettings] as any) || {});
          const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
          const sysIndex = getMappedIndex(sysExitSource);
          return getTrendForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysExitSource));
@@ -317,17 +328,15 @@ export function useTradeEvaluation(
       const activeExitSystems = tradingConfig.exitActiveDisjunctionSystems || [];
       const signals = activeExitSystems.map((sysId: string) => {
          const comp = ind.exitSignal.disjunctionSignals[sysId];
-         const cfg = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any) || {};
+         const cfg = tradingConfig.exitUseExplicitParams ? (tradingConfig.exitDisjunctionParams?.[sysId] || {}) : ((indicatorSettings[sysId as keyof typeof indicatorSettings] as any) || {});
          const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
          const sysIndex = getMappedIndex(sysExitSource);
          return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysExitSource));
       });
-      if (signals.some(s => s === 'LONG')) currentExitSignal = 'LONG';
-      else if (signals.some(s => s === 'SHORT')) currentExitSignal = 'SHORT';
-      else currentExitSignal = null;
+      currentExitSignal = evaluateDisjunctionSystem(signals);
     } else {
       const resolvedExitType = ind.exitSignal?.type || exitType;
-      const sysExitDataSource = indicatorSettings[resolvedExitType]?.dataSource || exitDataSource;
+      const sysExitDataSource = exitDataSource;
       const sysExitIndex = getMappedIndex(sysExitDataSource);
       currentExitSignal = getSignalForComputed(resolvedExitType, ind.exitSignal, sysExitIndex, getDataBySource(sysExitDataSource));
     }
@@ -338,6 +347,26 @@ export function useTradeEvaluation(
          lower: ind.stops.lowerBand[slIndex]
        };
     }
+
+    const isClassicTurtle = tradingConfig.activeSystemMode === 'classic' && config.type === 'turtle_trading';
+    let entryStopLossValue = customStopLossValue;
+    let turtleExitLevels: { lower: number; upper: number } | null = null;
+    if (isClassicTurtle) {
+      const source = indicatorSettings?.turtle_trading?.entrySignalSource || indicatorSettings?.turtle_trading?.dataSource || entryDataSource;
+      const turtleIndex = getMappedIndex(source);
+      const turtle = ind.entrySignal?.turtle;
+      if (turtleIndex >= 0 && Number.isFinite(turtle?.n?.[turtleIndex])) {
+        entryStopLossValue = { lower: turtle.stopLower[turtleIndex], upper: turtle.stopUpper[turtleIndex] };
+        if (!tradingConfig.useDifferentSignalSystemOnExit) {
+          turtleExitLevels = { lower: turtle.exitLower[turtleIndex], upper: turtle.exitUpper[turtleIndex] };
+        }
+      }
+    }
+    const turtleRules = isClassicTurtle
+      ? { ...tradingConfig, useStopLoss: true, useTakeProfit: false,
+          exitOnSignalReversal: tradingConfig.useDifferentSignalSystemOnExit ? tradingConfig.exitOnSignalReversal : true,
+          partialTradeExitOnReversal: false }
+      : tradingConfig;
 
     let adxValue: number | undefined = undefined;
     if (tradingConfig.useADXFilter && ind.adx) {
@@ -382,10 +411,21 @@ export function useTradeEvaluation(
       let closedPnL = prevTrades.filter(t => t.status === 'CLOSED' && (t.accountId === eligibleAccountId || (!t.accountId && eligibleAccountId === 'A1'))).reduce((sum, t) => sum + (t.pnl || 0), 0);
       let currentBalance = leverageSettings.balance + closedPnL;
 
-      const trailedTrades = updateTrailSL(prevTrades, simulationIndex, visibleData, tradingConfig, ind.trailStops || ind.stops);
+      const channelStopTrades = prevTrades.map(trade => {
+        if (!turtleExitLevels || trade.status !== 'OPEN' || trade.entrySystem !== 'turtle_trading') return trade;
+        const level = trade.side === 'LONG' ? turtleExitLevels.lower : turtleExitLevels.upper;
+        if (!Number.isFinite(level)) return trade;
+        const stopLoss = trade.side === 'LONG'
+          ? Math.max(trade.stopLoss ?? -Infinity, level)
+          : Math.min(trade.stopLoss ?? Infinity, level);
+        return stopLoss === trade.stopLoss ? trade : { ...trade, stopLoss };
+      });
 
-      // Note: evaluateTradeExits does logic for PnL. It might use `currentBalance` but let's keep it computing correctly
-      let updatedTrades = evaluateTradeExits(simulationIndex, visibleData, currentExitSignal, trailedTrades, tradingConfig, zScoreValue, leverageSettings, currentBalance, latencyDelaySeconds, customStopLossValue, onLogCallback);
+      // Check this candle against stops already in force. A trail derived from
+      // the closing price becomes active for the next candle, so an earlier
+      // low/high on this candle cannot retroactively trigger the new stop.
+      const exitedTrades = evaluateTradeExits(simulationIndex, visibleData, currentExitSignal, channelStopTrades, turtleRules, zScoreValue, leverageSettings, currentBalance, latencyDelaySeconds, customStopLossValue, onLogCallback);
+      let updatedTrades = updateTrailSL(exitedTrades, simulationIndex, visibleData, tradingConfig, ind.trailStops || ind.stops, assetName);
       
       const newlyClosedTrades = updatedTrades.filter(t => t.status === 'CLOSED' && prevTrades.find(pt => pt.id === t.id)?.status === 'OPEN');
       const newlyClosedPnL = newlyClosedTrades.filter(t => t.accountId === eligibleAccountId || (!t.accountId && eligibleAccountId === 'A1')).reduce((sum, t) => sum + (t.pnl || 0), 0);
@@ -435,8 +475,8 @@ export function useTradeEvaluation(
           visibleData,
           currentEntrySignal,
           updatedTrades,
-          tradingConfig,
-          customStopLossValue,
+          turtleRules,
+          entryStopLossValue,
           adxValue,
           squeezeStatus,
           leverageSettings,

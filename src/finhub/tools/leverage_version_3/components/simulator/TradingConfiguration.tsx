@@ -5,6 +5,8 @@ import { getBaseInterval, formatInterval } from '../../functions/api/rules/dataS
 import { activeClassicSystems, ClassicSystemOption } from '../../functions/api/classicSystem/classicsystemController';
 import { getLongAtrStopLossPrice, getLongAtrStopLossDifferenceInPips } from '../../functions/api/middleware/translateLongSLPriceIntoPips';
 import { getBaseSystemId } from '../../functions/api/conjunctionSystem/selfReplicationLabelManage';
+import { StopLossModifierConfig, defaultStopLossModifierConfig } from '../../functions/api/stopLossModifier/stopLossModifierConfig';
+import { ProfitPipsStopControls } from './ProfitPipsStopControls';
 import { ChevronDown, ChevronRight, Info } from 'lucide-react';
 
 interface TradingConfigurationProps {
@@ -21,6 +23,12 @@ export const TradingConfiguration: React.FC<TradingConfigurationProps> = ({ conf
   const [showSlSettings, setShowSlSettings] = useState(false);
   const updateConfig = (updates: Partial<TradingRulesConfig>) => {
     onChange({ ...config, ...updates });
+  };
+  const updateStopLossModifier = (updates: Partial<StopLossModifierConfig>) => {
+    updateConfig({
+      stopLossModifier: { ...defaultStopLossModifierConfig, ...config.stopLossModifier, ...updates },
+      useSmoothAtrStopLossTrailing: updates.enableTrailAfterProfitPips ? true : config.useSmoothAtrStopLossTrailing
+    });
   };
 
   const alphaInterval = getBaseInterval(dataSettings.simulationMode);
@@ -212,7 +220,12 @@ export const TradingConfiguration: React.FC<TradingConfigurationProps> = ({ conf
                 </div>
               )}
               <label className="flex items-center gap-2 text-[10px] text-cyan-400 select-none cursor-pointer">
-                <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 text-cyan-500 focus:ring-cyan-500" checked={!!config.useSmoothAtrStopLossTrailing} onChange={e => updateConfig({ useSmoothAtrStopLossTrailing: e.target.checked })} />
+                <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 text-cyan-500 focus:ring-cyan-500" checked={!!config.useSmoothAtrStopLossTrailing} onChange={e => updateConfig({
+                  useSmoothAtrStopLossTrailing: e.target.checked,
+                  ...(!e.target.checked && config.stopLossModifier?.enableTrailAfterProfitPips ? {
+                    stopLossModifier: { ...defaultStopLossModifierConfig, ...config.stopLossModifier, enableTrailAfterProfitPips: false }
+                  } : {})
+                })} />
                 Trail SL with Smooth ATR Bands
               </label>
               {config.useSmoothAtrStopLossTrailing && (
@@ -227,6 +240,12 @@ export const TradingConfiguration: React.FC<TradingConfigurationProps> = ({ conf
                   </label>
                 </div>
               )}
+              <div className="mt-2 p-3 rounded border border-zinc-700/50 bg-zinc-900/40">
+                <ProfitPipsStopControls
+                  config={{ ...defaultStopLossModifierConfig, ...config.stopLossModifier }}
+                  onChange={updateStopLossModifier}
+                />
+              </div>
             </div>
           )}
         </div>

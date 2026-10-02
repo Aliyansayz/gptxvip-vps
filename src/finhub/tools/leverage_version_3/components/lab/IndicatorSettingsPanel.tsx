@@ -124,14 +124,44 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
           <>
             <label className="flex items-center gap-2 text-xs">
               <span className="w-20">Period:</span>
-              <input type="number" min="1" max="100" value={sourceSettings?.period || defaults.period || 20} onChange={e => handleChange({ period: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+              <input type="number" min="1" max="100" value={sourceSettings?.period || defaults.period || 55} onChange={e => handleChange({ period: parseInt(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
             <label className="flex items-center gap-2 text-xs">
               <span className="w-20">Std Dev:</span>
-              <input type="number" min="0.1" max="5" step="0.1" value={sourceSettings?.stdDev || defaults.stdDev || 2} onChange={e => handleChange({ stdDev: parseFloat(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+              <input type="number" min="0.1" max="5" step="0.1" value={sourceSettings?.stdDev || defaults.stdDev || 1} onChange={e => handleChange({ stdDev: parseFloat(e.target.value) || 1 })} className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
             </label>
           </>
         );
+      case 'ichimoku':
+      case 'three_candle_strike': {
+        const fields = baseId === 'ichimoku'
+          ? [['tenkanPeriod', 'Tenkan'], ['kijunPeriod', 'Kijun'], ['senkouBPeriod', 'Span B'], ['displacement', 'Displace']]
+          : [['fastEma', 'Fast EMA'], ['fastSmma', 'Fast SMMA'], ['mediumSmma', 'Mid SMMA'], ['slowSmma', 'Slow SMMA'], ['regressionPeriod', 'Regression'], ['slopeSmooth', 'Slope EMA'], ['trendThreshold', 'Threshold']];
+        return <div className="flex flex-wrap gap-3">{fields.map(([key, label]) => (
+          <label key={key} className="flex items-center gap-2 text-xs">
+            <span>{label}:</span>
+            <input type="number" min={key === 'trendThreshold' ? 0 : 1} step={key === 'trendThreshold' ? 0.001 : 1}
+              value={sourceSettings?.[key] ?? defaults[key] ?? 1}
+              onChange={e => handleChange({ [key]: Number(e.target.value) })}
+              className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+          </label>
+        ))}</div>;
+      }
+      case 'turtle_trading': {
+        const fields = [['entryPeriod', 'Entry bars'], ['exitPeriod', 'Exit bars'], ['nPeriod', 'N bars'], ['stopMultiple', 'Stop × N']];
+        return <div className="flex flex-wrap items-center gap-3">
+          <button type="button" onClick={() => handleChange({ entryPeriod: 20, exitPeriod: 10 })} className="px-2 py-1 rounded border border-zinc-700 text-xs text-cyan-300">20/10 channels</button>
+          <button type="button" onClick={() => handleChange({ entryPeriod: 55, exitPeriod: 20 })} className="px-2 py-1 rounded border border-zinc-700 text-xs text-cyan-300">55/20 channels</button>
+          {fields.map(([key, label]) => <label key={key} className="flex items-center gap-2 text-xs">
+            <span>{label}:</span>
+            <input type="number" min={key === 'stopMultiple' ? 0.1 : 1} step={key === 'stopMultiple' ? 0.1 : 1}
+              value={sourceSettings?.[key] ?? defaults[key] ?? 1}
+              onChange={e => handleChange({ [key]: Number(e.target.value) })}
+              className="w-16 bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300" />
+          </label>)}
+          <span className="text-[10px] text-zinc-500">Periods count chart candles. Use daily candles for the original day based rules. This channel variant omits the prior winner filter and unit pyramiding.</span>
+        </div>;
+      }
       case 'supertrend_regime':
         return (
           <div className="flex flex-col gap-3 w-full">
@@ -288,7 +318,10 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
     supertrend: 'Supertrend Trend-Following',
     divergence: 'Stochastic Divergences',
     linear_regression: 'Linear Regression System',
-    bollinger_bands: 'Bollinger Bands Reversion',
+    bollinger_bands: 'Bollinger Bands Breakout',
+    ichimoku: 'Ichimoku',
+    three_candle_strike: '3 Candle Strike',
+    turtle_trading: 'Turtle Trading',
     supertrend_regime: 'Hybrid Supertrend Regime',
     heikin_ashi_smoothed: 'Smoothed Heikin Ashi',
     candlestick_pattern: 'Candlestick Pattern',

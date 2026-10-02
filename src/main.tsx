@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router";
 
 const BlogsView = lazy(() => import("./devLushArea/agentDevRootComponents/BlogsView").then((module) => ({ default: module.BlogsView })));
 const AgentCatalogApp = lazy(() => import("./devLushArea/agentMarketplace/App"));
+const DesignSystemBoard = lazy(() => import("../ui_docs/DesignSystemBoard"));
 
 const RouteLoading = () => (
   <div className="flex min-h-screen w-full items-center justify-center bg-white text-sm font-semibold text-slate-500">
@@ -43,6 +44,14 @@ if (appRoot === '/blogs') {
         <BrowserRouter basename="/agents">
           <AgentCatalogApp />
         </BrowserRouter>
+      </Suspense>
+    </StrictMode>,
+  );
+} else if (path === "/ui-ux" || path.startsWith("/ui-ux/")) {
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <Suspense fallback={<RouteLoading />}>
+        <DesignSystemBoard />
       </Suspense>
     </StrictMode>,
   );

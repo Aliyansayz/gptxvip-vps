@@ -4,7 +4,7 @@ import { useIndicatorsStore } from '../stores/indicators_store';
 
 export const BollingerBandsSimulation: React.FC = () => {
   const { indicatorSettings } = useIndicatorsStore();
-  const settings = indicatorSettings.bollinger_bands || { period: 20, stdDev: 2 };
+  const settings = indicatorSettings.bollinger_bands || { period: 55, stdDev: 1 };
   
   return (
     <div className="w-full space-y-4">

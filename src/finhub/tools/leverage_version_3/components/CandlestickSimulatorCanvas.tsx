@@ -17,7 +17,11 @@ import {
 } from './utils/canvasRenderer';
 
 interface Config {
-  type: 'ma_crossover' | 'stochastic' | 'supertrend' | 'divergence' | 'linear_regression' | 'bollinger_bands' | 'supertrend_regime' | 'heikin_ashi_smoothed' | 'candlestick_pattern';
+  type: 'ma_crossover' | 'stochastic' | 'supertrend' | 'divergence' | 'linear_regression' | 'bollinger_bands' | 'ichimoku' | 'three_candle_strike' | 'turtle_trading' | 'supertrend_regime' | 'heikin_ashi_smoothed' | 'candlestick_pattern';
+  entryPeriod?: number;
+  exitPeriod?: number;
+  nPeriod?: number;
+  stopMultiple?: number;
   fastMa?: number;
   slowMa?: number;
   stochK?: number;
@@ -29,6 +33,17 @@ interface Config {
   lrRegimePeriod?: number;
   bbPeriod?: number;
   bbStdDev?: number;
+  tenkanPeriod?: number;
+  kijunPeriod?: number;
+  senkouBPeriod?: number;
+  displacement?: number;
+  fastEma?: number;
+  fastSmma?: number;
+  mediumSmma?: number;
+  slowSmma?: number;
+  regressionPeriod?: number;
+  slopeSmooth?: number;
+  trendThreshold?: number;
   stPeriod?: number;
   atrMultiplier?: number;
   regimePeriod?: number;
@@ -327,9 +342,33 @@ export const CandlestickSimulatorCanvas = React.memo<CandlestickSimulatorCanvasP
 
       if (config.type === 'bollinger_bands' && computedIndicators) {
          for (let i = startIdx; i <= effectiveEndIdx; i++) {
-            const b = computedIndicators.entrySignal?.bb?.[i];
+            const b = computedIndicators.bb?.[i];
             if (b && !isNaN(b.lower)) rawMin = Math.min(rawMin, b.lower);
             if (b && !isNaN(b.upper)) rawMax = Math.max(rawMax, b.upper);
+         }
+      }
+      if (config.type === 'ichimoku' && computedIndicators?.ichimoku) {
+         for (let i = startIdx; i <= effectiveEndIdx; i++) {
+            for (const line of ['tenkan', 'kijun', 'cloudA', 'cloudB']) {
+               const value = computedIndicators.ichimoku[line]?.[i];
+               if (Number.isFinite(value)) { rawMin = Math.min(rawMin, value); rawMax = Math.max(rawMax, value); }
+            }
+         }
+      }
+      if (config.type === 'three_candle_strike' && computedIndicators?.strike) {
+         for (let i = startIdx; i <= effectiveEndIdx; i++) {
+            for (const line of ['ema', 'fast', 'medium', 'slow']) {
+               const value = computedIndicators.strike[line]?.[i];
+               if (Number.isFinite(value)) { rawMin = Math.min(rawMin, value); rawMax = Math.max(rawMax, value); }
+            }
+         }
+      }
+      if (config.type === 'turtle_trading' && computedIndicators?.turtle) {
+         for (let i = startIdx; i <= effectiveEndIdx; i++) {
+            for (const line of ['entryUpper', 'entryLower', 'exitUpper', 'exitLower']) {
+               const value = computedIndicators.turtle[line]?.[i];
+               if (Number.isFinite(value)) { rawMin = Math.min(rawMin, value); rawMax = Math.max(rawMax, value); }
+            }
          }
       }
       

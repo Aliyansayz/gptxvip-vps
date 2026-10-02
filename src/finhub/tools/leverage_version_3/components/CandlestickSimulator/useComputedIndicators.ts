@@ -5,7 +5,10 @@ import { manualPipsOffset, lowForLongAtrOffset, highForShortAtrOffset } from '..
 import { priceToPips } from '../../functions/api/middleware/pipsTranslation';
 import { calculateVolatilityZScore } from '../../functions/api/indicators/exclusive';
 import { linearRegressionSystem } from '../../functions/api/indicators/exclusive/linearRegression';
-import { calculateBollingerBands } from '../../functions/api/indicators/exclusive/bollingerBands';
+import { calculateBollingerBreakout } from '../../functions/api/classicSystem/bollingerBreakout';
+import { calculateIchimoku } from '../../functions/api/classicSystem/ichimoku';
+import { calculateThreeCandleStrike } from '../../functions/api/classicSystem/threeCandleStrike';
+import { calculateTurtleTrading } from '../../functions/api/classicSystem/turtleTrading';
 import { supertrendRegimeSystem } from '../../functions/api/indicators/exclusive/supertrend_regime';
 import { calculateADX } from '../../functions/api/indicators/integral/adx';
 import { calculateATR } from '../../functions/api/indicators/integral/atr';
@@ -99,18 +102,21 @@ export function useComputedIndicators(
           direction
         };
       } else if (sysType === 'bollinger_bands') {
-        const bbPeriod = cfg.bbPeriod || cfg.period || 20;
-        const bbStdDev = cfg.bbStdDev || cfg.stdDev || 2;
-        const bb = calculateBollingerBands(sourceData, bbPeriod, bbStdDev);
-        const direction = bb.map((b, i) => {
-          const middle = (b.upper + b.lower) / 2;
-          return sourceData[i].close > middle ? 1 : (sourceData[i].close < middle ? -1 : 0);
-        });
+        const breakout = calculateBollingerBreakout(sourceData, cfg.bbPeriod ?? cfg.period ?? 55, cfg.bbStdDev ?? cfg.stdDev ?? 1);
         return {
           type: 'bollinger_bands',
-          bb,
-          direction
+          ...breakout,
+          direction: breakout.trend
         };
+      } else if (sysType === 'ichimoku') {
+        const ichimoku = calculateIchimoku(sourceData, cfg);
+        return { type: 'ichimoku', ichimoku, direction: ichimoku.trend };
+      } else if (sysType === 'three_candle_strike') {
+        const strike = calculateThreeCandleStrike(sourceData, cfg);
+        return { type: 'three_candle_strike', strike, direction: strike.trend };
+      } else if (sysType === 'turtle_trading') {
+        const turtle = calculateTurtleTrading(sourceData, cfg);
+        return { type: 'turtle_trading', turtle, direction: turtle.trend };
       } else if (sysType === 'supertrend_regime') {
         const highs = sourceData.map(d => d.high);
         const lows = sourceData.map(d => d.low);
@@ -181,7 +187,7 @@ export function useComputedIndicators(
        (tradingConfig.activeConjunctionSystems || []).forEach((sysId: string) => {
          const baseId = sysId.replace('_alpha', '').replace('_beta', '').replace('_delta', '');
          const sysEntrySource = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[sysId as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
-         const sig = computeSignalForType(baseId, sysId, sysEntrySource, config);
+         const sig = computeSignalForType(baseId, sysId, sysEntrySource, {});
          if (sig) {
            result.entrySignal.conjunctionSignals[sysId] = sig;
          }
@@ -194,7 +200,7 @@ export function useComputedIndicators(
        (tradingConfig.activeDisjunctionSystems || []).forEach((sysId: string) => {
          const baseId = sysId.replace('_alpha', '').replace('_beta', '').replace('_delta', '');
          const sysEntrySource = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[sysId as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
-         const sig = computeSignalForType(baseId, sysId, sysEntrySource, config);
+         const sig = computeSignalForType(baseId, sysId, sysEntrySource, {});
          if (sig) {
            result.entrySignal.disjunctionSignals[sysId] = sig;
          }
@@ -223,7 +229,7 @@ export function useComputedIndicators(
            : ((indicatorSettings as any)[sysId] || {});
 
          const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
-         const sig = computeSignalForType(sysId, baseId, sysExitSource, cfg);
+         const sig = computeSignalForType(baseId, sysId, sysExitSource, cfg);
          if (sig) {
            result.exitSignal.conjunctionSignals[sysId] = sig;
          }
@@ -243,7 +249,7 @@ export function useComputedIndicators(
            : ((indicatorSettings as any)[sysId] || {});
 
          const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
-         const sig = computeSignalForType(sysId, baseId, sysExitSource, cfg);
+         const sig = computeSignalForType(baseId, sysId, sysExitSource, cfg);
          if (sig) {
            result.exitSignal.disjunctionSignals[sysId] = sig;
          }

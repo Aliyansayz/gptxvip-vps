@@ -3,7 +3,7 @@ import { Crosshair, Activity, Radar, BarChart2, Layers, Shuffle } from 'lucide-r
 import { useIndicatorsStore } from '../../stores/indicators_store';
 import { toast } from 'sonner';
 
-export type ToolTab = "ma_crossover" | "stochastic" | "supertrend" | "divergence" | "linear_regression" | "bollinger_bands" | "supertrend_regime" | "heikin_ashi_smoothed" | "candlestick_pattern" | "conjunction" | "disjunction";
+export type ToolTab = "ma_crossover" | "stochastic" | "supertrend" | "divergence" | "linear_regression" | "bollinger_bands" | "ichimoku" | "three_candle_strike" | "turtle_trading" | "supertrend_regime" | "heikin_ashi_smoothed" | "candlestick_pattern" | "conjunction" | "disjunction";
 
 interface LabNavigationProps {
   activeTab: ToolTab;
@@ -17,7 +17,7 @@ export const LabNavigation: React.FC<LabNavigationProps> = ({ activeTab, onTabCh
 
   // Track the last classic tab when it changes
   React.useEffect(() => {
-    if (activeTab !== 'conjunction') {
+    if (activeTab !== 'conjunction' && activeTab !== 'disjunction') {
       setLastClassicTab(activeTab);
     }
   }, [activeTab]);
@@ -28,7 +28,10 @@ export const LabNavigation: React.FC<LabNavigationProps> = ({ activeTab, onTabCh
     { id: 'supertrend', label: 'Supertrend', icon: <Radar className="w-3 h-3" /> },
     { id: 'divergence', label: 'Divergence', icon: <BarChart2 className="w-3 h-3" /> },
     { id: 'linear_regression', label: 'Linear Regression', icon: <BarChart2 className="w-3 h-3" /> },
-    { id: 'bollinger_bands', label: 'Bollinger Bands', icon: <Activity className="w-3 h-3" /> },
+    { id: 'bollinger_bands', label: 'Bollinger Breakout', icon: <Activity className="w-3 h-3" /> },
+    { id: 'ichimoku', label: 'Ichimoku', icon: <Layers className="w-3 h-3" /> },
+    { id: 'three_candle_strike', label: '3 Candle Strike', icon: <Activity className="w-3 h-3" /> },
+    { id: 'turtle_trading', label: 'Turtle Trading', icon: <Radar className="w-3 h-3" /> },
     { id: 'supertrend_regime', label: 'Supertrend Regime', icon: <Radar className="w-3 h-3" /> },
     { id: 'heikin_ashi_smoothed', label: 'Smoothed HA', icon: <Activity className="w-3 h-3" /> },
     { id: 'candlestick_pattern', label: 'Candlestick Pattern', icon: <Activity className="w-3 h-3" /> },
