@@ -152,7 +152,7 @@ interface IndicatorsStoreContextType {
   setFeatureLog: React.Dispatch<React.SetStateAction<FeatureLogEntry[]>>;
   indicatorCheckedState: Record<string, boolean>;
   setIndicatorCheckedState: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
-  getIndicatorDescription: (type: keyof IndicatorSettings | 'conjunction') => string;
+  getIndicatorDescription: (type: keyof IndicatorSettings | 'conjunction' | 'disjunction') => string;
   latestPrice?: number;
   setLatestPrice?: React.Dispatch<React.SetStateAction<number>>;
   currentStops?: { lowerBand: number[], upperBand: number[] } | null;

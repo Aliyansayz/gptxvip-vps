@@ -29,7 +29,11 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
   const renderNestedInputs = (tabId: string, sourceKey: 'alphaParams' | 'betaParams' | 'deltaParams' | 'default', defaults: any) => {
     let sourceSettings = defaults;
     if (sourceKey !== 'default') {
-      sourceSettings = defaults[sourceKey] || defaults;
+      sourceSettings = {
+        ...defaults,
+        ...defaults[sourceKey],
+        allowedPatterns: { ...defaults.allowedPatterns, ...defaults[sourceKey]?.allowedPatterns }
+      };
     }
     
     const handleChange = (updates: any) => {
@@ -349,7 +353,7 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
           >
             <div className="p-4 border-t border-zinc-700/30 text-zinc-300 space-y-4">
               <p className="text-xs text-cyan-400/80 leading-relaxed max-w-2xl">
-                {getIndicatorDescription(activeTab as any)}
+                {getIndicatorDescription(activeTab)}
               </p>
               
               <div className="flex flex-col gap-4">
@@ -532,21 +536,7 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
                              </span>
                            </label>
                            
-                          <label className="flex items-center gap-2 text-xs">
-                            <span className="text-zinc-400">Strategy Config Source:</span>
-                            <select
-                              value={systemSettings.dataSource || 'alpha'}
-                              onChange={(e) => handleUpdate(sysId as keyof IndicatorSettings, { dataSource: e.target.value as any })}
-                              className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300"
-                            >
-                              <option value="alpha">Alpha Base</option>
-                              <option value="beta">Beta Aggregate</option>
-                              <option value="delta">Delta Layer</option>
-                            </select>
-                            <span className="text-cyan-500 font-bold ml-1">
-                              {formatInterval(systemSettings.dataSource === 'beta' ? betaInterval : systemSettings.dataSource === 'delta' ? deltaInterval : alphaInterval)}
-                            </span>
-                          </label>
+                          <span className="text-[10px] text-zinc-500">Entry source also selects the parameter variation and calculation data.</span>
                           <label className="flex items-center gap-2 text-xs cursor-pointer select-none border border-zinc-700/50 bg-zinc-900/30 px-2 py-1 rounded">
                             <input
                               type="checkbox"

@@ -29,9 +29,8 @@ export const activeClassicSystems: ClassicSystemOption[] = [
     isSelfLayeredOnly: true,
     isInvertDirectionIndicator: true,
     defaultNumericalInputs: {
-      kPeriod: 14,
-      dPeriod: 3,
-      smooth: 3
+      stochK: 14,
+      stochD: 3
     }
   },
   {
@@ -42,7 +41,7 @@ export const activeClassicSystems: ClassicSystemOption[] = [
     isSelfLayeredOnly: true,
     isInvertDirectionIndicator: true,
     defaultNumericalInputs: {
-      atrPeriod: 10,
+      period: 10,
       multiplier: 3
     }
   },
@@ -54,8 +53,8 @@ export const activeClassicSystems: ClassicSystemOption[] = [
     isSelfLayeredOnly: true,
     isInvertDirectionIndicator: true,
     defaultNumericalInputs: {
-      lookback: 14,
-      rsiPeriod: 14
+      stochK: 14,
+      stochD: 3
     }
   },
   {
@@ -66,8 +65,9 @@ export const activeClassicSystems: ClassicSystemOption[] = [
     isSelfLayeredOnly: true,
     isInvertDirectionIndicator: true,
     defaultNumericalInputs: {
-      period: 14,
-      channelWidth: 2
+      slopePeriod: 20,
+      volPeriod: 20,
+      regimePeriod: 30
     }
   },
   {

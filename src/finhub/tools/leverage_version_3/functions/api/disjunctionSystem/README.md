@@ -7,6 +7,8 @@
 + **System Panel:** Features a unique 'Disjunction System Panel' that displays all active systems being monitored for potential entry signals.
 + **Single System Behavior:** When only one system is active in the Disjunction system, it functions identically to a classic system, relying solely on its individual entry criteria (e.g., crossover state).
 + **Multi-System Disjunction (OR logic):** When two or more systems are active, a trade entry is triggered the moment *at least one* of the configured systems signals an entry, independent of the alignment or correlation of the other systems.
++ **Opposite Signals:** If LONG and SHORT arrive on the same candle, the first selected system takes priority. No selected systems means no entry signal.
++ **Aggregated Sources:** Beta and delta signals are consumed when their candle closes, once per source candle.
 + **Self Replication Mode Support:** Allows replication of a single system (e.g., Supertrend Regime) multiple times to behave as independent systems allowing distinct parameters and data sources, which can then trigger an entry if any of the replicated criteria are met.
 
 + **Enable Disjunction System Mode type also for exit rule section**

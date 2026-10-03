@@ -19,7 +19,7 @@ import { Config } from './types';
 import { getTrailSlIndicator } from '../../functions/api/middleware/trailSlIndicatorVersion';
 import { rollingRegressionSlope, slopePersistenceFast, trendEfficiencyFast } from '../../functions/api/indicators/trendStrength/trendStrength';
 import { smoothedWickEfficiencyFast } from '../../functions/api/indicators/trendStrength/wickEfficiency';
-import { getSystemInstanceSettings } from '../../functions/api/classicSystem/systemInstanceSettings';
+import { getSystemInstanceSettings, normalizeSystemParameters } from '../../functions/api/classicSystem/systemInstanceSettings';
 
 const getBaseSystemId = (id: string) => id.replace('_alpha', '').replace('_beta', '').replace('_delta', '');
 
@@ -45,9 +45,12 @@ export function useComputedIndicators(
     const getParams = (settings: any, source: string, fallback: any) => {
       if (!settings) return fallback;
       if (settings.allowVariation) {
-        if (source === 'alpha' && settings.alphaParams) return { ...fallback, ...settings.alphaParams };
-        if (source === 'beta' && settings.betaParams) return { ...fallback, ...settings.betaParams };
-        if (source === 'delta' && settings.deltaParams) return { ...fallback, ...settings.deltaParams };
+        const variation = settings[`${source}Params`];
+        if (variation) return {
+          ...fallback,
+          ...variation,
+          allowedPatterns: { ...fallback.allowedPatterns, ...variation.allowedPatterns }
+        };
       }
       return fallback;
     };
@@ -72,8 +75,8 @@ export function useComputedIndicators(
           direction
         };
       } else if (sysType === 'supertrend') {
-        const superPeriod = cfg.supertrendPeriod || cfg.period || cfg.atrPeriod || 10;
-        const superMultiplier = cfg.supertrendMultiplier || cfg.multiplier || 3;
+        const superPeriod = cfg.period ?? cfg.supertrendPeriod ?? cfg.atrPeriod ?? 10;
+        const superMultiplier = cfg.multiplier ?? cfg.supertrendMultiplier ?? 3;
         const st = calculateSupertrend(sourceData, superPeriod, superMultiplier);
         const direction = st.trend.map(t => t === 1 ? 1 : (t === -1 ? -1 : 0));
         return {
@@ -92,9 +95,9 @@ export function useComputedIndicators(
           direction
         };
       } else if (sysType === 'linear_regression') {
-        const lrSlope = cfg.lrSlopePeriod || cfg.slopePeriod || cfg.period || 20;
-        const lrVol = cfg.lrVolPeriod || cfg.volPeriod || cfg.channelWidth || 20;
-        const lrRegime = cfg.lrRegimePeriod || cfg.regimePeriod || 30;
+        const lrSlope = cfg.slopePeriod ?? cfg.lrSlopePeriod ?? cfg.period ?? 20;
+        const lrVol = cfg.volPeriod ?? cfg.lrVolPeriod ?? cfg.channelWidth ?? 20;
+        const lrRegime = cfg.regimePeriod ?? cfg.lrRegimePeriod ?? 30;
         const lr = linearRegressionSystem(closePrices, lrSlope, lrVol, lrRegime);
         const direction = lr.direction;
         return {
@@ -103,7 +106,7 @@ export function useComputedIndicators(
           direction
         };
       } else if (sysType === 'bollinger_bands') {
-        const breakout = calculateBollingerBreakout(sourceData, cfg.bbPeriod ?? cfg.period ?? 55, cfg.bbStdDev ?? cfg.stdDev ?? 1);
+        const breakout = calculateBollingerBreakout(sourceData, cfg.period ?? cfg.bbPeriod ?? 55, cfg.stdDev ?? cfg.bbStdDev ?? 1);
         return {
           type: 'bollinger_bands',
           ...breakout,
@@ -143,7 +146,7 @@ export function useComputedIndicators(
         const open = sourceData.map(d => d.open);
         const highs = sourceData.map(d => d.high);
         const lows = sourceData.map(d => d.low);
-        const smoothLen = cfg.haSmoothLen || cfg.smoothLen || 10;
+        const smoothLen = cfg.smoothLen ?? cfg.haSmoothLen ?? 10;
         const ha = smoothedHeikinAshi(open, highs, lows, closePrices, smoothLen);
         const direction = ha.direction;
         return {
@@ -152,8 +155,8 @@ export function useComputedIndicators(
           direction
         };
       } else if (sysType === 'divergence') {
-        const divLookback = cfg.lookback || cfg.stochK || 14;
-        const divRsiPeriod = cfg.rsiPeriod || cfg.stochD || 14;
+        const divLookback = cfg.stochK ?? cfg.lookback ?? 14;
+        const divRsiPeriod = cfg.stochD ?? cfg.rsiPeriod ?? 14;
         // Divergence uses stochastic internally under some conditions
         const stoch = calculateStochastic(sourceData, divLookback, 3, divRsiPeriod);
         const direction = stoch.k.map((k, i) => k > stoch.d[i] ? 1 : (k < stoch.d[i] ? -1 : 0));
@@ -227,9 +230,10 @@ export function useComputedIndicators(
          
          // Use explicit custom parameters if toggled, otherwise sync with entry indicator settings
          const isExplicit = !!tradingConfig.exitUseExplicitParams;
+         const instanceSettings = getSystemInstanceSettings(indicatorSettings, sysId);
          const cfg = isExplicit 
-           ? { ...(tradingConfig.exitConjunctionParams?.[sysId] || {}), allowVariation: false }
-           : getSystemInstanceSettings(indicatorSettings, sysId);
+           ? { ...instanceSettings, ...normalizeSystemParameters(sysId, tradingConfig.exitConjunctionParams?.[sysId]), allowVariation: false }
+           : instanceSettings;
 
          const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
          const sig = computeSignalForType(baseId, sysId, sysExitSource, cfg);
@@ -247,9 +251,10 @@ export function useComputedIndicators(
          
          // Use explicit custom parameters if toggled, otherwise sync with entry indicator settings
          const isExplicit = !!tradingConfig.exitUseExplicitParams;
+         const instanceSettings = getSystemInstanceSettings(indicatorSettings, sysId);
          const cfg = isExplicit 
-           ? { ...(tradingConfig.exitDisjunctionParams?.[sysId] || {}), allowVariation: false }
-           : getSystemInstanceSettings(indicatorSettings, sysId);
+           ? { ...instanceSettings, ...normalizeSystemParameters(sysId, tradingConfig.exitDisjunctionParams?.[sysId]), allowVariation: false }
+           : instanceSettings;
 
          const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
          const sig = computeSignalForType(baseId, sysId, sysExitSource, cfg);

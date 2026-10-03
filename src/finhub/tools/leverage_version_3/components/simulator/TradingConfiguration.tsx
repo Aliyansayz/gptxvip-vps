@@ -94,6 +94,33 @@ export const TradingConfiguration: React.FC<TradingConfigurationProps> = ({ conf
         </div>
       )}
 
+      {config.activeSystemMode === 'disjunction' && (
+        <div className="bg-orange-900/20 border border-orange-500/30 rounded p-3 mb-2 flex flex-col gap-2">
+          <span className="text-[10px] font-bold text-orange-400 uppercase">Disjunction System Configuration</span>
+          <span className="text-[10px] text-zinc-400">Any selected system can trigger an entry. Configure each system in the Disjunction settings panel.</span>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-1">
+            {activeClassicSystems.map(sys => {
+              const isActive = (config.activeDisjunctionSystems || []).some(id => getBaseSystemId(id) === sys.id);
+              return (
+                <label key={sys.id} className="flex items-center gap-2 text-[10px] text-zinc-300 select-none cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="rounded bg-zinc-800 border-zinc-700 text-orange-500 focus:ring-orange-500"
+                    checked={isActive}
+                    onChange={e => updateConfig({
+                      activeDisjunctionSystems: e.target.checked
+                        ? [...(config.activeDisjunctionSystems || []), `${sys.id}_alpha`]
+                        : (config.activeDisjunctionSystems || []).filter(id => getBaseSystemId(id) !== sys.id)
+                    })}
+                  />
+                  {sys.name}
+                </label>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-2">
         <div className="flex flex-col gap-1">
           <label className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">

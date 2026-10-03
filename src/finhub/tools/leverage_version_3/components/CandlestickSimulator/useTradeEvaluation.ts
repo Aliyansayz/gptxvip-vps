@@ -12,6 +12,7 @@ import { shouldActivateTradeBreaker } from '../../functions/api/tradeBreaker/tra
 import { evaluateConjunctionSystem } from '../../functions/api/conjunctionSystem';
 import { evaluateDisjunctionSystem } from '../../functions/api/disjunctionSystem';
 import { getSystemInstanceSettings } from '../../functions/api/classicSystem/systemInstanceSettings';
+import { isNewSourceCandle } from '../../functions/api/rules/dataSourceRules';
 import { Config } from './types';
 import { ParallelAccount, useIndicatorsStore } from '../../stores/indicators_store';
 import { calculatePnL } from '../../functions/api/position_sizing/leveragedPositionSizeMetals';
@@ -106,7 +107,7 @@ export function useTradeEvaluation(
       if (idx < 0 || !sourceData[idx]) return null;
       // A completed aggregate candle can be mapped to several alpha candles.
       // Consume its entry signal once, when that source candle first closes.
-      if (sourceData !== data && simulationIndex > 0 && sourceData[idx].time <= data[simulationIndex - 1].time) return null;
+      if (!isNewSourceCandle(sourceData[idx].time, data[simulationIndex - 1]?.time)) return null;
       let signal: 'LONG' | 'SHORT' | null = null;
       if (sysType === 'ma_crossover' && computedSig?.fastLine) {
         const fastLine = computedSig.fastLine;
@@ -168,13 +169,11 @@ export function useTradeEvaluation(
         }
       } else if (sysType === 'heikin_ashi_smoothed' && computedSig?.heikin_ashi_smoothed) {
         const ha = computedSig.heikin_ashi_smoothed;
-        if (ha && ha.haClose && ha.haClose.length > idx) {
-          const lastClose = ha.haClose[idx];
-          const lastOpen = ha.haOpen[idx];
-          const prevClose = ha.haClose[Math.max(0, idx - 1)];
-          const prevOpen = ha.haOpen[Math.max(0, idx - 1)];
-          if (prevClose <= prevOpen && lastClose > lastOpen) signal = 'LONG';
-          else if (prevClose >= prevOpen && lastClose < lastOpen) signal = 'SHORT';
+        if (ha && ha.direction && ha.direction.length > idx) {
+          const lastDirection = ha.direction[idx];
+          const previousDirection = ha.direction[Math.max(0, idx - 1)];
+          if (previousDirection <= 0 && lastDirection === 1) signal = 'LONG';
+          else if (previousDirection >= 0 && lastDirection === -1) signal = 'SHORT';
         }
       } else if (sysType === 'candlestick_pattern' && computedSig?.candlestick_pattern) {
         const cp = computedSig.candlestick_pattern;
@@ -311,14 +310,14 @@ export function useTradeEvaluation(
       const activeExitSystems = tradingConfig.exitActiveConjunctionSystems || [];
       const signals = activeExitSystems.map((sysId: string) => {
          const comp = ind.exitSignal.conjunctionSignals[sysId];
-         const cfg = tradingConfig.exitUseExplicitParams ? (tradingConfig.exitConjunctionParams?.[sysId] || {}) : getSystemInstanceSettings(indicatorSettings, sysId);
+         const cfg = { ...getSystemInstanceSettings(indicatorSettings, sysId), ...(tradingConfig.exitUseExplicitParams ? tradingConfig.exitConjunctionParams?.[sysId] : {}) };
          const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
          const sysIndex = getMappedIndex(sysExitSource);
          return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysExitSource));
       });
       const trends = activeExitSystems.map((sysId: string) => {
          const comp = ind.exitSignal.conjunctionSignals[sysId];
-         const cfg = tradingConfig.exitUseExplicitParams ? (tradingConfig.exitConjunctionParams?.[sysId] || {}) : getSystemInstanceSettings(indicatorSettings, sysId);
+         const cfg = { ...getSystemInstanceSettings(indicatorSettings, sysId), ...(tradingConfig.exitUseExplicitParams ? tradingConfig.exitConjunctionParams?.[sysId] : {}) };
          const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
          const sysIndex = getMappedIndex(sysExitSource);
          return getTrendForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysExitSource));
@@ -334,7 +333,7 @@ export function useTradeEvaluation(
       const activeExitSystems = tradingConfig.exitActiveDisjunctionSystems || [];
       const signals = activeExitSystems.map((sysId: string) => {
          const comp = ind.exitSignal.disjunctionSignals[sysId];
-         const cfg = tradingConfig.exitUseExplicitParams ? (tradingConfig.exitDisjunctionParams?.[sysId] || {}) : getSystemInstanceSettings(indicatorSettings, sysId);
+         const cfg = { ...getSystemInstanceSettings(indicatorSettings, sysId), ...(tradingConfig.exitUseExplicitParams ? tradingConfig.exitDisjunctionParams?.[sysId] : {}) };
          const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
          const sysIndex = getMappedIndex(sysExitSource);
          return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysExitSource));

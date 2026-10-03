@@ -8,6 +8,10 @@ export const DEFAULT_DATA_SOURCE_RULES: DataSourceRules = {
   signalSource: 'alpha',
 };
 
+/** A signal from an aggregate candle is usable only when that candle first closes. */
+export const isNewSourceCandle = (sourceTime: number, previousAlphaTime?: number): boolean =>
+  previousAlphaTime === undefined || sourceTime > previousAlphaTime;
+
 export const getBaseInterval = (mode: string) => {
   const parts = mode.split('_');
   if (parts.length === 2) {
@@ -52,4 +56,3 @@ export const getLowestActiveIntervalDelay = (
   if (lowest === Infinity) return base;
   return lowest;
 };
-

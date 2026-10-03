@@ -2,6 +2,7 @@ import React from 'react';
 import { Crosshair, Activity, Radar, BarChart2, Layers, Shuffle } from 'lucide-react';
 import { useIndicatorsStore } from '../../stores/indicators_store';
 import { toast } from 'sonner';
+import { getBaseSystemId } from '../../functions/api/conjunctionSystem/selfReplicationLabelManage';
 
 export type ToolTab = "ma_crossover" | "stochastic" | "supertrend" | "divergence" | "linear_regression" | "bollinger_bands" | "ichimoku" | "three_candle_strike" | "turtle_trading" | "supertrend_regime" | "heikin_ashi_smoothed" | "candlestick_pattern" | "conjunction" | "disjunction";
 
@@ -21,6 +22,12 @@ export const LabNavigation: React.FC<LabNavigationProps> = ({ activeTab, onTabCh
       setLastClassicTab(activeTab);
     }
   }, [activeTab]);
+
+  React.useEffect(() => {
+    if (activeMode === 'disjunction' && activeTab !== 'disjunction') onTabChange('disjunction');
+    else if (activeMode === 'conjunction' && activeTab !== 'conjunction') onTabChange('conjunction');
+    else if (activeMode === 'classic' && (activeTab === 'conjunction' || activeTab === 'disjunction')) onTabChange(lastClassicTab);
+  }, [activeMode, activeTab, lastClassicTab, onTabChange]);
 
   const tabs: { id: ToolTab; label: string; icon: React.ReactNode }[] = [
     { id: 'ma_crossover', label: 'MA Crossover', icon: <Crosshair className="w-3 h-3" /> },
@@ -106,18 +113,17 @@ export const LabNavigation: React.FC<LabNavigationProps> = ({ activeTab, onTabCh
 
   const toggleDisjunctionSystem = (sysId: string) => {
     const current = tradingConfig.activeDisjunctionSystems || [];
-    const baseId = sysId + '_alpha';
-    const isActive = current.includes(baseId);
+    const isActive = current.some(id => getBaseSystemId(id) === sysId);
     
     if (isActive) {
       setTradingConfig(prev => ({
         ...prev,
-        activeDisjunctionSystems: current.filter(id => id !== baseId)
+        activeDisjunctionSystems: current.filter(id => getBaseSystemId(id) !== sysId)
       }));
     } else {
       setTradingConfig(prev => ({
         ...prev,
-        activeDisjunctionSystems: [...current, baseId]
+        activeDisjunctionSystems: [...current, `${sysId}_alpha`]
       }));
     }
   };
@@ -131,7 +137,7 @@ export const LabNavigation: React.FC<LabNavigationProps> = ({ activeTab, onTabCh
             Core Trading Mode
           </span>
           <span className="text-[9px] text-zinc-500 max-w-xl">
-            Select standard single-system configuration or active Conjunction system mode (filters signals based on perfect alignment of 3 randomly picked classic strategies).
+            Select one classic system, require aligned conjunction signals, or enter when any selected disjunction system signals.
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -252,7 +258,7 @@ export const LabNavigation: React.FC<LabNavigationProps> = ({ activeTab, onTabCh
               <div key={rowIndex} className="flex gap-1 p-1 rounded-xl border shrink-0 bg-orange-950/20 border-orange-800/30 w-fit items-center">
                 {rowTabs.map((tab) => {
                   if (tab.id === 'conjunction' || tab.id === 'disjunction') return null;
-                  const isActive = (tradingConfig.activeDisjunctionSystems || []).some(sys => sys.replace('_alpha', '').replace('_beta', '').replace('_delta', '') === tab.id);
+                  const isActive = (tradingConfig.activeDisjunctionSystems || []).some(sys => getBaseSystemId(sys) === tab.id);
                   return (
                     <button
                       key={tab.id}

@@ -68,9 +68,12 @@ export function useIndicatorSlice() {
     saveState(`${STORAGE_KEY}_indicator`, indicatorSettings);
   }, [indicatorSettings]);
 
-  const getIndicatorDescription = (type: keyof IndicatorSettings | 'conjunction') => {
+  const getIndicatorDescription = (type: keyof IndicatorSettings | 'conjunction' | 'disjunction') => {
     if (type === 'conjunction') {
       return `Simulates the Conjunction System which requires perfect alignment across multiple classic systems to trigger entry logic. Select multiple subsystems in the Configuration Panel to observe correlated behavior.`;
+    }
+    if (type === 'disjunction') {
+      return 'Any selected system can trigger an entry. Opposite signals on the same candle use the first selected system. Configure each system and its data source below.';
     }
     switch (type) {
       case 'ma_crossover':

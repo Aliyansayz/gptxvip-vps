@@ -1,6 +1,7 @@
 import React from 'react';
 import { CandlestickSimulator } from './CandlestickSimulator';
 import { useIndicatorsStore } from '../stores/indicators_store';
+import { getSystemInstanceSettings } from '../functions/api/classicSystem/systemInstanceSettings';
 
 export const DisjunctionSimulation: React.FC = () => {
   const { tradingConfig, indicatorSettings } = useIndicatorsStore();
@@ -30,7 +31,7 @@ export const DisjunctionSimulation: React.FC = () => {
   }
 
   // Get settings for that type
-  const settings = indicatorSettings[configType as keyof typeof indicatorSettings] || indicatorSettings.stochastic;
+  const settings = getSystemInstanceSettings(indicatorSettings, tradingConfig.activeDisjunctionSystems?.[0] || configType);
 
   return (
     <div className="w-full space-y-4">
@@ -42,7 +43,7 @@ export const DisjunctionSimulation: React.FC = () => {
           </span>
         </h3>
         <p className="text-xs text-zinc-300 leading-relaxed mb-3">
-          This mode evaluates signals from multiple classic systems abstracting their signals logically using an OR operator. Entries are triggered when at least one of the selected sub-systems points to a direction.
+          Any selected system can trigger an entry. If systems signal opposite directions on the same candle, the first system in the selector takes priority.
         </p>
         <div className="flex flex-wrap gap-2 items-center">
           <span className="text-[10px] uppercase font-bold text-zinc-500">Active Sub-systems:</span>
@@ -56,7 +57,7 @@ export const DisjunctionSimulation: React.FC = () => {
               );
             })
           ) : (
-            <span className="text-[10px] text-zinc-500 font-semibold italic">No systems selected (classic mode fallback behavior). Choose systems below.</span>
+            <span className="text-[10px] text-zinc-500 font-semibold italic">No systems selected. Choose systems in the selector to enable entries.</span>
           )}
         </div>
       </div>
