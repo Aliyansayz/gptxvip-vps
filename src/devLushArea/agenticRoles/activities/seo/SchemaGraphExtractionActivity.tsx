@@ -46,14 +46,14 @@ export const SchemaGraphExtractionActivity: React.FC<ActivityComponentProps> = (
       <div className="space-y-2">
         {schemaData.map((node: any, idx: number) => (
           <div key={idx} className="p-2.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-3">
-            <div className="space-y-1">
+            <div className="min-w-0 flex-1 space-y-1 break-words">
               <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-sm font-bold">
                 @{node.type}
               </span>
               <div className="text-slate-900 dark:text-white font-medium text-sm">{node.headline || node.name}</div>
-              <div className="text-sm text-slate-500 truncate max-w-sm">{node.id}</div>
+              <div className="break-all text-sm text-slate-500 dark:text-slate-400">{node.id}</div>
             </div>
-            <Check className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
+            <Check className="h-4 w-4 shrink-0 text-emerald-700 dark:text-emerald-400" />
           </div>
         ))}
       </div>
