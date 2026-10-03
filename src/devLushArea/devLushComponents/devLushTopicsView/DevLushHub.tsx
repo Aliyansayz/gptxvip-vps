@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { RandomKeywordsList } from "./RandomKeywordsList";
 import { getThemeColorClass } from "../themeHelpers";
+import { SpotlightBorderCard } from "../../components/SpotlightBorderCard";
 
 interface EnrichedConceptData extends ConceptCourse {
   chapters: LabData[];
@@ -42,10 +43,11 @@ const DevLushChapterCard: React.FC<{
   const themeColors = getThemeColorClass(chapter.course);
 
   return (
-    <article
-      className={`group relative min-w-0 overflow-hidden rounded-2xl border bg-white shadow-sm transition-[border-color,box-shadow] duration-200 hover:shadow-md dark:bg-slate-900 ${isCompleted ? 'border-emerald-400 dark:border-emerald-700' : 'border-slate-200 hover:border-indigo-300 dark:border-slate-800'}`}
+    <SpotlightBorderCard
+      spotlightRgb="99, 102, 241"
+      baseColorClassName={isCompleted ? 'bg-emerald-400 dark:bg-emerald-700' : undefined}
+      innerClassName="flex h-full flex-col p-4 sm:p-6"
     >
-      <div className="relative z-10 flex h-full flex-col p-4 sm:p-6">
         <div className="relative">
           {isCompleted && <span className="mb-2 inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200"><CheckCircle2 className="h-3.5 w-3.5" /> Completed</span>}
           <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">{totalExercises} {totalExercises === 1 ? "exercise" : "exercises"} · interactive lab</p>
@@ -90,8 +92,7 @@ const DevLushChapterCard: React.FC<{
           <Play className="w-4 h-4 fill-current" />
           <span>{isCompleted ? 'Review lab' : 'Start lab'}</span>
         </button>
-      </div>
-    </article>
+    </SpotlightBorderCard>
   );
 };
 

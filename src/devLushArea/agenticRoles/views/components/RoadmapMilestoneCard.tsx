@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2, Clock } from 'lucide-react';
 import { AgenticRoleChapter } from '../../agenticRoleTypes';
 import { getRoleTheme } from '../../agenticThemeHelpers';
 import DifficultyBadge from './DifficultyBadge';
+import { SpotlightBorderCard } from '../../../components/SpotlightBorderCard';
 
 interface RoadmapMilestoneCardProps {
   chapter: AgenticRoleChapter;
@@ -14,7 +15,7 @@ export default function RoadmapMilestoneCard({ chapter, isCompleted = false, onL
   const theme = getRoleTheme(chapter.roleDomain);
   const brief = chapter.interactive_questions[0]?.prompt || chapter.theory_content.practical_takeaway;
   return (
-    <article className="group flex min-w-0 flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-slate-400 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-600 sm:flex-row sm:gap-6 sm:p-7">
+    <SpotlightBorderCard spotlightRgb={theme.spotlightRgb} innerClassName="flex flex-col gap-4 p-5 sm:flex-row sm:gap-6 sm:p-7">
       <div aria-hidden="true" className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl font-mono text-lg font-semibold ${theme.bgSoft} ${theme.text}`}>{String(chapter.day).padStart(2, '0')}</div>
       <div className="min-w-0 flex-1">
         <div className="mb-3 flex flex-wrap items-center gap-3">
@@ -29,6 +30,6 @@ export default function RoadmapMilestoneCard({ chapter, isCompleted = false, onL
           {isCompleted ? 'Review case' : 'Open case'}<ArrowRight className="h-4 w-4" />
         </button>
       </div>
-    </article>
+    </SpotlightBorderCard>
   );
 }
