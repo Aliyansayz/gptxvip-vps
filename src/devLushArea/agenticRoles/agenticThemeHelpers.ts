@@ -30,7 +30,7 @@ const roleThemes: Record<RoleDomain, RoleThemeTokens> = {
   seo: {
     domain: 'seo',
     title: 'SEO Agentic Analyst',
-    text: 'text-emerald-500 dark:text-emerald-400',
+    text: 'text-emerald-700 dark:text-emerald-400',
     textMuted: 'text-emerald-600/80 dark:text-emerald-300/80',
     bg: 'bg-emerald-600 hover:bg-emerald-500',
     hoverBg: 'hover:bg-emerald-500',
@@ -55,7 +55,7 @@ const roleThemes: Record<RoleDomain, RoleThemeTokens> = {
   accountant: {
     domain: 'accountant',
     title: 'Agentic Accountant',
-    text: 'text-amber-500 dark:text-amber-400',
+    text: 'text-amber-700 dark:text-amber-400',
     textMuted: 'text-amber-600/80 dark:text-amber-300/80',
     bg: 'bg-amber-600 hover:bg-amber-500',
     hoverBg: 'hover:bg-amber-500',
@@ -80,7 +80,7 @@ const roleThemes: Record<RoleDomain, RoleThemeTokens> = {
   commerce: {
     domain: 'commerce',
     title: 'Agentic Commerce Analyst',
-    text: 'text-rose-500 dark:text-rose-400',
+    text: 'text-rose-700 dark:text-rose-400',
     textMuted: 'text-rose-600/80 dark:text-rose-300/80',
     bg: 'bg-rose-600 hover:bg-rose-500',
     hoverBg: 'hover:bg-rose-500',
@@ -105,7 +105,7 @@ const roleThemes: Record<RoleDomain, RoleThemeTokens> = {
   recommendation: {
     domain: 'recommendation',
     title: 'Agentic Recommendation System Analyst',
-    text: 'text-indigo-500 dark:text-indigo-400',
+    text: 'text-indigo-700 dark:text-indigo-400',
     textMuted: 'text-indigo-600/80 dark:text-indigo-300/80',
     bg: 'bg-indigo-600 hover:bg-indigo-500',
     hoverBg: 'hover:bg-indigo-500',
@@ -130,7 +130,7 @@ const roleThemes: Record<RoleDomain, RoleThemeTokens> = {
   preprocessing: {
     domain: 'preprocessing',
     title: 'Data Preprocessing Agentic Specialist',
-    text: 'text-cyan-500 dark:text-cyan-400',
+    text: 'text-cyan-700 dark:text-cyan-400',
     textMuted: 'text-cyan-600/80 dark:text-cyan-300/80',
     bg: 'bg-cyan-600 hover:bg-cyan-500',
     hoverBg: 'hover:bg-cyan-500',
@@ -155,7 +155,7 @@ const roleThemes: Record<RoleDomain, RoleThemeTokens> = {
   visualization: {
     domain: 'visualization',
     title: 'Data Visualization Agentic Specialist',
-    text: 'text-purple-500 dark:text-purple-400',
+    text: 'text-purple-700 dark:text-purple-400',
     textMuted: 'text-purple-600/80 dark:text-purple-300/80',
     bg: 'bg-purple-600 hover:bg-purple-500',
     hoverBg: 'hover:bg-purple-500',

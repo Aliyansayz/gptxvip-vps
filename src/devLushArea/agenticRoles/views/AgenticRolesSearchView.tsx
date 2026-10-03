@@ -105,7 +105,7 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
   return (
     <div role="search" aria-label="Explore Agentic Role cases" className="min-h-full w-full bg-slate-50 dark:bg-black">
       <div className="p-4 sm:p-6">
-        <div className="mx-auto w-full max-w-7xl">
+        <div className="mx-auto w-full max-w-5xl">
           <header className="mb-5 flex flex-col gap-4 sm:mb-7 sm:flex-row sm:items-end sm:justify-between">
             <div className="min-w-0">
               <button
@@ -115,8 +115,8 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
               >
                 <ArrowLeft className="h-4 w-4" /> Roles
               </button>
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-300">Agentic Roles · Explore</p>
-              <h1 className="mt-1 font-heading text-2xl font-bold tracking-wide text-slate-900 dark:text-white sm:text-4xl">Find a case to work through</h1>
+              <p className="text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-300">Agentic Roles · Explore</p>
+              <h1 className="mt-1 font-heading text-2xl font-semibold text-slate-900 dark:text-white sm:text-4xl">Find a case to work through</h1>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-400">
                 Search role stories, decisions, tools, and concepts across every case file.
               </p>
@@ -152,7 +152,7 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
 
             <div className="mt-4 space-y-3">
               <div className="flex items-center gap-2 overflow-x-auto pb-1">
-                <span className="shrink-0 text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Role</span>
+                <span className="shrink-0 text-xs font-extrabold uppercase tracking-wider text-slate-500">Role</span>
                 {[
                   { id: 'all', label: 'All roles' },
                   ...roles.map((role) => ({ id: role.roleDomain, label: role.shortTitle })),
@@ -170,7 +170,7 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
-                <span className="mr-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Difficulty</span>
+                <span className="mr-1 text-xs font-extrabold uppercase tracking-wider text-slate-500">Difficulty</span>
                 {difficultyOptions.map((difficulty) => (
                   <button
                     key={difficulty}
@@ -186,7 +186,7 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
             </div>
           </section>
 
-          {!query && <div className="mb-5 flex flex-wrap items-center gap-2" aria-label="Suggested role filters"><span className="mr-1 text-xs font-semibold text-slate-500">Try a role:</span>{roles.slice(0, 4).map(role => <button key={role.id} type="button" onClick={() => { setSelectedDomain(role.roleDomain); setQuery(''); }} className="min-h-9 rounded-full border border-indigo-200 bg-white px-3 text-xs font-semibold text-indigo-700 hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">{role.shortTitle}</button>)}</div>}
+          {!query && <div className="mb-5 flex flex-wrap items-center gap-2" aria-label="Suggested role filters"><span className="mr-1 text-xs font-semibold text-slate-500">Try a role:</span>{roles.slice(0, 4).map(role => <button key={role.id} type="button" onClick={() => { setSelectedDomain(role.roleDomain); setQuery(''); }} className="min-h-9 rounded-full border border-indigo-200 bg-white px-3 text-sm font-semibold text-indigo-700 hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-indigo-800 dark:bg-slate-900 dark:text-indigo-300 dark:hover:bg-slate-800">{role.shortTitle}</button>)}</div>}
 
           {results.length === 0 ? (
             <StatePanel title="No cases match those filters" description="Try a broader search or clear the filters to see all available role scenarios." actionLabel="Clear filters" onAction={() => { setQuery(''); setSelectedDomain('all'); setSelectedDifficulty('all'); }} />
@@ -198,21 +198,21 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
                 const storyBrief = chapter.interactive_questions[0]?.prompt || chapter.theory_content.practical_takeaway || chapter.chapter_title;
 
                 return (
-                  <article key={`${role.id}-${chapter.labComponentId}`} className="flex min-w-0 flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:border-slate-300 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 sm:p-5">
+                  <article key={`${role.id}-${chapter.labComponentId}`} className="flex min-w-0 flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:border-slate-300 hover:shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 sm:p-5">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className={`rounded-full border px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider ${theme.bgSoft} ${theme.text} ${theme.borderSoft}`}>
+                      <span className={`rounded-full border px-2.5 py-1 text-xs font-extrabold uppercase tracking-wider ${theme.bgSoft} ${theme.text} ${theme.borderSoft}`}>
                         {role.shortTitle} · Case {String(chapter.day).padStart(2, '0')}
                       </span>
                       <DifficultyBadge difficulty={chapter.difficulty} size="sm" />
                     </div>
                     <h2 className="mt-3 font-heading text-lg font-bold leading-6 text-slate-900 dark:text-white">{chapter.chapter_title}</h2>
-                    <p className="mt-2 line-clamp-3 text-sm leading-5 text-slate-600 dark:text-slate-300">{storyBrief}</p>
+                    <p className="mt-2 line-clamp-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{storyBrief}</p>
                     {matchedField !== 'role' && (
                       <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Match: <span className="font-semibold text-slate-700 dark:text-slate-200">{matchedValue}</span></p>
                     )}
                     <div className="mt-3 flex flex-wrap gap-1.5">
                       {chapter.critical_concepts.slice(0, 3).map((concept) => (
-                        <span key={concept.concept} className="rounded-md bg-slate-100 px-2 py-1 text-[10px] font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{concept.concept}</span>
+                        <span key={concept.concept} className="rounded-md bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{concept.concept}</span>
                       ))}
                     </div>
                     <div className="mt-auto flex items-center justify-between gap-2 border-t border-slate-100 pt-4 dark:border-slate-800 sm:mt-5">
@@ -235,7 +235,7 @@ export const AgenticRolesSearchView: React.FC<AgenticRolesSearchViewProps> = ({
                           type="button"
                           onClick={() => onSelectChapter(role.id, chapter)}
                           aria-label={`Open ${role.title}: ${chapter.chapter_title}`}
-                          className={`inline-flex min-h-11 items-center gap-2 rounded-xl bg-gradient-to-r px-3 text-xs font-bold text-white shadow-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 ${theme.gradientFrom} ${theme.gradientTo}`}
+                          className={`inline-flex min-h-11 items-center gap-2 rounded-xl bg-indigo-600 px-4 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2`}
                         >
                           Open case <ArrowRight className="h-3.5 w-3.5" />
                         </button>

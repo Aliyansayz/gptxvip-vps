@@ -1,3 +1,4 @@
+import '../agenticLearning.css';
 import React from 'react';
 import { AgentLabsMobileLearningNav } from '../../agentDevRootComponents/AgentLabsMobileLearningNav';
 import { AgentLabsMobileTopicRail } from '../../agentDevRootComponents/AgentLabsMobileTopicRail';
@@ -49,7 +50,7 @@ export const AgenticRolesLayout: React.FC<AgenticRolesLayoutProps> = ({
   }));
 
   return (
-    <div className="relative flex h-full w-full min-w-0 overflow-hidden bg-slate-50 text-slate-900 dark:bg-black dark:text-slate-100">
+    <div className="agentic-learning relative flex h-full w-full min-w-0 overflow-hidden bg-slate-50 text-slate-900 dark:bg-black dark:text-slate-100">
       <DevLushSidebar
         topics={topics}
         activeTopicId={activeRoleId}

@@ -9,25 +9,35 @@
     "labComponentId": "visualization-day1-color-contrast",
     "difficulty": "easy",
     "estimatedMinutes": 25,
-    "prerequisites": ["Color Theory Basics", "WCAG 2.1 Contrast Standards (7:1 for AAA)"],
-    "tags": ["visualization", "accessibility", "wcag", "color-palette", "perceptual-uniformity", "agentic-dataviz"],
+    "prerequisites": [
+      "Color Theory Basics",
+      "WCAG 2.1 Contrast Standards (7:1 for AAA)"
+    ],
+    "tags": [
+      "visualization",
+      "accessibility",
+      "wcag",
+      "color-palette",
+      "perceptual-uniformity",
+      "agentic-dataviz"
+    ],
     "critical_concepts": [
       {
         "concept": "Perceptually Uniform Color Spaces (Oklab / CIELAB)",
         "definition": "Color spaces designed so that equal numerical step changes correspond directly to equal human perceptual differences across all hues.",
-        "elaboration": "Autonomous visualization agents synthesize multi-series chart palettes in Oklab space, guaranteeing that no category appears artificially dominant due to uneven luminance.",
+        "elaboration": "Agents can use Oklab to compare and adjust perceptual color differences, then verify the resulting chart with contrast measurements and redundant encodings.",
         "industry_application": "Prevents executive dashboards from misleading decision-makers through unintentional visual prominence artifacts."
       },
       {
         "concept": "Colorblind Accessibility & WCAG Contrast Ratio",
-        "definition": "Ensuring all adjacent categorical colors and text labels achieve at least 4.5:1 (AA) or 7.0:1 (AAA) contrast against dark/light canvas backgrounds across Deuteranopia, Protanopia, and Tritanopia simulations.",
+        "definition": "Evaluate text against its background separately from essential chart graphics. WCAG AAA normal text requires 7:1; large text requires 4.5:1. Essential non-text graphics are covered by a separate 3:1 AA criterion. Pair category colors with direct labels or patterns.",
         "elaboration": "Agents simulate color vision deficiencies and inject redundant visual encodings (patterns, line dashes, explicit direct labels).",
-        "industry_application": "Ensures legal ADA compliance and seamless data legibility for 8%+ of the population with color vision differences."
+        "industry_application": "Improves dashboard legibility for people with low vision or color vision differences."
       }
     ],
     "theory_content": {
       "title": "Perceptually Uniform & Accessible Visual Encodings",
-      "content": "Standard RGB/HSL color pickers produce glaring luminance inconsistencies where yellow appears drastically brighter than blue. A Data Visualization Agentic Specialist synthesizes accessible, colorblind-safe palettes with verified WCAG AAA contrast ratios.",
+      "content": "Hue differences alone are insufficient for an accessible chart. Compare the categories in a vision preview, keep names and values readable, and measure each relevant foreground/background pair. Oklab can support palette design, but it does not guarantee contrast or full WCAG conformance.",
       "practical_takeaway": "Never encode critical categorical data using color alone; pair color with direct labels, icons, or dash patterns.",
       "analogy": "Like a road traffic signal that uses both distinct colors (red/green) and standardized spatial positions (top/bottom) so drivers with colorblindness never get confused.",
       "industry_case_study": "When a major healthcare analytics provider redesigned its hospital bed occupancy monitor using colorblind-safe palettes and direct text callouts, triage misrouting errors dropped by 24%."
@@ -39,7 +49,7 @@
         "dayNumber": 1,
         "difficulty": "easy",
         "title": "Audit Multi-Series Palette for Red-Green Colorblind Accessibility",
-        "prompt": "An executive dashboard uses `#E11D48` (Crimson Red) for 'Q3 Churn' and `#10B981` (Emerald Green) for 'Q3 Expansion'. When viewed under Deuteranopia simulation, both categories appear as identical shades of muted yellowish-brown.",
+        "prompt": "An executive dashboard uses #E11D48 (crimson) for Q3 Churn and #10B981 (emerald) for Q3 Expansion. Color alone makes the categories harder to distinguish for some people with color vision differences. Compare the previews and choose an accessible remediation.",
         "question": "What is the correct autonomous palette remediation for the agent to execute?",
         "options": [
           "Double the font size without changing the colors",
@@ -49,30 +59,51 @@
         ],
         "answer": "Switch to a perceptually distinct Viridis or Blue-Orange palette (`#2563EB` Cobalt Blue vs `#F59E0B` Amber) and add direct text labels with percentage values on each bar segment",
         "correctAnswerIndex": 1,
-        "explanation": "Blue-Orange and Viridis palettes remain highly distinguishable across all common forms of colorblindness. Adding direct data labels provides redundant encoding that guarantees clarity.",
+        "explanation": "A blue/amber palette can improve category separation for some viewers. Direct labels, values, and patterns provide information without requiring hue discrimination. Measure text and essential chart graphics separately; a palette choice alone does not establish AAA conformance.",
         "wrong_answer_feedback": [
-          { "option": "Double the font size without changing the colors", "feedback": "Increasing font size does not fix color hue indistinguishability between two adjacent chart bars." },
-          { "option": "Remove all bar charts and present raw 5,000-row CSV tables instead", "feedback": "Raw tables destroy rapid visual pattern recognition for executive leadership." }
+          {
+            "option": "Double the font size without changing the colors",
+            "feedback": "Increasing font size does not fix color hue indistinguishability between two adjacent chart bars."
+          },
+          {
+            "option": "Remove all bar charts and present raw 5,000-row CSV tables instead",
+            "feedback": "Raw tables destroy rapid visual pattern recognition for executive leadership."
+          }
         ],
-        "tags": ["wcag", "colorblind-friendly", "accessibility"],
+        "tags": [
+          "wcag",
+          "colorblind-friendly",
+          "accessibility"
+        ],
         "nature": "ux_perception",
         "logs": [
-          { "timestamp": "15:00:00", "level": "info", "message": "PALETTE_AUDITOR: Testing palette against Deuteranopia / Protanopia filters..." },
-          { "timestamp": "15:00:01", "level": "warn", "message": "CONTRAST_FAIL: Red/Green pairs show Delta-E < 5.0 under green-weak simulation." },
-          { "timestamp": "15:00:02", "level": "success", "message": "PALETTE_AUDITOR: Generated Blue/Amber Oklab palette. WCAG AAA contrast ratio: 8.4:1 against dark slate canvas." }
+          {
+            "timestamp": "15:00:00",
+            "level": "info",
+            "message": "Compare source colors against the #0F172A canvas."
+          },
+          {
+            "timestamp": "15:00:01",
+            "level": "info",
+            "message": "Blue: 3.45:1. Amber: 8.31:1. White labels: 17.85:1. Apply the criterion appropriate to each element."
+          }
         ],
         "expectedToolCalls": [
-          { "toolName": "audit_palette_wcag_contrast", "args": { "foregroundHex": "#2563EB", "backgroundHex": "#0F172A", "level": "AAA" }, "purpose": "Verify contrast accessibility ratio" }
+          {
+            "toolName": "audit_palette_wcag_contrast",
+            "args": {
+              "foregroundHex": "#2563EB",
+              "backgroundHex": "#0F172A",
+              "level": "AA non-text"
+            },
+            "purpose": "Verify contrast accessibility ratio"
+          }
         ],
         "roleSpecificData": {
           "type": "visualization",
           "data": {
             "chartTitle": "Executive SaaS Retention & Churn Breakdown",
-            "chartType": "scatter",
-            "colorPaletteAudits": [
-              { "paletteName": "Accessible Blue-Amber", "hexCodes": ["#2563EB", "#F59E0B", "#10B981", "#8B5CF6"], "contrastRatioAgainstBg": 8.4, "wcagRating": "AAA", "colorblindSafe": true },
-              { "paletteName": "Legacy Red-Green", "hexCodes": ["#E11D48", "#10B981"], "contrastRatioAgainstBg": 4.1, "wcagRating": "FAIL", "colorblindSafe": false }
-            ]
+            "chartType": "bar"
           }
         }
       }

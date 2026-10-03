@@ -214,7 +214,7 @@ export interface PreprocessingDomainData {
 
 export interface VisualizationDomainData {
   chartTitle: string;
-  chartType: 'sankey' | 'heatmap' | 'waterfall' | 'treemap' | 'scatter' | 'choropleth';
+  chartType: 'bar' | 'sankey' | 'heatmap' | 'waterfall' | 'treemap' | 'scatter' | 'choropleth';
   colorPaletteAudits?: Array<{
     paletteName: string;
     hexCodes: string[];
