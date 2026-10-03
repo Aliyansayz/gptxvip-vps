@@ -11,6 +11,7 @@ import { getEligibleRootAccount } from '../../functions/api/accountState/account
 import { shouldActivateTradeBreaker } from '../../functions/api/tradeBreaker/tradeBreakerByEquity';
 import { evaluateConjunctionSystem } from '../../functions/api/conjunctionSystem';
 import { evaluateDisjunctionSystem } from '../../functions/api/disjunctionSystem';
+import { getSystemInstanceSettings } from '../../functions/api/classicSystem/systemInstanceSettings';
 import { Config } from './types';
 import { ParallelAccount, useIndicatorsStore } from '../../stores/indicators_store';
 import { calculatePnL } from '../../functions/api/position_sizing/leveragedPositionSizeMetals';
@@ -102,7 +103,10 @@ export function useTradeEvaluation(
     const tsIndex = getMappedIndex(tsDataSource);
 
     const getSignalForComputed = (sysType: string, computedSig: any, idx: number, sourceData: Ohlc[]) => {
-      if (idx < 0) return null;
+      if (idx < 0 || !sourceData[idx]) return null;
+      // A completed aggregate candle can be mapped to several alpha candles.
+      // Consume its entry signal once, when that source candle first closes.
+      if (sourceData !== data && simulationIndex > 0 && sourceData[idx].time <= data[simulationIndex - 1].time) return null;
       let signal: 'LONG' | 'SHORT' | null = null;
       if (sysType === 'ma_crossover' && computedSig?.fastLine) {
         const fastLine = computedSig.fastLine;
@@ -258,13 +262,15 @@ export function useTradeEvaluation(
       const activeSystems = tradingConfig.activeConjunctionSystems || [];
       const signals = activeSystems.map((sysId: string) => {
          const comp = ind.entrySignal.conjunctionSignals[sysId];
-         const sysEntrySource = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[sysId as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
+         const settings = getSystemInstanceSettings(indicatorSettings, sysId);
+         const sysEntrySource = settings.entrySignalSource || settings.dataSource || entryDataSource;
          const sysIndex = getMappedIndex(sysEntrySource);
          return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysEntrySource));
       });
       const trends = activeSystems.map((sysId: string) => {
          const comp = ind.entrySignal.conjunctionSignals[sysId];
-         const sysEntrySource = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[sysId as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
+         const settings = getSystemInstanceSettings(indicatorSettings, sysId);
+         const sysEntrySource = settings.entrySignalSource || settings.dataSource || entryDataSource;
          const sysIndex = getMappedIndex(sysEntrySource);
          return getTrendForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysEntrySource));
       });
@@ -305,14 +311,14 @@ export function useTradeEvaluation(
       const activeExitSystems = tradingConfig.exitActiveConjunctionSystems || [];
       const signals = activeExitSystems.map((sysId: string) => {
          const comp = ind.exitSignal.conjunctionSignals[sysId];
-         const cfg = tradingConfig.exitUseExplicitParams ? (tradingConfig.exitConjunctionParams?.[sysId] || {}) : ((indicatorSettings[sysId as keyof typeof indicatorSettings] as any) || {});
+         const cfg = tradingConfig.exitUseExplicitParams ? (tradingConfig.exitConjunctionParams?.[sysId] || {}) : getSystemInstanceSettings(indicatorSettings, sysId);
          const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
          const sysIndex = getMappedIndex(sysExitSource);
          return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysExitSource));
       });
       const trends = activeExitSystems.map((sysId: string) => {
          const comp = ind.exitSignal.conjunctionSignals[sysId];
-         const cfg = tradingConfig.exitUseExplicitParams ? (tradingConfig.exitConjunctionParams?.[sysId] || {}) : ((indicatorSettings[sysId as keyof typeof indicatorSettings] as any) || {});
+         const cfg = tradingConfig.exitUseExplicitParams ? (tradingConfig.exitConjunctionParams?.[sysId] || {}) : getSystemInstanceSettings(indicatorSettings, sysId);
          const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
          const sysIndex = getMappedIndex(sysExitSource);
          return getTrendForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysExitSource));
@@ -328,7 +334,7 @@ export function useTradeEvaluation(
       const activeExitSystems = tradingConfig.exitActiveDisjunctionSystems || [];
       const signals = activeExitSystems.map((sysId: string) => {
          const comp = ind.exitSignal.disjunctionSignals[sysId];
-         const cfg = tradingConfig.exitUseExplicitParams ? (tradingConfig.exitDisjunctionParams?.[sysId] || {}) : ((indicatorSettings[sysId as keyof typeof indicatorSettings] as any) || {});
+         const cfg = tradingConfig.exitUseExplicitParams ? (tradingConfig.exitDisjunctionParams?.[sysId] || {}) : getSystemInstanceSettings(indicatorSettings, sysId);
          const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
          const sysIndex = getMappedIndex(sysExitSource);
          return getSignalForComputed(getBaseSystemId(sysId), comp, sysIndex, getDataBySource(sysExitSource));

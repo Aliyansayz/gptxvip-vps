@@ -19,6 +19,7 @@ import { Config } from './types';
 import { getTrailSlIndicator } from '../../functions/api/middleware/trailSlIndicatorVersion';
 import { rollingRegressionSlope, slopePersistenceFast, trendEfficiencyFast } from '../../functions/api/indicators/trendStrength/trendStrength';
 import { smoothedWickEfficiencyFast } from '../../functions/api/indicators/trendStrength/wickEfficiency';
+import { getSystemInstanceSettings } from '../../functions/api/classicSystem/systemInstanceSettings';
 
 const getBaseSystemId = (id: string) => id.replace('_alpha', '').replace('_beta', '').replace('_delta', '');
 
@@ -54,7 +55,7 @@ export function useComputedIndicators(
     const computeSignalForType = (sysType: string, configKey: string, dataSource: string, config: any) => {
       const sourceData = getDataBySource(dataSource);
       const closePrices = sourceData.map(d => d.close);
-      const baseCfgObj = indicatorSettings[configKey as keyof typeof indicatorSettings] || indicatorSettings[sysType as keyof typeof indicatorSettings];
+      const baseCfgObj = getSystemInstanceSettings(indicatorSettings, configKey);
       
       // Merge base configuration parameters with the specific custom configuration passed in
       const mergedObj = { ...baseCfgObj, ...config };
@@ -165,7 +166,7 @@ export function useComputedIndicators(
         const open = sourceData.map(d => d.open);
         const highs = sourceData.map(d => d.high);
         const lows = sourceData.map(d => d.low);
-        const cp = getCandlePatternsMultiple(open, highs, lows, closePrices, indicatorSettings?.candlestick_pattern?.allowedPatterns);
+        const cp = getCandlePatternsMultiple(open, highs, lows, closePrices, cfg.allowedPatterns);
         const direction = cp.action_signal.map(a => a === 'bullish_action' ? 1 : (a === 'bearish_action' ? -1 : 0));
         return {
           type: 'candlestick_pattern',
@@ -186,7 +187,8 @@ export function useComputedIndicators(
        };
        (tradingConfig.activeConjunctionSystems || []).forEach((sysId: string) => {
          const baseId = sysId.replace('_alpha', '').replace('_beta', '').replace('_delta', '');
-         const sysEntrySource = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[sysId as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
+         const settings = getSystemInstanceSettings(indicatorSettings, sysId);
+         const sysEntrySource = settings.entrySignalSource || settings.dataSource || entryDataSource;
          const sig = computeSignalForType(baseId, sysId, sysEntrySource, {});
          if (sig) {
            result.entrySignal.conjunctionSignals[sysId] = sig;
@@ -199,7 +201,8 @@ export function useComputedIndicators(
        };
        (tradingConfig.activeDisjunctionSystems || []).forEach((sysId: string) => {
          const baseId = sysId.replace('_alpha', '').replace('_beta', '').replace('_delta', '');
-         const sysEntrySource = (indicatorSettings[sysId as keyof typeof indicatorSettings] as any)?.entrySignalSource || indicatorSettings[sysId as keyof typeof indicatorSettings]?.dataSource || entryDataSource;
+         const settings = getSystemInstanceSettings(indicatorSettings, sysId);
+         const sysEntrySource = settings.entrySignalSource || settings.dataSource || entryDataSource;
          const sig = computeSignalForType(baseId, sysId, sysEntrySource, {});
          if (sig) {
            result.entrySignal.disjunctionSignals[sysId] = sig;
@@ -225,8 +228,8 @@ export function useComputedIndicators(
          // Use explicit custom parameters if toggled, otherwise sync with entry indicator settings
          const isExplicit = !!tradingConfig.exitUseExplicitParams;
          const cfg = isExplicit 
-           ? (tradingConfig.exitConjunctionParams?.[sysId] || {}) 
-           : ((indicatorSettings as any)[sysId] || {});
+           ? { ...(tradingConfig.exitConjunctionParams?.[sysId] || {}), allowVariation: false }
+           : getSystemInstanceSettings(indicatorSettings, sysId);
 
          const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
          const sig = computeSignalForType(baseId, sysId, sysExitSource, cfg);
@@ -245,8 +248,8 @@ export function useComputedIndicators(
          // Use explicit custom parameters if toggled, otherwise sync with entry indicator settings
          const isExplicit = !!tradingConfig.exitUseExplicitParams;
          const cfg = isExplicit 
-           ? (tradingConfig.exitDisjunctionParams?.[sysId] || {}) 
-           : ((indicatorSettings as any)[sysId] || {});
+           ? { ...(tradingConfig.exitDisjunctionParams?.[sysId] || {}), allowVariation: false }
+           : getSystemInstanceSettings(indicatorSettings, sysId);
 
          const sysExitSource = cfg.exitSignalSource || tradingConfig.exitSignalSource || cfg.entrySignalSource || cfg.dataSource || 'alpha';
          const sig = computeSignalForType(baseId, sysId, sysExitSource, cfg);

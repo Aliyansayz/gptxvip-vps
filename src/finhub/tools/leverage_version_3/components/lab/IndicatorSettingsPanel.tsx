@@ -6,6 +6,7 @@ import { ToolTab } from './LabNavigation';
 import { getBaseInterval, formatInterval } from '../../functions/api/rules/dataSourceRules';
 import { getBaseSystemId, getSystemLabelForDisplay, newNamesAfterReplication } from '../../functions/api/conjunctionSystem/selfReplicationLabelManage';
 import { isReplicationPossible } from '../../functions/api/conjunctionSystem/selfReplicationFeature';
+import { getSystemInstanceSettings } from '../../functions/api/classicSystem/systemInstanceSettings';
 
 export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activeTab }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -282,11 +283,7 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
   };
 
   const renderInputs = (tabId: string) => {
-    const baseId = getBaseSystemId(tabId);
-    let currentSettings = indicatorSettings[tabId as keyof IndicatorSettings] as any;
-    if (!currentSettings) {
-        currentSettings = indicatorSettings[baseId as keyof IndicatorSettings] as any;
-    }
+    const currentSettings = getSystemInstanceSettings(indicatorSettings, tabId);
     
     const allowVariation = currentSettings?.allowVariation || false;
 
@@ -480,6 +477,7 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
                     </div>
                     {(tradingConfig.activeDisjunctionSystems || []).map((sysId: string) => {
                       const baseId = getBaseSystemId(sysId);
+                      const systemSettings = getSystemInstanceSettings(indicatorSettings, sysId);
                       return (
                       <div key={sysId} className="border border-orange-500/30 bg-orange-900/5 p-4 rounded-lg relative">
                         <div className="absolute top-2 right-2">
@@ -521,7 +519,7 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
                            <label className="flex items-center gap-2 text-xs">
                              <span className="text-amber-400 font-semibold uppercase">Entry Signal Source:</span>
                              <select
-                               value={(indicatorSettings[sysId as keyof IndicatorSettings] as any)?.entrySignalSource || 'alpha'}
+                               value={systemSettings.entrySignalSource || systemSettings.dataSource || tradingConfig.entrySignalSource || 'alpha'}
                                onChange={(e) => handleUpdate(sysId as keyof IndicatorSettings, { entrySignalSource: e.target.value as any })}
                                className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300"
                              >
@@ -530,14 +528,14 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
                                <option value="delta">Delta Layer</option>
                              </select>
                              <span className="text-cyan-500 font-bold ml-1">
-                               {formatInterval((indicatorSettings[sysId as keyof IndicatorSettings] as any)?.entrySignalSource === 'beta' ? betaInterval : (indicatorSettings[sysId as keyof IndicatorSettings] as any)?.entrySignalSource === 'delta' ? deltaInterval : alphaInterval)}
+                               {formatInterval((systemSettings.entrySignalSource || systemSettings.dataSource || tradingConfig.entrySignalSource) === 'beta' ? betaInterval : (systemSettings.entrySignalSource || systemSettings.dataSource || tradingConfig.entrySignalSource) === 'delta' ? deltaInterval : alphaInterval)}
                              </span>
                            </label>
                            
                           <label className="flex items-center gap-2 text-xs">
                             <span className="text-zinc-400">Strategy Config Source:</span>
                             <select
-                              value={(indicatorSettings[sysId as keyof IndicatorSettings] as any)?.dataSource || 'alpha'}
+                              value={systemSettings.dataSource || 'alpha'}
                               onChange={(e) => handleUpdate(sysId as keyof IndicatorSettings, { dataSource: e.target.value as any })}
                               className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-zinc-300"
                             >
@@ -546,13 +544,13 @@ export const IndicatorSettingsPanel: React.FC<{ activeTab: ToolTab }> = ({ activ
                               <option value="delta">Delta Layer</option>
                             </select>
                             <span className="text-cyan-500 font-bold ml-1">
-                              {formatInterval((indicatorSettings[sysId as keyof IndicatorSettings] as any)?.dataSource === 'beta' ? betaInterval : (indicatorSettings[sysId as keyof IndicatorSettings] as any)?.dataSource === 'delta' ? deltaInterval : alphaInterval)}
+                              {formatInterval(systemSettings.dataSource === 'beta' ? betaInterval : systemSettings.dataSource === 'delta' ? deltaInterval : alphaInterval)}
                             </span>
                           </label>
                           <label className="flex items-center gap-2 text-xs cursor-pointer select-none border border-zinc-700/50 bg-zinc-900/30 px-2 py-1 rounded">
                             <input
                               type="checkbox"
-                              checked={(indicatorSettings[sysId as keyof IndicatorSettings] as any)?.allowVariation || false}
+                              checked={!!systemSettings.allowVariation}
                               onChange={(e) => handleUpdate(sysId as keyof IndicatorSettings, { allowVariation: e.target.checked })}
                               className="accent-cyan-500 rounded bg-zinc-800 border-zinc-700"
                             />

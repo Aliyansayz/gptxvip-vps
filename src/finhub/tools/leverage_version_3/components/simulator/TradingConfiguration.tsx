@@ -53,6 +53,7 @@ export const TradingConfiguration: React.FC<TradingConfigurationProps> = ({ conf
           >
             <option value="classic">Classic System</option>
             <option value="conjunction">Conjunction System</option>
+            <option value="disjunction">Disjunction System</option>
           </select>
         </div>
       </div>
