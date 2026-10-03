@@ -1,6 +1,7 @@
 import { strict as assert } from 'node:assert';
 import { Trade } from '../../../../types/trading';
 import { TradingRulesConfig, evaluateTradeExits } from '../rules/tradingRules';
+import { processIndicatorBasedEntry } from '../rules/tradingEntryIndicatorRules';
 import { updateTrailSL } from '../middleware/updateTrailSL';
 import { defaultStopLossModifierConfig } from './stopLossModifierConfig';
 import { evaluateStopLossModification } from './stopLossModifierManager';
@@ -46,5 +47,47 @@ const beforeTrigger = updateTrailSL([trade], 0, [{ ...bar, close: 106.9 }], atrR
 assert.equal(beforeTrigger[0].stopLoss, 95);
 const atTrigger = updateTrailSL([trade], 0, [bar], atrRules, atrStops, 'Gold');
 assert.equal(atTrigger[0].stopLoss, 102);
+
+const fixedRules = { ...atrRules, entryOnSignal: true, stopLossPips: 50,
+  useTakeProfit: true, rewardRiskRatio: 2 } as TradingRulesConfig;
+const entryBar = { time: 0, open: 100, high: 100, low: 100, close: 100, volume: 1 };
+const [fixedLong] = processIndicatorBasedEntry(0, [entryBar], 'LONG', [], fixedRules,
+  { lower: 92, upper: 108 }, undefined, undefined, undefined, undefined, undefined, 'Gold');
+assert.equal(fixedLong.initialStopLoss, 95);
+assert.equal(fixedLong.stopLoss, 95);
+assert.equal(fixedLong.takeProfit, 110);
+const [fixedShort] = processIndicatorBasedEntry(0, [entryBar], 'SHORT', [], fixedRules,
+  { lower: 92, upper: 108 }, undefined, undefined, undefined, undefined, undefined, 'Gold');
+assert.equal(fixedShort.initialStopLoss, 105);
+assert.equal(fixedShort.takeProfit, 90);
+
+const stoppedBeforeTrigger = evaluateTradeExits(1, [entryBar,
+  { time: 1, open: 100, high: 101, low: 94, close: 96, volume: 1 }], null, [fixedLong], fixedRules);
+assert.equal(stoppedBeforeTrigger[0].exitReason, 'STOP_LOSS');
+assert.equal(stoppedBeforeTrigger[0].exitPrice, 95);
+const fixedBeforeTrigger = updateTrailSL([fixedLong], 0, [{ ...bar, close: 106.9 }], fixedRules, atrStops, 'Gold');
+assert.equal(fixedBeforeTrigger[0].stopLoss, 95);
+const fixedAfterTrigger = updateTrailSL([fixedLong], 0, [bar], fixedRules, atrStops, 'Gold');
+assert.equal(fixedAfterTrigger[0].stopLoss, 102);
+assert.equal(fixedAfterTrigger[0].initialStopLoss, 95);
+const shortStops = { lowerBand: [88], upperBand: [98] };
+const shortBeforeTrigger = updateTrailSL([fixedShort], 0, [{ ...bar, close: 93.1 }], fixedRules, shortStops, 'Gold');
+assert.equal(shortBeforeTrigger[0].stopLoss, 105);
+const shortAfterTrigger = updateTrailSL([fixedShort], 0, [{ ...bar, close: 93 }], fixedRules, shortStops, 'Gold');
+assert.equal(shortAfterTrigger[0].stopLoss, 98);
+assert.equal(shortAfterTrigger[0].initialStopLoss, 105);
+const activatedWithoutMoving = updateTrailSL([fixedLong], 0, [bar], fixedRules,
+  { lowerBand: [94], upperBand: [112] }, 'Gold');
+assert.equal(activatedWithoutMoving[0].stopLoss, 95);
+assert.equal(activatedWithoutMoving[0].profitTrailActivated, true);
+assert.equal(activatedWithoutMoving[0].trailCount, 0);
+const afterRetracement = updateTrailSL(activatedWithoutMoving, 0, [{ ...bar, close: 106 }],
+  fixedRules, atrStops, 'Gold');
+assert.equal(afterRetracement[0].stopLoss, 102);
+
+const [forexLong] = processIndicatorBasedEntry(0,
+  [{ ...entryBar, close: 1.1 }], 'LONG', [], fixedRules, undefined,
+  undefined, undefined, undefined, undefined, undefined, 'EURUSD');
+assert.ok(Math.abs((forexLong.stopLoss ?? 0) - 1.095) < 1e-10);
 
 console.log('pip profit stop loss checks passed');

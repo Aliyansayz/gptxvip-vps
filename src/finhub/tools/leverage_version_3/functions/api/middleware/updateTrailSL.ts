@@ -4,6 +4,7 @@ import { TradingRulesConfig } from '../rules/tradingRules';
 import { getDynamicVolatilityAtrMultiplier } from '../rules/trailingStopLossRules';
 import { evaluateStopLossModification, StopLossEvalContext } from '../stopLossModifier/stopLossModifierManager';
 import { evaluateTakeProfitModification, TakeProfitEvalContext } from '../takeProfitModifier/takeProfitModifierManager';
+import { priceToPips } from './pipsTranslation';
 
 export function updateTrailSL(
   trades: Trade[],
@@ -77,6 +78,16 @@ export function updateTrailSL(
       }
     }
 
+    const profitMove = trade.side === 'LONG'
+      ? currentCandle.close - trade.entryPrice
+      : trade.entryPrice - currentCandle.close;
+    const trigger = config.stopLossModifier?.trailAfterProfitPips;
+    const profitTrailActivated = !!trade.profitTrailActivated || !!(
+      config.stopLossModifier?.enableTrailAfterProfitPips &&
+      typeof trigger === 'number' && Number.isFinite(trigger) &&
+      priceToPips(Math.max(0, profitMove), assetType, trade.entryPrice) + 1e-8 >= Math.max(0, trigger)
+    );
+
     const ctx: StopLossEvalContext = {
       initialStopLoss: trade.initialStopLoss,
       currentStopLoss: trade.stopLoss,
@@ -84,7 +95,8 @@ export function updateTrailSL(
       latestPrice: currentCandle.close,
       proposedNewSL,
       direction: trade.side,
-      assetType
+      assetType,
+      profitTrailActivated
     };
 
     const finalSL = evaluateStopLossModification(ctx, config.stopLossModifier);
@@ -103,7 +115,7 @@ export function updateTrailSL(
       finalTP = evaluateTakeProfitModification(tpCtx, config.takeProfitModifier);
     }
 
-    if (finalSL !== trade.stopLoss || finalTP !== trade.takeProfit) {
+    if (finalSL !== trade.stopLoss || finalTP !== trade.takeProfit || profitTrailActivated !== !!trade.profitTrailActivated) {
       hasChanges = true;
       let info = trade.infoStatus || '';
       if (finalSL !== trade.stopLoss) {
@@ -117,8 +129,9 @@ export function updateTrailSL(
         ...trade,
         stopLoss: finalSL,
         takeProfit: finalTP,
-        trailCount: (trade.trailCount || 0) + 1,
-        lastTrailIndex: currentIndex,
+        profitTrailActivated,
+        trailCount: (trade.trailCount || 0) + (finalSL !== trade.stopLoss || finalTP !== trade.takeProfit ? 1 : 0),
+        lastTrailIndex: finalSL !== trade.stopLoss || finalTP !== trade.takeProfit ? currentIndex : trade.lastTrailIndex,
         infoStatus: info
       };
     }

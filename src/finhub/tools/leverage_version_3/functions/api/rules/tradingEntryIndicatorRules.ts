@@ -4,7 +4,7 @@ import { Ohlc } from '../indicators/baseline';
 import { isVolatilityEntryConditionMet } from './tradingVolatilityRules';
 import { LeverageConfig } from '../position_sizing/leveragedPositionSizeMetals';
 import { evaluateDynamicPositionSize, evaluateRiskPerPip } from '../position_sizing/leveragedDynamicPositionSize';
-import { priceToPips } from '../middleware/pipsTranslation';
+import { pipsToPrice, priceToPips } from '../middleware/pipsTranslation';
 import { shouldAllowTradeByTimeFilter } from './timeFilterTradingRules';
 import { evaluateAdaptiveRiskPercentage } from '../position_sizing/adaptivePositionSizing';
 import { isTradeRestricted } from './tradeRestriction';
@@ -70,7 +70,18 @@ export function processIndicatorBasedEntry(
   let stopLoss = undefined;
   let takeProfit = undefined;
 
-  if (config.useStopLoss && customStopLossValue) {
+  if (config.useStopLoss && config.stopLossPips !== undefined && config.stopLossPips > 0) {
+    // The fixed entry stop is active immediately. Indicator trailing can replace
+    // it only after the configured profit trigger is reached.
+    const risk = pipsToPrice(config.stopLossPips, assetName, currentCandle.close);
+    stopLoss = Math.max(0, signal === 'LONG' ? currentCandle.close - risk : currentCandle.close + risk);
+    if (config.useTakeProfit) {
+      const actualRisk = Math.abs(currentCandle.close - stopLoss);
+      takeProfit = Math.max(0, signal === 'LONG'
+        ? currentCandle.close + actualRisk * config.rewardRiskRatio
+        : currentCandle.close - actualRisk * config.rewardRiskRatio);
+    }
+  } else if (config.useStopLoss && customStopLossValue) {
     if (signal === 'LONG') {
       stopLoss = Math.max(0, customStopLossValue.lower);
       if (config.useTakeProfit) {

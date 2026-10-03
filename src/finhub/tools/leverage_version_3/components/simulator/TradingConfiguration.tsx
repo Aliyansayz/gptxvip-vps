@@ -147,7 +147,7 @@ export const TradingConfiguration: React.FC<TradingConfigurationProps> = ({ conf
           <div className="flex items-center flex-wrap gap-2">
             <label className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">
               <input type="checkbox" className="rounded bg-zinc-800 border-zinc-700 text-zinc-400 focus:ring-cyan-500" checked={config.useStopLoss} onChange={e => updateConfig({ useStopLoss: e.target.checked })} />
-              Use Stop Loss ({indicatorSettings.stopLossIndicator?.type === 'last_n_candles' ? 'Last N Candles' : 'ATR Bands'}) <span className="ml-1 text-[9px] px-1 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-400">[{indicatorSettings.stopLossIndicator?.dataSource || 'alpha'}]</span>
+              Use Stop Loss ({config.stopLossPips && config.stopLossPips > 0 ? 'Fixed Initial' : indicatorSettings.stopLossIndicator?.type === 'last_n_candles' ? 'Last N Candles' : 'ATR Bands'}) <span className="ml-1 text-[9px] px-1 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-400">[{indicatorSettings.stopLossIndicator?.dataSource || 'alpha'}]</span>
             </label>
             <button 
               onClick={() => setShowSlSettings(!showSlSettings)} 
@@ -261,15 +261,14 @@ export const TradingConfiguration: React.FC<TradingConfigurationProps> = ({ conf
 
         <div className="md:col-span-2 border-t border-zinc-700/30 pt-2 mt-1 flex flex-wrap items-center gap-x-4 gap-y-2">
           <label className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">
-            <span>Stop Loss (Pips):</span>
+            <span>Initial Stop Loss (Pips):</span>
             <input 
               type="number" 
               min="0" max="1000" 
-              placeholder="0 = off"
+              placeholder={config.useStopLoss ? '0 = indicator' : '0 = off'}
               value={config.stopLossPips || ''} 
-              disabled={config.useStopLoss}
               onChange={e => updateConfig({ stopLossPips: parseInt(e.target.value) || 0 })} 
-              className="w-16 bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5 disabled:opacity-50" 
+              className="w-20 bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5"
             />
           </label>
           <label className="flex items-center gap-2 text-xs text-zinc-300 select-none cursor-pointer">
@@ -284,7 +283,7 @@ export const TradingConfiguration: React.FC<TradingConfigurationProps> = ({ conf
               className="w-16 bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] rounded px-1.5 py-0.5 disabled:opacity-50" 
             />
           </label>
-          <span className="text-[10px] text-zinc-500">Fixed pips override ATR bounds when set.</span>
+          <span className="text-[10px] text-zinc-500">A fixed initial stop protects the trade from entry. Set 0 to use indicator bounds. The ATR trail starts after the profit trigger when enabled.</span>
         </div>
 
         <div id="pips-based-exit-container" className="md:col-span-2 border-t border-zinc-700/30 pt-2 mt-1 flex flex-col gap-1.5">

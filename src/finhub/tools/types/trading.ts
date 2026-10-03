@@ -32,5 +32,6 @@ export interface Trade {
   infoStatus?: string;
   trailCount?: number;
   lastTrailIndex?: number;
+  profitTrailActivated?: boolean;
   hasPartialExited?: boolean;
 }

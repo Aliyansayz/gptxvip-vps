@@ -9,6 +9,7 @@ export interface StopLossEvalContext {
   proposedNewSL: number;
   direction: 'LONG' | 'SHORT';
   assetType: string;
+  profitTrailActivated?: boolean;
 }
 
 export function evaluateStopLossModification(
@@ -37,7 +38,7 @@ export function evaluateStopLossModification(
   const minimumTrailProfit = Number.isFinite(config.trailAfterProfitPips)
     ? Math.max(0, config.trailAfterProfitPips)
     : Infinity;
-  let allowTrailing = !config.enableTrailAfterProfitPips || profitPips + 1e-8 >= minimumTrailProfit;
+  let allowTrailing = !config.enableTrailAfterProfitPips || ctx.profitTrailActivated || profitPips + 1e-8 >= minimumTrailProfit;
   let finalSL = currentStopLoss;
 
   // Explicit reward-factor adjustment is one of the trail methods. The
