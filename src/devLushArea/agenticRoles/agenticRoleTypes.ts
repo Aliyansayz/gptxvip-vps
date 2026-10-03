@@ -7,7 +7,7 @@ export type Difficulty = 'easy' | 'medium' | 'hard';
 export type NormalizedDifficulty = 'Easy' | 'Medium' | 'Hard' | 'easy' | 'medium' | 'hard';
 
 /**
- * The 6 supported Agentic Job Role Domains
+ * Supported Agentic Job Role Domains
  */
 export type RoleDomain = 
   | 'seo' 
@@ -15,7 +15,11 @@ export type RoleDomain =
   | 'commerce' 
   | 'recommendation' 
   | 'preprocessing' 
-  | 'visualization';
+  | 'visualization'
+  | 'mobility'
+  | 'retail'
+  | 'procurement'
+  | 'contracts';
 
 /**
  * The technical and business perspective nature of an activity

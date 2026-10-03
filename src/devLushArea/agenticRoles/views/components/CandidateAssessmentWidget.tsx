@@ -7,7 +7,7 @@ interface CandidateAssessmentWidgetProps {
   onComplete?: () => void;
 }
 
-/** Native choices and persistent feedback shared by all 30 role activities. */
+/** Native choices and persistent feedback shared by role activities. */
 export default function CandidateAssessmentWidget({ exercise, onComplete }: CandidateAssessmentWidgetProps) {
   const groupId = useId();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);

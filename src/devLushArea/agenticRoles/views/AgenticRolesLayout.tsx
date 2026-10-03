@@ -27,6 +27,10 @@ const MOBILE_ROLE_LABELS: Record<string, string> = {
   'agentic-recommendation-analyst': 'Recommendations',
   'data-preprocessing-agentic': 'Data Prep',
   'data-visualization-agentic': 'Data Viz',
+  'taxi-demand-intelligence': 'Taxi Demand',
+  'retail-replenishment': 'Retail Stock',
+  'procurement-intelligence': 'Procurement',
+  'contract-obligation-intelligence': 'Contracts',
 };
 
 export const AgenticRolesLayout: React.FC<AgenticRolesLayoutProps> = ({

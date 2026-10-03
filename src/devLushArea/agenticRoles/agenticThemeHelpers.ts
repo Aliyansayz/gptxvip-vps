@@ -26,7 +26,8 @@ export interface RoleThemeTokens {
   badgeBorder: string;
 }
 
-const roleThemes: Record<RoleDomain, RoleThemeTokens> = {
+type ExistingRoleDomain = Exclude<RoleDomain, 'mobility' | 'retail' | 'procurement' | 'contracts'>;
+const baseRoleThemes: Record<ExistingRoleDomain, RoleThemeTokens> = {
   seo: {
     domain: 'seo',
     title: 'SEO Agentic Analyst',
@@ -179,11 +180,24 @@ const roleThemes: Record<RoleDomain, RoleThemeTokens> = {
   },
 };
 
+// Reuse established palette tokens while giving each vertical a stable domain.
+const roleThemes: Record<RoleDomain, RoleThemeTokens> = {
+  ...baseRoleThemes,
+  mobility: { ...baseRoleThemes.preprocessing, domain: 'mobility', title: 'Taxi Demand Intelligence Agent' },
+  retail: { ...baseRoleThemes.commerce, domain: 'retail', title: 'Retail Replenishment Agent' },
+  procurement: { ...baseRoleThemes.accountant, domain: 'procurement', title: 'Procurement Intelligence Agent' },
+  contracts: { ...baseRoleThemes.visualization, domain: 'contracts', title: 'Contract Obligation Intelligence Agent' },
+};
+
 /**
  * Resolve Role Theme Tokens from a domain key or course name
  */
 export function getRoleTheme(domainOrName: string): RoleThemeTokens {
   const normalized = domainOrName.toLowerCase();
+  if (normalized === 'mobility' || normalized.includes('taxi')) return roleThemes.mobility;
+  if (normalized === 'retail' || normalized.includes('replenishment')) return roleThemes.retail;
+  if (normalized === 'procurement') return roleThemes.procurement;
+  if (normalized === 'contracts' || normalized.includes('contract')) return roleThemes.contracts;
   
   if (normalized.includes('seo') || normalized === 'seo') {
     return roleThemes.seo;

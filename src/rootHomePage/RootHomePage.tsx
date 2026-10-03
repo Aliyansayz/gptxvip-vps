@@ -14,6 +14,7 @@ import {
 import { agentLabTopics, getAgentLabTopic } from '../devLushArea/agentLabsData';
 import AgentTopicPreview from '../devLushArea/components/AgentTopicPreview';
 import { AgenticRoleUseCases } from '../devLushArea/landingPage/AgenticRoleUseCases';
+import { getAgenticRoleHref } from '../devLushArea/agenticRoles/roleRoutes';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 
@@ -237,7 +238,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                     </div>
                 </section>
 
-                <AgenticRoleUseCases onOpenRole={(roleId) => window.location.assign(`/agents/lab?role=${encodeURIComponent(roleId)}`)} />
+                <AgenticRoleUseCases onOpenRole={(roleId) => window.location.assign(getAgenticRoleHref(roleId))} />
 
                 <section className="border-b border-slate-900/10 bg-white/65" aria-labelledby="algo-topic-heading">
                     <div className="mx-auto grid max-w-6xl items-center gap-8 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[1.1fr_.9fr]">
