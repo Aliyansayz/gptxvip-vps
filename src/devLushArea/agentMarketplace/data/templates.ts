@@ -1,3 +1,5 @@
+import type { PrototypeId } from '../../../prototype/registry'
+
 export type ThumbLayout = 'sidebar' | 'topnav' | 'compact'
 export type ChartKind = 'bars' | 'area' | 'donut'
 export type DashboardPreviewKind = 'surface'
@@ -17,6 +19,7 @@ export interface Template {
   accent: string
   layout: ThumbLayout
   chart: ChartKind
+  prototype?: PrototypeId
   preview?: DashboardPreviewKind
   featured?: boolean
   features: string[]
@@ -41,6 +44,7 @@ export const CATEGORIES = [
   'Marketing',
   'Healthcare',
   'Crypto',
+  'Project Management',
 ] as const
 
 export const FRAMEWORKS = ['React', 'Next.js', 'Vue', 'Angular', 'Tailwind CSS'] as const
@@ -137,13 +141,13 @@ export const templates: Template[] = [
     includes: ['Conversation brief', 'Angular source', 'Integration questions', 'Review checklist'], tags: ['embedded', 'white-label', 'multi-tenant'],
   },
   {
-    id: 't11', slug: 'fulfillr', name: 'Fulfillr',
-    tagline: 'Warehouse and fulfillment operations console',
-    description: 'A dense but readable operations surface for picking queues, carrier context, returns triage, and service-level alerts.',
-    category: 'E-commerce', frameworks: ['Vue', 'Tailwind CSS'], version: '1.6.2', updated: 'Jul 2026', pages: 28, components: 127,
+    id: 't11', slug: 'fulfillr', name: 'Fulfillr', prototype: 'logistics',
+    tagline: 'AI logistics dispatch and delivery operations console',
+    description: 'A working logistics prototype with delivery dispatch, driver assignments, fleet readiness, schematic routes, exceptions and agent approvals. Sample data persists in your browser.',
+    category: 'E-commerce', frameworks: ['React', 'Tailwind CSS'], version: '1.0.0', updated: 'Oct 2026', pages: 7, components: 8,
     accent: '#84cc16', layout: 'compact', chart: 'bars', preview: 'surface',
-    features: ['Picking queue management', 'Carrier comparison table', 'Returns triage workflow', 'Service-level alerting', 'Large-table patterns', 'Barcode input modes'],
-    includes: ['Discovery prompts', 'Vue source', 'Integration questions', 'Review checklist'], tags: ['warehouse', 'logistics', 'fulfillment'],
+    features: ['Delivery dispatch board', 'Driver assignments', 'Schematic route overview', 'Fleet readiness', 'Exception resolution', 'Agent approval workflow'],
+    includes: ['Interactive prototype', 'TypeScript source', 'Browser demo data', 'Setup guide'], tags: ['warehouse', 'logistics', 'fulfillment'],
   },
   {
     id: 't12', slug: 'fundview', name: 'Fundview',
@@ -153,6 +157,15 @@ export const templates: Template[] = [
     accent: '#0f766e', layout: 'sidebar', chart: 'area', preview: 'surface',
     features: ['NAV history charts', 'Capital context ledgers', 'Investor portal view', 'Quarterly report export', 'Benchmark overlays', 'Sharing controls'],
     includes: ['Conversation brief', 'TypeScript source', 'Data assumptions', 'Review checklist'], tags: ['funds', 'irr', 'reporting'],
+  },
+  {
+    id: 't13', slug: 'project-management', name: 'Project Management', prototype: 'project-management',
+    tagline: 'Project overview, kanban boards and team analytics',
+    description: 'An interactive project workspace with a dashboard, project details, activity views, analytics and a draggable kanban board using sample data.',
+    category: 'Project Management', frameworks: ['React', 'Tailwind CSS'], version: '1.0.0', updated: 'Oct 2026', pages: 6, components: 10,
+    accent: '#10b981', layout: 'sidebar', chart: 'bars', preview: 'surface', featured: true,
+    features: ['Project dashboard', 'Project list and details', 'Draggable kanban board', 'Team analytics', 'Activity timeline', 'Responsive navigation'],
+    includes: ['Interactive prototype', 'TypeScript source', 'Sample project data', 'Setup guide'], tags: ['projects', 'tasks', 'kanban', 'team'],
   },
 ]
 

@@ -1,40 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ArrowUpRight, BriefcaseBusiness, CheckCircle2 } from 'lucide-react';
 import { agenticRoleDefinitions } from '../agenticRoles/data';
+import { getAgenticRoleUseCase } from './agenticRoleUseCases';
 import { getAgenticRoleIcon } from '../agenticRoles/views/components/roleIcons';
-
-const useCases: Record<string, { situation: string; decision: string; evidence: string }> = {
-  'seo-agentic-analyst': {
-    situation: 'A page loses search visibility as intent and technical signals change.',
-    decision: 'Inspect intent, structured data, internal links, and performance before choosing a fix.',
-    evidence: 'Explain which signal supports the next optimization step.',
-  },
-  'agentic-accountant': {
-    situation: 'A sample ledger has transactions that need reconciliation and review.',
-    decision: 'Check double-entry balance, trace anomalies, and keep the original records visible.',
-    evidence: 'Document the exception and the reason for a human review.',
-  },
-  'agentic-commerce-analyst': {
-    situation: 'A simulated commerce flow must respond to price and inventory pressure.',
-    decision: 'Compare margin limits, stock state, and customer impact before an action.',
-    evidence: 'Show why the chosen path stays within the scenario rules.',
-  },
-  'agentic-recommendation-analyst': {
-    situation: 'A new customer needs relevant suggestions with little prior history.',
-    decision: 'Trace candidate retrieval and ranking while checking diversity trade-offs.',
-    evidence: 'Compare the recommendation with the signals that produced it.',
-  },
-  'data-preprocessing-agentic': {
-    situation: 'An incoming data feed contains missing values or a changed schema.',
-    decision: 'Identify the drift, choose an imputation path, and preserve data contracts.',
-    evidence: 'Record the quality check before the data reaches a model.',
-  },
-  'data-visualization-agentic': {
-    situation: 'Complex data needs a view that a wider audience can interpret.',
-    decision: 'Choose accessible visual encodings and inspect the explanation behind the chart.',
-    evidence: 'Make the key pattern and its uncertainty easy to see.',
-  },
-};
 
 interface AgenticRoleUseCasesProps {
   onOpenRole: (roleId: string) => void;
@@ -45,8 +13,7 @@ export function AgenticRoleUseCases({ onOpenRole }: AgenticRoleUseCasesProps) {
   const [revealed, setRevealed] = useState(false);
   const revealRef = useRef<HTMLDivElement>(null);
   const activeRole = agenticRoleDefinitions.find((role) => role.id === activeRoleId) || agenticRoleDefinitions[0];
-  const activeIndex = agenticRoleDefinitions.findIndex((role) => role.id === activeRole.id);
-  const currentUseCase = useCases[activeRole.id];
+  const activeIndex = agenticRoleDefinitions.findIndex((role) => role.id === activeRole?.id);
 
   useEffect(() => {
     const element = revealRef.current;
@@ -64,13 +31,16 @@ export function AgenticRoleUseCases({ onOpenRole }: AgenticRoleUseCasesProps) {
     return () => observer.disconnect();
   }, []);
 
+  if (!activeRole) return null;
+  const currentUseCase = getAgenticRoleUseCase(activeRole);
+
   return (
     <section aria-labelledby="agentic-role-use-cases-heading" className="border-y border-zinc-200 bg-[#eef3f4] px-4 py-16 dark:border-zinc-800 dark:bg-[#0a1118] sm:px-8 sm:py-24">
       <div className="mx-auto max-w-6xl">
         <div className="mb-8 max-w-2xl">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-700 dark:text-cyan-300">Agentic Roles · applied learning</p>
           <h2 id="agentic-role-use-cases-heading" className="mt-3 text-3xl font-black tracking-tight text-zinc-950 dark:text-white sm:text-4xl">See where an agent role earns its place.</h2>
-          <p className="mt-4 text-base leading-7 text-zinc-600 dark:text-zinc-300">Move through six role-based use cases. Each opens a real case path with sample inputs, a decision to make, and evidence to inspect.</p>
+          <p className="mt-4 text-base leading-7 text-zinc-600 dark:text-zinc-300">Move through {agenticRoleDefinitions.length} role-based use cases. Each opens a real case path with sample inputs, a decision to make, and evidence to inspect.</p>
         </div>
 
         <div ref={revealRef} className={`relative overflow-hidden rounded-[1.75rem] border border-slate-700/80 bg-[#0d1824] text-white shadow-[0_24px_70px_rgba(15,23,42,0.16)] transition-[opacity,transform] duration-700 ease-out motion-reduce:transition-none ${revealed ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-6 scale-[0.98] opacity-0'}`}>

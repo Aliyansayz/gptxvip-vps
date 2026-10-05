@@ -1,9 +1,16 @@
+import { Link } from 'react-router';
 import { 
   Menu,
   Search,
   Shield,
 } from "lucide-react";
 import { getThemeColorClass } from "../themeHelpers";
+
+function SidebarAction({ to, onClick, children, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement> & { to?: string }) {
+  return to
+    ? <Link to={to} className={props.className} title={props.title} aria-label={props['aria-label']} aria-current={props['aria-current']}>{children}</Link>
+    : <button {...props} onClick={onClick}>{children}</button>;
+}
 
 interface Topic {
   id: string;
@@ -20,6 +27,10 @@ interface DevLushSidebarProps {
   setIsSidebarOpen: (isOpen: boolean) => void;
   onSearchClick: () => void;
   onExit?: () => void;
+  brandLabel?: string;
+  topicPath?: (id: string) => string;
+  searchPath?: string;
+  exitPath?: string;
   topicNavLabel?: string;
   searchLabel?: string;
   searchAriaLabel?: string;
@@ -34,6 +45,10 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
   setIsSidebarOpen,
   onSearchClick,
   onExit,
+  brandLabel,
+  topicPath,
+  searchPath,
+  exitPath,
   topicNavLabel = "Agent Labs topics",
   searchLabel = "Search Lab",
   searchAriaLabel = "Search Agent Labs topics",
@@ -57,16 +72,17 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
           <Menu className="w-6 h-6" />
         </button>
         {isSidebarOpen && (
-          <h1 className="text-xl font-bold text-white truncate tracking-wider">
-            DEV<span className="text-indigo-400">LUSH</span>
-          </h1>
+          <h2 className="text-lg font-bold text-white truncate tracking-wide">
+            {brandLabel || <>DEV<span className="text-indigo-400">LUSH</span></>}
+          </h2>
         )}
       </div>
 
       {/* Exit Button */}
       {onExit && (
         <div className="mb-6">
-          <button
+          <SidebarAction
+            to={exitPath}
             type="button"
             onClick={onExit}
             aria-label={exitAriaLabel}
@@ -77,13 +93,14 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
             {isSidebarOpen && (
               <span className="font-semibold text-sm">Exit</span>
             )}
-          </button>
+          </SidebarAction>
         </div>
       )}
 
       {/* Search Actions */}
       <div className="mb-6">
-        <button
+        <SidebarAction
+          to={searchPath}
           type="button"
           onClick={onSearchClick}
           className={`flex min-h-11 items-center w-full p-2 rounded-lg bg-indigo-600/10 border border-indigo-500/20 text-indigo-400 hover:bg-indigo-600/20 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${!isSidebarOpen && "justify-center"}`}
@@ -94,7 +111,7 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
           {isSidebarOpen && (
             <span className="font-semibold text-sm">{searchLabel}</span>
           )}
-        </button>
+        </SidebarAction>
       </div>
 
       {/* Topics Navigation */}
@@ -108,7 +125,8 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
               return (
                 <li key={topic.id}>
                   {isSidebarOpen && topic.group && (index === 0 || topics[index - 1].group !== topic.group) && <p className="px-2 pb-2 pt-4 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">{topic.group}</p>}
-                  <button
+                  <SidebarAction
+                    to={topicPath?.(topic.id)}
                     type="button"
                     aria-current={isActive ? 'page' : undefined}
                     onClick={() => onTopicSelect(topic.id)}
@@ -121,7 +139,7 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
                     {isSidebarOpen && (
                       <span className="truncate">{topic.title}</span>
                     )}
-                  </button>
+                  </SidebarAction>
                 </li>
               );
             })}
@@ -137,7 +155,7 @@ const DevLushSidebar: React.FC<DevLushSidebarProps> = ({
                 transform: "rotate(180deg)",
               }}
             >
-              Agent Sandbox
+              {brandLabel || 'Agent Sandbox'}
             </h2>
           </div>
         )}

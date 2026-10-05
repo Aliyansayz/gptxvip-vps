@@ -21,7 +21,8 @@ import TopicTheoryHub from './TopicTheoryView/TopicTheoryHub';
 import LandingPage from '../landingPage/LandingPage';
 import AgenticRolesContainer from '../agenticRoles/AgenticRolesContainer';
 import { agenticRoleDefinitions } from '../agenticRoles/data';
-import { getAgenticRoleHref } from '../agenticRoles/roleRoutes';
+import { getAgenticRolePath, getAgenticRoleSearchPath, getAgenticRoleChapterPath } from '../agenticRoles/roleRoutes';
+import { getLabViewPath, type LabView } from './labViewRoutes';
 import { getAgentLabTopic } from '../agentLabsData';
 
 
@@ -44,6 +45,8 @@ interface AppProps {
     onNavigateFinhub?: () => void;
     initialAgentLabTopicSlug?: string;
     initialAgenticRoleId?: string;
+    initialView?: LabView;
+    initialRoleChapterId?: string;
 }
 
 type DevLushView = 'landing' | 'devlush-search' | 'reading' | 'articles' | 'blogs' | 'favorites' | 'topic-theory' | 'devlush' | 'agentic-roles' | 'agent-workspace';
@@ -90,12 +93,13 @@ const viewForLabRoute = (state: unknown, isTopicLink: boolean, isRoleLink: boole
 // --- MedLab Container Removed ---
 
 // --- Main App Component ---
-const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub, initialAgentLabTopicSlug, initialAgenticRoleId }) => {
+const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub, initialAgentLabTopicSlug, initialAgenticRoleId, initialView, initialRoleChapterId }) => {
     const location = useLocation();
     const navigate = useNavigate();
     const initialAgentLabTopic = getAgentLabTopic(initialAgentLabTopicSlug);
     const requestedRoleId = new URLSearchParams(location.search).get('role');
     const deepLinkedRoleId = initialAgenticRoleId || (agenticRoleDefinitions.some(role => role.id === requestedRoleId) ? requestedRoleId : null);
+    const routeView = initialView === 'landing' && deepLinkedRoleId ? 'agentic-roles' : initialView;
     // -- Settings & State --
     // Default theme set to light
     const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -109,11 +113,14 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub, initialAgentLabTopi
     const [studyEnergy, setStudyEnergy] = useState(15);
     const [energyLockoutTime, setEnergyLockoutTime] = useState(0);
     
-    const [currentView, setCurrentView] = useState<DevLushView>(() => viewForLabRoute(location.state, Boolean(initialAgentLabTopic), Boolean(initialAgenticRoleId), Boolean(deepLinkedRoleId)));
+    const [currentView, setCurrentView] = useState<DevLushView>(() => routeView ?? viewForLabRoute(location.state, Boolean(initialAgentLabTopic), Boolean(initialAgenticRoleId), Boolean(deepLinkedRoleId)));
     const [pendingFavoriteChapterId, setPendingFavoriteChapterId] = useState<string | null>(null);
 
     const navigateView = useCallback((view: DevLushView) => {
-        if (view === currentView && !initialAgentLabTopic) return;
+        const path = view === 'agentic-roles'
+            ? getAgenticRolePath(deepLinkedRoleId || agenticRoleDefinitions[0].id)
+            : getLabViewPath(view);
+        if (location.pathname === path && !location.search) return;
         setCurrentView(view);
         const nextState = location.state && typeof location.state === 'object'
             ? { ...(location.state as Record<string, unknown>) }
@@ -126,14 +133,11 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub, initialAgentLabTopi
         delete nextState.devLushWorkspaceView;
         if (view === 'devlush-search') nextState.devLushSearchEntry = true;
         else delete nextState.devLushSearchEntry;
-        const path = view === 'agentic-roles'
-            ? getAgenticRoleHref(deepLinkedRoleId || agenticRoleDefinitions[0].id)
-            : '/lab';
         navigate(path, {
             replace: Boolean(initialAgentLabTopic),
             state: { ...nextState, devLushView: view },
         });
-    }, [currentView, deepLinkedRoleId, initialAgentLabTopic, location.state, navigate]);
+    }, [deepLinkedRoleId, initialAgentLabTopic, location.pathname, location.search, location.state, navigate]);
 
     const openRoleFromLanding = (roleId: string) => {
         if (!agenticRoleDefinitions.some((role) => role.id === roleId)) return;
@@ -146,7 +150,7 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub, initialAgentLabTopi
         delete nextState.devLushRolesSearchOpen;
         delete nextState.devLushWorkspaceView;
         setCurrentView('agentic-roles');
-        navigate(getAgenticRoleHref(roleId), {
+        navigate(getAgenticRolePath(roleId), {
             replace: Boolean(initialAgentLabTopic),
             state: { ...nextState, devLushView: 'agentic-roles', devLushRolesRoleId: roleId },
         });
@@ -166,7 +170,7 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub, initialAgentLabTopi
         const currentState = location.state && typeof location.state === 'object'
             ? { ...(location.state as Record<string, unknown>) }
             : {};
-        navigate(`${location.pathname}${location.search}`, {
+        navigate(getAgenticRoleSearchPath(initialAgenticRoleId || readHistoryRolesRoleId(location.state) || deepLinkedRoleId || agenticRoleDefinitions[0].id), {
             state: { ...currentState, devLushView: currentView, devLushRolesSearchOpen: true },
         });
     };
@@ -175,7 +179,7 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub, initialAgentLabTopi
         const currentState = location.state && typeof location.state === 'object'
             ? { ...(location.state as Record<string, unknown>) }
             : {};
-        navigate(getAgenticRoleHref(roleId), {
+        navigate(getAgenticRoleChapterPath(roleId, chapterId), {
             state: {
                 ...currentState,
                 devLushView: 'agentic-roles',
@@ -192,7 +196,7 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub, initialAgentLabTopi
             : {};
         delete currentState.devLushRolesChapterId;
         delete currentState.devLushRolesSearchOpen;
-        navigate(getAgenticRoleHref(roleId), {
+        navigate(getAgenticRolePath(roleId), {
             state: { ...currentState, devLushView: 'agentic-roles', devLushRolesRoleId: roleId },
         });
     };
@@ -208,7 +212,7 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub, initialAgentLabTopi
         delete nextState.devLushRolesChapterId;
         delete nextState.devLushRolesSearchOpen;
         delete nextState.devLushWorkspaceView;
-        navigate('/lab', {
+        navigate(getLabViewPath('devlush'), {
             replace: true,
             state: { ...nextState, devLushView: 'devlush' },
         });
@@ -231,8 +235,8 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub, initialAgentLabTopi
     }, [theme]);
 
     useEffect(() => {
-        setCurrentView(viewForLabRoute(location.state, Boolean(initialAgentLabTopic), Boolean(initialAgenticRoleId), Boolean(deepLinkedRoleId)));
-    }, [initialAgentLabTopic, initialAgenticRoleId, deepLinkedRoleId, location.key, location.state]);
+        setCurrentView(routeView ?? viewForLabRoute(location.state, Boolean(initialAgentLabTopic), Boolean(initialAgenticRoleId), Boolean(deepLinkedRoleId)));
+    }, [routeView, initialAgentLabTopic, initialAgenticRoleId, deepLinkedRoleId, location.key, location.state]);
 
     // Energy Regeneration Logic
     useEffect(() => {
@@ -332,7 +336,7 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub, initialAgentLabTopi
         delete currentState.devLushRolesSearchOpen;
         delete currentState.devLushWorkspaceView;
         setCurrentView('agentic-roles');
-        navigate(getAgenticRoleHref(role.id), {
+        navigate(getAgenticRoleChapterPath(role.id, favorite.id), {
             state: {
                 ...currentState,
                 devLushView: 'agentic-roles',
@@ -417,7 +421,7 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub, initialAgentLabTopi
                             onChapterRoutePush={pushChapterHistoryEntry}
                             onChapterRouteBack={() => {
                                 if (initialAgentLabTopic && !readHistoryChapterId(location.state)) {
-                                    navigate('/lab', { replace: true, state: { devLushView: 'devlush' } });
+                                    navigate(getLabViewPath('devlush'), { replace: true });
                                 } else {
                                     navigate(-1);
                                 }
@@ -439,12 +443,12 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub, initialAgentLabTopi
                             onExitToDevLush={() => navigateView('devlush')}
                             onShowSaved={() => navigateView('favorites')}
                             routeRoleId={initialAgenticRoleId || readHistoryRolesRoleId(location.state)}
-                            routeChapterId={readHistoryRolesChapterId(location.state)}
-                            routeSearchOpen={readHistoryRolesSearchOpen(location.state)}
+                            routeChapterId={initialAgenticRoleId ? initialRoleChapterId : readHistoryRolesChapterId(location.state)}
+                            routeSearchOpen={initialAgenticRoleId ? location.pathname.endsWith('/search') : readHistoryRolesSearchOpen(location.state)}
                             onChapterRoutePush={pushRolesChapterEntry}
-                            onChapterRouteBack={() => navigate(-1)}
+                            onChapterRouteBack={() => pushRolesHubEntry(initialAgenticRoleId || deepLinkedRoleId || agenticRoleDefinitions[0].id)}
                             onSearchRoutePush={pushRolesSearchEntry}
-                            onSearchRouteBack={() => navigate(-1)}
+                            onSearchRouteBack={() => pushRolesHubEntry(initialAgenticRoleId || deepLinkedRoleId || agenticRoleDefinitions[0].id)}
                             onRoleRoutePush={pushRolesHubEntry}
                         />
                     )}

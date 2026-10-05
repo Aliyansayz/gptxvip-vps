@@ -1,0 +1,7 @@
+/* Keep prototype styles local to its workspace. */
+.project-management-prototype { font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+.project-management-prototype .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
+.project-management-prototype .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
+.project-management-prototype .hide-scrollbar { scrollbar-width: none; }
+.project-management-prototype .hide-scrollbar::-webkit-scrollbar { display: none; }
+.project-management-prototype .recharts-tooltip-cursor { fill: rgba(0,0,0,0.02); }

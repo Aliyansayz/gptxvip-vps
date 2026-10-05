@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import type { Template } from '@/data/templates'
+import PrototypePreview from '../../../prototype/PrototypePreview'
 import { DashboardPreview } from '@/components/DashboardPreview'
 
 /** Deterministic pseudo-random series from a seed string */
@@ -121,6 +122,10 @@ export default function TemplateThumb({
   interactive?: boolean
 }) {
   const { accent, layout, chart, slug } = template
+
+  if (template.prototype && interactive) {
+    return <div className="h-[680px] w-full overflow-hidden rounded-xl"><PrototypePreview id={template.prototype} /></div>
+  }
 
   if (template.preview) {
     return (

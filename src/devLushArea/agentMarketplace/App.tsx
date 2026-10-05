@@ -1,12 +1,15 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router'
 import './catalog.css'
-import Home from '@/pages/Home'
-import Browse from '@/pages/Browse'
-import TemplateDetail from '@/pages/TemplateDetail'
-import LabRuntime from '@/pages/LabRuntime'
+import { labViewPaths, type LabView } from '../agentDevRootComponents/labViewRoutes'
+import PrototypeRuntime from '../../prototype/PrototypeRuntime'
 import { Navbar as RootNavbar } from '../../rootHomePage/Navbar'
 import { Footer as RootFooter } from '../../rootHomePage/Footer'
+
+const Home = lazy(() => import('@/pages/Home'))
+const Browse = lazy(() => import('@/pages/Browse'))
+const TemplateDetail = lazy(() => import('@/pages/TemplateDetail'))
+const LabRuntime = lazy(() => import('@/pages/LabRuntime'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -19,12 +22,12 @@ function ScrollToTop() {
 export default function App() {
   const navigate = useNavigate()
   const location = useLocation()
-  const isLabRuntime = location.pathname === '/lab' || location.pathname.startsWith('/lab/')
+  const isWorkspaceRuntime = location.pathname === '/lab' || location.pathname.startsWith('/lab/') || location.pathname.startsWith('/prototypes/')
 
   return (
     <div className="agent-catalog flex min-h-screen flex-col bg-white text-slate-900">
       <ScrollToTop />
-      {!isLabRuntime && <RootNavbar
+      {!isWorkspaceRuntime && <RootNavbar
         onNavigateFinhub={() => window.location.assign('/finhub')}
         onNavigateCodeConcepts={() => window.location.assign('/code_concepts/general')}
         onNavigateAgents={() => navigate('/')}
@@ -35,16 +38,23 @@ export default function App() {
         searchPlaceholder="Search project surfaces"
       />}
       <main className="flex-1">
+        <Suspense fallback={<div className="flex min-h-screen items-center justify-center" role="status">Loading workspace…</div>}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/templates" element={<Browse />} />
           <Route path="/templates/:slug" element={<TemplateDetail />} />
-          <Route path="/lab" element={<LabRuntime />} />
+          <Route path="/prototypes/:prototypeId" element={<PrototypeRuntime />} />
+          {Object.entries(labViewPaths).map(([view, path]) => (
+            <Route key={path} path={path} element={<LabRuntime initialView={view as LabView} />} />
+          ))}
+          <Route path="/lab/:topicSlug/search" element={<LabRuntime />} />
+          <Route path="/lab/:topicSlug/cases/:chapterId" element={<LabRuntime />} />
           <Route path="/lab/:topicSlug" element={<LabRuntime />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </Suspense>
       </main>
-      {!isLabRuntime && <RootFooter
+      {!isWorkspaceRuntime && <RootFooter
         onNavigateFinhub={() => window.location.assign('/finhub')}
         onNavigateCodeConcepts={() => window.location.assign('/code_concepts/general')}
         onNavigateDevLush={() => navigate('/')}

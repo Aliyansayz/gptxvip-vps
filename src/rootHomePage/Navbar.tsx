@@ -7,6 +7,7 @@ interface NavbarProps {
     onNavigateDevLush?: () => void;
     onNavigateAgents?: () => void;
     onNavigateProjectSurfaces?: () => void;
+    onNavigateSoftware?: () => void;
     onNavigateBlogs: () => void;
     onBookDemo?: () => void;
     onSearch?: (query: string) => void;
@@ -14,7 +15,7 @@ interface NavbarProps {
 }
 
 /** Shared V2 shell for pages that need the root navigation outside RootHomePage. */
-export const Navbar: React.FC<NavbarProps> = ({ onNavigateFinhub, onNavigateCodeConcepts, onNavigateDevLush, onNavigateAgents, onNavigateProjectSurfaces, onNavigateBlogs, onBookDemo, onSearch, searchPlaceholder = 'Search' }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onNavigateFinhub, onNavigateCodeConcepts, onNavigateDevLush, onNavigateAgents, onNavigateProjectSurfaces, onNavigateSoftware, onNavigateBlogs, onBookDemo, onSearch, searchPlaceholder = 'Search' }) => {
     const [open, setOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const mobileTriggerRef = useRef<HTMLButtonElement>(null);
@@ -57,6 +58,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateFinhub, onNavigateCode
                 <nav className="hidden items-center gap-1 text-sm font-semibold text-slate-600 xl:flex" aria-label="Primary navigation">
                     <button type="button" onClick={navigateAgents} aria-current={currentArea === 'Agent catalog' ? 'page' : undefined} className={navClass(currentArea === 'Agent catalog')}>Agent catalog</button>
                     {onNavigateProjectSurfaces && <button type="button" onClick={onNavigateProjectSurfaces} aria-current={currentArea === 'Project surfaces' ? 'page' : undefined} className={navClass(currentArea === 'Project surfaces')}>Project surfaces</button>}
+                    {onNavigateSoftware && <button type="button" onClick={onNavigateSoftware} className={navClass(false)}>Software</button>}
                     <button type="button" onClick={onNavigateFinhub} aria-current={currentArea === 'Finhub' ? 'page' : undefined} className={navClass(currentArea === 'Finhub')}>Finhub</button>
                     <button type="button" onClick={navigateCodeConcepts} aria-current={currentArea === 'Code Concepts' ? 'page' : undefined} className={navClass(currentArea === 'Code Concepts')}>Code Concepts</button>
                     <button type="button" onClick={onNavigateBlogs} aria-current={currentArea === 'Notes' ? 'page' : undefined} className={navClass(currentArea === 'Notes')}>Notes</button>
@@ -74,6 +76,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateFinhub, onNavigateCode
                 {onNavigateProjectSurfaces && <button type="button" onClick={() => navigate(onNavigateProjectSurfaces)} aria-current={currentArea === 'Project surfaces' ? 'page' : undefined} className="rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500">Project surfaces</button>}
                 <button type="button" onClick={() => navigate(onNavigateFinhub)} className="rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500">Finhub</button>
                 <p className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Learn and read</p>
+                {onNavigateSoftware && <button type="button" onClick={() => navigate(onNavigateSoftware)} className="rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500">Software</button>}
                 <button type="button" onClick={() => navigate(navigateCodeConcepts)} className="rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500">Code Concepts</button>
                 <button type="button" onClick={() => navigate(onNavigateBlogs)} className="rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500">Notes</button>
                 {onBookDemo && <button type="button" onClick={() => navigate(onBookDemo)} className="rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500">Contact</button>}

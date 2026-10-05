@@ -25,6 +25,7 @@ export interface RootHomePageProps {
     onNavigateDevLush?: () => void;
     onNavigateAgents?: () => void;
     onNavigateBlogs?: () => void;
+    onNavigateSoftware?: () => void;
 }
 
 type Tone = 'cyan' | 'emerald' | 'violet';
@@ -121,6 +122,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
     onNavigateDevLush,
     onNavigateAgents,
     onNavigateBlogs = () => window.location.assign('/blogs'),
+    onNavigateSoftware = () => window.location.assign('/software_manual'),
 }) => {
     const navigateAgents = onNavigateAgents || onNavigateDevLush || (() => window.location.assign('/agents'));
     const [slideIndex, setSlideIndex] = useState(0);
@@ -169,6 +171,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                 onNavigateAgents={navigateAgents}
                 onNavigateProjectSurfaces={() => window.location.assign('/agents/templates')}
                 onNavigateBlogs={onNavigateBlogs}
+                onNavigateSoftware={onNavigateSoftware}
             />
 
             <main>

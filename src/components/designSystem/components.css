@@ -1,0 +1,152 @@
+/* Apply tokenStyles to the parent surface when reusing these components. */
+.ds-control-button {
+  min-height: 40px;
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  padding: var(--ds-space-8) var(--ds-space-16);
+  color: var(--ds-text);
+}
+.ds-control-button.primary {
+  background: var(--ds-primary);
+  color: var(--ds-onPrimary);
+}
+.ds-control-button.primary:hover {
+  background: var(--ds-hover);
+}
+.ds-control-button.primary:active {
+  background: var(--ds-pressed);
+}
+.ds-control-button.secondary {
+  background: var(--ds-raised);
+  border-color: var(--ds-borderStrong);
+}
+.ds-control-button.secondary:hover {
+  background: var(--ds-border);
+}
+.ds-control-button.danger {
+  background: var(--ds-error);
+  color: var(--ds-onDanger);
+}
+.ds-control-button[data-size="sm"] {
+  min-height: 36px;
+  padding: 6px 12px;
+}
+.ds-control-button[data-size="lg"] {
+  min-height: 48px;
+  padding: var(--ds-space-12) 20px;
+}
+.ds-control-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: auto;
+}
+.ds-control-button:focus-visible,
+.ds-control-navigation:focus-visible,
+.ds-control-field input:focus-visible {
+  outline: 2px solid var(--ds-focus);
+  outline-offset: 2px;
+}
+.ds-control-field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.ds-control-field label {
+  color: var(--ds-text);
+  font-size: 14px;
+  font-weight: 600;
+}
+.ds-control-field input {
+  width: 100%;
+  min-height: 40px;
+  background: var(--ds-canvas);
+  border: 1px solid var(--ds-borderStrong);
+  border-radius: var(--ds-radius-sm);
+  padding: var(--ds-space-8) var(--ds-space-12);
+  color: var(--ds-text);
+  font-size: 14px;
+}
+.ds-control-field input::placeholder {
+  color: var(--ds-muted);
+}
+.ds-control-field input:focus {
+  border-color: var(--ds-focus);
+}
+.ds-control-field input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.ds-control-field input[aria-invalid="true"] {
+  border-color: var(--ds-error);
+}
+.ds-control-field p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ds-secondary);
+  line-height: 1.5;
+}
+.ds-control-field p.ds-field-error {
+  color: var(--ds-error);
+}
+.ds-control-badge {
+  font-size: 12px;
+  padding: 4px 10px;
+  background: var(--ds-surface);
+  border-color: currentColor;
+}
+.ds-control-badge.success {
+  color: var(--ds-success);
+}
+.ds-control-badge.warning {
+  color: var(--ds-warning);
+}
+.ds-control-badge.error {
+  color: var(--ds-error);
+}
+.ds-control-badge.info {
+  color: var(--ds-info);
+}
+.ds-control-badge.neutral {
+  color: var(--ds-secondary);
+}
+.ds-control-navigation {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 12px;
+  min-height: 44px;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-secondary);
+  text-align: left;
+  font-size: 14px;
+}
+.ds-control-navigation:hover {
+  background: var(--ds-raised);
+  color: var(--ds-text);
+}
+.ds-control-navigation[aria-current] {
+  border-color: var(--ds-focus);
+  color: var(--ds-focus);
+  background: var(--ds-raised);
+}
+.ds-control-navigation:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.ds-spinner {
+  animation: ds-spin 1s linear infinite;
+}
+@keyframes ds-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-spinner {
+    animation: none;
+  }
+}

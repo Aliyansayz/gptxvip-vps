@@ -1,14 +1,15 @@
 #!/bin/bash
 
+set -euo pipefail
+PROJECT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
 SESSION_NAME="gptxvip"
 
 # Check if the tmux session already exists
-tmux has-session -t $SESSION_NAME 2>/dev/null
-
-if [ $? != 0 ]; then
+if ! tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
   echo "Starting gptxvip app in a detached tmux session..."
   # Create a detached session named 'gptxvip' and run start.sh
-  tmux new-session -d -s $SESSION_NAME './start.sh'
+  tmux new-session -d -s "$SESSION_NAME" -c "$PROJECT_DIR" './start.sh'
   echo "✅ App is now running in the background!"
 else
   echo "⚠️ The tmux session '$SESSION_NAME' is already running."

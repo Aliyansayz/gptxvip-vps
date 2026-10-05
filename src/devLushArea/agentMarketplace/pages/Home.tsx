@@ -15,6 +15,7 @@ const categoryIcons: Record<string, string> = {
   Marketing: '📣',
   Healthcare: '🩺',
   Crypto: '🪙',
+  'Project Management': '📋',
 }
 
 export default function Home() {

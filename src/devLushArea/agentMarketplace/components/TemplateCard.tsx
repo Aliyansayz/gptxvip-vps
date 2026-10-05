@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import type { Template } from '@/data/templates'
 import { getContactHref } from '@/data/templates'
 import TemplateThumb from '@/components/TemplateThumb'
+import { getPrototypePath } from '../../../prototype/registry'
 
 export default function TemplateCard({ template, compared = false, onToggleCompare, compareDisabled = false }: { template: Template; compared?: boolean; onToggleCompare?: (slug: string) => void; compareDisabled?: boolean }) {
   return (
@@ -37,7 +38,7 @@ export default function TemplateCard({ template, compared = false, onToggleCompa
 
         <div className="mt-4 flex gap-2 pt-1">
           <Button asChild variant="outline" className="flex-1">
-            <Link to={'/templates/' + template.slug}>View details <ArrowRight className="ml-1.5 h-4 w-4" /></Link>
+            <Link to={template.prototype ? getPrototypePath(template.prototype) : '/templates/' + template.slug}>{template.prototype ? 'Open prototype' : 'View details'} <ArrowRight className="ml-1.5 h-4 w-4" /></Link>
           </Button>
           <Button asChild className="flex-1 bg-indigo-600 hover:bg-indigo-700">
             <a href={getContactHref(template)}><Mail className="mr-1.5 h-4 w-4" /> Contact</a>

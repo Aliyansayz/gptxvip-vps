@@ -72,7 +72,12 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
   }, [completedChapterIds]);
 
   // Find active role
-  const activeRole = roles.find((r) => r.id === activeRoleId) || roles[0];
+  const activeRole = roles.find((r) => r.id === (routeRoleId || activeRoleId)) || roles[0];
+  // Routed views render from the URL, including browser Back and Forward.
+  const displayedChapter = routeRoleId
+    ? activeRole.chapters.find(chapter => chapter.labComponentId === routeChapterId) || null
+    : selectedChapter;
+  const showSearch = routeRoleId ? routeSearchOpen : isSearchOpen;
 
   useEffect(() => {
     if (initialRoleId && roles.some(role => role.id === initialRoleId)) setActiveRoleId(initialRoleId);
@@ -136,7 +141,7 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
     const restoreSearchFocus = () => window.requestAnimationFrame(() => {
       const opener = searchOpenerRef.current;
       if (opener?.isConnected && opener.getClientRects().length > 0) opener.focus();
-      else document.querySelector<HTMLButtonElement>('[aria-label="Explore Agentic Roles"]')?.focus();
+      else document.querySelector<HTMLElement>('[aria-label="Explore Agentic Roles"]')?.focus();
     });
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -207,7 +212,7 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
     window.requestAnimationFrame(() => {
       const opener = searchOpenerRef.current;
       if (opener?.isConnected && opener.getClientRects().length > 0) opener.focus();
-      else document.querySelector<HTMLButtonElement>('[aria-label="Explore Agentic Roles"]')?.focus();
+      else document.querySelector<HTMLElement>('[aria-label="Explore Agentic Roles"]')?.focus();
     });
   };
 
@@ -233,24 +238,24 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
   return (
     <AgenticRolesLayout
       roles={roles}
-      activeRoleId={activeRoleId}
+      activeRoleId={activeRole.id}
       onSelectRole={handleRoleSelect}
       onOpenSearch={handleSearchOpen}
       onShowHub={handleShowHub}
       onShowSaved={onShowSaved || (() => undefined)}
       onExitToDevLush={onExitToDevLush}
-      isSearchOpen={isSearchOpen}
-      isRunning={Boolean(selectedChapter)}
+      isSearchOpen={showSearch}
+      isRunning={Boolean(displayedChapter)}
       savedCount={favoritesCtx?.favorites.length || 0}
     >
-      {selectedChapter ? (
+      {displayedChapter ? (
         <AgenticRolesRunner
-          chapter={selectedChapter}
+          chapter={displayedChapter}
           role={activeRole}
           onBack={handleChapterBack}
           onCompleteChapter={handleCompleteChapter}
         />
-      ) : isSearchOpen ? (
+      ) : showSearch ? (
         <AgenticRolesSearchView
           roles={roles}
           onSelectChapter={handleSelectSearchResult}
