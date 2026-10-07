@@ -1,0 +1,9 @@
+{
+  "command": "npm run lint",
+  "exitCode": 0,
+  "checkedSource": [
+    "src/devLushArea/agentMarketplace/components/TemplateCard.tsx",
+    "src/prototype/**",
+    "software_manual/**"
+  ]
+}

@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { useManualSurface, manualTheme } from "../shared";
 import sunshineImage from "./sunshine-manual.png";
 import "./styles.css";
+import "../components/manualNavigation.css";
 
 const pageNames = ["Foundation", "Operations", "Control"];
 const sectionIds = ["overview", "modules", "flow", "manual", "security"];
@@ -41,7 +42,7 @@ export default function SunshineManual() {
     const shell = event.currentTarget.querySelector<HTMLElement>(".holo-shell");
     if (shell) shell.style.transform = "";
   }
-  return <div ref={surfaceRef} className="sunshine-manual" style={manualTheme}>
+  return <div ref={surfaceRef} className="sunshine-manual manual-navigation" style={manualTheme}>
 
   <div className="noise" aria-hidden="true"></div>
   <div className="aurora aurora-a" aria-hidden="true"></div>
@@ -60,13 +61,13 @@ export default function SunshineManual() {
     </div>
 
     <nav className="top-links" aria-label="Primary">
-      <a href="#modules">Modules</a>
-      <a href="#flow">Flow</a>
-      <a href="#manual">Manual</a>
-      <a href="#security">Security</a>
+      <a href="#modules" aria-current={activeSection === "modules" ? "location" : undefined}>Modules</a>
+      <a href="#flow" aria-current={activeSection === "flow" ? "location" : undefined}>Flow</a>
+      <a href="#manual" aria-current={activeSection === "manual" ? "location" : undefined}>Manual</a>
+      <a href="#security" aria-current={activeSection === "security" ? "location" : undefined}>Security</a>
     </nav>
 
-    <a className="launch-btn" href="#manual"><span>OPEN MANUAL</span><b>↗</b></a>
+    <div className="manual-header-actions"><Link className="header-catalog-link" to="/">Catalog</Link><a className="launch-btn" aria-label="Open manual" href="#manual"><span>OPEN MANUAL</span><b>↗</b></a></div>
   </header>
 
   <aside className="rail" aria-label="Chapter navigation">

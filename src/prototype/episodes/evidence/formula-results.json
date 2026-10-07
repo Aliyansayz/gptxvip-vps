@@ -1,0 +1,93 @@
+{
+  "timezone": "Asia/Karachi",
+  "tests": [
+    {
+      "name": "Pulse seed cohort retention uses original membership and actual returning fixture dates",
+      "pass": true
+    },
+    {
+      "name": "Pulse funnel excludes out-of-order conversions and preserves descending eligible unique-user counts",
+      "pass": true
+    },
+    {
+      "name": "Storefront fixture totals, transition guards and cancel stock release stay consistent without double release",
+      "pass": true
+    },
+    {
+      "name": "Ledgerline USD/EUR balances isolate currencies and signed discrepancy cannot be silently matched",
+      "pass": true
+    },
+    {
+      "name": "Ledgerline valid posting changes only its account and records actual journal audit",
+      "pass": true
+    },
+    {
+      "name": "Orbit stage probability updates weighted forecast and excludes won/lost open amounts",
+      "pass": true
+    },
+    {
+      "name": "Orbit duplicate merge repairs deals, retains unrelated contacts and rejects unrelated pair",
+      "pass": true
+    },
+    {
+      "name": "SaaS starting MRR plus signed movements reconciles both periods and plan changes",
+      "pass": true
+    },
+    {
+      "name": "SaaS deterministic invoice retry fails once, recovers once, and cannot double count MRR",
+      "pass": true
+    },
+    {
+      "name": "AdSphere attribution conserves fixture conversion value and changes channel allocation",
+      "pass": true
+    },
+    {
+      "name": "AdSphere selected range drives spend and inclusive elapsed-period pacing",
+      "pass": true
+    },
+    {
+      "name": "CliniCare booking validates room and clinician conflicts, boundaries, availability and reversed interval",
+      "pass": true
+    },
+    {
+      "name": "CliniCare seed recorded wait is ten minutes and no flow gives unavailable denominator",
+      "pass": true
+    },
+    {
+      "name": "ChainPulse seed and repeated ticks preserve OHLC inequalities and chronological 30-minute spacing in every timezone",
+      "pass": true
+    },
+    {
+      "name": "ChainPulse fixture portfolio cost/P&L and gas median use correct numeric units",
+      "pass": true
+    },
+    {
+      "name": "HQ Admin last-active-admin guard is scoped per workspace and permits another existing admin",
+      "pass": true
+    },
+    {
+      "name": "HQ Admin invitation validation checks member/pending duplicates only in current workspace",
+      "pass": true
+    },
+    {
+      "name": "HQ Admin onboarding distinguishes partial/new/completed workspace setup from actual records",
+      "pass": true
+    },
+    {
+      "name": "Insight tenant and role boundaries exclude other tenants and restricted revenue",
+      "pass": true
+    },
+    {
+      "name": "Episodes 1–5 persisted schemas reject broken record relationships",
+      "pass": true
+    },
+    {
+      "name": "Fundview all fixture NAV bridges reconcile fund and quarter without cross-fund capital",
+      "pass": true
+    },
+    {
+      "name": "Fundview commitment limits, distribution date boundary and local share expiry are enforced",
+      "pass": true
+    }
+  ]
+}

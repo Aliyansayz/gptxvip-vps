@@ -49,7 +49,7 @@ export default function App() {
                 W
               </div>
               <div className="ml-2">
-                <h1 className="text-xl font-bold tracking-tight leading-none">Workload</h1>
+                <h1 className="text-xl font-bold tracking-tight leading-none text-slate-900">Workload</h1>
                 <p className="text-[9px] font-semibold text-slate-400 whitespace-nowrap">Project Management Admin</p>
               </div>
             </div>
@@ -85,7 +85,7 @@ export default function App() {
                    {[...Array(9)].map((_, i) => <div key={i} className="w-1.5 h-1.5 bg-black rounded-full" />)}
                 </div>
               </div>
-              <h4 className="text-sm font-bold mb-3 relative z-10">Enable Workload Automation System</h4>
+              <h4 className="text-sm font-bold mb-3 relative z-10 text-slate-900">Enable Workload Automation System</h4>
               <button className="text-[11px] font-bold bg-white border border-slate-200 shadow-sm rounded-full px-4 py-2 hover:bg-slate-50 flex items-center justify-center gap-1 mx-auto text-slate-700">
                 Learn more <ArrowRight size={12} />
               </button>

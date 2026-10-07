@@ -1,0 +1,269 @@
+{
+  "catalogCount": 13,
+  "registryCount": 13,
+  "unusedIds": [],
+  "duplicateIds": [],
+  "duplicateScreenshots": [],
+  "rows": [
+    {
+      "slug": "pulse-analytics",
+      "id": "pulse-analytics",
+      "registered": true,
+      "moduleExists": true,
+      "screenshotExists": true,
+      "screenshotHash": "1251508ea3822cbb7da72139c8bde8cbbdcae918f03f27ff5e08b2ed992bd691",
+      "frameworks": [
+        "React",
+        "Tailwind CSS"
+      ],
+      "features": [
+        "Activation trend and segmentation",
+        "Unique-user funnel conversion",
+        "Retention cohort heatmap",
+        "Session event paths",
+        "Saved report builder",
+        "Simulated event stream and CSV export"
+      ]
+    },
+    {
+      "slug": "storefront-pro",
+      "id": "storefront-pro",
+      "registered": true,
+      "moduleExists": true,
+      "screenshotExists": true,
+      "screenshotHash": "cd9d3da22704550c8f2c50278b5ee4df19e253689de9bfbbc282cb4f21b8aa23",
+      "frameworks": [
+        "React",
+        "Tailwind CSS"
+      ],
+      "features": [
+        "Order fulfillment transitions",
+        "Order and customer details",
+        "Warehouse and status filters",
+        "Inventory restocking and alerts",
+        "Settlement adjustment audit",
+        "Printable orders and CSV export"
+      ]
+    },
+    {
+      "slug": "ledgerline",
+      "id": "ledgerline",
+      "registered": true,
+      "moduleExists": true,
+      "screenshotExists": true,
+      "screenshotHash": "333c2fcf5c90e973d89e5e5d6fbcb796a17feeda18e888405ce22e4098d9b3e2",
+      "frameworks": [
+        "React",
+        "Tailwind CSS"
+      ],
+      "features": [
+        "Account and currency selection",
+        "Validated journal entries",
+        "Statement match and unmatch",
+        "Reconciliation discrepancy view",
+        "Cash-flow bridge and audit trail",
+        "Account ledger CSV export"
+      ]
+    },
+    {
+      "slug": "orbit-crm",
+      "id": "orbit-crm",
+      "registered": true,
+      "moduleExists": true,
+      "screenshotExists": true,
+      "screenshotHash": "c8a65fbaef56fe43cf4e9d8638ced1eca8c5b92c629294d35c719aa988b16ad6",
+      "frameworks": [
+        "React",
+        "Tailwind CSS"
+      ],
+      "features": [
+        "Deal pipeline and stage changes",
+        "Deal creation and editing",
+        "Linked contacts and companies",
+        "Activity notes and next actions",
+        "Weighted revenue forecast",
+        "Duplicate contact review and merge"
+      ]
+    },
+    {
+      "slug": "saas-metrics-kit",
+      "id": "saas-metrics-kit",
+      "registered": true,
+      "moduleExists": true,
+      "screenshotExists": true,
+      "screenshotHash": "e65d202c5fb63d18ec73db14b32c7f85ba1fa5c59fcd11c7b4581e4f1f7652aa",
+      "frameworks": [
+        "React",
+        "Tailwind CSS"
+      ],
+      "features": [
+        "Monthly recurring revenue bridge",
+        "Plan and period filtering",
+        "Retention cohort analysis",
+        "Sample payment retry and recovery",
+        "Plan changes and unit economics",
+        "Metric definitions and report export"
+      ]
+    },
+    {
+      "slug": "adsphere",
+      "id": "adsphere",
+      "registered": true,
+      "moduleExists": true,
+      "screenshotExists": true,
+      "screenshotHash": "251131ad4cc4e62539e35beb43decb8441cfa0612e9208db0d0478d20785e9c8",
+      "frameworks": [
+        "React",
+        "Tailwind CSS"
+      ],
+      "features": [
+        "Campaign pacing and state changes",
+        "Channel and date filters",
+        "Creative approval and review notes",
+        "Attribution model comparison",
+        "Period performance comparison",
+        "Channel CSV and printable digest"
+      ]
+    },
+    {
+      "slug": "clinicare",
+      "id": "clinicare",
+      "registered": true,
+      "moduleExists": true,
+      "screenshotExists": true,
+      "screenshotHash": "570c9c130f52ba480506c968a4f40e8368ebb11fdbd9778e01a128b8171b5bbc",
+      "frameworks": [
+        "React",
+        "Tailwind CSS"
+      ],
+      "features": [
+        "Appointment and room schedule",
+        "Conflict-checked booking and rescheduling",
+        "Check-in and patient-flow updates",
+        "Staff availability management",
+        "Masked records and demo session lock",
+        "Filtered schedule export"
+      ]
+    },
+    {
+      "slug": "chainpulse",
+      "id": "chainpulse",
+      "registered": true,
+      "moduleExists": true,
+      "screenshotExists": true,
+      "screenshotHash": "4345325fe26d0c538e5086ceeeae2d1e1883ff5bdc030a4208a3a8a0c354b9a8",
+      "frameworks": [
+        "React",
+        "Tailwind CSS"
+      ],
+      "features": [
+        "OHLC candlesticks and market depth",
+        "Simulated tick pause and resume",
+        "Portfolio holdings and allocation",
+        "Wallet cluster and activity explorer",
+        "Token event bookmarks",
+        "Gas network analysis and CSV export"
+      ]
+    },
+    {
+      "slug": "hq-admin",
+      "id": "hq-admin",
+      "registered": true,
+      "moduleExists": true,
+      "screenshotExists": true,
+      "screenshotHash": "cee4a90d17882ed57714241361e35bdfe91bb6aecf51545b579898e0c15b7d4a",
+      "frameworks": [
+        "React",
+        "Tailwind CSS"
+      ],
+      "features": [
+        "Workspace membership isolation",
+        "Sample invitations and revocation",
+        "Role changes and final-admin guard",
+        "Read and unread notifications",
+        "Persistent preferences and onboarding",
+        "Local sign-in and error recovery"
+      ]
+    },
+    {
+      "slug": "insight-boards",
+      "id": "insight-boards",
+      "registered": true,
+      "moduleExists": true,
+      "screenshotExists": true,
+      "screenshotHash": "185aab0118411cd6fefbc905cc75c6d3873eeab1fafc9d461db0e538c2d328cf",
+      "frameworks": [
+        "React",
+        "Tailwind CSS"
+      ],
+      "features": [
+        "Tenant-specific analytics and branding",
+        "Board widget configuration",
+        "Accessible theme editing",
+        "Member and admin access preview",
+        "Working iframe embed code",
+        "Local report schedules and CSV export"
+      ]
+    },
+    {
+      "slug": "fulfillr",
+      "id": "logistics",
+      "registered": true,
+      "moduleExists": true,
+      "screenshotExists": true,
+      "screenshotHash": "866b2658d0101725b0d19855d8bc33b0864e5c1eac3cab7e1bbc8dc050fb7efe",
+      "frameworks": [
+        "React",
+        "Tailwind CSS"
+      ],
+      "features": [
+        "Delivery dispatch board",
+        "Driver assignments",
+        "Schematic route overview",
+        "Fleet readiness",
+        "Exception resolution",
+        "Agent approval workflow"
+      ]
+    },
+    {
+      "slug": "fundview",
+      "id": "fundview",
+      "registered": true,
+      "moduleExists": true,
+      "screenshotExists": true,
+      "screenshotHash": "342b8ecd626a916e2132deb69e7a0826635309f70b3b200efeb980c40e398f9b",
+      "frameworks": [
+        "React",
+        "Tailwind CSS"
+      ],
+      "features": [
+        "Fund and quarter reporting context",
+        "NAV and benchmark performance bridge",
+        "Validated capital calls and distributions",
+        "Investor commitment statements",
+        "Sector exposure and quarterly export",
+        "Local report sharing and expiry preview"
+      ]
+    },
+    {
+      "slug": "project-management",
+      "id": "project-management",
+      "registered": true,
+      "moduleExists": true,
+      "screenshotExists": true,
+      "screenshotHash": "b7f5f827cc839334c99ac2872aeb1b83123a66e4a129670697757fdc4876b1e3",
+      "frameworks": [
+        "React",
+        "Tailwind CSS"
+      ],
+      "features": [
+        "Project dashboard",
+        "Project list and details",
+        "Draggable kanban board",
+        "Team analytics",
+        "Activity timeline",
+        "Responsive navigation"
+      ]
+    }
+  ]
+}

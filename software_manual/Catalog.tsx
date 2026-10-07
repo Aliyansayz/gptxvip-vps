@@ -5,16 +5,30 @@ import { manuals, type Manual, type ManualCategory } from "./catalogData";
 import { ManualCard, useManualSurface, manualTheme } from "./shared";
 import sunshineImage from "./sunshine-manual.png";
 import "./styles.css";
+import "./components/manualNavigation.css";
 
 export default function Catalog() {
   const surfaceRef = useManualSurface("Manual Vault // Software Catalog");
   const searchRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
+  const [activeSection, setActiveSection] = useState("");
   const [filter, setFilter] = useState<ManualCategory>("all");
   const [toast, setToast] = useState<Manual | null>(null);
   const navigate = useNavigate();
   const matches = (manual: Manual) => (filter === "all" || manual.category === filter) && `${manual.title} ${manual.searchText}`.toLowerCase().includes(query.trim().toLowerCase());
   const visibleManuals = manuals.filter(matches);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) setActiveSection(visible.target.id);
+    }, { rootMargin: "-20% 0px -55% 0px", threshold: [0, .1, .4] });
+    ["top", "featured", "catalog", "collections"].forEach(id => {
+      const section = surfaceRef.current?.querySelector(`#${id}`);
+      if (section) observer.observe(section);
+    });
+    return () => observer.disconnect();
+  }, [surfaceRef]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -48,7 +62,7 @@ export default function Catalog() {
     if (!reduced) card?.animate([{ transform: "translateY(0)" }, { transform: "translateY(-9px)" }, { transform: "translateY(0)" }], { duration: 900, easing: "ease" });
     setToast(manual);
   }
-  return <div ref={surfaceRef} className="manual-catalog" style={manualTheme}>
+  return <div ref={surfaceRef} className="manual-catalog manual-navigation" style={manualTheme}>
 
   <div className="fx-grid" aria-hidden="true"></div>
   <div className="fx-orb orb-one" aria-hidden="true"></div>
@@ -63,10 +77,10 @@ export default function Catalog() {
 
     <div className="system-state"><i></i><span>CATALOG ONLINE</span><b>08 MANUALS</b></div>
 
-    <nav>
-      <a href="#featured">Featured</a>
-      <a href="#catalog">Catalog</a>
-      <a href="#collections">Collections</a>
+    <nav aria-label="Catalog sections">
+      <a href="#featured" aria-current={activeSection === "featured" ? "location" : undefined}>Featured</a>
+      <a href="#catalog" aria-current={activeSection === "catalog" ? "location" : undefined}>Catalog</a>
+      <a href="#collections" aria-current={activeSection === "collections" ? "location" : undefined}>Collections</a>
     </nav>
 
     <div className="topbar-actions">

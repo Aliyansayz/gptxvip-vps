@@ -8,7 +8,16 @@
     "build": "NODE_OPTIONS=\"--max-old-space-size=4096\" vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "qa:prototype-inventory": "node src/prototype/episodes/qa-inventory.mjs",
+    "qa:prototype-capture": "node src/prototype/episodes/capture-previews.mjs",
+    "qa:prototype-formulas": "node src/prototype/episodes/qa-formulas.mjs",
+    "qa:prototype-browser": "node src/prototype/episodes/qa-browser.mjs",
+    "qa:prototype-domains": "node src/prototype/episodes/qa-domains.mjs",
+    "qa:prototype-contracts": "node src/prototype/episodes/qa-domain-contracts.mjs",
+    "qa:prototype-foundation": "node src/prototype/episodes/qa-foundation.mjs",
+    "qa:manual-navigation": "node src/prototype/episodes/qa-manual.mjs",
+    "qa:showcase-card-launch": "node src/prototype/episodes/qa-card-launch.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.29.0",
@@ -49,6 +58,7 @@
     "@types/node": "^22.14.0",
     "@types/react-syntax-highlighter": "^15.5.13",
     "autoprefixer": "^10.4.21",
+    "playwright": "^1.63.0",
     "tailwindcss": "^4.1.14",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
