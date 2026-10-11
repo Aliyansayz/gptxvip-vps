@@ -1,0 +1,110 @@
+{
+  "base": "http://127.0.0.1:3002",
+  "count": 13,
+  "results": [
+    {
+      "name": "Pulse Analytics",
+      "id": "pulse-analytics",
+      "label": "Open Prototype",
+      "visible": true,
+      "route": "http://127.0.0.1:3002/agents/prototypes/pulse-analytics",
+      "opened": true
+    },
+    {
+      "name": "Storefront Pro",
+      "id": "storefront-pro",
+      "label": "Open Prototype",
+      "visible": true,
+      "route": "http://127.0.0.1:3002/agents/prototypes/storefront-pro",
+      "opened": true
+    },
+    {
+      "name": "Ledgerline",
+      "id": "ledgerline",
+      "label": "Open Prototype",
+      "visible": true,
+      "route": "http://127.0.0.1:3002/agents/prototypes/ledgerline",
+      "opened": true
+    },
+    {
+      "name": "Orbit CRM",
+      "id": "orbit-crm",
+      "label": "Open Prototype",
+      "visible": true,
+      "route": "http://127.0.0.1:3002/agents/prototypes/orbit-crm",
+      "opened": true
+    },
+    {
+      "name": "SaaS Metrics Kit",
+      "id": "saas-metrics-kit",
+      "label": "Open Prototype",
+      "visible": true,
+      "route": "http://127.0.0.1:3002/agents/prototypes/saas-metrics-kit",
+      "opened": true
+    },
+    {
+      "name": "AdSphere",
+      "id": "adsphere",
+      "label": "Open Prototype",
+      "visible": true,
+      "route": "http://127.0.0.1:3002/agents/prototypes/adsphere",
+      "opened": true
+    },
+    {
+      "name": "CliniCare",
+      "id": "clinicare",
+      "label": "Open Prototype",
+      "visible": true,
+      "route": "http://127.0.0.1:3002/agents/prototypes/clinicare",
+      "opened": true
+    },
+    {
+      "name": "ChainPulse",
+      "id": "chainpulse",
+      "label": "Open Prototype",
+      "visible": true,
+      "route": "http://127.0.0.1:3002/agents/prototypes/chainpulse",
+      "opened": true
+    },
+    {
+      "name": "HQ Admin",
+      "id": "hq-admin",
+      "label": "Open Prototype",
+      "visible": true,
+      "route": "http://127.0.0.1:3002/agents/prototypes/hq-admin",
+      "opened": true
+    },
+    {
+      "name": "Insight Boards",
+      "id": "insight-boards",
+      "label": "Open Prototype",
+      "visible": true,
+      "route": "http://127.0.0.1:3002/agents/prototypes/insight-boards",
+      "opened": true
+    },
+    {
+      "name": "Fulfillr",
+      "id": "logistics",
+      "label": "Open Prototype",
+      "visible": true,
+      "route": "http://127.0.0.1:3002/agents/prototypes/logistics",
+      "opened": true
+    },
+    {
+      "name": "Fundview",
+      "id": "fundview",
+      "label": "Open Prototype",
+      "visible": true,
+      "route": "http://127.0.0.1:3002/agents/prototypes/fundview",
+      "opened": true
+    },
+    {
+      "name": "Project Management",
+      "id": "project-management",
+      "label": "Open Prototype",
+      "visible": true,
+      "route": "http://127.0.0.1:3002/agents/prototypes/project-management",
+      "opened": true
+    }
+  ]
+}

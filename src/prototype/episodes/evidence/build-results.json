@@ -1,0 +1,8 @@
+{
+  "command": "npm run build",
+  "exitCode": 0,
+  "modulesTransformed": 5043,
+  "durationSeconds": 51.69,
+  "outputDirectory": "dist",
+  "includes": "Open Prototype button on all showcase product cards."
+}

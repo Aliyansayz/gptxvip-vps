@@ -3,7 +3,6 @@ import type { Manual } from "./catalogData";
 
 // Only colors present in RootHomePage, Navbar and Footer. Reference Tailwind's
 // native variables so this surface stays aligned with the landing page palette.
-// Aqua blue - red gradient theme matching alternate landing page aesthetic
 export const manualTheme = {
   "--manual-canvas": "var(--color-slate-950)",
   "--manual-surface": "var(--color-slate-900)",
@@ -19,10 +18,6 @@ export const manualTheme = {
   "--manual-success": "var(--color-emerald-500)",
   "--manual-warning": "var(--color-cyan-300)",
   "--manual-error": "var(--color-violet-500)",
-  // Aqua blue - red gradient theme variables
-  "--gradient-accent": "linear-gradient(135deg, #06b6d4 0%, #f87171 100%)",
-  "--gradient-aqua": "linear-gradient(135deg, #0891b2 0%, #ef4444 100%)",
-  "--gradient-premium": "linear-gradient(135deg, #0e7490 0%, #b42318 100%)",
 } as CSSProperties;
 
 export function useManualSurface(title: string) {
