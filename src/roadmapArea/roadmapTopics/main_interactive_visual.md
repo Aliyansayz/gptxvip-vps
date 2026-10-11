@@ -1,2 +1,0 @@
->> Install the idea of implementation of interactive visual for each question have a main visual for that chapter,
-if multiple questions exist in a chapter then there can be multiple main visuals alongside multiple theory topics. 
