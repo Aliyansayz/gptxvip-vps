@@ -64,6 +64,12 @@ export default function Catalog() {
   }
   return <div ref={surfaceRef} className="manual-catalog manual-navigation" style={manualTheme}>
 
+  <div className="aurora-background">
+    <div className="aurora-layer aurora-left" aria-hidden="true" />
+    <div className="aurora-layer aurora-right" aria-hidden="true" />
+    <div className="aurora-layer aurora-center" aria-hidden="true" />
+  </div>
+
   <div className="fx-grid" aria-hidden="true"></div>
   <div className="fx-orb orb-one" aria-hidden="true"></div>
   <div className="fx-orb orb-two" aria-hidden="true"></div>
@@ -90,7 +96,7 @@ export default function Catalog() {
   </header>
 
   <main id="top">
-    <section className="hero">
+    <section className="hero" style={{background: 'var(--gradient-aqua)', backgroundSize: '400% 400%', animation: 'gradient-shift 15s ease infinite'}}>
       <div className="hero-kicker"><span>SOFTWARE DOCUMENTATION LIBRARY</span><i></i><b>V3 / CATALOG VIEW</b></div>
       <div className="hero-grid">
         <div className="hero-copy reveal">
