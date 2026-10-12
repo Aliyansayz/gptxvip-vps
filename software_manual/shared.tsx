@@ -1,8 +1,16 @@
 import { useEffect, useRef, type CSSProperties, type PointerEvent, type ReactNode } from "react";
 import type { Manual } from "./catalogData";
+import "./theme.css";
 
-// Only colors present in RootHomePage, Navbar and Footer. Reference Tailwind's
-// native variables so this surface stays aligned with the landing page palette.
+// Single source of truth for every software-manual surface. Applied inline on
+// each root element, so the variable NAMES are a contract with ~90KB of
+// consuming CSS across styles.css, manualGuide.css and the Sunshine manual.
+// Change values here; do not rename variables without updating every consumer.
+//
+// Accent direction: aqua carries interaction (links, focus, buttons, fills) and
+// red sits at the far end of gradient treatments. Aqua and red are
+// complementary, so letting red become a standalone primary reads garish on a
+// dense documentation UI -- it stays a gradient terminus instead.
 export const manualTheme = {
   "--manual-canvas": "var(--color-slate-950)",
   "--manual-surface": "var(--color-slate-900)",
@@ -11,13 +19,26 @@ export const manualTheme = {
   "--manual-secondary": "var(--color-slate-300)",
   "--manual-muted": "var(--color-slate-400)",
   "--manual-border": "color-mix(in srgb, var(--color-white) 10%, transparent)",
+  // Aqua: the interaction colour.
   "--manual-primary": "var(--color-cyan-500)",
-  "--manual-hover": "var(--color-cyan-700)",
+  "--manual-hover": "var(--color-cyan-600)",
   "--manual-info": "var(--color-cyan-400)",
   "--manual-focus": "var(--color-cyan-300)",
+  // Red: gradient terminus and status only, never a standalone interactive fill.
+  "--manual-accent-warm": "var(--color-red-500)",
+  "--manual-accent-warm-soft": "var(--color-red-400)",
+  /*
+   * Hero headline face. Basalt declares `"Basalt Inter", Inter, sans-serif`;
+   * its local webfont is scoped to that route's stylesheet and is not loaded
+   * here, so this resolves to Inter -- the same fallback Basalt itself falls
+   * back to, hence a visually identical result.
+   */
+  "--manual-hero-face": "var(--font-sans)",
+  // Status. These were violet-for-error and cyan-for-warning, which inverted
+  // the usual reading order; they now agree with their names.
   "--manual-success": "var(--color-emerald-500)",
-  "--manual-warning": "var(--color-cyan-300)",
-  "--manual-error": "var(--color-violet-500)",
+  "--manual-warning": "var(--color-amber-400)",
+  "--manual-error": "var(--color-red-500)",
 } as CSSProperties;
 
 export function useManualSurface(title: string) {

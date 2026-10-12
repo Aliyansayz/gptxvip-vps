@@ -6,24 +6,37 @@ interface AgentTopicPreviewProps {
   topic: AgentLabTopic
   compact?: boolean
   dark?: boolean
+  /**
+   * `warm` matches the landing page's orange-red accent ramp.
+   * Defaults to `cyan` so the Agent catalog root keeps its existing palette.
+   */
+  accent?: 'cyan' | 'warm'
 }
 
 /** A shared preview card built from the same chapter metadata used by the Agent Labs runtime. */
-export function AgentTopicPreview({ topic, compact = false, dark = false }: AgentTopicPreviewProps) {
+export function AgentTopicPreview({ topic, compact = false, dark = false, accent = 'cyan' }: AgentTopicPreviewProps) {
+  const warm = accent === 'warm'
   const cardTone = dark
-    ? 'border-white/15 bg-slate-900 text-white'
+    ? 'border-white/15 bg-ink text-white'
     : 'border-slate-200 bg-white text-slate-950 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100'
   const mutedTone = dark ? 'text-slate-300' : 'text-slate-600 dark:text-zinc-400'
   const stepTone = dark ? 'border-white/10 bg-white/5 text-slate-200' : 'border-slate-200 bg-slate-50 text-slate-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300'
 
+  // The dark variant sits on the glass hero panel, where the bright display
+  // stops clear 3:1. The light variant needs the deep AA step.
+  const accentOnDark = warm ? 'text-accent-400' : 'text-cyan-300'
+  const accentOnLight = warm ? 'text-accent-700 dark:text-accent-400' : 'text-cyan-700 dark:text-cyan-300'
+  const accentRing = warm ? 'focus-visible:ring-accent-600' : 'focus-visible:ring-cyan-500'
+  const accentHover = warm ? 'hover:border-accent-300' : 'hover:border-cyan-400'
+
   return (
     <a
       href={getAgentLabTopicHref(topic.slug)}
-      className={`group block rounded-2xl border p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-cyan-400 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 ${cardTone} ${compact ? 'p-4' : 'sm:p-6'}`}
+      className={`group block rounded-2xl border p-5 shadow-sm transition-all hover:-translate-y-0.5 ${accentHover} hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 ${accentRing} focus-visible:ring-offset-2 ${cardTone} ${compact ? 'p-4' : 'sm:p-6'}`}
       aria-label={`Open ${topic.chapterTitle} interactive lesson`}
     >
       <div className="flex items-center justify-between gap-3">
-        <span className={`text-[10px] font-bold uppercase tracking-[0.18em] ${dark ? 'text-cyan-300' : 'text-cyan-700 dark:text-cyan-300'}`}>Agent Labs interactive lesson</span>
+        <span className={`text-[10px] font-bold uppercase tracking-[0.18em] ${dark ? accentOnDark : accentOnLight}`}>Agent Labs interactive lesson</span>
         <span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${dark ? 'bg-white/10 text-slate-200' : 'bg-slate-100 text-slate-600 dark:bg-zinc-900 dark:text-zinc-300'}`}>{topic.family}</span>
       </div>
       <h3 className={`mt-4 font-bold tracking-tight ${compact ? 'text-lg' : 'text-xl'}`}>{topic.title}</h3>
@@ -32,7 +45,7 @@ export function AgentTopicPreview({ topic, compact = false, dark = false }: Agen
 
       <div className="mt-5">
         <p className={`mb-2 text-[9px] font-bold uppercase tracking-[0.16em] ${dark ? 'text-slate-400' : 'text-slate-500 dark:text-zinc-500'}`}>Concept flow</p>
-        <div className="grid grid-cols-3 gap-2" aria-label={`Concept flow: ${topic.previewSteps.join(', ')}`}>
+        <div className="mt-5 grid grid-cols-3 gap-2" aria-label={`Concept flow: ${topic.previewSteps.join(', ')}`}>
         {topic.previewSteps.map((step, index) => {
           return (
             <div key={step} className={`flex min-h-14 flex-col justify-center rounded-xl border px-2 py-2 text-center ${stepTone}`}>
@@ -44,7 +57,7 @@ export function AgentTopicPreview({ topic, compact = false, dark = false }: Agen
         </div>
       </div>
 
-      <span className={`mt-5 inline-flex items-center gap-2 text-sm font-bold ${dark ? 'text-cyan-300' : 'text-cyan-700 dark:text-cyan-300'}`}>
+      <span className={`mt-5 inline-flex items-center gap-2 text-sm font-bold ${dark ? accentOnDark : accentOnLight}`}>
         Open interactive lesson <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
       </span>
       <span className="sr-only"> The lesson opens at {topic.chapterTitle}.</span>

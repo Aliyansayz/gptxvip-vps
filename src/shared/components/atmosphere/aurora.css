@@ -1,0 +1,350 @@
+/*
+ * Aurora atmosphere — shared root component styles.
+ *
+ * One implementation, two themes:
+ *   dark  — the Basalt treatment: saturated blades screened over a near-black
+ *           ground that the container paints itself, so blending never depends
+ *           on what happens to sit behind it.
+ *   light — the light-surface adaptation. `screen` is a no-op over a light
+ *           ground, and `multiply` would be hostage to stacking-context
+ *           isolation, so the light theme bakes its warmth into plain alpha
+ *           fills instead. Visually equivalent to a multiply, with none of
+ *           the isolation fragility.
+ *
+ * Class prefix: aurora-
+ */
+
+.aurora-atmosphere {
+  position: absolute;
+  inset: 0;
+  /*
+   * -1, not 0. The dark theme paints an opaque ground, so a stacking order of
+   * 0 would cover any sibling content that is not itself positioned — the
+   * software manual's sections are static. Every host (landing hero, Basalt
+   * page, manual root) establishes `isolation: isolate`, which keeps this
+   * negative z-index inside the host instead of dropping behind it.
+   */
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  contain: paint;
+}
+
+.aurora-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------- blades -- */
+
+.aurora-blade {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(36px);
+  will-change: transform, opacity;
+}
+
+.aurora-blade--one {
+  width: 1180px;
+  height: 180px;
+  left: calc(50% - 1040px);
+  top: 280px;
+  animation: aurora-drift-one 18s ease-in-out infinite;
+}
+.aurora-blade--two {
+  width: 1000px;
+  height: 135px;
+  left: calc(50% - 240px);
+  top: 190px;
+  animation: aurora-drift-two 22s ease-in-out infinite;
+}
+.aurora-blade--three {
+  width: 1040px;
+  height: 170px;
+  left: calc(50% - 590px);
+  top: 620px;
+  animation: aurora-drift-three 15s ease-in-out infinite;
+}
+.aurora-blade--four {
+  width: 780px;
+  height: 105px;
+  left: calc(50% + 330px);
+  top: 430px;
+  animation: aurora-drift-four 20s ease-in-out infinite;
+}
+
+@keyframes aurora-drift-one {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-32deg) scale(1);
+    opacity: 0.94;
+  }
+  48% {
+    transform: translate(70px, -35px) rotate(-28deg) scale(0.9);
+    opacity: 0.54;
+  }
+}
+@keyframes aurora-drift-two {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-36deg) scale(1);
+    opacity: 0.9;
+  }
+  54% {
+    transform: translate(-60px, 48px) rotate(-31deg) scale(1.08);
+    opacity: 0.52;
+  }
+}
+@keyframes aurora-drift-three {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-29deg) scale(1);
+    opacity: 0.78;
+  }
+  42% {
+    transform: translate(-35px, -55px) rotate(-34deg) scale(0.92);
+    opacity: 0.42;
+  }
+}
+@keyframes aurora-drift-four {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-38deg) scale(1);
+    opacity: 0.8;
+  }
+  58% {
+    transform: translate(-75px, 24px) rotate(-33deg) scale(1.1);
+    opacity: 0.43;
+  }
+}
+
+/* ------------------------------------------------------------------ grain -- */
+
+.aurora-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------- dark theme -- */
+
+.aurora-atmosphere--dark {
+  isolation: isolate;
+  color-scheme: dark;
+  /*
+   * The container paints its own ground so blending never depends on what sits
+   * behind it. Overridable because Basalt's canvas is #07080a while the
+   * software manual's is slate-950 — left fixed, that difference shows as a
+   * seam across a full-page field.
+   */
+  background: var(--aurora-ground, #07080a);
+}
+.aurora-atmosphere--dark .aurora-blade {
+  mix-blend-mode: screen;
+  background: linear-gradient(
+    100deg,
+    transparent 2%,
+    #ffb3470d 16%,
+    #ff6b4a88 38%,
+    #ff2f3abf 62%,
+    #ff6b4a9c 80%,
+    #ffb34780 90%,
+    transparent 100%
+  );
+}
+.aurora-atmosphere--dark .aurora-grain {
+  opacity: 0.15;
+  mix-blend-mode: soft-light;
+}
+.aurora-vignette {
+  position: absolute;
+  inset: 0;
+}
+.aurora-atmosphere--dark .aurora-vignette {
+  background:
+    radial-gradient(
+      ellipse at 50% 42%,
+      transparent 20%,
+      #07080a50 65%,
+      #07080ad9 100%
+    ),
+    linear-gradient(
+      180deg,
+      #07080a55,
+      transparent 26%,
+      #07080a33 65%,
+      #07080aee
+    );
+}
+
+/* ------------------------------------------------------------ light theme -- */
+
+.aurora-atmosphere--light {
+  color-scheme: light;
+}
+/*
+ * Density tuning: the light theme originally read as a pale peach wash. The
+ * core red is now wider and more opaque, and the drift keyframes no longer
+ * fade as far, so the hero keeps a warm red presence across the whole cycle
+ * instead of pulsing in and out of visibility.
+ */
+.aurora-atmosphere--light .aurora-blade {
+  background: linear-gradient(
+    100deg,
+    transparent 2%,
+    #ff9a5f42 12%,
+    #f04a2c96 28%,
+    #d81f26b8 50%,
+    #b8121bb8 70%,
+    #e83a2490 86%,
+    transparent 100%
+  );
+}
+/* Soft-light barely registers on a light ground; overlay carries the texture. */
+.aurora-atmosphere--light .aurora-grain {
+  opacity: 0.24;
+  mix-blend-mode: overlay;
+}
+
+/*
+ * Light-theme drift holds a higher floor than the shared keyframes. The shared
+ * set dips to 0.42-0.54 opacity, which was tuned for the dark theme where the
+ * blades carry their own brightness; on the paper shell that dip reads as the
+ * red disappearing. Scoped to `--light` so Basalt keeps its original motion.
+ */
+.aurora-atmosphere--light .aurora-blade--one {
+  animation-name: aurora-drift-one-light;
+}
+.aurora-atmosphere--light .aurora-blade--two {
+  animation-name: aurora-drift-two-light;
+}
+.aurora-atmosphere--light .aurora-blade--three {
+  animation-name: aurora-drift-three-light;
+}
+.aurora-atmosphere--light .aurora-blade--four {
+  animation-name: aurora-drift-four-light;
+}
+
+@keyframes aurora-drift-one-light {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-32deg) scale(1);
+    opacity: 1;
+  }
+  48% {
+    transform: translate(70px, -35px) rotate(-28deg) scale(0.94);
+    opacity: 0.72;
+  }
+}
+@keyframes aurora-drift-two-light {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-36deg) scale(1);
+    opacity: 0.96;
+  }
+  54% {
+    transform: translate(-60px, 48px) rotate(-31deg) scale(1.05);
+    opacity: 0.7;
+  }
+}
+@keyframes aurora-drift-three-light {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-29deg) scale(1);
+    opacity: 0.88;
+  }
+  42% {
+    transform: translate(-35px, -55px) rotate(-34deg) scale(0.95);
+    opacity: 0.62;
+  }
+}
+@keyframes aurora-drift-four-light {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-38deg) scale(1);
+    opacity: 0.9;
+  }
+  58% {
+    transform: translate(-75px, 24px) rotate(-33deg) scale(1.06);
+    opacity: 0.64;
+  }
+}
+
+/* Holds the red further out before the field dissolves into the paper tone. */
+.aurora-atmosphere--light .aurora-vignette {
+  background:
+    radial-gradient(
+      ellipse at 50% 36%,
+      transparent 26%,
+      #f7f8f54d 70%,
+      #f7f8f5c4 100%
+    ),
+    linear-gradient(180deg, #f7f8f573, #f7f8f500 20%);
+}
+
+/* ------------------------------------------------------------- hero scope -- */
+
+/*
+ * The landing hero mounts the aurora inside its own section rather than
+ * `position: fixed`, so it never becomes a permanent compositing layer for
+ * the rest of the document. It dissolves into the page ground at the fold.
+ */
+.aurora-atmosphere--hero .aurora-field {
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    #000 0%,
+    #000 58%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(180deg, #000 0%, #000 58%, transparent 100%);
+}
+
+/* -------------------------------------------------------------- responsive -- */
+
+@media (max-width: 640px) {
+  .aurora-blade--one {
+    left: calc(50% - 740px);
+    top: 250px;
+  }
+  .aurora-blade--two {
+    left: calc(50% - 420px);
+    top: 370px;
+  }
+  .aurora-blade--three {
+    top: 730px;
+  }
+}
+
+/* --------------------------------------------------------- reduced motion -- */
+
+/*
+ * CSS-only, so the aurora needs no JS listener. The first frame is fully
+ * illuminated, which is exactly what these static transforms reproduce.
+ */
+@media (prefers-reduced-motion: reduce) {
+  /*
+   * Scoped under `.aurora-atmosphere` so this outranks any page-level
+   * `* { animation-duration: 0s !important }` rule regardless of the order
+   * the two stylesheets land in the bundle.
+   */
+  .aurora-atmosphere .aurora-blade {
+    animation: none !important;
+  }
+  .aurora-atmosphere .aurora-blade--one {
+    transform: rotate(-32deg);
+    opacity: 0.94;
+  }
+  .aurora-atmosphere .aurora-blade--two {
+    transform: rotate(-36deg);
+    opacity: 0.9;
+  }
+  .aurora-atmosphere .aurora-blade--three {
+    transform: rotate(-29deg);
+    opacity: 0.78;
+  }
+  .aurora-atmosphere .aurora-blade--four {
+    transform: rotate(-38deg);
+    opacity: 0.8;
+  }
+}

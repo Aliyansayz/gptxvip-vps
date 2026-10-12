@@ -3,7 +3,8 @@ import { ArrowRight, Layers3, Play, Search } from 'lucide-react';
 import { agentLabTopics } from '../agentLabsData';
 import { getAgentLabTopicHref } from '../agentLabsData';
 import AgentTopicPreview from '../components/AgentTopicPreview';
-import { AgenticRoleUseCases } from './AgenticRoleUseCases';
+// Extension pinned to out-resolve the case-insensitive match on `agenticRoleUseCases.ts`.
+import { AgenticRoleUseCases } from './AgenticRoleUseCases.tsx';
 
 interface LandingPageProps {
     onOpenTopics?: () => void;

@@ -66,131 +66,11 @@
   transform: none;
 }
 
-/* Four independent CSS-only light blades; the first frame is fully illuminated. */
-.basalt-atmosphere {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  overflow: hidden;
-}
-.basalt-aurora {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-.basalt-blade {
-  position: absolute;
-  border-radius: 50%;
-  mix-blend-mode: screen;
-  filter: blur(36px);
-  background: linear-gradient(
-    100deg,
-    transparent 2%,
-    #ffb3470d 16%,
-    #ff6b4a88 38%,
-    #ff2f3abf 62%,
-    #ff6b4a9c 80%,
-    #ffb34780 90%,
-    transparent 100%
-  );
-}
-.basalt-blade--one {
-  width: 1180px;
-  height: 180px;
-  left: calc(50% - 1040px);
-  top: 280px;
-  animation: basalt-drift-one 18s ease-in-out infinite;
-}
-.basalt-blade--two {
-  width: 1000px;
-  height: 135px;
-  left: calc(50% - 240px);
-  top: 190px;
-  animation: basalt-drift-two 22s ease-in-out infinite;
-}
-.basalt-blade--three {
-  width: 1040px;
-  height: 170px;
-  left: calc(50% - 590px);
-  top: 620px;
-  animation: basalt-drift-three 15s ease-in-out infinite;
-}
-.basalt-blade--four {
-  width: 780px;
-  height: 105px;
-  left: calc(50% + 330px);
-  top: 430px;
-  animation: basalt-drift-four 20s ease-in-out infinite;
-}
-@keyframes basalt-drift-one {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(-32deg) scale(1);
-    opacity: 0.94;
-  }
-  48% {
-    transform: translate(70px, -35px) rotate(-28deg) scale(0.9);
-    opacity: 0.54;
-  }
-}
-@keyframes basalt-drift-two {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(-36deg) scale(1);
-    opacity: 0.9;
-  }
-  54% {
-    transform: translate(-60px, 48px) rotate(-31deg) scale(1.08);
-    opacity: 0.52;
-  }
-}
-@keyframes basalt-drift-three {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(-29deg) scale(1);
-    opacity: 0.78;
-  }
-  42% {
-    transform: translate(-35px, -55px) rotate(-34deg) scale(0.92);
-    opacity: 0.42;
-  }
-}
-@keyframes basalt-drift-four {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(-38deg) scale(1);
-    opacity: 0.8;
-  }
-  58% {
-    transform: translate(-75px, 24px) rotate(-33deg) scale(1.1);
-    opacity: 0.43;
-  }
-}
-.basalt-grain {
-  position: absolute;
-  inset: 0;
-  opacity: 0.15;
-  mix-blend-mode: soft-light;
-}
-.basalt-vignette {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(
-      ellipse at 50% 42%,
-      transparent 20%,
-      #07080a50 65%,
-      #07080ad9 100%
-    ),
-    linear-gradient(
-      180deg,
-      #07080a55,
-      transparent 26%,
-      #07080a33 65%,
-      #07080aee
-    );
-}
+/*
+ * The aurora atmosphere (blades, grain, vignette) now lives in the shared
+ * root component at src/shared/components/atmosphere/AuroraBackground.tsx so
+ * the landing page and Basalt render one implementation.
+ */
 
 .basalt-navigation {
   position: absolute;
@@ -943,17 +823,6 @@
   .basalt-learn-more {
     margin-top: 20px;
   }
-  .basalt-blade--one {
-    left: calc(50% - 740px);
-    top: 250px;
-  }
-  .basalt-blade--two {
-    left: calc(50% - 420px);
-    top: 370px;
-  }
-  .basalt-blade--three {
-    top: 730px;
-  }
   .basalt-dialog {
     padding: 28px 22px;
   }
@@ -965,22 +834,6 @@
     animation-duration: 0s !important;
     transition: none !important;
     scroll-behavior: auto !important;
-  }
-  .basalt-blade--one {
-    transform: rotate(-32deg);
-    opacity: 0.94;
-  }
-  .basalt-blade--two {
-    transform: rotate(-36deg);
-    opacity: 0.9;
-  }
-  .basalt-blade--three {
-    transform: rotate(-29deg);
-    opacity: 0.78;
-  }
-  .basalt-blade--four {
-    transform: rotate(-38deg);
-    opacity: 0.8;
   }
   .basalt-caret {
     opacity: 1;

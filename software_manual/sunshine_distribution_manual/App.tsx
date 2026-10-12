@@ -1,6 +1,8 @@
 import { useEffect, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from "react";
 import { Link } from "react-router";
 import { useManualSurface, manualTheme } from "../shared";
+import { AuroraBackground } from "../../src/shared/components/atmosphere/AuroraBackground";
+import ManualFooter from "../components/ManualFooter";
 import sunshineImage from "./sunshine-manual.png";
 import "./styles.css";
 import "../components/manualNavigation.css";
@@ -44,9 +46,8 @@ export default function SunshineManual() {
   }
   return <div ref={surfaceRef} className="sunshine-manual manual-navigation" style={manualTheme}>
 
-  <div className="noise" aria-hidden="true"></div>
-  <div className="aurora aurora-a" aria-hidden="true"></div>
-  <div className="aurora aurora-b" aria-hidden="true"></div>
+  {/* Replaces the former .aurora-a/.aurora-b pair and .noise overlay. */}
+  <AuroraBackground theme="dark" variant="full" ground="var(--color-slate-950)" />
 
   <header className="topbar">
     <a className="brand" href="#overview" aria-label="Sunshine Distribution home">
@@ -279,11 +280,16 @@ export default function SunshineManual() {
       </div>
     </section>
 
-    <footer>
-      <a className="brand footer-brand" href="#overview"><span className="sun-logo small" aria-hidden="true"><i></i></span><span className="brand-text"><b>SUNSHINE</b><em>DISTRIBUTION</em></span></a>
-      <Link className="back-catalog" to="/">← SOFTWARE MANUAL CATALOG</Link>
-      <a href="#overview">BACK TO TOP ↑</a>
-    </footer>
+    <ManualFooter
+      brand={<a className="brand footer-brand" href="#overview"><span className="sun-logo small" aria-hidden="true"><i></i></span><span className="brand-text"><b>SUNSHINE</b><em>DISTRIBUTION</em></span></a>}
+      caption="WAREHOUSE · INVENTORY · DISTRIBUTION"
+      links={[
+        { label: "Overview", href: "#overview" },
+        { label: "Modules", href: "#modules" },
+        { label: "Back to catalog", onClick: () => window.location.assign("/") },
+        { label: "Back to top", href: "#overview" },
+      ]}
+    />
   </main>
 
   

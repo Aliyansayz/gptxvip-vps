@@ -1,30 +1,19 @@
-export function AuroraBackground() {
-  return (
-    <div className="basalt-atmosphere" aria-hidden="true">
-      <div className="basalt-aurora">
-        <span className="basalt-blade basalt-blade--one" />
-        <span className="basalt-blade basalt-blade--two" />
-        <span className="basalt-blade basalt-blade--three" />
-        <span className="basalt-blade basalt-blade--four" />
-      </div>
-      <svg className="basalt-grain" width="100%" height="100%">
-        <filter id="basalt-film-grain">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency=".84"
-            numOctaves="3"
-            stitchTiles="stitch"
-          />
-          <feColorMatrix type="saturate" values="0" />
-        </filter>
-        <rect
-          width="100%"
-          height="100%"
-          filter="url(#basalt-film-grain)"
-          opacity=".24"
-        />
-      </svg>
-      <div className="basalt-vignette" />
-    </div>
-  );
+import {
+  AuroraBackground as SharedAuroraBackground,
+  type AuroraTheme,
+} from "../../shared/components/atmosphere/AuroraBackground";
+
+interface AuroraBackgroundProps {
+  theme?: AuroraTheme;
 }
+
+/**
+ * Basalt is a dark surface, so this root mounts the shared atmosphere in its
+ * `dark` theme. Kept as a thin wrapper so `landing.css` stays the single owner
+ * of the page shell and the atmosphere keeps one implementation across roots.
+ */
+export function AuroraBackground({ theme = 'dark' }: AuroraBackgroundProps) {
+  return <SharedAuroraBackground theme={theme} showGrain />;
+}
+
+export default AuroraBackground;

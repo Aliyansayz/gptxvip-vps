@@ -3,6 +3,10 @@ import { Link, useNavigate } from "react-router";
 import { ArrowLeft } from "lucide-react";
 import { manuals, type Manual, type ManualCategory } from "./catalogData";
 import { ManualCard, useManualSurface, manualTheme } from "./shared";
+import { AuroraBackground } from "../src/shared/components/atmosphere/AuroraBackground";
+import HeroRibbon from "./components/HeroRibbon";
+import ManualFaq from "./components/ManualFaq";
+import ManualFooter from "./components/ManualFooter";
 import sunshineImage from "./sunshine-manual.png";
 import "./styles.css";
 import "./components/manualNavigation.css";
@@ -64,10 +68,11 @@ export default function Catalog() {
   }
   return <div ref={surfaceRef} className="manual-catalog manual-navigation" style={manualTheme}>
 
+  {/* Replaces the former .fx-orb pair and .noise overlay. The shared root
+      already renders film grain; the ground is pinned to the manual canvas so
+      the field does not seam against it. */}
+  <AuroraBackground theme="dark" variant="full" ground="var(--color-slate-950)" />
   <div className="fx-grid" aria-hidden="true"></div>
-  <div className="fx-orb orb-one" aria-hidden="true"></div>
-  <div className="fx-orb orb-two" aria-hidden="true"></div>
-  <div className="noise" aria-hidden="true"></div>
 
   <header className="topbar">
     <a href="#top" className="vault-brand" aria-label="Manual Vault home">
@@ -91,6 +96,7 @@ export default function Catalog() {
 
   <main id="top">
     <section className="hero">
+      <HeroRibbon />
       <div className="hero-kicker"><span>SOFTWARE DOCUMENTATION LIBRARY</span><i></i><b>V3 / CATALOG VIEW</b></div>
       <div className="hero-grid">
         <div className="hero-copy reveal">
@@ -279,6 +285,8 @@ export default function Catalog() {
         <article tabIndex={0} role="button" aria-label="Browse finance manuals" onClick={() => browseCollection("finance")} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); browseCollection("finance"); } } }><span>04</span><div><small>FINANCE</small><h3>Process cases.<br />Resolve value.</h3></div><b>1 MANUAL ↗</b></article>
       </div>
     </section>
+
+    <ManualFaq />
   </main>
 
   <div className={toast ? "manual-toast show" : "manual-toast"} id="manualToast" role="status" aria-live="polite">
@@ -287,11 +295,16 @@ export default function Catalog() {
     <b>{toast?.href ? "READY ↗" : "PREVIEW"}</b>
   </div>
 
-  <footer>
-    <a href="#top" className="vault-brand compact"><span className="vault-mark"><i></i><i></i><i></i></span><span><strong>MANUAL</strong><em>// VAULT</em></span></a>
-    <p>ENERGETIC SOFTWARE DOCUMENTATION CATALOG · VERSION 3</p>
-    <a href="#top">BACK TO TOP ↑</a>
-  </footer>
+  <ManualFooter
+    brand={<a href="#top" className="vault-brand compact"><span className="vault-mark"><i></i><i></i><i></i></span><span><strong>MANUAL</strong><em>// VAULT</em></span></a>}
+    caption="ENERGETIC SOFTWARE DOCUMENTATION CATALOG · VERSION 3"
+    links={[
+      { label: "Featured", href: "#featured" },
+      { label: "Catalog", href: "#catalog" },
+      { label: "Collections", href: "#collections" },
+      { label: "Back to top", href: "#top" },
+    ]}
+  />
 
   
 

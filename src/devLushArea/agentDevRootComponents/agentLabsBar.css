@@ -1,0 +1,50 @@
+/*
+ * Agent Labs navigation bar.
+ *
+ * Takes the detached, translucent treatment from the Basalt reference: the
+ * bar floats on its own surface with a hairline and a drop shadow rather than
+ * reading as a solid full-bleed block. Alpha is lower than Basalt's because
+ * this bar sits directly over scrolling content, not over a fixed hero — a
+ * heavier tint here would read as fog on every scroll.
+ */
+
+.agent-labs-bar {
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 8px 28px rgba(0, 0, 0, 0.18);
+}
+
+/*
+ * Without blur the translucent bar would sit directly on scrolling content and
+ * lose both separation and contrast, so fall back to an opaque ground.
+ */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .agent-labs-bar {
+    background-color: #ffffff;
+  }
+  :root.dark .agent-labs-bar {
+    background-color: #080b12;
+  }
+}
+
+/*
+ * Active section marker. Positioned rather than background-only so the current
+ * view is identifiable without relying on colour perception alone.
+ */
+.agent-labs-tab.is-active::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 2px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, #06b6d4, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-labs-bar,
+  .agent-labs-bar * {
+    transition-duration: 0s !important;
+  }
+}

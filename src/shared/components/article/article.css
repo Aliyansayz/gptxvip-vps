@@ -1,0 +1,167 @@
+/*
+ * Editorial (magazine) article system — stylesheet half.
+ *
+ * Owns the type scale, palette and reading affordances for every long-form
+ * surface in the app: agent-lab article chapters, software-manual deep dives,
+ * and blog posts. Import ONCE from `src/index.css`; never import per component.
+ *
+ * Deliberately hand-rolled rather than `prose` classes, because
+ * `@tailwindcss/typography` is not a dependency of this project.
+ *
+ * Palette note: light values sit on `:root`, dark on `.dark`. The app is
+ * dark-first (see `class="dark"` on <html> in index.html), so dark is the
+ * default a reader sees and light is the opt-in.
+ */
+
+@theme {
+  /*
+   * Editorial trio. `--font-serif` and `--font-body` are additive: `--font-sans`
+   * (Inter) and `--font-display` (Space Grotesk) are owned by index.css and are
+   * left alone, so app chrome keeps its own voice while articles get theirs.
+   */
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Lora", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /*
+   * Resolved through custom properties rather than literals so a single
+   * utility (`bg-tablet-bg`) flips correctly with the theme. Defining them as
+   * `var(...)` keeps Tailwind's opacity modifiers (`/40`) working, since v4
+   * composes those with color-mix().
+   */
+  --color-tablet-bg: var(--tablet-bg);
+  --color-tablet-surface: var(--tablet-surface);
+  --color-tablet-border: var(--tablet-border);
+  --color-tablet-red: var(--tablet-red);
+  --color-tablet-muted: var(--tablet-muted);
+  --color-tablet-highlight: var(--tablet-highlight);
+  --color-tablet-ink: var(--tablet-ink);
+}
+
+:root {
+  --tablet-bg: #fcfbf9;
+  --tablet-surface: #ffffff;
+  --tablet-border: #e5e2da;
+  --tablet-red: #b91c1c;
+  --tablet-muted: #66635b;
+  --tablet-highlight: #f4f1ea;
+  --tablet-ink: #1a1a1a;
+}
+
+.dark {
+  --tablet-bg: #121212;
+  --tablet-surface: #18181b;
+  --tablet-border: #2e2e2c;
+  /* Lifted off the light-mode crimson: #b91c1c on #121212 is only ~3.6:1. */
+  --tablet-red: #f87171;
+  --tablet-muted: #b9b9bb;
+  --tablet-highlight: #1f1f1d;
+  --tablet-ink: #f5f5f4;
+}
+
+@layer components {
+  /*
+   * The base layer in index.css uppercases every h1–h6 to give app chrome its
+   * sign-like voice. Long-form copy must not inherit that, so article
+   * containers opt out here — same mechanism as `.premium-surface`, but scoped
+   * to prose so the two never interact.
+   */
+  .article-prose {
+    font-family: var(--font-body);
+    color: var(--tablet-ink);
+  }
+
+  .article-prose :is(h2, h3, h4) {
+    font-family: var(--font-serif);
+    text-transform: none;
+    letter-spacing: -0.02em;
+  }
+
+  .article-prose p {
+    margin-block: 1.15rem;
+    line-height: 1.75;
+  }
+
+  .article-prose ul,
+  .article-prose ol {
+    margin-block: 1.15rem;
+    padding-inline-start: 1.4rem;
+  }
+
+  .article-prose ul {
+    list-style: disc;
+  }
+
+  .article-prose ol {
+    list-style: decimal;
+  }
+
+  .article-prose :is(ul, ol) > li {
+    margin-block: 0.5rem;
+    line-height: 1.7;
+  }
+
+  .article-prose em {
+    font-style: italic;
+  }
+
+  /*
+   * Signature drop cap. Floated so following paragraphs wrap the glyph, which
+   * is what makes a column read as editorial rather than as a web page.
+   */
+  .article-prose .drop-cap::first-letter {
+    font-family: var(--font-serif);
+    float: left;
+    font-size: 4.5rem;
+    line-height: 0.78;
+    padding-block-start: 4px;
+    padding-inline-end: 10px;
+    color: var(--tablet-ink);
+    font-weight: 900;
+  }
+
+  /* Superscript source marker. Anchors into the notes section at the foot. */
+  .article-footnote-ref {
+    font-size: 0.75rem;
+    vertical-align: super;
+    color: var(--tablet-red);
+    font-weight: 600;
+    margin-inline-start: 2px;
+    text-decoration: none;
+  }
+
+  .article-footnote-ref:hover {
+    text-decoration: underline;
+  }
+
+  /* Range inputs are used by the inline analytics widgets. */
+  .article-prose input[type="range"] {
+    accent-color: var(--tablet-red);
+  }
+
+  /*
+   * Long-form reading is the only surface where a page-height scrollbar is the
+   * expected furniture, so tighten the 6px app default to feel less dominant.
+   */
+  .article-prose ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+/*
+ * Print: an editorial page is expected to survive being handed to a printer.
+ * Reading furniture is stripped; the article itself is forced to ink-on-white
+ * because the dark theme would otherwise render as a solid black block.
+ */
+@media print {
+  .article-no-print {
+    display: none !important;
+  }
+
+  .article-print-plain {
+    background: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+  }
+}

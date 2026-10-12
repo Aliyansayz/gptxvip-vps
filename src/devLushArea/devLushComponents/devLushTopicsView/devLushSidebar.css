@@ -1,0 +1,50 @@
+/*
+ * Agent Labs category rail.
+ *
+ * Scoped to one class so the rail keeps a single translucent ground across
+ * themes, instead of per-item colour utilities drifting out of sync.
+ */
+.devlush-rail {
+  position: relative;
+  isolation: isolate;
+  border-right: 1px solid #1e293b;
+  background-color: #0a0f1a;
+  /* Subtle top-down sheen so the rail reads as a raised surface. */
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 42%);
+  color: #e2e8f0;
+  color-scheme: dark;
+}
+
+.devlush-rail *,
+.devlush-rail *::before,
+.devlush-rail *::after {
+  box-sizing: border-box;
+}
+
+/* The app's global base layer uppercases headings; headings here are labels. */
+.devlush-rail :is(h2, h3) {
+  text-transform: none;
+  letter-spacing: inherit;
+}
+
+/* Scrollbar is inside the rail, not the document. */
+.devlush-rail .custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.devlush-rail .custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.devlush-rail .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.22);
+  border-radius: 999px;
+}
+.devlush-rail .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.38);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .devlush-rail,
+  .devlush-rail * {
+    transition-duration: 0s !important;
+  }
+}

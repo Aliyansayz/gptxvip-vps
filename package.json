@@ -8,6 +8,7 @@
     "build": "NODE_OPTIONS=\"--max-old-space-size=4096\" vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist",
+    "icons:build": "node scripts/build-icon-assets.cjs",
     "lint": "tsc --noEmit",
     "qa:prototype-inventory": "node src/prototype/episodes/qa-inventory.mjs",
     "qa:prototype-capture": "node src/prototype/episodes/capture-previews.mjs",
@@ -59,6 +60,7 @@
     "@types/react-syntax-highlighter": "^15.5.13",
     "autoprefixer": "^10.4.21",
     "playwright": "^1.63.0",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4.1.14",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"

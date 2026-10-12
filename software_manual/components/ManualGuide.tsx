@@ -2,6 +2,8 @@ import { useEffect, useState, Fragment, type CSSProperties } from "react";
 import { Link } from "react-router";
 import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, FileCheck2, Layers3, ShieldCheck } from "lucide-react";
 import { manualTheme, useManualSurface } from "../shared";
+import { AuroraBackground } from "../../src/shared/components/atmosphere/AuroraBackground";
+import ManualFooter from "./ManualFooter";
 import { getManualPresentation } from "./manualPresentation";
 import ManualPreview from "./ManualPreview";
 import ManualIllustrations from "./ManualIllustrations";
@@ -29,7 +31,8 @@ export default function ManualGuide({ manual }: { manual: ManualDefinition }) {
     return () => observer.disconnect();
   }, [count, surfaceRef]);
   return <div ref={surfaceRef} className="sunshine-manual manual-guide manual-navigation" style={manualTheme}>
-    <div className="noise" aria-hidden="true" /><div className="aurora aurora-a" aria-hidden="true" /><div className="aurora aurora-b" aria-hidden="true" />
+    {/* Replaces the former .aurora-a/.aurora-b pair and .noise overlay. */}
+    <AuroraBackground theme="dark" variant="full" ground="var(--color-slate-950)" />
     <header className="topbar">
       <a className="brand" href="#overview" aria-label={`${manual.title} overview`}><span className="guide-brand-mark" aria-hidden="true"><Icon size={22} /></span><span className="brand-text"><b>{presentation.brand[0]}</b><em>{presentation.brand[1]}</em></span></a>
       <div className="command"><span className="pulse" /><span>FIELD HANDBOOK</span><Link className="back-catalog" to="/">Back to catalog</Link></div>
@@ -78,7 +81,16 @@ export default function ManualGuide({ manual }: { manual: ManualDefinition }) {
         <div className="security-orb" aria-hidden="true"><div className="orb-rings"><i /><i /><i /></div><div className="orb-core"><ShieldCheck size={26} /><span>REVIEW</span><small>BEFORE ACTION</small></div></div>
         <div className="security-readouts"><div><span>EVIDENCE</span><strong>Keep the source record</strong><i>●</i></div><div><span>HANDOFF</span><strong>Name the next owner</strong><i>●</i></div><div><span>COMPLETION</span><strong>Check the outcome</strong><i>●</i></div></div>
       </div></section>
-      <footer><a className="brand footer-brand" href="#overview"><span className="guide-brand-mark" aria-hidden="true"><Icon size={22} /></span><span className="brand-text"><b>{presentation.brand[0]}</b><em>FIELD HANDBOOK</em></span></a><Link className="back-catalog" to="/">Back to catalog</Link><a href="#overview">BACK TO TOP ↑</a></footer>
+      <ManualFooter
+        brand={<a className="brand footer-brand" href="#overview"><span className="guide-brand-mark" aria-hidden="true"><Icon size={22} /></span><span className="brand-text"><b>{presentation.brand[0]}</b><em>FIELD HANDBOOK</em></span></a>}
+        caption={`${manual.title} · FIELD HANDBOOK`}
+        links={[
+          { label: "Overview", href: "#overview" },
+          { label: "System map", href: "#modules" },
+          { label: "Back to catalog", onClick: () => window.location.assign("/") },
+          { label: "Back to top", href: "#overview" },
+        ]}
+      />
     </main>
   </div>;
 }

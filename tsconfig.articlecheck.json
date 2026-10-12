@@ -1,0 +1,7 @@
+{
+  // Scoped check for the article system only. The full-project typecheck takes
+  // several minutes in this shell's 30s command limit; this covers just the
+  // files under active development.
+  "extends": "./tsconfig.json",
+  "include": ["src/shared/components/article/**/*.ts", "src/shared/components/article/**/*.tsx"]
+}

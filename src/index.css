@@ -1,10 +1,47 @@
+/*
+ * App chrome uses Inter / Space Grotesk / Righteous. The editorial trio
+ * (Playfair, Lora, JetBrains Mono) is loaded here rather than in a CDN block so
+ * it ships through the same single request as everything else and is subject to
+ * the same `display=swap`.
+ */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700;900&family=Righteous&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap");
 @import "tailwindcss";
+
+/* Editorial article system: palette, type scale, drop cap, print rules. */
+@import "./shared/components/article/article.css";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-righteous: "Righteous", cursive;
+
+  /*
+   * Accent ramp for the landing surface. Steps 600+ clear WCAG AA on the
+   * paper ground (#f7f8f5); 500 and below are display-only (large or bold
+   * text). Never use 300/400 as body copy colour on light.
+   */
+  --color-accent-50: #fff6f3;
+  --color-accent-100: #ffe7de;
+  --color-accent-200: #ffcabb;
+  --color-accent-300: #ffa68e;
+  --color-accent-400: #f5764f;
+  --color-accent-500: #e0452a;
+  --color-accent-600: #c81e28;
+  --color-accent-700: #a5161f;
+  --color-accent-800: #80111a;
+  --color-accent-900: #5c0c13;
+
+  /* Near-black ground for glass surfaces. */
+  --color-ink: #12130f;
+  --color-paper: #f7f8f5;
+  /*
+   * Muted text for dark surfaces. Basalt's #9c9c9d was chosen against a solid
+   * near-black ground; glass panels composite that ground over the light
+   * shell, so this is lifted to hold 5.3:1 against the lightest effective
+   * backdrop a panel can produce.
+   */
+  --color-muted-on-dark: #b9b9bb;
 }
 
 @custom-variant dark (&:is(.dark, .dark *));
@@ -37,6 +74,19 @@
 
   h4 {
     @apply text-xs font-bold tracking-widest;
+  }
+
+  /*
+   * Opt a subtree out of the display-cased heading rule above.
+   *
+   * The base layer uppercases every heading, which forces prose-style pages to
+   * bolt a `normal-case` onto each heading individually. Scoping the escape
+   * here lets a page opt in once at its root and let the type scale — not a
+   * per-element override — decide the casing.
+   */
+  .premium-surface :is(h1, h2, h3, h4, h5, h6) {
+    text-transform: none;
+    letter-spacing: -0.022em;
   }
 
   :root {

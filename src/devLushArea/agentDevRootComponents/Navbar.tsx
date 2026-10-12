@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, BookOpen, Bot, ChevronDown, FileText, FlaskConical, Layers, Lock, Menu, Moon, Search, Settings2, ShieldCheck, Sun, Unlock, Users, X, Zap } from 'lucide-react';
+import './agentLabsBar.css';
 
 type Theme = 'light' | 'dark';
 type View =
@@ -101,22 +102,28 @@ export const Navbar: React.FC<NavbarProps> = ({
     setMobileOpen(false);
   };
 
-  const navButton = (item: (typeof primaryItems)[number]) => (
-    <button type="button" key={item.id} onClick={() => changeView(item.id)} className={`flex min-h-11 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${currentView === item.id ? 'bg-cyan-500/10 text-cyan-700 dark:text-cyan-300' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-white'}`} aria-current={currentView === item.id ? 'page' : undefined}>
-      {item.icon}{item.label}
-    </button>
-  );
+  const navButton = (item: (typeof primaryItems)[number]) => {
+    const active = currentView === item.id;
+    return (
+      <button type="button" key={item.id} onClick={() => changeView(item.id)} className={`agent-labs-tab relative flex min-h-11 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${active ? 'is-active bg-cyan-500/10 text-cyan-700 dark:text-cyan-300' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950 dark:text-slate-400 dark:hover:bg-white/10 dark:hover:text-white'}`} aria-current={active ? 'page' : undefined}>
+        {item.icon}{item.label}
+      </button>
+    );
+  };
 
   return (
-    <header className="sticky top-0 z-50 w-full shrink-0 border-b border-zinc-200/80 bg-white/95 backdrop-blur-xl dark:border-zinc-800/80 dark:bg-zinc-950/95">
-      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-3 px-3 sm:px-6">
+    <header className="agent-labs-bar sticky top-0 z-50 w-full shrink-0 border-b border-zinc-200/80 bg-white/85 backdrop-blur-xl dark:border-white/[0.07] dark:bg-[#080b12]/85">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-3 sm:px-6">
         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-          <button type="button" onClick={() => currentView === 'landing' ? (onExit || (() => window.location.assign('/')))() : changeView('landing')} className="flex h-11 w-11 items-center justify-center rounded-lg text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950 dark:hover:bg-zinc-900 dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500" aria-label={currentView === 'landing' ? (onExit ? 'Return to Agent catalog' : 'Return to GPTX.VIP') : 'Return to Agent Labs overview'}>
+          <button type="button" onClick={() => currentView === 'landing' ? (onExit || (() => window.location.assign('/')))() : changeView('landing')} className="flex h-11 w-11 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-slate-400 dark:hover:bg-white/10 dark:hover:text-white" aria-label={currentView === 'landing' ? (onExit ? 'Return to Agent catalog' : 'Return to GPTX.VIP') : 'Return to Agent Labs overview'}>
             <ArrowLeft className="h-4 w-4" />
           </button>
-          <button type="button" onClick={() => changeView('landing')} className="flex min-h-11 min-w-0 items-center gap-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-tr from-cyan-600 to-emerald-500 text-white dark:text-zinc-950"><Bot className="h-4 w-4" /></span>
-            <span className="truncate text-sm font-black tracking-tight text-zinc-900 dark:text-white">Agent Labs</span>
+          <button type="button" onClick={() => changeView('landing')} className="flex min-h-11 min-w-0 items-center gap-2.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-0">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500 to-violet-600 text-white shadow-sm shadow-cyan-500/20"><Bot className="h-4 w-4" /></span>
+            <span className="flex min-w-0 flex-col leading-none">
+              <span className="truncate text-sm font-black tracking-tight text-zinc-900 dark:text-white">Agent Labs</span>
+              <span className="mt-0.5 truncate text-[9px] font-bold uppercase tracking-[0.16em] text-zinc-400 dark:text-slate-500">Interactive systems</span>
+            </span>
           </button>
         </div>
 
