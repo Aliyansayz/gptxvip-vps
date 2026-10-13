@@ -17,6 +17,7 @@ import AgentTopicPreview from '../devLushArea/components/AgentTopicPreview';
 // specifier to the sibling `agenticRoleUseCases.ts` data module, which exports no
 // component. `allowImportingTsExtensions` is on in tsconfig for exactly this.
 import { AgenticRoleUseCases } from '../devLushArea/landingPage/AgenticRoleUseCases.tsx';
+import { AgenticArticlePreview } from '../devLushArea/landingPage/AgenticArticlePreview';
 import { getAgenticRoleHref } from '../devLushArea/agenticRoles/roleRoutes';
 import { AuroraBackground } from '../shared/components/atmosphere/AuroraBackground';
 import GlassPanel from '../shared/components/GlassPanel';
@@ -296,6 +297,11 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                 </section>
 
                 <AgenticRoleUseCases accent="warm" onOpenRole={(roleId) => window.location.assign(getAgenticRoleHref(roleId))} />
+
+                <AgenticArticlePreview 
+                  accent="warm" 
+                  onOpenArticle={(roleId) => window.location.assign(getAgenticRoleHref(roleId) + '?mode=read')} 
+                />
 
                 {/* ------------------------------------------------------ algo trading */}
                 <section className="border-b border-ink/10 bg-white/65" aria-labelledby="algo-topic-heading">

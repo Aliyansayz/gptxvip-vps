@@ -170,7 +170,7 @@ export const DevLabsAgentWorkspaceView: React.FC<Props> = ({ onExit }) => {
 
                 <main className="flex-1 overflow-hidden relative">
 
-                    {currentView === 'landing' && <LandingPage onOpenTopics={() => setCurrentView('devlush')} onOpenTheory={() => setCurrentView('topic-theory')} onOpenSearch={() => setCurrentView('devlush-search')} onOpenRole={(roleId) => { setLandingRoleId(roleId); setCurrentView('agentic-roles'); }} />}
+                    {currentView === 'landing' && <LandingPage onOpenTopics={() => setCurrentView('devlush')} onOpenTheory={() => setCurrentView('topic-theory')} onOpenSearch={() => setCurrentView('devlush-search')} onOpenRole={(roleId) => { setLandingRoleId(roleId); setCurrentView('agentic-roles'); }} onOpenArticle={(roleId) => { setLandingRoleId(roleId); setCurrentView('agentic-roles'); window.location.search = 'mode=read'; }} />}
 
                     {(currentView === 'devlush' || currentView === 'devlush-search') && (
                         <DevLushContainer 

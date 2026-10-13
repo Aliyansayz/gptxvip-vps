@@ -17,12 +17,16 @@ import { getRoleTheme } from '../agenticThemeHelpers';
 import { useTheoryCollections } from '../../agentDevRootComponents/TheoryCollectionContext';
 import FavoriteButton from '../../agentDevRootComponents/FavoriteButton';
 import { toast } from 'sonner';
+import { ArticleLabLayout, QuizBank, chapterToArticleBlocks } from '../../../shared/components/article-lab';
+
+export type RunnerMode = 'lab' | 'read';
 
 interface AgenticRolesRunnerProps {
   chapter: AgenticRoleChapter;
   role: AgenticRoleDefinition;
   onBack: () => void;
   onCompleteChapter: (labComponentId: string) => void;
+  mode?: RunnerMode;
 }
 
 export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
@@ -30,6 +34,7 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
   role,
   onBack,
   onCompleteChapter,
+  mode = 'lab',
 }) => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [currentStep, setCurrentStep] = useState(() => {
@@ -53,6 +58,9 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
   const totalSteps = Math.max(1, exercises.length);
   const currentExercise = exercises[currentStep] || exercises[0];
   const ActivityComponent = agenticRolesRegistry[chapter.labComponentId] || FallbackRoleActivity;
+
+  // Article blocks for read mode
+  const articleBlocks = chapterToArticleBlocks(chapter);
 
   useEffect(() => {
     try {
@@ -108,6 +116,28 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
       toast.error('Theory could not be saved right now.');
     }
   };
+
+  // Read mode: render article + quiz
+  if (mode === 'read') {
+    return (
+      <ArticleLabLayout
+        blocks={articleBlocks}
+        roleDomain={chapter.roleDomain}
+        roleShortTitle={role.shortTitle}
+        chapterTitle={chapter.chapter_title}
+        chapterDay={chapter.day}
+        theme={theme}
+        onBack={onBack}
+        onSaveTheory={handleSaveTheory}
+        isTheorySaved={isTheorySaved}
+      >
+        <QuizBank
+          exercises={exercises}
+          onComplete={() => onCompleteChapter(chapter.labComponentId)}
+        />
+      </ArticleLabLayout>
+    );
+  }
 
   return (
     <div className="flex h-full min-h-0 min-w-0 flex-col bg-slate-50 text-slate-900 dark:bg-black dark:text-slate-100">

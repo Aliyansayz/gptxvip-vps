@@ -14,7 +14,17 @@ import { cn } from './cn';
  * panel renders software-manual and blog content, which have their own shapes.
  */
 export interface TheoryContent {
-  content: string;
+  /**
+   * The main body. Accepted but deliberately not rendered here — it belongs to
+   * the caller, so it can be split into paragraphs (and interleaved with the
+   * exercises) at the caller's discretion.
+   *
+   * Optional, and typed loosely as `unknown`, because the panel has no opinion
+   * about its shape: chapter content is `string`, blog content is pre-parsed
+   * blocks. Requiring it here would force every caller to pass a field the
+   * component ignores.
+   */
+  content?: unknown;
   analogy?: string;
   practical_takeaway?: string;
   case_study?: string;

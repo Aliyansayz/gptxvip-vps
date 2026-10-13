@@ -5,15 +5,23 @@ import { getAgentLabTopicHref } from '../agentLabsData';
 import AgentTopicPreview from '../components/AgentTopicPreview';
 // Extension pinned to out-resolve the case-insensitive match on `agenticRoleUseCases.ts`.
 import { AgenticRoleUseCases } from './AgenticRoleUseCases.tsx';
+import { AgenticArticlePreview } from './AgenticArticlePreview';
 
 interface LandingPageProps {
     onOpenTopics?: () => void;
     onOpenTheory?: () => void;
     onOpenSearch?: () => void;
     onOpenRole?: (roleId: string) => void;
+    onOpenArticle?: (roleId: string) => void;
 }
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onOpenTopics = () => undefined, onOpenTheory = () => undefined, onOpenSearch = () => undefined, onOpenRole = () => undefined }) => (
+export const LandingPage: React.FC<LandingPageProps> = ({ 
+    onOpenTopics = () => undefined, 
+    onOpenTheory = () => undefined, 
+    onOpenSearch = () => undefined, 
+    onOpenRole = () => undefined,
+    onOpenArticle = () => undefined 
+}) => (
     <div className="h-full w-full overflow-y-auto bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
         <section className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-20">
             <div className="max-w-3xl">
@@ -34,6 +42,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenTopics = () => u
         </section>
 
         <AgenticRoleUseCases onOpenRole={onOpenRole} />
+
+        <AgenticArticlePreview onOpenArticle={onOpenArticle} />
 
         <section className="border-y border-zinc-200 bg-white/70 dark:border-zinc-800 dark:bg-zinc-900/40" aria-labelledby="topic-grid-heading">
             <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">

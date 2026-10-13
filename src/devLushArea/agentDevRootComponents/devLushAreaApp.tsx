@@ -19,7 +19,7 @@ import type { FavoriteItem } from './FavoritesContext';
 import type { SavedTheory } from './TheoryCollectionContext';
 import TopicTheoryHub from './TopicTheoryView/TopicTheoryHub';
 import LandingPage from '../landingPage/LandingPage';
-import AgenticRolesContainer from '../agenticRoles/AgenticRolesContainer';
+import AgenticRolesContainer, { RunnerMode } from '../agenticRoles/AgenticRolesContainer';
 import { agenticRoleDefinitions } from '../agenticRoles/data';
 import { getAgenticRolePath, getAgenticRoleSearchPath, getAgenticRoleChapterPath } from '../agenticRoles/roleRoutes';
 import { getLabViewPath, type LabView } from './labViewRoutes';
@@ -397,7 +397,7 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub, initialAgentLabTopi
 
                 <main className="flex-1 overflow-hidden relative">
 
-                    {currentView === 'landing' && <LandingPage onOpenTopics={() => navigateView('devlush')} onOpenTheory={() => navigateView('topic-theory')} onOpenSearch={() => navigateView('devlush-search')} onOpenRole={openRoleFromLanding} />}
+                    {currentView === 'landing' && <LandingPage onOpenTopics={() => navigateView('devlush')} onOpenTheory={() => navigateView('topic-theory')} onOpenSearch={() => navigateView('devlush-search')} onOpenRole={openRoleFromLanding} onOpenArticle={(roleId) => { openRoleFromLanding(roleId); const url = new URL(window.location.href); url.searchParams.set('mode', 'read'); window.history.replaceState({}, '', url); }} />}
 
                     {(currentView === 'devlush' || currentView === 'devlush-search') && (
                         <DevLushContainer 
@@ -445,6 +445,7 @@ const App: React.FC<AppProps> = ({ onExit, onNavigateFinhub, initialAgentLabTopi
                             routeRoleId={initialAgenticRoleId || readHistoryRolesRoleId(location.state)}
                             routeChapterId={initialAgenticRoleId ? initialRoleChapterId : readHistoryRolesChapterId(location.state)}
                             routeSearchOpen={initialAgenticRoleId ? location.pathname.endsWith('/search') : readHistoryRolesSearchOpen(location.state)}
+                            routeMode={(new URLSearchParams(location.search).get('mode') as RunnerMode) || 'lab'}
                             onChapterRoutePush={pushRolesChapterEntry}
                             onChapterRouteBack={() => pushRolesHubEntry(initialAgenticRoleId || deepLinkedRoleId || agenticRoleDefinitions[0].id)}
                             onSearchRoutePush={pushRolesSearchEntry}

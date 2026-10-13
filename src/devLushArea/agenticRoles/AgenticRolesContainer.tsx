@@ -4,6 +4,9 @@ import { agenticRoleDefinitions } from './data';
 import AgenticRolesLayout from './views/AgenticRolesLayout';
 import AgenticRolesHub from './views/AgenticRolesHub';
 import AgenticRolesRunner from './views/AgenticRolesRunner';
+import type { RunnerMode } from './views/AgenticRolesRunner';
+
+export type { RunnerMode } from './views/AgenticRolesRunner';
 import AgenticRolesSearchView from './views/AgenticRolesSearchView';
 import { toast } from 'sonner';
 import { useFavorites } from '../agentDevRootComponents/FavoritesContext';
@@ -18,6 +21,7 @@ interface AgenticRolesContainerProps {
   routeRoleId?: string;
   routeChapterId?: string;
   routeSearchOpen?: boolean;
+  routeMode?: RunnerMode;
   onChapterRoutePush?: (roleId: string, chapterId: string) => void;
   onChapterRouteBack?: () => void;
   onSearchRoutePush?: () => void;
@@ -36,6 +40,7 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
   routeRoleId,
   routeChapterId,
   routeSearchOpen = false,
+  routeMode = 'lab',
   onChapterRoutePush,
   onChapterRouteBack,
   onSearchRoutePush,
@@ -254,6 +259,7 @@ export const AgenticRolesContainer: React.FC<AgenticRolesContainerProps> = ({
           role={activeRole}
           onBack={handleChapterBack}
           onCompleteChapter={handleCompleteChapter}
+          mode={routeMode}
         />
       ) : showSearch ? (
         <AgenticRolesSearchView
