@@ -1,6 +1,7 @@
 import React from 'react';
-import { ArrowUpRight, BookOpen, Code2, LineChart, Mail, Sparkles } from 'lucide-react';
+import { ArrowUpRight, BookOpen, Code2, LineChart, Mail } from 'lucide-react';
 import { ContactForm } from '../shared/components/ContactForm';
+import { Logo } from '../shared/components/Logo';
 
 interface FooterProps {
     onNavigateFinhub: () => void;
@@ -59,8 +60,7 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="mx-auto grid max-w-6xl gap-9 px-5 py-10 sm:px-8 md:grid-cols-[1.2fr_1fr_1fr] md:py-12">
                 <div>
                     <a href="/" className={`inline-flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 ${skin.homeLink}`} aria-label="GPTX.VIP home">
-                        <span className={`flex h-9 w-9 items-center justify-center rounded-xl ${skin.markTile}`}><Sparkles className="h-4 w-4" /></span>
-                        <span className={`font-display text-lg font-black tracking-tight ${dark ? 'text-white' : 'text-slate-950'}`}>GPTX<span className={skin.wordmarkAccent}>.VIP</span></span>
+                        <Logo size="md" variant="default" />
                     </a>
                     <p className="mt-4 max-w-sm text-sm leading-6">
                         Interactive lessons, agent labs, and finance tools for exploring code, systems, and trading ideas.
@@ -71,7 +71,7 @@ export const Footer: React.FC<FooterProps> = ({
                     <h2 className={`text-xs font-bold uppercase tracking-[0.16em] ${dark ? 'text-zinc-100' : skin.heading}`}>Explore</h2>
                     <ul className="mt-4 space-y-3 text-sm">
                         <li><button onClick={onNavigateCodeConcepts} className={linkClass}><Code2 className="h-4 w-4" />Code Concepts</button></li>
-                        <li><button onClick={onNavigateDevLush} className={linkClass}><Sparkles className="h-4 w-4" />Agent Labs</button></li>
+                        <li><button onClick={onNavigateDevLush} className={linkClass}><Logo size="sm" variant="icon-only" className="mr-2" />Agent Labs</button></li>
                         {onNavigateProjectSurfaces && <li><button onClick={onNavigateProjectSurfaces} className={linkClass}>Project surfaces</button></li>}
                         {onNavigateAnalyticsSurfaces && <li><button onClick={onNavigateAnalyticsSurfaces} className={linkClass}><LineChart className="h-4 w-4" />Analytics surfaces</button></li>}
                         <li><button onClick={onNavigateFinhub} className={linkClass}><LineChart className="h-4 w-4" />Finhub</button></li>

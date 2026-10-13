@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowRight, Menu, Sparkles, X } from 'lucide-react';
+import { ArrowRight, Menu, X } from 'lucide-react';
+import { Logo } from '../shared/components/Logo';
 
 interface NavbarProps {
     onNavigateFinhub: () => void;
@@ -115,8 +116,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <header className={`sticky top-0 z-40 border-b ${skin.header}`}>
             <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
                 <button type="button" onClick={() => window.location.assign('/')} className={`flex items-center gap-3 text-left focus-visible:outline-none focus-visible:ring-2 ${skin.ring} ${glass ? 'focus-visible:ring-offset-0' : 'focus-visible:ring-offset-2'}`} aria-label="GPTX.VIP home">
-                    <span className={`flex h-9 w-9 items-center justify-center rounded ${skin.markTile}`}><Sparkles className="h-4 w-4" /></span>
-                    <span className={`font-display text-lg font-black tracking-tight ${skin.wordmark}`}>GPTX<span className={skin.wordmarkAccent}>.VIP</span></span>
+                    <Logo size="md" variant="default" />
                 </button>
                 <span className={`max-w-24 truncate rounded-full border px-2 py-1 text-[10px] font-bold uppercase tracking-wide sm:max-w-none ${skin.pill}`} aria-label={`Current area: ${currentArea}`}>{currentArea}</span>
                 <nav className={`hidden items-center gap-1 text-sm font-semibold xl:flex ${glass ? 'text-slate-600' : 'text-slate-600'}`} aria-label="Primary navigation">
