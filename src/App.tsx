@@ -17,6 +17,7 @@ const ProfileInfo = lazy(() => import("./finhub/profileInfo").then(module => ({ 
 const TradingToolsView = lazy(() => import("./views/TradingToolsView").then(module => ({ default: module.TradingToolsView })));
 const RoadmapContainer = lazy(() => import("./roadmapArea/roadmapView/RoadmapContainer"));
 const RootHomePage = lazy(() => import("./rootHomePage/RootHomePage").then(module => ({ default: module.RootHomePage })));
+const AgentAreaArticlePage = lazy(() => import("./AgentArea/pages/ArticlePage").then(module => ({ default: module.AgentAreaArticlePage })));
 
 import { Toaster } from 'sonner';
 
@@ -35,7 +36,8 @@ type ActiveTabType =
   | "dev-labs-workspace"
   | "roadmap-workspace"
   | "core-concepts"
-  | "math-primer";
+  | "math-primer"
+  | "agent-area";
 
 const learningTabs = ["code-concepts", "core-concepts", "math-primer"] as const;
 const finhubTabs = [
@@ -69,6 +71,7 @@ function readAppRoute(pathname: string) {
   if (prefix === "math_primer") return { tab: "math-primer" as ActiveTabType, category: knownCategory, activity: segments[2], subTab: "" };
   if (prefix === "code_concepts") return { tab: "code-concepts" as ActiveTabType, category: knownCategory, activity: segments[2], subTab: "" };
   if (prefix === "roadmap") return { tab: "roadmap-workspace" as ActiveTabType, category: knownCategory, activity: undefined, subTab: "" };
+  if (prefix === "agent-area") return { tab: "agent-area" as ActiveTabType, category: knownCategory, activity: segments[1], subTab: "" };
 
   if (prefix === "finhub" && segments[1]) {
     const routeTab = segments[1] as (typeof finhubTabs)[number];
@@ -148,6 +151,7 @@ export default function App({ initialTab }: AppProps = {}) {
     if (tab === "profile") return "/profile";
     if (tab === "roadmap-workspace") return "/roadmap";
     if (tab === "dev-labs-workspace") return "/agents/lab";
+    if (tab === "agent-area") return "/agent-area";
     if (tab === "core-concepts") return `/core_concepts/${activeCodeCategory}`;
     if (tab === "math-primer") return `/math_primer/${activeCodeCategory}`;
     if (tab === "code-concepts") return `/code_concepts/${activeCodeCategory}`;
@@ -169,6 +173,13 @@ export default function App({ initialTab }: AppProps = {}) {
   const navigateTab = (tab: ActiveTabType, subTab = "") => {
     if (tab === "dev-labs-workspace") {
       window.location.assign("/agents/lab");
+      return;
+    }
+    if (tab === "agent-area") {
+      const path = "/agent-area";
+      setActiveTabState(tab);
+      setActiveSubTab("");
+      if (window.location.pathname !== path) window.history.pushState({}, "", path);
       return;
     }
     setActiveTabState(tab);
@@ -341,6 +352,9 @@ export default function App({ initialTab }: AppProps = {}) {
                 }}
                 initialActivityId={initialDeepLinkActivity}
               />
+            )}
+            {activeTab === "agent-area" && (
+              <AgentAreaArticlePage />
             )}
           </Suspense>
         </MainLayout>

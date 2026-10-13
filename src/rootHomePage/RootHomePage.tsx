@@ -32,6 +32,7 @@ export interface RootHomePageProps {
     onNavigateAgents?: () => void;
     onNavigateBlogs?: () => void;
     onNavigateSoftware?: () => void;
+    onNavigateAgentArea?: () => void;
 }
 
 /**
@@ -113,6 +114,16 @@ const intentBlocks: Array<{ icon: React.ElementType; title: string; body: string
     },
     {
         icon: Bot,
+        title: 'Read Agent Research',
+        body: 'Deep-dive editorial articles on multi-agent coordination, consensus mechanisms, and emergent behaviors with interactive simulations.',
+        action: 'Open Agent Area',
+        audience: 'For deep technical reading',
+        result: 'Leave with a mental model of agent system dynamics',
+        effort: 'Read at your own pace',
+        tone: 'deep',
+    },
+    {
+        icon: Bot,
         title: 'Inspect a project surface',
         body: 'Compare interface concepts, included patterns, and fit before contacting the owner about an adaptation.',
         action: 'Browse project surfaces',
@@ -138,8 +149,10 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
     onNavigateAgents,
     onNavigateBlogs = () => window.location.assign('/blogs'),
     onNavigateSoftware = () => window.location.assign('/software_manual'),
+    onNavigateAgentArea = () => window.location.assign('/agent-area'),
 }) => {
     const navigateAgents = onNavigateAgents || onNavigateDevLush || (() => window.location.assign('/agents'));
+    const navigateAgentArea = onNavigateAgentArea;
     const [slideIndex, setSlideIndex] = useState(0);
     const [isCarouselPaused, setIsCarouselPaused] = useState(false);
     const [isCarouselHovered, setIsCarouselHovered] = useState(false);
@@ -178,7 +191,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
         setSlideIndex((current) => (current + direction + slides.length) % slides.length);
     };
 
-    const actions = [onNavigateCodeConcepts, onNavigateFinhub, () => window.location.assign('/agents/lab'), () => window.location.assign('/agents/templates')];
+    const actions = [onNavigateCodeConcepts, onNavigateFinhub, navigateAgents, navigateAgentArea, () => window.location.assign('/agents/templates')];
 
     return (
         <div className="premium-surface min-h-screen overflow-x-hidden bg-paper text-ink selection:bg-accent-200 selection:text-ink">
