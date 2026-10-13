@@ -8,6 +8,7 @@ import { DeltaCalculator } from './DeltaCalculator';
 import { AuthorBio, RelatedArticles } from './AuthorBio';
 import { Toast } from './Toast';
 import { Share2, Link2 } from 'lucide-react';
+import { ContactForm } from '../../shared/components/ContactForm';
 import { editorialTheme, globalStyles } from '../utils/styles';
 
 export interface ArticleData {
@@ -168,6 +169,21 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({ article, isDark = fals
           articles={article.relatedArticles}
           isDark={isDark}
         />
+
+        {/* Contact Form */}
+        <section style={{
+          maxWidth: editorialTheme.spacing.articleMaxWidth,
+          margin: '3rem auto 0',
+          padding: '0 1.5rem',
+        }}>
+          <ContactForm
+            variant="full"
+            title="Questions about this article?"
+            description="Have a question about the content, spotted an error, or want to discuss further? We'd love to hear from you."
+            subject={`Article Inquiry: ${article.headline}`}
+          />
+        </section>
+
       </main>
 
       {/* Footer */}

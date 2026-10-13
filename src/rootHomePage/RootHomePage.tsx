@@ -18,6 +18,7 @@ import AgentTopicPreview from '../devLushArea/components/AgentTopicPreview';
 // component. `allowImportingTsExtensions` is on in tsconfig for exactly this.
 import { AgenticRoleUseCases } from '../devLushArea/landingPage/AgenticRoleUseCases.tsx';
 import { AgenticArticlePreview } from '../devLushArea/landingPage/AgenticArticlePreview';
+import { ContactForm } from '../shared/components/ContactForm';
 import { getAgenticRoleHref } from '../devLushArea/agenticRoles/roleRoutes';
 import { AuroraBackground } from '../shared/components/atmosphere/AuroraBackground';
 import GlassPanel from '../shared/components/GlassPanel';
@@ -386,6 +387,25 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                         }
                     </div>
                 </section>
+
+            {/* Contact Section */}
+            <section className="py-12 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6">
+              <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-10 lg:p-12">
+                <div className="max-w-2xl mx-auto text-center">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-3">
+                    Get in Touch
+                  </h2>
+                  <p className="text-slate-600 dark:text-slate-400 mb-8">
+                    Questions about a lesson, tool, or want to share feedback? We'd love to hear from you.
+                  </p>
+                  <ContactForm
+                    variant="full"
+                    subject="Contact from GPTX.VIP Landing Page"
+                  />
+                </div>
+              </div>
+            </section>
+
             </main>
             <Footer accent="warm" onNavigateFinhub={onNavigateFinhub} onNavigateCodeConcepts={onNavigateCodeConcepts} onNavigateDevLush={navigateAgents} onNavigateBlogs={onNavigateBlogs} />
         </div>

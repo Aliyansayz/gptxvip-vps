@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowUpRight, BookOpen, Code2, LineChart, Mail, Sparkles } from 'lucide-react';
+import { ContactForm } from '../shared/components/ContactForm';
 
 interface FooterProps {
     onNavigateFinhub: () => void;
@@ -81,9 +82,12 @@ export const Footer: React.FC<FooterProps> = ({
                 <div className="flex flex-col items-start gap-3">
                     <h2 className={`text-xs font-bold uppercase tracking-[0.16em] ${dark ? 'text-zinc-100' : skin.heading}`}>Contact</h2>
                     <p className="text-sm leading-6">Questions or feedback about a lesson or tool?</p>
-                    <a href="mailto:aliyan@gptx.vip" className={`inline-flex items-center gap-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 ${dark ? 'text-cyan-300 hover:text-cyan-200 focus-visible:ring-cyan-500' : skin.mail}`}>
-                        <Mail className="h-4 w-4" /> aliyan@gptx.vip <ArrowUpRight className="h-3.5 w-3.5" />
-                    </a>
+                    <ContactForm
+                      variant="compact"
+                      title="Send us a message"
+                      description="We'll get back to you within 24 hours."
+                      subject="Contact from GPTX.VIP Footer"
+                    />
                 </div>
             </div>
             <div className={`border-t px-5 py-4 text-xs sm:px-8 ${dark ? 'border-zinc-800 text-zinc-500' : skin.rule}`}>

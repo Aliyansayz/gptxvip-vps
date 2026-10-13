@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { Download, FileText, CheckCircle2, Shield, ArrowRight, Sparkles, Mail } from 'lucide-react';
+import { Download, FileText, CheckCircle2, Shield, ArrowRight, Sparkles, Mail, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+
+const ACCESS_KEY = 'dcc5f92a-158b-4cf1-b828-49514f651a6f';
+const API_URL = 'https://api.web3forms.com/submit';
 
 export const LeadMagnetSection: React.FC = () => {
     const [workEmail, setWorkEmail] = useState('');
@@ -8,7 +11,7 @@ export const LeadMagnetSection: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!workEmail || !workEmail.includes('@')) {
             toast.error('Please enter a valid work email address.');
@@ -16,11 +19,34 @@ export const LeadMagnetSection: React.FC = () => {
         }
 
         setIsSubmitting(true);
-        setTimeout(() => {
+
+        const formData = new FormData();
+        formData.append('access_key', ACCESS_KEY);
+        formData.append('subject', 'Whitepaper Download Request - 2026 Enterprise Benchmark Report');
+        formData.append('email', workEmail);
+        formData.append('industry', industry);
+        formData.append('from_name', 'Whitepaper Request');
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                body: formData,
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                setIsSubmitting(false);
+                setIsSubmitted(true);
+                toast.success('Your 2026 Enterprise Benchmark Report has been dispatched to ' + workEmail + '!');
+            } else {
+                toast.error(data.message || 'Failed to submit. Please try again.');
+                setIsSubmitting(false);
+            }
+        } catch {
+            toast.error('Network error. Please check your connection and try again.');
             setIsSubmitting(false);
-            setIsSubmitted(true);
-            toast.success('Your 2026 Enterprise Benchmark Report has been dispatched to ' + workEmail + '!');
-        }, 600);
+        }
     };
 
     return (
@@ -130,7 +156,10 @@ export const LeadMagnetSection: React.FC = () => {
                                         className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-zinc-950 font-bold rounded-xl text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                                     >
                                         {isSubmitting ? (
-                                            <span>Generating Download...</span>
+                                            <>
+                                                <Loader2 className="w-4 h-4 animate-spin" />
+                                                <span>Sending...</span>
+                                            </>
                                         ) : (
                                             <>
                                                 <Download className="w-4 h-4" />
