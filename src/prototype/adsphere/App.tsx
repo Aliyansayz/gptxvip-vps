@@ -16,6 +16,8 @@ import {
   Notice,
   Empty,
   money,
+  AreaTrendChart,
+  CustomerDistributionMap,
 } from "../shared";
 import { validate, seed, type Campaign, type Creative } from "./data";
 import { campaignTotals, allocations, inRange } from "./formulas";
@@ -107,7 +109,7 @@ export default function App() {
     >
       <div className="product-filters">
         <Field
-          label="Campaign search"
+          label="Search campaigns"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -137,21 +139,70 @@ export default function App() {
             label: "Selected spend",
             value: money(spend),
             note: "Sample account · USD",
+            comparison: "+8.9% spend efficiency",
+            change: { value: "+8.90%", positive: true },
+            sparkline: [22, 28, 25, 34, 38, 45, 42],
+            sparklineColor: "#3157be",
           },
           {
             label: "Conversions",
             value: rows.reduce((s, r) => s + r.conversions, 0),
+            comparison: "Target 120% pacing",
+            change: { value: "+14.2%", positive: true },
+            sparkline: [14, 18, 16, 25, 22, 30, 28],
+            sparklineColor: "#10b981",
           },
           {
             label: "Active campaigns",
             value: campaigns.filter((c) => c.status === "active").length,
+            comparison: "All channels optimized",
+            change: { value: "Active", positive: true },
+            sparkline: [4, 5, 5, 6, 6, 6, 6],
+            sparklineColor: "#3157be",
           },
           {
             label: "Selected budget",
             value: money(campaigns.reduce((s, c) => s + c.budgetCents, 0)),
+            comparison: "Pacing within threshold",
+            change: { value: "Nominal", positive: true },
+            sparkline: [30, 32, 35, 38, 40, 42, 45],
+            sparklineColor: "#3b82f6",
           },
         ]}
       />
+
+      {/* Visual Chart View matching reference aesthetic */}
+      <div className="product-grid" style={{ marginBottom: "20px" }}>
+        <AreaTrendChart
+          title="Campaign Spend & Attributed Revenue"
+          data={[
+            { label: "Mon", v1: 3.2, v2: 2.1 },
+            { label: "Tue", v1: 5.6, v2: 3.8 },
+            { label: "Wed", v1: 4.8, v2: 3.4 },
+            { label: "Thu", v1: 7.2, v2: 5.1 },
+            { label: "Fri", v1: 8.87, v2: 6.4 },
+            { label: "Sat", v1: 5.8, v2: 4.2 },
+            { label: "Sun", v1: 7.4, v2: 5.5 },
+          ]}
+          series={[
+            { key: "v1", label: "Ad Spend ($k)", color: "#3157be" },
+            { key: "v2", label: "Attributed Revenue ($k)", color: "#93c5fd" },
+          ]}
+          yLabels={["$10k", "$8k", "$6k", "$4k", "$2k"]}
+          activeTooltip={{ label: "Fri", value: "$8,870.00" }}
+        />
+        <CustomerDistributionMap
+          title="Channel Conversion Reach"
+          items={[
+            { country: "Search Ads", value: "3,890", flag: "🔍", percent: 85 },
+            { country: "Social Video", value: "2,640", flag: "📱", percent: 62 },
+            { country: "Display Retargeting", value: "1,980", flag: "🎯", percent: 48 },
+            { country: "Email Campaigns", value: "1,450", flag: "✉️", percent: 36 },
+            { country: "Affiliate Referral", value: "980", flag: "🤝", percent: 24 },
+          ]}
+        />
+      </div>
+
       {state.view === "Campaigns" && (
         <div className="product-stack">
           <Card

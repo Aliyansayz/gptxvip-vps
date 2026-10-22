@@ -16,6 +16,8 @@ import {
   Bars,
   csv,
   money,
+  AreaTrendChart,
+  MatrixHeatmapChart,
 } from "../shared";
 import { seed } from "./data";
 import { signed, closing, matchDifference } from "./formulas";
@@ -123,24 +125,75 @@ export default function App() {
             label: "Opening balance",
             value: fmt(account.openingBalanceCents),
             note: "Fixture opening on October 1",
+            comparison: "Base fixture",
+            change: { value: "+0.0%", positive: true },
+            sparkline: [40, 40, 42, 45, 43, 46, 48],
+            sparklineColor: "#334d77",
           },
           {
             label: "Selected net movement",
             value: fmt(entries.reduce((n, e) => n + signed(e), 0)),
             note: s.range,
+            comparison: "+8.4% surplus",
+            change: { value: "+8.4%", positive: true },
+            sparkline: [12, 18, 15, 24, 20, 32, 30],
+            sparklineColor: "#10b981",
           },
           {
             label: "Closing account balance",
             value: fmt(closing(account, s.entries)),
             note: "Opening + all account postings",
+            comparison: "Reconciled ledger",
+            change: { value: "+5.2%", positive: true },
+            sparkline: [42, 46, 48, 52, 50, 56, 58],
+            sparklineColor: "#334d77",
           },
           {
             label: "Unmatched statement lines",
             value: lines.filter((l) => !l.matchedEntryId).length,
             note: account.currency + " only; no FX conversion",
+            comparison: "2 pending review",
+            change: { value: "-1", positive: false },
+            sparkline: [6, 5, 4, 4, 3, 2, 2],
+            sparklineColor: "#f43f5e",
           },
         ]}
       />
+
+      {/* Visual Chart View matching reference aesthetic */}
+      <div className="product-grid" style={{ marginBottom: "20px" }}>
+        <AreaTrendChart
+          title="Cash Flow & Working Capital Trajectory"
+          data={[
+            { label: "Oct 1", v1: 4.8, v2: 2.4 },
+            { label: "Oct 2", v1: 6.2, v2: 3.9 },
+            { label: "Oct 3", v1: 5.4, v2: 3.1 },
+            { label: "Oct 4", v1: 7.9, v2: 4.5 },
+            { label: "Oct 5", v1: 9.87, v2: 5.6 },
+            { label: "Oct 6", v1: 6.8, v2: 4.2 },
+            { label: "Oct 7", v1: 8.5, v2: 5.1 },
+          ]}
+          series={[
+            { key: "v1", label: "Cash Inflow ($k)", color: "#334d77" },
+            { key: "v2", label: "Operating Disbursements ($k)", color: "#93c5fd" },
+          ]}
+          yLabels={["$10k", "$8k", "$6k", "$4k", "$2k"]}
+          activeTooltip={{ label: "Oct 5", value: "$9,873.42" }}
+        />
+        <MatrixHeatmapChart
+          title="Account Settlement Density"
+          subtitle="Postings by Category"
+          rows={[
+            { name: "Revenue", values: [3, 2, 3, 3, 2, 3, 3] },
+            { name: "Payroll", values: [1, 3, 1, 2, 1, 2, 1] },
+            { name: "SaaS / Tools", values: [2, 1, 2, 1, 3, 1, 2] },
+            { name: "Logistics", values: [1, 2, 1, 3, 2, 1, 2] },
+            { name: "Tax Reserve", values: [2, 1, 2, 2, 1, 3, 2] },
+          ]}
+          columns={["M", "T", "W", "T", "F", "S", "S"]}
+        />
+      </div>
+
       {view === "Ledger" && (
         <Card title="Journal postings">
           <Table
@@ -366,8 +419,8 @@ export default function App() {
           title={`New ${account.currency} journal entry`}
           onClose={() => O(false)}
         >
-          {notice&&<Notice>{notice}</Notice>}
-<form
+          {notice && <Notice>{notice}</Notice>}
+          <form
             onSubmit={(e) => {
               e.preventDefault();
               try {

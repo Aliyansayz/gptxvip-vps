@@ -21,6 +21,7 @@ import {
   getTemplate,
   templates,
 } from "@/data/templates";
+import { ContactForm } from "../../../shared/components/ContactForm";
 
 export default function TemplateDetail() {
   const { slug } = useParams();
@@ -196,21 +197,30 @@ export default function TemplateDetail() {
                 <li>What outcome, deployment, and support do you need?</li>
               </ul>
               <p className="mt-3 text-xs text-slate-600">
-                The email action includes these prompts so you can explain the
-                fit.
+                The contact form below starts from the same prompts, and the
+                email action includes them as a prefilled draft.
               </p>
             </div>
+            <ContactForm
+              variant="full"
+              tone="light"
+              accent="indigo"
+              title={`Ask about ${template.name}`}
+              description="Send your project context and the owner replies by email."
+              subject={`Enquiry: ${template.name}`}
+            />
             <Button
               asChild
               size="lg"
-              className="mt-6 w-full bg-indigo-600 hover:bg-indigo-700"
+              variant="outline"
+              className="mt-4 w-full"
             >
               <a href={getContactHref(template)}>
-                <Mail className="mr-2 h-4 w-4" /> Contact {CONTACT_EMAIL}
+                <Mail className="mr-2 h-4 w-4" /> Email {CONTACT_EMAIL} instead
               </a>
             </Button>
             <p className="mt-3 text-center text-xs text-slate-400">
-              Project conversations happen directly by email.
+              Project conversations happen directly with the site owner.
             </p>
             <Separator className="my-5" />
             <div className="flex flex-wrap gap-1.5">

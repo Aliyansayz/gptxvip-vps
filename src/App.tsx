@@ -17,12 +17,15 @@ const ProfileInfo = lazy(() => import("./finhub/profileInfo").then(module => ({ 
 const TradingToolsView = lazy(() => import("./views/TradingToolsView").then(module => ({ default: module.TradingToolsView })));
 const RoadmapContainer = lazy(() => import("./roadmapArea/roadmapView/RoadmapContainer"));
 const RootHomePage = lazy(() => import("./rootHomePage/RootHomePage").then(module => ({ default: module.RootHomePage })));
+const ContactPage = lazy(() => import("./rootHomePage/ContactPage").then(module => ({ default: module.ContactPage })));
 const AgentAreaArticlePage = lazy(() => import("./AgentArea/pages/ArticlePage").then(module => ({ default: module.AgentAreaArticlePage })));
+const AgentWorkspacePage = lazy(() => import("./rootHomePage/AgentWorkspacePage").then(module => ({ default: module.AgentWorkspacePage })));
 
 import { Toaster } from 'sonner';
 
 type ActiveTabType =
   | "root-home"
+  | "contact"
   | "home"
   | "trade-type"
   | "overview"
@@ -37,7 +40,8 @@ type ActiveTabType =
   | "roadmap-workspace"
   | "core-concepts"
   | "math-primer"
-  | "agent-area";
+  | "agent-area"
+  | "agent-workspace";
 
 const learningTabs = ["code-concepts", "core-concepts", "math-primer"] as const;
 const finhubTabs = [
@@ -67,11 +71,13 @@ function readAppRoute(pathname: string) {
     : "general";
 
   if (prefix === "profile" && segments.length === 1) return { tab: "profile" as ActiveTabType, category: knownCategory, activity: undefined, subTab: "" };
+  if (prefix === "contact" && segments.length === 1) return { tab: "contact" as ActiveTabType, category: knownCategory, activity: undefined, subTab: "" };
   if (prefix === "core_concepts") return { tab: "core-concepts" as ActiveTabType, category: knownCategory, activity: segments[2], subTab: "" };
   if (prefix === "math_primer") return { tab: "math-primer" as ActiveTabType, category: knownCategory, activity: segments[2], subTab: "" };
   if (prefix === "code_concepts") return { tab: "code-concepts" as ActiveTabType, category: knownCategory, activity: segments[2], subTab: "" };
   if (prefix === "roadmap") return { tab: "roadmap-workspace" as ActiveTabType, category: knownCategory, activity: undefined, subTab: "" };
   if (prefix === "agent-area") return { tab: "agent-area" as ActiveTabType, category: knownCategory, activity: segments[1], subTab: "" };
+  if (prefix === "workspace" || prefix === "agent-workspace") return { tab: "agent-workspace" as ActiveTabType, category: knownCategory, activity: segments[1], subTab: segments[1] || "" };
 
   if (prefix === "finhub" && segments[1]) {
     const routeTab = segments[1] as (typeof finhubTabs)[number];
@@ -148,10 +154,12 @@ export default function App({ initialTab }: AppProps = {}) {
 
   const pathForTab = (tab: ActiveTabType, subTab = "") => {
     if (tab === "root-home") return "/";
+    if (tab === "contact") return "/contact";
     if (tab === "profile") return "/profile";
     if (tab === "roadmap-workspace") return "/roadmap";
     if (tab === "dev-labs-workspace") return "/agents/lab";
     if (tab === "agent-area") return "/agent-area";
+    if (tab === "agent-workspace") return subTab ? `/workspace/${encodeURIComponent(subTab)}` : "/workspace";
     if (tab === "core-concepts") return `/core_concepts/${activeCodeCategory}`;
     if (tab === "math-primer") return `/math_primer/${activeCodeCategory}`;
     if (tab === "code-concepts") return `/code_concepts/${activeCodeCategory}`;
@@ -173,6 +181,14 @@ export default function App({ initialTab }: AppProps = {}) {
   const navigateTab = (tab: ActiveTabType, subTab = "") => {
     if (tab === "dev-labs-workspace") {
       window.location.assign("/agents/lab");
+      return;
+    }
+    if (tab === "agent-workspace") {
+      const path = subTab ? `/workspace/${encodeURIComponent(subTab)}` : "/workspace";
+      setActiveTabState(tab);
+      setActiveSubTab(subTab);
+      setInitialDeepLinkActivity(subTab || undefined);
+      if (window.location.pathname !== path) window.history.pushState({}, "", path);
       return;
     }
     if (tab === "agent-area") {
@@ -292,6 +308,31 @@ export default function App({ initialTab }: AppProps = {}) {
             onNavigateBlogs={() => {
               window.location.assign('/blogs');
             }}
+            onNavigateContact={() => navigateTab("contact")}
+            onNavigateAgentWorkspace={() => navigateTab("agent-workspace")}
+          />
+        </Suspense>
+      ) : activeTab === "contact" ? (
+        <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-zinc-500">Loading contact form...</div>}>
+          <ContactPage
+            onNavigateFinhub={() => navigateTab("home")}
+            onNavigateCodeConcepts={() => navigateCodeConcepts()}
+            onNavigateBlogs={() => window.location.assign('/blogs')}
+            onNavigateContact={() => navigateTab("contact")}
+            onNavigateAgentWorkspace={() => navigateTab("agent-workspace")}
+          />
+        </Suspense>
+      ) : activeTab === "agent-workspace" ? (
+        <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-zinc-500">Loading Agent Workspace...</div>}>
+          <AgentWorkspacePage
+            initialView={initialDeepLinkActivity}
+            onNavigateHome={() => navigateTab("root-home")}
+            onNavigateFinhub={() => navigateTab("home")}
+            onNavigateCodeConcepts={() => navigateCodeConcepts()}
+            onNavigateAgents={() => window.location.assign('/agents')}
+            onNavigateProjectSurfaces={() => window.location.assign('/agents/templates')}
+            onNavigateBlogs={() => window.location.assign('/blogs')}
+            onNavigateContact={() => navigateTab("contact")}
           />
         </Suspense>
       ) : activeTab === "roadmap-workspace" ? (

@@ -178,6 +178,8 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({ article, isDark = fals
         }}>
           <ContactForm
             variant="full"
+            tone={isDark ? 'dark' : 'light'}
+            accent="warm"
             title="Questions about this article?"
             description="Have a question about the content, spotted an error, or want to discuss further? We'd love to hear from you."
             subject={`Article Inquiry: ${article.headline}`}
@@ -242,7 +244,7 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({ article, isDark = fals
           }}>
             <a href="#" style={{ color: colors.footerMuted, transition: 'color 0.15s' }} onMouseOver={(e)=>e.currentTarget.style.color=colors.footerText} onMouseOut={(e)=>e.currentTarget.style.color=colors.footerMuted}>About</a>
             <a href="#" style={{ color: colors.footerMuted, transition: 'color 0.15s' }} onMouseOver={(e)=>e.currentTarget.style.color=colors.footerText} onMouseOut={(e)=>e.currentTarget.style.color=colors.footerMuted}>Masthead</a>
-            <a href="#" style={{ color: colors.footerMuted, transition: 'color 0.15s' }} onMouseOver={(e)=>e.currentTarget.style.color=colors.footerText} onMouseOut={(e)=>e.currentTarget.style.color=colors.footerMuted}>Contact</a>
+            <a href="/contact" style={{ color: colors.footerMuted, transition: 'color 0.15s' }} onMouseOver={(e)=>e.currentTarget.style.color=colors.footerText} onMouseOut={(e)=>e.currentTarget.style.color=colors.footerMuted}>Contact</a>
             <a href="#" style={{ color: colors.footerMuted, transition: 'color 0.15s' }} onMouseOver={(e)=>e.currentTarget.style.color=colors.footerText} onMouseOut={(e)=>e.currentTarget.style.color=colors.footerMuted}>Subscriptions</a>
             <a href="#" style={{ color: colors.footerMuted, transition: 'color 0.15s' }} onMouseOver={(e)=>e.currentTarget.style.color=colors.footerText} onMouseOut={(e)=>e.currentTarget.style.color=colors.footerMuted}>Privacy</a>
           </div>

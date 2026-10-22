@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, BookOpen, Bot, ChevronDown, FileText, FlaskConical, Layers, Lock, Menu, Moon, Search, Settings2, ShieldCheck, Sun, Unlock, Users, X, Zap } from 'lucide-react';
+import { ArrowLeft, ChevronDown, Lock, Menu, Moon, Search, Settings2, Sun, Unlock, X, Zap } from 'lucide-react';
+import { Logo } from '../../shared/components/Logo';
 import './agentLabsBar.css';
 
 type Theme = 'light' | 'dark';
@@ -43,11 +44,22 @@ const formatTime = (ms: number) => {
   return `${hours}:${minutes}:${seconds}`;
 };
 
-const primaryItems: Array<{ id: View; label: string; icon: React.ReactNode }> = [
-  { id: 'landing', label: 'Overview', icon: <FlaskConical className="h-3.5 w-3.5" /> },
-  { id: 'devlush', label: 'Topics', icon: <Layers className="h-3.5 w-3.5" /> },
-  { id: 'topic-theory', label: 'Theory', icon: <ShieldCheck className="h-3.5 w-3.5" /> },
-  { id: 'agent-workspace', label: 'Workspace', icon: <Bot className="h-3.5 w-3.5" /> },
+/**
+ * Text-only, deliberately.
+ *
+ * These items previously carried generic glyphs, and three of them labelled two
+ * different destinations (`ShieldCheck` on both Theory and Favorites, `Bot` on
+ * both Workspace and AI helper, `BookOpen` on both Reading and Open Notes). An
+ * icon that means two things carries no information; the label is enough.
+ *
+ * Icon-only controls elsewhere in this bar keep their glyphs — there the icon
+ * *is* the label.
+ */
+const primaryItems: Array<{ id: View; label: string }> = [
+  { id: 'landing', label: 'Overview' },
+  { id: 'devlush', label: 'Topics' },
+  { id: 'topic-theory', label: 'Theory' },
+  { id: 'agent-workspace', label: 'Workspace' },
 ];
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -105,8 +117,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   const navButton = (item: (typeof primaryItems)[number]) => {
     const active = currentView === item.id;
     return (
-      <button type="button" key={item.id} onClick={() => changeView(item.id)} className={`agent-labs-tab relative flex min-h-11 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${active ? 'is-active bg-cyan-500/10 text-cyan-700 dark:text-cyan-300' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950 dark:text-slate-400 dark:hover:bg-white/10 dark:hover:text-white'}`} aria-current={active ? 'page' : undefined}>
-        {item.icon}{item.label}
+      <button type="button" key={item.id} onClick={() => changeView(item.id)} className={`agent-labs-tab relative flex min-h-11 items-center rounded-lg px-3 py-2 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${active ? 'is-active bg-cyan-500/10 text-cyan-700 dark:text-cyan-300' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950 dark:text-slate-400 dark:hover:bg-white/10 dark:hover:text-white'}`} aria-current={active ? 'page' : undefined}>
+        {item.label}
       </button>
     );
   };
@@ -119,7 +131,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             <ArrowLeft className="h-4 w-4" />
           </button>
           <button type="button" onClick={() => changeView('landing')} className="flex min-h-11 min-w-0 items-center gap-2.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-0">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500 to-violet-600 text-white shadow-sm shadow-cyan-500/20"><Bot className="h-4 w-4" /></span>
+            {/*
+              Real brand mark, not a generic glyph. The tile keeps a cyan tint
+              rather than the old cyan-to-violet gradient: the mark is itself a
+              cyan-to-blue gradient, and on a saturated gradient its blue half
+              would sink into the background.
+            */}
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-cyan-500/20 bg-cyan-500/10 p-1 dark:border-white/10 dark:bg-white/[0.06]"><Logo size="sm" variant="icon-only" /></span>
             <span className="flex min-w-0 flex-col leading-none">
               <span className="truncate text-sm font-black tracking-tight text-zinc-900 dark:text-white">Agent Labs</span>
               <span className="mt-0.5 truncate text-[9px] font-bold uppercase tracking-[0.16em] text-zinc-400 dark:text-slate-500">Interactive systems</span>
@@ -140,18 +158,20 @@ export const Navbar: React.FC<NavbarProps> = ({
             {toolsOpen && (
               <div id="agent-labs-tools" className="absolute right-0 mt-2 w-72 rounded-2xl border border-zinc-200 bg-white p-2 text-zinc-900 shadow-2xl dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100" role="group" aria-label="Agent Labs contextual tools">
                 <div className="px-3 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-400">Contextual tools</div>
-                <button type="button" onClick={() => changeView('reading')} className="flex min-h-11 w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:hover:bg-zinc-900"><BookOpen className="h-4 w-4 text-cyan-600" /> Reading</button>
-                <button type="button" onClick={() => changeView('articles')} className="flex min-h-11 w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:hover:bg-zinc-900"><FileText className="h-4 w-4 text-cyan-600" /> Articles</button>
-                <button type="button" onClick={() => changeView('agentic-roles')} className="flex min-h-11 w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:hover:bg-zinc-900"><Users className="h-4 w-4 text-cyan-600" /> Agent roles</button>
-                <button type="button" onClick={() => changeView('favorites')} className="flex min-h-11 w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:hover:bg-zinc-900"><ShieldCheck className="h-4 w-4 text-cyan-600" /> Favorites</button>
+                <button type="button" onClick={() => changeView('reading')} className="flex min-h-11 w-full items-center rounded-xl px-3 py-2 text-left text-sm hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:hover:bg-zinc-900">Reading</button>
+                <button type="button" onClick={() => changeView('articles')} className="flex min-h-11 w-full items-center rounded-xl px-3 py-2 text-left text-sm hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:hover:bg-zinc-900">Articles</button>
+                <button type="button" onClick={() => changeView('agentic-roles')} className="flex min-h-11 w-full items-center rounded-xl px-3 py-2 text-left text-sm hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:hover:bg-zinc-900">Agent roles</button>
+                <button type="button" onClick={() => changeView('favorites')} className="flex min-h-11 w-full items-center rounded-xl px-3 py-2 text-left text-sm hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:hover:bg-zinc-900">Favorites</button>
                 <div className="my-2 border-t border-zinc-100 dark:border-zinc-900" />
-                <button type="button" onClick={onToggleFocusMode} aria-pressed={focusMode} className="flex min-h-11 w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:hover:bg-zinc-900"><span className="flex items-center gap-2"><FlaskConical className="h-4 w-4" /> Focus mode</span><span className="text-xs text-zinc-400">{focusMode ? 'On' : 'Off'}</span></button>
-                <button type="button" onClick={onToggleAiAssistant} aria-pressed={showAiAssistant} className="flex min-h-11 w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:hover:bg-zinc-900"><span className="flex items-center gap-2"><Bot className="h-4 w-4" /> AI helper</span><span className="text-xs text-zinc-400">{showAiAssistant ? 'On' : 'Off'}</span></button>
+                {/* Lock/Unlock and Zap stay: they swap with real state beside an On/Off label. */}
+                <button type="button" onClick={onToggleFocusMode} aria-pressed={focusMode} className="flex min-h-11 w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:hover:bg-zinc-900"><span>Focus mode</span><span className="text-xs text-zinc-400">{focusMode ? 'On' : 'Off'}</span></button>
+                <button type="button" onClick={onToggleAiAssistant} aria-pressed={showAiAssistant} className="flex min-h-11 w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:hover:bg-zinc-900"><span>AI helper</span><span className="text-xs text-zinc-400">{showAiAssistant ? 'On' : 'Off'}</span></button>
                 <button type="button" onClick={onToggleLockMode} aria-pressed={isAppLocked} className="flex min-h-11 w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:hover:bg-zinc-900"><span className="flex items-center gap-2">{isAppLocked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />} Interaction lock</span><span className="text-xs text-zinc-400">{isAppLocked ? 'On' : 'Off'}</span></button>
                 <button type="button" onClick={onToggleInfiniteEnergy} aria-pressed={isInfiniteEnergy} className="flex min-h-11 w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:hover:bg-zinc-900"><span className="flex items-center gap-2"><Zap className="h-4 w-4" /> Study energy</span><span className="text-xs text-zinc-400">{isInfiniteEnergy ? '∞' : lockoutRemaining > 0 ? formatTime(lockoutRemaining) : `${studyEnergy}/15`}</span></button>
                 <div className="my-2 border-t border-zinc-100 dark:border-zinc-900" />
-                <button type="button" onClick={() => { setToolsOpen(false); (onNavigateFinhub || (() => window.location.assign('/finhub')))(); }} className="flex min-h-11 w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm text-emerald-700 hover:bg-emerald-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-emerald-300 dark:hover:bg-emerald-950/30"><ArrowLeft className="h-4 w-4 rotate-180" /> Open Finhub</button>
-                <button type="button" onClick={() => { setToolsOpen(false); window.location.assign('/blogs'); }} className="flex min-h-11 w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm text-violet-700 hover:bg-violet-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-violet-300 dark:hover:bg-violet-950/30"><BookOpen className="h-4 w-4" /> Open Notes</button>
+                <button type="button" onClick={() => { setToolsOpen(false); window.location.assign('/workspace'); }} className="flex min-h-11 w-full items-center rounded-xl px-3 py-2 text-left text-sm text-indigo-700 hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-indigo-300 dark:hover:bg-indigo-950/30">Open Agent Workspace</button>
+                <button type="button" onClick={() => { setToolsOpen(false); (onNavigateFinhub || (() => window.location.assign('/finhub')))(); }} className="flex min-h-11 w-full items-center rounded-xl px-3 py-2 text-left text-sm text-emerald-700 hover:bg-emerald-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-emerald-300 dark:hover:bg-emerald-950/30">Open Finhub</button>
+                <button type="button" onClick={() => { setToolsOpen(false); window.location.assign('/blogs'); }} className="flex min-h-11 w-full items-center rounded-xl px-3 py-2 text-left text-sm text-violet-700 hover:bg-violet-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-violet-300 dark:hover:bg-violet-950/30">Open Notes</button>
               </div>
             )}
           </div>
@@ -161,7 +181,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {mobileOpen && <nav id="agent-labs-mobile-nav" className="border-t border-zinc-200 bg-white px-3 py-3 dark:border-zinc-800 dark:bg-zinc-950 lg:hidden" aria-label="Mobile Agent Labs navigation"><div className="mx-auto flex max-w-7xl flex-col gap-1">{primaryItems.map(navButton)}<button type="button" onClick={() => changeView('reading')} className="flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-semibold text-zinc-600 hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-zinc-400 dark:hover:bg-zinc-900"><BookOpen className="h-3.5 w-3.5" /> Reading and articles</button><button type="button" onClick={() => { setMobileOpen(false); (onNavigateFinhub || (() => window.location.assign('/finhub')))(); }} className="flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-semibold text-emerald-700 hover:bg-emerald-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-emerald-300 dark:hover:bg-emerald-950/30">Finhub</button>{onExit && <button type="button" onClick={onExit} className="flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-semibold text-zinc-600 hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-zinc-400 dark:hover:bg-zinc-900"><ArrowLeft className="h-3.5 w-3.5" /> Exit</button>}</div></nav>}
+      {mobileOpen && <nav id="agent-labs-mobile-nav" className="border-t border-zinc-200 bg-white px-3 py-3 dark:border-zinc-800 dark:bg-zinc-950 lg:hidden" aria-label="Mobile Agent Labs navigation"><div className="mx-auto flex max-w-7xl flex-col gap-1">{primaryItems.map(navButton)}<button type="button" onClick={() => changeView('reading')} className="flex min-h-11 items-center rounded-lg px-3 py-2 text-left text-xs font-semibold text-zinc-600 hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-zinc-400 dark:hover:bg-zinc-900">Reading and articles</button><button type="button" onClick={() => { setMobileOpen(false); (onNavigateFinhub || (() => window.location.assign('/finhub')))(); }} className="flex min-h-11 items-center rounded-lg px-3 py-2 text-left text-xs font-semibold text-emerald-700 hover:bg-emerald-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-emerald-300 dark:hover:bg-emerald-950/30">Finhub</button>{onExit && <button type="button" onClick={onExit} className="flex min-h-11 items-center rounded-lg px-3 py-2 text-left text-xs font-semibold text-zinc-600 hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-zinc-400 dark:hover:bg-zinc-900">Exit</button>}</div></nav>}
     </header>
   );
 };

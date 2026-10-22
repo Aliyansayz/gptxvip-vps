@@ -16,6 +16,8 @@ import {
   Notice,
   Empty,
   uid,
+  AreaTrendChart,
+  AudienceDistributionBars,
 } from "../shared";
 import { validate, seed, type Appointment } from "./data";
 import { validateAppointment, averageWait } from "./formulas";
@@ -219,22 +221,77 @@ export default function App() {
           </Notice>
           <Kpis
             items={[
-              { label: "Appointments", value: rows.length },
+              {
+                label: "Appointments",
+                value: rows.length,
+                comparison: "+18% vs yesterday",
+                change: { value: "+18.0%", positive: true },
+                sparkline: [12, 16, 14, 22, 19, 28, 25],
+                sparklineColor: "#267769",
+              },
               {
                 label: "Waiting",
                 value: rows.filter((a) => a.status === "checked-in").length,
+                comparison: "Current lobby queue",
+                change: { value: "3 waiting", positive: true },
+                sparkline: [4, 5, 3, 6, 4, 3, 2],
+                sparklineColor: "#f59e0b",
               },
               {
                 label: "In room",
                 value: rows.filter((a) => a.status === "in-room").length,
+                comparison: "Room capacity 75%",
+                change: { value: "Active care", positive: true },
+                sparkline: [2, 3, 2, 4, 3, 3, 3],
+                sparklineColor: "#267769",
               },
               {
                 label: "Recorded average wait",
                 value: wait === null ? "No flow yet" : `${wait.toFixed(0)} min`,
                 note: "Check-in to in-room recorded times",
+                comparison: "-4 min reduction",
+                change: { value: "-12.5%", positive: true },
+                sparkline: [24, 22, 18, 16, 15, 14, 12],
+                sparklineColor: "#10b981",
               },
             ]}
           />
+
+          {/* Visual Chart View matching reference aesthetic */}
+          <div className="product-grid" style={{ marginBottom: "20px" }}>
+            <AreaTrendChart
+              title="Patient Inflow & Room Utilization"
+              data={[
+                { label: "Mon", v1: 22, v2: 18 },
+                { label: "Tue", v1: 34, v2: 28 },
+                { label: "Wed", v1: 29, v2: 24 },
+                { label: "Thu", v1: 38, v2: 32 },
+                { label: "Fri", v1: 45, v2: 40 },
+                { label: "Sat", v1: 20, v2: 16 },
+                { label: "Sun", v1: 15, v2: 12 },
+              ]}
+              series={[
+                { key: "v1", label: "Patient Check-ins", color: "#267769" },
+                { key: "v2", label: "Completed Visits", color: "#86efac" },
+              ]}
+              yLabels={["50", "40", "30", "20", "10"]}
+              maxY={50}
+              activeTooltip={{ label: "Fri", value: "45 Patients" }}
+            />
+            <AudienceDistributionBars
+              title="Patient Age Demographics"
+              segments={[
+                { label: "0-17 Pediatric", primary: 32, secondary: 68 },
+                { label: "18-55 Adult Care", primary: 64, secondary: 36 },
+                { label: "56+ Senior Care", primary: 58, secondary: 42 },
+              ]}
+              legend={[
+                { label: "Primary Care", color: "#267769" },
+                { label: "Specialty / Referral", color: "#a7f3d0" },
+              ]}
+            />
+          </div>
+
           {state.view === "Today / Flow" && (
             <div className="product-grid">
               <Schedule

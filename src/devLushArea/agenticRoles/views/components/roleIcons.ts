@@ -9,6 +9,7 @@ import {
   FileText,
   Layers,
   PackageSearch,
+  Palette,
   Search,
   ShoppingBag,
 } from 'lucide-react';
@@ -25,6 +26,7 @@ export const agenticRoleIconMap: Record<string, ComponentType<{ className?: stri
   PackageSearch,
   ClipboardList,
   FileText,
+  Palette,
 };
 
 export const getAgenticRoleIcon = (iconName: string) => agenticRoleIconMap[iconName] || Layers;
@@ -38,8 +40,8 @@ export const getAgenticRoleIcon = (iconName: string) => agenticRoleIconMap[iconN
  *
  * Where a domain has no natural subject in the packs, the closest tool-shaped
  * glyph is used (`contract` for contracts, `financial-analytics` for
- * visualisation) rather than a generic one, so adjacent roles never render the
- * same illustration.
+ * visualisation, `articles` for UI/UX) rather than a generic one, so adjacent
+ * roles never render the same illustration.
  */
 const DOMAIN_ICONS: Record<string, string> = {
   seo: 'search-from-code',
@@ -52,6 +54,7 @@ const DOMAIN_ICONS: Record<string, string> = {
   retail: 'open-box',
   procurement: 'delivery-list',
   contracts: 'contract',
+  uiux: 'articles',
 };
 
 /**

@@ -16,6 +16,9 @@ import {
   Notice,
   csv,
   uid,
+  AreaTrendChart,
+  AudienceDistributionBars,
+  CustomerDistributionMap,
 } from "../shared";
 import { seed, type SavedReport } from "./data";
 import { filterEvents, unique, funnel, retention } from "./formulas";
@@ -37,7 +40,32 @@ export default function App() {
     if (!s.stream) return;
     const timer = setInterval(
       () =>
-        set((p) => {const event=streamEvent(p.events);const existing=p.sessions.find(session=>session.id===event.sessionId);return {...p,events:[...p.events,event],sessions:existing?p.sessions.map(session=>session.id===event.sessionId?{...session,path:[...session.path,event.event]}:session):[...p.sessions,{id:event.sessionId,userId:event.userId,startedAt:event.timestamp,platform:event.platform,path:[event.event]}]}}),
+        set((p) => {
+          const event = streamEvent(p.events);
+          const existing = p.sessions.find(
+            (session) => session.id === event.sessionId,
+          );
+          return {
+            ...p,
+            events: [...p.events, event],
+            sessions: existing
+              ? p.sessions.map((session) =>
+                  session.id === event.sessionId
+                    ? { ...session, path: [...session.path, event.event] }
+                    : session,
+                )
+              : [
+                  ...p.sessions,
+                  {
+                    id: event.sessionId,
+                    userId: event.userId,
+                    startedAt: event.timestamp,
+                    platform: event.platform,
+                    path: [event.event],
+                  },
+                ],
+          };
+        }),
       3000,
     );
     return () => clearInterval(timer);
@@ -116,26 +144,76 @@ export default function App() {
             label: "Active users",
             value: users,
             note: "Unique users in selected events",
+            comparison: "+14.8% vs last week",
+            change: { value: "+14.8%", positive: true },
+            sparkline: [28, 35, 32, 44, 40, 52, 48],
+            sparklineColor: "#6750ca",
           },
           {
             label: "Activation rate",
             value: `${users ? ((activated / users) * 100).toFixed(1) : 0}%`,
             note: `${activated} activated users / ${users} active`,
+            comparison: "Target 60% exceeded",
+            change: { value: "+6.2%", positive: true },
+            sparkline: [45, 48, 52, 50, 58, 62, 65],
+            sparklineColor: "#10b981",
           },
           {
             label: "Product events",
             value: events.length,
             note: "Sample event records",
+            comparison: "+28% telemetry flow",
+            change: { value: "+28.0%", positive: true },
+            sparkline: [120, 140, 160, 150, 190, 220, 240],
+            sparklineColor: "#6750ca",
           },
           {
-            label: "Channels",
-            value: new Set(events.map((e) => e.channel)).size,
-            note: s.stream
-              ? "Simulated stream running"
-              : "Simulated stream paused",
+            label: "Average session steps",
+            value: (
+              events.length /
+              Math.max(1, new Set(events.map((e) => e.sessionId)).size)
+            ).toFixed(1),
+            note: "Events per unique session",
+            comparison: "+0.8 deeper engagement",
+            change: { value: "+18.2%", positive: true },
+            sparkline: [3.2, 3.4, 3.8, 3.6, 4.2, 4.5, 4.8],
+            sparklineColor: "#3b82f6",
           },
         ]}
       />
+
+      {/* Visual Chart View matching reference aesthetic */}
+      <div className="product-grid" style={{ marginBottom: "20px" }}>
+        <AreaTrendChart
+          title="Daily Engagement & Activation Trend"
+          data={[
+            { label: "Mon", v1: 4.8, v2: 3.2 },
+            { label: "Tue", v1: 6.9, v2: 4.8 },
+            { label: "Wed", v1: 5.4, v2: 3.9 },
+            { label: "Thu", v1: 7.8, v2: 5.4 },
+            { label: "Fri", v1: 9.87, v2: 7.1 },
+            { label: "Sat", v1: 5.9, v2: 4.2 },
+            { label: "Sun", v1: 8.2, v2: 5.9 },
+          ]}
+          series={[
+            { key: "v1", label: "Active Cohort (k)", color: "#6750ca" },
+            { key: "v2", label: "Activated Users (k)", color: "#a5b4fc" },
+          ]}
+          yLabels={["10k", "8k", "6k", "4k", "2k"]}
+          activeTooltip={{ label: "Fri", value: "9,870 users" }}
+        />
+        <CustomerDistributionMap
+          title="Global User Traffic"
+          items={[
+            { country: "United States", value: "24,890", flag: "🇺🇸", percent: 86 },
+            { country: "Germany", value: "14,210", flag: "🇩🇪", percent: 64 },
+            { country: "United Kingdom", value: "11,840", flag: "🇬🇧", percent: 52 },
+            { country: "Japan", value: "8,920", flag: "🇯🇵", percent: 40 },
+            { country: "Singapore", value: "6,410", flag: "🇸🇬", percent: 28 },
+          ]}
+        />
+      </div>
+
       {view === "Overview" && (
         <div className="product-grid">
           <Card title="Activation pulse">
@@ -377,7 +455,7 @@ export default function App() {
                   : w === "Event volume"
                     ? exportRows.length
                     : w === "Funnel conversion"
-                      ? `${funnel(exportRows,["Visit","Signup","Activate","Purchase"])[3].value} sequential purchasers`
+                      ? `${funnel(exportRows, ["Visit", "Signup", "Activate", "Purchase"])[3].value} sequential purchasers`
                       : w === "Activation trend"
                         ? `${unique(exportRows.filter((e) => e.event === "Activate"))} activations`
                         : `${retention(s.cohorts[0], exportRows)[2].value} / ${s.cohorts[0].userIds.length} cohort users returned on ${retention(s.cohorts[0], exportRows)[2].label}`}

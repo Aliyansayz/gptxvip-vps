@@ -5,6 +5,7 @@
  * - /blogs -> BlogsView
  * - /agents (including /agents/lab) -> Agent catalog
  * - /alternate-landing -> AlternateLandingPage
+ * - /contact -> dedicated contact route inside the main App
  * - all other paths -> main App
  */
 
@@ -29,6 +30,9 @@ export function getAppRoot(path: string): string {
 
   if (isWithin("/software_manual")) return "/software_manual";
   if (isWithin("/alternate-landing")) return "/alternate-landing";
+  // Named so `smartNavigate` can soft-navigate between /contact and the other
+  // surfaces that live in the same React tree; the renderer is still the default.
+  if (isWithin("/contact")) return "/contact";
   if (isWithin("/blogs")) return "/blogs";
   if (isWithin("/agents") || isWithin("/agent")) return "/agents";
   if (isWithin("/profile")) return "/profile";

@@ -43,11 +43,24 @@ import WebGlHeatmapStreamActivity from './activities/visualization/WebGlHeatmapS
 import AutomatedEdaCritiqueActivity from './activities/visualization/AutomatedEdaCritiqueActivity';
 import ShapWaterfallExplainabilityActivity from './activities/visualization/ShapWaterfallExplainabilityActivity';
 
+// 7. UI/UX Agentic Specialist (Days 1..6)
+import AccessibilityAuditActivity from './activities/uiux/AccessibilityAuditActivity';
+import NavigationDepthActivity from './activities/uiux/NavigationDepthActivity';
+import OnboardingFunnelActivity from './activities/uiux/OnboardingFunnelActivity';
+import LayoutHierarchyActivity from './activities/uiux/LayoutHierarchyActivity';
+import InteractionLatencyActivity from './activities/uiux/InteractionLatencyActivity';
+import DesignTokenDriftActivity from './activities/uiux/DesignTokenDriftActivity';
+
 export type { ActivityComponentProps };
 
 /**
- * Master Registry mapping all 30 Chapter Component IDs to dedicated specialized React components.
- * FallbackRoleActivity serves as safe fallback for any unmapped activities.
+ * Master Registry mapping every chapter's `labComponentId` to a dedicated
+ * interactive component. FallbackRoleActivity serves as the safe fallback for
+ * any unmapped activity.
+ *
+ * Component IDs are derived from the chapter topic, so a registry key must
+ * match `<roleDomain>-day<N>-<slugified chapter_title>` exactly. The
+ * `roleRegistrations` test asserts every registered chapter resolves here.
  */
 export const agenticRolesRegistry: Record<string, React.ComponentType<ActivityComponentProps>> = {
   // 1. SEO Agentic Analyst (Days 1..5)
@@ -91,6 +104,14 @@ export const agenticRolesRegistry: Record<string, React.ComponentType<ActivityCo
   'visualization-day3-webgl-heatmaps': WebGlHeatmapStreamActivity,
   'visualization-day4-eda-chart-critique': AutomatedEdaCritiqueActivity,
   'visualization-day5-shap-waterfall': ShapWaterfallExplainabilityActivity,
+
+  // 7. UI/UX Agentic Specialist (Days 1..6)
+  'uiux-day1-accessibility-audit-across-contrast-semantics-and-focus-order': AccessibilityAuditActivity,
+  'uiux-day2-information-architecture-and-navigation-depth': NavigationDepthActivity,
+  'uiux-day3-onboarding-funnel-and-activation-drop-off': OnboardingFunnelActivity,
+  'uiux-day4-layout-density-and-visual-hierarchy-review': LayoutHierarchyActivity,
+  'uiux-day5-interaction-latency-and-perceived-performance-budget': InteractionLatencyActivity,
+  'uiux-day6-design-token-drift-and-component-consistency': DesignTokenDriftActivity,
 };
 
 export default agenticRolesRegistry;

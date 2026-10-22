@@ -159,6 +159,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
             window.history.pushState({}, '', '/');
           })}
           onNavigateDevLush={onNavigateDevLush || (() => setActiveTab("dev-labs-workspace"))}
+          onNavigateAgentWorkspace={() => setActiveTab("agent-workspace")}
         />
       )}
 

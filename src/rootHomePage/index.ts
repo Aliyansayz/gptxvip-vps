@@ -16,6 +16,7 @@ export { FaqSection } from './FaqSection';
 export { LeadCaptureModal } from './LeadCaptureModal';
 export { StickyConversionBar } from './StickyConversionBar';
 export { Footer } from './Footer';
+export { AgentWorkspacePage } from './AgentWorkspacePage';
 export * from './archive';
 
 export default RootHomePage;

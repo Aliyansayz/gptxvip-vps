@@ -17,6 +17,10 @@ import {
   printReport,
   money,
   uid,
+  AreaTrendChart,
+  MatrixHeatmapChart,
+  AudienceDistributionBars,
+  CustomerDistributionMap,
 } from "../shared";
 import { seed } from "./data";
 import {
@@ -120,6 +124,10 @@ export default function App() {
             value: orders.filter((o) => ["paid", "packed"].includes(o.status))
               .length,
             note: "Ready for your next action",
+            comparison: "+12.4% vs last week",
+            change: { value: "+12.4%", positive: true },
+            sparkline: [8, 12, 10, 15, 14, 20, 18],
+            sparklineColor: "#147d6b",
           },
           {
             label: "Selected order value",
@@ -129,19 +137,66 @@ export default function App() {
                 .reduce((n, o) => n + orderTotal(o), 0),
             ),
             note: "Canceled orders excluded",
+            comparison: "+18.9% trajectory",
+            change: { value: "+18.9%", positive: true },
+            sparkline: [22, 28, 25, 34, 38, 45, 42],
+            sparklineColor: "#147d6b",
           },
           {
             label: "Stock alerts",
             value: lowStock(s.products).length,
             note: "Available stock at reorder point",
+            comparison: "-4 items needed",
+            change: { value: "-4.2%", positive: false },
+            sparkline: [12, 9, 8, 11, 7, 5, 4],
+            sparklineColor: "#f43f5e",
           },
           {
             label: "Settlement exceptions",
             value: s.settlements.filter((x) => settlementDiff(x) !== 0).length,
             note: "Payment difference needs review",
+            comparison: "99.2% reconciled",
+            change: { value: "+1.2%", positive: true },
+            sparkline: [3, 4, 2, 1, 3, 2, 1],
+            sparklineColor: "#3b82f6",
           },
         ]}
       />
+
+      {/* Visual Chart View matching reference aesthetic */}
+      <div className="product-grid" style={{ marginBottom: "20px" }}>
+        <AreaTrendChart
+          title="Sales & Order Volume"
+          data={[
+            { label: "Mon", v1: 4.2, v2: 2.8 },
+            { label: "Tue", v1: 6.8, v2: 4.4 },
+            { label: "Wed", v1: 5.1, v2: 3.6 },
+            { label: "Thu", v1: 7.2, v2: 4.9 },
+            { label: "Fri", v1: 9.87, v2: 6.8 },
+            { label: "Sat", v1: 6.3, v2: 4.1 },
+            { label: "Sun", v1: 8.4, v2: 5.7 },
+          ]}
+          series={[
+            { key: "v1", label: "Gross Revenue ($k)", color: "#147d6b" },
+            { key: "v2", label: "Orders Fulfilled", color: "#6ee7b7" },
+          ]}
+          yLabels={["$10k", "$8k", "$6k", "$4k", "$2k"]}
+          activeTooltip={{ label: "Fri", value: "$9,873.42" }}
+        />
+        <MatrixHeatmapChart
+          title="Inventory Demand Density"
+          subtitle="Stock Turnover Rate"
+          rows={[
+            { name: "Electronics", values: [2, 3, 1, 3, 2, 3, 3] },
+            { name: "Apparel", values: [1, 2, 2, 1, 3, 2, 2] },
+            { name: "Kitchenware", values: [3, 1, 2, 2, 1, 3, 1] },
+            { name: "Office", values: [1, 2, 1, 3, 2, 1, 2] },
+            { name: "Outdoor", values: [2, 1, 3, 2, 3, 2, 3] },
+          ]}
+          columns={["M", "T", "W", "T", "F", "S", "S"]}
+        />
+      </div>
+
       {view === "Orders" && (
         <div className="product-grid">
           <Card title="Fulfillment desk">
@@ -301,32 +356,58 @@ export default function App() {
         </Card>
       )}
       {view === "Customers" && (
-        <Card title="Customer relationships">
-          <Table
-            caption="Fictional customer directory"
-            heads={["Customer", "Email", "Orders", "Action"]}
-          >
-            {s.customers
-              .filter(
-                (c) =>
-                  c.name.toLowerCase().includes(query.toLowerCase()) || !query,
-              )
-              .map((c) => (
-                <tr key={c.id}>
-                  <td>{c.name}</td>
-                  <td>{c.email}</td>
-                  <td>
-                    {s.orders.filter((o) => o.customerId === c.id).length}
-                  </td>
-                  <td>
-                    <Button variant="secondary" onClick={() => C(c.id)}>
-                      View customer
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-          </Table>
-        </Card>
+        <div className="product-stack">
+          <div className="product-grid equal">
+            <AudienceDistributionBars
+              title="Customer Segments"
+              segments={[
+                { label: "B2B Wholesale", primary: 64, secondary: 36 },
+                { label: "Retail Consumers", primary: 48, secondary: 52 },
+                { label: "Institutional", primary: 75, secondary: 25 },
+              ]}
+              legend={[
+                { label: "Repeat", color: "#147d6b" },
+                { label: "New", color: "#a7f3d0" },
+              ]}
+            />
+            <CustomerDistributionMap
+              title="Regional Orders"
+              items={[
+                { country: "United States", value: "14,890", flag: "🇺🇸", percent: 84 },
+                { country: "Canada", value: "6,210", flag: "🇨🇦", percent: 52 },
+                { country: "United Kingdom", value: "5,430", flag: "🇬🇧", percent: 45 },
+                { country: "Australia", value: "3,890", flag: "🇦🇺", percent: 32 },
+                { country: "Germany", value: "2,980", flag: "🇩🇪", percent: 24 },
+              ]}
+            />
+          </div>
+          <Card title="Customer relationships">
+            <Table
+              caption="Fictional customer directory"
+              heads={["Customer", "Email", "Orders", "Action"]}
+            >
+              {s.customers
+                .filter(
+                  (c) =>
+                    c.name.toLowerCase().includes(query.toLowerCase()) || !query,
+                )
+                .map((c) => (
+                  <tr key={c.id}>
+                    <td>{c.name}</td>
+                    <td>{c.email}</td>
+                    <td>
+                      {s.orders.filter((o) => o.customerId === c.id).length}
+                    </td>
+                    <td>
+                      <Button variant="secondary" onClick={() => C(c.id)}>
+                        View customer
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+            </Table>
+          </Card>
+        </div>
       )}
       {order && (
         <Dialog title={`Order ${order.id}`} onClose={() => S("")}>
@@ -403,8 +484,8 @@ export default function App() {
           title={`Restock ${s.products.find((p) => p.id === restock)?.name}`}
           onClose={() => R("")}
         >
-          {notice&&<Notice>{notice}</Notice>}
-<form
+          {notice && <Notice>{notice}</Notice>}
+          <form
             onSubmit={(e) => {
               e.preventDefault();
               const n = Number(quantity);

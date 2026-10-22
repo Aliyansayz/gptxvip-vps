@@ -17,6 +17,8 @@ import {
   csv,
   printReport,
   money,
+  AreaTrendChart,
+  AudienceDistributionBars,
 } from "../shared";
 import { seed, plans, definitions } from "./data";
 import { metrics, amountAt } from "./formulas";
@@ -168,16 +170,28 @@ export default function App() {
             label: "Ending contracted MRR",
             value: money(m.end),
             note: `${s.period} · ${s.plan}`,
+            comparison: "+9.4% MoM",
+            change: { value: "+9.4%", positive: true },
+            sparkline: [26, 32, 30, 42, 38, 52, 49],
+            sparklineColor: "#3b60bd",
           },
           {
             label: "ARPA",
             value: money(m.arpa),
             note: `${m.active} positive-MRR accounts`,
+            comparison: "+$120 vs Q3",
+            change: { value: "+5.1%", positive: true },
+            sparkline: [18, 20, 22, 21, 25, 27, 29],
+            sparklineColor: "#3b60bd",
           },
           {
             label: "Gross revenue churn",
             value: m.churn === null ? "N/A" : `${(m.churn * 100).toFixed(2)}%`,
             note: "Contraction + churn / starting MRR",
+            comparison: "-0.4% improvement",
+            change: { value: "-0.4%", positive: false },
+            sparkline: [4.2, 3.8, 3.1, 2.9, 2.4, 2.1, 1.8],
+            sparklineColor: "#10b981",
           },
           {
             label: "Outstanding recovery",
@@ -191,9 +205,48 @@ export default function App() {
                 .reduce((n, i) => n + i.amountCents, 0),
             ),
             note: "Cash receivables; separate from MRR",
+            comparison: "92% dunning success",
+            change: { value: "+4.2%", positive: true },
+            sparkline: [12, 10, 8, 14, 11, 7, 5],
+            sparklineColor: "#f59e0b",
           },
         ]}
       />
+
+      {/* Visual Chart View matching reference aesthetic */}
+      <div className="product-grid" style={{ marginBottom: "20px" }}>
+        <AreaTrendChart
+          title="MRR Trajectory & Target"
+          data={[
+            { label: "Mon", v1: 4.8, v2: 3.2 },
+            { label: "Tue", v1: 6.2, v2: 4.5 },
+            { label: "Wed", v1: 5.9, v2: 4.1 },
+            { label: "Thu", v1: 7.8, v2: 5.4 },
+            { label: "Fri", v1: 9.42, v2: 6.8 },
+            { label: "Sat", v1: 6.8, v2: 4.9 },
+            { label: "Sun", v1: 8.9, v2: 6.2 },
+          ]}
+          series={[
+            { key: "v1", label: "Actual MRR ($k)", color: "#3b60bd" },
+            { key: "v2", label: "Target Model ($k)", color: "#93c5fd" },
+          ]}
+          yLabels={["$10k", "$8k", "$6k", "$4k", "$2k"]}
+          activeTooltip={{ label: "Fri", value: "$9,420.00" }}
+        />
+        <AudienceDistributionBars
+          title="Subscription Tiers"
+          segments={[
+            { label: "Enterprise Tier", primary: 72, secondary: 28 },
+            { label: "Growth Tier", primary: 54, secondary: 46 },
+            { label: "Starter Tier", primary: 38, secondary: 62 },
+          ]}
+          legend={[
+            { label: "Annual", color: "#3b60bd" },
+            { label: "Monthly", color: "#c7d2fe" },
+          ]}
+        />
+      </div>
+
       {view === "Revenue" && (
         <div className="product-stack">
           <Card title="MRR movement bridge">

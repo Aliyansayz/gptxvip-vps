@@ -8,6 +8,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap");
 @import "tailwindcss";
 
+/*
+ * Shared surface primitives. These are loaded globally rather than from the
+ * component that happens to render them most often: `accent-fill-gradient`,
+ * `glass-panel-light` and `accent-text-gradient-ink` are utility classes that
+ * any surface may reach for, and a route that does not happen to mount
+ * `GlassPanel` was silently rendering unstyled buttons.
+ */
+@import "./shared/components/glass.css";
+
 /* Editorial article system: palette, type scale, drop cap, print rules. */
 @import "./shared/components/article/article.css";
 

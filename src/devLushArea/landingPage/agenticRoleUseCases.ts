@@ -58,6 +58,11 @@ const useCases: Record<RoleDomain, AgenticRoleUseCase> = {
     decision: 'Extract source-cited obligations and calculate action windows from the operative agreement.',
     evidence: 'Check executed clauses, amendment precedence, and owner review before updating the register.',
   },
+  uiux: {
+    situation: 'A flow works for most people but blocks others, and the interface itself is slowing them down.',
+    decision: 'Audit accessibility barriers, navigation depth, funnel drop-off, layout hierarchy, and interaction latency.',
+    evidence: 'Cite the contrast ratio, event, timing, or DOM detail behind each proposed interface change.',
+  },
 };
 
 export function getAgenticRoleUseCase(role: Pick<AgenticRoleDefinition, 'roleDomain' | 'description'>): AgenticRoleUseCase {

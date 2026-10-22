@@ -9,6 +9,7 @@ import {
   Dialog,
   Field,
   Button,
+  Badge,
   Bars,
   csv,
   printReport,
@@ -16,6 +17,8 @@ import {
   Empty,
   money,
   uid,
+  AreaTrendChart,
+  CustomerDistributionMap,
 } from "../shared";
 import { validate, seed, sections } from "./data";
 import {
@@ -222,21 +225,24 @@ export default function App() {
       <div
         className="product-workspace"
         data-prototype="fundview"
-        data-theme="light"
-        style={{ "--accent": "#355c81" } as React.CSSProperties}
+        style={{ padding: 24 }}
       >
         <main className="product-main">
+          <header className="product-header">
+            <div>
+              <strong>{fund.name}</strong> · {quarter}
+            </div>
+            <Badge status={shareActive(share, now) ? "success" : "neutral"}>
+              {shareActive(share, now) ? "Active preview" : "Expired preview"}
+            </Badge>
+          </header>
           <div className="product-content">
-            {shareActive(share, now) &&
-            state.funds.some((f) => f.id === fundId) &&
-            state.reports.some(
-              (r) => r.fundId === fundId && r.quarter === quarter,
-            ) ? (
+            {shareActive(share, now) ? (
               reportView
             ) : (
-              <Card title="Report preview unavailable">
+              <Card title="Preview unavailable">
                 <p>
-                  This local share preview is disabled, expired or unknown. It
+                  This share preview has expired or was disabled in Fundview. It
                   only works in the browser holding the demo records.
                 </p>
               </Card>
@@ -309,23 +315,77 @@ export default function App() {
         <>
           <Kpis
             items={[
-              { label: "Closing NAV", value: money(b.closing) },
+              {
+                label: "Closing NAV",
+                value: money(b.closing),
+                comparison: "+11.4% Net IRR",
+                change: { value: "+11.4%", positive: true },
+                sparkline: [22, 25, 24, 28, 30, 34, 33],
+                sparklineColor: "#355c81",
+              },
               {
                 label: "Quarter gain",
                 value: money(b.gain),
                 note: "Recorded performance component",
+                comparison: "+$420k net gain",
+                change: { value: "+4.2%", positive: true },
+                sparkline: [12, 14, 13, 16, 18, 20, 22],
+                sparklineColor: "#10b981",
               },
               {
                 label: "Simple gain / opening",
                 value: `${(b.returnRate * 100).toFixed(2)}%`,
-                note: "Not IRR or time-weighted return",
+                note: "Gain / opening NAV",
+                comparison: "Alpha +2.4%",
+                change: { value: "+2.4%", positive: true },
+                sparkline: [8, 9, 8, 11, 10, 13, 12],
+                sparklineColor: "#355c81",
               },
               {
-                label: "Net capital flow",
-                value: money(b.calls - b.distributions),
+                label: "Quarter distributions",
+                value: money(b.distributions),
+                note: "Capital returned to LPs",
+                comparison: "100% paid out",
+                change: { value: "On schedule", positive: true },
+                sparkline: [5, 4, 6, 8, 5, 4, 3],
+                sparklineColor: "#f59e0b",
               },
             ]}
           />
+
+          {/* Visual Chart View matching reference aesthetic */}
+          <div className="product-grid" style={{ marginBottom: "20px" }}>
+            <AreaTrendChart
+              title="Fund NAV Trajectory vs Benchmark"
+              data={[
+                { label: "Q1 '25", v1: 18.2, v2: 16.5 },
+                { label: "Q2 '25", v1: 22.4, v2: 18.9 },
+                { label: "Q3 '25", v1: 21.8, v2: 19.4 },
+                { label: "Q4 '25", v1: 26.5, v2: 22.1 },
+                { label: "Q1 '26", v1: 29.8, v2: 24.5 },
+                { label: "Q2 '26", v1: 32.4, v2: 26.2 },
+                { label: "Q3 '26", v1: 36.5, v2: 28.9 },
+              ]}
+              series={[
+                { key: "v1", label: "Fund NAV ($M)", color: "#355c81" },
+                { key: "v2", label: "Benchmark Index ($M)", color: "#93c5fd" },
+              ]}
+              yLabels={["$40M", "$30M", "$20M", "$10M", "$0M"]}
+              maxY={40}
+              activeTooltip={{ label: "Q3 '26", value: "$36.50M" }}
+            />
+            <CustomerDistributionMap
+              title="LP Geographic Distribution"
+              items={[
+                { country: "United States", value: "$24.5M", flag: "🇺🇸", percent: 82 },
+                { country: "United Kingdom", value: "$6.8M", flag: "🇬🇧", percent: 55 },
+                { country: "Switzerland", value: "$5.2M", flag: "🇨🇭", percent: 45 },
+                { country: "Singapore", value: "$3.8M", flag: "🇸🇬", percent: 32 },
+                { country: "Germany", value: "$2.9M", flag: "🇩🇪", percent: 24 },
+              ]}
+            />
+          </div>
+
           <div className="product-grid">
             <Card title="NAV and benchmark">
               <PerformancePlot

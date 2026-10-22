@@ -84,6 +84,15 @@ export function Shell({
     "--ds-focus": "var(--focus)",
     "--ds-onDanger": "#ffffff",
   } as CSSProperties;
+
+  const handleExit = () => {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.assign("/templates");
+    }
+  };
+
   return (
     <div
       className="product-workspace"
@@ -129,6 +138,14 @@ export function Shell({
             </NavigationItem>
           ))}
         </nav>
+        <button
+          type="button"
+          className="product-side-exit"
+          onClick={handleExit}
+          title="Exit to surfaces showcase"
+        >
+          <span aria-hidden="true">←</span> Exit to Surfaces
+        </button>
         <div className="product-side-bottom">
           <span className="product-avatar" aria-hidden="true">
             JD
@@ -163,6 +180,14 @@ export function Shell({
             </span>
           </div>
           <div className="product-header-actions">
+            <Button
+              variant="secondary"
+              className="product-exit-btn"
+              onClick={handleExit}
+              title="Exit prototype and return to surfaces showcase"
+            >
+              <span aria-hidden="true">←</span> Exit Dashboard
+            </Button>
             <Button
               variant="secondary"
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}

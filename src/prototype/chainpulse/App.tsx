@@ -13,6 +13,8 @@ import {
   csv,
   Notice,
   Empty,
+  AreaTrendChart,
+  MatrixHeatmapChart,
 } from "../shared";
 import {
   validate,
@@ -126,22 +128,76 @@ export default function App() {
         <>
           <Kpis
             items={[
-              { label: `${state.asset} last close`, value: dollars(price) },
+              {
+                label: `${state.asset} last close`,
+                value: dollars(price),
+                comparison: "+4.8% 24h",
+                change: { value: "+4.80%", positive: true },
+                sparkline: [2100, 2150, 2120, 2240, 2200, 2290, 2310],
+                sparklineColor: "#526bce",
+              },
               {
                 label: "Window high",
                 value: dollars(Math.max(...candles.map((c) => c.high))),
+                comparison: "Local peak",
+                change: { value: "+2.1%", positive: true },
+                sparkline: [2180, 2220, 2260, 2280, 2300, 2340, 2320],
+                sparklineColor: "#526bce",
               },
               {
                 label: "Window low",
                 value: dollars(Math.min(...candles.map((c) => c.low))),
+                comparison: "Strong support",
+                change: { value: "-0.8%", positive: false },
+                sparkline: [2080, 2090, 2110, 2100, 2130, 2150, 2170],
+                sparklineColor: "#f43f5e",
               },
               {
                 label: "Window volume",
                 value: candles.reduce((s, c) => s + c.volume, 0).toFixed(0),
                 note: `Sample ${state.asset} units`,
+                comparison: "+18.4% activity",
+                change: { value: "+18.4%", positive: true },
+                sparkline: [120, 140, 135, 180, 210, 240, 225],
+                sparklineColor: "#10b981",
               },
             ]}
           />
+
+          {/* Visual Chart View matching reference aesthetic */}
+          <div className="product-grid" style={{ marginBottom: "20px" }}>
+            <AreaTrendChart
+              title="Simulated Liquidity & Network Volume"
+              data={[
+                { label: "Mon", v1: 4.8, v2: 3.1 },
+                { label: "Tue", v1: 6.9, v2: 4.6 },
+                { label: "Wed", v1: 5.7, v2: 3.8 },
+                { label: "Thu", v1: 8.2, v2: 5.6 },
+                { label: "Fri", v1: 9.87, v2: 6.8 },
+                { label: "Sat", v1: 6.4, v2: 4.2 },
+                { label: "Sun", v1: 8.5, v2: 5.9 },
+              ]}
+              series={[
+                { key: "v1", label: "24h Volume ($M)", color: "#526bce" },
+                { key: "v2", label: "Protocol Liquidity ($M)", color: "#93c5fd" },
+              ]}
+              yLabels={["$10M", "$8M", "$6M", "$4M", "$2M"]}
+              activeTooltip={{ label: "Fri", value: "$9.87M" }}
+            />
+            <MatrixHeatmapChart
+              title="Network Gas Density"
+              subtitle="Gwei Activity by Hour"
+              rows={[
+                { name: "Mainnet", values: [3, 2, 3, 3, 2, 3, 3] },
+                { name: "Arbitrum", values: [1, 1, 2, 1, 2, 1, 2] },
+                { name: "Optimism", values: [1, 2, 1, 2, 1, 2, 1] },
+                { name: "Base", values: [2, 1, 2, 2, 3, 2, 2] },
+                { name: "Polygon", values: [1, 1, 1, 2, 1, 1, 1] },
+              ]}
+              columns={["00", "04", "08", "12", "16", "20", "24"]}
+            />
+          </div>
+
           <div className="product-grid">
             <Card title={`${state.asset} / USD · 30-minute candles`}>
               <Candlesticks rows={candles} asset={state.asset} />
@@ -190,16 +246,38 @@ export default function App() {
         <>
           <Kpis
             items={[
-              { label: "Portfolio value", value: dollars(total) },
+              {
+                label: "Portfolio value",
+                value: dollars(total),
+                comparison: "+6.8% unrealized",
+                change: { value: "+6.80%", positive: true },
+                sparkline: [18000, 19200, 18900, 20400, 21500, 22800, 23400],
+                sparklineColor: "#526bce",
+              },
               {
                 label: "Cost basis",
                 value: dollars(positions.reduce((s, p) => s + p.cost, 0)),
+                comparison: "Entry benchmark",
+                change: { value: "+0.0%", positive: true },
+                sparkline: [21000, 21000, 21000, 21000, 21000, 21000, 21000],
+                sparklineColor: "#93c5fd",
               },
               {
                 label: "Unrealized P/L",
                 value: dollars(positions.reduce((s, p) => s + p.pnl, 0)),
+                comparison: "Profitable positions",
+                change: { value: "+$2,400", positive: true },
+                sparkline: [800, 1200, 1100, 1600, 1900, 2200, 2400],
+                sparklineColor: "#10b981",
               },
-              { label: "Sample holdings", value: positions.length },
+              {
+                label: "Sample holdings",
+                value: positions.length,
+                comparison: "Diversified exposure",
+                change: { value: "2 assets", positive: true },
+                sparkline: [2, 2, 2, 2, 2, 2, 2],
+                sparklineColor: "#526bce",
+              },
             ]}
           />
           <div className="product-grid">

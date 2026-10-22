@@ -19,6 +19,7 @@ export const mobilityAgenticChapters = industryRoleChapters.mobility;
 export const retailAgenticChapters = industryRoleChapters.retail;
 export const procurementAgenticChapters = industryRoleChapters.procurement;
 export const contractsAgenticChapters = industryRoleChapters.contracts;
+export const uiuxAgenticChapters = industryRoleChapters.uiux;
 
 /**
  * Master flat array of all Agentic Role Chapters
@@ -34,6 +35,7 @@ export const agenticRolesChaptersRaw: AgenticRoleChapter[] = [
   ...retailAgenticChapters,
   ...procurementAgenticChapters,
   ...contractsAgenticChapters,
+  ...uiuxAgenticChapters,
 ];
 
 /**
@@ -161,6 +163,14 @@ export const agenticRoleDefinitions: AgenticRoleDefinition[] = [
     longDescription: 'Extract source-cited clauses, calculate notice windows, assess SLA evidence and maintain an auditable obligation register.',
     iconName: 'FileText', accentColor: 'purple', totalDays: contractsAgenticChapters.length, careerLevel: 'Mid AI Engineer',
     requiredSkills: ['Clause Extraction', 'Renewal Deadlines', 'SLA Evidence', 'Insurance Tracking', 'Amendment Control'], chapters: contractsAgenticChapters,
+  },
+  {
+    id: 'ui-ux-agentic-specialist', title: 'UI/UX Agentic Specialist', shortTitle: 'UI/UX', roleDomain: 'uiux',
+    tagline: 'Accessibility barriers, navigation depth, funnel evidence, and interaction latency budgets.',
+    description: 'Audit contrast and semantics, flatten navigation depth, locate funnel drop-off, and hold interface work to a latency budget.',
+    longDescription: 'Practice interface work the way an evidence review would. Measure contrast ratios and heading structure, map click depth before a migration, isolate the funnel step that costs the most setups, and treat a slow interaction as a defect rather than a loading state.',
+    iconName: 'Palette', accentColor: 'lime', totalDays: uiuxAgenticChapters.length, careerLevel: 'Mid AI Engineer',
+    requiredSkills: ['WCAG Contrast & Semantics', 'Focus Order Audits', 'Navigation Depth Mapping', 'Funnel Cohort Analysis', 'Interaction Latency Budgets'], chapters: uiuxAgenticChapters,
   },
 ];
 

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Landing Page Blueprint — High Converting Cheat Sheet</title>
+  <meta name="description" content="A one-page cheat sheet blueprint for high converting landing pages: navbar, hero, benefits, audience, features, testimonials, tools, pricing, FAQ and footer." />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: {
+              50: '#fff4ed',
+              100: '#ffe6d5',
+              300: '#ffb187',
+              500: '#ff5a1f',
+              600: '#f04810',
+              700: '#c93a0c',
+            },
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            display: ['"Bricolage Grotesque"', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          },
+          boxShadow: {
+            card: '0 18px 40px -18px rgba(15, 23, 42, 0.28)',
+            page: '0 40px 90px -40px rgba(15, 23, 42, 0.35)',
+            glow: '0 0 0 6px rgba(255, 90, 31, 0.10), 0 18px 50px -12px rgba(255, 90, 31, 0.65)',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600;700&display=swap');
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #f6f6f7;
+      background-image:
+        linear-gradient(to right, rgba(15, 23, 42, 0.045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(15, 23, 42, 0.045) 1px, transparent 1px);
+      background-size: 34px 34px;
+    }
+
+    .skeleton { background: #d9d9de; border-radius: 9999px; }
+    .skeleton-block { background: #e7e7ea; border-radius: 0.65rem; }
+
+    /* Annotation connector pointing at the blueprint */
+    .connector { position: absolute; top: 2.35rem; display: none; align-items: center; gap: 0.35rem; }
+    .connector::before { content: ''; height: 2px; width: 34px; background: linear-gradient(90deg, rgba(255, 90, 31, 0.15), #ff5a1f); border-radius: 9999px; }
+    .connector::after {
+      content: '';
+      width: 0; height: 0;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 7px solid #ff5a1f;
+    }
+    .connector-left { right: -42px; }
+    .connector-right { left: -42px; flex-direction: row-reverse; }
+    .connector-right::before { background: linear-gradient(270deg, rgba(255, 90, 31, 0.15), #ff5a1f); }
+    .connector-right::after { border-left: 0; border-right: 7px solid #ff5a1f; }
+
+    @media (min-width: 1024px) {
+      .connector { display: flex; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen font-sans text-neutral-900 antialiased">
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="px-5 pt-14 pb-8 sm:pt-20">
+    <div class="mx-auto max-w-3xl text-center">
+      <p class="text-3xl font-display font-extrabold tracking-tight text-neutral-400 sm:text-5xl">
+        High <span class="text-neutral-500">Converting</span>
+      </p>
+      <h1 class="-mt-1 text-4xl font-display font-extrabold tracking-tight text-neutral-900 sm:text-6xl">
+        Landing Page
+      </h1>
+      <div class="mt-5 inline-block rounded-3xl border-2 border-accent-500 px-7 py-3 shadow-glow">
+        <h2 class="text-4xl font-display font-extrabold tracking-tight text-accent-500 sm:text-6xl">Blueprint</h2>
+      </div>
+      <p class="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-neutral-500 sm:text-base">
+        Ten blocks, in this order, cover almost every landing page that converts.
+        Each rule on the side is the reason the block on the page exists.
+      </p>
+      <div class="mt-8 p-5 rounded-2xl bg-neutral-50 border border-neutral-200 text-left">
+        <h3 class="font-display text-lg font-extrabold text-neutral-900 mb-4">Example: GPTX.VIP Project Offerings</h3>
+        <div class="space-y-3 text-sm text-neutral-600">
+          <p><strong>Hero headline:</strong> "See how trading systems and agents <span class="text-accent-600">actually work.</span>"</p>
+          <p><strong>Subtitle:</strong> "Run the code, agent, and market models we teach, inside the page with no setup. Open a prototype above, change one input, and watch the model respond."</p>
+          <p><strong>Primary CTA:</strong> "Start an Agent Lab" → <code>/agents/lab</code></p>
+          <p><strong>Secondary CTA:</strong> "Browse all paths" → <code>/agents</code></p>
+          <p><strong>Social proof strip:</strong> 3 inbuilt prototypes · 6 agent lab topics · 6 code concept tracks</p>
+          <p><strong>Inbuilt prototypes (secondary nav):</strong> Finhub (Leverage trading tool) · Code Concepts (Guided walkthroughs) · Agent Labs (Run an agent topic)</p>
+        </div>
+      </div>
+      <div class="mt-7 flex flex-wrap items-center justify-center gap-2 text-[11px] font-semibold uppercase tracking-wider no-print">
+        <span class="rounded-full bg-neutral-900 px-3 py-1.5 text-white">Order matters</span>
+        <span class="rounded-full bg-white px-3 py-1.5 text-neutral-600 ring-1 ring-neutral-200">1 primary CTA</span>
+        <span class="rounded-full bg-white px-3 py-1.5 text-neutral-600 ring-1 ring-neutral-200">Max 6 features</span>
+        <span class="rounded-full bg-white px-3 py-1.5 text-neutral-600 ring-1 ring-neutral-200">5+ FAQ items</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== BLUEPRINT ===================== -->
+  <main class="px-5 pb-20">
+    <div class="mx-auto max-w-6xl">
+      <div class="grid grid-cols-1 items-start gap-y-6 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,2.3fr)_minmax(0,0.85fr)] lg:gap-x-14" id="blueprint"></div>
+    </div>
+  </main>
+
+  <!-- ===================== FOOTER CREDIT ===================== -->
+  <footer class="border-t border-neutral-200 bg-white/70 px-5 py-10 text-center">
+    <p class="text-xs uppercase tracking-[0.2em] text-neutral-400">Cheat sheet adapted from the blueprint by</p>
+    <p class="mt-2 font-display text-xl font-bold text-neutral-700">Mark Vassilevskiy</p>
+    <p class="text-sm text-neutral-400">@MarkKnd</p>
+  </footer>
+
+  <script>
+    /* =========================================================
+       Blueprint data — single source of truth.
+       Each entry: where the note sits, the rules, and the mockup.
+       ========================================================= */
+    const SECTIONS = [
+      {
+        id: 'navbar',
+        side: 'right',
+        title: 'Navbar',
+        rules: [
+          'Logo placeholder',
+          'Navigation menu with up to **4–5 items**',
+          'CTA button (plus secondary if it exists)',
+        ],
+        mock: mockNavbar,
+      },
+      {
+        id: 'hero',
+        side: 'left',
+        title: 'Hero Section',
+        rules: [
+          '**1 primary CTA** to keep the attention on the spot',
+          'If it is a **SaaS**, then makes sense to include product demo',
+          'Key problem mentioned in the **title** and punchy **subtitle**',
+        ],
+        mock: mockHero,
+      },
+      {
+        id: 'benefits',
+        side: 'right',
+        title: 'Benefits Section',
+        rules: [
+          'Showcase **3 main benefits** of your product',
+          'Each benefit highlighted with a title and brief description',
+          'Support the benefits with icons or visuals',
+        ],
+        mock: mockBenefits,
+      },
+      {
+        id: 'apply',
+        side: 'left',
+        title: 'Apply cases',
+        rules: [
+          'Include portraits or direct descriptions of your target audience',
+          'Explain in **1–2 lines** how each user type benefits from the product',
+          'Make sure you focus on the right audience',
+        ],
+        mock: mockApply,
+      },
+      {
+        id: 'features',
+        side: 'right',
+        title: 'Features Section',
+        rules: [
+          'Describe how your product is better than everyone else on the market',
+          'Make sure not to overcomplicate it and include **not more then 6 features**',
+        ],
+        mock: mockFeatures,
+      },
+      {
+        id: 'testimonials',
+        side: 'left',
+        title: 'Testimonials',
+        rules: [
+          'Testimonials are the key to social trust. Make sure there\'s enough of them and they\'re **high quality ones**',
+          'Showcase key metrics (**star ratings, badges, or reviews**)',
+        ],
+        mock: mockTestimonials,
+      },
+      {
+        id: 'tools',
+        side: 'right',
+        title: 'Tools & Integrations',
+        rules: [
+          'Display icons of the platforms or tools your product integrates with',
+          'The bigger partners you have, the more trust you\'ll have in the future',
+        ],
+        mock: mockTools,
+      },
+      {
+        id: 'pricing',
+        side: 'left',
+        title: 'Pricing Section',
+        rules: [
+          'Highlight the plan that you want more people to buy (either middle one or the most expensive)',
+          'Show **key differences** between the plans',
+          'Each pricing plan should have a clear **CTA button**',
+        ],
+        mock: mockPricing,
+      },
+      {
+        id: 'faq',
+        side: 'right',
+        title: 'FAQ',
+        rules: [
+          'Include **at least 5 common questions** with short, easy-to-read answers',
+          'Don\'t make them just for “FUN”, instead try to really analyze the pain points of the potential client',
+          'It\'ll save time for you and your customer support by a lot',
+        ],
+        mock: mockFaq,
+      },
+      {
+        id: 'footer',
+        side: 'left',
+        title: 'Footer',
+        rules: [
+          'Footer must tell the user that the story has come to end and that everything that is left is to **follow you on social media** — 3 platforms',
+        ],
+        mock: mockFooter,
+      },
+      {
+        id: 'offerings',
+        side: 'right',
+        title: 'Project Offerings',
+        rules: [
+          'Show **3 software product lines** with one-line capability summaries',
+          'Group **17 AI agents** into functional clusters (Product & Research, Data & Analytics, Compliance & Legal, Market Intelligence, Revenue Ops, Finance & Procurement, Supply Chain & Logistics)',
+          'Each agent: bold name + one-line capability list for scannability',
+        ],
+        mock: mockOfferings,
+      },
+    ];
+
+    /* =========================================================
+       Mockup primitives
+       ========================================================= */
+    const line = (w, h = 'h-2') => `<div class="skeleton ${h} ${w}"></div>`;
+    const lines = (count, widths = ['w-full', 'w-11/12', 'w-4/5']) =>
+      Array.from({ length: count }, (_, i) => `<div class="skeleton h-2 ${widths[i % widths.length]}"></div>`).join('');
+
+    const mockHeading = (text, sub = 3) => `
+      <div class="mx-auto mb-5 max-w-[16rem] text-center">
+        <h3 class="font-display text-xl font-extrabold tracking-tight text-neutral-900 sm:text-2xl">${text}</h3>
+        <div class="mx-auto mt-3 flex flex-col items-center gap-1.5">${lines(sub)}</div>
+      </div>`;
+
+    const mockNavPill = (active = false) => `
+      <span class="rounded-full px-2.5 py-1 text-[8px] font-bold tracking-wide ${active ? 'bg-neutral-900 text-white' : 'bg-neutral-200/70 text-neutral-500'}">LINK</span>`;
+
+    /* =========================================================
+       Section mockups
+       ========================================================= */
+    function mockNavbar() {
+      return `
+        <div class="flex items-center justify-between rounded-xl border border-neutral-200 bg-white px-4 py-3">
+          <div class="flex h-7 w-7 items-center justify-center rounded-lg bg-neutral-900 text-white">
+            <i data-lucide="box" class="h-3.5 w-3.5"></i>
+          </div>
+          <div class="hidden items-center gap-2 sm:flex">${mockNavPill()}${mockNavPill(true)}${mockNavPill()}${mockNavPill()}</div>
+          <div class="flex items-center gap-2">
+            <div class="hidden h-6 w-14 rounded-full bg-neutral-200 sm:block"></div>
+            <div class="h-6 w-16 rounded-full bg-accent-500 shadow-[0_8px_18px_-8px_rgba(255,90,31,0.9)]"></div>
+          </div>
+        </div>`;
+    }
+
+    function mockHero() {
+      return `
+        <div class="text-center">
+          <div class="mx-auto max-w-[18rem] space-y-2">
+            <div class="h-3.5 w-3/4 rounded-full bg-neutral-900 mx-auto"></div>
+            <div class="mx-auto max-w-[13rem] space-y-1.5">${lines(3)}</div>
+          </div>
+          <div class="mx-auto mt-6 h-7 w-28 rounded-full bg-accent-500 shadow-[0_10px_22px_-10px_rgba(255,90,31,0.95)]"></div>
+          <div class="mt-6 flex items-center justify-center">
+            <div class="h-28 w-full max-w-[22rem] rounded-2xl bg-gradient-to-br from-accent-500 to-accent-700 shadow-[0_24px_40px_-20px_rgba(240,72,16,0.75)] sm:h-32"></div>
+          </div>
+          <p class="mt-3 text-[10px] font-semibold uppercase tracking-widest text-neutral-400">Product demo / screenshot</p>
+        </div>`;
+    }
+
+    function mockBenefits() {
+      const card = `
+        <div class="overflow-hidden rounded-xl border border-neutral-200 bg-white">
+          <div class="h-14 bg-gradient-to-br from-accent-500 to-accent-600"></div>
+          <div class="space-y-1.5 p-3">${lines(3)}</div>
+        </div>`;
+      return `${mockHeading('What you get')}
+        <div class="grid grid-cols-3 gap-3">${card.repeat(3)}</div>`;
+    }
+
+    function mockApply() {
+      return `${mockHeading('For who?')}
+        <div class="grid grid-cols-3 items-center gap-3">
+          <div class="space-y-1.5 rounded-xl border border-neutral-200 bg-white p-3">${lines(4)}</div>
+          <div class="flex items-center justify-center">
+            <div class="flex h-16 w-16 items-center justify-center rounded-full bg-accent-500 text-white shadow-[0_18px_30px_-14px_rgba(255,90,31,0.9)]">
+              <i data-lucide="user" class="h-7 w-7"></i>
+            </div>
+          </div>
+          <div class="space-y-1.5 rounded-xl border border-neutral-200 bg-white p-3">${lines(4)}</div>
+        </div>`;
+    }
+
+    function mockFeatures() {
+      const card = `
+        <div class="flex items-start gap-2.5 rounded-xl border border-neutral-200 bg-white p-3">
+          <div class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-accent-50 text-accent-600">
+            <i data-lucide="zap" class="h-3.5 w-3.5"></i>
+          </div>
+          <div class="w-full space-y-1.5">${lines(3)}</div>
+        </div>`;
+      return `${mockHeading('Features you\'ll love', 2)}
+        <div class="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">${card.repeat(6)}</div>`;
+    }
+
+    function mockTestimonials() {
+      return `${mockHeading('Testimonials', 2)}
+        <div class="rounded-2xl bg-gradient-to-br from-accent-500 to-accent-600 p-5 sm:p-7">
+          <div class="flex items-center gap-4 rounded-xl bg-white/95 p-4 shadow-card">
+            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent-100 text-accent-600">
+              <i data-lucide="smile" class="h-6 w-6"></i>
+            </div>
+            <div class="w-full space-y-1.5">
+              <div class="flex items-center gap-0.5 text-accent-500">
+                ${Array.from({ length: 5 }, () => '<i data-lucide="star" class="h-3 w-3 fill-current"></i>').join('')}
+              </div>
+              ${lines(3)}
+            </div>
+          </div>
+          <div class="mx-auto -mt-3 h-3 w-2/3 rounded-b-lg bg-white/40"></div>
+        </div>`;
+    }
+
+    function mockTools() {
+      const tile = (icon, filled = false) => `
+        <div class="flex h-12 w-12 items-center justify-center rounded-xl ${filled ? 'bg-neutral-900 text-white' : 'bg-neutral-100 text-neutral-600'}">
+          <i data-lucide="${icon}" class="h-5 w-5"></i>
+        </div>`;
+      return `
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div class="max-w-[13rem]">
+            <h3 class="font-display text-2xl font-extrabold leading-tight tracking-tight text-neutral-900">Tools &amp;<br />Integrations</h3>
+            <div class="mt-3 space-y-1.5">${lines(3)}</div>
+          </div>
+          <div class="grid grid-cols-4 gap-2.5">
+            ${tile('pen-tool', true)}${tile('git-branch')}${tile('apple')}${tile('grid-2x2')}
+            ${tile('notebook-pen')}${tile('cloud')}${tile('box')}${tile('plug')}
+          </div>
+        </div>`;
+    }
+
+    function mockPricing() {
+      const plan = (price, featured) => `
+        <div class="flex-1 rounded-2xl border ${featured ? 'border-accent-500 bg-white shadow-glow' : 'border-neutral-200 bg-white'} p-4">
+          <p class="text-2xl font-display font-extrabold tracking-tight text-neutral-900">${price}<span class="text-xs font-medium text-neutral-400">/month</span></p>
+          <div class="my-3 space-y-1.5">${lines(2, ['w-full', 'w-3/4'])}</div>
+          <ul class="space-y-2">
+            ${Array.from({ length: 4 }, (_, i) => `
+              <li class="flex items-center gap-2">
+                <i data-lucide="${i === 3 && !featured ? 'minus' : 'check'}" class="h-3.5 w-3.5 ${i === 3 && !featured ? 'text-neutral-300' : 'text-accent-500'}"></i>
+                ${line('w-3/5', 'h-1.5')}
+              </li>`).join('')}
+          </ul>
+          <div class="mt-4 h-7 w-full rounded-full ${featured ? 'bg-accent-500 shadow-[0_10px_20px_-10px_rgba(255,90,31,0.9)]' : 'bg-neutral-900'}"></div>
+        </div>`;
+      return `${mockHeading('Pricing', 2)}
+        <div class="mx-auto flex max-w-md flex-col gap-4 sm:flex-row">${plan('$0', false)}${plan('$30', true)}</div>`;
+    }
+
+    function mockFaq() {
+      const item = (n, open = false) => `
+        <div class="mx-auto mb-2.5 max-w-sm rounded-xl border ${open ? 'border-accent-500 bg-white shadow-card' : 'border-neutral-200 bg-white'} p-3">
+          <div class="flex items-center gap-2">
+            <i data-lucide="${open ? 'chevron-down' : 'chevron-right'}" class="h-3.5 w-3.5 text-accent-500"></i>
+            <span class="text-[10px] font-bold text-accent-600">Question #${n}</span>
+          </div>
+          <div class="mt-2 space-y-1.5 pl-5">${lines(open ? 3 : 1, open ? ['w-full', 'w-10/12', 'w-4/5'] : ['w-full'])}</div>
+        </div>`;
+      return `${mockHeading('What you get', 2)}${item(1, true)}${item(2)}${item(3)}`;
+    }
+
+    function mockFooter() {
+      return `
+        <div class="flex flex-col gap-5 border-t border-neutral-200 pt-6 sm:flex-row sm:items-start sm:justify-between">
+          <div class="max-w-[11rem] space-y-2">
+            <div class="flex items-center gap-2">
+              <div class="flex h-6 w-6 items-center justify-center rounded-md bg-neutral-900 text-white">
+                <i data-lucide="box" class="h-3 w-3"></i>
+              </div>
+              <p class="font-display text-sm font-extrabold text-neutral-900">Your Product</p>
+            </div>
+            ${lines(3)}
+          </div>
+          <div class="flex gap-8">
+            <div class="space-y-1.5">
+              <p class="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Legal</p>
+              ${lines(2, ['w-16', 'w-12'])}
+            </div>
+            <div class="space-y-1.5">
+              <p class="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Menu</p>
+              ${lines(2, ['w-14', 'w-10'])}
+            </div>
+          </div>
+          <div class="flex items-center gap-2.5 text-neutral-400">
+            <i data-lucide="message-circle" class="h-4 w-4"></i>
+            <i data-lucide="send" class="h-4 w-4"></i>
+            <i data-lucide="share-2" class="h-4 w-4"></i>
+          </div>
+        </div>`;
+    }
+
+    function mockOfferings() {
+      const softwareLines = [
+        { name: 'Cybersecurity Software', caps: 'Vulnerability scanners, endpoint protection, SIEM, sandboxing, penetration-testing suites, forensic tools.' },
+        { name: 'Educational Software', caps: 'Interactive lessons, virtual labs, adaptive learning, quiz engines, learning games.' },
+        { name: 'Document Software', caps: 'PDF tools, OCR, document conversion, electronic signatures, document comparison.' },
+      ];
+
+      const agentClusters = [
+        {
+          name: 'Product & Research',
+          agents: [
+            { name: 'AI Product Manager Agent', desc: 'Gathers feedback, clusters requests, drafts requirements, maintains roadmap artifacts, tracks delivery.' },
+            { name: 'AI Research Agent', desc: 'Decomposes research questions, searches sources, evaluates evidence, creates reports, maintains citations.' },
+          ]
+        },
+        {
+          name: 'Data & Analytics',
+          agents: [
+            { name: 'AI Data Analyst Agent', desc: 'Connects to databases, writes queries, validates results, builds charts, explains anomalies, schedules reports.' },
+          ]
+        },
+        {
+          name: 'Compliance & Legal',
+          agents: [
+            { name: 'AI Compliance Agent', desc: 'Continuously checks controls, gathers evidence, flags gaps, prepares audit packages, tracks remediation.' },
+            { name: 'AI Contract Review Agent', desc: 'Ingests agreements, compares clauses against playbooks, flags deviations, routes approvals, tracks obligations.' },
+            { name: 'AI Legal Operations Agent', desc: 'Matter intake, document organization, deadlines, research tasks, billing checks, case workflow coordination.' },
+          ]
+        },
+        {
+          name: 'Market & Competitive Intelligence',
+          agents: [
+            { name: 'AI Competitive Intelligence Agent', desc: 'Monitors competitors, pricing, releases, hiring, patents, news, and builds change summaries.' },
+            { name: 'AI Market Intelligence Agent', desc: 'Tracks markets, customers, regulations, trends, and generates structured opportunity/risk briefs.' },
+          ]
+        },
+        {
+          name: 'Revenue Operations',
+          agents: [
+            { name: 'AI Sales Development Agent', desc: 'Lead research, enrichment, outreach drafting, follow-up sequencing, CRM logging, meeting booking.' },
+          ]
+        },
+        {
+          name: 'Finance & Procurement',
+          agents: [
+            { name: 'AI Procurement Agent', desc: 'Purchase requests, vendor comparison, quotation analysis, approval routing, PO creation, delivery tracking.' },
+            { name: 'AI Accounts Payable Agent', desc: 'Invoice extraction, PO matching, anomaly checks, approval routing, payment preparation, audit logs.' },
+            { name: 'AI Finance Operations Agent', desc: 'Reconciliation, expense categorization, cash-flow monitoring, variance detection, management reporting.' },
+          ]
+        },
+        {
+          name: 'Supply Chain & Logistics',
+          agents: [
+            { name: 'AI Inventory Replenishment Agent', desc: 'Demand monitoring, reorder calculations, supplier selection, draft purchase orders, stockout alerts.' },
+            { name: 'AI Warehouse Operations Agent', desc: 'Receiving prioritization, put-away decisions, picking optimization, replenishment, exception handling.' },
+            { name: 'AI Distribution Planner', desc: 'Store demand analysis, dispatch planning, vehicle/load allocation, stock balancing, delivery exception handling.' },
+            { name: 'AI Supply Chain Control Tower', desc: 'Monitors suppliers, inventory, shipments, disruptions, and recommends or executes recovery workflows.' },
+            { name: 'AI Logistics Dispatcher', desc: 'Assigns jobs to drivers, optimizes routes, handles delays, updates customers, escalates exceptions.' },
+          ]
+        },
+      ];
+
+      const soft = softwareLines.map(s => `
+        <div class="rounded-xl border border-neutral-200 bg-white p-4">
+          <p class="font-semibold text-neutral-900">${s.name}</p>
+          <p class="mt-1 text-sm text-neutral-600">${s.caps}</p>
+        </div>`).join('');
+
+      const clusters = agentClusters.map(c => `
+        <div class="space-y-3">
+          <h4 class="font-semibold text-neutral-900 text-sm uppercase tracking-wider text-accent-600">${c.name}</h4>
+          <div class="space-y-2">
+            ${c.agents.map(a => `
+              <div class="rounded-xl border border-neutral-200 bg-white p-3">
+                <p class="font-medium text-neutral-900">${a.name}</p>
+                <p class="mt-0.5 text-sm text-neutral-600">${a.desc}</p>
+              </div>`).join('')}
+          </div>
+        </div>`).join('');
+
+      return `
+        <div class="space-y-10">
+          <div>
+            <h3 class="font-display text-xl font-extrabold tracking-tight text-neutral-900 mb-4">Software Product Lines</h3>
+            <div class="grid gap-3 sm:grid-cols-3">${soft}</div>
+          </div>
+          <div>
+            <h3 class="font-display text-xl font-extrabold tracking-tight text-neutral-900 mb-4">AI Agents (17)</h3>
+            <div class="space-y-6">${clusters}</div>
+          </div>
+        </div>`;
+    }
+
+    /* =========================================================
+       Renderers
+       ========================================================= */
+    const md = (text) =>
+      text.replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-neutral-900">$1</strong>');
+
+    function annotationCard(section) {
+      const onLeft = section.side === 'left';
+      const card = `
+        <div class="relative rounded-2xl border border-neutral-200 bg-white p-5 shadow-card transition-shadow duration-300 hover:shadow-page">
+          <div class="connector ${onLeft ? 'connector-left' : 'connector-right'}"></div>
+          <h3 class="font-display text-base font-extrabold tracking-tight text-neutral-900">${section.title}</h3>
+          <ul class="mt-3 space-y-1.5">
+            ${section.rules.map((rule) => `
+              <li class="flex gap-2 text-[13px] leading-relaxed text-neutral-500">
+                <span class="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-accent-500"></span>
+                <span>${md(rule)}</span>
+              </li>`).join('')}
+          </ul>
+        </div>`;
+
+      return onLeft
+        ? `<div class="lg:col-start-1">${card}</div>`
+        : `<div class="lg:col-start-3">${card}</div>`;
+    }
+
+    function mockupSection(section) {
+      return `
+        <section id="${section.id}" class="lg:col-start-2">
+          <div class="overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-page">
+            <div class="space-y-10 px-5 py-8 sm:px-10 sm:py-12">${section.mock()}</div>
+          </div>
+        </section>`;
+    }
+
+    document.getElementById('blueprint').innerHTML = SECTIONS.map((section) => annotationCard(section) + mockupSection(section)).join('');
+
+    if (window.lucide) {
+      lucide.createIcons();
+      const missing = [...document.querySelectorAll('i[data-lucide]')].map((el) => el.dataset.lucide);
+      if (missing.length) console.warn('Unknown lucide icons:', missing);
+    }
+  </script>
+</body>
+</html>

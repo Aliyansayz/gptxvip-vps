@@ -16,6 +16,8 @@ import {
   csv,
   money,
   uid,
+  AreaTrendChart,
+  CustomerDistributionMap,
 } from "../shared";
 import { seed, stages, probabilities, type Deal } from "./data";
 import { forecast, openDeals } from "./formulas";
@@ -100,9 +102,19 @@ export default function App() {
               )
             }
           >
-            Export deals
+            Export pipeline
           </Button>
-          <Button onClick={() => E({ data: blank })}>New deal</Button>
+          <Button variant="secondary" onClick={() => MO(true)}>
+            Merge duplicate
+          </Button>
+          <Button
+            onClick={() => {
+              E({ data: { ...blank } });
+              S("");
+            }}
+          >
+            New opportunity
+          </Button>
         </>
       }
     >
@@ -113,7 +125,7 @@ export default function App() {
           onChange={(e) => Q(e.target.value)}
         />
         <Select
-          label="Owner"
+          label="Relationship owner"
           value={s.owner}
           options={["All", "Jordan", "Jamie"]}
           onChange={(owner) => set({ ...s, owner })}
@@ -136,24 +148,73 @@ export default function App() {
             label: "Open pipeline",
             value: money(f.raw),
             note: `${openDeals(deals).length} active relationships`,
+            comparison: "+14.2% vs last month",
+            change: { value: "+14.2%", positive: true },
+            sparkline: [24, 32, 28, 42, 36, 50, 48],
+            sparklineColor: "#9b5d30",
           },
           {
             label: "Weighted forecast",
             value: money(f.weighted),
             note: "Open value × stage probability",
+            comparison: "+8.5% expected",
+            change: { value: "+8.5%", positive: true },
+            sparkline: [14, 18, 16, 25, 22, 30, 28],
+            sparklineColor: "#9b5d30",
           },
           {
             label: "Closed won",
             value: money(f.won),
             note: "Recognized separately from open forecast",
+            comparison: "Target 85% reached",
+            change: { value: "+22.1%", positive: true },
+            sparkline: [10, 15, 20, 18, 30, 35, 40],
+            sparklineColor: "#10b981",
           },
           {
             label: "Next actions",
             value: openDeals(deals).filter((d) => d.nextAction).length,
             note: "Owner and close-period filters applied",
+            comparison: "3 overdue",
+            change: { value: "-2", positive: false },
+            sparkline: [8, 7, 9, 6, 5, 4, 3],
+            sparklineColor: "#f43f5e",
           },
         ]}
       />
+
+      {/* Visual Chart View matching reference aesthetic */}
+      <div className="product-grid" style={{ marginBottom: "20px" }}>
+        <AreaTrendChart
+          title="Deal Velocity & Pipeline Inflow"
+          data={[
+            { label: "Mon", v1: 3.5, v2: 2.1 },
+            { label: "Tue", v1: 5.8, v2: 3.8 },
+            { label: "Wed", v1: 4.9, v2: 3.2 },
+            { label: "Thu", v1: 7.4, v2: 4.6 },
+            { label: "Fri", v1: 8.87, v2: 6.2 },
+            { label: "Sat", v1: 5.1, v2: 3.5 },
+            { label: "Sun", v1: 7.6, v2: 5.0 },
+          ]}
+          series={[
+            { key: "v1", label: "Pipeline Value ($k)", color: "#9b5d30" },
+            { key: "v2", label: "Closed Weighted ($k)", color: "#f59e0b" },
+          ]}
+          yLabels={["$10k", "$8k", "$6k", "$4k", "$2k"]}
+          activeTooltip={{ label: "Fri", value: "$8,870.00" }}
+        />
+        <CustomerDistributionMap
+          title="Account Regional Distribution"
+          items={[
+            { country: "United States", value: "32 Deals", flag: "🇺🇸", percent: 85 },
+            { country: "United Kingdom", value: "18 Deals", flag: "🇬🇧", percent: 62 },
+            { country: "Germany", value: "12 Deals", flag: "🇩🇪", percent: 48 },
+            { country: "France", value: "9 Deals", flag: "🇫🇷", percent: 35 },
+            { country: "Singapore", value: "6 Deals", flag: "🇸🇬", percent: 25 },
+          ]}
+        />
+      </div>
+
       {view === "Pipeline" && (
         <div className="product-board">
           {stages.map((stage) => (
@@ -181,18 +242,31 @@ export default function App() {
                     >
                       {d.title}
                     </button>
-                    <p>{s.companies.find((c) => c.id === d.companyId)?.name}</p>
-                    <strong>{money(d.valueCents)}</strong>
                     <p>
-                      {d.ownerId} · {d.expectedClose}
+                      {s.companies.find((c) => c.id === d.companyId)?.name} ·{" "}
+                      {money(d.valueCents)}
                     </p>
-                    <p className="product-chip">{d.nextAction}</p>
-                    <Select
-                      label={`Stage for ${d.title}`}
-                      value={d.stage}
-                      options={stages}
-                      onChange={(v) => mutate(() => stageMove(s, d.id, v))}
-                    />
+                    <small>
+                      {d.ownerId} · Close: {d.expectedClose}
+                    </small>
+                    <p style={{ fontStyle: "italic" }}>{d.nextAction}</p>
+                    <div className="product-actions">
+                      {stages.map((st) => (
+                        <button
+                          key={st}
+                          style={{
+                            fontSize: 11,
+                            padding: "4px 6px",
+                            opacity: st === d.stage ? 1 : 0.6,
+                            fontWeight: st === d.stage ? "bold" : "normal",
+                          }}
+                          disabled={st === d.stage}
+                          onClick={() => mutate(() => stageMove(s, d.id, st))}
+                        >
+                          {st.slice(0, 3)}
+                        </button>
+                      ))}
+                    </div>
                   </Card>
                 ))}
             </section>
@@ -201,17 +275,10 @@ export default function App() {
       )}
       {view === "Contacts / Companies" && (
         <div className="product-grid">
-          <Card
-            title="Contact directory"
-            aside={
-              <Button variant="secondary" onClick={() => MO(true)}>
-                Review duplicates
-              </Button>
-            }
-          >
+          <Card title="Key contacts">
             <Table
-              caption="Fictional linked contacts"
-              heads={["Contact", "Email", "Company", "Linked deals"]}
+              caption="Contacts in selected workspace"
+              heads={["Contact", "Company", "Email"]}
             >
               {s.contacts
                 .filter(
@@ -222,11 +289,9 @@ export default function App() {
                 .map((c) => (
                   <tr key={c.id}>
                     <td>{c.name}</td>
+                    <td>{s.companies.find((x) => x.id === c.companyId)?.name}</td>
                     <td>{c.email}</td>
-                    <td>
-                      {s.companies.find((x) => x.id === c.companyId)?.name}
-                    </td>
-                    <td>{deals.filter((d) => d.contactId === c.id).length}</td>
+                    
                   </tr>
                 ))}
             </Table>
@@ -350,8 +415,8 @@ export default function App() {
             Edit deal
           </Button>
           <h3>Next action</h3>
-          {notice&&<Notice>{notice}</Notice>}
-<form
+          {notice && <Notice>{notice}</Notice>}
+          <form
             onSubmit={(e) => {
               e.preventDefault();
               if (!next.trim()) {
@@ -395,8 +460,8 @@ export default function App() {
                 {a.date} · {a.note}
               </p>
             ))}
-          {notice&&<Notice>{notice}</Notice>}
-<form
+          {notice && <Notice>{notice}</Notice>}
+          <form
             onSubmit={(e) => {
               e.preventDefault();
               if (!note.trim()) return;
@@ -433,8 +498,8 @@ export default function App() {
           title={editing.id ? "Edit deal" : "Create deal"}
           onClose={() => E(null)}
         >
-          {notice&&<Notice>{notice}</Notice>}
-<form
+          {notice && <Notice>{notice}</Notice>}
+          <form
             onSubmit={(e) => {
               e.preventDefault();
               try {
@@ -556,8 +621,8 @@ export default function App() {
           title="Review duplicate contact merge"
           onClose={() => MO(false)}
         >
-          {notice&&<Notice>{notice}</Notice>}
-<p>
+          {notice && <Notice>{notice}</Notice>}
+          <p>
             Review both records. Keep record retains its name/email/company;
             source is removed and its deals are relinked. Matching email and
             company required.

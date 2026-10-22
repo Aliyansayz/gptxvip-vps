@@ -3,6 +3,7 @@ import {
   Shell,
   useDemo,
   Card,
+  Kpis,
   Select,
   Table,
   Field,
@@ -12,6 +13,8 @@ import {
   Notice,
   Empty,
   uid,
+  AreaTrendChart,
+  MatrixHeatmapChart,
 } from "../shared";
 import { validate, seed, allowed } from "./data";
 import { scopedUsage, metricTotal, embedUrl, validAccent } from "./formulas";
@@ -201,6 +204,77 @@ export default function App() {
       {notice && <Notice>{notice}</Notice>}
       {state.view === "Board" && (
         <>
+          <Kpis
+            items={[
+              {
+                label: "Tenant widgets",
+                value: visibleWidgets.length,
+                comparison: "Active dashboard",
+                change: { value: `${visibleWidgets.length} active`, positive: true },
+                sparkline: [2, 3, 3, 4, 4, 5, 5],
+                sparklineColor: tenant.accent,
+              },
+              {
+                label: "Access role",
+                value: role,
+                comparison: `${role} preview mode`,
+                change: { value: role, positive: true },
+                sparkline: [1, 1, 1, 1, 1, 1, 1],
+                sparklineColor: "#10b981",
+              },
+              {
+                label: "30-day queries",
+                value: "14,890",
+                comparison: "+24.2% monthly",
+                change: { value: "+24.2%", positive: true },
+                sparkline: [8, 12, 14, 18, 22, 26, 30],
+                sparklineColor: tenant.accent,
+              },
+              {
+                label: "Active seats",
+                value: "18 members",
+                comparison: "90% adoption",
+                change: { value: "+3 seats", positive: true },
+                sparkline: [12, 14, 13, 15, 16, 17, 18],
+                sparklineColor: "#3b82f6",
+              },
+            ]}
+          />
+
+          {/* Visual Chart View matching reference aesthetic */}
+          <div className="product-grid" style={{ marginBottom: "20px" }}>
+            <AreaTrendChart
+              title="Tenant Query & Event Velocity"
+              data={[
+                { label: "Mon", v1: 3.8, v2: 2.4 },
+                { label: "Tue", v1: 5.9, v2: 4.1 },
+                { label: "Wed", v1: 4.8, v2: 3.2 },
+                { label: "Thu", v1: 7.4, v2: 4.9 },
+                { label: "Fri", v1: 9.87, v2: 6.8 },
+                { label: "Sat", v1: 5.4, v2: 3.8 },
+                { label: "Sun", v1: 7.9, v2: 5.4 },
+              ]}
+              series={[
+                { key: "v1", label: "Query Volume (k)", color: tenant.accent || "#635bdb" },
+                { key: "v2", label: "Cache Hits (k)", color: "#93c5fd" },
+              ]}
+              yLabels={["10k", "8k", "6k", "4k", "2k"]}
+              activeTooltip={{ label: "Fri", value: "9,870 req" }}
+            />
+            <MatrixHeatmapChart
+              title="Activity Heatmap"
+              subtitle="Daily Events"
+              rows={[
+                { name: "Analytics", values: [3, 2, 3, 3, 2, 3, 3] },
+                { name: "Reports", values: [1, 2, 1, 2, 3, 1, 2] },
+                { name: "Exports", values: [2, 1, 2, 1, 2, 1, 1] },
+                { name: "Integrations", values: [1, 2, 2, 3, 2, 2, 3] },
+                { name: "Settings", values: [1, 1, 1, 1, 2, 1, 1] },
+              ]}
+              columns={["M", "T", "W", "T", "F", "S", "S"]}
+            />
+          </div>
+
           <Card title="Board tools">
             <div className="product-filters">
               <Select

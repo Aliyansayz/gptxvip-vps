@@ -19,7 +19,8 @@ export type RoleDomain =
   | 'mobility'
   | 'retail'
   | 'procurement'
-  | 'contracts';
+  | 'contracts'
+  | 'uiux';
 
 /**
  * The technical and business perspective nature of an activity

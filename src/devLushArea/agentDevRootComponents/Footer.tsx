@@ -1,5 +1,6 @@
 import React from 'react';
 import { Mail, Heart } from 'lucide-react';
+import { ContactForm } from '../../shared/components/ContactForm';
 
 interface FooterProps {
     theme?: 'light' | 'dark';
@@ -35,8 +36,17 @@ const Footer: React.FC<FooterProps> = ({ theme, currentView }) => {
                 </div>
 
                 {/* Contact */}
-                <div className="flex flex-col items-center md:items-end gap-4 md:w-1/3">
+                <div className="flex w-full flex-col items-center gap-4 md:w-1/3 md:items-end">
                     <span className={`text-xs font-semibold uppercase tracking-[0.2em] ${textHighlight}`}>Contact</span>
+                    <ContactForm
+                        variant="compact"
+                        tone={isHome ? 'dark' : 'light'}
+                        accent="emerald"
+                        title="Send a message"
+                        description="This form reaches the site owner directly."
+                        subject="Contact from DevLush"
+                        className="w-full max-w-sm"
+                    />
                     <a href="mailto:aliyan@gptx.vip" className={`inline-flex items-center gap-2 text-sm font-medium opacity-80 transition-all duration-300 ${linkHover}`}>
                         <Mail className="w-4 h-4 stroke-[1.5]" />
                         aliyan@gptx.vip

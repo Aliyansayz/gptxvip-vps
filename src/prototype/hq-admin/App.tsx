@@ -14,6 +14,8 @@ import {
   Notice,
   Empty,
   uid,
+  AreaTrendChart,
+  AudienceDistributionBars,
 } from "../shared";
 import { validate, seed, type Member, type Preferences } from "./data";
 import { memberError, invitationError, onboarding } from "./formulas";
@@ -128,8 +130,6 @@ export default function App() {
                 }));
                 setEdit(null);
                 setInvite(false);
-                setSettings(null);
-                setNotice("");
               }}
               options={state.workspaces.map((w) => ({
                 value: w.id,
@@ -148,22 +148,74 @@ export default function App() {
                   {
                     label: "Active members",
                     value: members.filter((m) => m.status === "active").length,
+                    comparison: "100% seat utilization",
+                    change: { value: "+12.5%", positive: true },
+                    sparkline: [8, 9, 10, 11, 10, 12, 12],
+                    sparklineColor: "#6d54b5",
                   },
                   {
                     label: "Pending invitations",
                     value: invitations.filter((i) => i.status === "pending")
                       .length,
+                    comparison: "Awaiting approval",
+                    change: { value: "3 pending", positive: false },
+                    sparkline: [5, 4, 6, 3, 4, 3, 3],
+                    sparklineColor: "#f59e0b",
                   },
                   {
                     label: "Unread notifications",
                     value: notifications.filter((n) => !n.read).length,
+                    comparison: "Inbox items",
+                    change: { value: "2 unread", positive: false },
+                    sparkline: [8, 6, 5, 4, 3, 2, 2],
+                    sparklineColor: "#f43f5e",
                   },
                   {
                     label: "Setup progress",
                     value: `${onboarding(state).filter((i) => i.done).length}/4`,
+                    comparison: "Onboarding checklist",
+                    change: { value: "75%", positive: true },
+                    sparkline: [1, 2, 2, 3, 3, 3, 3],
+                    sparklineColor: "#10b981",
                   },
                 ]}
               />
+
+              {/* Visual Chart View matching reference aesthetic */}
+              <div className="product-grid" style={{ marginBottom: "20px" }}>
+                <AreaTrendChart
+                  title="Active Workspace Sessions"
+                  data={[
+                    { label: "Mon", v1: 24, v2: 18 },
+                    { label: "Tue", v1: 38, v2: 26 },
+                    { label: "Wed", v1: 32, v2: 24 },
+                    { label: "Thu", v1: 44, v2: 32 },
+                    { label: "Fri", v1: 52, v2: 38 },
+                    { label: "Sat", v1: 18, v2: 12 },
+                    { label: "Sun", v1: 14, v2: 10 },
+                  ]}
+                  series={[
+                    { key: "v1", label: "Active Sessions", color: "#6d54b5" },
+                    { key: "v2", label: "API Requests (k)", color: "#c4b5fd" },
+                  ]}
+                  yLabels={["60", "48", "36", "24", "12"]}
+                  maxY={60}
+                  activeTooltip={{ label: "Fri", value: "52 Active" }}
+                />
+                <AudienceDistributionBars
+                  title="Team Role Distribution"
+                  segments={[
+                    { label: "Engineering", primary: 70, secondary: 30 },
+                    { label: "Product & Design", primary: 45, secondary: 55 },
+                    { label: "Operations / Admin", primary: 60, secondary: 40 },
+                  ]}
+                  legend={[
+                    { label: "Admins", color: "#6d54b5" },
+                    { label: "Members", color: "#ddd6fe" },
+                  ]}
+                />
+              </div>
+
               <div className="product-grid">
                 <Onboarding items={onboarding(state)} />
                 <Card title="Operational audit">

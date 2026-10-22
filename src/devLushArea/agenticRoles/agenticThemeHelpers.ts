@@ -178,6 +178,36 @@ const baseRoleThemes: Record<ExistingRoleDomain, RoleThemeTokens> = {
     badgeText: 'text-purple-600 dark:text-purple-400',
     badgeBorder: 'border-purple-500/30',
   },
+  /*
+   * Lime sits beside emerald and cyan in the wheel but is distinguishable from
+   * both at card and badge size, so UI/UX never reads as a second copy of the
+   * SEO or preprocessing roles.
+   */
+  uiux: {
+    domain: 'uiux',
+    title: 'UI/UX Agentic Specialist',
+    text: 'text-lime-700 dark:text-lime-400',
+    textMuted: 'text-lime-600/80 dark:text-lime-300/80',
+    bg: 'bg-lime-600 hover:bg-lime-500',
+    hoverBg: 'hover:bg-lime-500',
+    bgSoft: 'bg-lime-50 dark:bg-lime-950/30',
+    bgSoftGlow: 'bg-lime-500/10',
+    border: 'border-lime-500',
+    borderSoft: 'border-lime-200 dark:border-lime-800/40',
+    hoverBorder: 'hover:border-lime-500/60',
+    shadow: 'shadow-lime-500/10',
+    shadowMd: 'shadow-lime-500/20',
+    spotlightRgb: '132, 204, 22', // lime-500
+    accentHex: '#84CC16',
+    gradientFrom: 'from-lime-500',
+    gradientVia: 'via-green-500',
+    gradientTo: 'to-teal-400',
+    groupHoverText: 'group-hover:text-lime-600 dark:group-hover:text-lime-400',
+    ring: 'focus:ring-lime-500/50',
+    badgeBg: 'bg-lime-500/15',
+    badgeText: 'text-lime-700 dark:text-lime-400',
+    badgeBorder: 'border-lime-500/30',
+  },
 };
 
 // Reuse established palette tokens while giving each vertical a stable domain.
@@ -198,7 +228,12 @@ export function getRoleTheme(domainOrName: string): RoleThemeTokens {
   if (normalized === 'retail' || normalized.includes('replenishment')) return roleThemes.retail;
   if (normalized === 'procurement') return roleThemes.procurement;
   if (normalized === 'contracts' || normalized.includes('contract')) return roleThemes.contracts;
-  
+  // Matched before the course-name branches: "UI/UX Agentic Specialist" and
+  // "user experience" both have to resolve here rather than fall through.
+  if (normalized === 'uiux' || normalized.includes('ui/ux') || normalized.includes('user experience')) {
+    return roleThemes.uiux;
+  }
+
   if (normalized.includes('seo') || normalized === 'seo') {
     return roleThemes.seo;
   }

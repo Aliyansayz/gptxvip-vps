@@ -1,5 +1,6 @@
 import type { ElementType, ReactNode } from 'react';
-import './glass.css';
+// `glass.css` is imported once from `index.css`. Re-importing it here would
+// duplicate the stylesheet on any route that mounts this panel.
 
 interface GlassPanelProps {
   as?: ElementType;

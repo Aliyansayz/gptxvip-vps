@@ -16,4 +16,9 @@ export {
   Notice,
   Dialog,
   Bars,
+  Sparkline,
+  AreaTrendChart,
+  MatrixHeatmapChart,
+  AudienceDistributionBars,
+  CustomerDistributionMap,
 } from "./controls";

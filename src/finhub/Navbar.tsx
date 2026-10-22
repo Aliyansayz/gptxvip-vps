@@ -13,6 +13,7 @@ import {
   Activity,
   Network,
   UserRound,
+  Cpu,
 } from 'lucide-react';
 
 interface FinhubNavbarProps {
@@ -26,6 +27,7 @@ interface FinhubNavbarProps {
   onToggleSidebar?: () => void;
   onExit?: () => void;
   onNavigateDevLush?: () => void;
+  onNavigateAgentWorkspace?: () => void;
 }
 
 export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
@@ -39,6 +41,7 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
   onToggleSidebar,
   onExit,
   onNavigateDevLush,
+  onNavigateAgentWorkspace,
 }) => {
   const isLearningTab = activeTab === 'code-concepts' || activeTab === 'core-concepts' || activeTab === 'math-primer';
   const navItems = [
@@ -126,6 +129,14 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
     }
   };
 
+  const handleAgentWorkspaceClick = () => {
+    if (onNavigateAgentWorkspace) {
+      onNavigateAgentWorkspace();
+    } else {
+      setActiveTab('agent-workspace');
+    }
+  };
+
   const handleBlogsClick = () => {
     window.location.assign('/blogs');
   };
@@ -209,6 +220,21 @@ export const FinhubNavbar: React.FC<FinhubNavbarProps> = ({
               <span>{item.label}</span>
             </button>
           ))}
+
+          {/* Direct bridge to Agent Workspace */}
+          <button
+            type="button"
+            onClick={handleAgentWorkspaceClick}
+            className={`px-3 py-1.5 text-xs font-bold tracking-wide transition-all rounded-xl flex items-center gap-1.5 cursor-pointer ${
+              activeTab === 'agent-workspace'
+                ? 'bg-white dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 shadow-sm border border-zinc-200 dark:border-zinc-700'
+                : 'text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/10'
+            }`}
+            title="Switch to Agent Workspace"
+          >
+            <Cpu className="w-3.5 h-3.5 text-indigo-500" />
+            <span>Agent Workspace</span>
+          </button>
 
           {/* Direct bridge to devLush Swarms */}
           <button

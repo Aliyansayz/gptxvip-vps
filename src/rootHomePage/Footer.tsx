@@ -5,6 +5,7 @@ import { Logo } from '../shared/components/Logo';
 
 interface FooterProps {
     onNavigateFinhub: () => void;
+    onNavigateAgentWorkspace?: () => void;
     onNavigateDevLush: () => void;
     onNavigateBlogs: () => void;
     onNavigateCodeConcepts?: () => void;
@@ -20,6 +21,7 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({
     onNavigateFinhub,
+    onNavigateAgentWorkspace,
     onNavigateDevLush,
     onNavigateBlogs,
     onNavigateCodeConcepts = () => window.location.assign('/code_concepts/general'),
@@ -70,6 +72,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <div>
                     <h2 className={`text-xs font-bold uppercase tracking-[0.16em] ${dark ? 'text-zinc-100' : skin.heading}`}>Explore</h2>
                     <ul className="mt-4 space-y-3 text-sm">
+                        <li><button onClick={onNavigateAgentWorkspace || (() => window.location.assign('/workspace'))} className={linkClass}>Agent Workspace</button></li>
                         <li><button onClick={onNavigateCodeConcepts} className={linkClass}><Code2 className="h-4 w-4" />Code Concepts</button></li>
                         <li><button onClick={onNavigateDevLush} className={linkClass}><Logo size="sm" variant="icon-only" className="mr-2" />Agent Labs</button></li>
                         {onNavigateProjectSurfaces && <li><button onClick={onNavigateProjectSurfaces} className={linkClass}>Project surfaces</button></li>}
@@ -84,6 +87,8 @@ export const Footer: React.FC<FooterProps> = ({
                     <p className="text-sm leading-6">Questions or feedback about a lesson or tool?</p>
                     <ContactForm
                       variant="compact"
+                      tone={dark ? 'dark' : 'light'}
+                      accent={warm ? 'warm' : 'emerald'}
                       title="Send us a message"
                       description="We'll get back to you within 24 hours."
                       subject="Contact from GPTX.VIP Footer"

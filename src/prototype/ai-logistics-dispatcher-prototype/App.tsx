@@ -1,5 +1,5 @@
 import { useEffect, useState, type CSSProperties } from 'react';
-import { AlertTriangle, ClipboardList, LayoutDashboard, Map, Route, Settings, Truck, Users, Plus } from 'lucide-react';
+import { AlertTriangle, ClipboardList, LayoutDashboard, Map, Route, Settings, Truck, Users, Plus, ArrowLeft } from 'lucide-react';
 import { SystemButton, TextField, tokenStyles } from '../../components/designSystem';
 import { Badge, MetricCard, formatTime } from './components/UI';
 import { MapCanvas } from './components/MapCanvas';
@@ -46,6 +46,14 @@ export default function LogisticsPrototype() {
     } finally { setBusy(false); }
   }
 
+  const handleExit = () => {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.assign('/templates');
+    }
+  };
+
   if (!data) return <div className="logistics-prototype boot-screen" role={error ? 'alert' : 'status'}>{error || 'Preparing your local prototype…'}</div>;
   const jobs = data.jobs.filter(job => `${job.reference} ${job.customer} ${job.region}`.toLowerCase().includes(query.toLowerCase()));
   return (
@@ -56,19 +64,59 @@ export default function LogisticsPrototype() {
           <nav className="primary-nav" aria-label="Logistics navigation">
             {navigation.map(item => <button key={item.id} className={`nav-item${page === item.id ? ' active' : ''}`} aria-label={item.label} aria-current={page === item.id ? 'page' : undefined} onClick={() => setPage(item.id)}><item.icon size={18} /><span>{item.label}</span></button>)}
           </nav>
+          <div style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid #e2e8f0' }}>
+            <button
+              type="button"
+              onClick={handleExit}
+              className="nav-item"
+              style={{ width: '100%', textAlign: 'left', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+              title="Exit to surfaces showcase"
+            >
+              <ArrowLeft size={16} />
+              <span>Exit to Surfaces</span>
+            </button>
+          </div>
         </aside>
         <main className="main-panel">
-          <header className="topbar"><strong>Northstar Logistics</strong><span className="prototype-status">Demo · saved in this browser</span></header>
+          <header className="topbar" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <strong>Northstar Logistics</strong>
+              <span className="prototype-status">Demo · saved in this browser</span>
+            </div>
+            <button
+              type="button"
+              onClick={handleExit}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '6px 14px',
+                borderRadius: '8px',
+                fontSize: '12px',
+                fontWeight: 600,
+                background: '#ffffff',
+                border: '1px solid #cbd5e1',
+                color: '#182b46',
+                cursor: 'pointer',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                transition: 'all 0.15s ease'
+              }}
+              title="Exit prototype and return to templates"
+            >
+              <ArrowLeft size={14} />
+              <span>Exit Dashboard</span>
+            </button>
+          </header>
           <div className="page-content">
             <div className="page-heading"><div><span className="page-overline">LOCAL PROTOTYPE</span><h1>{navigation.find(item => item.id === page)?.label}</h1><p>Coordinate deliveries, fleet readiness and agent approvals.</p></div><SystemButton onClick={() => setCreating(true)}><Plus size={16} /> New delivery</SystemButton></div>
             {error && <p className="inline-error" role="alert">{error}</p>}
             <fieldset disabled={busy} className="prototype-workspace" aria-busy={busy}>
               {page === 'dashboard' && <>
                 <div className="metric-grid">
-                  <MetricCard label="Active deliveries" value={data.metrics.activeJobs} icon={ClipboardList} />
-                  <MetricCard label="Available drivers" value={data.metrics.availableDrivers} icon={Users} tone="green" />
-                  <MetricCard label="At risk" value={data.metrics.atRisk} icon={AlertTriangle} tone="orange" />
-                  <MetricCard label="On-time rate" value={`${data.metrics.onTimeRate}%`} icon={Truck} />
+                  <MetricCard label="Active deliveries" value={data.metrics.activeJobs} icon={ClipboardList} sparkline={[14, 20, 18, 26, 24, 30]} />
+                  <MetricCard label="Available drivers" value={data.metrics.availableDrivers} icon={Users} tone="green" sparkline={[8, 12, 10, 15, 14, 18]} />
+                  <MetricCard label="At risk" value={data.metrics.atRisk} icon={AlertTriangle} tone="orange" sparkline={[5, 7, 6, 8, 4, 3]} />
+                  <MetricCard label="On-time rate" value={`${data.metrics.onTimeRate}%`} icon={Truck} sparkline={[92, 94, 91, 95, 96, 97.4]} />
                 </div>
                 <div className="prototype-columns"><section className="card"><h2>Delivery network</h2><MapCanvas stops={data.routes.flatMap(route => route.stops)} /></section><section className="card"><h2>Agent recommendations</h2><Recommendations data={data} perform={perform} /></section></div>
                 <JobTable jobs={jobs.slice(0, 6)} data={data} perform={perform} />

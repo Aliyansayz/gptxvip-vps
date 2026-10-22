@@ -1,5 +1,7 @@
 import React from "react";
-import { BarChart3, ChevronRight, Sun, Moon } from "lucide-react";
+import { ChevronRight, Sun, Moon } from "lucide-react";
+import { ContactForm } from "../shared/components/ContactForm";
+import { Logo } from "../shared/components/Logo";
 
 interface MainFooterProps {
   setActiveTab: (tab: any, subTab?: string) => void;
@@ -18,21 +20,32 @@ export const MainFooter: React.FC<MainFooterProps> = ({
 }) => {
   return (
     <footer className="border-t transition-colors duration-300 mt-auto border-zinc-800 bg-zinc-900 relative z-50">
-      <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div className="space-y-4 col-span-1 md:col-span-2">
-          <a href="/" aria-label="Return to GPTX.VIP home" className="flex w-fit items-center gap-2 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-500">
-            <div className="w-6 h-6 bg-emerald-500 rounded flex items-center justify-center">
-              <BarChart3 className="w-3 h-3 text-black" />
-            </div>
-            <span className="font-display font-black tracking-tighter text-lg uppercase text-zinc-100">
-              GPTX.VIP
-            </span>
+      <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.25fr_1.15fr_0.85fr_0.75fr] gap-8">
+        <div className="space-y-4">
+          <a href="/" aria-label="Return to GPTX.VIP home" className="flex w-fit items-center gap-2.5 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-500">
+            <Logo size="sm" variant="default" wordmarkClassName="text-zinc-100" />
           </a>
           <p className="text-xs font-mono leading-relaxed max-w-sm text-zinc-400">
             Advanced analytical environment and visual documentation engine for algorithmic trading concepts and execution simulations.
           </p>
           <a href="mailto:aliyan@gptx.vip" className="block w-fit text-xs font-mono text-zinc-300 hover:text-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
             Contact: aliyan@gptx.vip
+          </a>
+        </div>
+
+        <div className="space-y-4">
+          <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-100">Send a message</h4>
+          <ContactForm
+            variant="compact"
+            tone="dark"
+            accent="emerald"
+            title="Questions about a tool or lesson?"
+            description="This form reaches the site owner directly."
+            subject="Contact from Finhub workspace"
+            className="[&_input]:border-zinc-700 [&_input]:bg-zinc-950"
+          />
+          <a href="/contact" className="inline-block text-xs font-mono text-zinc-400 underline decoration-zinc-700 underline-offset-4 transition-colors hover:text-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
+            Or open the full contact page
           </a>
         </div>
         

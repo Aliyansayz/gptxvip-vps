@@ -19,6 +19,13 @@ function ScrollToTop() {
   return null
 }
 
+function ExternalRedirect({ to }: { to: string }) {
+  useEffect(() => {
+    window.location.replace(to);
+  }, [to]);
+  return null;
+}
+
 export default function App() {
   const navigate = useNavigate()
   const location = useLocation()
@@ -30,10 +37,11 @@ export default function App() {
       {!isWorkspaceRuntime && <RootNavbar
         onNavigateFinhub={() => window.location.assign('/finhub')}
         onNavigateCodeConcepts={() => window.location.assign('/code_concepts/general')}
+        onNavigateAgentWorkspace={() => window.location.assign('/workspace')}
         onNavigateAgents={() => navigate('/')}
         onNavigateProjectSurfaces={() => navigate('/templates')}
         onNavigateBlogs={() => window.location.assign('/blogs')}
-        onBookDemo={() => window.location.assign('mailto:aliyan@gptx.vip')}
+        onBookDemo={() => window.location.assign('/contact')}
         onSearch={(query) => navigate(query ? `/templates?q=${encodeURIComponent(query)}` : '/templates')}
         searchPlaceholder="Search project surfaces"
       />}
@@ -44,6 +52,8 @@ export default function App() {
           <Route path="/templates" element={<Browse />} />
           <Route path="/templates/:slug" element={<TemplateDetail />} />
           <Route path="/prototypes/:prototypeId" element={<PrototypeRuntime />} />
+          <Route path="/lab/workspace" element={<ExternalRedirect to="/workspace" />} />
+          <Route path="/workspace" element={<ExternalRedirect to="/workspace" />} />
           {Object.entries(labViewPaths).map(([view, path]) => (
             <Route key={path} path={path} element={<LabRuntime initialView={view as LabView} />} />
           ))}
@@ -57,6 +67,7 @@ export default function App() {
       {!isWorkspaceRuntime && <RootFooter
         onNavigateFinhub={() => window.location.assign('/finhub')}
         onNavigateCodeConcepts={() => window.location.assign('/code_concepts/general')}
+        onNavigateAgentWorkspace={() => window.location.assign('/workspace')}
         onNavigateDevLush={() => navigate('/')}
         onNavigateProjectSurfaces={() => navigate('/templates')}
         onNavigateAnalyticsSurfaces={() => navigate('/templates?category=Analytics')}
