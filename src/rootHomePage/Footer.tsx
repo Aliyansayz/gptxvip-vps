@@ -1,11 +1,12 @@
 import React from 'react';
-import { ArrowUpRight, BookOpen, Code2, LineChart, Mail } from 'lucide-react';
+import { ArrowUpRight, BookOpen, Code2, LineChart, Mail, Briefcase } from 'lucide-react';
 import { ContactForm } from '../shared/components/ContactForm';
 import { Logo } from '../shared/components/Logo';
 
 interface FooterProps {
     onNavigateFinhub: () => void;
     onNavigateAgentWorkspace?: () => void;
+    onNavigateUseCases?: () => void;
     onNavigateDevLush: () => void;
     onNavigateBlogs: () => void;
     onNavigateCodeConcepts?: () => void;
@@ -22,6 +23,7 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({
     onNavigateFinhub,
     onNavigateAgentWorkspace,
+    onNavigateUseCases,
     onNavigateDevLush,
     onNavigateBlogs,
     onNavigateCodeConcepts = () => window.location.assign('/code_concepts/general'),
@@ -73,6 +75,7 @@ export const Footer: React.FC<FooterProps> = ({
                     <h2 className={`text-xs font-bold uppercase tracking-[0.16em] ${dark ? 'text-zinc-100' : skin.heading}`}>Explore</h2>
                     <ul className="mt-4 space-y-3 text-sm">
                         <li><button onClick={onNavigateAgentWorkspace || (() => window.location.assign('/workspace'))} className={linkClass}>Agent Workspace</button></li>
+                        <li><button onClick={onNavigateUseCases || (() => window.location.assign('/resources/usecases'))} className={linkClass}><Briefcase className="h-4 w-4" />Use Cases & Case Studies</button></li>
                         <li><button onClick={onNavigateCodeConcepts} className={linkClass}><Code2 className="h-4 w-4" />Code Concepts</button></li>
                         <li><button onClick={onNavigateDevLush} className={linkClass}><Logo size="sm" variant="icon-only" className="mr-2" />Agent Labs</button></li>
                         {onNavigateProjectSurfaces && <li><button onClick={onNavigateProjectSurfaces} className={linkClass}>Project surfaces</button></li>}
@@ -98,7 +101,7 @@ export const Footer: React.FC<FooterProps> = ({
             <div className={`border-t px-5 py-4 text-xs sm:px-8 ${dark ? 'border-zinc-800 text-zinc-500' : skin.rule}`}>
                 <div className="mx-auto flex max-w-6xl flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                     <span>© {new Date().getFullYear()} GPTX.VIP</span>
-                    <span>Code Concepts · Agent Labs · Finhub · Notes</span>
+                    <span>Code Concepts · Agent Labs · Finhub · Use Cases · Notes</span>
                 </div>
             </div>
         </footer>

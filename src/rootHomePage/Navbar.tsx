@@ -8,6 +8,7 @@ interface NavbarProps {
     onNavigateDevLush?: () => void;
     onNavigateAgents?: () => void;
     onNavigateAgentWorkspace?: () => void;
+    onNavigateUseCases?: () => void;
     onNavigateProjectSurfaces?: () => void;
     onNavigateSoftware?: () => void;
     onNavigateBlogs: () => void;
@@ -31,6 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     onNavigateDevLush,
     onNavigateAgents,
     onNavigateAgentWorkspace,
+    onNavigateUseCases,
     onNavigateProjectSurfaces,
     onNavigateSoftware,
     onNavigateBlogs,
@@ -51,12 +53,22 @@ export const Navbar: React.FC<NavbarProps> = ({
             window.location.assign('/workspace');
         }
     });
+    const navigateUseCases = onNavigateUseCases || (() => {
+        if ((window as any).smartNavigate) {
+            (window as any).smartNavigate('/resources/usecases');
+        } else {
+            window.location.assign('/resources/usecases');
+        }
+    });
     const pathname = window.location.pathname;
     const isAgentWorkspace = pathname.startsWith('/workspace') || pathname.startsWith('/agent-workspace');
+    const isUseCases = pathname.startsWith('/resources') || pathname.startsWith('/usecases') || pathname.startsWith('/case-studies');
     const currentArea = pathname.startsWith('/agents/templates')
         ? 'Project surfaces'
         : isAgentWorkspace
         ? 'Agent Workspace'
+        : isUseCases
+        ? 'Use Cases'
         : pathname.startsWith('/agents')
         ? 'Agent catalog'
         : pathname.startsWith('/contact')
@@ -137,6 +149,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className={`max-w-24 truncate rounded-full border px-2 py-1 text-[10px] font-bold uppercase tracking-wide sm:max-w-none ${skin.pill}`} aria-label={`Current area: ${currentArea}`}>{currentArea}</span>
                 <nav className={`hidden items-center gap-1 text-sm font-semibold xl:flex ${glass ? 'text-slate-600' : 'text-slate-600'}`} aria-label="Primary navigation">
                     <button type="button" onClick={navigateAgentWorkspace} aria-current={currentArea === 'Agent Workspace' ? 'page' : undefined} className={navClass(currentArea === 'Agent Workspace')}>Agent Workspace</button>
+                    <button type="button" onClick={navigateUseCases} aria-current={currentArea === 'Use Cases' ? 'page' : undefined} className={navClass(currentArea === 'Use Cases')}>Use Cases</button>
                     <button type="button" onClick={navigateAgents} aria-current={currentArea === 'Agent catalog' ? 'page' : undefined} className={navClass(currentArea === 'Agent catalog')}>Agent catalog</button>
                     {onNavigateProjectSurfaces && <button type="button" onClick={onNavigateProjectSurfaces} aria-current={currentArea === 'Project surfaces' ? 'page' : undefined} className={navClass(currentArea === 'Project surfaces')}>Project surfaces</button>}
                     {onNavigateSoftware && <button type="button" onClick={onNavigateSoftware} className={navClass(false)}>Software</button>}
@@ -154,6 +167,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {onSearch && <form onSubmit={submitSearch} role="search" className="mb-2"><label className="sr-only" htmlFor="root-mobile-site-search">Search project surfaces</label><input id="root-mobile-site-search" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder={searchPlaceholder} className={`h-11 w-full rounded border px-4 text-sm outline-none ${skin.search} ${skin.ring}`} /></form>}
                 <p className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Explore</p>
                 <button type="button" onClick={() => navigate(navigateAgentWorkspace)} aria-current={currentArea === 'Agent Workspace' ? 'page' : undefined} className={menuLinkClass}>Agent Workspace</button>
+                <button type="button" onClick={() => navigate(navigateUseCases)} aria-current={currentArea === 'Use Cases' ? 'page' : undefined} className={menuLinkClass}>Use Cases</button>
                 <button type="button" onClick={() => navigate(navigateAgents)} aria-current={currentArea === 'Agent catalog' ? 'page' : undefined} className={menuLinkClass}>Agent catalog</button>
                 {onNavigateProjectSurfaces && <button type="button" onClick={() => navigate(onNavigateProjectSurfaces)} aria-current={currentArea === 'Project surfaces' ? 'page' : undefined} className={menuLinkClass}>Project surfaces</button>}
                 <button type="button" onClick={() => navigate(onNavigateFinhub)} className={menuLinkClass}>Finhub</button>

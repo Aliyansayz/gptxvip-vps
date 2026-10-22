@@ -20,6 +20,7 @@ const RootHomePage = lazy(() => import("./rootHomePage/RootHomePage").then(modul
 const ContactPage = lazy(() => import("./rootHomePage/ContactPage").then(module => ({ default: module.ContactPage })));
 const AgentAreaArticlePage = lazy(() => import("./AgentArea/pages/ArticlePage").then(module => ({ default: module.AgentAreaArticlePage })));
 const AgentWorkspacePage = lazy(() => import("./rootHomePage/AgentWorkspacePage").then(module => ({ default: module.AgentWorkspacePage })));
+const UseCasesPage = lazy(() => import("./resources/usecases/UseCasesPage").then(module => ({ default: module.UseCasesPage })));
 
 import { Toaster } from 'sonner';
 
@@ -41,7 +42,8 @@ type ActiveTabType =
   | "core-concepts"
   | "math-primer"
   | "agent-area"
-  | "agent-workspace";
+  | "agent-workspace"
+  | "usecases";
 
 const learningTabs = ["code-concepts", "core-concepts", "math-primer"] as const;
 const finhubTabs = [
@@ -78,6 +80,10 @@ function readAppRoute(pathname: string) {
   if (prefix === "roadmap") return { tab: "roadmap-workspace" as ActiveTabType, category: knownCategory, activity: undefined, subTab: "" };
   if (prefix === "agent-area") return { tab: "agent-area" as ActiveTabType, category: knownCategory, activity: segments[1], subTab: "" };
   if (prefix === "workspace" || prefix === "agent-workspace") return { tab: "agent-workspace" as ActiveTabType, category: knownCategory, activity: segments[1], subTab: segments[1] || "" };
+  if (prefix === "resources" || prefix === "usecases" || prefix === "case-studies") {
+    const slug = (prefix === "resources" && segments[1] === "usecases") ? segments[2] : segments[1];
+    return { tab: "usecases" as ActiveTabType, category: knownCategory, activity: slug, subTab: slug || "" };
+  }
 
   if (prefix === "finhub" && segments[1]) {
     const routeTab = segments[1] as (typeof finhubTabs)[number];
@@ -160,6 +166,7 @@ export default function App({ initialTab }: AppProps = {}) {
     if (tab === "dev-labs-workspace") return "/agents/lab";
     if (tab === "agent-area") return "/agent-area";
     if (tab === "agent-workspace") return subTab ? `/workspace/${encodeURIComponent(subTab)}` : "/workspace";
+    if (tab === "usecases") return subTab ? `/resources/usecases/${encodeURIComponent(subTab)}` : "/resources/usecases";
     if (tab === "core-concepts") return `/core_concepts/${activeCodeCategory}`;
     if (tab === "math-primer") return `/math_primer/${activeCodeCategory}`;
     if (tab === "code-concepts") return `/code_concepts/${activeCodeCategory}`;
@@ -185,6 +192,14 @@ export default function App({ initialTab }: AppProps = {}) {
     }
     if (tab === "agent-workspace") {
       const path = subTab ? `/workspace/${encodeURIComponent(subTab)}` : "/workspace";
+      setActiveTabState(tab);
+      setActiveSubTab(subTab);
+      setInitialDeepLinkActivity(subTab || undefined);
+      if (window.location.pathname !== path) window.history.pushState({}, "", path);
+      return;
+    }
+    if (tab === "usecases") {
+      const path = subTab ? `/resources/usecases/${encodeURIComponent(subTab)}` : "/resources/usecases";
       setActiveTabState(tab);
       setActiveSubTab(subTab);
       setInitialDeepLinkActivity(subTab || undefined);
@@ -330,6 +345,21 @@ export default function App({ initialTab }: AppProps = {}) {
             onNavigateFinhub={() => navigateTab("home")}
             onNavigateCodeConcepts={() => navigateCodeConcepts()}
             onNavigateAgents={() => window.location.assign('/agents')}
+            onNavigateProjectSurfaces={() => window.location.assign('/agents/templates')}
+            onNavigateBlogs={() => window.location.assign('/blogs')}
+            onNavigateContact={() => navigateTab("contact")}
+          />
+        </Suspense>
+      ) : activeTab === "usecases" ? (
+        <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-zinc-500">Loading Case Studies...</div>}>
+          <UseCasesPage
+            initialSlug={initialDeepLinkActivity}
+            onNavigateHome={() => navigateTab("root-home")}
+            onNavigateFinhub={() => navigateTab("home")}
+            onNavigateCodeConcepts={() => navigateCodeConcepts()}
+            onNavigateAgents={() => window.location.assign('/agents')}
+            onNavigateDevLush={() => window.location.assign('/agents')}
+            onNavigateAgentWorkspace={() => navigateTab("agent-workspace")}
             onNavigateProjectSurfaces={() => window.location.assign('/agents/templates')}
             onNavigateBlogs={() => window.location.assign('/blogs')}
             onNavigateContact={() => navigateTab("contact")}
