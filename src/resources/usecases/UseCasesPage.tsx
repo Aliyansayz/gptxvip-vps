@@ -32,6 +32,19 @@ export const UseCasesPage: React.FC<UseCasesPageProps> = ({
 }) => {
   const [activeSlug, setActiveSlug] = useState<string | null>(initialSlug || null);
 
+  // Canonicalize slug aliases
+  const resolveCanonicalSlug = (rawSlug: string): string => {
+    if (rawSlug === 'vireon') return 'vireon-threat-center';
+    if (
+      rawSlug === 'investment-platform' ||
+      rawSlug === 'investment-platform-tokenized-real-estate' ||
+      rawSlug === 'investment'
+    ) {
+      return 'real-estate-investment-platform';
+    }
+    return rawSlug;
+  };
+
   // Sync state with URL if user navigates back/forward
   useEffect(() => {
     const handlePopState = () => {
@@ -39,21 +52,23 @@ export const UseCasesPage: React.FC<UseCasesPageProps> = ({
       const segments = path.split('/').filter(Boolean);
       // /resources/usecases/:slug or /usecases/:slug
       if (segments[0] === 'resources' && segments[1] === 'usecases' && segments[2]) {
-        setActiveSlug(segments[2]);
+        setActiveSlug(resolveCanonicalSlug(segments[2]));
       } else if (segments[0] === 'usecases' && segments[1]) {
-        setActiveSlug(segments[1]);
+        setActiveSlug(resolveCanonicalSlug(segments[1]));
       } else {
         setActiveSlug(null);
       }
     };
 
+    handlePopState();
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   const handleSelectCaseStudy = (slug: string) => {
-    setActiveSlug(slug);
-    const newPath = `/resources/usecases/${encodeURIComponent(slug)}`;
+    const canonical = resolveCanonicalSlug(slug);
+    setActiveSlug(canonical);
+    const newPath = `/resources/usecases/${encodeURIComponent(canonical)}`;
     if (window.location.pathname !== newPath) {
       window.history.pushState({}, '', newPath);
     }
@@ -68,11 +83,13 @@ export const UseCasesPage: React.FC<UseCasesPageProps> = ({
   };
 
   const selectedStudy = activeSlug
-    ? CASE_STUDIES.find((item) => item.slug === activeSlug)
+    ? CASE_STUDIES.find(
+        (item) => item.slug === activeSlug || resolveCanonicalSlug(item.slug) === activeSlug
+      ) || CASE_STUDIES[0]
     : null;
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#fbfcfb] text-slate-900 selection:bg-cyan-200 selection:text-slate-900 dark:bg-[#07090e] dark:text-zinc-100">
+    <div className="flex min-h-screen flex-col bg-[#F8FAFC] text-slate-900 selection:bg-teal-200 selection:text-slate-900">
       {/* Root Navigation Bar */}
       <Navbar
         variant="default"

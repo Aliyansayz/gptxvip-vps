@@ -5,6 +5,8 @@ export * from './components/CaseStudyCard';
 export * from './components/CaseStudyDetail';
 export * from './components/UseCasesFilterBar';
 export * from './components/LeadGenerationSection';
+export * from './components/vireon/VireonThreatCenterBento';
+export * from './components/investment/InvestmentBentoGrid';
 export * from './UseCasesDirectory';
 export * from './UseCasesPage';
 export { default } from './UseCasesPage';
