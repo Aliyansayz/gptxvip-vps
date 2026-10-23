@@ -3,7 +3,7 @@ import { ArrowRight, ChevronDown, Menu, X } from 'lucide-react';
 import { Logo } from '../shared/components/Logo';
 
 interface NavbarProps {
-    onNavigateFinhub: () => void;
+    onNavigateFinhub?: () => void;
     onNavigateCodeConcepts?: () => void;
     onNavigateDevLush?: () => void;
     onNavigateAgents?: () => void;
@@ -12,7 +12,7 @@ interface NavbarProps {
     onNavigateProjectSurfaces?: () => void;
     onNavigateGuide?: () => void;
     onNavigateSoftware?: () => void;
-    onNavigateBlogs: () => void;
+    onNavigateBlogs?: () => void;
     onBookDemo?: () => void;
     onSearch?: (query: string) => void;
     searchPlaceholder?: string;
@@ -49,7 +49,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     const mobileTriggerRef = useRef<HTMLButtonElement>(null);
     const resourcesRef = useRef<HTMLDivElement>(null);
     const navigateAgents = onNavigateAgents || onNavigateDevLush || (() => window.location.assign('/agents'));
-    const navigateCodeConcepts = onNavigateCodeConcepts || (() => window.location.assign('/code_concepts/general'));
     const navigateGuide = onNavigateGuide || onNavigateSoftware || (() => window.location.assign('/guide'));
     const navigateAgentWorkspace = onNavigateAgentWorkspace || (() => {
         if ((window as any).smartNavigate) {
