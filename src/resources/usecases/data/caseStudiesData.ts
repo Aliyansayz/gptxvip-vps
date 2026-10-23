@@ -4,7 +4,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     id: 'cs-compliance-legal-agent',
     slug: 'compliance-legal-agent',
-    title: 'LexGuard Legal & Compliance Agent: Instant Contract Review & Always-On Audit Readiness',
+    title: 'AI Contract Review & Audit-Ready Compliance',
     client: 'LexGuard Enterprise Legal & Compliance',
     clientProfile: {
       name: 'LexGuard Global Operations',
@@ -48,7 +48,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     challenge: {
       headline: 'Slow Contract Approvals and Stressful Last-Minute Audit Prep',
       description:
-        'Sales and purchasing teams were waitingnearly a week just to get standard vendor agreements and NDAs reviewed. At the same time, preparing for SOC 2, GDPR, and HIPAA audits meant pulling legal and operations leaders away from their real work to hunt down signatures and policy screenshots across dozens of folders.',
+        'Sales and purchasing teams were waiting nearly a week just to get standard vendor agreements and NDAs reviewed. At the same time, preparing for SOC 2, GDPR, and HIPAA audits meant pulling legal and operations leaders away from their real work to hunt down signatures and policy screenshots across dozens of folders.',
       bulletPoints: [
         'Sales deals were delayed up to 5 business days waiting on routine contract reviews.',
         'Important risks — like automatic 2-year renewals or unlimited liability clauses — were easy to miss in 40-page PDFs.',
@@ -179,7 +179,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     id: 'cs-vireon-threat-center',
     slug: 'vireon-threat-center',
-    title: 'Vireon Threat Center: 24/7 Business Security Monitoring & Instant Threat Protection',
+    title: '24/7 Security Command Center & Instant Threat Protection',
     client: 'Vireon Security & MSSP Global',
     clientProfile: {
       name: 'Vireon Defense Technologies',
@@ -354,7 +354,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     id: 'cs-real-estate-investment',
     slug: 'real-estate-investment-platform',
-    title: 'Real Estate Investment Platform: Easy Fractional Property Investing & Live Return Tracking',
+    title: 'Fractional Real Estate Investing & Live Returns',
     client: 'Global Real Estate Investment Platform',
     clientProfile: {
       name: 'Investment Global Capital Partners',

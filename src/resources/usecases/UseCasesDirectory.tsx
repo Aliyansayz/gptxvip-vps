@@ -61,10 +61,10 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
           <div className="mb-6 flex flex-wrap items-center justify-between gap-4 text-xs text-white/80">
             <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 font-semibold tracking-wide text-white">
               <span className="h-2 w-2 rounded-full bg-[#d8ff38]" />
-              Real Business Results • Interactive Live Workspaces
+              Real Business Solutions • Live Interactive Demos
             </span>
             <span className="font-mono text-[11px] text-[#d8ff38]">
-              03 INTERACTIVE USE CASES READY
+              03 LIVE USE CASES
             </span>
           </div>
 
@@ -73,10 +73,10 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
               className="text-3xl sm:text-5xl font-normal leading-[1.04] tracking-[-0.05em] text-white"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
-              Practical AI &amp; software solutions that save hours, reduce risk, and help your business grow.
+              See How Teams Save Hours Every Week with Simple, Smart AI Workspaces.
             </h1>
             <p className="mt-4 text-sm sm:text-base text-white/80 leading-relaxed">
-              See how teams use our interactive workspaces to review legal contracts in minutes, protect company systems 24/7, and simplify property investing — all explained in plain, everyday business language.
+              Explore real-world examples: review contracts in under 4 minutes, protect company systems around the clock, and make property investing accessible starting at $50. All explained in plain business language with zero confusing jargon.
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <button
@@ -84,7 +84,7 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
                 onClick={() => onSelectCaseStudy('compliance-legal-agent')}
                 className="inline-flex items-center gap-3.5 rounded-[30px] bg-[#d8ff38] px-4 py-2.5 text-xs font-bold text-[#101014] transition hover:-translate-y-0.5 cursor-pointer"
               >
-                <span>Try Compliance &amp; Legal Agent</span>
+                <span>Try Contract Review Agent</span>
                 <span className="grid h-5 w-5 place-items-center rounded-full bg-[#101014] text-[10px] text-white">
                   ↗
                 </span>
@@ -93,7 +93,7 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
                 href="#usecases-catalog"
                 className="inline-flex items-center gap-2 rounded-[30px] border border-white/25 bg-white/10 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-white/20"
               >
-                <span>Browse All Use Cases</span>
+                <span>Explore All Use Cases</span>
                 <span className="text-[#d8ff38]">↓</span>
               </a>
             </div>
@@ -122,7 +122,7 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
               className="max-w-xl text-2xl sm:text-3xl font-medium leading-[1.15] tracking-[-0.055em] text-[#101014]"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
-              Built for real teams, not just technical specialists — clear screens, fast answers, and measurable results from day one.
+              Built for real business teams — simple screens, quick decisions, and measurable time saved every day.
             </h2>
             <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#101014] text-xs text-white">
               ✳
@@ -150,10 +150,10 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
                   className="mb-2 text-2xl font-medium leading-[1.04] tracking-[-0.06em]"
                   style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                 >
-                  Compliance &amp; Legal Agent.
+                  Contract &amp; Compliance Agent.
                 </h3>
                 <p className="text-xs leading-relaxed text-white/85">
-                  Review contracts in 3.5 minutes, translate legal risks into plain English, and stay 100% ready for GDPR, SOC 2, and HIPAA audits.
+                  Review agreements in 3.5 minutes, spot legal risks in plain English, and stay audit-ready for GDPR, SOC 2, and HIPAA automatically.
                 </p>
               </div>
             </article>
@@ -167,16 +167,16 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
                   'radial-gradient(circle at 60% 35%, rgba(255,255,255,.16), transparent 36%), linear-gradient(140deg, #222, #050506)',
               }}
             >
-              <div className="text-[11px] text-white/65">24/7 Business Protection</div>
+              <div className="text-[11px] text-white/65">24/7 Security Command</div>
               <div>
                 <h3
                   className="mb-2 text-2xl font-medium leading-[1.04] tracking-[-0.06em]"
                   style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                 >
-                  Security in one view.
+                  All your protection in one place.
                 </h3>
                 <p className="text-xs leading-relaxed text-white/80">
-                  Stop suspicious logins in under 60 seconds and keep tamper-proof backups ready without juggling six different dashboards.
+                  Stop suspicious logins in under 60 seconds and keep tamper-proof backups ready without jumping between half a dozen consoles.
                 </p>
               </div>
             </article>
@@ -194,7 +194,7 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
                 +85%
               </div>
               <p className="text-xs leading-relaxed text-[#555560]">
-                Faster contract sign-offs, simpler investor onboarding, and clearer daily reporting across every department.
+                Faster contract approvals, simpler investor onboarding, and clearer daily numbers across every department.
               </p>
             </article>
           </div>
@@ -205,7 +205,7 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
           <div className="mb-8 flex flex-wrap items-end justify-between gap-6">
             <div>
               <span className="block text-xs font-bold uppercase tracking-widest text-[#343edb] mb-2">
-                01 / INTERACTIVE CASE STUDIES
+                01 / REAL BUSINESS EXAMPLES
               </span>
               <h2
                 className="text-4xl sm:text-6xl font-medium leading-[0.94] tracking-[-0.075em] text-transparent bg-clip-text"
@@ -214,11 +214,11 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
                   backgroundImage: 'linear-gradient(100deg, #2534bf, #8d9dff)',
                 }}
               >
-                Featured<br />Use Cases
+                Explore<br />Use Cases
               </h2>
             </div>
             <p className="max-w-md text-xs sm:text-sm text-[#777780] leading-relaxed">
-              Every use case below includes a live interactive workspace you can click through right in your browser, plus a plain-English breakdown of how it works.
+              Click any use case below to test the live interactive workspace right in your browser, with clear steps and plain-English explanations.
             </p>
           </div>
 
@@ -266,7 +266,7 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
                 No use cases matched your search.
               </p>
               <p className="mt-1 text-xs text-[#777780]">
-                Try a simpler keyword or click Reset Filters to see all interactive showcases.
+                Try a simpler keyword or click Reset Filters to view all use cases.
               </p>
               <button
                 onClick={handleClearFilters}
