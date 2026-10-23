@@ -226,9 +226,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                         )}
                     </div>
                     {onNavigateProjectSurfaces && <button type="button" onClick={onNavigateProjectSurfaces} aria-current={currentArea === 'Project surfaces' ? 'page' : undefined} className={navClass(currentArea === 'Project surfaces')}>Project surfaces</button>}
-                    <button type="button" onClick={onNavigateFinhub} aria-current={currentArea === 'Finhub' ? 'page' : undefined} className={navClass(currentArea === 'Finhub')}>Finhub</button>
-                    <button type="button" onClick={navigateCodeConcepts} aria-current={currentArea === 'Code Concepts' ? 'page' : undefined} className={navClass(currentArea === 'Code Concepts')}>Code Concepts</button>
-                    <button type="button" onClick={onNavigateBlogs} aria-current={currentArea === 'Notes' ? 'page' : undefined} className={navClass(currentArea === 'Notes')}>Notes</button>
                 </nav>
                 <div className="flex items-center gap-2">
                     {onSearch && <form onSubmit={submitSearch} role="search" className="hidden lg:block"><label className="sr-only" htmlFor="root-site-search">Search project surfaces</label><input id="root-site-search" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder={searchPlaceholder} className={`h-9 w-44 rounded border px-4 text-sm outline-none xl:w-52 ${skin.search} ${skin.ring}`} /></form>}
@@ -241,14 +238,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <p className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Explore</p>
                 <button type="button" onClick={() => navigate(navigateAgentWorkspace)} aria-current={currentArea === 'Agent Workspace' ? 'page' : undefined} className={menuLinkClass}>Agent Workspace</button>
                 {onNavigateProjectSurfaces && <button type="button" onClick={() => navigate(onNavigateProjectSurfaces)} aria-current={currentArea === 'Project surfaces' ? 'page' : undefined} className={menuLinkClass}>Project surfaces</button>}
-                <button type="button" onClick={() => navigate(onNavigateFinhub)} className={menuLinkClass}>Finhub</button>
                 <p className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Resources</p>
                 <button type="button" onClick={() => navigate(navigateUseCases)} aria-current={currentArea === 'Use Cases' ? 'page' : undefined} className={menuLinkClass}>Use Cases</button>
                 <button type="button" onClick={() => navigate(navigateGuide)} aria-current={currentArea === 'Guide' ? 'page' : undefined} className={menuLinkClass}>Guide</button>
                 <button type="button" onClick={() => navigate(navigateAgents)} aria-current={currentArea === 'Agent catalog' ? 'page' : undefined} className={menuLinkClass}>Agent Catalog</button>
-                <p className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Learn and read</p>
-                <button type="button" onClick={() => navigate(navigateCodeConcepts)} className={menuLinkClass}>Code Concepts</button>
-                <button type="button" onClick={() => navigate(onNavigateBlogs)} className={menuLinkClass}>Notes</button>
                 {onBookDemo && <button type="button" onClick={() => navigate(onBookDemo)} aria-current={currentArea === 'Contact' ? 'page' : undefined} className={menuLinkClass}>Contact</button>}
             </div></nav>}
         </header>
