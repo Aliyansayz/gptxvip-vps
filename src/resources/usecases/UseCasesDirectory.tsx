@@ -73,7 +73,7 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
               className="text-3xl sm:text-5xl font-normal leading-[1.04] tracking-[-0.05em] text-white"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
-              See How Teams Save Hours Every Week with Simple, Smart AI Workspaces.
+              See How Teams Save Hours Every Week with <span className="hl-circle-sketch">Simple</span>, <span className="hl-brutalist">Smart AI Workspaces.</span>
             </h1>
             <p className="mt-4 text-sm sm:text-base text-white/80 leading-relaxed">
               Explore real-world examples: review contracts in under 4 minutes, protect company systems around the clock, and make property investing accessible starting at $50. All explained in plain business language with zero confusing jargon.
@@ -122,7 +122,7 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
               className="max-w-xl text-2xl sm:text-3xl font-medium leading-[1.15] tracking-[-0.055em] text-[#101014]"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
-              Built for real business teams — simple screens, quick decisions, and measurable time saved every day.
+              Built for real business teams — <span className="hl-circle-sketch">simple screens</span>, quick decisions, and <span className="hl-brutalist">measurable time saved</span> every day.
             </h2>
             <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#101014] text-xs text-white">
               ✳
@@ -286,7 +286,7 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
                 className="block text-3xl sm:text-4xl font-medium tracking-[-0.07em] text-[#343edb]"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                3.5m
+                <span className="hl-brutalist">3.5m</span>
               </strong>
               <span className="text-xs text-[#777780]">
                 Average contract review time with LexGuard Agent
@@ -297,7 +297,7 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
                 className="block text-3xl sm:text-4xl font-medium tracking-[-0.07em] text-[#343edb]"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                &lt; 60s
+                <span className="hl-circle-sketch">&lt; 60s</span>
               </strong>
               <span className="text-xs text-[#777780]">
                 Time to stop suspicious logins in Vireon Threat Center
@@ -319,7 +319,7 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
                 className="block text-3xl sm:text-4xl font-medium tracking-[-0.07em] text-[#343edb]"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                100%
+                <span className="hl-brutalist">100%</span>
               </strong>
               <span className="text-xs text-[#777780]">
                 Audit-ready records across GDPR, SOC 2 &amp; HIPAA

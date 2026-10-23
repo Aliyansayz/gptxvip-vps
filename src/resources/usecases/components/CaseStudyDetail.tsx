@@ -258,7 +258,7 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({
                 className="mt-2 text-2xl sm:text-3xl font-medium tracking-[-0.045em] text-[#101014]"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                {caseStudy.challenge.headline}
+                <span className="hl-circle-sketch">{caseStudy.challenge.headline}</span>
               </h2>
               <p className="mt-3 text-sm sm:text-base text-[#555560] leading-relaxed">
                 {caseStudy.challenge.description}
@@ -288,13 +288,12 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({
                 02 / HOW IT WORKS IN 3 SIMPLE STEPS
               </span>
               <h2
-                className="mt-2 text-2xl sm:text-4xl font-medium leading-[0.98] tracking-[-0.06em] text-transparent bg-clip-text"
+                className="mt-2 text-2xl sm:text-4xl font-medium leading-[1.2] tracking-[-0.06em] text-[#101014]"
                 style={{
                   fontFamily: "'Space Grotesk', sans-serif",
-                  backgroundImage: 'linear-gradient(100deg, #2534bf, #8d9dff)',
                 }}
               >
-                {caseStudy.solution.headline}
+                <span className="hl-brutalist">{caseStudy.solution.headline}</span>
               </h2>
               <p className="mt-3 text-sm sm:text-base text-[#555560] leading-relaxed">
                 {caseStudy.solution.description}
@@ -368,7 +367,7 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({
                 className="mt-2 text-2xl sm:text-3xl font-medium tracking-[-0.045em] text-[#101014]"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                {caseStudy.results.headline}
+                <span className="hl-circle-sketch">{caseStudy.results.headline}</span>
               </h2>
               <p className="mt-2.5 text-sm sm:text-base text-[#555560] leading-relaxed">
                 {caseStudy.results.description}

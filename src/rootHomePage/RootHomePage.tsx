@@ -511,7 +511,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                   <button type="button" onClick={() => (onNavigateContact ? onNavigateContact() : window.location.assign('/contact'))} className="inline-flex items-center gap-1.5 font-bold text-slate-700 underline decoration-accent-400 decoration-2 underline-offset-4 transition-colors hover:text-accent-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600">
                     Open the full contact page
                   </button>
-                  <span className="text-slate-500">or email <a href="mailto:aliyan@gptx.vip" className="font-mono text-slate-800 underline decoration-ink/20 underline-offset-4 transition-colors hover:text-accent-700">aliyan@gptx.vip</a></span>
+                  <span className="text-slate-500">or email <a href="mailto:hello@gptx.vip" className="font-mono text-slate-800 underline decoration-ink/20 underline-offset-4 transition-colors hover:text-accent-700">hello@gptx.vip</a></span>
                 </Reveal>
               </div>
             </section>

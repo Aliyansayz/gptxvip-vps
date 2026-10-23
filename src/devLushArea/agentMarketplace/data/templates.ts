@@ -17,7 +17,7 @@ export interface Template {
   tags: string[];
 }
 
-export const CONTACT_EMAIL = "aliyan@gptx.vip";
+export const CONTACT_EMAIL = "hello@gptx.vip";
 
 export const getContactHref = (template: Pick<Template, "name" | "slug">) => {
   const subject = encodeURIComponent(`Project inquiry: ${template.name}`);

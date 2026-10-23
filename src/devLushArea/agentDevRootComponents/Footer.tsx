@@ -47,9 +47,9 @@ const Footer: React.FC<FooterProps> = ({ theme, currentView }) => {
                         subject="Contact from DevLush"
                         className="w-full max-w-sm"
                     />
-                    <a href="mailto:aliyan@gptx.vip" className={`inline-flex items-center gap-2 text-sm font-medium opacity-80 transition-all duration-300 ${linkHover}`}>
+                    <a href="mailto:hello@gptx.vip" className={`inline-flex items-center gap-2 text-sm font-medium opacity-80 transition-all duration-300 ${linkHover}`}>
                         <Mail className="w-4 h-4 stroke-[1.5]" />
-                        aliyan@gptx.vip
+                        hello@gptx.vip
                     </a>
                 </div>
 

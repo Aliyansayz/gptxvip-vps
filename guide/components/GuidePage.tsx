@@ -54,7 +54,7 @@ export default function GuidePage({ guide, manual }: { guide?: GuideDefinition; 
       </section>
       <section className="ticker" aria-label="Guide capabilities"><div className="ticker-track">{[0, 1].map(copy => <Fragment key={copy}>{presentation.stages.map(stage => <Fragment key={stage}><span>{stage.toUpperCase()}</span><i aria-hidden="true">✳</i></Fragment>)}</Fragment>)}</div></section>
       <section id="modules" className="section modules">
-        <div className="section-head reveal"><div><span className="eyebrow">01 / SYSTEM MAP</span><h2>Six connected stages.<br /><em>One clear workflow.</em></h2></div><p>{item.subtitle} Explore each stage, then open the chapter for its working steps and completion checks.</p></div>
+        <div className="section-head reveal"><div><span className="eyebrow">01 / SYSTEM MAP</span><h2>Six connected stages.<br /><span className="hl-brutalist">One clear workflow.</span></h2></div><p>{item.subtitle} Explore each stage, then open the chapter for its working steps and completion checks.</p></div>
         <div className="bento-grid guide-module-grid">{item.sections.map((section, i) => { const CardIcon = cardIcons[i]; return <article key={section.id} className={`sys-card ${cardColors[i]} ${i === 0 || i === 3 ? "span-2" : ""} reveal`}>
           <div className="card-top"><span className="chip">{String(i + 1).padStart(2, "0")} / {presentation.stages[i].toUpperCase()}</span><CardIcon size={22} aria-hidden="true" /></div>
           <h3>{section.title}</h3><p>{section.summary}</p>
@@ -63,11 +63,11 @@ export default function GuidePage({ guide, manual }: { guide?: GuideDefinition; 
         </article>; })}</div>
       </section>
       <section id="flow" className="section flow-section">
-        <div className="section-head reveal"><div><span className="eyebrow">02 / OPERATIONAL CHAIN</span><h2>Every step visible.<br /><em>Every handoff clear.</em></h2></div><p>{item.subtitle} Follow the chain from the first record to a reviewed, documented outcome.</p></div>
+        <div className="section-head reveal"><div><span className="eyebrow">02 / OPERATIONAL CHAIN</span><h2>Every step visible.<br /><span className="hl-circle-sketch">Every handoff clear.</span></h2></div><p>{item.subtitle} Follow the chain from the first record to a reviewed, documented outcome.</p></div>
         <div className="pipeline guide-pipeline reveal"><div className="pipeline-line" aria-hidden="true"><span /></div>{item.sections.map((section, i) => { const StageIcon = cardIcons[i]; return <article key={section.id}><b>{String(i + 1).padStart(2, "0")}</b><i><StageIcon size={23} aria-hidden="true" /></i><h3>{presentation.stages[i]}</h3><p>{section.summary}</p><a href={`#${section.id}`}>OPEN CHAPTER <ArrowRight size={12} /></a></article>; })}</div>
       </section>
       <section id="workflow" className="section guide-reading-section">
-        <div className="section-head reveal"><div><span className="eyebrow">03 / FIELD GUIDE</span><h2>Read the workflow.<br /><em>Keep the detail close.</em></h2></div><p>Work through the chapters in order or jump to the stage you need. Each chapter finishes with a clear check before continuing.</p></div>
+        <div className="section-head reveal"><div><span className="eyebrow">03 / FIELD GUIDE</span><h2>Read the workflow.<br /><span className="hl-brutalist">Keep the detail close.</span></h2></div><p>Work through the chapters in order or jump to the stage you need. Each chapter finishes with a clear check before continuing.</p></div>
         <div className="guide-layout">
           <aside className="guide-contents"><div className="controller-top"><span>CHAPTER INDEX</span><b>06 STEPS</b></div><nav aria-label="Guide contents">{item.sections.map((section, i) => <a key={section.id} href={`#${section.id}`}><span>{String(i + 1).padStart(2, "0")}</span><div><strong>{presentation.stages[i]}</strong><small>{section.title}</small></div></a>)}{count > 0 && <a href="#illustrations" aria-current={activeSection === "illustrations" ? "location" : undefined}><BookOpen size={18} /><div><strong>Illustrated pages</strong><small>{count} original views</small></div></a>}</nav><div className="manual-readout"><span><i /> WORKING GUIDE</span></div></aside>
           <article className="guide-reader" aria-label={`${item.title} workflow`}>{item.sections.map((section, i) => <section id={section.id} className={`guide-section ${cardColors[i]}`} key={section.id}>
@@ -77,7 +77,7 @@ export default function GuidePage({ guide, manual }: { guide?: GuideDefinition; 
       </section>
       {count > 0 && <GuideIllustrations key={item.title} guide={item} surfaceRef={surfaceRef} />}
       <section id="review" className="section security-section"><div className="security-panel reveal">
-        <div className="security-copy"><span className="eyebrow">{count ? "05" : "04"} / REVIEW LAYER</span><h2>Keep the evidence.<br /><em>Own the decision.</em></h2><p>{item.sections.at(-1)?.outcome}</p><div className="security-tags"><span>SOURCE RECORDS</span><span>HUMAN REVIEW</span><span>CLEAR OWNERSHIP</span></div></div>
+        <div className="security-copy"><span className="eyebrow">{count ? "05" : "04"} / REVIEW LAYER</span><h2>Keep the evidence.<br /><span className="hl-circle-sketch">Own the decision.</span></h2><p>{item.sections.at(-1)?.outcome}</p><div className="security-tags"><span>SOURCE RECORDS</span><span>HUMAN REVIEW</span><span>CLEAR OWNERSHIP</span></div></div>
         <div className="security-orb" aria-hidden="true"><div className="orb-rings"><i /><i /><i /></div><div className="orb-core"><ShieldCheck size={26} /><span>REVIEW</span><small>BEFORE ACTION</small></div></div>
         <div className="security-readouts"><div><span>EVIDENCE</span><strong>Keep the source record</strong><i>●</i></div><div><span>HANDOFF</span><strong>Name the next owner</strong><i>●</i></div><div><span>COMPLETION</span><strong>Check the outcome</strong><i>●</i></div></div>
       </div></section>

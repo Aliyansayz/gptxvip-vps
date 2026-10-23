@@ -202,7 +202,7 @@ export const ComplianceLegalBento: React.FC = () => {
               className="text-sm font-bold text-[#343edb]"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
-              3.5 mins (vs. 5 days)
+              <span className="hl-circle-sketch">3.5 mins</span> (vs. 5 days)
             </strong>
           </div>
           <div className="rounded-xl border border-[#e9e9ec] bg-[#f5f5f7] px-3.5 py-2 text-right">
@@ -213,7 +213,7 @@ export const ComplianceLegalBento: React.FC = () => {
               className="text-sm font-bold text-[#101014]"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
-              {approvedCount} of {CONTRACT_CLAUSES.length} Ready
+              <span className="hl-brutalist">{approvedCount} of {CONTRACT_CLAUSES.length} Ready</span>
             </strong>
           </div>
         </div>

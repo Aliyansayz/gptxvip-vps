@@ -42,7 +42,7 @@ The current `/agents` implementation is a lead-based Agent Labs catalog:
 
 - `App.tsx` exposes only `/`, `/templates`, and `/templates/:slug`.
 - `SiteHeader.tsx` exposes the catalog, featured surfaces, search, and a direct owner-contact action.
-- `SiteFooter.tsx` exposes lightweight exploration links and `aliyan@gptx.vip`.
+- `SiteFooter.tsx` exposes lightweight exploration links and `hello@gptx.vip`.
 - `Home.tsx` presents lab topics first, then project surfaces, technical context, and direct email actions.
 - `src/devLushArea/agentMarketplace` remains the implementation directory for the lead catalog and its 12 surface records.
 
@@ -73,7 +73,7 @@ The catalog must not imply self-service purchasing. These elements are intention
 - Payment, sales, ratings, guarantees, and purchase claims.
 - Add-to-cart, download, and self-service purchase actions.
 
-**V2 replacement:** “View details”, “Contact owner”, and a prefilled email to `aliyan@gptx.vip`.
+**V2 replacement:** “View details”, “Contact owner”, and a prefilled email to `hello@gptx.vip`.
 
 ### 3.3 Catalog taxonomy before visitor intent
 
@@ -246,7 +246,7 @@ The V2 footer is compact and useful:
 - Resources: accessibility, source/architecture notes, contact.
 - A small copyright/status line.
 
-The catalog footer may include one direct contact link to `aliyan@gptx.vip`; exclude cart, checkout, pricing, licensing, and simulated-purchase language.
+The catalog footer may include one direct contact link to `hello@gptx.vip`; exclude cart, checkout, pricing, licensing, and simulated-purchase language.
 
 ## 5. V2 information architecture
 
@@ -300,7 +300,7 @@ Each episode is independently reviewable. Do not begin the next episode until th
 
 **Prompt:**
 
-> Audit `/`, `/agents`, `/finhub`, and `/blogs`. Define the lead catalog boundary for `/agents`, identify the existing lab registries and data files that can supply topic cards, and confirm that every inquiry action targets `aliyan@gptx.vip`. Remove cart, checkout, pricing, licensing, and payment routes. Add route-level notes and a migration checklist.
+> Audit `/`, `/agents`, `/finhub`, and `/blogs`. Define the lead catalog boundary for `/agents`, identify the existing lab registries and data files that can supply topic cards, and confirm that every inquiry action targets `hello@gptx.vip`. Remove cart, checkout, pricing, licensing, and payment routes. Add route-level notes and a migration checklist.
 
 **Acceptance:** `/agents` has one documented owner; lab data has one source of truth; every conversion path is a direct email inquiry.
 

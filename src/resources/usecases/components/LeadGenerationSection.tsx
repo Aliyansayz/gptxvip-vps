@@ -30,7 +30,7 @@ export const LeadGenerationSection: React.FC<LeadGenerationSectionProps> = ({
             className="text-3xl sm:text-4xl font-normal tracking-[-0.05em] text-white leading-[1.05]"
             style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
-            Ready to save hours on contracts, security, or daily operations?
+            Ready to <span className="hl-circle-sketch">save hours</span> on contracts, security, or <span className="hl-brutalist">daily operations?</span>
           </h2>
 
           <p className="text-sm sm:text-base text-white/85 leading-relaxed">

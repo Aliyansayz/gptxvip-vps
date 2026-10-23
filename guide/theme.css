@@ -313,3 +313,33 @@
   background-clip: text;
   color: transparent;
 }
+
+
+/* ------------------------------------------- Highlighters (Sketch & Brutalist) -- */
+
+.hl-circle-sketch {
+  position: relative;
+  display: inline-block;
+  padding: 0 6px;
+}
+
+.hl-circle-sketch::before {
+  content: "";
+  position: absolute;
+  inset: -4px -8px;
+  border: 2px solid #f97316;
+  border-radius: 50% 45% 55% 40% / 45% 55% 40% 50%;
+  transform: rotate(-2deg);
+  pointer-events: none;
+}
+
+.hl-brutalist {
+  background-color: #343edb;
+  color: #ffffff;
+  border: 2px solid #101014;
+  padding: 0.05em 0.35em;
+  box-shadow: 3px 3px 0px #101014;
+  font-weight: 600;
+  display: inline-block;
+  line-height: 1.25;
+}

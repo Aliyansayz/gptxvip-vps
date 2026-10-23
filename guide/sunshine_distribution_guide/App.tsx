@@ -81,7 +81,7 @@ export default function SunshineGuide() {
     <section id="overview" className="hero section blvd-hero-top">
       <div className="hero-copy reveal">
         <div className="micro-label"><span>V2 / FUTURE OPERATIONS</span><i></i><span>LOCAL-FIRST GUIDE</span></div>
-        <h1>Distribution,<br /><strong>synchronized.</strong></h1>
+        <h1>Distribution,<br /><span className="hl-circle-sketch">synchronized.</span></h1>
         <p className="lead">A high-clarity operating guide for warehouse receiving, FIFO inventory, multi-store distribution, receivables, reporting and audit — all on your machine.</p>
         <div className="hero-actions">
           <a href="#modules" className="btn btn-energy"><span>EXPLORE SYSTEM</span><b>↗</b></a>
@@ -132,7 +132,7 @@ export default function SunshineGuide() {
 
     <section id="modules" className="section modules">
       <div className="section-head reveal">
-        <div><span className="eyebrow">01 / SYSTEM MAP</span><h2>Ten modules.<br /><em>One operating core.</em></h2></div>
+        <div><span className="eyebrow">01 / SYSTEM MAP</span><h2>Ten modules.<br /><span className="hl-brutalist">One operating core.</span></h2></div>
         <p>The guide becomes an interactive information architecture: operational, visual, permission-aware and easy to scan.</p>
       </div>
 
@@ -218,7 +218,7 @@ export default function SunshineGuide() {
 
     <section id="flow" className="section flow-section">
       <div className="section-head reveal">
-        <div><span className="eyebrow">02 / OPERATIONAL CHAIN</span><h2>Goods in.<br /><em>Cash back.</em></h2></div>
+        <div><span className="eyebrow">02 / OPERATIONAL CHAIN</span><h2>Goods in.<br /><span className="hl-circle-sketch">Cash back.</span></h2></div>
         <p>The interface mirrors the distribution business: every state transition is visible, traceable and controlled.</p>
       </div>
 
@@ -234,7 +234,7 @@ export default function SunshineGuide() {
 
     <section id="manual" className="section manual-section">
       <div className="section-head reveal">
-        <div><span className="eyebrow">03 / INTERACTIVE GUIDE</span><h2>One guide.<br /><em>Three focused views.</em></h2></div>
+        <div><span className="eyebrow">03 / INTERACTIVE GUIDE</span><h2>One guide.<br /><span className="hl-brutalist">Three focused views.</span></h2></div>
         <p>Use the page controller to inspect the original guide while keeping the product experience crystal clear.</p>
       </div>
 
@@ -261,7 +261,7 @@ export default function SunshineGuide() {
       <div className="security-panel reveal">
         <div className="security-copy">
           <span className="eyebrow">04 / TRUST LAYER</span>
-          <h2>Built to keep the business <em>under your control.</em></h2>
+          <h2>Built to keep the business <span className="hl-circle-sketch">under your control.</span></h2>
           <p>Local storage, role controls, verified backups and auditable activity give the application a strong operational boundary without cloud dependency.</p>
           <div className="security-tags"><span>LOCAL SQLITE</span><span>SHA-256</span><span>RBAC</span><span>ROLLBACK COPY</span><span>AUDIT TRAIL</span></div>
         </div>

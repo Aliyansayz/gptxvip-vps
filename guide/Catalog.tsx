@@ -91,7 +91,7 @@ export default function Catalog() {
       <div className="hero-kicker"><span>INTERACTIVE GUIDE STUDIO &amp; OPERATING PLAYBOOKS</span><i></i><b>V3 / GUIDE VIEW</b></div>
       <div className="hero-grid">
         <div className="hero-copy reveal">
-          <h1>Guides that not only document software, but elevate <em>how teams operate.</em></h1>
+          <h1>Guides that not only document software, but <span className="hl-circle-sketch">elevate</span> <span className="hl-brutalist">how teams operate.</span></h1>
           <p>An interactive studio catalog for operating guides, workflow playbooks, and agent handbooks. Scan by mission, preview the interface, and jump directly into the guide you need.</p>
           <div className="hero-actions">
             <a href="#catalog" className="cta primary"><span>BROWSE GUIDES</span><b>↗</b></a>
@@ -119,7 +119,7 @@ export default function Catalog() {
     {/* Boulevard Intro & Feature Trio */}
     <section className="blvd-intro-section reveal">
       <div className="blvd-intro-line">
-        <h2>Reshaping how software is explained — we’re here to help your team move faster with clarity, structure, and edge.</h2>
+        <h2>Reshaping how software is explained — we’re here to help your team move faster with <span className="hl-circle-sketch">clarity</span>, structure, and <span className="hl-brutalist">competitive edge.</span></h2>
         <span className="blvd-round-icon">✳</span>
       </div>
       <div className="blvd-feature-grid">
@@ -150,7 +150,7 @@ export default function Catalog() {
 
     <section id="featured" className="section featured reveal">
       <div className="section-title">
-        <div><span className="eyebrow">01 / FEATURED GUIDE</span><h2>Guide of the <em>moment.</em></h2></div>
+        <div><span className="eyebrow">01 / FEATURED GUIDE</span><h2>Guide of the <span className="hl-circle-sketch">moment.</span></h2></div>
         <p>The strongest visual operating story gets the spotlight — then the rest of the library becomes a fast, filterable catalog.</p>
       </div>
 
@@ -184,7 +184,7 @@ export default function Catalog() {
 
     <section id="catalog" className="section catalog-section">
       <div className="section-title catalog-heading reveal">
-        <div><span className="eyebrow">02 / GUIDE INDEX</span><h2>Operating guides.<br /><em>Built to scan fast.</em></h2></div>
+        <div><span className="eyebrow">02 / GUIDE INDEX</span><h2>Operating guides.<br /><span className="hl-brutalist">Built to scan fast.</span></h2></div>
         <div className="catalog-tools">
           <label className="search-box">
             <span>⌕</span>
@@ -292,7 +292,7 @@ export default function Catalog() {
 
     <section id="collections" className="section collections reveal">
       <div className="section-title">
-        <div><span className="eyebrow">03 / COLLECTIONS</span><h2>Organize by<br /><em>mission.</em></h2></div>
+        <div><span className="eyebrow">03 / COLLECTIONS</span><h2>Organize by<br /><span className="hl-circle-sketch">mission.</span></h2></div>
         <p>Group guides by the kind of work they support so the library feels closer to an operating studio than a folder of PDFs.</p>
       </div>
 

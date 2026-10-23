@@ -210,7 +210,7 @@ reduced-motion users get an instant or static result rather than staggered lines
 
 **Acceptance:** every icon renders visibly; the accordion is keyboard operable
 with correct `aria-expanded`; no commercial content appears; the footer keeps
-`aliyan@gptx.vip` reachable.
+`hello@gptx.vip` reachable.
 
 ---
 

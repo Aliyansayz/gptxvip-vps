@@ -228,7 +228,7 @@ export const ProfileInfo: React.FC<ProfileInfoProps> = ({ showYears = false }) =
 
   const handleCopyEmail = async () => {
     try {
-      await navigator.clipboard.writeText("aliyan@gptx.vip");
+      await navigator.clipboard.writeText("hello@gptx.vip");
       setCopied(true);
       toast.success("Email address copied to clipboard!");
       if (copyResetTimeout.current !== null) window.clearTimeout(copyResetTimeout.current);
@@ -294,7 +294,7 @@ export const ProfileInfo: React.FC<ProfileInfoProps> = ({ showYears = false }) =
               className="flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 text-zinc-700 dark:text-zinc-200 text-sm font-semibold transition-colors shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2"
             >
               <Mail className="w-4 h-4" />
-              <span>aliyan@gptx.vip</span>
+              <span>hello@gptx.vip</span>
               {copied ? (
                 <Check className="w-3.5 h-3.5 text-emerald-500" />
               ) : (

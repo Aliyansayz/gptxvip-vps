@@ -28,8 +28,8 @@ export const MainFooter: React.FC<MainFooterProps> = ({
           <p className="text-xs font-mono leading-relaxed max-w-sm text-zinc-400">
             Advanced analytical environment and visual documentation engine for algorithmic trading concepts and execution simulations.
           </p>
-          <a href="mailto:aliyan@gptx.vip" className="block w-fit text-xs font-mono text-zinc-300 hover:text-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
-            Contact: aliyan@gptx.vip
+          <a href="mailto:hello@gptx.vip" className="block w-fit text-xs font-mono text-zinc-300 hover:text-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
+            Contact: hello@gptx.vip
           </a>
         </div>
 

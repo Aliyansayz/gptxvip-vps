@@ -7,7 +7,7 @@ import { Footer } from './Footer';
 import { Reveal, RevealGroup, RevealItem } from '../shared/components/Reveal';
 
 /** Single source for the owner address so no surface can hard-code a stale one. */
-export const CONTACT_EMAIL = 'aliyan@gptx.vip';
+export const CONTACT_EMAIL = 'hello@gptx.vip';
 
 const EXPECTATIONS = [
     { Icon: Clock, title: 'Reply within a day', body: 'Questions about a lesson or a bug in a tool are answered fastest, usually the same working day.' },

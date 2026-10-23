@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowRight, Menu, X } from 'lucide-react';
+import { ArrowRight, ChevronDown, Menu, X } from 'lucide-react';
 import { Logo } from '../shared/components/Logo';
 
 interface NavbarProps {
@@ -44,8 +44,10 @@ export const Navbar: React.FC<NavbarProps> = ({
     variant = 'default',
 }) => {
     const [open, setOpen] = useState(false);
+    const [resourcesOpen, setResourcesOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const mobileTriggerRef = useRef<HTMLButtonElement>(null);
+    const resourcesRef = useRef<HTMLDivElement>(null);
     const navigateAgents = onNavigateAgents || onNavigateDevLush || (() => window.location.assign('/agents'));
     const navigateCodeConcepts = onNavigateCodeConcepts || (() => window.location.assign('/code_concepts/general'));
     const navigateGuide = onNavigateGuide || onNavigateSoftware || (() => window.location.assign('/guide'));
@@ -87,6 +89,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         ? 'Notes'
         : 'Home';
 
+    const isResourcesActive = currentArea === 'Use Cases' || currentArea === 'Guide' || currentArea === 'Agent catalog';
     const glass = variant === 'glass';
 
     const skin = glass
@@ -146,6 +149,25 @@ export const Navbar: React.FC<NavbarProps> = ({
         return () => document.removeEventListener('keydown', closeOnEscape);
     }, [open]);
 
+    useEffect(() => {
+        if (!resourcesOpen) return;
+        const handleClickOutside = (event: MouseEvent) => {
+            if (resourcesRef.current && !resourcesRef.current.contains(event.target as Node)) {
+                setResourcesOpen(false);
+            }
+        };
+        const closeOnEscape = (event: KeyboardEvent) => {
+            if (event.key !== 'Escape') return;
+            setResourcesOpen(false);
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('keydown', closeOnEscape);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('keydown', closeOnEscape);
+        };
+    }, [resourcesOpen]);
+
     return (
         <header className={`sticky top-0 z-40 border-b ${skin.header}`}>
             <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
@@ -155,10 +177,55 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className={`max-w-24 truncate rounded-full border px-2 py-1 text-[10px] font-bold uppercase tracking-wide sm:max-w-none ${skin.pill}`} aria-label={`Current area: ${currentArea}`}>{currentArea}</span>
                 <nav className={`hidden items-center gap-1 text-sm font-semibold xl:flex ${glass ? 'text-slate-600' : 'text-slate-600'}`} aria-label="Primary navigation">
                     <button type="button" onClick={navigateAgentWorkspace} aria-current={currentArea === 'Agent Workspace' ? 'page' : undefined} className={navClass(currentArea === 'Agent Workspace')}>Agent Workspace</button>
-                    <button type="button" onClick={navigateUseCases} aria-current={currentArea === 'Use Cases' ? 'page' : undefined} className={navClass(currentArea === 'Use Cases')}>Use Cases</button>
-                    <button type="button" onClick={navigateAgents} aria-current={currentArea === 'Agent catalog' ? 'page' : undefined} className={navClass(currentArea === 'Agent catalog')}>Agent catalog</button>
+                    <div className="relative" ref={resourcesRef}>
+                        <button
+                            type="button"
+                            onClick={() => setResourcesOpen((prev) => !prev)}
+                            aria-expanded={resourcesOpen}
+                            aria-haspopup="true"
+                            aria-current={isResourcesActive ? 'page' : undefined}
+                            className={`inline-flex items-center gap-1 ${navClass(isResourcesActive || resourcesOpen)}`}
+                        >
+                            <span>Resources</span>
+                            <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${resourcesOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                        {resourcesOpen && (
+                            <div
+                                role="menu"
+                                aria-label="Resources"
+                                className={`absolute left-0 mt-2 w-48 rounded-xl border p-1.5 shadow-xl backdrop-blur-2xl z-50 ${glass ? 'border-ink/10 bg-paper/95 text-slate-800 shadow-slate-900/10' : 'border-slate-900/10 bg-white text-slate-800 shadow-slate-900/10'}`}
+                            >
+                                <button
+                                    type="button"
+                                    role="menuitem"
+                                    onClick={() => { setResourcesOpen(false); navigateUseCases(); }}
+                                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 ${currentArea === 'Use Cases' ? (glass ? 'bg-ink/10 text-ink' : 'bg-cyan-50 text-cyan-900') : 'hover:bg-slate-100 text-slate-700 hover:text-slate-950'}`}
+                                >
+                                    <span>Use Cases</span>
+                                    {currentArea === 'Use Cases' && <span className="h-1.5 w-1.5 rounded-full bg-cyan-600" />}
+                                </button>
+                                <button
+                                    type="button"
+                                    role="menuitem"
+                                    onClick={() => { setResourcesOpen(false); navigateGuide(); }}
+                                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 ${currentArea === 'Guide' ? (glass ? 'bg-ink/10 text-ink' : 'bg-cyan-50 text-cyan-900') : 'hover:bg-slate-100 text-slate-700 hover:text-slate-950'}`}
+                                >
+                                    <span>Guide</span>
+                                    {currentArea === 'Guide' && <span className="h-1.5 w-1.5 rounded-full bg-cyan-600" />}
+                                </button>
+                                <button
+                                    type="button"
+                                    role="menuitem"
+                                    onClick={() => { setResourcesOpen(false); navigateAgents(); }}
+                                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 ${currentArea === 'Agent catalog' ? (glass ? 'bg-ink/10 text-ink' : 'bg-cyan-50 text-cyan-900') : 'hover:bg-slate-100 text-slate-700 hover:text-slate-950'}`}
+                                >
+                                    <span>Agent Catalog</span>
+                                    {currentArea === 'Agent catalog' && <span className="h-1.5 w-1.5 rounded-full bg-cyan-600" />}
+                                </button>
+                            </div>
+                        )}
+                    </div>
                     {onNavigateProjectSurfaces && <button type="button" onClick={onNavigateProjectSurfaces} aria-current={currentArea === 'Project surfaces' ? 'page' : undefined} className={navClass(currentArea === 'Project surfaces')}>Project surfaces</button>}
-                    <button type="button" onClick={navigateGuide} aria-current={currentArea === 'Guide' ? 'page' : undefined} className={navClass(currentArea === 'Guide')}>Guide</button>
                     <button type="button" onClick={onNavigateFinhub} aria-current={currentArea === 'Finhub' ? 'page' : undefined} className={navClass(currentArea === 'Finhub')}>Finhub</button>
                     <button type="button" onClick={navigateCodeConcepts} aria-current={currentArea === 'Code Concepts' ? 'page' : undefined} className={navClass(currentArea === 'Code Concepts')}>Code Concepts</button>
                     <button type="button" onClick={onNavigateBlogs} aria-current={currentArea === 'Notes' ? 'page' : undefined} className={navClass(currentArea === 'Notes')}>Notes</button>
@@ -173,12 +240,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {onSearch && <form onSubmit={submitSearch} role="search" className="mb-2"><label className="sr-only" htmlFor="root-mobile-site-search">Search project surfaces</label><input id="root-mobile-site-search" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder={searchPlaceholder} className={`h-11 w-full rounded border px-4 text-sm outline-none ${skin.search} ${skin.ring}`} /></form>}
                 <p className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Explore</p>
                 <button type="button" onClick={() => navigate(navigateAgentWorkspace)} aria-current={currentArea === 'Agent Workspace' ? 'page' : undefined} className={menuLinkClass}>Agent Workspace</button>
-                <button type="button" onClick={() => navigate(navigateUseCases)} aria-current={currentArea === 'Use Cases' ? 'page' : undefined} className={menuLinkClass}>Use Cases</button>
-                <button type="button" onClick={() => navigate(navigateAgents)} aria-current={currentArea === 'Agent catalog' ? 'page' : undefined} className={menuLinkClass}>Agent catalog</button>
                 {onNavigateProjectSurfaces && <button type="button" onClick={() => navigate(onNavigateProjectSurfaces)} aria-current={currentArea === 'Project surfaces' ? 'page' : undefined} className={menuLinkClass}>Project surfaces</button>}
                 <button type="button" onClick={() => navigate(onNavigateFinhub)} className={menuLinkClass}>Finhub</button>
-                <p className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Learn and read</p>
+                <p className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Resources</p>
+                <button type="button" onClick={() => navigate(navigateUseCases)} aria-current={currentArea === 'Use Cases' ? 'page' : undefined} className={menuLinkClass}>Use Cases</button>
                 <button type="button" onClick={() => navigate(navigateGuide)} aria-current={currentArea === 'Guide' ? 'page' : undefined} className={menuLinkClass}>Guide</button>
+                <button type="button" onClick={() => navigate(navigateAgents)} aria-current={currentArea === 'Agent catalog' ? 'page' : undefined} className={menuLinkClass}>Agent Catalog</button>
+                <p className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Learn and read</p>
                 <button type="button" onClick={() => navigate(navigateCodeConcepts)} className={menuLinkClass}>Code Concepts</button>
                 <button type="button" onClick={() => navigate(onNavigateBlogs)} className={menuLinkClass}>Notes</button>
                 {onBookDemo && <button type="button" onClick={() => navigate(onBookDemo)} aria-current={currentArea === 'Contact' ? 'page' : undefined} className={menuLinkClass}>Contact</button>}
