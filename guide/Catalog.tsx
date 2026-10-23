@@ -305,7 +305,7 @@ export default function Catalog() {
     </section>
 
     <GuideFaq />
-    <GuideFooter caption="BOULEVARD STUDIO OPERATING GUIDE CATALOG · VERSION 3" />
+    <GuideFooter />
   </main>
 
   <div className={toast ? "manual-toast show" : "manual-toast"} id="manualToast" role="status" aria-live="polite">
