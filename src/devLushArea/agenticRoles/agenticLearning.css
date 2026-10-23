@@ -22,3 +22,105 @@
     transition: none !important;
   }
 }
+
+/* ── Shared motion + surface language for role visuals (emil-design-eng / better-ui) ── */
+.role-activity,
+.role-visual {
+  --role-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Layered transparent shadows carry depth; borders stay for structure only. */
+.role-panel {
+  box-shadow:
+    0 0 0 1px rgb(15 23 42 / 0.05),
+    0 1px 2px rgb(15 23 42 / 0.04),
+    0 10px 24px -14px rgb(15 23 42 / 0.12);
+}
+.dark .role-panel {
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.07), 0 10px 24px -14px rgb(0 0 0 / 0.6);
+}
+
+/* Press feedback on every pressable role control. */
+.role-press {
+  transition-property: transform, background-color, border-color, color, box-shadow, opacity;
+  transition-duration: 160ms, 150ms, 150ms, 150ms, 200ms, 150ms;
+  transition-timing-function: var(--role-ease-out), ease, ease, ease, var(--role-ease-out), ease;
+}
+.role-press:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .role-lift:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 1px rgb(15 23 42 / 0.06), 0 14px 28px -16px rgb(15 23 42 / 0.2);
+  }
+}
+
+/* Staged entrance: used once per mount, 60ms stagger via --i. */
+@keyframes role-enter {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); filter: blur(2px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+.role-enter {
+  animation: role-enter 320ms var(--role-ease-out) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+.role-swap {
+  animation: role-enter 200ms var(--role-ease-out) both;
+}
+
+/* Live indicator: static dot + soft halo (halo is decorative, dot carries meaning). */
+@keyframes role-halo {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+.role-live-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: role-halo 1.8s var(--role-ease-out) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .role-enter, .role-swap, .role-live-dot::after { animation: none; }
+  .role-press:active:not(:disabled) { transform: none; }
+}
+
+/* ── Legacy activities: restyle their shared patterns once, no per-file edits ── */
+/* Toolbar actions become dark pills with press feedback (opt out with data-role-custom). */
+.role-toolbar > button:not([data-role-custom]) {
+  min-height: 2.75rem;
+  padding-inline: 1rem;
+  border-radius: 9999px;
+  border: 0;
+  background: #0f172a;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: transform 160ms var(--role-ease-out), background-color 150ms ease, opacity 150ms ease;
+}
+.role-toolbar > button:not([data-role-custom]):hover:not(:disabled) { background: #334155; }
+.role-toolbar > button:not([data-role-custom]):active:not(:disabled) { transform: scale(0.96); }
+.role-toolbar > button:not([data-role-custom]):disabled { opacity: 0.6; }
+.dark .role-toolbar > button:not([data-role-custom]) { background: #f1f5f9; color: #0f172a; }
+.dark .role-toolbar > button:not([data-role-custom]):hover:not(:disabled) { background: #cbd5e1; }
+
+/* Direct children of the stage become concentric white bento cards (tray 26px - 8px padding = 18px). */
+.role-stage > :is(.rounded-xl, .rounded-2xl, .rounded-lg) {
+  border-radius: 18px;
+  border-color: transparent;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgb(15 23 42 / 0.05), 0 1px 2px rgb(15 23 42 / 0.04), 0 10px 24px -14px rgb(15 23 42 / 0.12);
+  animation: role-enter 320ms var(--role-ease-out) both;
+}
+.dark .role-stage > :is(.rounded-xl, .rounded-2xl, .rounded-lg) {
+  background: #020617;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.07), 0 10px 24px -14px rgb(0 0 0 / 0.6);
+}
+.role-stage > :nth-child(2) { animation-delay: 60ms; }
+.role-stage > :nth-child(3) { animation-delay: 120ms; }
+.role-stage > :nth-child(4) { animation-delay: 180ms; }
+@media (prefers-reduced-motion: reduce) { .role-stage > * { animation: none; } }
