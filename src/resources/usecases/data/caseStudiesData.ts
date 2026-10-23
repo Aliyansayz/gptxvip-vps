@@ -2,352 +2,527 @@ import { CaseStudy } from '../types';
 
 export const CASE_STUDIES: CaseStudy[] = [
   {
-    id: 'cs-vireon-threat-center',
-    slug: 'vireon-threat-center',
-    title: 'Vireon Threat Center: 24×7 Managed Cybersecurity, MXDR & SIEM Telemetry',
-    client: 'Vireon Security & MSSP Global',
+    id: 'cs-compliance-legal-agent',
+    slug: 'compliance-legal-agent',
+    title: 'LexGuard Legal & Compliance Agent: Instant Contract Review & Always-On Audit Readiness',
+    client: 'LexGuard Enterprise Legal & Compliance',
     clientProfile: {
-      name: 'Vireon Defense Technologies',
-      industry: 'Managed Cybersecurity & Cloud Security (MSSP)',
-      companySize: 'Enterprise (2,400+ Nodes)',
-      location: 'New York, NY & Frankfurt, DE',
-      timeframe: '90-Day Production Deployment',
+      name: 'LexGuard Global Operations',
+      industry: 'Legal, Risk & Regulatory Compliance',
+      companySize: 'Enterprise (1,800+ Employees)',
+      location: 'New York, London & Zurich',
+      timeframe: '45-Day Rollout',
     },
-    industry: 'Financial Services',
-    service: 'Cybersecurity & Zero Trust',
+    industry: 'Legal & Compliance',
+    service: 'AI & Autonomous Agents',
     tagline:
-      'Correlating SIEM, ITDR, EDR, compliance, and immutable disaster recovery workflows into a single 24×7 Managed Security Threat Center.',
+      'Review vendor contracts in minutes, spot risky clauses in plain English, and stay 100% ready for GDPR, SOC 2, and HIPAA audits without manual spreadsheet work.',
     summary:
-      'Vireon integrated multi-cloud network telemetry, endpoint isolation, automated incident response playbooks, and continuous NIST CSF 2.0 / SOC 2 Type II compliance tracking into a responsive bento architecture monitoring 40.3M multi-cloud events.',
+      'An easy-to-use AI legal and compliance assistant that reads incoming agreements, highlights hidden business risks, suggests pre-approved wording fixes, and keeps compliance evidence up to date automatically.',
     heroStats: [
       {
-        value: '40.3M',
-        label: 'Packet Telemetry Events',
-        detail: 'Continuous AWS & Azure SIEM log ingestion with zero packet loss',
+        value: '85%',
+        label: 'Faster Contract Reviews',
+        detail: 'Cut average agreement review time from 5 days down to under 4 minutes',
         trend: 'up',
       },
       {
-        value: '78%',
-        label: 'Threat Protection Score',
-        detail: 'Unified ZTNA & MFA policy enforcement across all enterprise gateways',
+        value: '99.4%',
+        label: 'Policy Match Accuracy',
+        detail: 'Every clause checked against your company legal playbook',
         trend: 'up',
       },
       {
-        value: '4.0 hrs',
-        label: 'Target RTO Disaster Recovery',
-        detail: 'Immutable air-gapped backup restoration for critical databases',
+        value: '120 hrs',
+        label: 'Saved Every Month',
+        detail: 'No more manual copy-pasting for quarterly compliance audits',
         trend: 'down',
       },
       {
-        value: '15 mins',
-        label: 'Target RPO Data Guarantee',
-        detail: 'Continuous delta snapshots encrypted with AES-256 keys',
-        trend: 'down',
+        value: '100%',
+        label: 'Audit Trail Clarity',
+        detail: 'Every edit, approval, and policy check logged in one place',
+        trend: 'neutral',
       },
     ],
     challenge: {
-      headline: 'Fragmented Security Telemetry and Slow Incident Triage Across Hybrid Infrastructure',
+      headline: 'Slow Contract Approvals and Stressful Last-Minute Audit Prep',
       description:
-        'With hybrid infrastructure distributed across AWS EU-West-1, Azure West US, and on-premises core enclaves, security operations suffered from disjointed tooling. SOC engineers spent critical minutes manually pivoting between disconnected SIEM consoles, endpoint isolation agents, and identity directories during active credential stuffing and API abuse attempts.',
+        'Sales and purchasing teams were waitingnearly a week just to get standard vendor agreements and NDAs reviewed. At the same time, preparing for SOC 2, GDPR, and HIPAA audits meant pulling legal and operations leaders away from their real work to hunt down signatures and policy screenshots across dozens of folders.',
       bulletPoints: [
-        'Disparate monitoring consoles delayed P1 incident escalation and breach containment by up to 45 minutes.',
-        'Identity threat detection (ITDR) was segregated from endpoint response (EDR), obscuring compromised user session pathways.',
-        'Manual audit preparation for SOC 2 Type II and NIST CSF 2.0 consumed over 120 engineering hours per quarter.',
-        'Lack of real-time multi-cloud network traffic inspection led to noisy alert fatigue and unmitigated DDoS attack vectors.',
+        'Sales deals were delayed up to 5 business days waiting on routine contract reviews.',
+        'Important risks — like automatic 2-year renewals or unlimited liability clauses — were easy to miss in 40-page PDFs.',
+        'Preparing for quarterly compliance audits took over 120 hours of manual spreadsheet tracking.',
+        'Approvals were scattered across emails and chat threads, making it hard to see who signed off on what.',
       ],
     },
     solution: {
-      headline: 'Unified 24×7 SOC Threat Center with Live Animatic Telemetry & Automated Playbooks',
+      headline: 'An AI Legal Assistant That Explains Risks in Plain English and Automates Compliance Checks',
       description:
-        'Implemented the Vireon Threat Center bento platform with centralized signal correlation across MITRE ATT&CK tactics, one-click host isolation, automated ITDR session revocation, and immutable BaaS/DRaaS recovery vaults.',
+        'We launched the LexGuard Legal & Compliance Agent — an interactive workspace where anyone on the team can upload a contract, see risky terms highlighted in plain English, apply pre-approved fixes in one click, and track regulatory compliance live.',
       phases: [
         {
           phaseNumber: '01',
-          title: 'Signal Aggregation & SIEM Pipeline',
+          title: 'Connect Your Company Playbook',
           description:
-            'Configured high-throughput event streaming ingesting 40.3M daily security events from VPC flow logs, Azure NSGs, Kubernetes audit streams, and Okta identity events.',
-          deliverable: 'Real-time telemetry pipeline with automated deduplication and MITRE ATT&CK mapping',
+            'Loaded the company’s standard legal rules, preferred contract wording, and regulatory checklists (GDPR, SOC 2, HIPAA, EU AI Act) into a private, secure knowledge base.',
+          deliverable: 'Custom company playbook that checks every incoming agreement automatically',
         },
         {
           phaseNumber: '02',
-          title: 'EDR & ITDR Automated Containment Playbooks',
+          title: 'One-Click Plain-English Contract Reviewer',
           description:
-            'Integrated bidirectional APIs connecting Falcon EDR with Entra ID/M365 SSO, enabling instantaneous host network containment and token revocation upon brute force detection.',
-          deliverable: 'Sub-second containment orchestrations for high-confidence CVE and IOC alerts',
+            'Built an interactive review screen that translates dense legal jargon into simple business summaries and suggests safe replacement wording ready to send back.',
+          deliverable: 'Live contract redlining assistant with one-click lawyer-approved revisions',
         },
         {
           phaseNumber: '03',
-          title: 'Continuous Compliance & Immutable BDR Hardening',
+          title: 'Continuous Audit & Compliance Tracker',
           description:
-            'Deployed automated compliance evidence collectors mapped against NIST CSF 2.0, SOC 2 Type II, and CMMC Level 2, backed by AES-256 air-gapped snapshots guaranteeing RTO < 4h.',
-          deliverable: 'Live audit-ready compliance dashboard with cryptographic snapshot verification',
+            'Connected daily policy checks so privacy, security, and vendor records are collected automatically in the background instead of right before an audit.',
+          deliverable: 'Always-ready compliance dashboard with downloadable audit reports',
         },
       ],
       architecturalFeatures: [
         {
-          title: 'Multi-Cloud Telemetry Loupe',
+          title: 'Plain-English Clause Translator',
           description:
-            'Interactive SVG dual-curve analytics comparing AWS and Azure packet volumes with real-time hover tooltips and timeframe filtering.',
-          iconName: 'telemetry',
+            'Shows the original legal text side-by-side with a simple explanation of what it actually means for your budget and liability.',
+          iconName: 'file',
         },
         {
-          title: 'Matrix Cyber Globe Activity Arc',
+          title: 'One-Click Playbook Redlines',
           description:
-            'Holographic threat activity globe visualizing incoming attack vectors with instant IOC artifact hash generation and containment toggles.',
-          iconName: 'globe',
+            'Suggests exact replacement wording already approved by your General Counsel so deals move forward without back-and-forth.',
+          iconName: 'check',
         },
         {
-          title: 'Incident Response & Correlation Orbit Map',
+          title: 'Live Regulatory Scorecards',
           description:
-            'Concentric radar orbit tracking the complete incident lifecycle from SIEM detection through triage, containment, DFIR, and recovery.',
-          iconName: 'radar',
+            'Tracks GDPR, SOC 2, HIPAA, and AI governance readiness in real time with clear pass/fail indicators.',
+          iconName: 'shield',
         },
         {
-          title: 'Stakeholder Governance Personas',
+          title: 'Complete Sign-Off Timeline',
           description:
-            'Role-tailored interfaces accommodating vCISO risk oversight, Tier-3 DFIR specialists, and technology alignment engineers.',
+            'Records every review, revision, and executive approval automatically so external auditors have everything they need.',
           iconName: 'users',
         },
       ],
     },
     results: {
-      headline: 'Sub-Minute Threat Containment, 96% Control Mapping, and Zero Ransomware Exposure',
+      headline: 'Deals Close 85% Faster and Compliance Audits Finish with Zero Last-Minute Fire Drills',
       description:
-        'The deployment transitioned Vireon from reactive log aggregation to autonomous, proactive cyber defense with measurable operational improvements.',
+        'By giving legal, finance, and operations teams an easy-to-use agentic workspace, routine agreements are cleared in minutes while high-risk contracts get immediate expert attention.',
       metrics: [
         {
-          value: '40.3M',
-          label: 'Events Daily Inspected',
-          detail: 'Real-time multi-cloud correlation',
-          trend: 'up',
-        },
-        {
-          value: '< 60s',
-          label: 'P1 Threat Containment',
-          detail: 'Reduced from 45 min baseline',
+          value: '3.5 mins',
+          label: 'Contract First-Pass Review',
+          detail: 'Down from 5 business days',
           trend: 'down',
         },
         {
-          value: '96%',
-          label: 'NIST CSF 2.0 Alignment',
-          detail: 'Automated continuous control validation',
+          value: '85%',
+          label: 'Faster Deal Turnaround',
+          detail: 'Standard NDAs and vendor MSAs cleared same-day',
+          trend: 'up',
+        },
+        {
+          value: '100%',
+          label: 'On-Time Audit Readiness',
+          detail: 'Across GDPR, SOC 2 & HIPAA',
           trend: 'up',
         },
         {
           value: '0',
-          label: 'Critical CVE Breaches',
-          detail: 'Over 12 consecutive months',
+          label: 'Missed Auto-Renewals',
+          detail: 'Automated alerts before vendor lock-in dates',
           trend: 'neutral',
         },
       ],
       businessOutcomes: [
-        'Reduced median time to detect (MTTD) from 4.2 hours to under 3 minutes across all multi-cloud infrastructure.',
-        'Automated 92% of routine Tier-1 alert triages, allowing senior analysts to focus on proactive threat hunting.',
-        'Streamlined annual SOC 2 Type II audit completion with zero remediation findings and zero customer downtime.',
-        'Guaranteed zero business interruption through immutable off-site backups validated every 14 minutes.',
+        'Cut first-pass contract review times from 5 days to under 4 minutes for sales and procurement agreements.',
+        'Flagged 100% of non-standard liability and auto-renewal clauses before signature.',
+        'Saved 120+ hours every quarter by collecting compliance evidence automatically in the background.',
+        'Gave business leaders clear, jargon-free visibility into legal risks and regulatory readiness.',
       ],
     },
     testimonial: {
       quote:
-        'The Vireon Threat Center bento interface delivers what traditional SIEM tools promised for a decade: instantaneous visibility from raw multi-cloud network packets down to individual endpoint containment, saving our SOC hundreds of hours.',
+        'LexGuard turned our legal and compliance team from a bottleneck into a growth accelerator. Business managers finally understand contract risks in plain English, and our audits practically run themselves.',
+      author: 'Elena Rostova',
+      title: 'General Counsel & Chief Compliance Officer',
+      company: 'LexGuard Global Operations',
+    },
+    techStack: [
+      {
+        category: 'Contract & Policy Intelligence',
+        tools: ['Agentic Clause Reviewer', 'Company Playbook Engine', 'Plain-English Redliner', 'DocuSign Sync'],
+      },
+      {
+        category: 'Regulatory Frameworks',
+        tools: ['GDPR Privacy Controls', 'SOC 2 Type II', 'HIPAA Safeguards', 'EU AI Act Governance'],
+      },
+      {
+        category: 'Workflow & Approvals',
+        tools: ['Slack & Teams Alerts', 'One-Click Sign-Off', 'Vendor Renewal Tracker', 'Immutable Audit Log'],
+      },
+      {
+        category: 'Data Privacy & Security',
+        tools: ['Zero External Training', 'Private Vault Storage', 'Role-Based Access', 'Encrypted Document Archive'],
+      },
+    ],
+    relatedSlugs: ['vireon-threat-center', 'real-estate-investment-platform'],
+    accentColor: 'indigo',
+    abstractGraphicType: 'shield',
+  },
+  {
+    id: 'cs-vireon-threat-center',
+    slug: 'vireon-threat-center',
+    title: 'Vireon Threat Center: 24/7 Business Security Monitoring & Instant Threat Protection',
+    client: 'Vireon Security & MSSP Global',
+    clientProfile: {
+      name: 'Vireon Defense Technologies',
+      industry: '24/7 Managed Cybersecurity & Cloud Protection',
+      companySize: 'Enterprise (2,400+ Connected Devices)',
+      location: 'New York, NY & Frankfurt, DE',
+      timeframe: '90-Day Rollout',
+    },
+    industry: 'Financial Services',
+    service: 'Cybersecurity & Zero Trust',
+    tagline:
+      'Bringing all your cloud alerts, employee login checks, compliance tracking, and backup recovery into one clear 24/7 security command center.',
+    summary:
+      'Vireon replaced a tangle of separate security screens with one easy-to-read command center that watches over 40.3 million daily activity events, blocks suspicious logins automatically, and keeps safe backups ready to restore.',
+    heroStats: [
+      {
+        value: '40.3M',
+        label: 'Daily Security Checks',
+        detail: 'Continuous monitoring across AWS and Azure cloud accounts',
+        trend: 'up',
+      },
+      {
+        value: '78%',
+        label: 'Stronger Protection Score',
+        detail: 'Consistent multi-factor login and access rules for every team member',
+        trend: 'up',
+      },
+      {
+        value: '4.0 hrs',
+        label: 'Full Recovery Guarantee',
+        detail: 'Protected backups that can restore core business systems fast',
+        trend: 'down',
+      },
+      {
+        value: '15 mins',
+        label: 'Backup Save Window',
+        detail: 'Automatic encrypted snapshots saved every 15 minutes',
+        trend: 'down',
+      },
+    ],
+    challenge: {
+      headline: 'Too Many Separate Security Screens Made It Hard to Spot Real Threats Fast',
+      description:
+        'As the company grew across multiple cloud services and offices, the security team had to jump between half a dozen different dashboards just to investigate a single suspicious login. Valuable time was lost piecing together clues, and preparing for routine security audits took weeks of manual work.',
+      bulletPoints: [
+        'Switching between separate tools slowed down urgent security responses by up to 45 minutes.',
+        'Employee login alerts were separated from laptop security alerts, making it hard to see the full picture.',
+        'Gathering proof for quarterly security audits took over 120 hours of staff time.',
+        'Too many repetitive, low-priority alerts made it harder for analysts to focus on real risks.',
+      ],
+    },
+    solution: {
+      headline: 'One Clear 24/7 Security Dashboard with Automatic Threat Blocking',
+      description:
+        'We built the Vireon Threat Center — a single visual workspace that connects cloud monitoring, device protection, compliance checklists, and automatic backups so the team can spot and stop threats in seconds.',
+      phases: [
+        {
+          phaseNumber: '01',
+          title: 'Bring All Security Alerts into One View',
+          description:
+            'Connected cloud accounts, office networks, and employee login systems into a single live feed that filters out noise and highlights what matters.',
+          deliverable: 'Unified security feed that groups related alerts automatically',
+        },
+        {
+          phaseNumber: '02',
+          title: 'One-Click Protection & Login Lockdowns',
+          description:
+            'Set up automatic safety rules that isolate affected laptops and pause suspicious user accounts the moment an attack is detected.',
+          deliverable: 'Instant containment playbooks that stop threats in under 60 seconds',
+        },
+        {
+          phaseNumber: '03',
+          title: 'Automated Audit Tracking & Safe Backups',
+          description:
+            'Added live compliance tracking for SOC 2 and NIST standards alongside tamper-proof cloud backups that are tested every 15 minutes.',
+          deliverable: 'Always-ready audit dashboard and verified disaster recovery vault',
+        },
+      ],
+      architecturalFeatures: [
+        {
+          title: 'Live Cloud Traffic Comparison',
+          description:
+            'Easy-to-read visual charts comparing AWS and Azure activity so teams can spot unusual spikes right away.',
+          iconName: 'telemetry',
+        },
+        {
+          title: 'Global Threat Activity Map',
+          description:
+            'Interactive globe showing where incoming threats originate and blocking them with a single click.',
+          iconName: 'globe',
+        },
+        {
+          title: 'Step-by-Step Incident Tracker',
+          description:
+            'Clear visual ring showing every stage of response — from detection to containment and full recovery.',
+          iconName: 'radar',
+        },
+        {
+          title: 'Views Tailored for Every Role',
+          description:
+            'Custom summaries for executives, security analysts, and IT operations managers.',
+          iconName: 'users',
+        },
+      ],
+    },
+    results: {
+      headline: 'Threats Stopped in Under a Minute, Stress-Free Audits, and Zero Ransomware Downtime',
+      description:
+        'Vireon moved from chasing noisy alerts across multiple tabs to proactive, automated protection that keeps the business running safely around the clock.',
+      metrics: [
+        {
+          value: '40.3M',
+          label: 'Daily Events Checked',
+          detail: 'Watched automatically 24/7',
+          trend: 'up',
+        },
+        {
+          value: '< 60s',
+          label: 'Time to Stop Threats',
+          detail: 'Improved from 45 minutes',
+          trend: 'down',
+        },
+        {
+          value: '96%',
+          label: 'Compliance Readiness',
+          detail: 'Tracked automatically every day',
+          trend: 'up',
+        },
+        {
+          value: '0',
+          label: 'Business Disruptions',
+          detail: 'Over 12 straight months',
+          trend: 'neutral',
+        },
+      ],
+      businessOutcomes: [
+        'Cut the time to spot a potential issue from over 4 hours down to under 3 minutes.',
+        'Automated 92% of routine alert checks so senior specialists can focus on high-value protection.',
+        'Completed annual SOC 2 security audits smoothly with zero customer downtime.',
+        'Guaranteed business continuity with tamper-proof backups verified every 15 minutes.',
+      ],
+    },
+    testimonial: {
+      quote:
+        'The Vireon Threat Center gives our leadership and security teams instant clarity. We can see cloud health, stop suspicious logins, and prove compliance in one place — saving hundreds of hours every quarter.',
       author: 'Noah Turner',
-      title: 'Virtual CISO & Head of Cybersecurity Operations',
+      title: 'Head of Cybersecurity Operations',
       company: 'Vireon Defense Global',
     },
     techStack: [
       {
-        category: 'Threat Telemetry & SIEM',
-        tools: ['Elastic SIEM', 'AWS Security Hub', 'Azure Sentinel', 'Zeek Network Bro'],
+        category: 'Cloud & Network Monitoring',
+        tools: ['Elastic SIEM', 'AWS Security Hub', 'Azure Sentinel', 'Live Traffic Inspector'],
       },
       {
-        category: 'Identity & Endpoint Protection',
-        tools: ['CrowdStrike Falcon', 'Microsoft Defender for Identity', 'Okta ZTNA', 'YubiKey MFA'],
+        category: 'Login & Device Safety',
+        tools: ['CrowdStrike Falcon', 'Microsoft Defender', 'Okta Access Control', 'Hardware MFA Keys'],
       },
       {
-        category: 'Governance & Compliance',
-        tools: ['Vanta SOC 2 Automation', 'NIST CSF 2.0 Framework', 'CMMC 2.0 Level 2', 'AWS Audit Manager'],
+        category: 'Compliance & Audits',
+        tools: ['Vanta SOC 2 Automation', 'NIST Security Framework', 'CMMC Readiness', 'AWS Audit Manager'],
       },
       {
-        category: 'Resilience & BDR',
-        tools: ['AWS S3 Glacier Vault Lock', 'Veeam Immutable Cloud Backup', 'AES-256 Air-Gapping', 'DRaaS Failover'],
+        category: 'Backups & Recovery',
+        tools: ['Immutable Cloud Vault', 'Veeam Backup', 'Encrypted Snapshots', 'Instant Failover'],
       },
     ],
-    relatedSlugs: ['real-estate-investment-platform'],
+    relatedSlugs: ['compliance-legal-agent', 'real-estate-investment-platform'],
     accentColor: 'cyan',
     abstractGraphicType: 'shield',
   },
   {
     id: 'cs-real-estate-investment',
     slug: 'real-estate-investment-platform',
-    title: 'Real Estate Investment Platform: Tokenized Fractional Assets & Treasury Benchmarks',
+    title: 'Real Estate Investment Platform: Easy Fractional Property Investing & Live Return Tracking',
     client: 'Global Real Estate Investment Platform',
     clientProfile: {
       name: 'Investment Global Capital Partners',
-      industry: 'Alternative Real Estate & PropTech Finance',
-      companySize: 'Asset Management ($380M+ AUM)',
+      industry: 'Modern Real Estate & Property Investing',
+      companySize: 'Asset Management ($380M+ Managed)',
       location: 'New York, London & Singapore',
-      timeframe: '60-Day Interactive Rollout',
+      timeframe: '60-Day Rollout',
     },
     industry: 'Financial Services',
     service: 'High-Throughput Data & DevOps',
     tagline:
-      'Optimized information architecture and interactive bento dashboards enabling seamless fractional property investments, live auctions, and macroeconomic bond benchmarking.',
+      'Making it simple for everyday investors and family offices to buy fractional shares of premier properties, collect rental income, and compare returns in real time.',
     summary:
-      'A high-performance modern web platform bridging commercial real estate syndication with blockchain-secured liquidity, featuring live secondary rails, user persona tailoring, and real-time U.S. 10Y Treasury yield spreads.',
+      'A clean, modern web platform that lets investors start with as little as $50, browse vetted residential and commercial properties, receive automated rental payouts, and compare property performance against standard U.S. Treasury rates.',
     heroStats: [
       {
         value: '$142,850',
-        label: 'Average Portfolio Balance',
-        detail: 'Diversified across 8 fractional residential & commercial properties',
+        label: 'Average Investor Portfolio',
+        detail: 'Spread across 8 vetted residential and commercial properties',
         trend: 'up',
       },
       {
         value: '+12.4%',
-        label: 'Net Projected APY',
-        detail: 'Combining monthly rental yields with quarterly property appreciation',
+        label: 'Projected Annual Return',
+        detail: 'Combining monthly rental income with long-term property value growth',
         trend: 'up',
       },
       {
         value: '4.18%',
-        label: 'U.S. 10Y Benchmark Tracking',
-        detail: 'Live yield monitoring against Federal Reserve target rates',
+        label: 'U.S. Treasury Comparison',
+        detail: 'Live side-by-side comparison with 10-year government bond rates',
         trend: 'neutral',
       },
       {
-        value: '+220 bps',
-        label: 'Cap Rate Spread',
-        detail: 'Positive leverage differential over benchmark 10-year sovereign bonds',
+        value: '+2.20%',
+        label: 'Extra Yield Advantage',
+        detail: 'Higher net property return compared to standard government bonds',
         trend: 'up',
       },
     ],
     challenge: {
-      headline: 'Complex Onboarding, High Minimum Investment Thresholds, and Fragmented Asset Data',
+      headline: 'High Minimum Investments, Slow Paperwork, and Hard-to-Compare Property Numbers',
       description:
-        'Commercial and multi-family real estate transactions historically required \$50,000+ minimum commitments, weeks of paperwork, and opacity regarding cap-rate performance. Individual retail investors and global family offices lacked transparent tools to evaluate lease rolls, historical net operating incomes, and sensitivity to fluctuating interest rates.',
+        'Traditionally, investing in high-quality commercial or apartment buildings required $50,000+ upfront, weeks of legal paperwork, and confusing spreadsheets. Investors had no easy way to check building occupancy, track monthly rent payouts, or compare property returns against safe government bonds.',
       bulletPoints: [
-        'Complex spreadsheets made comparing projected IRR versus macroeconomic Treasury yields cumbersome.',
-        'High KYC and escrow drop-off rates due to slow, disconnected document verification workflows.',
-        'Inability for investors to liquidate fractional positions before the standard 5-to-7 year hold period.',
-        'Missing real-time property health telemetry such as occupancy rates, rent collections, and reserve balances.',
+        'Complicated spreadsheets made it hard to compare property returns against standard bank or bond rates.',
+        'Long identity checks and paper forms caused many interested investors to drop off before finishing sign-up.',
+        'Investors were locked in for 5 to 7 years with no simple way to buy or sell smaller shares.',
+        'Lack of clear, up-to-date numbers on building occupancy, rent collection, and maintenance reserves.',
       ],
     },
     solution: {
-      headline: 'Responsive Bento Investment Interface with Live Marketplace, Escrow Sweeps & Journey Analytics',
+      headline: 'An All-in-One Property Dashboard with $50 Entry Shares and Automatic Rent Payouts',
       description:
-        'Engineered an interactive 5-block bento dashboard allowing investors to browse tokenized assets (from \$50/share), track rental distributions, participate in fractional auctions, and assess debt refinancing opportunities via U.S. Treasury yield curves.',
+        'We created an interactive 5-panel investment workspace where users can explore vetted properties in New York and Miami, buy fractional shares in minutes, watch rental income arrive automatically, and compare yields at a glance.',
       phases: [
         {
           phaseNumber: '01',
-          title: 'Tokenization Architecture & Smart Escrows',
+          title: 'Simple Legal Structure & Automatic Rent Payouts',
           description:
-            'Structured legally compliant SPVs under SEC Reg D/Reg S with automated daily rent dividend streaming directly to investor wallets.',
-          deliverable: 'Automated ERC-3643 compliant permissioned real estate token infrastructure',
+            'Set up regulated property shares with automated payout rails so rental income goes straight to each investor’s account without manual bookkeeping.',
+          deliverable: 'Compliant fractional ownership system with automated rent distributions',
         },
         {
           phaseNumber: '02',
-          title: 'Interactive Bento Grid Dashboard & Dual Rails',
+          title: 'Interactive Property Marketplace & Portfolio View',
           description:
-            'Designed a responsive bento grid containing live marketplace deals (Luxe Apt NYC, Miami Ocean Loft), 5-stacked amenity specs, and expandable desktop workspaces.',
-          deliverable: '6-view interactive application supporting Marketplace, My Properties, Auctions, and Wallet',
+            'Designed a clean visual dashboard showing live property deals, building amenities, occupancy rates, and an easy secondary market for trading shares.',
+          deliverable: '6-view web application covering Marketplace, My Properties, Auctions, and Wallet',
         },
         {
           phaseNumber: '03',
-          title: 'Macro Benchmark Visualizer & Cap Spread Engine',
+          title: 'Live Market Comparison & Return Calculator',
           description:
-            'Integrated live financial market data feeds comparing portfolio net cap rates (6.38%) against U.S. 10Y Treasury yields and FOMC interest rate announcements.',
-          deliverable: 'Interactive SVG area chart with magnifying glass loupe and debt-service coverage ratio telemetry',
+            'Added live financial feeds that compare property rental yields (6.38%) directly against 10-year U.S. Treasury rates so investors can make informed decisions.',
+          deliverable: 'Interactive comparison chart with magnifying loupe and cash-flow health indicators',
         },
       ],
       architecturalFeatures: [
         {
-          title: 'Streamlined Navigation & Animatic Auto-Switch',
+          title: 'One-Click Workspace Switching',
           description:
-            'Seamless view transitions across Portfolio, Marketplace, Auctions, and Multi-Chain Treasury Wallets.',
+            'Smooth transitions between your Portfolio, Property Marketplace, Live Auctions, and Payout Wallet.',
           iconName: 'layout',
         },
         {
-          title: 'Interactive Property Loupe & Cap Rate Spread',
+          title: 'Interactive Return Comparison Chart',
           description:
-            'Circular magnifying readout tracking sovereign bond yields and refinancing spreads with interactive SVG cursor crosshairs.',
+            'Built-in magnifier tool that lets investors compare property yields against government bond rates on any date.',
           iconName: 'trending',
         },
         {
-          title: 'Customer Experience Journey Map',
+          title: 'Clear Investor Journey Tracker',
           description:
-            'Concentric orbit visualization showing customer delightful touchpoints from Discovery through Token Purchase and Rent Sweeping.',
+            'Visual guide showing every step from account sign-up to buying your first property share and collecting rent.',
           iconName: 'journey',
         },
         {
-          title: 'Multi-Persona Wealth Alignment',
+          title: 'Tailored Views for Every Investor',
           description:
-            'Tailored views for retail fractional investors, UK private equity directors, and Asian family office founders.',
+            'Personalized dashboards whether you are a first-time $50 investor, a financial advisor, or a family office.',
           iconName: 'persona',
         },
       ],
     },
     results: {
-      headline: '94% Onboarding Completion, 428 Fractional Shares Traded, and Seamless Yield Streaming',
+      headline: '94% Sign-Up Completion, 4,200+ Active Investors, and Effortless Rent Distributions',
       description:
-        'The interactive platform lowered entry barriers to \$50 per token while providing institutional-grade debt-service telemetry and liquid fractional markets.',
+        'The new platform opened premier real estate to everyday investors starting at $50 while giving larger wealth managers the clear performance numbers they need.',
       metrics: [
         {
           value: '94%',
-          label: 'Onboarding KYC Pass Rate',
-          detail: 'Under 90 seconds verification',
+          label: 'Fast Sign-Up Completion',
+          detail: 'Account verification in under 90 seconds',
           trend: 'up',
         },
         {
           value: '6.38%',
-          label: 'Portfolio Cap Rate',
-          detail: 'Maintained across all active holdings',
+          label: 'Average Net Rental Yield',
+          detail: 'Across all active properties',
           trend: 'up',
         },
         {
           value: '1.72x',
-          label: 'DSCR Debt Coverage',
-          detail: 'Substantial buffer against rate hikes',
+          label: 'Healthy Cash-Flow Buffer',
+          detail: 'Strong rental coverage above mortgage costs',
           trend: 'up',
         },
         {
           value: '100%',
-          label: 'Occupancy Rate',
-          detail: 'Prime residential NYC & Miami assets',
+          label: 'Building Occupancy',
+          detail: 'Across premier NYC & Miami properties',
           trend: 'neutral',
         },
       ],
       businessOutcomes: [
-        'Enabled over 4,200 active investors to allocate capital into premium urban real estate in fractions as low as \$50.',
-        'Automated daily rental income distribution, eliminating manual quarterly accounting reconciliation overhead.',
-        'Equipped investors with real-time macroeconomic context, showing when debt refinancing or acquisition is mathematically optimal.',
-        'Maintained 100% on-time rental collections with transparent tenant occupancy disclosures.',
+        'Welcomed over 4,200 active investors buying fractional shares starting at just $50.',
+        'Automated rental payouts, eliminating weeks of manual quarterly accounting work.',
+        'Helped investors clearly see how property returns stack up against interest rates in real time.',
+        'Maintained 100% on-time rent reporting and full transparency on building occupancy.',
       ],
     },
     testimonial: {
       quote:
-        'The interactive bento design demystifies real estate investing. Being able to compare property cap rates directly against 10-year Treasury yields in real time gives our investors confidence they never had with private syndications.',
+        'This interactive dashboard makes property investing effortless to understand. Being able to compare rental returns directly against U.S. Treasury rates in plain language gives our investors total confidence.',
       author: 'Sophia Wilson',
-      title: 'Principal Investor & Product Marketing Lead',
+      title: 'Principal Investor & Product Lead',
       company: 'Global Investment Asset Platform',
     },
     techStack: [
       {
-        category: 'Frontend & Visual Components',
-        tools: ['React 18', 'Tailwind CSS', 'Vite', 'Lucide React', 'SVG Chart Engine'],
+        category: 'Interactive Web Experience',
+        tools: ['React 18', 'Tailwind CSS', 'Vite', 'Lucide Icons', 'Interactive SVG Charts'],
       },
       {
-        category: 'Macro & Financial Feeds',
-        tools: ['Federal Reserve FRED API', 'U.S. Treasury Bond Feed', 'Coinbase Pay API', 'Plaid Banking'],
+        category: 'Financial & Market Data',
+        tools: ['Federal Reserve Rate Feed', 'U.S. Treasury Benchmarks', 'Instant Bank Linking', 'Automated Payouts'],
       },
       {
-        category: 'Asset Infrastructure & Legal',
-        tools: ['SEC Reg D 506(c)', 'SEC Reg S', 'Delaware Series LLC', 'Chainlink Proof of Reserve'],
+        category: 'Property & Legal Compliance',
+        tools: ['SEC Reg D & Reg S', 'Delaware Property LLCs', 'Verified Reserve Proofs', 'Automated Tax Docs'],
       },
       {
-        category: 'Security & Custody',
-        tools: ['Fireblocks Institutional Custody', 'Soc 2 Certified Infrastructure', 'Stripe Identity', 'Sumsub KYC'],
+        category: 'Account Safety & Verification',
+        tools: ['Institutional Custody', 'SOC 2 Certified Hosting', 'Stripe Identity', '90-Second KYC Check'],
       },
     ],
-    relatedSlugs: ['vireon-threat-center'],
+    relatedSlugs: ['compliance-legal-agent', 'vireon-threat-center'],
     accentColor: 'blue',
     abstractGraphicType: 'pipeline',
   },

@@ -7,12 +7,6 @@ import {
   CheckCircle2,
   Layers,
   MapPin,
-  Quote,
-  ShieldAlert,
-  Sparkles,
-  TrendingDown,
-  TrendingUp,
-  Cpu,
   MonitorPlay,
   FileCode2,
 } from 'lucide-react';
@@ -21,6 +15,7 @@ import { ContactForm } from '../../../shared/components/ContactForm';
 import { CASE_STUDIES } from '../data/caseStudiesData';
 import { VireonThreatCenterBento } from './vireon/VireonThreatCenterBento';
 import { InvestmentBentoGrid } from './investment/InvestmentBentoGrid';
+import { ComplianceLegalBento } from './compliance/ComplianceLegalBento';
 
 interface CaseStudyDetailProps {
   caseStudy: CaseStudy;
@@ -38,11 +33,11 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     const prevTitle = document.title;
-    document.title = `${caseStudy.client} Case Study — GPTX.VIP Resources`;
+    document.title = `${caseStudy.client} Use Case — GPTX.VIP`;
     return () => {
       document.title = prevTitle;
     };
-  }, [caseStudy.slug]);
+  }, [caseStudy.slug, caseStudy.client]);
 
   const relatedStudies = CASE_STUDIES.filter((item) =>
     caseStudy.relatedSlugs.includes(item.slug)
@@ -53,409 +48,501 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({
     caseStudy.slug === 'real-estate-investment-platform' ||
     caseStudy.slug === 'investment-platform-tokenized-real-estate' ||
     caseStudy.slug === 'investment-platform';
+  const isCompliance =
+    caseStudy.slug === 'compliance-legal-agent' ||
+    caseStudy.slug === 'compliance' ||
+    caseStudy.slug === 'legal';
+
+  const hasInteractiveWidget = isVireon || isInvestment || isCompliance;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 sm:py-10 bg-[#F8FAFC]/50 min-h-screen text-slate-900">
-      {/* Back button & Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <button
-          onClick={onBack}
-          className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50"
-        >
-          <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1 text-slate-500" />
-          Back to Case Studies Directory
-        </button>
+    <div
+      className="bg-white min-h-screen text-[#101014]"
+      style={{ fontFamily: "'DM Sans', sans-serif" }}
+    >
+      {/* Boulevard Royal Cobalt Hero (.top) */}
+      <section
+        className="relative overflow-hidden text-white pt-8 pb-10 px-4 sm:px-8"
+        style={{
+          background:
+            'radial-gradient(ellipse at 78% 25%, #6f78ff 0, transparent 38%), radial-gradient(ellipse at 63% 76%, #1528b7 0, transparent 42%), linear-gradient(115deg, #11121c 5%, #272bc3 58%, #7f8cff 100%)',
+        }}
+      >
+        <div className="mx-auto max-w-7xl">
+          {/* Top Breadcrumb & Back */}
+          <nav
+            aria-label="Breadcrumb"
+            className="mb-8 flex flex-wrap items-center justify-between gap-3"
+          >
+            <button
+              onClick={onBack}
+              className="group inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-xs font-bold text-white backdrop-blur-xs transition hover:bg-white/20 cursor-pointer"
+            >
+              <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1 text-[#d8ff38]" />
+              Back to All Use Cases
+            </button>
 
-        <div className="flex items-center gap-2 text-xs text-slate-500">
-          <span>Resources</span>
-          <span>/</span>
-          <span>Use Cases</span>
-          <span>/</span>
-          <span className="font-semibold text-slate-800 truncate max-w-[220px]">
-            {caseStudy.client}
-          </span>
-        </div>
-      </nav>
-
-      {/* Hero Header in Clean Light Theme */}
-      <header className="mb-8 rounded-3xl border border-slate-200/80 bg-white p-6 sm:p-8 shadow-sm">
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-800">
-              {caseStudy.industry}
-            </span>
-            <span className="inline-flex items-center gap-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200/80 px-3 py-1 text-xs font-semibold">
-              <Sparkles className="h-3.5 w-3.5 text-teal-600" />
-              {caseStudy.service}
-            </span>
-            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600 font-mono">
-              {caseStudy.clientProfile.timeframe}
-            </span>
-          </div>
-
-          {/* Interactive vs Blueprint Switcher Tabs */}
-          {(isVireon || isInvestment) && (
-            <div className="flex items-center bg-slate-100/90 p-1 rounded-xl border border-slate-200">
-              <button
-                onClick={() => setActiveTab('interactive')}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                  activeTab === 'interactive'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-500 hover:text-slate-800'
-                }`}
-              >
-                <MonitorPlay className="h-3.5 w-3.5 text-teal-600" />
-                Live Bento Showcase
-              </button>
-              <button
-                onClick={() => setActiveTab('blueprint')}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                  activeTab === 'blueprint'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-500 hover:text-slate-800'
-                }`}
-              >
-                <FileCode2 className="h-3.5 w-3.5 text-slate-500" />
-                Architecture Spec
-              </button>
+            <div className="flex items-center gap-2 text-xs text-white/75">
+              <span>Use Cases</span>
+              <span>/</span>
+              <span className="font-semibold text-[#d8ff38] truncate max-w-[240px]">
+                {caseStudy.client}
+              </span>
             </div>
-          )}
-        </div>
+          </nav>
 
-        <h1 className="text-2xl font-extrabold tracking-tight text-slate-950 sm:text-3xl lg:text-4xl leading-snug">
-          {caseStudy.title}
-        </h1>
+          {/* Badges & View Switcher */}
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-5">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-full bg-[#d8ff38] px-3 py-1 text-xs font-bold text-[#101014]">
+                {caseStudy.industry}
+              </span>
+              <span className="rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
+                {caseStudy.service}
+              </span>
+              <span className="rounded-full border border-white/20 bg-black/20 px-3 py-1 text-xs text-white/85 font-mono">
+                {caseStudy.clientProfile.timeframe}
+              </span>
+            </div>
 
-        <p className="mt-3 text-base text-slate-600 leading-relaxed max-w-4xl">
-          {caseStudy.tagline}
-        </p>
-
-        {/* Client Profile Row */}
-        <div className="mt-6 grid grid-cols-2 gap-4 rounded-2xl border border-slate-200/70 bg-slate-50/70 p-4 sm:grid-cols-4">
-          <div>
-            <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-400">Client</span>
-            <p className="mt-1 text-xs sm:text-sm font-semibold text-slate-900 flex items-center gap-1.5">
-              <Building2 className="h-4 w-4 text-teal-600 shrink-0" />
-              <span className="truncate">{caseStudy.client}</span>
-            </p>
-          </div>
-          <div>
-            <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-400">Location</span>
-            <p className="mt-1 text-xs sm:text-sm font-semibold text-slate-900 flex items-center gap-1.5">
-              <MapPin className="h-4 w-4 text-teal-600 shrink-0" />
-              <span className="truncate">{caseStudy.clientProfile.location}</span>
-            </p>
-          </div>
-          <div>
-            <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-400">Scale</span>
-            <p className="mt-1 text-xs sm:text-sm font-semibold text-slate-900 flex items-center gap-1.5">
-              <Layers className="h-4 w-4 text-teal-600 shrink-0" />
-              <span className="truncate">{caseStudy.clientProfile.companySize}</span>
-            </p>
-          </div>
-          <div>
-            <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-400">Timeline</span>
-            <p className="mt-1 text-xs sm:text-sm font-semibold text-slate-900 flex items-center gap-1.5">
-              <Calendar className="h-4 w-4 text-teal-600 shrink-0" />
-              <span className="truncate">{caseStudy.clientProfile.timeframe}</span>
-            </p>
-          </div>
-        </div>
-      </header>
-
-      {/* Key Metric Impact Bar in Clean Light Theme */}
-      <section className="mb-10 rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#0D9488]">
-            Measurable Performance Breakthroughs
-          </span>
-          <span className="text-xs text-slate-400 font-medium">Audited Production Telemetry</span>
-        </div>
-        <div className="grid grid-cols-2 gap-6 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-slate-100 pt-1">
-          {caseStudy.heroStats.map((stat, idx) => (
-            <div key={idx} className={idx > 0 ? 'pt-4 lg:pt-0 lg:pl-6' : ''}>
-              <div className="flex items-center gap-2">
-                <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
-                  {stat.value}
-                </span>
-                {stat.trend === 'up' ? (
-                  <TrendingUp className="h-4 w-4 text-emerald-600" />
-                ) : stat.trend === 'down' ? (
-                  <TrendingDown className="h-4 w-4 text-teal-600" />
-                ) : null}
+            {hasInteractiveWidget && (
+              <div className="flex items-center rounded-full border border-white/20 bg-black/30 p-1 backdrop-blur-xs">
+                <button
+                  onClick={() => setActiveTab('interactive')}
+                  className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition cursor-pointer ${
+                    activeTab === 'interactive'
+                      ? 'bg-[#d8ff38] text-[#101014]'
+                      : 'text-white/80 hover:text-white'
+                  }`}
+                >
+                  <MonitorPlay className="h-3.5 w-3.5" />
+                  Interactive Workspace
+                </button>
+                <button
+                  onClick={() => setActiveTab('blueprint')}
+                  className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition cursor-pointer ${
+                    activeTab === 'blueprint'
+                      ? 'bg-[#d8ff38] text-[#101014]'
+                      : 'text-white/80 hover:text-white'
+                  }`}
+                >
+                  <FileCode2 className="h-3.5 w-3.5" />
+                  How It Works
+                </button>
               </div>
-              <p className="mt-1 text-xs sm:text-sm font-semibold text-slate-700">{stat.label}</p>
-              {stat.detail && (
-                <p className="mt-0.5 text-xs text-slate-400 leading-normal">{stat.detail}</p>
-              )}
+            )}
+          </div>
+
+          {/* Headline & Plain-English Tagline */}
+          <h1
+            className="max-w-4xl text-2xl sm:text-4xl lg:text-5xl font-normal leading-[1.04] tracking-[-0.05em] text-white"
+            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+          >
+            {caseStudy.title}
+          </h1>
+
+          <p className="mt-4 max-w-3xl text-sm sm:text-lg text-white/85 leading-relaxed">
+            {caseStudy.tagline}
+          </p>
+
+          {/* Client Profile Strip */}
+          <div className="mt-8 grid grid-cols-2 gap-4 rounded-2xl border border-white/15 bg-black/25 p-4 backdrop-blur-md sm:grid-cols-4">
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-white/60">
+                Organization
+              </span>
+              <p className="mt-1 text-xs sm:text-sm font-semibold text-white flex items-center gap-1.5">
+                <Building2 className="h-4 w-4 text-[#d8ff38] shrink-0" />
+                <span className="truncate">{caseStudy.client}</span>
+              </p>
             </div>
-          ))}
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-white/60">
+                Locations
+              </span>
+              <p className="mt-1 text-xs sm:text-sm font-semibold text-white flex items-center gap-1.5">
+                <MapPin className="h-4 w-4 text-[#d8ff38] shrink-0" />
+                <span className="truncate">{caseStudy.clientProfile.location}</span>
+              </p>
+            </div>
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-white/60">
+                Team Scale
+              </span>
+              <p className="mt-1 text-xs sm:text-sm font-semibold text-white flex items-center gap-1.5">
+                <Layers className="h-4 w-4 text-[#d8ff38] shrink-0" />
+                <span className="truncate">{caseStudy.clientProfile.companySize}</span>
+              </p>
+            </div>
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-white/60">
+                Time to Launch
+              </span>
+              <p className="mt-1 text-xs sm:text-sm font-semibold text-white flex items-center gap-1.5">
+                <Calendar className="h-4 w-4 text-[#d8ff38] shrink-0" />
+                <span className="truncate">{caseStudy.clientProfile.timeframe}</span>
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Render Subwidget or Blueprint based on active tab */}
-      {activeTab === 'interactive' && (isVireon || isInvestment) ? (
-        <section className="mb-14">
+      {/* Main Content Container */}
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-8 sm:py-14">
+        {/* Boulevard 4-Column Stats Ribbon */}
+        <section className="mb-12 rounded-2xl border border-[#e9e9ec] bg-[#f5f5f7] p-6">
           <div className="mb-4 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-600">
-                Interactive React Bento Grid
-              </span>
-            </div>
-            <span className="text-xs text-slate-400">
-              Live Responsive Prototype • Full Control State
+            <span className="text-xs font-bold uppercase tracking-wider text-[#343edb]">
+              Key Business Results at a Glance
+            </span>
+            <span className="text-xs text-[#777780] font-medium">
+              Verified Production Outcomes
             </span>
           </div>
-
-          {isVireon && <VireonThreatCenterBento />}
-          {isInvestment && <InvestmentBentoGrid />}
-        </section>
-      ) : null}
-
-      {/* Main Content Grid: Challenge & Architecture Blueprint */}
-      <div className="grid gap-10 lg:grid-cols-12 mb-14">
-        {/* Left Column: Challenge, Solution, Outcomes */}
-        <div className="lg:col-span-8 space-y-10">
-          {/* The Challenge */}
-          <section className="rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-7 shadow-sm">
-            <div className="flex items-center gap-2 text-rose-600 mb-2">
-              <ShieldAlert className="h-4 w-4" />
-              <h2 className="text-xs font-bold uppercase tracking-wider">The Challenge</h2>
-            </div>
-            <h3 className="text-lg sm:text-xl font-bold text-slate-950">
-              {caseStudy.challenge.headline}
-            </h3>
-            <p className="mt-2.5 text-sm sm:text-base text-slate-600 leading-relaxed">
-              {caseStudy.challenge.description}
-            </p>
-
-            <div className="mt-5 space-y-2.5">
-              {caseStudy.challenge.bulletPoints.map((point, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-3 rounded-xl border border-rose-100 bg-rose-50/40 p-3 text-xs sm:text-sm text-slate-700"
+          <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+            {caseStudy.heroStats.map((stat, idx) => (
+              <div
+                key={idx}
+                className="border-l border-[#e9e9ec] pl-4 first:border-l-0 first:pl-0"
+              >
+                <strong
+                  className="block text-3xl sm:text-4xl font-medium tracking-[-0.06em] text-[#343edb]"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                 >
-                  <span className="flex-shrink-0 mt-1 h-2 w-2 rounded-full bg-rose-500" />
-                  <span>{point}</span>
-                </div>
-              ))}
+                  {stat.value}
+                </strong>
+                <p className="mt-1 text-xs sm:text-sm font-bold text-[#101014]">
+                  {stat.label}
+                </p>
+                {stat.detail && (
+                  <p className="mt-0.5 text-xs text-[#777780] leading-normal">
+                    {stat.detail}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Interactive Subwidget Showcase (Preserved intact!) */}
+        {activeTab === 'interactive' && hasInteractiveWidget ? (
+          <section className="mb-14">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#343edb] animate-ping" />
+                <span className="text-xs font-bold uppercase tracking-wider text-[#101014]">
+                  Live Interactive Workspace — Click Elements Below to Explore
+                </span>
+              </div>
+              <span className="text-xs text-[#777780]">
+                Interactive Prototype • Real-Time Controls
+              </span>
             </div>
+
+            {isVireon && <VireonThreatCenterBento />}
+            {isInvestment && <InvestmentBentoGrid />}
+            {isCompliance && <ComplianceLegalBento />}
           </section>
+        ) : null}
 
-          {/* The Engineering Solution & Implementation Roadmap */}
-          <section className="rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-7 shadow-sm">
-            <div className="flex items-center gap-2 text-[#0D9488] mb-2">
-              <Cpu className="h-4 w-4" />
-              <h2 className="text-xs font-bold uppercase tracking-wider">The Strategy & Execution</h2>
-            </div>
-            <h3 className="text-lg sm:text-xl font-bold text-slate-950">
-              {caseStudy.solution.headline}
-            </h3>
-            <p className="mt-2.5 text-sm sm:text-base text-slate-600 leading-relaxed">
-              {caseStudy.solution.description}
-            </p>
+        {/* Plain-English Story Grid: Before vs After & Boulevard Numbered Steps */}
+        <div className="grid gap-10 lg:grid-cols-12 mb-14">
+          {/* Left 8 Columns */}
+          <div className="lg:col-span-8 space-y-10">
+            {/* The Everyday Business Problem */}
+            <section className="rounded-2xl border border-[#e9e9ec] bg-white p-6 sm:p-8">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#343edb]">
+                01 / THE EVERYDAY CHALLENGE
+              </span>
+              <h2
+                className="mt-2 text-2xl sm:text-3xl font-medium tracking-[-0.045em] text-[#101014]"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                {caseStudy.challenge.headline}
+              </h2>
+              <p className="mt-3 text-sm sm:text-base text-[#555560] leading-relaxed">
+                {caseStudy.challenge.description}
+              </p>
 
-            {/* Phased Roadmap */}
-            <div className="mt-7 space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                Implementation Roadmap
-              </h4>
-              <div className="space-y-3.5">
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                {caseStudy.challenge.bulletPoints.map((point, index) => (
+                  <div
+                    key={index}
+                    className="flex items-start gap-3 rounded-xl border border-[#e9e9ec] bg-[#f5f5f7] p-4 text-xs sm:text-sm text-[#101014]"
+                  >
+                    <span
+                      className="font-bold text-[#343edb] shrink-0"
+                      style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                    >
+                      0{index + 1}.
+                    </span>
+                    <span>{point}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* How It Works — Boulevard Service Row List (01. / 02. / 03.) */}
+            <section className="rounded-2xl border border-[#e9e9ec] bg-white p-6 sm:p-8">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#343edb]">
+                02 / HOW IT WORKS IN 3 SIMPLE STEPS
+              </span>
+              <h2
+                className="mt-2 text-2xl sm:text-4xl font-medium leading-[0.98] tracking-[-0.06em] text-transparent bg-clip-text"
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  backgroundImage: 'linear-gradient(100deg, #2534bf, #8d9dff)',
+                }}
+              >
+                {caseStudy.solution.headline}
+              </h2>
+              <p className="mt-3 text-sm sm:text-base text-[#555560] leading-relaxed">
+                {caseStudy.solution.description}
+              </p>
+
+              {/* Boulevard .service-row numbered list */}
+              <div className="mt-8 border-t border-[#e9e9ec]">
                 {caseStudy.solution.phases.map((phase, idx) => (
                   <div
                     key={idx}
-                    className="relative pl-6 before:absolute before:left-2 before:top-3 before:h-full before:w-0.5 before:bg-slate-200 last:before:hidden"
+                    className="grid gap-4 border-b border-[#e9e9ec] py-6 sm:grid-cols-12 items-start"
                   >
-                    <div className="absolute left-0 top-1 h-4 w-4 rounded-full border-2 border-[#0D9488] bg-white" />
-                    <div className="rounded-xl border border-slate-100 bg-[#F8FAFC] p-4">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-bold text-[#0D9488]">
-                          {phase.phaseNumber}: {phase.title}
-                        </span>
-                      </div>
-                      <p className="mt-1 text-xs sm:text-sm text-slate-600">
+                    <div
+                      className="sm:col-span-2 text-lg font-medium text-[#343edb]"
+                      style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                    >
+                      {phase.phaseNumber}.
+                    </div>
+                    <div className="sm:col-span-4">
+                      <h3
+                        className="text-lg font-medium tracking-[-0.03em] text-[#101014]"
+                        style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                      >
+                        {phase.title}
+                      </h3>
+                    </div>
+                    <div className="sm:col-span-6 space-y-2">
+                      <p className="text-xs sm:text-sm text-[#555560] leading-relaxed">
                         {phase.description}
                       </p>
-                      <div className="mt-2 text-xs font-medium text-slate-500">
-                        <strong className="text-slate-800">Key Deliverable:</strong> {phase.deliverable}
+                      <div className="inline-block rounded-full bg-[#f5f5f7] px-3 py-1 text-[11px] font-semibold text-[#101014] border border-[#e9e9ec]">
+                        Result: {phase.deliverable}
                       </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Key Highlights */}
+              <div className="mt-8">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#777780] mb-4">
+                  What Your Team Gets Out of the Box
+                </h4>
+                <div className="grid gap-3.5 sm:grid-cols-2">
+                  {caseStudy.solution.architecturalFeatures.map((feature, idx) => (
+                    <div
+                      key={idx}
+                      className="rounded-xl border border-[#e9e9ec] bg-[#f5f5f7] p-4"
+                    >
+                      <h5
+                        className="text-sm font-bold text-[#101014]"
+                        style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                      >
+                        {feature.title}
+                      </h5>
+                      <p className="mt-1 text-xs text-[#555560] leading-relaxed">
+                        {feature.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* Measurable Business Impact */}
+            <section className="rounded-2xl border border-[#e9e9ec] bg-white p-6 sm:p-8">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#343edb]">
+                03 / MEASURABLE OUTCOMES
+              </span>
+              <h2
+                className="mt-2 text-2xl sm:text-3xl font-medium tracking-[-0.045em] text-[#101014]"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                {caseStudy.results.headline}
+              </h2>
+              <p className="mt-2.5 text-sm sm:text-base text-[#555560] leading-relaxed">
+                {caseStudy.results.description}
+              </p>
+
+              <div className="mt-6 space-y-2.5">
+                {caseStudy.results.businessOutcomes.map((outcome, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-start gap-3 rounded-xl bg-[#f5f5f7] p-3.5 text-xs sm:text-sm text-[#101014]"
+                  >
+                    <CheckCircle2 className="h-4 w-4 text-[#343edb] shrink-0 mt-0.5" />
+                    <span>{outcome}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Boulevard Quote Grid Testimonial */}
+            {caseStudy.testimonial && (
+              <section className="grid gap-4 sm:grid-cols-12 rounded-2xl border border-[#e9e9ec] bg-[#f5f5f7] p-6">
+                <div
+                  className="sm:col-span-4 rounded-xl p-6 text-white flex flex-col justify-between"
+                  style={{
+                    background:
+                      'radial-gradient(circle at 80% 20%, #818bff, transparent 50%), linear-gradient(135deg, #1821b5, #343ce8)',
+                  }}
+                >
+                  <span className="text-3xl leading-none text-[#d8ff38]">“</span>
+                  <div>
+                    <p
+                      className="font-bold text-base text-white"
+                      style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                    >
+                      {caseStudy.testimonial.author}
+                    </p>
+                    <p className="text-xs text-white/80 mt-0.5">
+                      {caseStudy.testimonial.title}
+                    </p>
+                    <p className="text-[11px] text-[#d8ff38] font-semibold mt-1">
+                      {caseStudy.testimonial.company}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="sm:col-span-8 flex flex-col justify-between p-2 sm:p-4">
+                  <p
+                    className="text-lg sm:text-2xl font-normal leading-snug tracking-[-0.03em] text-[#101014]"
+                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    “{caseStudy.testimonial.quote}”
+                  </p>
+                  <div className="mt-6 flex items-center justify-between border-t border-[#e9e9ec] pt-3 text-xs text-[#777780]">
+                    <span>Verified Client Feedback</span>
+                    <span className="font-bold text-[#343edb]">★ 5.0 / 5.0 Impact Rating</span>
+                  </div>
+                </div>
+              </section>
+            )}
+          </div>
+
+          {/* Right 4 Columns: Included Tools & Quick Contact */}
+          <aside className="lg:col-span-4 space-y-6">
+            <div className="rounded-2xl border border-[#e9e9ec] bg-[#f5f5f7] p-6">
+              <h3
+                className="text-sm font-bold uppercase tracking-wider text-[#101014] mb-4"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                What’s Included Under the Hood
+              </h3>
+              <div className="space-y-4">
+                {caseStudy.techStack.map((category, idx) => (
+                  <div key={idx} className="space-y-1.5">
+                    <span className="text-xs font-bold text-[#343edb]">
+                      {category.category}
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {category.tools.map((tool) => (
+                        <span
+                          key={tool}
+                          className="rounded-full border border-[#e9e9ec] bg-white px-3 py-1 text-xs font-medium text-[#101014]"
+                        >
+                          {tool}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Architectural Highlights */}
-            <div className="mt-7 space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                Core Architectural Highlights
-              </h4>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {caseStudy.solution.architecturalFeatures.map((feature, idx) => (
-                  <div
-                    key={idx}
-                    className="rounded-xl border border-slate-200/70 bg-white p-3.5 shadow-2xs"
-                  >
-                    <h5 className="text-xs font-bold text-slate-900">
-                      {feature.title}
-                    </h5>
-                    <p className="mt-1 text-xs text-slate-500 leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Results & Business Outcomes */}
-          <section className="rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-7 shadow-sm">
-            <div className="flex items-center gap-2 text-emerald-600 mb-2">
-              <CheckCircle2 className="h-4 w-4" />
-              <h2 className="text-xs font-bold uppercase tracking-wider">Business Impact & ROI</h2>
-            </div>
-            <h3 className="text-lg sm:text-xl font-bold text-slate-950">
-              {caseStudy.results.headline}
-            </h3>
-            <p className="mt-2.5 text-sm sm:text-base text-slate-600 leading-relaxed">
-              {caseStudy.results.description}
-            </p>
-
-            <div className="mt-5 space-y-2">
-              {caseStudy.results.businessOutcomes.map((outcome, idx) => (
-                <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-500 flex-shrink-0 mt-0.5" />
-                  <span>{outcome}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Executive Testimonial Quote */}
-          {caseStudy.testimonial && (
-            <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-gradient-to-br from-slate-50 to-teal-50/40 p-7 shadow-sm">
-              <Quote className="absolute right-5 top-5 h-12 w-12 text-slate-200 pointer-events-none" />
-              <p className="text-base sm:text-lg italic text-slate-800 leading-relaxed font-serif">
-                "{caseStudy.testimonial.quote}"
+            <div className="rounded-2xl border border-[#e9e9ec] bg-white p-6 shadow-xs">
+              <h3
+                className="text-lg font-medium text-[#101014] mb-1"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                Want This Working for Your Team?
+              </h3>
+              <p className="text-xs text-[#666670] mb-4 leading-relaxed">
+                Tell us what workflow you want to speed up. We’ll show you a tailored live demo in plain English.
               </p>
-              <div className="mt-5 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0D9488] font-bold text-white text-sm shadow-xs">
-                  {caseStudy.testimonial.author[0] || 'T'}
-                </div>
-                <div>
-                  <p className="font-bold text-sm text-slate-900">{caseStudy.testimonial.author}</p>
-                  <p className="text-xs text-slate-500">
-                    {caseStudy.testimonial.title} · {caseStudy.testimonial.company}
-                  </p>
-                </div>
-              </div>
+              <ContactForm
+                variant="compact"
+                tone="light"
+                accent="warm"
+                title="Book a 15-Minute Walkthrough"
+                description="Friendly, no-jargon walkthrough with our product team."
+                subject={`Walkthrough Request: ${caseStudy.client}`}
+              />
             </div>
-          )}
+          </aside>
         </div>
 
-        {/* Right Column: Tech Stack & Lead Capture */}
-        <aside className="lg:col-span-4 space-y-6">
-          {/* Tech Stack Matrix */}
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 mb-4">
-              Technologies & Infrastructure
-            </h3>
-            <div className="space-y-4">
-              {caseStudy.techStack.map((category, idx) => (
-                <div key={idx} className="space-y-1.5">
-                  <span className="text-[11px] font-semibold text-slate-500">
-                    {category.category}
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {category.tools.map((tool) => (
-                      <span
-                        key={tool}
-                        className="rounded-md border border-slate-200/80 bg-[#F8FAFC] px-2 py-1 text-xs font-mono text-slate-700"
-                      >
-                        {tool}
-                      </span>
-                    ))}
+        {/* Related Use Cases */}
+        {relatedStudies.length > 0 && (
+          <section className="border-t border-[#e9e9ec] pt-10">
+            <div className="mb-6 flex items-center justify-between">
+              <div>
+                <h2
+                  className="text-2xl font-medium tracking-[-0.04em] text-[#101014]"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
+                  Explore More Interactive Use Cases
+                </h2>
+                <p className="text-xs text-[#777780]">
+                  Click any use case below to try its live interactive workspace.
+                </p>
+              </div>
+              <button
+                onClick={onBack}
+                className="text-xs font-bold text-[#343edb] hover:underline inline-flex items-center gap-1 cursor-pointer"
+              >
+                View All Use Cases <ArrowRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              {relatedStudies.map((study) => (
+                <div
+                  key={study.id}
+                  onClick={() => onSelectRelated(study.slug)}
+                  className="group cursor-pointer rounded-2xl border border-[#e9e9ec] bg-[#f5f5f7] p-6 transition-all hover:border-[#343edb] hover:bg-white hover:shadow-md"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="rounded-full bg-[#343edb] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                      {study.industry}
+                    </span>
+                    <span className="text-xs text-[#777780] font-medium">
+                      {study.service}
+                    </span>
+                  </div>
+                  <h3
+                    className="text-lg font-medium text-[#101014] group-hover:text-[#343edb] transition-colors"
+                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    {study.title}
+                  </h3>
+                  <p className="mt-2 text-xs text-[#555560] line-clamp-2">
+                    {study.summary}
+                  </p>
+                  <div className="mt-4 flex items-center justify-between text-xs font-bold text-[#101014]">
+                    <span className="text-[#343edb]">
+                      {study.heroStats[0]?.value} {study.heroStats[0]?.label}
+                    </span>
+                    <span className="inline-flex items-center gap-1 group-hover:text-[#343edb]">
+                      Try Interactive Workspace <ArrowRight className="h-3.5 w-3.5" />
+                    </span>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Quick Lead Capture Form in Light Theme */}
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm">
-            <h3 className="text-sm font-bold text-slate-950 mb-1">
-              Have a Similar Architecture Need?
-            </h3>
-            <p className="text-xs text-slate-600 mb-4 leading-normal">
-              Speak with our senior solutions architects to design a scoped migration or custom bento dashboard.
-            </p>
-            <ContactForm
-              variant="compact"
-              tone="light"
-              accent="warm"
-              title="Schedule a Discovery Consultation"
-              description="Confidential architecture review with our principal systems engineers."
-              subject={`Inquiry regarding ${caseStudy.client} Case Study`}
-            />
-          </div>
-        </aside>
+          </section>
+        )}
       </div>
-
-      {/* Related Case Studies */}
-      {relatedStudies.length > 0 && (
-        <section className="border-t border-slate-200/80 pt-10">
-          <div className="mb-6 flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-bold text-slate-950">
-                Explore Other Case Studies
-              </h2>
-              <p className="text-xs text-slate-500">
-                Discover related enterprise technical architectures and live bento showcases.
-              </p>
-            </div>
-            <button
-              onClick={onBack}
-              className="text-xs font-bold text-[#0D9488] hover:text-[#0F766E] inline-flex items-center gap-1"
-            >
-              View Directory <ArrowRight className="h-3.5 w-3.5" />
-            </button>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2">
-            {relatedStudies.map((study) => (
-              <div
-                key={study.id}
-                onClick={() => onSelectRelated(study.slug)}
-                className="group cursor-pointer rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition-all hover:border-slate-300 hover:shadow-md"
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-700">
-                    {study.industry}
-                  </span>
-                  <span className="text-[11px] text-[#0D9488] font-medium">
-                    {study.service}
-                  </span>
-                </div>
-                <h3 className="font-bold text-slate-900 group-hover:text-[#0D9488] transition-colors">
-                  {study.title}
-                </h3>
-                <p className="mt-2 text-xs text-slate-600 line-clamp-2">
-                  {study.summary}
-                </p>
-                <div className="mt-4 flex items-center justify-between text-xs font-semibold text-slate-900">
-                  <span className="text-emerald-600">
-                    {study.heroStats[0]?.value} {study.heroStats[0]?.label}
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-slate-500 group-hover:text-slate-900">
-                    Launch Interactive Showcase <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
     </div>
   );
 };

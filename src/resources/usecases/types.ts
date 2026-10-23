@@ -1,6 +1,7 @@
 export type IndustryType =
   | 'All'
   | 'Financial Services'
+  | 'Legal & Compliance'
   | 'Healthcare & Life Sciences'
   | 'Manufacturing & Supply Chain'
   | 'Education & Research'
@@ -11,6 +12,7 @@ export type IndustryType =
 export const INDUSTRIES: IndustryType[] = [
   'All',
   'Financial Services',
+  'Legal & Compliance',
   'Healthcare & Life Sciences',
   'Manufacturing & Supply Chain',
   'Education & Research',
@@ -21,17 +23,17 @@ export const INDUSTRIES: IndustryType[] = [
 
 export type ServiceType =
   | 'All'
-  | 'Cloud Modernization'
-  | 'Cybersecurity & Zero Trust'
   | 'AI & Autonomous Agents'
+  | 'Cybersecurity & Zero Trust'
+  | 'Cloud Modernization'
   | 'Managed IT & Disaster Recovery'
   | 'High-Throughput Data & DevOps';
 
 export const SERVICES: ServiceType[] = [
   'All',
-  'Cloud Modernization',
-  'Cybersecurity & Zero Trust',
   'AI & Autonomous Agents',
+  'Cybersecurity & Zero Trust',
+  'Cloud Modernization',
   'Managed IT & Disaster Recovery',
   'High-Throughput Data & DevOps',
 ];

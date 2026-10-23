@@ -5,15 +5,20 @@
  * - /blogs -> BlogsView
  * - /agents (including /agents/lab) -> Agent catalog
  * - /alternate-landing -> AlternateLandingPage
+ * - /guide -> Guide catalog & handbooks
  * - /contact -> dedicated contact route inside the main App
  * - all other paths -> main App
  */
 
-/** Public manual aliases resolve to the canonical software_manual application. */
-export function getCanonicalManualPath(pathname: string): string {
-  const path = pathname.replace(/^\/(?:software|software-manual)(?=\/|$)/, "/software_manual");
-  return path.replace(/^(\/software_manual(?:\/[^/]+)?)\/index\.html$/, "$1");
+/** Public guide and legacy manual aliases resolve to the canonical /guide application. */
+export function getCanonicalGuidePath(pathname: string): string {
+  const path = pathname
+    .replace(/^\/(?:software|software-manual|software_manual|guides)(?=\/|$)/, "/guide")
+    .replace(/^\/guide\/sunshine_distribution_manual(?=\/|$)/, "/guide/sunshine_distribution_guide");
+  return path.replace(/^(\/guide(?:\/[^/]+)?)\/index\.html$/, "$1");
 }
+
+export const getCanonicalManualPath = getCanonicalGuidePath;
 
 export function getAppRoot(path: string): string {
   let pathname: string;
@@ -23,12 +28,12 @@ export function getAppRoot(path: string): string {
     pathname = path.split(/[?#]/, 1)[0] || "/";
   }
 
-  pathname = getCanonicalManualPath(pathname);
+  pathname = getCanonicalGuidePath(pathname);
 
   const isWithin = (root: string) =>
     pathname === root || pathname.startsWith(`${root}/`);
 
-  if (isWithin("/software_manual")) return "/software_manual";
+  if (isWithin("/guide")) return "/guide";
   if (isWithin("/alternate-landing")) return "/alternate-landing";
   // Named so `smartNavigate` can soft-navigate between /contact and the other
   // surfaces that live in the same React tree; the renderer is still the default.
@@ -56,7 +61,7 @@ export function smartNavigate(targetUrl: string) {
   }
 
   if (target.origin === window.location.origin) {
-    target.pathname = getCanonicalManualPath(target.pathname);
+    target.pathname = getCanonicalGuidePath(target.pathname);
   }
 
   const current = new URL(window.location.href);

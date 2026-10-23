@@ -1,7 +1,6 @@
 import React from 'react';
-import { ShieldCheck, CloudLightning, Award } from 'lucide-react';
+import { ShieldCheck, Sparkles, Clock } from 'lucide-react';
 import { ContactForm } from '../../../shared/components/ContactForm';
-import { Reveal } from '../../../shared/components/Reveal';
 
 interface LeadGenerationSectionProps {
   className?: string;
@@ -11,67 +10,81 @@ export const LeadGenerationSection: React.FC<LeadGenerationSectionProps> = ({
   className = '',
 }) => {
   return (
-    <section className={`rounded-3xl border border-slate-200/90 bg-white text-slate-900 p-8 sm:p-12 shadow-sm relative overflow-hidden ${className}`}>
-      {/* Background ambient lighting */}
-      <div className="absolute top-0 right-0 -mr-20 -mt-20 h-96 w-96 rounded-full bg-teal-500/5 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 -ml-20 -mb-20 h-96 w-96 rounded-full bg-sky-500/5 blur-3xl pointer-events-none" />
-
+    <section
+      className={`rounded-2xl p-8 sm:p-12 text-white relative overflow-hidden ${className}`}
+      style={{
+        background:
+          'radial-gradient(ellipse at 78% 25%, #6f78ff 0, transparent 38%), radial-gradient(ellipse at 63% 76%, #1528b7 0, transparent 42%), linear-gradient(115deg, #11121c 5%, #272bc3 58%, #7f8cff 100%)',
+        fontFamily: "'DM Sans', sans-serif",
+      }}
+    >
       <div className="relative z-10 grid gap-10 lg:grid-cols-12 items-center">
-        {/* Left Column: Offer positioning & credibility */}
+        {/* Left Column: Plain-English Value Proposition */}
         <div className="lg:col-span-6 space-y-6">
-          <Reveal>
-            <div className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-teal-50/80 px-3.5 py-1.5 text-xs font-semibold text-teal-800">
-              <ShieldCheck className="h-4 w-4 text-teal-600" />
-              Enterprise Architecture &amp; Prototype Consultation
-            </div>
-          </Reveal>
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-bold text-[#d8ff38]">
+            <span>✳</span>
+            Custom AI Agents &amp; Interactive Workspaces
+          </div>
 
-          <Reveal delay={0.05}>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-950 leading-tight">
-              Transform Complex Architecture Into High-Performance Software.
-            </h2>
-          </Reveal>
+          <h2
+            className="text-3xl sm:text-4xl font-normal tracking-[-0.05em] text-white leading-[1.05]"
+            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+          >
+            Ready to save hours on contracts, security, or daily operations?
+          </h2>
 
-          <Reveal delay={0.1}>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-              Facing multi-cloud security fragmentation, legacy data silos, or seeking custom interactive bento dashboards? Our lead engineers conduct architecture deep-dives and deliver scoped production prototypes.
-            </p>
-          </Reveal>
+          <p className="text-sm sm:text-base text-white/85 leading-relaxed">
+            Whether you want an AI legal assistant that checks vendor agreements in minutes or a live dashboard that brings your business numbers into one clear view, our team builds and launches it with you.
+          </p>
 
-          {/* Value pillars */}
           <div className="space-y-4 pt-1">
             <div className="flex items-start gap-3.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-50 text-teal-700 flex-shrink-0 border border-teal-100">
-                <CloudLightning className="h-4 w-4" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#d8ff38] text-[#101014] shrink-0">
+                <Sparkles className="h-4 w-4" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-900">Custom Interactive Bento &amp; Telemetry UIs</h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Responsive multi-panel bento interfaces tailored to executive governance, live telemetry, and rapid triage.
+                <h3
+                  className="text-sm font-bold text-white"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
+                  Easy for Anyone on Your Team to Use
+                </h3>
+                <p className="text-xs text-white/75 mt-0.5">
+                  Clean, visual workspaces designed in plain English — no technical training required.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-3.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-50 text-sky-700 flex-shrink-0 border border-sky-100">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#d8ff38] text-[#101014] shrink-0">
+                <Clock className="h-4 w-4" />
+              </div>
+              <div>
+                <h3
+                  className="text-sm font-bold text-white"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
+                  Fast Rollout in Weeks, Not Quarters
+                </h3>
+                <p className="text-xs text-white/75 mt-0.5">
+                  Start with a working interactive prototype tailored to your company rules and tools.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#d8ff38] text-[#101014] shrink-0">
                 <ShieldCheck className="h-4 w-4" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-900">Zero-Trust Security &amp; MXDR Integration</h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Real-time SIEM, ITDR, EDR, and immutable disaster recovery backups guaranteeing RTO &lt; 4 hours.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 flex-shrink-0 border border-emerald-100">
-                <Award className="h-4 w-4" />
-              </div>
-              <div>
-                <h3 className="text-sm font-bold text-slate-900">Guaranteed Compliance &amp; Audit Readiness</h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Full control mapping against NIST CSF 2.0, SOC 2 Type II, CMMC 2.0, and financial regulatory standards.
+                <h3
+                  className="text-sm font-bold text-white"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
+                  100% Private &amp; Audit-Ready
+                </h3>
+                <p className="text-xs text-white/75 mt-0.5">
+                  Your company documents stay private and every approval is logged for GDPR, SOC 2, and HIPAA.
                 </p>
               </div>
             </div>
@@ -79,14 +92,14 @@ export const LeadGenerationSection: React.FC<LeadGenerationSectionProps> = ({
         </div>
 
         {/* Right Column: Lead Capture Form */}
-        <div className="lg:col-span-6 bg-slate-50/70 text-slate-900 rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-xs">
+        <div className="lg:col-span-6 bg-white text-[#101014] rounded-2xl p-6 sm:p-8 shadow-xl">
           <ContactForm
             variant="full"
             tone="light"
             accent="warm"
-            title="Request an Architecture Consultation"
-            description="Speak directly with an enterprise systems architect. Confidential and non-binding."
-            subject="Case Studies Lead: Architecture Consultation Request"
+            title="Book a Friendly Walkthrough"
+            description="Tell us what you’d like to simplify, or email us directly at hello@gptx.vip."
+            subject="Use Cases Inquiry: Custom Walkthrough Request"
           />
         </div>
       </div>

@@ -1,0 +1,315 @@
+/*
+ * Guide theme layer (Boulevard Creative Studio style).
+ *
+ * Imported once from shared.tsx, so every surface (Catalog, GuidePage,
+ * and SunshineGuide) picks up the exact Boulevard landing page styling:
+ * --ink: #101014, --blue: #343edb, --blue2: #7d91ff, --lime: #d8ff38,
+ * --paper: #ffffff, --muted: #777780, --line: #e9e9ec, --night: #111114
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=Space+Grotesk:wght@400..700&display=swap');
+
+.blvd-guide-surface {
+  --ink: #101014;
+  --blue: #343edb;
+  --blue2: #7d91ff;
+  --lime: #d8ff38;
+  --paper: #ffffff;
+  --muted: #777780;
+  --line: #e9e9ec;
+  --night: #111114;
+  font-family: 'DM Sans', var(--font-sans), sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  color-scheme: light;
+}
+
+/* ----------------------------------------------------- Boulevard Hero (.top) -- */
+
+.blvd-guide-surface .blvd-hero-top {
+  background:
+    radial-gradient(ellipse at 78% 25%, #6f78ff 0, transparent 38%),
+    radial-gradient(ellipse at 63% 76%, #1528b7 0, transparent 42%),
+    linear-gradient(115deg, #11121c 5%, #272bc3 58%, #7f8cff 100%);
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  max-width: none !important;
+  width: 100% !important;
+}
+
+.blvd-guide-surface .blvd-hero-word {
+  font-family: 'Space Grotesk', var(--font-display), sans-serif;
+  font-weight: 500;
+  font-size: clamp(68px, 14.8vw, 170px);
+  letter-spacing: -0.095em;
+  line-height: 0.92;
+  margin-top: 28px;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.96);
+  pointer-events: none;
+  user-select: none;
+}
+
+.blvd-guide-surface .blvd-tiny-note {
+  margin-top: 24px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.72);
+  font-weight: 500;
+}
+
+/* ------------------------------------------- Boulevard Intro & Feature Trio -- */
+
+.blvd-guide-surface .blvd-intro-section {
+  max-width: 1640px;
+  margin: 0 auto;
+  padding: 58px clamp(24px, 6vw, 100px) 42px;
+  background: #ffffff;
+}
+
+.blvd-guide-surface .blvd-intro-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 34px;
+}
+
+.blvd-guide-surface .blvd-intro-line h2 {
+  font-family: 'Space Grotesk', var(--font-display), sans-serif;
+  font-size: clamp(22px, 2.5vw, 32px);
+  line-height: 1.18;
+  letter-spacing: -0.055em;
+  font-weight: 500;
+  max-width: 680px;
+  margin: 0;
+  color: #101014;
+}
+
+.blvd-guide-surface .blvd-round-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #101014;
+  color: #ffffff;
+  display: inline-grid;
+  place-items: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.blvd-guide-surface .blvd-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.blvd-guide-surface .blvd-feature {
+  min-height: 310px;
+  border-radius: 8px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.blvd-guide-surface .blvd-feature h3 {
+  font-family: 'Space Grotesk', var(--font-display), sans-serif;
+  font-size: 26px;
+  line-height: 1.04;
+  letter-spacing: -0.06em;
+  font-weight: 500;
+  margin: 0 0 10px;
+}
+
+.blvd-guide-surface .blvd-feature p {
+  font-size: 13px;
+  line-height: 1.5;
+  opacity: 0.84;
+  max-width: 280px;
+  margin: 0;
+}
+
+.blvd-guide-surface .blvd-feature-blue {
+  background:
+    radial-gradient(circle at 80% 20%, #818bff, transparent 50%),
+    linear-gradient(135deg, #1821b5, #343ce8);
+  color: #ffffff;
+}
+
+.blvd-guide-surface .blvd-feature-blue .blvd-mark {
+  font-size: 46px;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.blvd-guide-surface .blvd-feature-black {
+  background:
+    radial-gradient(circle at 60% 35%, rgba(255, 255, 255, 0.16), transparent 36%),
+    linear-gradient(140deg, #222226, #050506);
+  color: #ffffff;
+}
+
+.blvd-guide-surface .blvd-feature-white {
+  background: #f5f5f7;
+  color: #101014;
+  border: 1px solid #e9e9ec;
+}
+
+.blvd-guide-surface .blvd-mini-label {
+  font-size: 11px;
+  opacity: 0.65;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.blvd-guide-surface .blvd-plus {
+  font-family: 'Space Grotesk', var(--font-display), sans-serif;
+  font-size: clamp(54px, 6vw, 76px);
+  letter-spacing: -0.08em;
+  color: #343edb;
+  line-height: 0.95;
+  font-weight: 500;
+}
+
+@media (max-width: 920px) {
+  .blvd-guide-surface .blvd-feature-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* -------------------------------------------------------------------- FAQ -- */
+
+.manual-faq {
+  max-width: 1640px;
+  margin: 70px auto 90px;
+  padding: 0 clamp(24px, 6vw, 100px);
+}
+
+.manual-faq-heading {
+  text-align: left;
+  margin-bottom: 36px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.manual-faq-heading h2 {
+  font-family: 'Space Grotesk', var(--font-display), sans-serif;
+  font-size: clamp(2rem, 4.2vw, 3.5rem);
+  font-weight: 500;
+  letter-spacing: -0.07em;
+  line-height: 0.96;
+  background: linear-gradient(100deg, #2534bf, #8d9dff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin: 0;
+}
+
+.manual-faq-heading p {
+  color: #777780;
+  font-size: 14px;
+  max-width: 460px;
+  margin: 0;
+  line-height: 1.55;
+}
+
+.manual-faq-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #e9e9ec;
+}
+
+.manual-faq-item {
+  border-bottom: 1px solid #e9e9ec;
+  background: #ffffff;
+  overflow: hidden;
+  transition: background 0.2s;
+}
+
+.manual-faq-item:hover {
+  background: #fafafc;
+}
+
+.manual-faq-item.is-open {
+  background: #f5f5f7;
+}
+
+.manual-faq-trigger {
+  width: 100%;
+  min-height: 64px;
+  padding: 20px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  color: #101014;
+  font-family: 'Space Grotesk', var(--font-display), sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  cursor: pointer;
+}
+
+.manual-faq-trigger:focus-visible {
+  outline: 2px solid #343edb;
+  outline-offset: -2px;
+}
+
+.manual-faq-trigger svg {
+  flex: none;
+  color: #343edb;
+  transition: transform 0.2s;
+}
+
+.manual-faq-item.is-open .manual-faq-trigger svg {
+  transform: rotate(180deg);
+}
+
+.manual-faq-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease;
+}
+
+.manual-faq-item.is-open .manual-faq-content {
+  grid-template-rows: 1fr;
+}
+
+.manual-faq-content > div {
+  overflow: hidden;
+  padding: 0 16px;
+  color: #555560;
+  font-size: 14px;
+  line-height: 1.65;
+  max-width: 780px;
+}
+
+.manual-faq-item.is-open .manual-faq-content > div {
+  padding-bottom: 22px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .manual-faq-content,
+  .manual-faq-trigger svg {
+    transition: none;
+  }
+}
+
+/* ------------------------------------------- Boulevard Cobalt Gradient Text -- */
+
+.manual-catalog .manual-gradient-text,
+.sunshine-manual .manual-gradient-text {
+  background-image: linear-gradient(100deg, #2534bf 0%, #8d9dff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

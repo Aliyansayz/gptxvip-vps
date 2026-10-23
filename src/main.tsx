@@ -1,6 +1,6 @@
 import { StrictMode, Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
-import { smartNavigate, getAppRoot, getCanonicalManualPath } from "./utils/navigation";
+import { smartNavigate, getAppRoot, getCanonicalGuidePath } from "./utils/navigation";
 import "./index.css";
 import { BrowserRouter } from "react-router";
 
@@ -17,7 +17,7 @@ const DesignSystemBoard = lazy(() => import("../ui_docs/DesignSystemBoard"));
 const AlternateLandingPage = lazy(
   () => import("./alternateLandingPage/AlternateLandingPage"),
 );
-const SoftwareManualApp = lazy(() => import("../software_manual/App"));
+const GuideApp = lazy(() => import("../guide/App"));
 
 const RouteLoading = ({ dark = false }: { dark?: boolean }) => (
   <div
@@ -34,9 +34,9 @@ const RouteLoading = ({ dark = false }: { dark?: boolean }) => (
 let path = window.location.pathname;
 
 // Resolve public aliases and former HTML URLs before choosing the application root.
-const canonicalManualPath = getCanonicalManualPath(path);
-if (canonicalManualPath !== path) {
-  path = canonicalManualPath;
+const canonicalGuidePath = getCanonicalGuidePath(path);
+if (canonicalGuidePath !== path) {
+  path = canonicalGuidePath;
   window.history.replaceState(window.history.state, "", `${path}${window.location.search}${window.location.hash}`);
 }
 
@@ -52,12 +52,12 @@ if (path === "/agent" || path.startsWith("/agent/")) {
 
 const appRoot = getAppRoot(path);
 
-if (appRoot === "/software_manual") {
+if (appRoot === "/guide") {
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
       <Suspense fallback={<RouteLoading />}>
-        <BrowserRouter basename="/software_manual">
-          <SoftwareManualApp />
+        <BrowserRouter basename="/guide">
+          <GuideApp />
         </BrowserRouter>
       </Suspense>
     </StrictMode>,

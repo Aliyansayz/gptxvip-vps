@@ -10,6 +10,7 @@ interface NavbarProps {
     onNavigateAgentWorkspace?: () => void;
     onNavigateUseCases?: () => void;
     onNavigateProjectSurfaces?: () => void;
+    onNavigateGuide?: () => void;
     onNavigateSoftware?: () => void;
     onNavigateBlogs: () => void;
     onBookDemo?: () => void;
@@ -34,6 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     onNavigateAgentWorkspace,
     onNavigateUseCases,
     onNavigateProjectSurfaces,
+    onNavigateGuide,
     onNavigateSoftware,
     onNavigateBlogs,
     onBookDemo,
@@ -46,6 +48,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     const mobileTriggerRef = useRef<HTMLButtonElement>(null);
     const navigateAgents = onNavigateAgents || onNavigateDevLush || (() => window.location.assign('/agents'));
     const navigateCodeConcepts = onNavigateCodeConcepts || (() => window.location.assign('/code_concepts/general'));
+    const navigateGuide = onNavigateGuide || onNavigateSoftware || (() => window.location.assign('/guide'));
     const navigateAgentWorkspace = onNavigateAgentWorkspace || (() => {
         if ((window as any).smartNavigate) {
             (window as any).smartNavigate('/workspace');
@@ -63,12 +66,15 @@ export const Navbar: React.FC<NavbarProps> = ({
     const pathname = window.location.pathname;
     const isAgentWorkspace = pathname.startsWith('/workspace') || pathname.startsWith('/agent-workspace');
     const isUseCases = pathname.startsWith('/resources') || pathname.startsWith('/usecases') || pathname.startsWith('/case-studies');
+    const isGuide = pathname.startsWith('/guide') || pathname.startsWith('/software_manual') || pathname.startsWith('/software-manual') || pathname.startsWith('/software');
     const currentArea = pathname.startsWith('/agents/templates')
         ? 'Project surfaces'
         : isAgentWorkspace
         ? 'Agent Workspace'
         : isUseCases
         ? 'Use Cases'
+        : isGuide
+        ? 'Guide'
         : pathname.startsWith('/agents')
         ? 'Agent catalog'
         : pathname.startsWith('/contact')
@@ -152,7 +158,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <button type="button" onClick={navigateUseCases} aria-current={currentArea === 'Use Cases' ? 'page' : undefined} className={navClass(currentArea === 'Use Cases')}>Use Cases</button>
                     <button type="button" onClick={navigateAgents} aria-current={currentArea === 'Agent catalog' ? 'page' : undefined} className={navClass(currentArea === 'Agent catalog')}>Agent catalog</button>
                     {onNavigateProjectSurfaces && <button type="button" onClick={onNavigateProjectSurfaces} aria-current={currentArea === 'Project surfaces' ? 'page' : undefined} className={navClass(currentArea === 'Project surfaces')}>Project surfaces</button>}
-                    {onNavigateSoftware && <button type="button" onClick={onNavigateSoftware} className={navClass(false)}>Software</button>}
+                    <button type="button" onClick={navigateGuide} aria-current={currentArea === 'Guide' ? 'page' : undefined} className={navClass(currentArea === 'Guide')}>Guide</button>
                     <button type="button" onClick={onNavigateFinhub} aria-current={currentArea === 'Finhub' ? 'page' : undefined} className={navClass(currentArea === 'Finhub')}>Finhub</button>
                     <button type="button" onClick={navigateCodeConcepts} aria-current={currentArea === 'Code Concepts' ? 'page' : undefined} className={navClass(currentArea === 'Code Concepts')}>Code Concepts</button>
                     <button type="button" onClick={onNavigateBlogs} aria-current={currentArea === 'Notes' ? 'page' : undefined} className={navClass(currentArea === 'Notes')}>Notes</button>
@@ -172,7 +178,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {onNavigateProjectSurfaces && <button type="button" onClick={() => navigate(onNavigateProjectSurfaces)} aria-current={currentArea === 'Project surfaces' ? 'page' : undefined} className={menuLinkClass}>Project surfaces</button>}
                 <button type="button" onClick={() => navigate(onNavigateFinhub)} className={menuLinkClass}>Finhub</button>
                 <p className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Learn and read</p>
-                {onNavigateSoftware && <button type="button" onClick={() => navigate(onNavigateSoftware)} className={menuLinkClass}>Software</button>}
+                <button type="button" onClick={() => navigate(navigateGuide)} aria-current={currentArea === 'Guide' ? 'page' : undefined} className={menuLinkClass}>Guide</button>
                 <button type="button" onClick={() => navigate(navigateCodeConcepts)} className={menuLinkClass}>Code Concepts</button>
                 <button type="button" onClick={() => navigate(onNavigateBlogs)} className={menuLinkClass}>Notes</button>
                 {onBookDemo && <button type="button" onClick={() => navigate(onBookDemo)} aria-current={currentArea === 'Contact' ? 'page' : undefined} className={menuLinkClass}>Contact</button>}

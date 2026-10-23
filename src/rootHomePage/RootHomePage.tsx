@@ -164,7 +164,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
     onNavigateAgents,
     onNavigateAgentWorkspace,
     onNavigateBlogs = () => window.location.assign('/blogs'),
-    onNavigateSoftware = () => window.location.assign('/software_manual'),
+    onNavigateSoftware = () => window.location.assign('/guide'),
     onNavigateAgentArea = () => window.location.assign('/agent-area'),
     onNavigateContact,
 }) => {

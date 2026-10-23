@@ -1,108 +1,252 @@
 import React from 'react';
-import { ArrowUpRight, BookOpen, Code2, LineChart, Mail, Briefcase } from 'lucide-react';
-import { ContactForm } from '../shared/components/ContactForm';
-import { Logo } from '../shared/components/Logo';
 
-interface FooterProps {
-    onNavigateFinhub: () => void;
+export interface FooterProps {
+    onNavigateFinhub?: () => void;
     onNavigateAgentWorkspace?: () => void;
     onNavigateUseCases?: () => void;
-    onNavigateDevLush: () => void;
-    onNavigateBlogs: () => void;
+    onNavigateGuide?: () => void;
+    onNavigateDevLush?: () => void;
+    onNavigateBlogs?: () => void;
     onNavigateCodeConcepts?: () => void;
     onNavigateProjectSurfaces?: () => void;
     onNavigateAnalyticsSurfaces?: () => void;
     theme?: 'light' | 'dark';
-    /**
-     * `warm` matches the landing page's orange-red accent ramp.
-     * Defaults to `cyan` so the Agent catalog root keeps its existing palette.
-     */
     accent?: 'cyan' | 'warm';
+    caption?: string;
+    wordmark?: string;
 }
 
 export const Footer: React.FC<FooterProps> = ({
-    onNavigateFinhub,
-    onNavigateAgentWorkspace,
-    onNavigateUseCases,
-    onNavigateDevLush,
-    onNavigateBlogs,
+    onNavigateFinhub = () => window.location.assign('/finhub'),
+    onNavigateAgentWorkspace = () => window.location.assign('/workspace'),
+    onNavigateUseCases = () => window.location.assign('/resources/usecases'),
+    onNavigateGuide = () => window.location.assign('/guide'),
+    onNavigateDevLush = () => window.location.assign('/agents'),
+    onNavigateBlogs = () => window.location.assign('/blogs'),
     onNavigateCodeConcepts = () => window.location.assign('/code_concepts/general'),
-    onNavigateProjectSurfaces,
-    onNavigateAnalyticsSurfaces,
-    theme = 'light',
-    accent = 'cyan',
+    onNavigateProjectSurfaces = () => window.location.assign('/agents/templates'),
+    caption,
+    wordmark = 'GPTX.VIP™',
 }) => {
-    const warm = accent === 'warm';
-    const skin = warm
-        ? {
-            shell: 'border-ink/10 bg-white/70 text-slate-600',
-            markTile: 'bg-ink text-accent-400',
-            wordmarkAccent: 'accent-text-gradient-ink',
-            heading: 'text-slate-950',
-            link: 'hover:text-accent-700 focus-visible:ring-accent-600',
-            homeLink: 'focus-visible:ring-accent-600',
-            mail: 'text-accent-700 hover:text-accent-800 focus-visible:ring-accent-600',
-            rule: 'border-ink/10 text-slate-500',
-        }
-        : {
-            shell: 'border-slate-900/10 bg-white/70 text-slate-600',
-            markTile: 'bg-slate-950 text-cyan-300',
-            wordmarkAccent: 'text-cyan-600',
-            heading: 'text-slate-950',
-            link: 'hover:text-cyan-700 focus-visible:ring-cyan-500',
-            homeLink: 'focus-visible:ring-cyan-500 focus-visible:ring-offset-2',
-            mail: 'text-cyan-800 hover:text-cyan-600 focus-visible:ring-cyan-500',
-            rule: 'border-slate-900/10 text-slate-500',
-        };
-
-    const dark = theme === 'dark';
-
-    const linkClass = `inline-flex items-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 ${skin.link}`;
+    const scrollToTop = (e: React.MouseEvent) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     return (
-        <footer className={`border-t ${dark ? 'border-zinc-800 bg-zinc-950/90 text-zinc-300' : skin.shell}`}>
-            <div className="mx-auto grid max-w-6xl gap-9 px-5 py-10 sm:px-8 md:grid-cols-[1.2fr_1fr_1fr] md:py-12">
+        <footer
+            id="footer"
+            className="blvd-footer"
+            style={{
+                background: '#111114',
+                color: '#fff',
+                padding: '35px 4.2% 18px',
+                position: 'relative',
+                overflow: 'hidden',
+                fontFamily: "'DM Sans', Arial, sans-serif",
+            }}
+        >
+            <style>{`
+                .blvd-footer .blvd-footer-top {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 20px;
+                    max-width: 1120px;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                .blvd-footer .blvd-footer-kicker {
+                    font-size: 9px;
+                    text-transform: uppercase;
+                    letter-spacing: .1em;
+                    color: #a1a1aa;
+                }
+                .blvd-footer .blvd-footer-pill {
+                    border: 1px solid #77777e;
+                    border-radius: 30px;
+                    padding: 9px 13px;
+                    font-size: 10px;
+                    color: #fff;
+                    text-decoration: none;
+                    white-space: nowrap;
+                    transition: border-color 0.2s, color 0.2s;
+                }
+                .blvd-footer .blvd-footer-pill:hover {
+                    border-color: #d8ff38;
+                    color: #d8ff38;
+                }
+                .blvd-footer .blvd-email {
+                    display: block;
+                    font-family: 'Space Grotesk', sans-serif;
+                    font-size: clamp(27px, 7.2vw, 78px);
+                    letter-spacing: -.075em;
+                    line-height: 1.05;
+                    color: #a6afff;
+                    text-decoration: none;
+                    white-space: nowrap;
+                    margin: 18px auto 35px;
+                    max-width: 1120px;
+                    transition: color 0.2s;
+                }
+                .blvd-footer .blvd-email:hover {
+                    color: #d8ff38;
+                }
+                .blvd-footer .blvd-footer-rule {
+                    height: 1px;
+                    background: #ffffff20;
+                    margin: 0 auto 22px;
+                    max-width: 1120px;
+                }
+                .blvd-footer .blvd-footer-bottom {
+                    display: grid;
+                    grid-template-columns: 1.4fr 1fr;
+                    gap: 35px;
+                    max-width: 1120px;
+                    margin: 0 auto;
+                }
+                .blvd-footer .blvd-footer-blurb {
+                    font-size: 11px;
+                    line-height: 1.6;
+                    color: #b5b5bc;
+                    max-width: 320px;
+                    margin: 0 0 10px;
+                }
+                .blvd-footer .blvd-footer-links {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 18px;
+                }
+                .blvd-footer .blvd-footer-links h4 {
+                    font-size: 9px;
+                    text-transform: uppercase;
+                    letter-spacing: .1em;
+                    color: #777780;
+                    margin: 0 0 12px;
+                    font-weight: 700;
+                }
+                .blvd-footer .blvd-footer-links a,
+                .blvd-footer .blvd-footer-links button {
+                    display: block;
+                    text-decoration: none;
+                    color: #e9e9ec;
+                    font-size: 11px;
+                    margin: 8px 0;
+                    background: none;
+                    border: 0;
+                    padding: 0;
+                    font-family: inherit;
+                    cursor: pointer;
+                    text-align: left;
+                    transition: color 0.15s;
+                }
+                .blvd-footer .blvd-footer-links a:hover,
+                .blvd-footer .blvd-footer-links button:hover {
+                    color: #d8ff38;
+                }
+                .blvd-footer .blvd-footer-wordmark {
+                    font-family: 'Space Grotesk', sans-serif;
+                    font-size: clamp(42px, 9vw, 95px);
+                    line-height: .95;
+                    letter-spacing: -.085em;
+                    margin: 48px auto 12px;
+                    max-width: 1120px;
+                    color: #fff;
+                }
+                .blvd-footer .blvd-footer-legal {
+                    display: flex;
+                    justify-content: space-between;
+                    gap: 15px;
+                    font-size: 9px;
+                    color: #777780;
+                    border-top: 1px solid #ffffff20;
+                    padding-top: 13px;
+                    max-width: 1120px;
+                    margin: 0 auto;
+                }
+                .blvd-footer .blvd-footer-legal a,
+                .blvd-footer .blvd-footer-legal button {
+                    color: inherit;
+                    text-decoration: none;
+                    background: none;
+                    border: 0;
+                    padding: 0;
+                    font: inherit;
+                    cursor: pointer;
+                }
+                .blvd-footer .blvd-footer-legal a:hover,
+                .blvd-footer .blvd-footer-legal button:hover {
+                    color: #d8ff38;
+                }
+                @media (max-width: 650px) {
+                    .blvd-footer { padding: 28px 5% 15px !important; }
+                    .blvd-footer .blvd-footer-top { align-items: flex-start; }
+                    .blvd-footer .blvd-email { font-size: 7.3vw; letter-spacing: -.07em; margin: 22px auto 28px; }
+                    .blvd-footer .blvd-footer-bottom { grid-template-columns: 1fr; gap: 25px; }
+                    .blvd-footer .blvd-footer-wordmark { margin-top: 38px; }
+                    .blvd-footer .blvd-footer-legal { flex-wrap: wrap; }
+                }
+                @media (max-width: 380px) {
+                    .blvd-footer .blvd-email { font-size: 7vw; }
+                    .blvd-footer .blvd-footer-links { gap: 10px; }
+                    .blvd-footer .blvd-footer-links a,
+                    .blvd-footer .blvd-footer-links button { font-size: 10px; }
+                }
+            `}</style>
+
+            <div className="blvd-footer-top">
+                <div className="blvd-footer-kicker">Let’s make something great together</div>
+                <a className="blvd-footer-pill" href="mailto:hello@gptx.vip">Start a project ↗</a>
+            </div>
+
+            <a className="blvd-email" href="mailto:hello@gptx.vip">hello@gptx.vip</a>
+
+            <div className="blvd-footer-rule" />
+
+            <div className="blvd-footer-bottom">
                 <div>
-                    <a href="/" className={`inline-flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 ${skin.homeLink}`} aria-label="GPTX.VIP home">
-                        <Logo size="md" variant="default" />
-                    </a>
-                    <p className="mt-4 max-w-sm text-sm leading-6">
-                        Interactive lessons, agent labs, and finance tools for exploring code, systems, and trading ideas.
+                    <p className="blvd-footer-blurb">
+                        {caption || 'We work with our strategists, designers, and engineers to deliver high-impact AI agents, interactive systems, and enterprise digital products with passion.'}
                     </p>
+                    <p className="blvd-footer-blurb">© {new Date().getFullYear()} GPTX.VIP Creative Studio. All rights reserved.</p>
                 </div>
 
-                <div>
-                    <h2 className={`text-xs font-bold uppercase tracking-[0.16em] ${dark ? 'text-zinc-100' : skin.heading}`}>Explore</h2>
-                    <ul className="mt-4 space-y-3 text-sm">
-                        <li><button onClick={onNavigateAgentWorkspace || (() => window.location.assign('/workspace'))} className={linkClass}>Agent Workspace</button></li>
-                        <li><button onClick={onNavigateUseCases || (() => window.location.assign('/resources/usecases'))} className={linkClass}><Briefcase className="h-4 w-4" />Use Cases & Case Studies</button></li>
-                        <li><button onClick={onNavigateCodeConcepts} className={linkClass}><Code2 className="h-4 w-4" />Code Concepts</button></li>
-                        <li><button onClick={onNavigateDevLush} className={linkClass}><Logo size="sm" variant="icon-only" className="mr-2" />Agent Labs</button></li>
-                        {onNavigateProjectSurfaces && <li><button onClick={onNavigateProjectSurfaces} className={linkClass}>Project surfaces</button></li>}
-                        {onNavigateAnalyticsSurfaces && <li><button onClick={onNavigateAnalyticsSurfaces} className={linkClass}><LineChart className="h-4 w-4" />Analytics surfaces</button></li>}
-                        <li><button onClick={onNavigateFinhub} className={linkClass}><LineChart className="h-4 w-4" />Finhub</button></li>
-                        <li><button onClick={onNavigateBlogs} className={linkClass}><BookOpen className="h-4 w-4" />Notes</button></li>
-                    </ul>
-                </div>
-
-                <div className="flex flex-col items-start gap-3">
-                    <h2 className={`text-xs font-bold uppercase tracking-[0.16em] ${dark ? 'text-zinc-100' : skin.heading}`}>Contact</h2>
-                    <p className="text-sm leading-6">Questions or feedback about a lesson or tool?</p>
-                    <ContactForm
-                      variant="compact"
-                      tone={dark ? 'dark' : 'light'}
-                      accent={warm ? 'warm' : 'emerald'}
-                      title="Send us a message"
-                      description="We'll get back to you within 24 hours."
-                      subject="Contact from GPTX.VIP Footer"
-                    />
+                <div className="blvd-footer-links">
+                    <div>
+                        <h4>Navigate</h4>
+                        <a href="/">Home</a>
+                        <button type="button" onClick={onNavigateUseCases}>Use Cases</button>
+                        <button type="button" onClick={onNavigateGuide}>Guide</button>
+                        <button type="button" onClick={onNavigateAgentWorkspace}>Workspace</button>
+                        <a href="/contact">Contact</a>
+                    </div>
+                    <div>
+                        <h4>Social</h4>
+                        <a href="mailto:hello@gptx.vip">Email ↗</a>
+                        <a href="/resources/usecases">Case Studies ↗</a>
+                        <a href="/guide">Field Guides ↗</a>
+                        <a href="/agents">Agent Catalog ↗</a>
+                    </div>
+                    <div>
+                        <h4>Explore</h4>
+                        <button type="button" onClick={onNavigateDevLush}>Agent Labs</button>
+                        <button type="button" onClick={onNavigateProjectSurfaces}>UI/UX Surfaces</button>
+                        <button type="button" onClick={onNavigateFinhub}>Finhub</button>
+                        <button type="button" onClick={onNavigateCodeConcepts}>Code Concepts</button>
+                        <button type="button" onClick={onNavigateBlogs}>Journal</button>
+                    </div>
                 </div>
             </div>
-            <div className={`border-t px-5 py-4 text-xs sm:px-8 ${dark ? 'border-zinc-800 text-zinc-500' : skin.rule}`}>
-                <div className="mx-auto flex max-w-6xl flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-                    <span>© {new Date().getFullYear()} GPTX.VIP</span>
-                    <span>Code Concepts · Agent Labs · Finhub · Use Cases · Notes</span>
-                </div>
+
+            <div className="blvd-footer-wordmark">{wordmark}</div>
+
+            <div className="blvd-footer-legal">
+                <span>© {new Date().getFullYear()} GPTX.VIP. Made with intention.</span>
+                <span>
+                    <a href="/contact">Privacy</a> &nbsp; · &nbsp; <a href="/contact">Terms</a>
+                </span>
+                <button type="button" onClick={scrollToTop}>Back to top ↑</button>
             </div>
         </footer>
     );

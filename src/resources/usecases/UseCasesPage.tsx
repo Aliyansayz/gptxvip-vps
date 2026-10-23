@@ -20,7 +20,6 @@ interface UseCasesPageProps {
 
 export const UseCasesPage: React.FC<UseCasesPageProps> = ({
   initialSlug,
-  onNavigateHome,
   onNavigateFinhub,
   onNavigateCodeConcepts,
   onNavigateDevLush,
@@ -41,6 +40,13 @@ export const UseCasesPage: React.FC<UseCasesPageProps> = ({
       rawSlug === 'investment'
     ) {
       return 'real-estate-investment-platform';
+    }
+    if (
+      rawSlug === 'compliance' ||
+      rawSlug === 'legal' ||
+      rawSlug === 'compliance-legal'
+    ) {
+      return 'compliance-legal-agent';
     }
     return rawSlug;
   };
@@ -89,7 +95,10 @@ export const UseCasesPage: React.FC<UseCasesPageProps> = ({
     : null;
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#F8FAFC] text-slate-900 selection:bg-teal-200 selection:text-slate-900">
+    <div
+      className="flex min-h-screen flex-col bg-white text-[#101014] selection:bg-[#d8ff38] selection:text-[#101014]"
+      style={{ fontFamily: "'DM Sans', sans-serif" }}
+    >
       {/* Root Navigation Bar */}
       <Navbar
         variant="default"
@@ -116,7 +125,7 @@ export const UseCasesPage: React.FC<UseCasesPageProps> = ({
         )}
       </main>
 
-      {/* Root Footer */}
+      {/* Root Footer (Boulevard style with hello@gptx.vip) */}
       <Footer
         onNavigateFinhub={onNavigateFinhub || (() => window.location.assign('/finhub'))}
         onNavigateDevLush={onNavigateDevLush || (() => window.location.assign('/agents'))}
