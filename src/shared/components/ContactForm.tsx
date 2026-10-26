@@ -481,16 +481,17 @@ export const ContactForm: React.FC<ContactFormProps> = ({
 
   // Full variant
   return (
-    <form onSubmit={handleSubmit} className={`space-y-4 ${className}`} noValidate>
+    <form onSubmit={handleSubmit} className={`space-y-3.5 ${className}`} noValidate>
       {title && (
-        <div>
-          <h3 className={`text-lg font-bold ${skin.title}`}>{title}</h3>
-          {description && <p className={`mt-1 text-sm ${skin.description}`}>{description}</p>}
+        <div className="mb-1">
+          <h3 className={`text-base sm:text-lg font-bold ${skin.title}`} style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{title}</h3>
+          {description && <p className={`mt-0.5 text-xs sm:text-sm ${skin.description}`}>{description}</p>}
         </div>
       )}
       {hiddenTrap}
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <fieldset className="grid gap-3 sm:grid-cols-2">
+        <legend className="sr-only">Contact Details</legend>
         <div>
           <label htmlFor="cf-name" className={skin.label}>Name</label>
           <input
@@ -502,12 +503,12 @@ export const ContactForm: React.FC<ContactFormProps> = ({
             onChange={handleChange}
             placeholder="Your name"
             autoComplete="name"
-            className={fieldClass}
+            className={`${fieldClass} min-h-[44px]`}
             disabled={isSubmitting}
           />
         </div>
         <div>
-          <label htmlFor="cf-full-email" className={skin.label}>Email</label>
+          <label htmlFor="cf-full-email" className={skin.label}>Email Address</label>
           <div className="relative">
             <Mail className={`pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 ${skin.fieldOnIcon}`} aria-hidden="true" />
             <input
@@ -517,47 +518,54 @@ export const ContactForm: React.FC<ContactFormProps> = ({
               required
               value={formData.email}
               onChange={handleChange}
-              placeholder="your@email.com"
-              className={`${fieldClass} pl-11`}
+              placeholder="you@company.com"
+              autoComplete="email"
+              inputMode="email"
+              className={`${fieldClass} pl-11 min-h-[44px]`}
               disabled={isSubmitting}
             />
           </div>
         </div>
-      </div>
+      </fieldset>
 
-      <div>
-        <label htmlFor="cf-subject" className={skin.label}>Subject</label>
-        <select
-          name="subject"
-          id="cf-subject"
-          value={formData.subject}
-          onChange={handleChange}
-          className={`${fieldClass} ${selectChevron}`}
-          style={selectChevronStyle}
-          disabled={isSubmitting}
-        >
-          {subjectOptions.map(opt => (
-            <option key={opt.value} value={opt.value}>{opt.label}</option>
-          ))}
-        </select>
-      </div>
+      <fieldset className="space-y-3">
+        <legend className="sr-only">Message Inquiries</legend>
+        <div>
+          <label htmlFor="cf-subject" className={skin.label}>Subject / Inquiry Type</label>
+          <select
+            name="subject"
+            id="cf-subject"
+            value={formData.subject}
+            onChange={handleChange}
+            className={`${fieldClass} ${selectChevron} min-h-[44px]`}
+            style={selectChevronStyle}
+            disabled={isSubmitting}
+          >
+            {subjectOptions.map(opt => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
+          </select>
+        </div>
 
-      <div>
-        <label htmlFor="cf-message" className={skin.label}>Message</label>
-        <textarea
-          name="message"
-          id="cf-message"
-          required
-          value={formData.message}
-          onChange={handleChange}
-          placeholder="Your message..."
-          rows={5}
-          className={`${fieldClass} min-h-[128px] resize-none`}
-          disabled={isSubmitting}
-        />
-      </div>
+        <div>
+          <label htmlFor="cf-message" className={skin.label}>Message</label>
+          <textarea
+            name="message"
+            id="cf-message"
+            required
+            value={formData.message}
+            onChange={handleChange}
+            placeholder="How can we help your team?"
+            rows={4}
+            className={`${fieldClass} min-h-[110px] resize-none`}
+            disabled={isSubmitting}
+          />
+        </div>
+      </fieldset>
 
-      {submitButton('Send Message', Send)}
+      <div className="pt-1">
+        {submitButton('Send Message', Send)}
+      </div>
       {statusBanner}
     </form>
   );

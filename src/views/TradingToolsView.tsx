@@ -20,6 +20,7 @@ const LeverageLiveStarterStore = lazy(() => import('../finhub/tools/leverage_ver
 interface TradingToolsViewProps {
   activeSubTab: string;
   isArchive?: boolean;
+  onSelectSubTab?: (subTab: string) => void;
 }
 
 const toolLabels: Record<string, string> = {
@@ -37,14 +38,26 @@ const LoadingFallback: React.FC<{ label: string }> = ({ label }) => (
   </div>
 );
 
-export const TradingToolsView: React.FC<TradingToolsViewProps> = ({ activeSubTab, isArchive = false }) => {
+export const TradingToolsView: React.FC<TradingToolsViewProps> = ({ activeSubTab, isArchive = false, onSelectSubTab }) => {
+  const [internalSubTab, setInternalSubTab] = React.useState(activeSubTab || 'leverage-view-v3');
+
+  React.useEffect(() => {
+    if (activeSubTab) setInternalSubTab(activeSubTab);
+  }, [activeSubTab]);
+
+  const effectiveSubTab = internalSubTab;
+  const switchSubTab = (newTab: string) => {
+    setInternalSubTab(newTab);
+    onSelectSubTab?.(newTab);
+  };
+
   const activeLab = 
-    activeSubTab === 'leverage-view-live-starter' ? 'leverage-live-starter' :
-    activeSubTab === 'leverage-view-v3' ? 'leverage-v3' : 
-    activeSubTab === 'leverage-view-v2' ? 'leverage-v2' : 
-    activeSubTab === 'leverage-view' ? 'leverage' : 
+    effectiveSubTab === 'leverage-view-live-starter' ? 'leverage-live-starter' :
+    effectiveSubTab === 'leverage-view-v3' ? 'leverage-v3' : 
+    effectiveSubTab === 'leverage-view-v2' ? 'leverage-v2' : 
+    effectiveSubTab === 'leverage-view' ? 'leverage' : 
     'starter';
-  const toolLabel = toolLabels[activeSubTab] || toolLabels['lab-view'];
+  const toolLabel = toolLabels[effectiveSubTab] || toolLabels['lab-view'];
 
   return (
     <motion.div 
@@ -63,13 +76,58 @@ export const TradingToolsView: React.FC<TradingToolsViewProps> = ({ activeSubTab
             <p className="mt-1 max-w-2xl text-xs leading-5 text-zinc-500 dark:text-zinc-400">
               {isArchive
                 ? 'Earlier tool versions are kept here for reference. Choose Trading Tools in the navigation to open the current workspace.'
-                : 'Choose a version from the sidebar. This workspace uses the selected version and its own settings.'}
+                : 'Choose a version below or from the sidebar. Each environment runs with isolated state and dedicated indicator pipelines.'}
             </p>
           </div>
           <span className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${isArchive ? 'bg-amber-500/10 text-amber-700 dark:text-amber-300' : 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300'}`}>
-            {isArchive ? 'Reference' : 'Available'}
+            {isArchive ? 'Reference' : 'Active Engine'}
           </span>
         </header>
+
+        {/* Quick Version Navigation Pills - Fitts's & Hick's Law */}
+        <nav aria-label="Trading tool versions" className="mb-6 flex flex-wrap items-center gap-2 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/30 p-2">
+          <button
+            type="button"
+            onClick={() => switchSubTab('leverage-view-v3')}
+            className={`flex min-h-[44px] items-center gap-2 rounded-lg px-4 text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
+              effectiveSubTab === 'leverage-view-v3'
+                ? 'bg-emerald-600 text-white shadow-sm'
+                : 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700'
+            }`}
+          >
+            <span>Leverage v3</span>
+            <span className="rounded-full bg-emerald-400/20 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-white">Latest</span>
+          </button>
+
+          {/* Progressive Disclosure: Earlier Versions Drawer (Hick's Law) */}
+          <details className="group flex-1">
+            <summary className="flex min-h-[44px] cursor-pointer items-center justify-between rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3.5 py-2 text-xs font-semibold text-zinc-600 dark:text-zinc-300 hover:text-emerald-600 select-none">
+              <span>Earlier Versions (v1, v2, starter)</span>
+              <span className="text-[10px] text-zinc-400 transition-transform group-open:rotate-180">▼</span>
+            </summary>
+            <div className="mt-2 flex flex-wrap items-center gap-2 pt-2 border-t border-zinc-200 dark:border-zinc-800">
+              {[
+                { id: 'leverage-view-v2', label: 'Leverage v2' },
+                { id: 'leverage-view', label: 'Leverage v1' },
+                { id: 'leverage-view-live-starter', label: 'Live Starter' },
+                { id: 'lab-view', label: 'Starter Edition' },
+              ].map((ver) => (
+                <button
+                  key={ver.id}
+                  type="button"
+                  onClick={() => switchSubTab(ver.id)}
+                  className={`flex min-h-[40px] items-center rounded-lg px-3 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
+                    effectiveSubTab === ver.id
+                      ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900'
+                      : 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-700'
+                  }`}
+                >
+                  {ver.label}
+                </button>
+              ))}
+            </div>
+          </details>
+        </nav>
         <AnimatePresence mode="wait">
           <motion.div
             key={activeLab}

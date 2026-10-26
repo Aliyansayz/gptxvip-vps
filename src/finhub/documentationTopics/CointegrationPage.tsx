@@ -29,27 +29,27 @@ interface DocumentationSectionProps {
 
 const DocumentationSection: React.FC<DocumentationSectionProps> = ({ id, title, icon: Icon, children, isLast }) => {
   return (
-    <section id={id} aria-labelledby={`${id}-title`} className="relative pl-8 md:pl-0 mb-32 scroll-mt-24">
+    <section id={id} aria-labelledby={`${id}-title`} className="relative pl-8 md:pl-0 mb-14 sm:mb-16 scroll-mt-24">
       {/* Timeline line */}
       {!isLast && (
-        <div className="hidden md:block absolute left-0 top-8 bottom-[-128px] w-px bg-zinc-200 dark:bg-zinc-800" />
+        <div className="hidden md:block absolute left-0 top-8 bottom-[-64px] w-px bg-zinc-200 dark:bg-zinc-800" />
       )}
       
       <div className="md:pl-12 relative">
         {/* Timeline dot (The "Knob") */}
         <div className="hidden md:block absolute left-[-5px] top-2 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-4 ring-white dark:ring-zinc-950 z-10" />
         
-        <header className="mb-12">
+        <header className="mb-6">
           <div className="flex items-center gap-3 mb-2">
             {Icon && <Icon className="w-5 h-5 text-emerald-500" />}
-            <h2 id={`${id}-title`} className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-tighter">
+            <h2 id={`${id}-title`} className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-tighter">
               {title}
             </h2>
           </div>
           <div className="h-1 w-20 bg-emerald-500 rounded-full" />
         </header>
 
-        <div className="space-y-16">
+        <div className="space-y-8 sm:space-y-10">
           {children}
         </div>
       </div>
@@ -130,6 +130,7 @@ const LogicBlock: React.FC<{
 };
 
 export const CointegrationPage: React.FC = () => {
+  const [pairFilter, setPairFilter] = React.useState<'all' | 'passed' | 'failed'>('all');
   const sections = [
     { id: "coint-overview", label: "Overview" },
     { id: "coint-rules", label: "Trading rules" },
@@ -284,31 +285,61 @@ export const CointegrationPage: React.FC = () => {
           </SubSection>
 
           <SubSection title="Evaluation Results">
+            {/* Hick's Law Filter Pills */}
+            <div className="flex flex-wrap items-center gap-2 mb-4" role="toolbar" aria-label="Filter evaluated pairs">
+              {[
+                { id: 'all', label: 'All Sample Pairs (4)' },
+                { id: 'passed', label: 'Stationary Spread Passed (2)' },
+                { id: 'failed', label: 'Divergent Rejected (2)' },
+              ].map((filterTab) => (
+                <button
+                  key={filterTab.id}
+                  type="button"
+                  onClick={() => setPairFilter(filterTab.id as any)}
+                  aria-pressed={pairFilter === filterTab.id}
+                  className={`min-h-[38px] px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
+                    pairFilter === filterTab.id
+                      ? 'bg-zinc-900 text-white dark:bg-emerald-500 dark:text-zinc-950 shadow-sm'
+                      : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                  }`}
+                >
+                  {filterTab.label}
+                </button>
+              ))}
+            </div>
+
             <div className="grid grid-cols-1 gap-4">
               {[
-                { pair: "EURUSD / GBPUSD", status: "passed", reason: "High correlation (0.85) and strong mean reversion (p=0.01).", metrics: "HL: 45 | Corr: 0.85" },
-                { pair: "AUDUSD / NZDUSD", status: "passed", reason: "Geographic economic coupling leads to stable cointegration.", metrics: "HL: 60 | Corr: 0.90" },
-                { pair: "EURUSD / USDCHF", status: "failed", reason: "High correlation but non-stationary spread (p=0.15).", metrics: "HL: N/A | Corr: 0.92" },
-                { pair: "GBPUSD / USDCAD", status: "failed", reason: "Insufficient correlation (0.30) for pairs trading.", metrics: "HL: N/A | Corr: 0.30" }
-              ].map((ex, i) => (
-                <div key={i} className="flex flex-col gap-4 rounded-2xl border border-zinc-200 bg-white p-5 transition-all hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900/30 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-3">
-                      <h4 className="font-bold text-zinc-900 dark:text-zinc-100">{ex.pair}</h4>
-                      <span className="text-[10px] font-mono text-zinc-400">{ex.metrics}</span>
+                { pair: "EURUSD / GBPUSD", status: "passed", confidence: "99% Confidence", reason: "High correlation (0.85) and strong mean reversion (p=0.01).", metrics: "HL: 45 bars | Corr: 0.85" },
+                { pair: "AUDUSD / NZDUSD", status: "passed", confidence: "95% Confidence", reason: "Geographic economic coupling leads to stable cointegration.", metrics: "HL: 60 bars | Corr: 0.90" },
+                { pair: "EURUSD / USDCHF", status: "failed", confidence: "Non-Stationary", reason: "High correlation but non-stationary spread (p=0.15).", metrics: "HL: N/A | Corr: 0.92" },
+                { pair: "GBPUSD / USDCAD", status: "failed", confidence: "Uncorrelated", reason: "Insufficient correlation (0.30) for pairs trading.", metrics: "HL: N/A | Corr: 0.30" }
+              ]
+                .filter((ex) => pairFilter === 'all' || ex.status === pairFilter)
+                .map((ex, i) => (
+                  <div key={i} className="flex flex-col gap-4 rounded-2xl border border-zinc-200 bg-white p-5 transition-all hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900/30 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+                    <div className="space-y-1.5">
+                      <div className="flex flex-wrap items-center gap-2.5">
+                        <h4 className="font-bold text-zinc-900 dark:text-zinc-100">{ex.pair}</h4>
+                        <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                          ex.status === 'passed' ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400' : 'bg-red-500/10 text-red-700 dark:text-red-400'
+                        }`}>
+                          {ex.confidence}
+                        </span>
+                        <span className="text-[10px] font-mono text-zinc-400 tabular-nums">{ex.metrics}</span>
+                      </div>
+                      <p className="text-xs text-zinc-500 max-w-md leading-relaxed">{ex.reason}</p>
                     </div>
-                    <p className="text-xs text-zinc-500 max-w-md leading-relaxed">{ex.reason}</p>
-                  </div>
-                  <div className="flex shrink-0 items-center gap-2">
-                    <div aria-hidden="true" className={`p-2 rounded-full ${ex.status === "passed" ? "bg-emerald-500/10 text-emerald-500" : "bg-red-500/10 text-red-500"}`}>
-                      {ex.status === "passed" ? <CheckCircle2 className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
+                    <div className="flex shrink-0 items-center gap-2">
+                      <div aria-hidden="true" className={`p-2 rounded-full ${ex.status === "passed" ? "bg-emerald-500/10 text-emerald-500" : "bg-red-500/10 text-red-500"}`}>
+                        {ex.status === "passed" ? <CheckCircle2 className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
+                      </div>
+                      <span className={`text-xs font-semibold ${ex.status === "passed" ? "text-emerald-700 dark:text-emerald-400" : "text-red-700 dark:text-red-400"}`}>
+                        {ex.status === 'passed' ? 'Passed' : 'Failed'}
+                      </span>
                     </div>
-                    <span className={`text-xs font-semibold ${ex.status === "passed" ? "text-emerald-700 dark:text-emerald-400" : "text-red-700 dark:text-red-400"}`}>
-                      Example {ex.status}
-                    </span>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </SubSection>
         </div>

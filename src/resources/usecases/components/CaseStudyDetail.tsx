@@ -106,27 +106,33 @@ export const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({
             </div>
 
             {hasInteractiveWidget && (
-              <div className="flex items-center rounded-full border border-white/20 bg-black/30 p-1 backdrop-blur-xs">
+              <div role="tablist" aria-label="View format" className="flex items-center rounded-full border border-white/20 bg-black/30 p-1 backdrop-blur-xs">
                 <button
+                  role="tab"
+                  id="tab-interactive"
+                  aria-selected={activeTab === 'interactive'}
                   onClick={() => setActiveTab('interactive')}
-                  className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition cursor-pointer ${
+                  className={`inline-flex min-h-[44px] items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d8ff38] cursor-pointer ${
                     activeTab === 'interactive'
-                      ? 'bg-[#d8ff38] text-[#101014]'
+                      ? 'bg-[#d8ff38] text-[#101014] shadow-sm'
                       : 'text-white/80 hover:text-white'
                   }`}
                 >
-                  <MonitorPlay className="h-3.5 w-3.5" />
+                  <MonitorPlay className="h-4 w-4" />
                   Interactive Workspace
                 </button>
                 <button
+                  role="tab"
+                  id="tab-blueprint"
+                  aria-selected={activeTab === 'blueprint'}
                   onClick={() => setActiveTab('blueprint')}
-                  className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition cursor-pointer ${
+                  className={`inline-flex min-h-[44px] items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d8ff38] cursor-pointer ${
                     activeTab === 'blueprint'
-                      ? 'bg-[#d8ff38] text-[#101014]'
+                      ? 'bg-[#d8ff38] text-[#101014] shadow-sm'
                       : 'text-white/80 hover:text-white'
                   }`}
                 >
-                  <FileCode2 className="h-3.5 w-3.5" />
+                  <FileCode2 className="h-4 w-4" />
                   How It Works
                 </button>
               </div>

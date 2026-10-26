@@ -11,9 +11,10 @@ interface AgenticRoleUseCasesProps {
    * Defaults to `cyan` so the Agent Labs landing keeps its existing palette.
    */
   accent?: 'cyan' | 'warm';
+  className?: string;
 }
 
-export function AgenticRoleUseCases({ onOpenRole, accent = 'cyan' }: AgenticRoleUseCasesProps) {
+export function AgenticRoleUseCases({ onOpenRole, accent = 'cyan', className = '' }: AgenticRoleUseCasesProps) {
   const [activeRoleId, setActiveRoleId] = useState(agenticRoleDefinitions[0]?.id || '');
   const [revealed, setRevealed] = useState(false);
   const revealRef = useRef<HTMLDivElement>(null);
@@ -23,13 +24,13 @@ export function AgenticRoleUseCases({ onOpenRole, accent = 'cyan' }: AgenticRole
   // Bright display stops clear 3:1 on the #0d1824 panel; body-level copy on
   // the light band needs the deep AA step instead.
   const warm = accent === 'warm';
-  const accentOnDark = warm ? 'text-accent-400' : 'text-cyan-300';
-  const accentOnLight = warm ? 'text-accent-700 dark:text-accent-400' : 'text-cyan-700 dark:text-cyan-300';
-  const accentRing = warm ? 'focus-visible:ring-accent-500' : 'focus-visible:ring-cyan-300';
-  const accentCta = warm ? 'bg-accent-600 hover:bg-accent-700' : 'bg-cyan-300 hover:bg-cyan-200';
-  const accentGlow = warm ? 'rgba(224,65,42,0.2)' : 'rgba(34,211,238,0.15)';
-  const accentRail = warm ? 'border-accent-400/50 bg-accent-500/15' : 'border-cyan-400/50 bg-cyan-300/10';
-  const accentRailIcon = warm ? 'bg-accent-500 text-white' : 'bg-cyan-300 text-slate-950';
+  const accentOnDark = warm ? 'text-[#d8ff38]' : 'text-cyan-300';
+  const accentOnLight = warm ? 'text-[#343edb]' : 'text-cyan-700 dark:text-cyan-300';
+  const accentRing = warm ? 'focus-visible:ring-[#343edb]' : 'focus-visible:ring-cyan-300';
+  const accentCta = warm ? 'bg-[#d8ff38] text-[#101014] hover:bg-[#c6f028]' : 'bg-cyan-300 hover:bg-cyan-200 text-slate-950';
+  const accentGlow = warm ? 'rgba(52,62,219,0.25)' : 'rgba(34,211,238,0.15)';
+  const accentRail = warm ? 'border-[#343edb] bg-[#343edb]/20' : 'border-cyan-400/50 bg-cyan-300/10';
+  const accentRailIcon = warm ? 'bg-[#d8ff38] text-[#101014]' : 'bg-cyan-300 text-slate-950';
 
   useEffect(() => {
     const element = revealRef.current;
@@ -51,12 +52,18 @@ export function AgenticRoleUseCases({ onOpenRole, accent = 'cyan' }: AgenticRole
   const currentUseCase = getAgenticRoleUseCase(activeRole);
 
   return (
-    <section aria-labelledby="agentic-role-use-cases-heading" className="border-y border-zinc-200 bg-[#eef3f4] px-4 py-16 dark:border-zinc-800 dark:bg-[#0a1118] sm:px-8 sm:py-24">
+    <section aria-labelledby="agentic-role-use-cases-heading" className={`border-y border-[#e9e9ec] bg-[#f7f8f5] px-4 py-8 sm:px-8 sm:py-10 ${className}`}>
       <div className="mx-auto max-w-6xl">
-        <div className="mb-8 max-w-2xl">
-          <p className={`text-xs font-bold uppercase tracking-[0.18em] ${accentOnLight}`}>Agentic Roles · applied learning</p>
-          <h2 id="agentic-role-use-cases-heading" className="mt-3 text-3xl font-black tracking-tight text-zinc-950 dark:text-white sm:text-4xl">See where an agent role earns its place.</h2>
-          <p className="mt-4 text-base leading-7 text-zinc-600 dark:text-zinc-300">Move through {agenticRoleDefinitions.length} role-based use cases. Each opens a real case path with sample inputs, a decision to make, and evidence to inspect.</p>
+        <div className="mb-6 max-w-2xl">
+          <span className="block text-xs font-bold uppercase tracking-widest text-[#343edb] mb-1.5">
+            02 / APPLIED AGENT ROLES
+          </span>
+          <h2 id="agentic-role-use-cases-heading" className="text-2xl sm:text-3xl font-medium tracking-tight text-[#101014]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            See where an agent role earns its place.
+          </h2>
+          <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[#777780]">
+            Move through {agenticRoleDefinitions.length} role-based use cases. Each opens a real case path with sample inputs, a decision to make, and evidence to inspect.
+          </p>
         </div>
 
         <div ref={revealRef} className={`relative overflow-hidden rounded-[1.75rem] border border-slate-700/80 bg-[#0d1824] text-white shadow-[0_24px_70px_rgba(15,23,42,0.16)] transition-[opacity,transform] duration-700 ease-out motion-reduce:transition-none ${revealed ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-6 scale-[0.98] opacity-0'}`}>
@@ -83,17 +90,17 @@ export function AgenticRoleUseCases({ onOpenRole, accent = 'cyan' }: AgenticRole
               </div>
             </div>
 
-            <div className="min-w-0 p-5 sm:p-8 lg:p-10">
+            <div className="min-w-0 p-4 sm:p-6 lg:p-7">
               <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-bold uppercase tracking-[0.14em]"><span className={accentOnDark}>Case path {String(activeIndex + 1).padStart(2, '0')} / {String(agenticRoleDefinitions.length).padStart(2, '0')}</span><span className="rounded-full border border-white/15 px-3 py-1 text-slate-300">{activeRole.chapters.length} exercises</span></div>
               <div aria-live="polite" aria-atomic="true">
-                <h3 className="mt-6 max-w-xl text-2xl font-bold tracking-tight text-white sm:text-3xl">{activeRole.title}</h3>
-                <p className="mt-3 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">{activeRole.tagline}</p>
-                <div className="mt-7 grid gap-3 sm:grid-cols-3">
-                  {[['The situation', currentUseCase.situation], ['The decision', currentUseCase.decision], ['What to check', currentUseCase.evidence]].map(([label, body]) => <div key={label} className="rounded-xl border border-white/10 bg-white/[0.04] p-4"><p className={`text-[10px] font-bold uppercase tracking-[0.14em] ${accentOnDark}`}>{label}</p><p className="mt-2 text-sm leading-6 text-slate-200">{body}</p></div>)}
+                <h3 className="mt-4 max-w-xl text-xl sm:text-2xl font-medium tracking-tight text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{activeRole.title}</h3>
+                <p className="mt-2 max-w-xl text-xs sm:text-sm leading-relaxed text-slate-300">{activeRole.tagline}</p>
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                  {[['The situation', currentUseCase.situation], ['The decision', currentUseCase.decision], ['What to check', currentUseCase.evidence]].map(([label, body]) => <div key={label} className="rounded-xl border border-white/10 bg-white/[0.04] p-3.5"><p className={`text-[10px] font-bold uppercase tracking-[0.14em] ${accentOnDark}`}>{label}</p><p className="mt-1.5 text-xs leading-5 text-slate-200">{body}</p></div>)}
                 </div>
-                <div className="mt-6 flex items-start gap-3 border-t border-white/10 pt-5 text-sm text-slate-300"><CheckCircle2 aria-hidden="true" className={`mt-0.5 h-4 w-4 shrink-0 ${accentOnDark}`} /><span>First case: <strong className="font-semibold text-white">{activeRole.chapters[0]?.chapter_title || 'Choose a case from this role'}</strong></span></div>
+                <div className="mt-5 flex items-start gap-2.5 border-t border-white/10 pt-4 text-xs text-slate-300"><CheckCircle2 aria-hidden="true" className={`mt-0.5 h-3.5 w-3.5 shrink-0 ${accentOnDark}`} /><span>First case: <strong className="font-semibold text-white">{activeRole.chapters[0]?.chapter_title || 'Choose a case from this role'}</strong></span></div>
               </div>
-              <button type="button" onClick={() => onOpenRole(activeRole.id)} className={`mt-7 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-bold transition-[background-color,transform] duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 ${accentRing} focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d1824] motion-reduce:transform-none sm:w-auto ${warm ? `${accentCta} text-white` : `${accentCta} text-slate-950`}`}>Explore this role <ArrowUpRight className="h-4 w-4" /></button>
+              <button type="button" onClick={() => onOpenRole(activeRole.id)} className={`mt-5 inline-flex min-h-10 items-center justify-center gap-2 rounded-[30px] px-4 py-2 text-xs font-bold transition-[background-color,transform] duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 ${accentRing} focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d1824] motion-reduce:transform-none ${accentCta}`}>Explore this role <ArrowUpRight className="h-3.5 w-3.5" /></button>
             </div>
           </div>
         </div>

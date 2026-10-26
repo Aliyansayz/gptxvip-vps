@@ -8,27 +8,30 @@ interface AgenticArticlePreviewProps {
   onOpenArticle: (roleId: string) => void;
   /** `warm` matches the landing page's orange-red accent ramp. Defaults to `cyan`. */
   accent?: 'cyan' | 'warm';
+  className?: string;
 }
 
-export function AgenticArticlePreview({ onOpenArticle, accent = 'cyan' }: AgenticArticlePreviewProps) {
+export function AgenticArticlePreview({ onOpenArticle, accent = 'cyan', className = '' }: AgenticArticlePreviewProps) {
   const warm = accent === 'warm';
-  const accentOnDark = warm ? 'text-accent-400' : 'text-cyan-300';
-  const accentOnLight = warm ? 'text-accent-700 dark:text-accent-400' : 'text-cyan-700 dark:text-cyan-300';
-  const accentRing = warm ? 'focus-visible:ring-accent-500' : 'focus-visible:ring-cyan-300';
-  const accentCta = warm ? 'bg-accent-600 hover:bg-accent-700' : 'bg-cyan-300 hover:bg-cyan-200';
-  const accentGlow = warm ? 'rgba(224,65,42,0.2)' : 'rgba(34,211,238,0.15)';
-  const accentRail = warm ? 'border-accent-400/50 bg-accent-500/15' : 'border-cyan-400/50 bg-cyan-300/10';
-  const accentRailIcon = warm ? 'bg-accent-500 text-white' : 'bg-cyan-300 text-slate-950';
+  const accentOnDark = warm ? 'text-[#d8ff38]' : 'text-cyan-300';
+  const accentOnLight = warm ? 'text-[#343edb]' : 'text-cyan-700 dark:text-cyan-300';
+  const accentRing = warm ? 'focus-visible:ring-[#343edb]' : 'focus-visible:ring-cyan-300';
+  const accentCta = warm ? 'bg-[#d8ff38] text-[#101014] hover:bg-[#c6f028]' : 'bg-cyan-300 hover:bg-cyan-200 text-slate-950';
+  const accentGlow = warm ? 'rgba(52,62,219,0.25)' : 'rgba(34,211,238,0.15)';
+  const accentRail = warm ? 'border-[#343edb] bg-[#343edb]/20' : 'border-cyan-400/50 bg-cyan-300/10';
+  const accentRailIcon = warm ? 'bg-[#d8ff38] text-[#101014]' : 'bg-cyan-300 text-slate-950';
 
   return (
-    <section aria-labelledby="agentic-article-preview-heading" className="border-y border-zinc-200 bg-[#eef3f4] px-4 py-16 dark:border-zinc-800 dark:bg-[#0a1118] sm:px-8 sm:py-24">
+    <section aria-labelledby="agentic-article-preview-heading" className={`border-y border-[#e9e9ec] bg-[#f7f8f5] px-4 py-8 sm:px-8 sm:py-10 ${className}`}>
       <div className="mx-auto max-w-6xl">
-        <div className="mb-8 max-w-2xl">
-          <p className={`text-xs font-bold uppercase tracking-[0.18em] ${accentOnLight}`}>Agentic Roles · reading mode</p>
-          <h2 id="agentic-article-preview-heading" className="mt-3 text-3xl font-black tracking-tight text-zinc-950 dark:text-white sm:text-4xl">
+        <div className="mb-6 max-w-2xl">
+          <span className="block text-xs font-bold uppercase tracking-widest text-[#343edb] mb-1.5">
+            03 / DEEP TECHNICAL READING
+          </span>
+          <h2 id="agentic-article-preview-heading" className="text-2xl sm:text-3xl font-medium tracking-[-0.05em] text-[#101014]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
             Prefer reading? Get the short article + quiz version.
           </h2>
-          <p className="mt-4 text-base leading-7 text-zinc-600 dark:text-zinc-300">
+          <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[#777780]">
             Every case has a concise article with key concepts, mental models, and a built-in quiz.
             No simulation required — just read, learn, and test your understanding.
           </p>
@@ -82,7 +85,7 @@ export function AgenticArticlePreview({ onOpenArticle, accent = 'cyan' }: Agenti
               </div>
             </div>
 
-            <div className="min-w-0 p-5 sm:p-8 lg:p-10">
+            <div className="min-w-0 p-4 sm:p-6 lg:p-7">
               <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-bold uppercase tracking-[0.14em]">
                 <span className={accentOnDark}>Reading mode</span>
                 <span className="rounded-full border border-white/15 px-3 py-1 text-slate-300">
@@ -90,38 +93,38 @@ export function AgenticArticlePreview({ onOpenArticle, accent = 'cyan' }: Agenti
                 </span>
               </div>
               <div aria-live="polite" aria-atomic="true">
-                <h3 className="mt-6 max-w-xl text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                <h3 className="mt-4 max-w-xl text-xl sm:text-2xl font-medium tracking-tight text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                   Read the article, take the quiz
                 </h3>
-                <p className="mt-3 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
+                <p className="mt-2 max-w-xl text-xs sm:text-sm leading-relaxed text-slate-300">
                   Each chapter becomes a short, illustrated article with key concepts and a multiple-choice quiz.
                   Your progress is saved automatically.
                 </p>
-                <div className="mt-7 grid gap-3 sm:grid-cols-3">
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
                   {[
                     ['Concise prose', 'Theory content rewritten for quick reading'],
                     ['Key concepts', 'Numbered sections with definitions & examples'],
                     ['Quiz bank', 'MCQ questions with per-distractor feedback'],
                   ].map(([label, body]) => (
-                    <div key={label} className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
+                    <div key={label} className="rounded-xl border border-white/10 bg-white/[0.04] p-3.5">
                       <p className={`text-[10px] font-bold uppercase tracking-[0.14em] ${accentOnDark}`}>{label}</p>
-                      <p className="mt-2 text-sm leading-6 text-slate-200">{body}</p>
+                      <p className="mt-1.5 text-xs leading-5 text-slate-200">{body}</p>
                     </div>
                   ))}
                 </div>
-                <div className="mt-6 flex items-start gap-3 border-t border-white/10 pt-5 text-sm text-slate-300">
-                  <Sparkles aria-hidden="true" className={`mt-0.5 h-4 w-4 shrink-0 ${accentOnDark}`} />
+                <div className="mt-5 flex items-start gap-2.5 border-t border-white/10 pt-4 text-xs text-slate-300">
+                  <Sparkles aria-hidden="true" className={`mt-0.5 h-3.5 w-3.5 shrink-0 ${accentOnDark}`} />
                   <span>
-                    Try it: <strong className="font-semibold text-white">Append <code className="text-cyan-300">?mode=read</code> to any case URL</strong>
+                    Try it: <strong className="font-semibold text-white">Append <code className="text-[#d8ff38]">?mode=read</code> to any case URL</strong>
                   </span>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => onOpenArticle(agenticRoleDefinitions[0]?.id || '')}
-                className={`mt-7 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-bold transition-[background-color,transform] duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 ${accentRing} focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d1824] motion-reduce:transform-none sm:w-auto ${warm ? `${accentCta} text-white` : `${accentCta} text-slate-950`}`}
+                className={`mt-5 inline-flex min-h-10 items-center justify-center gap-2 rounded-[30px] px-4 py-2 text-xs font-bold transition-[background-color,transform] duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 ${accentRing} focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d1824] motion-reduce:transform-none ${accentCta}`}
               >
-                Try first article <ArrowRight className="h-4 w-4" />
+                Try first article <ArrowRight className="h-3.5 w-3.5" />
               </button>
             </div>
           </div>

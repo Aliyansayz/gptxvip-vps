@@ -24,6 +24,9 @@ export const OrderBookLab: React.FC = () => {
   const [tradeHistory, setTradeHistory] = useState<{ price: number; quantity: number; time: string; side: string }[]>([]);
   const [systemLogs, setSystemLogs] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<"market" | "internals">("market");
+  const [customLimitPrice, setCustomLimitPrice] = useState<number>(100.25);
+  const [customLimitQty, setCustomLimitQty] = useState<number>(25);
+  const [customLimitSide, setCustomLimitSide] = useState<"bid" | "ask">("bid");
   
   const addLog = (msg: string) => {
     setSystemLogs(prev => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev].slice(0, 10));
@@ -183,6 +186,23 @@ export const OrderBookLab: React.FC = () => {
     }
   };
 
+  const handleInjectLimitOrder = () => {
+    const newOrder: Order = {
+      id: `${customLimitSide === "bid" ? "B" : "A"}-${Date.now()}`,
+      price: customLimitPrice,
+      quantity: customLimitQty,
+      type: customLimitSide,
+      timestamp: Date.now()
+    };
+    if (customLimitSide === "bid") {
+      setBids(prev => [...prev, newOrder].sort((a, b) => b.price - a.price));
+      addLog(`Limit BID added: $${customLimitPrice.toFixed(2)} (${customLimitQty} units)`);
+    } else {
+      setAsks(prev => [...prev, newOrder].sort((a, b) => a.price - b.price));
+      addLog(`Limit ASK added: $${customLimitPrice.toFixed(2)} (${customLimitQty} units)`);
+    }
+  };
+
   const getPriceLevels = (orders: Order[]) => {
     const levels: Record<number, PriceLevel> = {};
     orders.forEach(o => {
@@ -212,7 +232,7 @@ export const OrderBookLab: React.FC = () => {
           </div>
           <div className="text-right">
             <p className="text-[10px] text-cyan-700 dark:text-cyan-600 uppercase font-black transition-colors">Consolidated Price</p>
-            <p className="text-2xl font-black text-cyan-600 dark:text-[rgba(34,211,238,1)] font-sans tracking-tight transition-colors">${lastPrice.toFixed(2)}</p>
+            <p className="text-2xl font-black text-cyan-600 dark:text-[rgba(34,211,238,1)] font-sans tracking-tight tabular-nums transition-colors">${lastPrice.toFixed(2)}</p>
           </div>
         </div>
         
@@ -270,15 +290,15 @@ export const OrderBookLab: React.FC = () => {
                   <div className="bg-cyan-50/50 dark:bg-cyan-900/20 rounded-2xl border border-cyan-200 dark:border-cyan-500/20 p-4 flex flex-col overflow-hidden shadow-inner transition-colors">
                     <div className="flex justify-between items-center mb-4 border-b border-cyan-200 dark:border-cyan-500/20 pb-2 transition-colors">
                        <span className="text-[10px] font-black text-cyan-600 dark:text-[rgba(34,211,238,1)] uppercase tracking-widest transition-colors">BIDS_SIDE</span>
-                       <span className="text-[10px] text-cyan-700 dark:text-cyan-600 font-bold transition-colors">DEPTH: {bids.length}</span>
+                       <span className="text-[10px] text-cyan-700 dark:text-cyan-600 font-bold tabular-nums transition-colors">DEPTH: {bids.length}</span>
                     </div>
                     <div className="flex-1 overflow-y-auto space-y-1 custom-scrollbar pr-2">
                        {bidLevels.map((lvl) => (
                          <div key={lvl.price} className="relative group overflow-hidden rounded">
                             <div className="absolute right-0 top-0 bottom-0 bg-cyan-200/50 dark:bg-cyan-500/20 transition-all group-hover:bg-cyan-300/50 dark:group-hover:bg-cyan-500/30" style={{ width: `${(lvl.totalQty / maxQty) * 100}%` }} />
                             <div className="flex items-center justify-between py-1.5 px-2 text-xs relative z-10">
-                               <span className="text-cyan-600 dark:text-[rgba(34,211,238,1)] font-black transition-colors">${lvl.price.toFixed(2)}</span>
-                               <span className="text-zinc-800 dark:text-cyan-50 font-bold transition-colors">{lvl.totalQty}</span>
+                               <span className="text-cyan-600 dark:text-[rgba(34,211,238,1)] font-black tabular-nums transition-colors">${lvl.price.toFixed(2)}</span>
+                               <span className="text-zinc-800 dark:text-cyan-50 font-bold tabular-nums transition-colors">{lvl.totalQty}</span>
                             </div>
                          </div>
                        ))}
@@ -289,15 +309,15 @@ export const OrderBookLab: React.FC = () => {
                   <div className="bg-red-50/50 dark:bg-cyan-900/20 rounded-2xl border border-red-200 dark:border-cyan-300/20 p-4 flex flex-col overflow-hidden shadow-inner transition-colors">
                     <div className="flex justify-between items-center mb-4 border-b border-red-200 dark:border-cyan-300/20 pb-2 transition-colors">
                        <span className="text-[10px] font-black text-red-600 dark:text-white uppercase tracking-widest transition-colors">ASKS_SIDE</span>
-                       <span className="text-[10px] text-red-700 dark:text-cyan-600 font-bold transition-colors">DEPTH: {asks.length}</span>
+                       <span className="text-[10px] text-red-700 dark:text-cyan-600 font-bold tabular-nums transition-colors">DEPTH: {asks.length}</span>
                     </div>
                     <div className="flex-1 overflow-y-auto space-y-1 custom-scrollbar pr-2">
                        {askLevels.map((lvl) => (
                          <div key={lvl.price} className="relative group overflow-hidden rounded">
                             <div className="absolute left-0 top-0 bottom-0 bg-red-100 dark:bg-white/20 transition-all group-hover:bg-red-200 dark:group-hover:bg-white/30" style={{ width: `${(lvl.totalQty / maxQty) * 100}%` }} />
                             <div className="flex items-center justify-between py-1.5 px-2 text-xs relative z-10">
-                               <span className="text-red-700 dark:text-white font-black transition-colors">${lvl.price.toFixed(2)}</span>
-                               <span className="text-zinc-800 dark:text-cyan-50 font-bold transition-colors">{lvl.totalQty}</span>
+                               <span className="text-red-700 dark:text-white font-black tabular-nums transition-colors">${lvl.price.toFixed(2)}</span>
+                               <span className="text-zinc-800 dark:text-cyan-50 font-bold tabular-nums transition-colors">{lvl.totalQty}</span>
                             </div>
                          </div>
                        ))}
@@ -305,17 +325,93 @@ export const OrderBookLab: React.FC = () => {
                   </div>
                 </div>
 
+                {/* Primary Action Buttons - Fitts's Law min 48px height with safe 16px buffer */}
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  <button type="button" onClick={() => handleSimulateOrder("bid")} className="col-span-1 p-4 bg-cyan-50 hover:bg-cyan-100 border border-cyan-300 rounded-2xl text-cyan-700 dark:bg-cyan-500/10 dark:hover:bg-cyan-500/20 dark:border-[rgba(34,211,238,1)]/40 dark:text-[rgba(34,211,238,1)] font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95 shadow-[0_0_15px_inset_rgba(34,211,238,0.1)] dark:shadow-[0_0_15px_inset_rgba(34,211,238,0.2)]">
+                  <button
+                    type="button"
+                    onClick={() => handleSimulateOrder("bid")}
+                    className="col-span-1 min-h-[48px] p-3.5 bg-cyan-50 hover:bg-cyan-100 border border-cyan-300 rounded-2xl text-cyan-700 dark:bg-cyan-500/10 dark:hover:bg-cyan-500/20 dark:border-[rgba(34,211,238,1)]/40 dark:text-[rgba(34,211,238,1)] font-black uppercase text-[11px] tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 shadow-[0_0_15px_inset_rgba(34,211,238,0.1)] dark:shadow-[0_0_15px_inset_rgba(34,211,238,0.2)]"
+                  >
                     <TrendingUp className="w-4 h-4" /> Inject Market Buy
                   </button>
-                  <button type="button" onClick={() => handleSimulateOrder("ask")} className="col-span-1 p-4 bg-red-50 hover:bg-red-100 border border-red-300 rounded-2xl text-red-700 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/40 dark:text-white font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95 shadow-[0_0_15px_inset_rgba(239,68,68,0.1)] dark:shadow-[0_0_15px_inset_rgba(255,255,255,0.2)]">
+                  <button
+                    type="button"
+                    onClick={() => handleSimulateOrder("ask")}
+                    className="col-span-1 min-h-[48px] p-3.5 bg-red-50 hover:bg-red-100 border border-red-300 rounded-2xl text-red-700 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/40 dark:text-white font-black uppercase text-[11px] tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 shadow-[0_0_15px_inset_rgba(239,68,68,0.1)] dark:shadow-[0_0_15px_inset_rgba(255,255,255,0.2)]"
+                  >
                     <TrendingDown className="w-4 h-4" /> Inject Market Sell
                   </button>
-                  <button type="button" aria-pressed={isAutoActive} onClick={() => setIsAutoActive(!isAutoActive)} className={`col-span-2 md:col-span-1 p-4 border rounded-2xl font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95 ${isAutoActive ? 'bg-indigo-50 border-indigo-200 text-indigo-600 dark:bg-indigo-500/20 dark:border-indigo-500/40 dark:text-indigo-400 shadow-[0_0_15px_inset_rgba(99,102,241,0.1)] dark:shadow-[0_0_15px_inset_rgba(99,102,241,0.2)]' : 'bg-slate-100 border-zinc-300 text-zinc-500 hover:bg-slate-200 dark:bg-zinc-800/50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-700/50'}`}>
+                  <button
+                    type="button"
+                    aria-pressed={isAutoActive}
+                    onClick={() => setIsAutoActive(!isAutoActive)}
+                    className={`col-span-2 md:col-span-1 min-h-[48px] p-3.5 border rounded-2xl font-black uppercase text-[11px] tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${isAutoActive ? 'bg-indigo-50 border-indigo-200 text-indigo-600 dark:bg-indigo-500/20 dark:border-indigo-500/40 dark:text-indigo-400 shadow-[0_0_15px_inset_rgba(99,102,241,0.1)] dark:shadow-[0_0_15px_inset_rgba(99,102,241,0.2)]' : 'bg-slate-100 border-zinc-300 text-zinc-500 hover:bg-slate-200 dark:bg-zinc-800/50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-700/50'}`}
+                  >
                     <RefreshCw className={`w-4 h-4 ${isAutoActive ? 'animate-spin' : ''}`} /> {isAutoActive ? 'Auto: ON' : 'Auto: OFF'}
                   </button>
                 </div>
+
+                {/* Progressive Disclosure Limit Order Creator - Hick's Law */}
+                <details className="group rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-800/20 p-3.5 transition-all">
+                  <summary className="flex cursor-pointer items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-300 hover:text-cyan-600 dark:hover:text-cyan-400 select-none">
+                    <span className="flex items-center gap-2">
+                      <PlusCircle className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                      Configure Custom Limit Order (Progressive Disclosure)
+                    </span>
+                    <span className="text-[10px] text-zinc-400 font-mono transition-transform group-open:rotate-180">▼</span>
+                  </summary>
+                  <div className="mt-3.5 grid grid-cols-1 sm:grid-cols-4 gap-3 pt-3 border-t border-zinc-200 dark:border-zinc-700/50">
+                    <div>
+                      <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-1">Side</label>
+                      <div className="flex gap-1">
+                        <button
+                          type="button"
+                          onClick={() => setCustomLimitSide("bid")}
+                          className={`flex-1 min-h-[38px] rounded-lg text-xs font-bold transition-colors ${customLimitSide === "bid" ? "bg-cyan-500 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"}`}
+                        >
+                          BID
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setCustomLimitSide("ask")}
+                          className={`flex-1 min-h-[38px] rounded-lg text-xs font-bold transition-colors ${customLimitSide === "ask" ? "bg-red-500 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"}`}
+                        >
+                          ASK
+                        </button>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-1">Price ($)</label>
+                      <input
+                        type="number"
+                        step="0.05"
+                        value={customLimitPrice}
+                        onChange={(e) => setCustomLimitPrice(parseFloat(e.target.value) || 100)}
+                        className="w-full min-h-[38px] px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs font-mono tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-1">Quantity</label>
+                      <input
+                        type="number"
+                        step="5"
+                        min="1"
+                        value={customLimitQty}
+                        onChange={(e) => setCustomLimitQty(parseInt(e.target.value, 10) || 10)}
+                        className="w-full min-h-[38px] px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs font-mono tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+                      />
+                    </div>
+                    <div className="flex items-end">
+                      <button
+                        type="button"
+                        onClick={handleInjectLimitOrder}
+                        className="w-full min-h-[38px] px-3 py-1.5 rounded-lg bg-zinc-900 dark:bg-white text-white dark:text-black font-bold text-xs uppercase tracking-wider hover:opacity-90 active:scale-95 transition-all"
+                      >
+                        Place Limit
+                      </button>
+                    </div>
+                  </div>
+                </details>
               </motion.div>
             ) : (
               <motion.div 
@@ -420,9 +516,9 @@ export const OrderBookLab: React.FC = () => {
                   <div key={i} className="flex items-center justify-between text-xs py-1 border-b border-zinc-200 dark:border-zinc-700/30 last:border-0 transition-colors">
                      <div className="flex items-center gap-3">
                         <span className={`font-black transition-colors ${trade.side === 'BUY' ? 'text-emerald-600 dark:text-white' : 'text-red-600 dark:text-[rgba(34,211,238,1)]'}`}>{trade.side}</span>
-                        <span className="text-zinc-800 dark:text-zinc-200 font-bold transition-colors">${trade.price.toFixed(2)}</span>
+                        <span className="text-zinc-800 dark:text-zinc-200 font-bold tabular-nums transition-colors">${trade.price.toFixed(2)}</span>
                      </div>
-                     <span className="text-cyan-700 dark:text-cyan-600 font-bold transition-colors">x {trade.quantity}</span>
+                     <span className="text-cyan-700 dark:text-cyan-600 font-bold tabular-nums transition-colors">x {trade.quantity}</span>
                   </div>
                 ))}
              </div>

@@ -75,20 +75,22 @@ export function AgentLabsCatalog({
   }, []);
 
   return (
-    <section className={`mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24 ${className}`} aria-labelledby={headingId}>
+    <section className={`mx-auto max-w-6xl px-5 py-8 sm:px-8 sm:py-10 ${className}`} aria-labelledby={headingId}>
       <Reveal>
         <div className="max-w-xl">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent-700">{eyebrow}</p>
-          <h2 id={headingId} className="mt-3 font-display text-[clamp(1.75rem,3vw,2.5rem)] font-extrabold tracking-[-0.035em] text-slate-950">
+          <span className="block text-xs font-bold uppercase tracking-widest text-[#343edb] mb-1.5">
+            05 / {eyebrow.toUpperCase()}
+          </span>
+          <h2 id={headingId} className="text-2xl sm:text-3xl font-medium tracking-[-0.05em] text-[#101014]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
             {heading}
           </h2>
-          <p className="mt-4 text-slate-600">{description}</p>
-          {meta && <div className="mt-4 text-sm text-slate-500">{meta}</div>}
+          <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[#777780]">{description}</p>
+          {meta && <div className="mt-2 text-xs text-slate-500">{meta}</div>}
         </div>
       </Reveal>
 
       <Reveal delay={0.06}>
-        <div className="mt-8 mb-6 flex flex-wrap items-center gap-2" role="group" aria-label="Filter topics by study group">
+        <div className="mt-6 mb-5 flex flex-wrap items-center gap-2" role="group" aria-label="Filter topics by study group">
           {TOPIC_GROUP_ORDER.map((group) => {
             const selected = activeGroup === group;
             return (
@@ -97,14 +99,14 @@ export function AgentLabsCatalog({
                 type="button"
                 onClick={() => toggleGroup(group)}
                 aria-pressed={selected}
-                className={`inline-flex min-h-11 items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-medium transition-[color,background-color,border-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600 focus-visible:ring-offset-2 active:scale-[0.96] motion-reduce:transform-none ${
+                className={`inline-flex min-h-9 items-center gap-2 rounded-full border px-3.5 py-1 text-xs font-medium transition-[color,background-color,border-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb] focus-visible:ring-offset-2 active:scale-[0.96] motion-reduce:transform-none ${
                   selected
-                    ? 'border-accent-600 bg-accent-600/10 text-accent-700'
-                    : 'border-transparent text-slate-500 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-700'
+                    ? 'border-[#343edb] bg-[#343edb]/10 text-[#343edb] font-bold'
+                    : 'border-[#e9e9ec] bg-white text-[#777780] hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900'
                 }`}
               >
                 {group}
-                <span className={`font-mono text-[10px] tabular-nums ${selected ? 'text-accent-600' : 'text-slate-400'}`}>
+                <span className={`font-mono text-[10px] tabular-nums ${selected ? 'text-[#343edb]' : 'text-slate-400'}`}>
                   {counts.get(group) ?? 0}
                 </span>
               </button>
@@ -114,7 +116,7 @@ export function AgentLabsCatalog({
             <button
               type="button"
               onClick={() => setActiveGroup(null)}
-              className="inline-flex min-h-11 items-center rounded-full px-3 text-xs font-semibold text-slate-500 underline decoration-ink/20 underline-offset-4 transition-colors duration-150 hover:text-accent-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
+              className="inline-flex min-h-9 items-center rounded-full px-3 text-xs font-semibold text-[#777780] underline decoration-ink/20 underline-offset-4 transition-colors duration-150 hover:text-[#343edb] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb]"
             >
               Show all {agentLabTopics.length}
             </button>

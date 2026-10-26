@@ -679,7 +679,7 @@ const MCQExercise: React.FC<MCQExerciseProps> = ({ question, themeColor = 'indig
           const isSelected = selectedOption === optionText;
           const showResult = isSubmitted;
 
-          let btnClass = "w-full text-left p-4 rounded-xl border transition-all duration-200 block ";
+          let btnClass = "w-full min-h-[48px] text-left p-4 rounded-xl border transition-all duration-200 block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 ";
           
           if (showResult) {
             if (isSelected) {
@@ -749,11 +749,11 @@ const MCQExercise: React.FC<MCQExerciseProps> = ({ question, themeColor = 'indig
         <button
           onClick={handleSubmit}
           disabled={!selectedOption}
-          className={`mt-6 w-full py-3.5 text-white font-bold rounded-xl transition-all ${
+          className={`mt-6 w-full min-h-[48px] py-3.5 text-white font-bold rounded-xl transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
              !selectedOption ? 'bg-zinc-300 dark:bg-zinc-800 text-zinc-500 cursor-not-allowed' :
-             themeColor === 'emerald' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 shadow-md hover:shadow-lg' :
-             themeColor === 'blue' ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 shadow-md hover:shadow-lg' :
-             'bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-400 hover:to-indigo-500 shadow-md hover:shadow-lg'
+             themeColor === 'emerald' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 shadow-md hover:shadow-lg focus-visible:ring-emerald-500' :
+             themeColor === 'blue' ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 shadow-md hover:shadow-lg focus-visible:ring-blue-500' :
+             'bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-400 hover:to-indigo-500 shadow-md hover:shadow-lg focus-visible:ring-indigo-500'
           }`}
         >
           Check Answer
@@ -764,10 +764,10 @@ const MCQExercise: React.FC<MCQExerciseProps> = ({ question, themeColor = 'indig
             setIsSubmitted(false);
             setSelectedOption(null);
           }}
-          className={`mt-6 w-full py-3.5 font-bold rounded-xl transition-all flex items-center justify-center gap-2 ${
-             themeColor === 'emerald' ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 shadow-sm' :
-             themeColor === 'blue' ? 'bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 shadow-sm' :
-             'bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 shadow-sm'
+          className={`mt-6 w-full min-h-[48px] py-3.5 font-bold rounded-xl transition-all flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
+             themeColor === 'emerald' ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 shadow-sm focus-visible:ring-emerald-500' :
+             themeColor === 'blue' ? 'bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 shadow-sm focus-visible:ring-blue-500' :
+             'bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 shadow-sm focus-visible:ring-indigo-500'
           }`}
         >
            <RotateCcw className="w-4 h-4" /> Try Again
@@ -1114,7 +1114,7 @@ const WalkthroughMCQ: React.FC<WalkthroughMCQProps & { isDarkMode?: boolean }> =
             const showResult = isSubmitted;
             const isCorrect = option.isCorrect;
 
-            let btnClass = "w-full text-left p-5 rounded-none border transition-all duration-300 flex items-center justify-between group ";
+            let btnClass = "w-full min-h-[48px] text-left p-4 sm:p-5 rounded-xl border transition-all duration-300 flex items-center justify-between group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 ";
             
             if (showResult) {
               if (isSelected) {
