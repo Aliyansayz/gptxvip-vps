@@ -232,7 +232,7 @@ export const Footer: React.FC<FooterProps> = ({
                         <h4>Explore</h4>
                         <button type="button" onClick={onNavigateDevLush}>Agent Labs</button>
                         <button type="button" onClick={onNavigateProjectSurfaces}>UI/UX Surfaces</button>
-                        <button type="button" onClick={onNavigateFinhub}>Finhub</button>
+                        <button type="button" onClick={onNavigateUseCases}>Case Studies</button>
                         <button type="button" onClick={onNavigateCodeConcepts}>Code Concepts</button>
                         <button type="button" onClick={onNavigateBlogs}>Journal</button>
                     </div>

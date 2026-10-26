@@ -58,16 +58,16 @@ const slides: Array<{
     {
         eyebrow: 'Code Concepts',
         title: 'Work through code one step at a time.',
-        body: 'Follow guided code walkthroughs, check your understanding, and explore visual examples across programming and trading topics.',
+        body: 'Follow guided code walkthroughs, check your understanding, and explore visual examples across programming, algorithms, and system architecture.',
         label: 'Interactive lessons',
         detail: 'Read → inspect → practice',
     },
     {
-        eyebrow: 'Finhub',
-        title: 'Explore trading ideas with adjustable tools.',
-        body: 'Open chart views and simulations, change the inputs, and see how a model responds in real time.',
-        label: 'Trading workspaces',
-        detail: 'Adjust → observe → compare',
+        eyebrow: 'Enterprise Sandboxes',
+        title: 'Test-drive real enterprise prototypes.',
+        body: 'Explore interactive sandboxes for threat detection, asset tokenization models, and automated compliance auditing.',
+        label: 'Case study sandboxes',
+        detail: 'Sandbox → blueprint → telemetry',
     },
     {
         eyebrow: 'Agent Labs',
@@ -91,14 +91,14 @@ const intentBlocks: Array<{
     result: string;
     effort: string;
     gradient: string;
-    category: 'code' | 'trading' | 'agents' | 'projects';
+    category: 'code' | 'agents' | 'projects';
     handlerIndex: number;
 }> = [
     {
         id: 'code-concepts',
         icon: FlaskConical,
         title: 'Study a code concept',
-        body: 'Use guided walkthroughs, knowledge checks, and small visual labs to explore programming and algorithmic trading ideas.',
+        body: 'Use guided walkthroughs, knowledge checks, and small visual labs to explore programming, algorithms, and systems logic.',
         action: 'Browse Code Concepts',
         audience: 'For guided study',
         result: 'Worked explanation and practice result',
@@ -108,16 +108,16 @@ const intentBlocks: Array<{
         handlerIndex: 0,
     },
     {
-        id: 'trading-tool',
-        icon: LineChart,
-        title: 'Explore a trading tool',
-        body: 'Change simulation inputs and inspect how indicators, market depth, and leverage trading rules respond.',
-        action: 'Open Finhub',
-        audience: 'For market exploration',
-        result: 'Comparison of simulated outcomes',
-        effort: 'Adjust inputs at your own pace',
+        id: 'enterprise-case-study',
+        icon: Layers,
+        title: 'Test an enterprise case study',
+        body: 'Inspect production-grade sandboxes with live parameter tuning, system telemetry, and architecture blueprints.',
+        action: 'Explore Case Studies',
+        audience: 'For solution architects',
+        result: 'Working system blueprint & live demo',
+        effort: '10-minute sandbox run',
         gradient: 'radial-gradient(circle at 80% 20%, #818bff, transparent 50%), linear-gradient(135deg, #1821b5, #343ce8)',
-        category: 'trading',
+        category: 'projects',
         handlerIndex: 1,
     },
     {
@@ -186,13 +186,13 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
     };
 
     const inbuiltPrototypes: Array<{ id: string; prefix: string; label: string; hint: string; icon: React.ElementType; action: () => void }> = [
-        { id: 'finhub', prefix: '/finhub', label: 'Finhub', hint: 'Leverage trading tool', icon: LineChart, action: onNavigateFinhub },
         { id: 'code-concepts', prefix: '/code_concepts', label: 'Code Concepts', hint: 'Guided walkthroughs', icon: Code2, action: onNavigateCodeConcepts },
         { id: 'agent-labs', prefix: '/agents/lab', label: 'Agent Labs', hint: 'Run an agent topic', icon: FlaskConical, action: () => window.location.assign('/agents/lab') },
+        { id: 'usecases', prefix: '/resources/usecases', label: 'Case Studies', hint: 'Enterprise sandboxes', icon: Layers, action: navigateUseCases },
     ];
 
     const [slideIndex, setSlideIndex] = useState(0);
-    const [selectedCategory, setSelectedCategory] = useState<'all' | 'trading' | 'agents' | 'code' | 'projects'>('all');
+    const [selectedCategory, setSelectedCategory] = useState<'all' | 'agents' | 'code' | 'projects'>('all');
     const [isCarouselPaused, setIsCarouselPaused] = useState(false);
     const [isCarouselHovered, setIsCarouselHovered] = useState(false);
     const [isCarouselFocused, setIsCarouselFocused] = useState(false);
@@ -229,7 +229,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
 
     const actions = [
         onNavigateCodeConcepts,
-        onNavigateFinhub,
+        navigateUseCases,
         navigateAgents,
         navigateAgentArea,
         () => window.location.assign('/agents/templates')
@@ -315,17 +315,17 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                     className="text-3xl sm:text-5xl font-normal leading-[1.04] tracking-[-0.05em] text-white"
                                     style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                                 >
-                                    See How Trading Systems &amp; Agents <span className="hl-circle-sketch">Actually</span> Work in <span className="hl-brutalist">Live Workspaces.</span>
+                                    See How Agent Systems &amp; Code <span className="hl-circle-sketch">Actually</span> Work in <span className="hl-brutalist">Live Workspaces.</span>
                                 </h1>
                                 <p className="mt-3 text-xs sm:text-sm text-white/85 leading-relaxed max-w-xl">
-                                    Run the code, agent, and market models we teach, inside your browser with zero setup. Open a prototype, adjust inputs, watch the model respond, and inspect the logic in plain English.
+                                    Run the code, agent, and system models we teach, inside your browser with zero setup. Open a prototype, adjust inputs, watch the model respond, and inspect the logic in plain English.
                                 </p>
 
                                 <div className="mt-5 flex flex-wrap items-center gap-2.5">
                                     <button
                                         type="button"
                                         onClick={() => window.location.assign('/agents/lab')}
-                                        className="inline-flex items-center gap-3 rounded-[30px] bg-[#d8ff38] px-4 py-2.5 text-xs font-bold text-[#101014] transition hover:-translate-y-0.5 cursor-pointer shadow-md"
+                                        className="inline-flex min-h-[44px] items-center gap-3 rounded-[30px] bg-[#d8ff38] px-5 py-2.5 text-xs font-bold text-[#101014] transition hover:-translate-y-0.5 cursor-pointer shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                                     >
                                         <span>Start an Agent Lab</span>
                                         <span className="grid h-5 w-5 place-items-center rounded-full bg-[#101014] text-[10px] text-white">
@@ -334,7 +334,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                     </button>
                                     <a
                                         href="#intent-starting-points"
-                                        className="inline-flex items-center gap-2 rounded-[30px] border border-white/25 bg-white/10 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-white/20"
+                                        className="inline-flex min-h-[44px] items-center gap-2 rounded-[30px] border border-white/25 bg-white/10 px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                                     >
                                         <span>Explore All Paths</span>
                                         <span className="text-[#d8ff38]">↓</span>
@@ -342,7 +342,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                     <button
                                         type="button"
                                         onClick={navigateUseCases}
-                                        className="inline-flex items-center gap-1.5 rounded-[30px] border border-white/20 bg-white/5 px-3 py-2 text-xs font-medium text-white/90 hover:bg-white/15"
+                                        className="inline-flex min-h-[44px] items-center gap-1.5 rounded-[30px] border border-white/20 bg-white/5 px-4 py-2 text-xs font-medium text-white/90 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d8ff38]"
                                     >
                                         <span>View Case Studies</span>
                                         <ArrowRight className="h-3 w-3 text-[#d8ff38]" />
@@ -510,7 +510,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                 className="max-w-xl text-xl sm:text-2xl font-medium leading-[1.15] tracking-[-0.05em] text-[#101014]"
                                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                             >
-                                Built for builders and traders — <span className="hl-circle-sketch">visual models</span>, real code, and <span className="hl-brutalist">instant feedback</span> inside the browser.
+                                Built for builders, engineers, and researchers — <span className="hl-circle-sketch">visual models</span>, real code, and <span className="hl-brutalist">instant feedback</span> inside the browser.
                             </h2>
                             <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#101014] text-xs text-white">
                                 ✳
@@ -518,10 +518,19 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                         </div>
 
                         <div className="grid gap-4 md:grid-cols-3">
-                            {/* Feature Blue */}
+                            {/* Feature Blue - Enterprise Case Studies */}
                             <article
-                                onClick={onNavigateFinhub}
-                                className="flex min-h-[220px] cursor-pointer flex-col justify-between rounded-xl p-5 text-white transition hover:-translate-y-1"
+                                onClick={navigateUseCases}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        navigateUseCases();
+                                    }
+                                }}
+                                aria-label="Open Enterprise Sandboxes and Case Studies"
+                                className="group flex min-h-[220px] cursor-pointer flex-col justify-between rounded-xl p-5 text-white transition hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb] focus-visible:ring-offset-2"
                                 style={{
                                     background:
                                         'radial-gradient(circle at 80% 20%, #818bff, transparent 50%), linear-gradient(135deg, #1821b5, #343ce8)',
@@ -530,7 +539,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                 <div className="flex items-center justify-between">
                                     <span className="text-3xl leading-none">✳</span>
                                     <span className="rounded-full bg-[#d8ff38] px-2.5 py-0.5 text-[10px] font-bold text-[#101014]">
-                                        LIVE PROTOTYPE
+                                        CASE STUDIES
                                     </span>
                                 </div>
                                 <div>
@@ -538,10 +547,10 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                         className="mb-1.5 text-xl font-medium leading-[1.04] tracking-[-0.05em]"
                                         style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                                     >
-                                        Finhub Trading Systems.
+                                        Enterprise Sandboxes.
                                     </h3>
-                                    <p className="text-xs leading-relaxed text-white/85">
-                                        Adjust liquidity depth, simulate leverage trade executions, and analyze cointegration spread arbitrage in real time.
+                                    <p className="text-xs leading-relaxed text-white/85 max-w-[65ch]">
+                                        Inspect verified production architecture case studies, trace automated governance pipelines, and verify resilient agent orchestration.
                                     </p>
                                 </div>
                             </article>
@@ -549,7 +558,16 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                             {/* Feature Black */}
                             <article
                                 onClick={() => window.location.assign('/agents/lab')}
-                                className="flex min-h-[220px] cursor-pointer flex-col justify-between rounded-xl p-5 text-white transition hover:-translate-y-1"
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        window.location.assign('/agents/lab');
+                                    }
+                                }}
+                                aria-label="Start an Agent Lab"
+                                className="group flex min-h-[220px] cursor-pointer flex-col justify-between rounded-xl p-5 text-white transition hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb] focus-visible:ring-offset-2"
                                 style={{
                                     background:
                                         'radial-gradient(circle at 60% 35%, rgba(255,255,255,.16), transparent 36%), linear-gradient(140deg, #222, #050506)',
@@ -563,7 +581,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                     >
                                         Agent Labs &amp; Applied Roles.
                                     </h3>
-                                    <p className="text-xs leading-relaxed text-white/80">
+                                    <p className="text-xs leading-relaxed text-white/80 max-w-[65ch]">
                                         Trace memory states, inspect multi-agent orchestration, and simulate consensus mechanisms with zero configuration.
                                     </p>
                                 </div>
@@ -572,7 +590,16 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                             {/* Feature White */}
                             <article
                                 onClick={onNavigateCodeConcepts}
-                                className="flex min-h-[220px] cursor-pointer flex-col justify-between rounded-xl border border-[#e9e9ec] bg-[#f5f5f7] p-5 text-[#101014] transition hover:-translate-y-1"
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        onNavigateCodeConcepts();
+                                    }
+                                }}
+                                aria-label="Explore in-browser execution with 0-setup"
+                                className="group flex min-h-[220px] cursor-pointer flex-col justify-between rounded-xl border border-[#e9e9ec] bg-[#f5f5f7] p-5 text-[#101014] transition hover:-translate-y-1 hover:border-[#343edb] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb] focus-visible:ring-offset-2"
                             >
                                 <div className="text-[11px] text-[#777780]">In-Browser Execution</div>
                                 <div
@@ -581,7 +608,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                 >
                                     0-Setup
                                 </div>
-                                <p className="text-xs leading-relaxed text-[#555560]">
+                                <p className="text-xs leading-relaxed text-[#555560] max-w-[65ch]">
                                     No Docker, no complex terminal dependencies. Every simulator, code walk, and agent experiment runs instantly in your browser.
                                 </p>
                             </article>
@@ -611,10 +638,9 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                         </div>
 
                         {/* Category filter pills - Hick's Law: Reduces decision fatigue */}
-                        <div className="mb-6 flex flex-wrap items-center gap-1.5" role="toolbar" aria-label="Filter formats by category">
+                        <div className="mb-6 flex flex-wrap items-center gap-2" role="toolbar" aria-label="Filter formats by category">
                             {[
                                 { id: 'all', label: 'All Formats', count: intentBlocks.length },
-                                { id: 'trading', label: 'Trading Simulators', count: intentBlocks.filter((b) => b.category === 'trading').length },
                                 { id: 'agents', label: 'AI Agents', count: intentBlocks.filter((b) => b.category === 'agents').length },
                                 { id: 'code', label: 'Code Concepts', count: intentBlocks.filter((b) => b.category === 'code').length },
                                 { id: 'projects', label: 'Project Surfaces', count: intentBlocks.filter((b) => b.category === 'projects').length },
@@ -626,14 +652,14 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                         type="button"
                                         onClick={() => setSelectedCategory(filterTab.id as any)}
                                         aria-pressed={isActive}
-                                        className={`flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb] ${
+                                        className={`flex min-h-[44px] items-center gap-2 rounded-full px-4 text-xs font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb] ${
                                             isActive
                                                 ? 'bg-[#101014] text-white shadow-xs'
                                                 : 'bg-[#f5f5f7] text-[#555560] hover:bg-[#e9e9ec] hover:text-[#101014]'
                                         }`}
                                     >
                                         <span>{filterTab.label}</span>
-                                        <span className={`text-[11px] ${isActive ? 'text-white/70' : 'text-[#777780]'}`}>
+                                        <span className={`text-[11px] font-mono ${isActive ? 'text-white/70' : 'text-[#777780]'}`}>
                                             ({filterTab.count})
                                         </span>
                                     </button>
@@ -730,14 +756,14 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                     onOpenArticle={(roleId) => window.location.assign(getAgenticRoleHref(roleId) + '?mode=read')}
                 />
 
-                {/* ---------------------------------------------------- Algo Trading Architecture */}
+                {/* ---------------------------------------------------- Quantitative Systems Architecture */}
                 <section className="border-b border-[#e9e9ec] bg-white py-8 sm:py-10" aria-labelledby="algo-topic-heading">
                     <div className="mx-auto max-w-6xl px-5 sm:px-8">
                         <div className="grid items-center gap-6 lg:grid-cols-[1.1fr_.9fr]">
                             <Reveal>
                                 <div>
                                     <span className="block text-xs font-bold uppercase tracking-widest text-[#343edb] mb-1.5">
-                                        04 / CODE CONCEPTS · ALGO TRADING
+                                        04 / CODE CONCEPTS · QUANTITATIVE LOGIC
                                     </span>
                                     <h2
                                         id="algo-topic-heading"
@@ -746,22 +772,44 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                     >
                                         From ATR to an adaptive trend signal.
                                     </h2>
-                                    <p className="mt-2.5 text-xs sm:text-sm leading-relaxed text-[#777780] max-w-xl">
-                                        Follow the indicator logic from True Range and ATR through delayed swing-pivot confirmation and K-means volatility groups, then see how those inputs shape Supertrend bands and entry filters.
+                                    <p className="mt-2.5 text-xs sm:text-sm leading-relaxed text-[#777780] max-w-[65ch]">
+                                        Follow computational indicator logic from True Range and ATR through delayed swing-pivot confirmation and K-means volatility clusters, then see how those mathematical inputs shape adaptive bands and decision boundaries.
                                     </p>
+
+                                    {/* Hick's Law & Progressive Disclosure: Mathematical formulation */}
+                                    <details className="group mt-4 rounded-xl border border-[#e9e9ec] bg-[#f8f9fa] p-3 text-xs text-[#555560] transition-colors hover:border-[#d0d3db]">
+                                        <summary className="flex cursor-pointer select-none items-center justify-between font-semibold text-[#101014] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb] rounded-md px-1 py-0.5">
+                                            <span className="flex items-center gap-2">
+                                                <span className="h-1.5 w-1.5 rounded-full bg-[#343edb]" />
+                                                View mathematical formulation &amp; formula breakdown
+                                            </span>
+                                            <span className="font-mono text-sm text-[#777780] transition-transform duration-200 group-open:rotate-180">
+                                                ▼
+                                            </span>
+                                        </summary>
+                                        <div className="mt-3 space-y-2 border-t border-[#e9e9ec] pt-2.5 text-[11px] leading-relaxed text-[#555560]">
+                                            <div className="font-mono bg-white p-2 rounded border border-[#e9e9ec]">
+                                                TR_t = max(H_t - L_t, |H_t - C_(t-1)|, |L_t - C_(t-1)|)
+                                            </div>
+                                            <p>
+                                                ATR applies an exponential Wilder smoothing of True Range over window N. The adaptive envelope shifts bands proportional to instantaneous volatility clusters, preventing premature boundary whipsaws.
+                                            </p>
+                                        </div>
+                                    </details>
+
                                     <div className="mt-5 flex flex-wrap items-center gap-2.5">
                                         <button
                                             type="button"
                                             onClick={onNavigateAlgoTrading}
-                                            className="group inline-flex min-h-10 items-center gap-2 rounded-[30px] bg-[#343edb] px-4 text-xs font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#2534bf] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb]"
+                                            className="group inline-flex min-h-[44px] items-center gap-2 rounded-[30px] bg-[#343edb] px-5 text-xs font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#2534bf] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb]"
                                         >
-                                            <span>Open Algo Trading Topic</span>
+                                            <span>Open Quantitative Logic Lab</span>
                                             <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                                         </button>
                                         <button
                                             type="button"
                                             onClick={onNavigateCodeConcepts}
-                                            className="inline-flex min-h-10 items-center gap-1.5 rounded-[30px] border border-[#e9e9ec] bg-[#f5f5f7] px-4 text-xs font-semibold text-[#101014] transition hover:bg-[#e9e9ec]"
+                                            className="inline-flex min-h-[44px] items-center gap-1.5 rounded-[30px] border border-[#e9e9ec] bg-[#f5f5f7] px-4 text-xs font-semibold text-[#101014] transition hover:bg-[#e9e9ec] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb]"
                                         >
                                             <span>Browse All Code Concepts</span>
                                             <ChevronRight className="h-3.5 w-3.5" />
@@ -837,7 +885,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                     {codeConceptTracks}
                                 </strong>
                                 <span className="text-xs text-[#777780]">
-                                    Guided code tracks across algo trading &amp; HFT
+                                    Guided code tracks across algorithmic systems &amp; HFT
                                 </span>
                             </div>
                             <div className="border-l border-[#e9e9ec] pl-4">
@@ -860,7 +908,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                     eyebrow="Interactive systems · built in the open"
                     headline={<>Stop reading about it.<br /><span className="text-zinc-400">Run the thing.</span></>}
                     body="Every lesson here runs in your browser. Change an input, watch the model disagree with you, and keep the assumptions sitting next to the result."
-                    highlights={['No signup required', 'Real market logic', 'Source-linked exercises']}
+                    highlights={['No signup required', 'Production-grade logic', 'Source-linked exercises']}
                     primaryAction={{ label: 'Browse the agent catalog', onSelect: navigateAgents }}
                     secondaryAction={{ label: 'Book a 30-min walkthrough', onSelect: () => (onNavigateContact ? onNavigateContact() : window.location.assign('/contact')) }}
                     quote="I had bookmarked a hundred articles on agent architecture and understood almost none of them. Three lessons in here and I could finally explain the loop to my own team without notes."
@@ -889,11 +937,11 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                     className="text-2xl sm:text-4xl font-normal tracking-[-0.05em] text-white leading-[1.05]"
                                     style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                                 >
-                                    Ready to <span className="hl-circle-sketch">explore custom agents</span> or <span className="hl-brutalist">trading tools?</span>
+                                    Ready to <span className="hl-circle-sketch">explore custom agents</span> or <span className="hl-brutalist">decision sandboxes?</span>
                                 </h2>
 
-                                <p className="text-xs sm:text-sm text-white/85 leading-relaxed">
-                                    Whether you want a private agent workspace for compliance and operations, an algorithmic trading sandbox, or an engineering workshop for your team, let's talk.
+                                <p className="text-xs sm:text-sm text-white/85 leading-relaxed max-w-[65ch]">
+                                    Whether you want a private agent workspace for compliance and operations, high-throughput simulation environments, or an engineering workshop for your team, let's talk.
                                 </p>
 
                                 <div className="space-y-3 pt-1">
