@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowRight, ChevronDown, Menu, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, ChevronDown, Code2, FlaskConical, Layers, LineChart, Menu, Sparkles, X } from 'lucide-react';
 import { Logo } from '../shared/components/Logo';
 
 interface NavbarProps {
@@ -22,6 +22,10 @@ interface NavbarProps {
      * aurora. Both variants must stay legible against their own ground.
      */
     variant?: 'default' | 'glass';
+    /**
+     * Whether to show the subnavbar row of prototypes directly under the main bar.
+     */
+    showPrototypesSubnav?: boolean;
 }
 
 /**
@@ -42,12 +46,16 @@ export const Navbar: React.FC<NavbarProps> = ({
     onSearch,
     searchPlaceholder = 'Search',
     variant = 'default',
+    showPrototypesSubnav = false,
 }) => {
     const [open, setOpen] = useState(false);
     const [resourcesOpen, setResourcesOpen] = useState(false);
+    const [prototypesOpen, setPrototypesOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const mobileTriggerRef = useRef<HTMLButtonElement>(null);
     const resourcesRef = useRef<HTMLDivElement>(null);
+    const prototypesRef = useRef<HTMLDivElement>(null);
+
     const navigateAgents = onNavigateAgents || onNavigateDevLush || (() => window.location.assign('/agents'));
     const navigateGuide = onNavigateGuide || onNavigateSoftware || (() => window.location.assign('/guide'));
     const navigateAgentWorkspace = onNavigateAgentWorkspace || (() => {
@@ -64,6 +72,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             window.location.assign('/resources/usecases');
         }
     });
+    const navigateFinhub = onNavigateFinhub || (() => window.location.assign('/finhub'));
+    const navigateCodeConcepts = onNavigateCodeConcepts || (() => window.location.assign('/code_concepts/general'));
+
     const pathname = window.location.pathname;
     const isAgentWorkspace = pathname.startsWith('/workspace') || pathname.startsWith('/agent-workspace');
     const isUseCases = pathname.startsWith('/resources') || pathname.startsWith('/usecases') || pathname.startsWith('/case-studies');
@@ -89,7 +100,56 @@ export const Navbar: React.FC<NavbarProps> = ({
         : 'Home';
 
     const isResourcesActive = currentArea === 'Use Cases' || currentArea === 'Guide' || currentArea === 'Agent catalog';
+    const isPrototypesActive = currentArea === 'Finhub' || currentArea === 'Code Concepts';
     const glass = variant === 'glass';
+
+    const prototypeItems = [
+        {
+            id: 'remove-watermark',
+            label: 'Remove Watermark',
+            hint: 'remove.gptx.vip',
+            icon: Sparkles,
+            href: 'https://remove.gptx.vip',
+            isExternal: true,
+            action: () => window.open('https://remove.gptx.vip', '_blank', 'noopener,noreferrer'),
+        },
+        {
+            id: 'finhub',
+            label: 'Finhub',
+            hint: 'Financial analytics',
+            icon: LineChart,
+            prefix: '/finhub',
+            isExternal: false,
+            action: navigateFinhub,
+        },
+        {
+            id: 'code-concepts',
+            label: 'Code Concepts',
+            hint: 'Guided walkthroughs',
+            icon: Code2,
+            prefix: '/code_concepts',
+            isExternal: false,
+            action: navigateCodeConcepts,
+        },
+        {
+            id: 'agent-labs',
+            label: 'Agent Labs',
+            hint: 'Run an agent topic',
+            icon: FlaskConical,
+            prefix: '/agents/lab',
+            isExternal: false,
+            action: () => window.location.assign('/agents/lab'),
+        },
+        {
+            id: 'usecases',
+            label: 'Case Studies',
+            hint: 'Enterprise sandboxes',
+            icon: Layers,
+            prefix: '/resources/usecases',
+            isExternal: false,
+            action: navigateUseCases,
+        },
+    ];
 
     const skin = glass
         ? {
@@ -149,15 +209,19 @@ export const Navbar: React.FC<NavbarProps> = ({
     }, [open]);
 
     useEffect(() => {
-        if (!resourcesOpen) return;
+        if (!resourcesOpen && !prototypesOpen) return;
         const handleClickOutside = (event: MouseEvent) => {
             if (resourcesRef.current && !resourcesRef.current.contains(event.target as Node)) {
                 setResourcesOpen(false);
+            }
+            if (prototypesRef.current && !prototypesRef.current.contains(event.target as Node)) {
+                setPrototypesOpen(false);
             }
         };
         const closeOnEscape = (event: KeyboardEvent) => {
             if (event.key !== 'Escape') return;
             setResourcesOpen(false);
+            setPrototypesOpen(false);
         };
         document.addEventListener('mousedown', handleClickOutside);
         document.addEventListener('keydown', closeOnEscape);
@@ -165,7 +229,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             document.removeEventListener('mousedown', handleClickOutside);
             document.removeEventListener('keydown', closeOnEscape);
         };
-    }, [resourcesOpen]);
+    }, [resourcesOpen, prototypesOpen]);
 
     return (
         <header className={`sticky top-0 z-40 border-b ${skin.header}`}>
@@ -176,10 +240,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className={`max-w-24 truncate rounded-full border px-2 py-1 text-[10px] font-bold uppercase tracking-wide sm:max-w-none ${skin.pill}`} aria-label={`Current area: ${currentArea}`}>{currentArea}</span>
                 <nav className={`hidden items-center gap-1 text-sm font-semibold xl:flex ${glass ? 'text-slate-600' : 'text-slate-600'}`} aria-label="Primary navigation">
                     <button type="button" onClick={navigateAgentWorkspace} aria-current={currentArea === 'Agent Workspace' ? 'page' : undefined} className={navClass(currentArea === 'Agent Workspace')}>Agent Workspace</button>
+                    
+                    {/* Resources Dropdown */}
                     <div className="relative" ref={resourcesRef}>
                         <button
                             type="button"
-                            onClick={() => setResourcesOpen((prev) => !prev)}
+                            onClick={() => { setResourcesOpen((prev) => !prev); setPrototypesOpen(false); }}
                             aria-expanded={resourcesOpen}
                             aria-haspopup="true"
                             aria-current={isResourcesActive ? 'page' : undefined}
@@ -224,6 +290,68 @@ export const Navbar: React.FC<NavbarProps> = ({
                             </div>
                         )}
                     </div>
+
+                    {/* Prototypes Dropdown */}
+                    <div className="relative" ref={prototypesRef}>
+                        <button
+                            type="button"
+                            onClick={() => { setPrototypesOpen((prev) => !prev); setResourcesOpen(false); }}
+                            aria-expanded={prototypesOpen}
+                            aria-haspopup="true"
+                            aria-current={isPrototypesActive ? 'page' : undefined}
+                            className={`inline-flex items-center gap-1 ${navClass(isPrototypesActive || prototypesOpen)}`}
+                        >
+                            <span>Prototypes</span>
+                            <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${prototypesOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                        {prototypesOpen && (
+                            <div
+                                role="menu"
+                                aria-label="Prototypes"
+                                className={`absolute left-0 mt-2 w-56 rounded-xl border p-1.5 shadow-xl backdrop-blur-2xl z-50 ${glass ? 'border-ink/10 bg-paper/95 text-slate-800 shadow-slate-900/10' : 'border-slate-900/10 bg-white text-slate-800 shadow-slate-900/10'}`}
+                            >
+                                {prototypeItems.map((proto) => {
+                                    const ProtoIcon = proto.icon;
+                                    if (proto.isExternal) {
+                                        return (
+                                            <a
+                                                key={proto.id}
+                                                href={proto.href}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                role="menuitem"
+                                                onClick={() => setPrototypesOpen(false)}
+                                                className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition-colors hover:bg-slate-100 text-slate-700 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2"
+                                            >
+                                                <span className="flex items-center gap-2">
+                                                    <ProtoIcon className="h-4 w-4 text-accent-600" />
+                                                    <span>{proto.label}</span>
+                                                </span>
+                                                <ArrowUpRight className="h-3.5 w-3.5 text-slate-400" />
+                                            </a>
+                                        );
+                                    }
+                                    const isSelected = proto.prefix ? pathname.startsWith(proto.prefix) : false;
+                                    return (
+                                        <button
+                                            key={proto.id}
+                                            type="button"
+                                            role="menuitem"
+                                            onClick={() => { setPrototypesOpen(false); proto.action(); }}
+                                            className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 ${isSelected ? (glass ? 'bg-ink/10 text-ink' : 'bg-cyan-50 text-cyan-900') : 'hover:bg-slate-100 text-slate-700 hover:text-slate-950'}`}
+                                        >
+                                            <span className="flex items-center gap-2">
+                                                <ProtoIcon className="h-4 w-4 text-accent-600" />
+                                                <span>{proto.label}</span>
+                                            </span>
+                                            {isSelected && <span className="h-1.5 w-1.5 rounded-full bg-cyan-600" />}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+
                     {onNavigateProjectSurfaces && <button type="button" onClick={onNavigateProjectSurfaces} aria-current={currentArea === 'Project surfaces' ? 'page' : undefined} className={navClass(currentArea === 'Project surfaces')}>Project surfaces</button>}
                 </nav>
                 <div className="flex items-center gap-2">
@@ -232,6 +360,58 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <button ref={mobileTriggerRef} type="button" onClick={() => setOpen((value) => !value)} className={`inline-flex h-10 w-10 items-center justify-center rounded-xl border transition-colors focus-visible:outline-none focus-visible:ring-2 xl:hidden ${skin.trigger} ${skin.ring} ${glass ? 'focus-visible:ring-offset-0' : 'focus-visible:ring-offset-2'}`} aria-expanded={open} aria-controls="root-mobile-navigation" aria-label={open ? 'Close navigation' : 'Open navigation'}>{open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button>
                 </div>
             </div>
+
+            {/* Subnavbar of prototypes */}
+            {showPrototypesSubnav && (
+                <nav aria-label="Inbuilt prototypes" className={`border-t ${glass ? 'border-ink/10 bg-white/75 backdrop-blur-xl' : 'border-slate-900/10 bg-white/95 backdrop-blur-xl'}`}>
+                    <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-2.5 sm:px-8 sm:flex-row sm:items-center sm:gap-4">
+                        <p className="flex shrink-0 items-center gap-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
+                            <Layers className="h-3.5 w-3.5 text-accent-600" aria-hidden="true" />
+                            Inbuilt prototypes
+                        </p>
+                        <ul className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+                            {prototypeItems.map((proto) => {
+                                const ProtoIcon = proto.icon;
+                                if (proto.isExternal) {
+                                    return (
+                                        <li key={proto.id} className="shrink-0">
+                                            <a
+                                                href={proto.href}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className={`flex min-h-9 items-center justify-center gap-1.5 rounded-full px-3 text-xs font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 ${skin.ring} text-slate-600 hover:bg-white/80 hover:text-ink sm:px-3.5`}
+                                            >
+                                                <ProtoIcon className="h-3.5 w-3.5 shrink-0 text-accent-600" aria-hidden="true" />
+                                                <span className="truncate">{proto.label}</span>
+                                                <span className="hidden text-[11px] font-medium text-slate-400 lg:inline">{proto.hint}</span>
+                                                <ArrowUpRight className="h-3 w-3 opacity-60 ml-0.5 shrink-0" aria-hidden="true" />
+                                            </a>
+                                        </li>
+                                    );
+                                }
+                                const isSelected = proto.prefix ? pathname.startsWith(proto.prefix) : false;
+                                return (
+                                    <li key={proto.id} className="shrink-0">
+                                        <button
+                                            type="button"
+                                            onClick={proto.action}
+                                            aria-current={isSelected ? 'page' : undefined}
+                                            className={`flex min-h-9 items-center justify-center gap-1.5 rounded-full px-3 text-xs font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 ${skin.ring} sm:px-3.5 ${
+                                                isSelected ? 'bg-white text-ink shadow-xs font-bold' : 'text-slate-600 hover:bg-white/80 hover:text-ink'
+                                            }`}
+                                        >
+                                            <ProtoIcon className="h-3.5 w-3.5 shrink-0 text-accent-600" aria-hidden="true" />
+                                            <span className="truncate">{proto.label}</span>
+                                            <span className="hidden text-[11px] font-medium text-slate-400 lg:inline">{proto.hint}</span>
+                                        </button>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                </nav>
+            )}
+
             {open && <nav id="root-mobile-navigation" className={`border-t px-5 py-3 backdrop-blur-2xl xl:hidden ${skin.menu}`} aria-label="Mobile navigation"><div className="mx-auto flex max-w-6xl flex-col gap-1">
                 {onSearch && <form onSubmit={submitSearch} role="search" className="mb-2"><label className="sr-only" htmlFor="root-mobile-site-search">Search project surfaces</label><input id="root-mobile-site-search" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder={searchPlaceholder} className={`h-11 w-full rounded border px-4 text-sm outline-none ${skin.search} ${skin.ring}`} /></form>}
                 <p className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Explore</p>
@@ -241,6 +421,43 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button type="button" onClick={() => navigate(navigateUseCases)} aria-current={currentArea === 'Use Cases' ? 'page' : undefined} className={menuLinkClass}>Use Cases</button>
                 <button type="button" onClick={() => navigate(navigateGuide)} aria-current={currentArea === 'Guide' ? 'page' : undefined} className={menuLinkClass}>Guide</button>
                 <button type="button" onClick={() => navigate(navigateAgents)} aria-current={currentArea === 'Agent catalog' ? 'page' : undefined} className={menuLinkClass}>Agent Catalog</button>
+                <p className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Prototypes</p>
+                {prototypeItems.map((proto) => {
+                    const ProtoIcon = proto.icon;
+                    if (proto.isExternal) {
+                        return (
+                            <a
+                                key={proto.id}
+                                href={proto.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => setOpen(false)}
+                                className={menuLinkClass}
+                            >
+                                <span className="flex items-center justify-between w-full">
+                                    <span className="flex items-center gap-2">
+                                        <ProtoIcon className="h-4 w-4 text-accent-600" />
+                                        <span>{proto.label}</span>
+                                    </span>
+                                    <ArrowUpRight className="h-3.5 w-3.5 text-slate-400" />
+                                </span>
+                            </a>
+                        );
+                    }
+                    return (
+                        <button
+                            key={proto.id}
+                            type="button"
+                            onClick={() => navigate(proto.action)}
+                            className={menuLinkClass}
+                        >
+                            <span className="flex items-center gap-2">
+                                <ProtoIcon className="h-4 w-4 text-accent-600" />
+                                <span>{proto.label}</span>
+                            </span>
+                        </button>
+                    );
+                })}
                 {onBookDemo && <button type="button" onClick={() => navigate(onBookDemo)} aria-current={currentArea === 'Contact' ? 'page' : undefined} className={menuLinkClass}>Contact</button>}
             </div></nav>}
         </header>

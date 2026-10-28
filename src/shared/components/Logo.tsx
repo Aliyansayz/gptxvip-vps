@@ -45,11 +45,14 @@ export const Logo: React.FC<LogoProps> = ({
   variant = 'default',
   wordmarkClassName = '',
 }) => {
+  const pixelSize = size === 'sm' ? 24 : size === 'lg' ? 40 : size === 'xl' ? 48 : 32;
   const mark = (
     <img
       src={MARK_SRC}
-      alt=""
-      aria-hidden="true"
+      alt="GPTX.VIP"
+      width={pixelSize}
+      height={pixelSize}
+      decoding="async"
       draggable={false}
       className={`${MARK_SIZE_CLASSES[size]} w-auto shrink-0 object-contain select-none`}
     />

@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import {
     ArrowRight,
     Bot,
-    Code2,
     ChevronLeft,
     ChevronRight,
     FlaskConical,
     Layers,
-    LineChart,
     Network,
     Pause,
     Play,
@@ -20,6 +18,7 @@ import AgentLabsCatalog from '../devLushArea/components/AgentLabsCatalog';
 // component. `allowImportingTsExtensions` is on in tsconfig for exactly this.
 import { AgenticRoleUseCases } from '../devLushArea/landingPage/AgenticRoleUseCases.tsx';
 import { AgenticArticlePreview } from '../devLushArea/landingPage/AgenticArticlePreview';
+import { agenticRoleDefinitions } from '../devLushArea/agenticRoles/data';
 import { ContactForm } from '../shared/components/ContactForm';
 import { getAgenticRoleHref } from '../devLushArea/agenticRoles/roleRoutes';
 import { AnimatePresence, motion } from 'motion/react';
@@ -28,7 +27,6 @@ import GlassPanel from '../shared/components/GlassPanel';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { Reveal, RevealGroup, RevealItem } from '../shared/components/Reveal';
-import { CODE_CONCEPT_CATEGORIES } from '../constants/codeConcepts';
 import QuotePanel from '../shared/components/QuotePanel';
 
 export interface RootHomePageProps {
@@ -64,11 +62,11 @@ const slides: Array<{
     topicSlug?: string;
 }> = [
     {
-        eyebrow: 'Code Concepts',
-        title: 'Work through code one step at a time.',
-        body: 'Follow guided code walkthroughs, check your understanding, and explore visual examples across programming, algorithms, and system architecture.',
-        label: 'Interactive lessons',
-        detail: 'Read → inspect → practice',
+        eyebrow: 'Applied Agent Roles',
+        title: 'Deploy specialized agent roles.',
+        body: 'Explore autonomous personas across operations, compliance auditing, engineering oversight, and quantitative analysis.',
+        label: 'Agent roles',
+        detail: 'Role → workflow → output',
         tone: 'amber',
     },
     {
@@ -90,12 +88,6 @@ const slides: Array<{
     },
 ];
 
-/**
- * `search` is a UI entry in the category list, not a track a visitor can study,
- * so the hero count leaves it out rather than over-reporting.
- */
-const codeConceptTracks = CODE_CONCEPT_CATEGORIES.filter((category) => category.id !== 'search').length;
-
 const intentBlocks: Array<{
     icon: React.ElementType;
     title: string;
@@ -108,13 +100,13 @@ const intentBlocks: Array<{
     handlerIndex: number;
 }> = [
     {
-        icon: FlaskConical,
-        title: 'Study a code concept',
-        body: 'Use guided walkthroughs, knowledge checks, and small visual labs to explore programming, algorithms, and systems logic.',
-        action: 'Browse Code Concepts',
-        audience: 'For guided study',
-        result: 'Leave with a worked explanation and a practice result',
-        effort: 'One lesson at a time',
+        icon: Bot,
+        title: 'Explore agent roles',
+        body: 'Test autonomous agent workflows across operations, compliance auditing, engineering oversight, and quantitative analysis.',
+        action: 'Inspect Agent Roles',
+        audience: 'For practical deployment',
+        result: 'Leave with an actionable role blueprint and operational flow',
+        effort: 'Hands-on role simulation',
         tone: 'amber',
         handlerIndex: 0,
     },
@@ -151,17 +143,6 @@ const intentBlocks: Array<{
         tone: 'deep',
         handlerIndex: 3,
     },
-    {
-        icon: Bot,
-        title: 'Inspect a project surface',
-        body: 'Compare interface concepts, included patterns, and fit before contacting the owner about an adaptation.',
-        action: 'Browse project surfaces',
-        audience: 'For project planning',
-        result: 'Leave with a shortlist and fit questions',
-        effort: 'Browse and compare examples',
-        tone: 'deep',
-        handlerIndex: 4,
-    },
 ];
 
 const toneStyles: Record<Tone, { soft: string; text: string; border: string; solid: string; onGlass: string }> = {
@@ -185,7 +166,6 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
 }) => {
     const navigateAgents = onNavigateAgents || onNavigateDevLush || (() => window.location.assign('/agents'));
     const navigateAgentArea = onNavigateAgentArea;
-    const heroPath = window.location.pathname;
 
     const navigateUseCases = () => {
         if ((window as any).smartNavigate) {
@@ -195,14 +175,15 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
         }
     };
 
-    /**
-     * The inbuilt prototypes in the hero's secondary navigation.
-     */
-    const inbuiltPrototypes: Array<{ id: string; prefix: string; label: string; hint: string; icon: React.ElementType; action: () => void }> = [
-        { id: 'code-concepts', prefix: '/code_concepts', label: 'Code Concepts', hint: 'Guided walkthroughs', icon: Code2, action: onNavigateCodeConcepts },
-        { id: 'agent-labs', prefix: '/agents/lab', label: 'Agent Labs', hint: 'Run an agent topic', icon: FlaskConical, action: () => window.location.assign('/agents/lab') },
-        { id: 'usecases', prefix: '/resources/usecases', label: 'Case Studies', hint: 'Enterprise sandboxes', icon: Layers, action: navigateUseCases },
-    ];
+    const scrollToAgentRoles = () => {
+        const el = document.getElementById('agentic-role-use-cases-heading');
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+            navigateAgents();
+        }
+    };
+
     const [slideIndex, setSlideIndex] = useState(0);
     const [isCarouselPaused, setIsCarouselPaused] = useState(false);
     const [isCarouselHovered, setIsCarouselHovered] = useState(false);
@@ -213,6 +194,14 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
     const isCarouselInteracting = isCarouselHovered || isCarouselFocused;
     const slideTone = toneStyles[slide.tone];
     const slideTopic = getAgentLabTopic(slide.topicSlug);
+
+    useEffect(() => {
+        const previousTitle = document.title;
+        document.title = 'GPTX.VIP — Interactive AI Agent Workspaces & Applied Personas';
+        return () => {
+            document.title = previousTitle;
+        };
+    }, []);
 
     useEffect(() => {
         const media = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -240,7 +229,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
     };
 
     const actions = [
-        onNavigateCodeConcepts,
+        scrollToAgentRoles,
         navigateUseCases,
         navigateAgents,
         navigateAgentArea,
@@ -251,6 +240,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
         <div className="premium-surface min-h-screen overflow-x-hidden bg-paper text-ink selection:bg-accent-200 selection:text-ink">
             <Navbar
                 variant="glass"
+                showPrototypesSubnav={true}
                 onNavigateFinhub={onNavigateFinhub}
                 onNavigateCodeConcepts={onNavigateCodeConcepts}
                 onNavigateAgentWorkspace={onNavigateAgentWorkspace}
@@ -280,57 +270,28 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                      */}
                     <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(115%_95%_at_24%_58%,rgba(247,248,245,0.94)_0%,rgba(247,248,245,0.78)_40%,rgba(247,248,245,0)_74%)]" />
 
-                    {/* ---------------------------------------------------- prototype nav */}
-                    <nav aria-label="Inbuilt prototypes" className="relative border-b border-ink/10 bg-white/70 backdrop-blur-xl">
-                        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-3 sm:px-8 lg:flex-row lg:items-center lg:gap-5">
-                            <p className="flex shrink-0 items-center gap-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                                <Layers className="h-3.5 w-3.5 text-accent-600" aria-hidden="true" />
-                                Inbuilt prototypes
-                            </p>
-                            <ul className="grid grid-cols-3 gap-1 rounded-full bg-ink/[0.04] p-1 sm:flex sm:flex-wrap">
-                                {inbuiltPrototypes.map((prototype) => {
-                                    const isCurrent = heroPath.startsWith(prototype.prefix);
-                                    const Icon = prototype.icon;
-                                    return (
-                                        <li key={prototype.id}>
-                                            <button
-                                                type="button"
-                                                onClick={prototype.action}
-                                                aria-current={isCurrent ? 'page' : undefined}
-                                                className={`flex min-h-11 flex-col items-center justify-center gap-1 rounded-full px-3 text-xs font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600 focus-visible:ring-offset-2 motion-reduce:transition-none sm:flex-row sm:gap-2 sm:px-4 sm:text-sm ${
-                                                    isCurrent ? 'bg-white text-ink shadow-sm' : 'text-slate-600 hover:bg-white/60 hover:text-ink'
-                                                }`}
-                                            >
-                                                <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
-                                                <span className="truncate">{prototype.label}</span>
-                                                <span className="hidden text-xs font-medium text-slate-500 lg:inline">{prototype.hint}</span>
-                                            </button>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-                    </nav>
-
                     <div className="relative mx-auto max-w-6xl px-5 pb-20 pt-12 sm:px-8 sm:pt-20 lg:pb-28">
                         <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_.95fr]">
                             <div>
                                 <Reveal from="none" duration={0.5}>
-                                    <div className="glass-panel-light mb-6 inline-flex items-center gap-2 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-600">
+                                    <div className="glass-panel-light mb-5 inline-flex items-center gap-2 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-600">
                                         <span className="accent-fill-gradient h-1.5 w-1.5 rounded-full" />
-                                        Learn by running the system
+                                        Zero-Setup In-Browser Workspaces · Interactive Systems
                                     </div>
                                 </Reveal>
 
                                 <Reveal from="up" duration={0.7} delay={0.06}>
+                                    <p className="mb-2.5 text-xs font-bold uppercase tracking-[0.2em] text-accent-700 sm:text-sm">
+                                        Autonomous Systems &amp; Applied Architecture
+                                    </p>
                                     <h1 id="hero-heading" className="max-w-3xl text-balance font-display text-[clamp(2.25rem,5.2vw,4.25rem)] font-extrabold leading-[1.02] tracking-[-0.045em] text-slate-950">
-                                        See how agent systems and code <span className="accent-text-gradient-ink">actually work.</span>
+                                        See how agent systems and roles <span className="accent-text-gradient-ink">actually work.</span>
                                     </h1>
                                 </Reveal>
 
                                 <Reveal from="up" duration={0.65} delay={0.14}>
                                     <p className="mt-7 max-w-xl text-[clamp(1.0625rem,1.4vw,1.1875rem)] leading-8 text-slate-600">
-                                        Run the code, agent, and system models we teach, inside the page with no setup. Open a prototype above, change one input, and watch the model respond.
+                                        Run the autonomous agent, role, and system models inside the page with no setup. Open an agent prototype above, change one input, and watch the model respond.
                                     </p>
                                 </Reveal>
 
@@ -357,7 +318,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                     <dl className="mt-10 flex max-w-xl flex-wrap items-center gap-x-8 gap-y-2 border-t border-ink/10 pt-5 text-sm text-slate-600">
                                         <div className="flex items-baseline gap-2">
                                             <dt className="sr-only">Inbuilt prototypes</dt>
-                                            <dd className="font-display text-xl font-extrabold text-ink">{inbuiltPrototypes.length}</dd>
+                                            <dd className="font-display text-xl font-extrabold text-ink">5</dd>
                                             <span>inbuilt prototypes</span>
                                         </div>
                                         <div className="flex items-baseline gap-2">
@@ -366,9 +327,9 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                             <span>agent lab topics</span>
                                         </div>
                                         <div className="flex items-baseline gap-2">
-                                            <dt className="sr-only">Code concept tracks</dt>
-                                            <dd className="font-display text-xl font-extrabold text-ink">{codeConceptTracks}</dd>
-                                            <span>code tracks</span>
+                                            <dt className="sr-only">Applied agent roles</dt>
+                                            <dd className="font-display text-xl font-extrabold text-ink">{agenticRoleDefinitions.length}</dd>
+                                            <span>agent roles</span>
                                         </div>
                                     </dl>
                                 </Reveal>
@@ -494,7 +455,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                             <div className="max-w-xl">
                                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent-700">Choose a starting point</p>
                                 <h2 id="intent-heading" className="mt-3 font-display text-[clamp(1.75rem,3vw,2.5rem)] font-extrabold tracking-[-0.035em] text-slate-950">What would you like to explore?</h2>
-                                <p className="mt-4 text-slate-600 leading-relaxed">Compare the format and outcome before opening a lesson, lab, tool, or project example.</p>
+                                <p className="mt-4 text-slate-600 leading-relaxed">Compare the format and outcome before opening an autonomous role, agent lab, research article, or sandbox.</p>
                             </div>
                         </Reveal>
 
@@ -544,70 +505,6 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                     accent="warm"
                     onOpenArticle={(roleId) => window.location.assign(getAgenticRoleHref(roleId) + '?mode=read')}
                 />
-
-                {/* ------------------------------------------------------ quantitative logic */}
-                <section className="border-b border-ink/10 bg-white/65" aria-labelledby="algo-topic-heading">
-                    <div className="mx-auto grid max-w-6xl items-center gap-8 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[1.1fr_.9fr]">
-                        <Reveal>
-                            <div>
-                                <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent-700">Code Concepts · Quantitative Logic</p>
-                                <h2 id="algo-topic-heading" className="mt-3 font-display text-[clamp(1.75rem,3vw,2.5rem)] font-extrabold tracking-[-0.035em] text-slate-950">From ATR to an adaptive trend signal.</h2>
-                                <p className="mt-4 max-w-2xl leading-7 text-slate-600">Follow computational indicator logic from True Range and ATR through delayed swing-pivot confirmation and K-means volatility clusters, then see how those mathematical inputs shape adaptive bands and decision boundaries.</p>
-
-                                {/* Hick's Law progressive disclosure */}
-                                <details className="group mt-4 rounded-xl border border-ink/10 bg-paper p-3.5 text-xs text-slate-600 transition-colors hover:border-ink/20">
-                                    <summary className="flex cursor-pointer select-none items-center justify-between font-semibold text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600 rounded-md px-1 py-0.5">
-                                        <span className="flex items-center gap-2">
-                                            <span className="h-1.5 w-1.5 rounded-full bg-accent-600" />
-                                            View mathematical formulation &amp; formula breakdown
-                                        </span>
-                                        <span className="font-mono text-sm text-slate-400 transition-transform duration-200 group-open:rotate-180">
-                                            ▼
-                                        </span>
-                                    </summary>
-                                    <div className="mt-3 space-y-2 border-t border-ink/10 pt-2.5 text-[11px] leading-relaxed text-slate-600">
-                                        <div className="font-mono bg-white p-2 rounded border border-ink/10 text-slate-900">
-                                            TR_t = max(H_t - L_t, |H_t - C_(t-1)|, |L_t - C_(t-1)|)
-                                        </div>
-                                        <p>
-                                            ATR applies an exponential Wilder smoothing of True Range over window N. The adaptive envelope shifts bands proportional to instantaneous volatility clusters, preventing premature boundary whipsaws.
-                                        </p>
-                                    </div>
-                                </details>
-
-                                <div className="mt-7 flex flex-wrap gap-3">
-                                    <button onClick={onNavigateAlgoTrading} className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-ink px-5 text-sm font-bold text-white transition-[transform,background-color] duration-200 hover:-translate-y-0.5 hover:bg-ink/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600 focus-visible:ring-offset-2 motion-reduce:transform-none">
-                                        <span>Open Quantitative Logic Lab</span>
-                                        <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transform-none" />
-                                    </button>
-                                    <button onClick={onNavigateCodeConcepts} className="glass-panel-light inline-flex min-h-11 items-center gap-2 px-5 text-sm font-bold transition-[filter] duration-200 hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600 focus-visible:ring-offset-2">
-                                        <span>Browse all Code Concepts</span>
-                                        <ChevronRight className="h-4 w-4" />
-                                    </button>
-                                </div>
-                            </div>
-                        </Reveal>
-                        <RevealGroup className="grid grid-cols-2 gap-3" stagger={0.08} delay={0.1}>
-                            {[
-                                { title: 'Range & ATR', detail: 'Measure movement size', icon: LineChart },
-                                { title: 'Swing pivots', detail: 'Understand confirmation delay', icon: Network },
-                                { title: 'K-means', detail: 'Group recent volatility', icon: FlaskConical },
-                                { title: 'Supertrend', detail: 'Trace bands and signal filters', icon: Code2 },
-                            ].map((item, index) => {
-                                const Icon = item.icon;
-                                return (
-                                    <RevealItem key={item.title} index={index} from="right" className="h-full">
-                                        <div className="group h-full rounded-none border border-ink/10 bg-paper p-4 transition-[border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-ink/25 motion-reduce:transform-none sm:p-5">
-                                            <Icon className="h-5 w-5 text-accent-600 transition-transform duration-300 group-hover:scale-110 motion-reduce:transform-none" />
-                                            <h3 className="mt-4 text-sm font-bold text-slate-950">{item.title}</h3>
-                                            <p className="mt-1 text-xs leading-5 text-slate-600">{item.detail}</p>
-                                        </div>
-                                    </RevealItem>
-                                );
-                            })}
-                        </RevealGroup>
-                    </div>
-                </section>
 
                 {/* ------------------------------------------------------- agent labs */}
                 <AgentLabsCatalog accent="warm" />

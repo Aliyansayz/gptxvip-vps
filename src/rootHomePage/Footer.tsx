@@ -233,7 +233,7 @@ export const Footer: React.FC<FooterProps> = ({
                         <button type="button" onClick={onNavigateDevLush}>Agent Labs</button>
                         <button type="button" onClick={onNavigateProjectSurfaces}>UI/UX Surfaces</button>
                         <button type="button" onClick={onNavigateUseCases}>Case Studies</button>
-                        <button type="button" onClick={onNavigateCodeConcepts}>Code Concepts</button>
+                        <a href="https://remove.gptx.vip" target="_blank" rel="noopener noreferrer">Remove Watermark ↗</a>
                         <button type="button" onClick={onNavigateBlogs}>Journal</button>
                     </div>
                 </div>
