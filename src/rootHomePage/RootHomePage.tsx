@@ -369,7 +369,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                         <AnimatePresence mode="wait" initial={false}>
                                             <motion.div
                                                 key={slideIndex}
-                                                className="mt-8 min-h-[230px]"
+                                                className="mt-8 min-h-[290px]"
                                                 aria-live={isCarouselPaused || isCarouselInteracting ? 'polite' : 'off'}
                                                 initial={{ opacity: 0, y: reducedMotion ? 0 : 10 }}
                                                 animate={{ opacity: 1, y: 0 }}
@@ -396,19 +396,19 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                     </GlassPanel>
 
                                     <div className="mt-4 flex items-center justify-between">
-                                        <div className="flex items-center gap-2" aria-label={`Slide ${slideIndex + 1} of ${slides.length}`}>
+                                        <div className="flex items-center gap-1.5" aria-label={`Slide ${slideIndex + 1} of ${slides.length}`}>
                                             {slides.map((item, index) => (
                                                 <button
                                                     key={item.eyebrow}
                                                     type="button"
                                                     onClick={() => setSlideIndex(index)}
-                                                    className="flex h-11 w-11 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
+                                                    className="flex h-9 w-9 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
                                                     aria-label={`Show slide ${index + 1}`}
                                                     aria-current={index === slideIndex ? 'true' : undefined}
                                                 >
                                                     <span
                                                         aria-hidden="true"
-                                                        className={`h-2 rounded-full transition-all ${index === slideIndex ? `w-7 ${toneStyles[item.tone].solid}` : 'w-2 bg-ink/20'}`}
+                                                        className={`h-2 rounded-full transition-all duration-300 ${index === slideIndex ? `w-7 ${toneStyles[item.tone].solid}` : 'w-2 bg-ink/20 hover:bg-ink/35'}`}
                                                     />
                                                 </button>
                                             ))}
@@ -417,7 +417,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                             <button
                                                 type="button"
                                                 onClick={() => setIsCarouselPaused((paused) => !paused)}
-                                                className="glass-panel-light flex min-h-11 items-center gap-2 px-3 text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
+                                                className="glass-panel-light flex h-9 items-center gap-2 px-3 text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
                                                 aria-label={isCarouselPaused ? 'Resume automatic slides' : 'Pause automatic slides'}
                                                 aria-pressed={isCarouselPaused}
                                             >
@@ -427,7 +427,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                             <button
                                                 type="button"
                                                 onClick={() => moveSlide(-1)}
-                                                className="glass-panel-light flex h-11 w-11 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
+                                                className="glass-panel-light flex h-9 w-9 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
                                                 aria-label="Previous slide"
                                             >
                                                 <ChevronLeft className="h-4 w-4" />
@@ -435,7 +435,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                             <button
                                                 type="button"
                                                 onClick={() => moveSlide(1)}
-                                                className="glass-panel-light flex h-11 w-11 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
+                                                className="glass-panel-light flex h-9 w-9 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
                                                 aria-label="Next slide"
                                             >
                                                 <ChevronRight className="h-4 w-4" />
@@ -523,8 +523,8 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                 />
 
                 {/* ------------------------------------------------------- Contact Section */}
-                <section className="bg-white/65 py-16 sm:py-24" aria-labelledby="contact-heading">
-                    <div className="mx-auto max-w-7xl px-4 sm:px-6">
+                <section className="bg-paper py-16 sm:py-20" aria-labelledby="contact-heading">
+                    <div className="mx-auto max-w-6xl px-5 sm:px-8">
                         <Reveal className="mx-auto max-w-2xl text-center">
                             <div className="glass-panel-light mb-6 inline-flex items-center gap-2 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-600">
                                 <span className="accent-fill-gradient h-1.5 w-1.5 rounded-full" />
@@ -547,16 +547,16 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                 />
                             </div>
                         </Reveal>
-                        <Reveal className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm" delay={0.12}>
+                        <Reveal className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm" delay={0.12}>
                             <button
                                 type="button"
                                 onClick={() => (onNavigateContact ? onNavigateContact() : window.location.assign('/contact'))}
-                                className="inline-flex items-center gap-1.5 font-bold text-slate-700 underline decoration-accent-400 decoration-2 underline-offset-4 transition-colors hover:text-accent-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
+                                className="inline-flex min-h-[44px] items-center gap-1.5 font-bold text-slate-700 underline decoration-accent-400 decoration-2 underline-offset-4 transition-colors hover:text-accent-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
                             >
                                 Open the full contact page
                             </button>
-                            <span className="text-slate-500">
-                                or email <a href="mailto:hello@gptx.vip" className="font-mono text-slate-800 underline decoration-ink/20 underline-offset-4 transition-colors hover:text-accent-700">hello@gptx.vip</a>
+                            <span className="inline-flex min-h-[44px] items-center text-slate-500">
+                                or email&nbsp;<a href="mailto:hello@gptx.vip" className="font-mono text-slate-800 underline decoration-ink/20 underline-offset-4 transition-colors hover:text-accent-700">hello@gptx.vip</a>
                             </span>
                         </Reveal>
                     </div>

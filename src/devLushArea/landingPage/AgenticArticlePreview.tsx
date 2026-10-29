@@ -22,16 +22,16 @@ export function AgenticArticlePreview({ onOpenArticle, accent = 'cyan', classNam
   const accentRailIcon = warm ? 'bg-[#d8ff38] text-[#101014]' : 'bg-cyan-300 text-slate-950';
 
   return (
-    <section aria-labelledby="agentic-article-preview-heading" className={`border-y border-[#e9e9ec] bg-[#f7f8f5] px-4 py-8 sm:px-8 sm:py-10 ${className}`}>
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-6 max-w-2xl">
-          <span className="block text-xs font-bold uppercase tracking-widest text-[#343edb] mb-1.5">
+    <section aria-labelledby="agentic-article-preview-heading" className={`border-b border-ink/10 bg-white/65 py-16 sm:py-20 ${className}`}>
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <div className="mb-8 max-w-2xl sm:mb-10">
+          <span className="block text-xs font-bold uppercase tracking-[0.2em] text-[#343edb] mb-2">
             03 / DEEP TECHNICAL READING
           </span>
-          <h2 id="agentic-article-preview-heading" className="text-2xl sm:text-3xl font-medium tracking-[-0.05em] text-[#101014]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+          <h2 id="agentic-article-preview-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 font-display">
             Prefer reading? Get the short article + quiz version.
           </h2>
-          <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[#777780]">
+          <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
             Every case has a concise article with key concepts, mental models, and a built-in quiz.
             No simulation required — just read, learn, and test your understanding.
           </p>
@@ -54,7 +54,7 @@ export function AgenticArticlePreview({ onOpenArticle, accent = 'cyan', classNam
 
           <div className="relative grid min-w-0 grid-cols-1 lg:grid-cols-[minmax(15rem,0.76fr)_minmax(0,1.24fr)]">
             <div className="border-b border-white/10 p-3 lg:border-b-0 lg:border-r lg:p-4" aria-label="Choose an Agentic Role article">
-              <div className="flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible lg:pb-0">
+              <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar lg:flex-col lg:overflow-visible lg:pb-0">
                 {agenticRoleDefinitions.map((role, index) => {
                   const RoleIcon = getAgenticRoleIcon(role.iconName);
                   return (

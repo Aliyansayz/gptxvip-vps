@@ -40,7 +40,7 @@ export const Footer: React.FC<FooterProps> = ({
             style={{
                 background: '#111114',
                 color: '#fff',
-                padding: '35px 4.2% 18px',
+                padding: '48px 1.25rem 24px',
                 position: 'relative',
                 overflow: 'hidden',
                 fontFamily: "'DM Sans', Arial, sans-serif",
@@ -52,22 +52,22 @@ export const Footer: React.FC<FooterProps> = ({
                     justify-content: space-between;
                     align-items: center;
                     gap: 20px;
-                    margin-bottom: 20px;
-                    max-width: 1120px;
+                    margin-bottom: 24px;
+                    max-width: 1152px;
                     margin-left: auto;
                     margin-right: auto;
                 }
                 .blvd-footer .blvd-footer-kicker {
-                    font-size: 9px;
+                    font-size: 10px;
                     text-transform: uppercase;
-                    letter-spacing: .1em;
+                    letter-spacing: .12em;
                     color: #a1a1aa;
                 }
                 .blvd-footer .blvd-footer-pill {
                     border: 1px solid #77777e;
                     border-radius: 30px;
-                    padding: 9px 13px;
-                    font-size: 10px;
+                    padding: 8px 16px;
+                    font-size: 11px;
                     color: #fff;
                     text-decoration: none;
                     white-space: nowrap;
@@ -80,14 +80,14 @@ export const Footer: React.FC<FooterProps> = ({
                 .blvd-footer .blvd-email {
                     display: block;
                     font-family: 'Space Grotesk', sans-serif;
-                    font-size: clamp(27px, 7.2vw, 78px);
+                    font-size: clamp(28px, 7.2vw, 80px);
                     letter-spacing: -.075em;
                     line-height: 1.05;
                     color: #a6afff;
                     text-decoration: none;
                     white-space: nowrap;
-                    margin: 18px auto 35px;
-                    max-width: 1120px;
+                    margin: 20px auto 36px;
+                    max-width: 1152px;
                     transition: color 0.2s;
                 }
                 .blvd-footer .blvd-email:hover {
@@ -96,32 +96,32 @@ export const Footer: React.FC<FooterProps> = ({
                 .blvd-footer .blvd-footer-rule {
                     height: 1px;
                     background: #ffffff20;
-                    margin: 0 auto 22px;
-                    max-width: 1120px;
+                    margin: 0 auto 28px;
+                    max-width: 1152px;
                 }
                 .blvd-footer .blvd-footer-bottom {
                     display: grid;
                     grid-template-columns: 1.4fr 1fr;
-                    gap: 35px;
-                    max-width: 1120px;
+                    gap: 36px;
+                    max-width: 1152px;
                     margin: 0 auto;
                 }
                 .blvd-footer .blvd-footer-blurb {
-                    font-size: 11px;
+                    font-size: 12px;
                     line-height: 1.6;
                     color: #b5b5bc;
-                    max-width: 320px;
-                    margin: 0 0 10px;
+                    max-width: 360px;
+                    margin: 0 0 12px;
                 }
                 .blvd-footer .blvd-footer-links {
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
-                    gap: 18px;
+                    gap: 20px;
                 }
                 .blvd-footer .blvd-footer-links h4 {
-                    font-size: 9px;
+                    font-size: 10px;
                     text-transform: uppercase;
-                    letter-spacing: .1em;
+                    letter-spacing: .12em;
                     color: #777780;
                     margin: 0 0 12px;
                     font-weight: 700;
@@ -131,7 +131,7 @@ export const Footer: React.FC<FooterProps> = ({
                     display: block;
                     text-decoration: none;
                     color: #e9e9ec;
-                    font-size: 11px;
+                    font-size: 12px;
                     margin: 8px 0;
                     background: none;
                     border: 0;
@@ -150,19 +150,19 @@ export const Footer: React.FC<FooterProps> = ({
                     font-size: clamp(42px, 9vw, 95px);
                     line-height: .95;
                     letter-spacing: -.085em;
-                    margin: 48px auto 12px;
-                    max-width: 1120px;
+                    margin: 48px auto 16px;
+                    max-width: 1152px;
                     color: #fff;
                 }
                 .blvd-footer .blvd-footer-legal {
                     display: flex;
                     justify-content: space-between;
                     gap: 15px;
-                    font-size: 9px;
+                    font-size: 10px;
                     color: #777780;
                     border-top: 1px solid #ffffff20;
-                    padding-top: 13px;
-                    max-width: 1120px;
+                    padding-top: 16px;
+                    max-width: 1152px;
                     margin: 0 auto;
                 }
                 .blvd-footer .blvd-footer-legal a,
@@ -179,8 +179,11 @@ export const Footer: React.FC<FooterProps> = ({
                 .blvd-footer .blvd-footer-legal button:hover {
                     color: #d8ff38;
                 }
+                @media (min-width: 640px) {
+                    .blvd-footer { padding: 56px 2rem 24px !important; }
+                }
                 @media (max-width: 650px) {
-                    .blvd-footer { padding: 28px 5% 15px !important; }
+                    .blvd-footer { padding: 36px 1.25rem 20px !important; }
                     .blvd-footer .blvd-footer-top { align-items: flex-start; }
                     .blvd-footer .blvd-email { font-size: 7.3vw; letter-spacing: -.07em; margin: 22px auto 28px; }
                     .blvd-footer .blvd-footer-bottom { grid-template-columns: 1fr; gap: 25px; }

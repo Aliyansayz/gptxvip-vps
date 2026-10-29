@@ -79,7 +79,7 @@ export function AgentTopicPreview({ topic, compact = false, tone = 'light', acce
         </div>
       </div>
 
-      <span className={`mt-5 inline-flex min-h-[44px] items-center gap-2 pt-0 text-sm font-bold ${accentText}`}>
+      <span className={`mt-auto inline-flex min-h-[44px] items-center gap-2 pt-6 text-sm font-bold ${accentText}`}>
         Open interactive lesson
         <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none" aria-hidden="true" />
       </span>

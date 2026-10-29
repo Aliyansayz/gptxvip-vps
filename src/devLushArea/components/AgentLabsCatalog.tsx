@@ -75,71 +75,73 @@ export function AgentLabsCatalog({
   }, []);
 
   return (
-    <section className={`mx-auto max-w-6xl px-5 py-8 sm:px-8 sm:py-10 ${className}`} aria-labelledby={headingId}>
-      <Reveal>
-        <div className="max-w-xl">
-          <span className="block text-xs font-bold uppercase tracking-widest text-[#343edb] mb-1.5">
-            05 / {eyebrow.toUpperCase()}
-          </span>
-          <h2 id={headingId} className="text-2xl sm:text-3xl font-medium tracking-[-0.05em] text-[#101014]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-            {heading}
-          </h2>
-          <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[#777780]">{description}</p>
-          {meta && <div className="mt-2 text-xs text-slate-500">{meta}</div>}
-        </div>
-      </Reveal>
+    <section className={`border-b border-ink/10 bg-paper py-16 sm:py-20 ${className}`} aria-labelledby={headingId}>
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <Reveal>
+          <div className="max-w-xl">
+            <span className="block text-xs font-bold uppercase tracking-[0.2em] text-[#343edb] mb-2">
+              05 / {eyebrow.toUpperCase()}
+            </span>
+            <h2 id={headingId} className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 font-display">
+              {heading}
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">{description}</p>
+            {meta && <div className="mt-2 text-xs text-slate-500">{meta}</div>}
+          </div>
+        </Reveal>
 
-      <Reveal delay={0.06}>
-        <div className="mt-6 mb-5 flex flex-wrap items-center gap-2" role="group" aria-label="Filter topics by study group">
-          {TOPIC_GROUP_ORDER.map((group) => {
-            const selected = activeGroup === group;
-            return (
+        <Reveal delay={0.06}>
+          <div className="mt-8 mb-8 flex flex-wrap items-center gap-2" role="group" aria-label="Filter topics by study group">
+            {TOPIC_GROUP_ORDER.map((group) => {
+              const selected = activeGroup === group;
+              return (
+                <button
+                  key={group}
+                  type="button"
+                  onClick={() => toggleGroup(group)}
+                  aria-pressed={selected}
+                  className={`inline-flex min-h-9 items-center gap-2 rounded-full border px-3.5 py-1 text-xs font-medium transition-[color,background-color,border-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb] focus-visible:ring-offset-2 active:scale-[0.96] motion-reduce:transform-none ${
+                    selected
+                      ? 'border-[#343edb] bg-[#343edb]/10 text-[#343edb] font-bold'
+                      : 'border-[#e9e9ec] bg-white text-[#777780] hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900'
+                  }`}
+                >
+                  {group}
+                  <span className={`font-mono text-[10px] tabular-nums ${selected ? 'text-[#343edb]' : 'text-slate-400'}`}>
+                    {counts.get(group) ?? 0}
+                  </span>
+                </button>
+              );
+            })}
+            {activeGroup && (
               <button
-                key={group}
                 type="button"
-                onClick={() => toggleGroup(group)}
-                aria-pressed={selected}
-                className={`inline-flex min-h-9 items-center gap-2 rounded-full border px-3.5 py-1 text-xs font-medium transition-[color,background-color,border-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb] focus-visible:ring-offset-2 active:scale-[0.96] motion-reduce:transform-none ${
-                  selected
-                    ? 'border-[#343edb] bg-[#343edb]/10 text-[#343edb] font-bold'
-                    : 'border-[#e9e9ec] bg-white text-[#777780] hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900'
-                }`}
+                onClick={() => setActiveGroup(null)}
+                className="inline-flex min-h-9 items-center rounded-full px-3 text-xs font-semibold text-[#777780] underline decoration-ink/20 underline-offset-4 transition-colors duration-150 hover:text-[#343edb] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb]"
               >
-                {group}
-                <span className={`font-mono text-[10px] tabular-nums ${selected ? 'text-[#343edb]' : 'text-slate-400'}`}>
-                  {counts.get(group) ?? 0}
-                </span>
+                Show all {agentLabTopics.length}
               </button>
-            );
-          })}
-          {activeGroup && (
-            <button
-              type="button"
-              onClick={() => setActiveGroup(null)}
-              className="inline-flex min-h-9 items-center rounded-full px-3 text-xs font-semibold text-[#777780] underline decoration-ink/20 underline-offset-4 transition-colors duration-150 hover:text-[#343edb] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb]"
-            >
-              Show all {agentLabTopics.length}
-            </button>
-          )}
-        </div>
-      </Reveal>
+            )}
+          </div>
+        </Reveal>
 
-      {/*
-        Re-keyed on the filter so switching groups replays the cascade instead
-        of leaving the new cards at opacity 0, from a `once: true` observer that
-        already fired on the previous set.
-      */}
-      <RevealGroup key={activeGroup || 'all'} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" stagger={0.07}>
-        {topics.map((topic, index) => (
-          <RevealItem key={topic.slug} index={index} className="h-full">
-            <AgentTopicPreview topic={topic} compact accent={accent} />
-          </RevealItem>
-        ))}
-      </RevealGroup>
+        {/*
+          Re-keyed on the filter so switching groups replays the cascade instead
+          of leaving the new cards at opacity 0, from a `once: true` observer that
+          already fired on the previous set.
+        */}
+        <RevealGroup key={activeGroup || 'all'} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" stagger={0.07}>
+          {topics.map((topic, index) => (
+            <RevealItem key={topic.slug} index={index} className="h-full">
+              <AgentTopicPreview topic={topic} compact accent={accent} />
+            </RevealItem>
+          ))}
+        </RevealGroup>
 
-      <p role="status" aria-live="polite" className="sr-only">
-        {activeGroup ? `Showing ${topics.length} of ${agentLabTopics.length} topics in ${activeGroup}.` : `Showing all ${agentLabTopics.length} topics.`}
-      </p>
+        <p role="status" aria-live="polite" className="sr-only">
+          {activeGroup ? `Showing ${topics.length} of ${agentLabTopics.length} topics in ${activeGroup}.` : `Showing all ${agentLabTopics.length} topics.`}
+        </p>
+      </div>
     </section>
   );
 }
