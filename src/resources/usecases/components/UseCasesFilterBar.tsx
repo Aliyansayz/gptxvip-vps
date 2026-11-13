@@ -48,7 +48,7 @@ export const UseCasesFilterBar: React.FC<UseCasesFilterBarProps> = ({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search use cases by topic (e.g. Contracts, Legal, GDPR, Security, Real Estate)..."
-            className="w-full rounded-full border border-[#d8d8e0] bg-white pl-11 pr-9 py-2.5 text-xs sm:text-sm text-[#101014] placeholder:text-[#777780] focus:border-[#343edb] focus:outline-none focus:ring-2 focus:ring-[#343edb]/15"
+            className="w-full rounded-full border border-[#d8d8e0] bg-white pl-11 pr-9 py-2.5 text-base sm:text-sm min-h-[44px] text-[#101014] placeholder:text-[#777780] focus:border-[#343edb] focus:outline-none focus:ring-2 focus:ring-[#343edb]/15"
           />
           {searchQuery && (
             <button
@@ -109,7 +109,7 @@ export const UseCasesFilterBar: React.FC<UseCasesFilterBarProps> = ({
             Department / Industry
           </span>
           <span className="text-xs text-[#777780]">
-            Showing <strong className="text-[#101014]">{filteredCount}</strong> of {totalCount} use cases
+            Showing <strong className="text-[#101014] tabular-nums">{filteredCount}</strong> of <span className="tabular-nums">{totalCount}</span> use cases
           </span>
         </div>
         <div className="flex flex-wrap gap-1.5">

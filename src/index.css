@@ -19,25 +19,34 @@
 @import "./shared/components/article/article.css";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: "Playfair Display", Georgia, Cambria, "Times New Roman", serif;
+  --font-body: "Lora", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --font-righteous: "Righteous", cursive;
+
+  /* Fluid typography scale tokens (Major Third / Golden Ratio baseline) */
+  --step-h1: clamp(2.25rem, 1.8rem + 2.2vw, 3.75rem);
+  --step-h2: clamp(1.5rem, 1.25rem + 1.2vw, 2.25rem);
+  --step-h3: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem);
+  --step-body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
 
   /*
    * Accent ramp for the landing surface. Steps 600+ clear WCAG AA on the
    * paper ground (#f7f8f5); 500 and below are display-only (large or bold
    * text). Never use 300/400 as body copy colour on light.
    */
-  --color-accent-50: #fff6f3;
-  --color-accent-100: #ffe7de;
-  --color-accent-200: #ffcabb;
-  --color-accent-300: #ffa68e;
-  --color-accent-400: #f5764f;
-  --color-accent-500: #e0452a;
-  --color-accent-600: #c81e28;
-  --color-accent-700: #a5161f;
-  --color-accent-800: #80111a;
-  --color-accent-900: #5c0c13;
+  --color-accent-50: #faffd6;
+  --color-accent-100: #f3ffa3;
+  --color-accent-200: #e7ff6d;
+  --color-accent-300: #d8ff38;
+  --color-accent-400: #c6f028;
+  --color-accent-500: #a8d210;
+  --color-accent-600: #6e8e00;
+  --color-accent-700: #4d6300;
+  --color-accent-800: #364700;
+  --color-accent-900: #222e00;
 
   /* Near-black ground for glass surfaces. */
   --color-ink: #12130f;
@@ -56,6 +65,22 @@
 @layer base {
   body {
     @apply font-sans text-zinc-900 dark:text-zinc-100 antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Form controls inherit body typography by default */
+  input,
+  textarea,
+  select,
+  button {
+    font-family: inherit;
+  }
+
+  /* Textareas default to vertical resizing only, preventing horizontal card blowout */
+  textarea {
+    resize: vertical;
   }
 
   h1,
@@ -65,6 +90,11 @@
   h5,
   h6 {
     @apply font-display uppercase text-zinc-900 dark:text-zinc-100;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 
   h1 {
@@ -267,4 +297,55 @@
   font-weight: 600;
   display: inline-block;
   line-height: 1.25;
+}
+
+
+/* ============================================================================
+   Typography, Container & Text Box Ergonomics Utilities (Cheat Sheet System)
+   ============================================================================ */
+
+/* Tabular Numerals: Equal digit widths for tables, metrics, stats, prices & timers */
+.nums-tabular,
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.nums-proportional,
+.proportional-nums {
+  font-variant-numeric: proportional-nums;
+}
+
+/* Modern Text Wrapping */
+.wrap-balance,
+.text-balance {
+  text-wrap: balance;
+}
+
+.wrap-pretty,
+.text-pretty {
+  text-wrap: pretty;
+}
+
+/* Paragraph measure reading sweet-spot (45ch-75ch, 65ch ideal) */
+.prose-measure {
+  max-width: 65ch;
+}
+
+/* Concentric Border Radius formula helper: R_outer = R_inner + padding */
+.concentric-card {
+  --card-pad: 1.25rem;
+  --card-radius: 1.5rem;
+  padding: var(--card-pad);
+  border-radius: var(--card-radius);
+}
+.concentric-callout {
+  border-radius: calc(var(--card-radius, 1.5rem) - var(--card-pad, 1.25rem));
+}
+
+/* 16px minimum on mobile inputs to eliminate iOS Safari viewport auto-zoom */
+.accessible-input {
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  min-height: 44px;
 }

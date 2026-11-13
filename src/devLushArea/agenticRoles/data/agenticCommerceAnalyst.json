@@ -9,8 +9,17 @@
     "labComponentId": "commerce-day1-price-elasticity",
     "difficulty": "easy",
     "estimatedMinutes": 25,
-    "prerequisites": ["Price Elasticity of Demand", "Algorithmic Pricing Foundations"],
-    "tags": ["commerce", "pricing", "price-elasticity", "competitor-monitoring", "agentic-commerce"],
+    "prerequisites": [
+      "Price Elasticity of Demand",
+      "Algorithmic Pricing Foundations"
+    ],
+    "tags": [
+      "commerce",
+      "pricing",
+      "price-elasticity",
+      "competitor-monitoring",
+      "agentic-commerce"
+    ],
     "critical_concepts": [
       {
         "concept": "Price Elasticity Optimization",
@@ -30,7 +39,20 @@
       "content": "Modern ecommerce marketplaces operate on multi-agent pricing feedback loops. An Agentic Commerce Analyst programs intelligent repricing strategies that balance competitive buy-box win rates against strict gross margin guardrails and demand elasticity curves.",
       "practical_takeaway": "Never deploy an algorithmic repricer without an immutable unit cost margin floor.",
       "analogy": "Like an experienced auction bidder who sets an absolute maximum budget before the auction starts, refusing to be baited into an emotional bidding war.",
-      "industry_case_study": "In 2011, two automated repricing algorithms on Amazon entered an uncontrolled feedback loop on a biology textbook ('The Making of a Fly'), repeatedly multiplying prices against each other until the book reached $23.6 million before being manually terminated."
+      "industry_case_study": "In 2011, two automated repricing algorithms on Amazon entered an uncontrolled feedback loop on a biology textbook ('The Making of a Fly'), repeatedly multiplying prices against each other until the book reached $23.6 million before being manually terminated.",
+      "card_titles": [
+        "1. Buy-Box Elasticity",
+        "2. Margin Floor Guardrail",
+        "3. Anti-Race Circuit Breaker"
+      ],
+      "card_a": "Elasticity models estimate how price shifts move conversion volume and buy-box share across marketplaces.",
+      "card_b": "Hard gross margin floors stop automated repricers from matching predatory bids below unit profitability.",
+      "card_c": "Rate-limited repricing cooldowns break destructive downward price spirals between competing bots.",
+      "highlight": [
+        "multi-agent pricing feedback loops",
+        "competitive buy-box win rates",
+        "strict gross margin guardrails"
+      ]
     },
     "interactive_questions": [
       {
@@ -51,29 +73,70 @@
         "correctAnswerIndex": 1,
         "explanation": "Undercutting to $41.50 yields only $1.50 profit (3.7% margin), violating the 20% target. The agent must hold at the $50.00 floor. Often, predatory bots quickly run out of stock at $42.00, allowing your store to recapture the Buy Box at profitable margins.",
         "wrong_answer_feedback": [
-          { "option": "Undercut the competitor to $41.50 to guarantee winning the marketplace Buy Box", "feedback": "Selling at $41.50 violates the 20% margin floor and results in gross margin destruction." },
-          { "option": "Delete the product SKU from the marketplace catalog", "feedback": "Deleting the SKU destroys sales rank and forfeits revenue when competitor inventory depletes." }
+          {
+            "option": "Undercut the competitor to $41.50 to guarantee winning the marketplace Buy Box",
+            "feedback": "Selling at $41.50 violates the 20% margin floor and results in gross margin destruction."
+          },
+          {
+            "option": "Delete the product SKU from the marketplace catalog",
+            "feedback": "Deleting the SKU destroys sales rank and forfeits revenue when competitor inventory depletes."
+          }
         ],
-        "tags": ["pricing-war", "margin-floor", "buy-box"],
+        "tags": [
+          "pricing-war",
+          "margin-floor",
+          "buy-box"
+        ],
         "nature": "business_governance",
         "logs": [
-          { "timestamp": "14:02:10", "level": "info", "message": "REPRICE_AGENT: Ingested competitor price update on SKU-9918: $42.00 (-22.2%)." },
-          { "timestamp": "14:02:11", "level": "warn", "message": "MARGIN_GUARD: Proposed undercut ($41.50) violates $50.00 hard floor (Unit Cost: $40.00 + 20%)." },
-          { "timestamp": "14:02:12", "level": "success", "message": "REPRICE_AGENT: Clamped price to $50.00. Logged competitor stock drain event." }
+          {
+            "timestamp": "14:02:10",
+            "level": "info",
+            "message": "REPRICE_AGENT: Ingested competitor price update on SKU-9918: $42.00 (-22.2%)."
+          },
+          {
+            "timestamp": "14:02:11",
+            "level": "warn",
+            "message": "MARGIN_GUARD: Proposed undercut ($41.50) violates $50.00 hard floor (Unit Cost: $40.00 + 20%)."
+          },
+          {
+            "timestamp": "14:02:12",
+            "level": "success",
+            "message": "REPRICE_AGENT: Clamped price to $50.00. Logged competitor stock drain event."
+          }
         ],
         "expectedToolCalls": [
-          { "toolName": "calculate_optimal_price", "args": { "sku": "SKU-9918", "competitorPrice": 42.0, "unitCost": 40.0, "minMargin": 0.2 }, "purpose": "Determine bounded repricing output" }
+          {
+            "toolName": "calculate_optimal_price",
+            "args": {
+              "sku": "SKU-9918",
+              "competitorPrice": 42,
+              "unitCost": 40,
+              "minMargin": 0.2
+            },
+            "purpose": "Determine bounded repricing output"
+          }
         ],
         "roleSpecificData": {
           "type": "commerce",
           "data": {
             "sku": "SKU-9918",
             "productName": "Wireless Noise-Canceling Headphones",
-            "ourPrice": 50.00,
-            "minMarginFloor": 50.00,
+            "ourPrice": 50,
+            "minMarginFloor": 50,
             "competitors": [
-              { "id": "comp_alpha", "name": "DiscountGadgets Direct", "currentPrice": 42.00, "undercuttingActive": true },
-              { "id": "comp_beta", "name": "Prime Tech Store", "currentPrice": 53.50, "undercuttingActive": false }
+              {
+                "id": "comp_alpha",
+                "name": "DiscountGadgets Direct",
+                "currentPrice": 42,
+                "undercuttingActive": true
+              },
+              {
+                "id": "comp_beta",
+                "name": "Prime Tech Store",
+                "currentPrice": 53.5,
+                "undercuttingActive": false
+              }
             ],
             "inventoryState": {
               "stockAvailable": 340,
@@ -96,8 +159,17 @@
     "labComponentId": "commerce-day2-inventory-race-condition",
     "difficulty": "medium",
     "estimatedMinutes": 35,
-    "prerequisites": ["Day 01: Pricing & Elasticity", "Distributed Concurrency & Locks"],
-    "tags": ["commerce", "inventory", "race-conditions", "ghost-stock", "distributed-locks"],
+    "prerequisites": [
+      "Day 01: Pricing & Elasticity",
+      "Distributed Concurrency & Locks"
+    ],
+    "tags": [
+      "commerce",
+      "inventory",
+      "race-conditions",
+      "ghost-stock",
+      "distributed-locks"
+    ],
     "critical_concepts": [
       {
         "concept": "Distributed Inventory Lock (Redlock)",
@@ -111,7 +183,20 @@
       "content": "During flash sales and high-velocity promotional drops, multiple autonomous buyer agents and web users checkout simultaneously. An Agentic Commerce Analyst implements distributed locking and optimistic concurrency mechanisms to eliminate overselling and phantom inventory states.",
       "practical_takeaway": "Always reserve inventory atomically before passing customer payment tokens to the gateway.",
       "analogy": "Like an airline seat selector that temporarily holds your chosen seat for 10 minutes while you enter your passport details so no other passenger can book it.",
-      "industry_case_study": "During the PlayStation 5 launch, major retail websites experienced massive database deadlocks and oversold thousands of consoles due to concurrent bot checkouts. Implementing distributed atomic stock reservation locks resolved the issue."
+      "industry_case_study": "During the PlayStation 5 launch, major retail websites experienced massive database deadlocks and oversold thousands of consoles due to concurrent bot checkouts. Implementing distributed atomic stock reservation locks resolved the issue.",
+      "card_titles": [
+        "1. Flash-Drop Contention",
+        "2. Distributed Locks",
+        "3. Ghost Stock Prevention"
+      ],
+      "card_a": "Concurrent checkouts on the last unit create classic read-then-write race conditions under spike traffic.",
+      "card_b": "Atomic Redis locks and optimistic version checks serialize inventory decrements without stalling healthy SKUs.",
+      "card_c": "Expiring reservation TTLs release abandoned carts promptly while preventing oversold fulfillment cancellations.",
+      "highlight": [
+        "checkout simultaneously",
+        "distributed locking and optimistic concurrency",
+        "phantom inventory states"
+      ]
     },
     "interactive_questions": [
       {
@@ -132,26 +217,56 @@
         "correctAnswerIndex": 1,
         "explanation": "Atomic reservations via distributed locks (e.g. Redis DECR / Lua script) guarantee that only customers with confirmed stock reservations proceed to payment capture, eliminating overselling.",
         "wrong_answer_feedback": [
-          { "option": "Allow all 8 orders to charge credit cards and send apologetic emails later", "feedback": "Overselling triggers merchant penalties, customer rage, and payment processing dispute fees." },
-          { "option": "Remove checkout limits and allow unlimited negative inventory", "feedback": "Selling nonexistent inventory leads to massive backorders that may never be fulfilled." }
+          {
+            "option": "Allow all 8 orders to charge credit cards and send apologetic emails later",
+            "feedback": "Overselling triggers merchant penalties, customer rage, and payment processing dispute fees."
+          },
+          {
+            "option": "Remove checkout limits and allow unlimited negative inventory",
+            "feedback": "Selling nonexistent inventory leads to massive backorders that may never be fulfilled."
+          }
         ],
-        "tags": ["distributed-lock", "concurrency", "flash-sale"],
+        "tags": [
+          "distributed-lock",
+          "concurrency",
+          "flash-sale"
+        ],
         "nature": "technical_execution",
         "logs": [
-          { "timestamp": "15:00:00", "level": "info", "message": "STOCK_SERVICE: 8 concurrent checkout requests received for SKU-SNK-400 (Stock: 3)." },
-          { "timestamp": "15:00:01", "level": "info", "message": "REDIS_LOCK: Lock acquired for Request #1, #2, #3. Decremented stock to 0." },
-          { "timestamp": "15:00:02", "level": "warn", "message": "STOCK_EMPTY: Requests #4-#8 received 409 Conflict (Stock Exhausted). 0 oversells." }
+          {
+            "timestamp": "15:00:00",
+            "level": "info",
+            "message": "STOCK_SERVICE: 8 concurrent checkout requests received for SKU-SNK-400 (Stock: 3)."
+          },
+          {
+            "timestamp": "15:00:01",
+            "level": "info",
+            "message": "REDIS_LOCK: Lock acquired for Request #1, #2, #3. Decremented stock to 0."
+          },
+          {
+            "timestamp": "15:00:02",
+            "level": "warn",
+            "message": "STOCK_EMPTY: Requests #4-#8 received 409 Conflict (Stock Exhausted). 0 oversells."
+          }
         ],
         "expectedToolCalls": [
-          { "toolName": "acquire_atomic_inventory_lock", "args": { "sku": "SKU-SNK-400", "quantity": 1, "ttlSeconds": 300 }, "purpose": "Reserve stock before payment processing" }
+          {
+            "toolName": "acquire_atomic_inventory_lock",
+            "args": {
+              "sku": "SKU-SNK-400",
+              "quantity": 1,
+              "ttlSeconds": 300
+            },
+            "purpose": "Reserve stock before payment processing"
+          }
         ],
         "roleSpecificData": {
           "type": "commerce",
           "data": {
             "sku": "SKU-SNK-400",
             "productName": "Limited Edition Retro Sneakers",
-            "ourPrice": 180.00,
-            "minMarginFloor": 120.00,
+            "ourPrice": 180,
+            "minMarginFloor": 120,
             "competitors": [],
             "inventoryState": {
               "stockAvailable": 3,
@@ -174,8 +289,17 @@
     "labComponentId": "commerce-day3-cart-abandonment",
     "difficulty": "medium",
     "estimatedMinutes": 35,
-    "prerequisites": ["Day 02: Inventory Concurrency", "Predictive Propensity Modeling"],
-    "tags": ["commerce", "cart-abandonment", "propensity-score", "dynamic-discounts", "conversion"],
+    "prerequisites": [
+      "Day 02: Inventory Concurrency",
+      "Predictive Propensity Modeling"
+    ],
+    "tags": [
+      "commerce",
+      "cart-abandonment",
+      "propensity-score",
+      "dynamic-discounts",
+      "conversion"
+    ],
     "critical_concepts": [
       {
         "concept": "Intent-Weighted Discount Triggers",
@@ -189,7 +313,20 @@
       "content": "Blasting generic 20% discount emails to every abandoned cart trains customers to intentionally leave items to get cheaper prices. An Agentic Commerce Analyst deploys propensity scoring to dispatch personalized recovery incentives only when margin lift outweighs concession cost.",
       "practical_takeaway": "Test free shipping thresholds before applying percentage discounts on high-intent carts.",
       "analogy": "Like a skilled car salesman who notices a serious buyer hesitating only on delivery logistics and offers free home delivery rather than dropping the sticker price immediately.",
-      "industry_case_study": "ASOS redesigned their cart abandonment sequence using machine learning propensity scoring, increasing recovered cart revenue by 22% while reducing total coupon discount expenditure by 40%."
+      "industry_case_study": "ASOS redesigned their cart abandonment sequence using machine learning propensity scoring, increasing recovered cart revenue by 22% while reducing total coupon discount expenditure by 40%.",
+      "card_titles": [
+        "1. Propensity Scoring",
+        "2. Targeted Incentives",
+        "3. Margin Preservation"
+      ],
+      "card_a": "Intent scoring separates price-sensitive abandoners from high-intent buyers who will convert without a coupon.",
+      "card_b": "Dispatching discounts only where predicted lift exceeds margin cost stops margin erosion.",
+      "card_c": "Varying holdout controls prevents conditioning repeat shoppers to abandon carts for automatic codes.",
+      "highlight": [
+        "propensity scoring",
+        "personalized recovery incentives",
+        "margin lift outweighs concession cost"
+      ]
     },
     "interactive_questions": [
       {
@@ -210,31 +347,66 @@
         "correctAnswerIndex": 1,
         "explanation": "The user stalled specifically at the shipping calculation step. Absorbing the $15 shipping fee preserves $170 in merchandise margin, achieving far higher net profitability than a 50% slash.",
         "wrong_answer_feedback": [
-          { "option": "Immediately send a 50% off coupon code ($92.50 discount)", "feedback": "A 50% discount unnecessarily sacrifices $92.50 when removing the $15 shipping friction accomplishes the conversion." },
-          { "option": "Do nothing and hope the customer comes back tomorrow", "feedback": "Over 70% of abandoned carts never return without timely re-engagement." }
+          {
+            "option": "Immediately send a 50% off coupon code ($92.50 discount)",
+            "feedback": "A 50% discount unnecessarily sacrifices $92.50 when removing the $15 shipping friction accomplishes the conversion."
+          },
+          {
+            "option": "Do nothing and hope the customer comes back tomorrow",
+            "feedback": "Over 70% of abandoned carts never return without timely re-engagement."
+          }
         ],
-        "tags": ["cart-recovery", "dynamic-incentives", "margin-preservation"],
+        "tags": [
+          "cart-recovery",
+          "dynamic-incentives",
+          "margin-preservation"
+        ],
         "nature": "business_governance",
         "logs": [
-          { "timestamp": "16:15:00", "level": "info", "message": "BEHAVIOR_TRACKER: User idle on checkout step 2 (Shipping) for 90s. Cursor moving to window top." },
-          { "timestamp": "16:15:01", "level": "info", "message": "PROPENSITY_MODEL: Conversion probability 0.42. Sensitivity: Shipping cost friction." },
-          { "timestamp": "16:15:02", "level": "success", "message": "INCENTIVE_DISPATCH: Dispatched timed free shipping token `FREESHIP15M` ($15 incentive)." }
+          {
+            "timestamp": "16:15:00",
+            "level": "info",
+            "message": "BEHAVIOR_TRACKER: User idle on checkout step 2 (Shipping) for 90s. Cursor moving to window top."
+          },
+          {
+            "timestamp": "16:15:01",
+            "level": "info",
+            "message": "PROPENSITY_MODEL: Conversion probability 0.42. Sensitivity: Shipping cost friction."
+          },
+          {
+            "timestamp": "16:15:02",
+            "level": "success",
+            "message": "INCENTIVE_DISPATCH: Dispatched timed free shipping token `FREESHIP15M` ($15 incentive)."
+          }
         ],
         "expectedToolCalls": [
-          { "toolName": "calculate_cart_exit_propensity", "args": { "cartValue": 185.0, "dwellTimeSeconds": 90, "frictionStep": "shipping" }, "purpose": "Score exit risk and determine minimum viable incentive" }
+          {
+            "toolName": "calculate_cart_exit_propensity",
+            "args": {
+              "cartValue": 185,
+              "dwellTimeSeconds": 90,
+              "frictionStep": "shipping"
+            },
+            "purpose": "Score exit risk and determine minimum viable incentive"
+          }
         ],
         "roleSpecificData": {
           "type": "commerce",
           "data": {
             "sku": "CART-BUNDLE-99",
             "productName": "Ergonomic Office Setup",
-            "ourPrice": 185.00,
-            "minMarginFloor": 110.00,
+            "ourPrice": 185,
+            "minMarginFloor": 110,
             "competitors": [],
-            "inventoryState": { "stockAvailable": 45, "allocatedReservations": 1, "ghostStockRiskCount": 0, "lockAcquired": true },
+            "inventoryState": {
+              "stockAvailable": 45,
+              "allocatedReservations": 1,
+              "ghostStockRiskCount": 0,
+              "lockAcquired": true
+            },
             "cartAbandonmentFunnel": {
               "intentScore": 0.88,
-              "cartValue": 185.00,
+              "cartValue": 185,
               "timeIdleSeconds": 90,
               "triggeredIncentivePct": 8.1,
               "predictedConversionLift": 34.2
@@ -254,8 +426,17 @@
     "labComponentId": "commerce-day4-review-fraud",
     "difficulty": "hard",
     "estimatedMinutes": 45,
-    "prerequisites": ["Day 03: Cart Recovery", "Graph Clustering & NLP Sentiment"],
-    "tags": ["commerce", "fraud-detection", "fake-reviews", "graph-clustering", "sentiment"],
+    "prerequisites": [
+      "Day 03: Cart Recovery",
+      "Graph Clustering & NLP Sentiment"
+    ],
+    "tags": [
+      "commerce",
+      "fraud-detection",
+      "fake-reviews",
+      "graph-clustering",
+      "sentiment"
+    ],
     "critical_concepts": [
       {
         "concept": "Sybil Review Ring Graph Clustering",
@@ -269,7 +450,20 @@
       "content": "Coordinated review manipulation distorts search ranking algorithms and deceives consumers. An Agentic Commerce Analyst implements graph clustering and linguistic anomaly detection to isolate bot rings and automatically quarantine suspicious product feedback.",
       "practical_takeaway": "Cross-reference review sentiment anomalies with account creation timestamps and order fulfillment tracking numbers.",
       "analogy": "Like noticing that 50 glowing restaurant reviews were all submitted within 5 minutes from the exact same table in the back of the kitchen.",
-      "industry_case_study": "Amazon banned hundreds of top-selling merchant brands in 2021 after graph analytics revealed systematic review bribery networks that incentivized fake 5-star ratings with gift cards."
+      "industry_case_study": "Amazon banned hundreds of top-selling merchant brands in 2021 after graph analytics revealed systematic review bribery networks that incentivized fake 5-star ratings with gift cards.",
+      "card_titles": [
+        "1. Coordinated Bot Rings",
+        "2. Graph Clustering",
+        "3. Automated Quarantine"
+      ],
+      "card_a": "Fake review rings reuse timing windows, device fingerprints, and templated phrasing across listings.",
+      "card_b": "Reviewer-to-SKU bipartite graph clustering isolates suspicious account cliques before rankings warp.",
+      "card_c": "Quarantining flagged feedback preserves catalog trust while routing edge cases to human moderators.",
+      "highlight": [
+        "review manipulation",
+        "graph clustering and linguistic anomaly detection",
+        "quarantine suspicious product feedback"
+      ]
     },
     "interactive_questions": [
       {
@@ -290,18 +484,47 @@
         "correctAnswerIndex": 1,
         "explanation": "Quarantining malicious bursts prevents unfair ranking degradation while compiling immutable forensic graph proof (IP clusters, creation dates) for platform arbitration.",
         "wrong_answer_feedback": [
-          { "option": "Manually reply to all 120 fake reviews with an apology voucher", "feedback": "Replying to malicious bot rings validates attacker accounts and wastes customer service resources." },
-          { "option": "Retaliate by ordering 500 fake reviews against the competitor", "feedback": "Ordering fake reviews is illegal fraud that triggers permanent store suspension." }
+          {
+            "option": "Manually reply to all 120 fake reviews with an apology voucher",
+            "feedback": "Replying to malicious bot rings validates attacker accounts and wastes customer service resources."
+          },
+          {
+            "option": "Retaliate by ordering 500 fake reviews against the competitor",
+            "feedback": "Ordering fake reviews is illegal fraud that triggers permanent store suspension."
+          }
         ],
-        "tags": ["fraud-ring", "graph-analytics", "compliance"],
+        "tags": [
+          "fraud-ring",
+          "graph-analytics",
+          "compliance"
+        ],
         "nature": "forensic_audit",
         "logs": [
-          { "timestamp": "17:00:00", "level": "info", "message": "GRAPH_ENGINE: Ingesting review subgraph for SKU-HEADPHONES-PRO..." },
-          { "timestamp": "17:00:01", "level": "warn", "message": "CLUSTER_ALERT: 120 reviews linked to 4 shared IP CIDR blocks. Graph density score: 0.94." },
-          { "timestamp": "17:00:02", "level": "success", "message": "COMPLIANCE_BOT: Quarantined 120 reviews. Decoupled burst from Buy Box weighting." }
+          {
+            "timestamp": "17:00:00",
+            "level": "info",
+            "message": "GRAPH_ENGINE: Ingesting review subgraph for SKU-HEADPHONES-PRO..."
+          },
+          {
+            "timestamp": "17:00:01",
+            "level": "warn",
+            "message": "CLUSTER_ALERT: 120 reviews linked to 4 shared IP CIDR blocks. Graph density score: 0.94."
+          },
+          {
+            "timestamp": "17:00:02",
+            "level": "success",
+            "message": "COMPLIANCE_BOT: Quarantined 120 reviews. Decoupled burst from Buy Box weighting."
+          }
         ],
         "expectedToolCalls": [
-          { "toolName": "cluster_sybil_review_rings", "args": { "sku": "SKU-HEADPHONES-PRO", "windowHours": 48 }, "purpose": "Detect coordinated fake review networks" }
+          {
+            "toolName": "cluster_sybil_review_rings",
+            "args": {
+              "sku": "SKU-HEADPHONES-PRO",
+              "windowHours": 48
+            },
+            "purpose": "Detect coordinated fake review networks"
+          }
         ],
         "roleSpecificData": {
           "type": "commerce",
@@ -309,12 +532,22 @@
             "sku": "SKU-HEADPHONES-PRO",
             "productName": "Active Noise Cancelling Earbuds",
             "ourPrice": 79.99,
-            "minMarginFloor": 45.00,
+            "minMarginFloor": 45,
             "competitors": [],
-            "inventoryState": { "stockAvailable": 1200, "allocatedReservations": 8, "ghostStockRiskCount": 0, "lockAcquired": true },
+            "inventoryState": {
+              "stockAvailable": 1200,
+              "allocatedReservations": 8,
+              "ghostStockRiskCount": 0,
+              "lockAcquired": true
+            },
             "fraudulentReviewRing": {
               "clusterScore": 0.94,
-              "flaggedAccountIds": ["bot_acc_101", "bot_acc_102", "bot_acc_103", "bot_acc_104"],
+              "flaggedAccountIds": [
+                "bot_acc_101",
+                "bot_acc_102",
+                "bot_acc_103",
+                "bot_acc_104"
+              ],
               "sentimentAnomalyRatio": 0.92
             }
           }
@@ -332,8 +565,18 @@
     "labComponentId": "commerce-day5-cross-border-logistics",
     "difficulty": "hard",
     "estimatedMinutes": 50,
-    "prerequisites": ["Day 01 - Day 04 Commerce Milestones", "HS Code Harmonized Tariff Schedules"],
-    "tags": ["commerce", "logistics", "cross-border", "tariffs", "hs-codes", "landed-cost"],
+    "prerequisites": [
+      "Day 01 - Day 04 Commerce Milestones",
+      "HS Code Harmonized Tariff Schedules"
+    ],
+    "tags": [
+      "commerce",
+      "logistics",
+      "cross-border",
+      "tariffs",
+      "hs-codes",
+      "landed-cost"
+    ],
     "critical_concepts": [
       {
         "concept": "Autonomous Landed Cost Engine",
@@ -347,7 +590,20 @@
       "content": "International retail demands accurate customs classification, currency hedging, and dynamic carrier routing. An Agentic Commerce Analyst configures multi-carrier routing agents that evaluate port congestion, tariff changes, and landed costs in real time.",
       "practical_takeaway": "Always present Guaranteed Delivery Duty Paid (DDP) checkout prices to international buyers.",
       "analogy": "Like an international shipping navigator who recalculates shipping routes around storms and canal bottlenecks before cargo leaves the dock.",
-      "industry_case_study": "When cross-border ecommerce direct-to-consumer brand Gymshark scaled into North America and Europe, automated landed cost engines with local fulfillment hubs cut international cart abandonment by 28%."
+      "industry_case_study": "When cross-border ecommerce direct-to-consumer brand Gymshark scaled into North America and Europe, automated landed cost engines with local fulfillment hubs cut international cart abandonment by 28%.",
+      "card_titles": [
+        "1. HS Code & Tariffs",
+        "2. Dynamic Port Routing",
+        "3. True Landed Cost"
+      ],
+      "card_a": "Accurate harmonized tariff classification prevents customs holds and unexpected duty surcharges.",
+      "card_b": "Multi-carrier agents reroute shipments around congested ports and volatile freight lanes in real time.",
+      "card_c": "Optimizing total landed cost—freight, duties, FX, and delivery SLA—protects cross-border unit economics.",
+      "highlight": [
+        "customs classification",
+        "multi-carrier routing agents",
+        "landed costs in real time"
+      ]
     },
     "interactive_questions": [
       {
@@ -368,28 +624,66 @@
         "correctAnswerIndex": 1,
         "explanation": "Routing through the UK-Hub eliminates the 12% import tariff and cuts shipping from $18 to $12, providing a faster and cheaper customer experience while triggering inventory rebalancing.",
         "wrong_answer_feedback": [
-          { "option": "Route from US-East and pass the 12% tariff fee onto the German customer upon delivery", "feedback": "Surprise DDU customs fees lead to customer package refusals and 35%+ return rates." },
-          { "option": "Cancel the German customer's order", "feedback": "Canceling orders destroys revenue when valid UK-Hub inventory is available." }
+          {
+            "option": "Route from US-East and pass the 12% tariff fee onto the German customer upon delivery",
+            "feedback": "Surprise DDU customs fees lead to customer package refusals and 35%+ return rates."
+          },
+          {
+            "option": "Cancel the German customer's order",
+            "feedback": "Canceling orders destroys revenue when valid UK-Hub inventory is available."
+          }
         ],
-        "tags": ["landed-cost", "tariffs", "multi-warehouse"],
+        "tags": [
+          "landed-cost",
+          "tariffs",
+          "multi-warehouse"
+        ],
         "nature": "pipeline_optimization",
         "logs": [
-          { "timestamp": "18:00:00", "level": "info", "message": "LOGISTICS_ENGINE: Evaluating fulfillment routes for Order #DE-88392..." },
-          { "timestamp": "18:00:01", "level": "info", "message": "TARIFF_CALC: US-East Route: $18 freight + $14.40 tariff ($32.40 total). UK-Hub Route: $12 freight + $0 tariff ($12.00 total)." },
-          { "timestamp": "18:00:02", "level": "success", "message": "ROUTING_BOT: Dispatched order to UK-Hub 3PL. Triggered container restock notification." }
+          {
+            "timestamp": "18:00:00",
+            "level": "info",
+            "message": "LOGISTICS_ENGINE: Evaluating fulfillment routes for Order #DE-88392..."
+          },
+          {
+            "timestamp": "18:00:01",
+            "level": "info",
+            "message": "TARIFF_CALC: US-East Route: $18 freight + $14.40 tariff ($32.40 total). UK-Hub Route: $12 freight + $0 tariff ($12.00 total)."
+          },
+          {
+            "timestamp": "18:00:02",
+            "level": "success",
+            "message": "ROUTING_BOT: Dispatched order to UK-Hub 3PL. Triggered container restock notification."
+          }
         ],
         "expectedToolCalls": [
-          { "toolName": "calculate_landed_cost", "args": { "destinationCountry": "DE", "sku": "SKU-PRO-AUDIO", "warehouseOptions": ["US-EAST", "UK-HUB"] }, "purpose": "Determine lowest landed cost fulfillment origin" }
+          {
+            "toolName": "calculate_landed_cost",
+            "args": {
+              "destinationCountry": "DE",
+              "sku": "SKU-PRO-AUDIO",
+              "warehouseOptions": [
+                "US-EAST",
+                "UK-HUB"
+              ]
+            },
+            "purpose": "Determine lowest landed cost fulfillment origin"
+          }
         ],
         "roleSpecificData": {
           "type": "commerce",
           "data": {
             "sku": "SKU-PRO-AUDIO",
             "productName": "Studio Monitor Speakers",
-            "ourPrice": 120.00,
-            "minMarginFloor": 75.00,
+            "ourPrice": 120,
+            "minMarginFloor": 75,
             "competitors": [],
-            "inventoryState": { "stockAvailable": 4, "allocatedReservations": 1, "ghostStockRiskCount": 0, "lockAcquired": true }
+            "inventoryState": {
+              "stockAvailable": 4,
+              "allocatedReservations": 1,
+              "ghostStockRiskCount": 0,
+              "lockAcquired": true
+            }
           }
         }
       }

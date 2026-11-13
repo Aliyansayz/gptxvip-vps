@@ -90,7 +90,16 @@ function makeChapter(key: string, spec: CaseSpec, index: number): AgenticRoleCha
       { concept: spec.topic, definition: spec.purpose, elaboration: `The agent uses ${spec.inputs} to make a decision that can be checked against source evidence.`, industry_application: spec.action },
       { concept: 'Decision metric', definition: spec.measure, elaboration: 'Measure whether the recommended action improves the workflow after review.', industry_application: spec.measure },
     ],
-    theory_content: { title: spec.topic, content: `${spec.purpose} The workflow combines ${spec.inputs}. ${spec.why}`, practical_takeaway: spec.action },
+    theory_content: {
+      title: spec.topic,
+      content: `${spec.purpose} The workflow combines ${spec.inputs}. ${spec.why}`,
+      practical_takeaway: spec.action,
+      card_titles: ['1. Evidence Inputs', '2. Decision Rationale', '3. Measured Outcome'],
+      card_a: `Ingests ${spec.inputs} so every agent recommendation stays grounded in verifiable operational records.`,
+      card_b: spec.why,
+      card_c: `${spec.action} Track success using ${spec.measure.toLowerCase()}.`,
+      highlight: [spec.purpose.replace(/\.$/, ''), spec.inputs],
+    },
     interactive_questions: [{
       id: `${key}-ex-${day}01`, componentId, dayNumber: day, difficulty, title: spec.topic,
       prompt: spec.scenario, question: 'What should the agent recommend next?',

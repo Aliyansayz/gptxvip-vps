@@ -27,10 +27,10 @@ export const RoiCalculator: React.FC<RoiCalculatorProps> = ({ onOpenLeadModal })
                     <span className="text-xs font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20 inline-block">
                         Enterprise ROI Modeler
                     </span>
-                    <h2 className="text-2xl sm:text-4xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight leading-tight">
+                    <h2 className="text-2xl sm:text-4xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight leading-tight text-balance">
                         Calculate Your Enterprise Fleet Financial Savings
                     </h2>
-                    <p className="text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm leading-relaxed">
+                    <p className="text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm leading-relaxed max-w-[65ch] text-pretty">
                         Adjust team size and average hourly rates to project annual operational savings achieved through autonomous AI agents and financial valuation automation.
                     </p>
                     <div className="space-y-2 pt-1 text-xs text-zinc-600 dark:text-zinc-400">
@@ -53,7 +53,7 @@ export const RoiCalculator: React.FC<RoiCalculatorProps> = ({ onOpenLeadModal })
                                 <label className="font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
                                     <Users className="w-4 h-4 text-cyan-500" /> Team Size:
                                 </label>
-                                <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm bg-zinc-100 dark:bg-zinc-800 px-2.5 py-1 rounded-lg">
+                                <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm bg-zinc-100 dark:bg-zinc-800 px-2.5 py-1 rounded-lg tabular-nums">
                                     {teamSize} Members
                                 </span>
                             </div>
@@ -73,7 +73,7 @@ export const RoiCalculator: React.FC<RoiCalculatorProps> = ({ onOpenLeadModal })
                                 <label className="font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
                                     <DollarSign className="w-4 h-4 text-emerald-500" /> Hourly Cost ($/hr):
                                 </label>
-                                <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm bg-zinc-100 dark:bg-zinc-800 px-2.5 py-1 rounded-lg">
+                                <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm bg-zinc-100 dark:bg-zinc-800 px-2.5 py-1 rounded-lg tabular-nums">
                                     ${hourlyRate} / hr
                                 </span>
                             </div>
@@ -93,7 +93,7 @@ export const RoiCalculator: React.FC<RoiCalculatorProps> = ({ onOpenLeadModal })
                                 <span className="text-[10px] sm:text-[11px] text-zinc-600 dark:text-zinc-400 font-medium block">
                                     Annual Hours Saved:
                                 </span>
-                                <span className="text-xl sm:text-2xl lg:text-3xl font-black font-mono text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5 mt-0.5">
+                                <span className="text-xl sm:text-2xl lg:text-3xl font-black font-mono text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5 mt-0.5 tabular-nums">
                                     <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-500" />
                                     {hoursSaved.toLocaleString()} hrs
                                 </span>
@@ -102,7 +102,7 @@ export const RoiCalculator: React.FC<RoiCalculatorProps> = ({ onOpenLeadModal })
                                 <span className="text-[10px] sm:text-[11px] text-zinc-600 dark:text-zinc-400 font-medium block">
                                     Projected Cost Reduction:
                                 </span>
-                                <span className="text-xl sm:text-2xl lg:text-3xl font-black font-mono text-emerald-500 mt-0.5 block">
+                                <span className="text-xl sm:text-2xl lg:text-3xl font-black font-mono text-emerald-500 mt-0.5 block tabular-nums">
                                     ${annualSavings.toLocaleString()}
                                 </span>
                             </div>
@@ -111,7 +111,7 @@ export const RoiCalculator: React.FC<RoiCalculatorProps> = ({ onOpenLeadModal })
                         {/* Action Lead Hook */}
                         <button
                             onClick={handleEmailReport}
-                            className="w-full py-3 sm:py-3.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-zinc-950 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer hover:scale-[1.01]"
+                            className="w-full py-3 sm:py-3.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-zinc-950 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer hover:scale-[1.01] active:scale-[0.97]"
                         >
                             <Download className="w-4 h-4" />
                             <span>Download Full Financial Model</span>

@@ -40,7 +40,7 @@ export const Footer: React.FC<FooterProps> = ({
             style={{
                 background: '#111114',
                 color: '#fff',
-                padding: '48px 1.25rem 24px',
+                padding: '36px 1.25rem 20px',
                 position: 'relative',
                 overflow: 'hidden',
                 fontFamily: "'DM Sans', Arial, sans-serif",
@@ -83,10 +83,10 @@ export const Footer: React.FC<FooterProps> = ({
                     font-size: clamp(28px, 7.2vw, 80px);
                     letter-spacing: -.075em;
                     line-height: 1.05;
-                    color: #a6afff;
+                    color: #d8ff38;
                     text-decoration: none;
                     white-space: nowrap;
-                    margin: 20px auto 36px;
+                    margin: 12px auto 22px;
                     max-width: 1152px;
                     transition: color 0.2s;
                 }
@@ -96,7 +96,7 @@ export const Footer: React.FC<FooterProps> = ({
                 .blvd-footer .blvd-footer-rule {
                     height: 1px;
                     background: #ffffff20;
-                    margin: 0 auto 28px;
+                    margin: 0 auto 20px;
                     max-width: 1152px;
                 }
                 .blvd-footer .blvd-footer-bottom {
@@ -150,7 +150,7 @@ export const Footer: React.FC<FooterProps> = ({
                     font-size: clamp(42px, 9vw, 95px);
                     line-height: .95;
                     letter-spacing: -.085em;
-                    margin: 48px auto 16px;
+                    margin: 28px auto 12px;
                     max-width: 1152px;
                     color: #fff;
                 }
@@ -180,7 +180,7 @@ export const Footer: React.FC<FooterProps> = ({
                     color: #d8ff38;
                 }
                 @media (min-width: 640px) {
-                    .blvd-footer { padding: 56px 2rem 24px !important; }
+                    .blvd-footer { padding: 40px 2rem 20px !important; }
                 }
                 @media (max-width: 650px) {
                     .blvd-footer { padding: 36px 1.25rem 20px !important; }
@@ -233,6 +233,7 @@ export const Footer: React.FC<FooterProps> = ({
                     </div>
                     <div>
                         <h4>Explore</h4>
+                        <a href="/ui-ux">Typography &amp; UI Cheatsheet ↗</a>
                         <button type="button" onClick={onNavigateDevLush}>Agent Labs</button>
                         <button type="button" onClick={onNavigateProjectSurfaces}>UI/UX Surfaces</button>
                         <button type="button" onClick={onNavigateUseCases}>Case Studies</button>

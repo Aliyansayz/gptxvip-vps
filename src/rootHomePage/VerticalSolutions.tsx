@@ -13,10 +13,10 @@ export const VerticalSolutions: React.FC = () => {
                 <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3.5 py-1.5 rounded-full border border-cyan-500/25 inline-block">
                     Deep Operational Impact
                 </span>
-                <h2 className="text-2xl sm:text-4xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight">
+                <h2 className="text-2xl sm:text-4xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight text-balance">
                     How Autonomous Swarms Transform Enterprise Verticals
                 </h2>
-                <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-base leading-relaxed">
+                <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-base leading-relaxed max-w-[65ch] mx-auto text-pretty">
                     Interactive operational visualizers demonstrating real-time agent decision loops across critical business units.
                 </p>
             </div>
@@ -27,10 +27,10 @@ export const VerticalSolutions: React.FC = () => {
                     <span className="text-xs font-mono font-bold text-cyan-500 uppercase tracking-widest">
                         Vertical Suite 01 — Legal &amp; IP
                     </span>
-                    <h3 className="text-xl sm:text-3xl font-extrabold text-zinc-900 dark:text-zinc-50 leading-tight">
+                    <h3 className="text-xl sm:text-3xl font-extrabold text-zinc-900 dark:text-zinc-50 leading-tight text-balance">
                         Real-Time Contract Redlining &amp; Playbook Enforcement
                     </h3>
-                    <p className="text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm leading-relaxed">
+                    <p className="text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm leading-relaxed max-w-[65ch] text-pretty">
                         Human legal review takes days and costs thousands per contract. devLush AgentOS processes 50-page Master Service Agreements in seconds, detecting rogue indemnity terms and substituting pre-approved corporate clauses automatically.
                     </p>
                     <ul className="space-y-2 text-xs text-zinc-700 dark:text-zinc-300 font-medium pt-1">
@@ -96,7 +96,7 @@ export const VerticalSolutions: React.FC = () => {
                             <div>
                                 <div className="flex justify-between font-bold text-zinc-700 dark:text-zinc-300 mb-2">
                                     <span>Simulate Competitor Price Drop:</span>
-                                    <span className="text-emerald-500 font-mono text-sm">-{marginDrop}%</span>
+                                    <span className="text-emerald-500 font-mono text-sm tabular-nums">-{marginDrop}%</span>
                                 </div>
                                 <input
                                     type="range"
@@ -111,7 +111,7 @@ export const VerticalSolutions: React.FC = () => {
                             <div className="p-4 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl space-y-1.5 text-left">
                                 <div className="flex justify-between font-bold text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm">
                                     <span>Automated Re-Pricing Action:</span>
-                                    <span className="text-emerald-500 font-mono">
+                                    <span className="text-emerald-500 font-mono tabular-nums">
                                         $89.00 &rarr; ${(89 * (1 - marginDrop / 200)).toFixed(2)}
                                     </span>
                                 </div>
@@ -127,10 +127,10 @@ export const VerticalSolutions: React.FC = () => {
                     <span className="text-xs font-mono font-bold text-emerald-500 uppercase tracking-widest">
                         Vertical Suite 02 — Ecommerce &amp; Retail
                     </span>
-                    <h3 className="text-xl sm:text-3xl font-extrabold text-zinc-900 dark:text-zinc-50 leading-tight">
+                    <h3 className="text-xl sm:text-3xl font-extrabold text-zinc-900 dark:text-zinc-50 leading-tight text-balance">
                         Autonomous Dynamic Margin &amp; Buy-Box Guard
                     </h3>
-                    <p className="text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm leading-relaxed">
+                    <p className="text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm leading-relaxed max-w-[65ch] text-pretty">
                         Never bleed profit during predatory price wars. devLush agents scrape competitor catalogs 24/7, recalculating supplier COGS and executing algorithmic repricing within 400ms.
                     </p>
                     <ul className="space-y-2 text-xs text-zinc-700 dark:text-zinc-300 font-medium pt-1">
@@ -152,10 +152,10 @@ export const VerticalSolutions: React.FC = () => {
                     <span className="text-xs font-mono font-bold text-amber-500 uppercase tracking-widest">
                         Vertical Suite 03 — Supply Chain &amp; Logistics
                     </span>
-                    <h3 className="text-xl sm:text-3xl font-extrabold text-zinc-900 dark:text-zinc-50 leading-tight">
+                    <h3 className="text-xl sm:text-3xl font-extrabold text-zinc-900 dark:text-zinc-50 leading-tight text-balance">
                         Autonomous Port Congestion &amp; PO Re-Routing
                     </h3>
-                    <p className="text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm leading-relaxed">
+                    <p className="text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm leading-relaxed max-w-[65ch] text-pretty">
                         Supply chain disruptions cost enterprise manufacturers millions in demurrage and factory downtime. Our agent swarms ingest maritime AIS signals and automatically issue replacement POs in SAP and Oracle ERP.
                     </p>
                     <ul className="space-y-2 text-xs text-zinc-700 dark:text-zinc-300 font-medium pt-1">
@@ -185,11 +185,11 @@ export const VerticalSolutions: React.FC = () => {
                         <div className="p-4 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl space-y-2.5">
                             <div className="flex justify-between items-center text-xs">
                                 <span className="font-bold text-zinc-700 dark:text-zinc-300">Congestion Delay:</span>
-                                <span className="font-mono text-red-500 font-bold">+9.4 Days Port Wait</span>
+                                <span className="font-mono text-red-500 font-bold tabular-nums">+9.4 Days Port Wait</span>
                             </div>
                             <div className="flex justify-between items-center text-xs">
                                 <span className="font-bold text-zinc-700 dark:text-zinc-300">Agent Action:</span>
-                                <span className="font-mono text-emerald-500 font-bold">Air-Freight 4 Containers</span>
+                                <span className="font-mono text-emerald-500 font-bold tabular-nums">Air-Freight 4 Containers</span>
                             </div>
                             <div className="text-[11px] text-zinc-500 pt-1.5 border-t border-zinc-200 dark:border-zinc-800">
                                 Net Enterprise ROI: Saved $420,000 in contractual assembly delay penalties.

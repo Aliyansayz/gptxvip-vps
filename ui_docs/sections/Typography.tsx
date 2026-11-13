@@ -1,3 +1,4 @@
+import TypographyCheatSheet from "../../src/components/designSystem/TypographyCheatSheet";
 import { ArrowRight } from "lucide-react";
 import { SectionHeading, PanelTitle } from "../DocParts";
 import { tokens } from "../../src/components/designSystem/tokens";
@@ -91,6 +92,9 @@ export default function Typography() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="mt-16 border-t border-slate-200/60 dark:border-slate-800/60 pt-12">
+        <TypographyCheatSheet />
       </div>
     </section>
   );

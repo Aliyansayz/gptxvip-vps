@@ -9,8 +9,17 @@
     "labComponentId": "recommendation-day1-vector-cosine",
     "difficulty": "easy",
     "estimatedMinutes": 25,
-    "prerequisites": ["Linear Algebra Foundations", "Vector Dot Product & Cosine Distance"],
-    "tags": ["recommendation", "embeddings", "vector-search", "cosine-similarity", "agentic-recommender"],
+    "prerequisites": [
+      "Linear Algebra Foundations",
+      "Vector Dot Product & Cosine Distance"
+    ],
+    "tags": [
+      "recommendation",
+      "embeddings",
+      "vector-search",
+      "cosine-similarity",
+      "agentic-recommender"
+    ],
     "critical_concepts": [
       {
         "concept": "Cosine Similarity in Normalized Vector Space",
@@ -30,7 +39,20 @@
       "content": "Modern recommendation engines convert unstructured user behavior and catalog items into dense numerical embeddings. An Agentic Recommendation System Analyst evaluates vector alignment, audits similarity thresholds, and prevents dimensional collapse.",
       "practical_takeaway": "Always verify L2 normalization before indexing vectors in production vector stores like Pinecone, Qdrant, or Milvus.",
       "analogy": "Like placing books in a massive 3D library where books with similar themes float into the exact same shelf cluster, regardless of their title letters.",
-      "industry_case_study": "Spotify's Discover Weekly maps playlist co-occurrences into a shared high-dimensional vector space using collaborative filtering vectors and audio spectrogram embeddings, generating 40+ million personalized playlists every Monday."
+      "industry_case_study": "Spotify's Discover Weekly maps playlist co-occurrences into a shared high-dimensional vector space using collaborative filtering vectors and audio spectrogram embeddings, generating 40+ million personalized playlists every Monday.",
+      "card_titles": [
+        "1. Dense Vector Space",
+        "2. Cosine Alignment",
+        "3. Collapse Audits"
+      ],
+      "card_a": "Dual encoders project user histories and catalog items into a shared geometric embedding space.",
+      "card_b": "Normalized cosine similarity measures directional affinity independent of raw interaction magnitude.",
+      "card_c": "Monitoring embedding variance catches dimensional collapse before recommendations turn generic.",
+      "highlight": [
+        "dense numerical embeddings",
+        "vector alignment",
+        "dimensional collapse"
+      ]
     },
     "interactive_questions": [
       {
@@ -51,27 +73,92 @@
         "correctAnswerIndex": 0,
         "explanation": "Since both vectors are normalized, Cosine Similarity = A · B = (0.6 * 0.8) + (0.8 * 0.6) = 0.48 + 0.48 = 0.96. A score of 0.96 represents extremely high semantic overlap.",
         "wrong_answer_feedback": [
-          { "option": "0.00 (Orthogonal / Unrelated)", "feedback": "0.0 occurs when vectors are perpendicular (e.g. [1, 0] and [0, 1]), not when coordinates overlap positively." },
-          { "option": "1.40 (Overflow Error)", "feedback": "Cosine similarity is mathematically bounded between -1.0 and +1.0." }
+          {
+            "option": "0.00 (Orthogonal / Unrelated)",
+            "feedback": "0.0 occurs when vectors are perpendicular (e.g. [1, 0] and [0, 1]), not when coordinates overlap positively."
+          },
+          {
+            "option": "1.40 (Overflow Error)",
+            "feedback": "Cosine similarity is mathematically bounded between -1.0 and +1.0."
+          }
         ],
-        "tags": ["cosine-similarity", "dot-product", "linear-algebra"],
+        "tags": [
+          "cosine-similarity",
+          "dot-product",
+          "linear-algebra"
+        ],
         "nature": "technical_execution",
         "logs": [
-          { "timestamp": "16:00:00", "level": "info", "message": "VECTOR_ENGINE: Ingesting user session embedding (dim=2 for lab visualization)..." },
-          { "timestamp": "16:00:01", "level": "info", "message": "SIMILARITY_AUDITOR: Computing dot product against candidate prod_441." },
-          { "timestamp": "16:00:02", "level": "success", "message": "SIMILARITY_AUDITOR: Cosine similarity computed: 0.9600. Ranked #1 in top-10 candidate pool." }
+          {
+            "timestamp": "16:00:00",
+            "level": "info",
+            "message": "VECTOR_ENGINE: Ingesting user session embedding (dim=2 for lab visualization)..."
+          },
+          {
+            "timestamp": "16:00:01",
+            "level": "info",
+            "message": "SIMILARITY_AUDITOR: Computing dot product against candidate prod_441."
+          },
+          {
+            "timestamp": "16:00:02",
+            "level": "success",
+            "message": "SIMILARITY_AUDITOR: Cosine similarity computed: 0.9600. Ranked #1 in top-10 candidate pool."
+          }
         ],
         "expectedToolCalls": [
-          { "toolName": "compute_cosine_similarity", "args": { "vectorA": [0.6, 0.8], "vectorB": [0.8, 0.6] }, "purpose": "Calculate vector alignment" }
+          {
+            "toolName": "compute_cosine_similarity",
+            "args": {
+              "vectorA": [
+                0.6,
+                0.8
+              ],
+              "vectorB": [
+                0.8,
+                0.6
+              ]
+            },
+            "purpose": "Calculate vector alignment"
+          }
         ],
         "roleSpecificData": {
           "type": "recommendation",
           "data": {
-            "userVector": [0.6, 0.8],
+            "userVector": [
+              0.6,
+              0.8
+            ],
             "candidateItems": [
-              { "id": "prod_441", "title": "Ultra-Light Running Shoes", "category": "Footwear", "vector": [0.8, 0.6], "cosineSimilarity": 0.96 },
-              { "id": "prod_102", "title": "Heavy Duty Leather Boots", "category": "Footwear", "vector": [0.1, 0.99], "cosineSimilarity": 0.852 },
-              { "id": "prod_993", "title": "Formal Business Suit", "category": "Apparel", "vector": [-0.6, 0.8], "cosineSimilarity": 0.28 }
+              {
+                "id": "prod_441",
+                "title": "Ultra-Light Running Shoes",
+                "category": "Footwear",
+                "vector": [
+                  0.8,
+                  0.6
+                ],
+                "cosineSimilarity": 0.96
+              },
+              {
+                "id": "prod_102",
+                "title": "Heavy Duty Leather Boots",
+                "category": "Footwear",
+                "vector": [
+                  0.1,
+                  0.99
+                ],
+                "cosineSimilarity": 0.852
+              },
+              {
+                "id": "prod_993",
+                "title": "Formal Business Suit",
+                "category": "Apparel",
+                "vector": [
+                  -0.6,
+                  0.8
+                ],
+                "cosineSimilarity": 0.28
+              }
             ]
           }
         }
@@ -88,8 +175,18 @@
     "labComponentId": "recommendation-day2-two-tower-hnsw",
     "difficulty": "medium",
     "estimatedMinutes": 35,
-    "prerequisites": ["Day 01: Vector Embeddings", "Graph-Based ANN Indexing (HNSW)"],
-    "tags": ["recommendation", "two-tower", "hnsw", "ann", "retrieval", "latency"],
+    "prerequisites": [
+      "Day 01: Vector Embeddings",
+      "Graph-Based ANN Indexing (HNSW)"
+    ],
+    "tags": [
+      "recommendation",
+      "two-tower",
+      "hnsw",
+      "ann",
+      "retrieval",
+      "latency"
+    ],
     "critical_concepts": [
       {
         "concept": "Two-Tower Architecture Candidate Generation",
@@ -103,7 +200,20 @@
       "content": "Brute-force vector distance calculation across millions of items creates unacceptable latency. An Agentic Recommendation System Analyst tunes HNSW parameters (M, efConstruction, efSearch) to achieve optimal trade-offs between Recall@100 and latency SLAs.",
       "practical_takeaway": "Increasing efSearch improves recall at the cost of linear latency increases.",
       "analogy": "Like using multi-level highway expressway exits to get near your destination quickly before navigating local city streets.",
-      "industry_case_study": "YouTube's candidate generation pipeline filters over a billion videos down to a few hundred candidates in under 10ms using dual-tower deep neural networks and fast nearest-neighbor search."
+      "industry_case_study": "YouTube's candidate generation pipeline filters over a billion videos down to a few hundred candidates in under 10ms using dual-tower deep neural networks and fast nearest-neighbor search.",
+      "card_titles": [
+        "1. Navigable Small World",
+        "2. HNSW Tuning Knobs",
+        "3. Recall vs. Latency SLA"
+      ],
+      "card_a": "Multi-layer HNSW graphs jump from coarse hubs to fine neighborhoods in logarithmic lookup time.",
+      "card_b": "Tuning M, efConstruction, and efSearch trades index memory and build time for query accuracy.",
+      "card_c": "Benchmarking Recall@100 against p99 latency keeps candidate retrieval fast at million-item scale.",
+      "highlight": [
+        "Brute-force vector distance",
+        "HNSW parameters",
+        "Recall@100 and latency SLAs"
+      ]
     },
     "interactive_questions": [
       {
@@ -124,23 +234,60 @@
         "correctAnswerIndex": 1,
         "explanation": "Tuning `efSearch` to 64 explores more neighboring nodes in the HNSW graph, lifting recall to 94.6% while 5.8ms latency comfortably meets the <10ms SLA.",
         "wrong_answer_feedback": [
-          { "option": "Lower `efSearch` to 4 to reduce latency further", "feedback": "Lowering efSearch will cause recall to drop even further below 70%, degrading recommendation quality." },
-          { "option": "Disable indexing and switch to brute-force k-NN linear scan (O(N) search)", "feedback": "Brute force search on 10 million items will increase latency from 2ms to over 2,500ms, crashing production SLAs." }
+          {
+            "option": "Lower `efSearch` to 4 to reduce latency further",
+            "feedback": "Lowering efSearch will cause recall to drop even further below 70%, degrading recommendation quality."
+          },
+          {
+            "option": "Disable indexing and switch to brute-force k-NN linear scan (O(N) search)",
+            "feedback": "Brute force search on 10 million items will increase latency from 2ms to over 2,500ms, crashing production SLAs."
+          }
         ],
-        "tags": ["hnsw", "recall-tuning", "vector-database"],
+        "tags": [
+          "hnsw",
+          "recall-tuning",
+          "vector-database"
+        ],
         "nature": "pipeline_optimization",
         "logs": [
-          { "timestamp": "11:20:00", "level": "info", "message": "BENCHMARK_BOT: Running ANN grid search across efSearch=[16, 32, 64, 128]..." },
-          { "timestamp": "11:20:02", "level": "info", "message": "RESULTS: efSearch=64 -> Recall@100: 94.6% | p99 Latency: 5.8ms | QPS: 1,450 req/sec." },
-          { "timestamp": "11:20:03", "level": "success", "message": "CONFIG_UPDATE: Production vector index config updated: `efSearch=64`." }
+          {
+            "timestamp": "11:20:00",
+            "level": "info",
+            "message": "BENCHMARK_BOT: Running ANN grid search across efSearch=[16, 32, 64, 128]..."
+          },
+          {
+            "timestamp": "11:20:02",
+            "level": "info",
+            "message": "RESULTS: efSearch=64 -> Recall@100: 94.6% | p99 Latency: 5.8ms | QPS: 1,450 req/sec."
+          },
+          {
+            "timestamp": "11:20:03",
+            "level": "success",
+            "message": "CONFIG_UPDATE: Production vector index config updated: `efSearch=64`."
+          }
         ],
         "expectedToolCalls": [
-          { "toolName": "benchmark_hnsw_index", "args": { "indexName": "prod_catalog_10m", "candidateEfSearch": [16, 32, 64, 128] }, "purpose": "Find Pareto-optimal recall vs latency configuration" }
+          {
+            "toolName": "benchmark_hnsw_index",
+            "args": {
+              "indexName": "prod_catalog_10m",
+              "candidateEfSearch": [
+                16,
+                32,
+                64,
+                128
+              ]
+            },
+            "purpose": "Find Pareto-optimal recall vs latency configuration"
+          }
         ],
         "roleSpecificData": {
           "type": "recommendation",
           "data": {
-            "userVector": [0.72, 0.69],
+            "userVector": [
+              0.72,
+              0.69
+            ],
             "candidateItems": [],
             "twoTowerHnswConfig": {
               "efSearch": 64,
@@ -163,8 +310,17 @@
     "labComponentId": "recommendation-day3-cross-encoder-reranker",
     "difficulty": "medium",
     "estimatedMinutes": 40,
-    "prerequisites": ["Day 02: HNSW Retrieval", "Exploration vs Exploitation"],
-    "tags": ["recommendation", "reranking", "cross-encoder", "multi-armed-bandits", "contextual-bandits"],
+    "prerequisites": [
+      "Day 02: HNSW Retrieval",
+      "Exploration vs Exploitation"
+    ],
+    "tags": [
+      "recommendation",
+      "reranking",
+      "cross-encoder",
+      "multi-armed-bandits",
+      "contextual-bandits"
+    ],
     "critical_concepts": [
       {
         "concept": "Multi-Armed Bandit Exploration (Upper Confidence Bound)",
@@ -178,7 +334,20 @@
       "content": "While Two-Tower models retrieve hundreds of candidates quickly, heavy Cross-Encoder models with full attention across user and item tokens re-rank the top 50 items. An Agentic Recommendation System Analyst layers contextual bandit algorithms to discover emerging user interests.",
       "practical_takeaway": "Never rely solely on greedy historical click-through rates; always reserve slots for stochastic exploration.",
       "analogy": "Like a restaurant chef who keeps serving top-selling signature dishes (exploitation) while adding one innovative daily special (exploration) to discover new favorites.",
-      "industry_case_study": "Netflix uses multi-armed contextual bandit algorithms to dynamically personalize thumbnail artwork for each movie, discovering that changing the artwork based on user genre affinities boosts play rates by over 20%."
+      "industry_case_study": "Netflix uses multi-armed contextual bandit algorithms to dynamically personalize thumbnail artwork for each movie, discovering that changing the artwork based on user genre affinities boosts play rates by over 20%.",
+      "card_titles": [
+        "1. Two-Stage Funnel",
+        "2. Cross-Encoder Attention",
+        "3. Bandit Exploration"
+      ],
+      "card_a": "Fast Two-Tower retrieval narrows millions of items down to top candidates before heavy scoring runs.",
+      "card_b": "Cross-Encoders compute full token-level interaction across user context and candidate attributes.",
+      "card_c": "Contextual bandits allocate controlled exploration slots to surface fresh items and rising tastes.",
+      "highlight": [
+        "Two-Tower models",
+        "Cross-Encoder models",
+        "contextual bandit algorithms"
+      ]
     },
     "interactive_questions": [
       {
@@ -199,23 +368,61 @@
         "correctAnswerIndex": 1,
         "explanation": "5 impressions is far too small a sample size. Thompson Sampling models uncertainty via Beta(α, β) distributions, balancing exploration without overreacting to noisy micro-samples.",
         "wrong_answer_feedback": [
-          { "option": "Greedy ranking is always optimal; no change is needed", "feedback": "Greedy ranking causes severe volatility and starves new items when older items dominate historical counts." },
-          { "option": "Thompson Sampling permanently bans Item B from all user feeds", "feedback": "Thompson Sampling gives new items a calculated opportunity to be shown and earn positive feedback." }
+          {
+            "option": "Greedy ranking is always optimal; no change is needed",
+            "feedback": "Greedy ranking causes severe volatility and starves new items when older items dominate historical counts."
+          },
+          {
+            "option": "Thompson Sampling permanently bans Item B from all user feeds",
+            "feedback": "Thompson Sampling gives new items a calculated opportunity to be shown and earn positive feedback."
+          }
         ],
-        "tags": ["thompson-sampling", "bandits", "exploration-exploitation"],
+        "tags": [
+          "thompson-sampling",
+          "bandits",
+          "exploration-exploitation"
+        ],
         "nature": "technical_execution",
         "logs": [
-          { "timestamp": "14:40:00", "level": "info", "message": "BANDIT_SERVICE: Evaluating Beta distributions for candidate pool (50 items)..." },
-          { "timestamp": "14:40:01", "level": "info", "message": "POSTERIOR_SAMPLING: Item A ~ Beta(1000, 9000), Item B ~ Beta(2, 3)." },
-          { "timestamp": "14:40:02", "level": "success", "message": "RERANK_OUTPUT: Top slot assigned to Item A (Stable High Mean); Slot #4 assigned to Item B (Controlled Exploration)." }
+          {
+            "timestamp": "14:40:00",
+            "level": "info",
+            "message": "BANDIT_SERVICE: Evaluating Beta distributions for candidate pool (50 items)..."
+          },
+          {
+            "timestamp": "14:40:01",
+            "level": "info",
+            "message": "POSTERIOR_SAMPLING: Item A ~ Beta(1000, 9000), Item B ~ Beta(2, 3)."
+          },
+          {
+            "timestamp": "14:40:02",
+            "level": "success",
+            "message": "RERANK_OUTPUT: Top slot assigned to Item A (Stable High Mean); Slot #4 assigned to Item B (Controlled Exploration)."
+          }
         ],
         "expectedToolCalls": [
-          { "toolName": "sample_thompson_posteriors", "args": { "alpha": [1000, 2], "beta": [9000, 3] }, "purpose": "Draw probability samples from reward distributions" }
+          {
+            "toolName": "sample_thompson_posteriors",
+            "args": {
+              "alpha": [
+                1000,
+                2
+              ],
+              "beta": [
+                9000,
+                3
+              ]
+            },
+            "purpose": "Draw probability samples from reward distributions"
+          }
         ],
         "roleSpecificData": {
           "type": "recommendation",
           "data": {
-            "userVector": [0.5, 0.5],
+            "userVector": [
+              0.5,
+              0.5
+            ],
             "candidateItems": [],
             "banditExplorationRate": 0.08
           }
@@ -233,8 +440,17 @@
     "labComponentId": "recommendation-day4-cold-start-memory",
     "difficulty": "hard",
     "estimatedMinutes": 45,
-    "prerequisites": ["Day 03: Re-ranking & Bandits", "LLM Episodic Memory Extraction"],
-    "tags": ["recommendation", "cold-start", "episodic-memory", "persona-synthesis", "zero-shot"],
+    "prerequisites": [
+      "Day 03: Re-ranking & Bandits",
+      "LLM Episodic Memory Extraction"
+    ],
+    "tags": [
+      "recommendation",
+      "cold-start",
+      "episodic-memory",
+      "persona-synthesis",
+      "zero-shot"
+    ],
     "critical_concepts": [
       {
         "concept": "Zero-Shot Persona Vector Initialization",
@@ -248,7 +464,20 @@
       "content": "Collaborative filtering fails for new users with zero interaction history (the cold-start problem). An Agentic Recommendation System Analyst leverages LLM agent memory stores to extract structured interest graphs from conversational onboarding and synthesize instant user vectors.",
       "practical_takeaway": "Map extracted natural language interests directly to vector clusters during the first 60 seconds of onboarding.",
       "analogy": "Like a knowledgeable concierge who asks you two quick questions about your mood and instantly recommends the perfect museum without needing to stalk your past year of vacation trips.",
-      "industry_case_study": "When TikTok onboards a new user, its algorithm shows a rapid succession of diverse short clips to quickly triangulate the user's vector cluster within the first 10 minutes of session watch-time."
+      "industry_case_study": "When TikTok onboards a new user, its algorithm shows a rapid succession of diverse short clips to quickly triangulate the user's vector cluster within the first 10 minutes of session watch-time.",
+      "card_titles": [
+        "1. Zero-History Gap",
+        "2. Episodic Memory Graphs",
+        "3. Instant Vector Synthesis"
+      ],
+      "card_a": "Pure collaborative filtering breaks down when a new user or SKU has no prior click history.",
+      "card_b": "LLM memory stores distill stated goals and session context into structured preference graphs.",
+      "card_c": "Synthesizing a warm initial vector delivers relevant picks from the very first session.",
+      "highlight": [
+        "cold-start problem",
+        "LLM agent memory stores",
+        "structured interest graphs"
+      ]
     },
     "interactive_questions": [
       {
@@ -269,23 +498,54 @@
         "correctAnswerIndex": 1,
         "explanation": "Entity extraction and composite vector projection solves cold-start by initializing a high-affinity zero-shot embedding that immediately delights the user on Day 1.",
         "wrong_answer_feedback": [
-          { "option": "Wait for 50 organic user purchases before generating any recommendations", "feedback": "New users with empty feeds will abandon the application long before reaching 50 purchases." },
-          { "option": "Recommend the top-10 pop fiction romance bestsellers because they have the highest global click count", "feedback": "Showing generic bestsellers ignores the user's explicit preferences and creates a poor first impression." }
+          {
+            "option": "Wait for 50 organic user purchases before generating any recommendations",
+            "feedback": "New users with empty feeds will abandon the application long before reaching 50 purchases."
+          },
+          {
+            "option": "Recommend the top-10 pop fiction romance bestsellers because they have the highest global click count",
+            "feedback": "Showing generic bestsellers ignores the user's explicit preferences and creates a poor first impression."
+          }
         ],
-        "tags": ["cold-start", "persona-synthesis", "entity-filtering"],
+        "tags": [
+          "cold-start",
+          "persona-synthesis",
+          "entity-filtering"
+        ],
         "nature": "ux_perception",
         "logs": [
-          { "timestamp": "16:00:00", "level": "info", "message": "LLM_MEMORY_AGENT: Ingested onboarding natural language statement." },
-          { "timestamp": "16:00:01", "level": "info", "message": "ENTITY_EXTRACTOR: Extracted concepts: Quantum Physics (0.9), Deep Tech (0.85), British Narration (Filter)." },
-          { "timestamp": "16:00:02", "level": "success", "message": "VECTOR_SYNTHESIS: Initialized user_9941 vector at cluster center #482 (Science & Biographies)." }
+          {
+            "timestamp": "16:00:00",
+            "level": "info",
+            "message": "LLM_MEMORY_AGENT: Ingested onboarding natural language statement."
+          },
+          {
+            "timestamp": "16:00:01",
+            "level": "info",
+            "message": "ENTITY_EXTRACTOR: Extracted concepts: Quantum Physics (0.9), Deep Tech (0.85), British Narration (Filter)."
+          },
+          {
+            "timestamp": "16:00:02",
+            "level": "success",
+            "message": "VECTOR_SYNTHESIS: Initialized user_9941 vector at cluster center #482 (Science & Biographies)."
+          }
         ],
         "expectedToolCalls": [
-          { "toolName": "extract_persona_entities", "args": { "text": "Looking for non-fiction audiobooks about quantum physics and deep tech startup founders" }, "purpose": "Extract structured topics for zero-shot vector embedding" }
+          {
+            "toolName": "extract_persona_entities",
+            "args": {
+              "text": "Looking for non-fiction audiobooks about quantum physics and deep tech startup founders"
+            },
+            "purpose": "Extract structured topics for zero-shot vector embedding"
+          }
         ],
         "roleSpecificData": {
           "type": "recommendation",
           "data": {
-            "userVector": [0.88, 0.42],
+            "userVector": [
+              0.88,
+              0.42
+            ],
             "candidateItems": [],
             "coldStartEpisodicMemories": [
               "Interests: Quantum Physics, Startup Biographies, Deep Tech",
@@ -307,8 +567,17 @@
     "labComponentId": "recommendation-day5-filter-bubble-mitigation",
     "difficulty": "hard",
     "estimatedMinutes": 50,
-    "prerequisites": ["Day 01 - Day 04 Recommendation Milestones", "Diversity & Serendipity Metrics"],
-    "tags": ["recommendation", "filter-bubble", "popularity-bias", "diversity", "serendipity"],
+    "prerequisites": [
+      "Day 01 - Day 04 Recommendation Milestones",
+      "Diversity & Serendipity Metrics"
+    ],
+    "tags": [
+      "recommendation",
+      "filter-bubble",
+      "popularity-bias",
+      "diversity",
+      "serendipity"
+    ],
     "critical_concepts": [
       {
         "concept": "Intra-List Diversity & Serendipity Optimization",
@@ -322,7 +591,20 @@
       "content": "Feedback loops in recommender systems amplify popularity bias and trap users in narrow filter bubbles. An Agentic Recommendation System Analyst monitors calibration metrics, applies inverse propensity weighting, and injects controlled serendipity to maintain user engagement.",
       "practical_takeaway": "Balance relevance scores with MMR diversity penalties to keep user feeds fresh and surprising.",
       "analogy": "Like a music DJ who plays the hits you love but occasionally drops an unexpected underground track that becomes your new favorite.",
-      "industry_case_study": "When YouTube introduced diversity penalties to prevent recommendation rabbit holes, user session length and long-term 30-day retention improved across all demographic cohorts."
+      "industry_case_study": "When YouTube introduced diversity penalties to prevent recommendation rabbit holes, user session length and long-term 30-day retention improved across all demographic cohorts.",
+      "card_titles": [
+        "1. Popularity Feedback Loops",
+        "2. Propensity Debiasing",
+        "3. Controlled Serendipity"
+      ],
+      "card_a": "Over-indexing on clicks reinforces blockbuster bias and traps users inside narrow recommendation loops.",
+      "card_b": "Inverse propensity weighting corrects for position and exposure bias in historical training logs.",
+      "card_c": "Calibration and Maximal Marginal Relevance inject diverse picks that sustain long-term retention.",
+      "highlight": [
+        "popularity bias",
+        "inverse propensity weighting",
+        "controlled serendipity"
+      ]
     },
     "interactive_questions": [
       {
@@ -343,27 +625,89 @@
         "correctAnswerIndex": 1,
         "explanation": "MMR balances individual item relevance with intra-list diversity, preventing duplicate category saturation while surfacing complementary cross-sell products.",
         "wrong_answer_feedback": [
-          { "option": "Double the weight on hiking boots to ensure the user never sees any other product category", "feedback": "Monopolizing the feed with boots guarantees banner blindness and zero repeat cross-category sales." },
-          { "option": "Disable recommendations entirely for this user", "feedback": "Disabling recommendations reduces total platform engagement and forfeits revenue." }
+          {
+            "option": "Double the weight on hiking boots to ensure the user never sees any other product category",
+            "feedback": "Monopolizing the feed with boots guarantees banner blindness and zero repeat cross-category sales."
+          },
+          {
+            "option": "Disable recommendations entirely for this user",
+            "feedback": "Disabling recommendations reduces total platform engagement and forfeits revenue."
+          }
         ],
-        "tags": ["mmr", "diversity", "filter-bubble-bursting"],
+        "tags": [
+          "mmr",
+          "diversity",
+          "filter-bubble-bursting"
+        ],
         "nature": "business_governance",
         "logs": [
-          { "timestamp": "17:45:00", "level": "info", "message": "DIVERSITY_AUDITOR: Raw recommendation list contains 95% 'Footwear: Hiking Boots'." },
-          { "timestamp": "17:45:01", "level": "info", "message": "MMR_RERANKER: Applying lambda=0.6 diversity tradeoff penalty..." },
-          { "timestamp": "17:45:02", "level": "success", "message": "DIVERSIFIED_FEED: Top 10 now features 2 Boots, 2 Trail Socks, 2 Packs, 2 Trekking Poles, 2 GPS Devices." }
+          {
+            "timestamp": "17:45:00",
+            "level": "info",
+            "message": "DIVERSITY_AUDITOR: Raw recommendation list contains 95% 'Footwear: Hiking Boots'."
+          },
+          {
+            "timestamp": "17:45:01",
+            "level": "info",
+            "message": "MMR_RERANKER: Applying lambda=0.6 diversity tradeoff penalty..."
+          },
+          {
+            "timestamp": "17:45:02",
+            "level": "success",
+            "message": "DIVERSIFIED_FEED: Top 10 now features 2 Boots, 2 Trail Socks, 2 Packs, 2 Trekking Poles, 2 GPS Devices."
+          }
         ],
         "expectedToolCalls": [
-          { "toolName": "rerank_maximal_marginal_relevance", "args": { "lambdaDiversity": 0.6, "topK": 10 }, "purpose": "Balance relevance against category redundancy" }
+          {
+            "toolName": "rerank_maximal_marginal_relevance",
+            "args": {
+              "lambdaDiversity": 0.6,
+              "topK": 10
+            },
+            "purpose": "Balance relevance against category redundancy"
+          }
         ],
         "roleSpecificData": {
           "type": "recommendation",
           "data": {
-            "userVector": [0.6, 0.7],
+            "userVector": [
+              0.6,
+              0.7
+            ],
             "candidateItems": [
-              { "id": "prod_1", "title": "Alpine Trail Hiking Boots", "category": "Footwear", "vector": [0.61, 0.69], "cosineSimilarity": 0.99, "rerankScore": 0.94 },
-              { "id": "prod_2", "title": "Merino Wool Trail Socks (3-Pack)", "category": "Apparel", "vector": [0.55, 0.62], "cosineSimilarity": 0.91, "rerankScore": 0.89 },
-              { "id": "prod_3", "title": "2.5L Hydration Reservoir Pack", "category": "Gear", "vector": [0.52, 0.58], "cosineSimilarity": 0.88, "rerankScore": 0.86 }
+              {
+                "id": "prod_1",
+                "title": "Alpine Trail Hiking Boots",
+                "category": "Footwear",
+                "vector": [
+                  0.61,
+                  0.69
+                ],
+                "cosineSimilarity": 0.99,
+                "rerankScore": 0.94
+              },
+              {
+                "id": "prod_2",
+                "title": "Merino Wool Trail Socks (3-Pack)",
+                "category": "Apparel",
+                "vector": [
+                  0.55,
+                  0.62
+                ],
+                "cosineSimilarity": 0.91,
+                "rerankScore": 0.89
+              },
+              {
+                "id": "prod_3",
+                "title": "2.5L Hydration Reservoir Pack",
+                "category": "Gear",
+                "vector": [
+                  0.52,
+                  0.58
+                ],
+                "cosineSimilarity": 0.88,
+                "rerankScore": 0.86
+              }
             ]
           }
         }

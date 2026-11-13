@@ -81,20 +81,20 @@ export default function Browse() {
         <label className="text-xs font-semibold tracking-wide text-slate-500 uppercase">Search</label>
         <div className="relative mt-2">
           <Search className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
-          <input aria-label="Search templates" value={q} onChange={(e) => setParam('q', e.target.value)} placeholder="Name, tag, keyword…" className="h-11 w-full rounded-lg border border-slate-200 bg-white pr-11 pl-9 text-sm outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-500" />
+          <input aria-label="Search templates" value={q} onChange={(e) => setParam('q', e.target.value)} placeholder="Name, tag, keyword…" className="h-11 w-full rounded-lg border border-slate-200 bg-white pr-11 pl-9 text-base sm:text-sm outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-500" />
           {q && <button type="button" onClick={() => setParam('q', '')} className="absolute right-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" aria-label="Clear search"><X className="h-4 w-4" /></button>}
         </div>
       </div>
       <div>
         <label className="text-xs font-semibold tracking-wide text-slate-500 uppercase">Category</label>
         <div className="mt-2 space-y-1">
-          {['all', ...CATEGORIES].map((value) => <button key={value} type="button" aria-pressed={category === value} onClick={() => setParam('category', value)} className={category === value ? selectedClass : idleClass}>{value === 'all' ? 'All categories' : value}<span className="text-xs text-slate-400">{value === 'all' ? templates.length : templates.filter((template) => template.category === value).length}</span></button>)}
+          {['all', ...CATEGORIES].map((value) => <button key={value} type="button" aria-pressed={category === value} onClick={() => setParam('category', value)} className={category === value ? selectedClass : idleClass}>{value === 'all' ? 'All categories' : value}<span className="text-xs text-slate-400 tabular-nums">{value === 'all' ? templates.length : templates.filter((template) => template.category === value).length}</span></button>)}
         </div>
       </div>
       <div>
         <label className="text-xs font-semibold tracking-wide text-slate-500 uppercase">Framework</label>
         <div className="mt-2 space-y-1">
-          {['all', ...FRAMEWORKS].map((value) => <button key={value} type="button" aria-pressed={framework === value} onClick={() => setParam('framework', value)} className={framework === value ? selectedClass : idleClass}>{value === 'all' ? 'All frameworks' : value}<span className="text-xs text-slate-400">{value === 'all' ? templates.length : templates.filter((template) => template.frameworks.includes(value)).length}</span></button>)}
+          {['all', ...FRAMEWORKS].map((value) => <button key={value} type="button" aria-pressed={framework === value} onClick={() => setParam('framework', value)} className={framework === value ? selectedClass : idleClass}>{value === 'all' ? 'All frameworks' : value}<span className="text-xs text-slate-400 tabular-nums">{value === 'all' ? templates.length : templates.filter((template) => template.frameworks.includes(value)).length}</span></button>)}
         </div>
       </div>
       {hasFilters && <Button type="button" variant="outline" className="w-full" onClick={() => setParams({}, { replace: true })}>Clear all filters</Button>}
@@ -105,8 +105,8 @@ export default function Browse() {
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight text-slate-900">{category !== 'all' ? category : 'All agent surfaces'}</h1>
-          <p aria-live="polite" className="mt-1 text-slate-500">{results.length} result{results.length === 1 ? '' : 's'}{q && <> for “<span className="font-medium text-slate-700">{q}</span>”</>}</p>
+          <h1 className="text-3xl font-semibold tracking-tight text-slate-900 text-balance">{category !== 'all' ? category : 'All agent surfaces'}</h1>
+          <p aria-live="polite" className="mt-1 text-slate-500 tabular-nums">{results.length} result{results.length === 1 ? '' : 's'}{q && <> for “<span className="font-medium text-slate-700">{q}</span>”</>}</p>
         </div>
         <div className="flex items-center gap-2">
           <Button type="button" variant="outline" className="lg:hidden" aria-expanded={mobileFilters} aria-controls="browse-mobile-filters" onClick={() => setMobileFilters((value) => !value)}><SlidersHorizontal className="mr-2 h-4 w-4" /> {mobileFilters ? 'Hide filters' : 'Show filters'}</Button>

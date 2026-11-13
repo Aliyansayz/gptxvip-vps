@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowLeft,
-  Award,
   BookOpen,
   CheckCircle2,
   Columns,
@@ -12,6 +11,8 @@ import { AgenticRoleChapter, AgenticRoleDefinition } from '../agenticRoleTypes';
 import { agenticRolesRegistry } from '../agenticRolesRegistry';
 import FallbackRoleActivity from '../activities/FallbackRoleActivity';
 import RoleConceptVisual from './components/RoleConceptVisual';
+import RoleTheorySection from './components/RoleTheorySection';
+import { RoleMcqProvider } from './components/RoleMcqContext';
 import DifficultyBadge from './components/DifficultyBadge';
 import { getRoleTheme } from '../agenticThemeHelpers';
 import { useTheoryCollections } from '../../agentDevRootComponents/TheoryCollectionContext';
@@ -37,6 +38,9 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
   mode = 'lab',
 }) => {
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const mcqSectionRef = useRef<HTMLElement>(null);
+
   const [currentStep, setCurrentStep] = useState(() => {
     try {
       const saved = sessionStorage.getItem(`agentic_step_${chapter.labComponentId}`);
@@ -52,6 +56,9 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
   const [layoutPlacement, setLayoutPlacement] = useState<'side' | 'bottom'>('bottom');
   const [isTheorySaved, setIsTheorySaved] = useState(false);
   const [isCaseComplete, setIsCaseComplete] = useState(false);
+  const [isMcqOpen, setIsMcqOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
   const theoryCtx = useTheoryCollections();
   const theme = getRoleTheme(chapter.roleDomain);
   const exercises = chapter.interactive_questions || [];
@@ -72,7 +79,12 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
     }
     setIsCaseComplete(false);
     setIsTheorySaved(false);
-  }, [chapter.labComponentId]);
+    setIsMcqOpen(false);
+    setScrollProgress(0);
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [chapter.labComponentId, chapter.interactive_questions.length]);
 
   useEffect(() => {
     titleRef.current?.focus();
@@ -85,6 +97,44 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
       // The current lesson stays usable if session storage is unavailable.
     }
   }, [chapter.labComponentId, currentStep]);
+
+  useEffect(() => {
+    if (mode === 'read') return;
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const scrollable = container.scrollHeight - container.clientHeight;
+      const pct = scrollable > 0 ? Math.min(100, Math.max(0, (container.scrollTop / scrollable) * 100)) : 0;
+      setScrollProgress(pct);
+    };
+
+    handleScroll();
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [chapter.labComponentId, mode, theoryVisible, isMcqOpen]);
+
+  const openMcq = useCallback(() => {
+    setIsMcqOpen(true);
+    requestAnimationFrame(() => {
+      mcqSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }, []);
+
+  const closeMcq = useCallback(() => {
+    setIsMcqOpen(false);
+  }, []);
+
+  const mcqContextValue = useMemo(
+    () => ({
+      isMcqOpen,
+      totalQuestions: totalSteps,
+      openMcq,
+      closeMcq,
+      mcqSectionRef,
+    }),
+    [isMcqOpen, totalSteps, openMcq, closeMcq],
+  );
 
   const handleStepComplete = () => {
     if (currentStep < exercises.length - 1) {
@@ -117,19 +167,23 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
     }
   };
 
-  // Read mode: render article + quiz
+  // Read mode: render editorial article + button-gated quiz
   if (mode === 'read') {
     return (
       <ArticleLabLayout
         blocks={articleBlocks}
+        chapter={chapter}
         roleDomain={chapter.roleDomain}
         roleShortTitle={role.shortTitle}
+        roleTagline={role.tagline}
         chapterTitle={chapter.chapter_title}
         chapterDay={chapter.day}
         theme={theme}
         onBack={onBack}
         onSaveTheory={handleSaveTheory}
         isTheorySaved={isTheorySaved}
+        questionCount={totalSteps}
+        visualDiagramSlot={<RoleConceptVisual key={chapter.labComponentId} chapter={chapter} />}
       >
         <QuizBank
           exercises={exercises}
@@ -141,6 +195,14 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
 
   return (
     <div className="flex h-full min-h-0 min-w-0 flex-col bg-slate-50 text-slate-900 dark:bg-black dark:text-slate-100">
+      {/* Top Scroll Reading Progress Bar */}
+      <div className="h-1 w-full shrink-0 bg-stone-100 dark:bg-stone-800" aria-hidden="true">
+        <div
+          className="h-full bg-emerald-600 transition-all duration-150 dark:bg-emerald-500"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
       <header className="shrink-0 border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
         <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-3 px-3 py-3 sm:px-5 sm:py-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex min-w-0 items-start gap-3">
@@ -178,7 +240,7 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
               aria-valuemin={0}
               aria-valuemax={totalSteps}
               aria-valuenow={isCaseComplete ? totalSteps : currentStep}
-              aria-valuetext={isCaseComplete ? "Case complete" : `Decision ${currentStep + 1} of ${totalSteps}`}
+              aria-valuetext={isCaseComplete ? 'Case complete' : `Decision ${currentStep + 1} of ${totalSteps}`}
               className="hidden min-h-11 items-center rounded-lg border border-slate-200 bg-slate-50 px-3 text-xs font-bold text-slate-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400 sm:flex"
             >
               Decision <span className={`mx-1 ${theme.text}`}>{Math.min(currentStep + 1, totalSteps)}</span> / {totalSteps}
@@ -218,12 +280,11 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
         </div>
       </header>
 
-      <div className="min-h-0 flex-1 overflow-y-auto custom-scrollbar">
+      <div ref={scrollContainerRef} className="min-h-0 flex-1 overflow-y-auto custom-scrollbar">
         <main className="mx-auto w-full max-w-[1440px] p-3 pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:p-5 sm:pb-8 lg:p-7">
           <section aria-label="Case briefing" className={`mb-4 rounded-2xl border bg-white p-4 shadow-sm dark:bg-slate-900 sm:mb-5 sm:p-5 ${theme.borderSoft}`}>
             <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
               <p className={`text-xs font-semibold uppercase tracking-wider ${theme.text}`}>The scenario</p>
-
             </div>
             <p className="max-w-5xl text-sm leading-6 text-slate-700 dark:text-slate-200 sm:text-base sm:leading-7">
               {currentExercise?.prompt || chapter.theory_content?.practical_takeaway || 'Review the case evidence, make a role-specific decision, and examine the outcome.'}
@@ -253,79 +314,32 @@ export const AgenticRolesRunner: React.FC<AgenticRolesRunnerProps> = ({
             </section>
           )}
 
-          <div className={`grid min-w-0 gap-4 sm:gap-5 ${theoryVisible && layoutPlacement === 'side' ? 'grid-cols-1 2xl:grid-cols-[minmax(0,1fr)_20rem]' : 'grid-cols-1'}`}>
+          <div className={`grid min-w-0 gap-4 sm:gap-5 ${theoryVisible && layoutPlacement === 'side' ? 'grid-cols-1 2xl:grid-cols-[minmax(0,1fr)_26rem]' : 'grid-cols-1'}`}>
             <section aria-label="Interactive case simulation" className="min-w-0">
-              <ActivityComponent
-                key={`${chapter.labComponentId}:${currentStep}`}
-                step={currentStep}
-                exercises={exercises}
-                infoVisible={theoryVisible}
-                infoPlacement={layoutPlacement}
-                onComplete={handleStepComplete}
-              />
+              <RoleMcqProvider value={mcqContextValue}>
+                <ActivityComponent
+                  key={`${chapter.labComponentId}:${currentStep}`}
+                  step={currentStep}
+                  exercises={exercises}
+                  infoVisible={theoryVisible}
+                  infoPlacement={layoutPlacement}
+                  onComplete={handleStepComplete}
+                />
+              </RoleMcqProvider>
             </section>
 
             {theoryVisible && (
-              <aside id="agentic-role-theory" aria-label="Case theory" className="h-fit min-w-0 space-y-6 rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 sm:p-7">
-                <div className="flex items-start justify-between gap-3 border-b border-slate-100 pb-4 dark:border-slate-800">
-                  <div className="flex min-w-0 items-start gap-3">
-                    <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${theme.bgSoft} ${theme.text}`}>
-                      <BookOpen className="h-4 w-4" />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Theory notes</p>
-                      <h2 className="mt-1 break-words text-xl font-semibold leading-7 text-slate-900 dark:text-white">
-                        {chapter.theory_content?.title || 'Role framework'}
-                      </h2>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleSaveTheory}
-                    aria-pressed={isTheorySaved}
-                    className={`flex min-h-10 shrink-0 items-center gap-1.5 rounded-lg border px-2.5 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${isTheorySaved ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300' : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'}`}
-                  >
-                    {isTheorySaved ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Award className="h-3.5 w-3.5" />}
-                    {isTheorySaved ? 'Saved' : 'Save'}
-                  </button>
-                </div>
-
-                <p className="max-w-3xl whitespace-pre-line text-base leading-8 text-slate-600 dark:text-slate-300">
-                  {chapter.theory_content?.content || 'Theory notes for this role case will appear here.'}
-                </p>
-
-                <RoleConceptVisual key={chapter.labComponentId} chapter={chapter} />
-
-                {chapter.theory_content?.practical_takeaway && (
-                  <div className={`rounded-xl border p-3 ${theme.bgSoft} ${theme.borderSoft}`}>
-                    <p className={`mb-1 flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider ${theme.text}`}>
-                      <Sparkles className="h-3 w-3" /> Practical takeaway
-                    </p>
-                    <p className="text-sm leading-7 text-slate-700 dark:text-slate-200">{chapter.theory_content.practical_takeaway}</p>
-                  </div>
-                )}
-
-                {chapter.theory_content?.analogy && (
-                  <div className="rounded-xl bg-slate-50 p-3 dark:bg-slate-950">
-                    <p className="mb-1 text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Mental model</p>
-                    <p className="text-sm leading-7 text-slate-600 dark:text-slate-300">{chapter.theory_content.analogy}</p>
-                  </div>
-                )}
-
-                {chapter.critical_concepts.length > 0 && (
-                  <div className="space-y-4 border-t border-slate-100 pt-4 dark:border-slate-800">
-                    <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Key concepts</h3>
-                    {chapter.critical_concepts.map((concept) => (
-                      <div key={concept.concept} className="rounded-xl border border-slate-100 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-950">
-                        <h4 className="text-base font-semibold text-slate-900 dark:text-white">{concept.concept}</h4>
-                        {concept.definition && <p className="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-400">{concept.definition}</p>}
-                      {concept.elaboration && <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{concept.elaboration}</p>}
-                        {concept.industry_application && <p className="mt-3 border-l-2 border-indigo-300 pl-3 text-sm leading-7 text-slate-700 dark:text-slate-300"><span className="font-semibold">In practice: </span>{concept.industry_application}</p>}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </aside>
+              <RoleTheorySection
+                chapter={chapter}
+                role={role}
+                theme={theme}
+                scrollContainerRef={scrollContainerRef}
+                compact={layoutPlacement === 'side'}
+                onSaveTheory={handleSaveTheory}
+                isTheorySaved={isTheorySaved}
+                isMcqOpen={isMcqOpen}
+                onStartActivity={openMcq}
+              />
             )}
           </div>
         </main>

@@ -1,14 +1,17 @@
-import React from 'react';
-import { BookOpen, Sparkles, Briefcase } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { BookOpen, Briefcase, Sparkles } from 'lucide-react';
 import { cn } from '../article/cn';
-import { TheoryPanel } from '../article/TheoryPanel';
-import { ConceptSection } from './ConceptSection';
 import type { ArticleBlocks } from './conceptText';
+import type { AgenticRoleChapter } from '../../../devLushArea/agenticRoles/agenticRoleTypes';
+import { EditorialTheorySection } from './EditorialTheorySection';
+import { KnowledgeCheckPromptCard } from './KnowledgeCheckPromptCard';
 
 interface ArticleLabLayoutProps {
   blocks: ArticleBlocks;
+  chapter?: AgenticRoleChapter;
   roleDomain: string;
   roleShortTitle: string;
+  roleTagline?: string;
   chapterTitle: string;
   chapterDay: number;
   theme: {
@@ -21,6 +24,8 @@ interface ArticleLabLayoutProps {
   onBack: () => void;
   onSaveTheory?: () => void;
   isTheorySaved?: boolean;
+  visualDiagramSlot?: React.ReactNode;
+  questionCount?: number;
   className?: string;
   children?: React.ReactNode;
 }
@@ -49,35 +54,115 @@ const domainLabelMap: Record<string, string> = {
   retail: 'Retail',
   procurement: 'Procurement',
   contracts: 'Contracts',
+  uiux: 'UI/UX',
 };
 
 export const ArticleLabLayout: React.FC<ArticleLabLayoutProps> = ({
   blocks,
+  chapter,
   roleDomain,
   roleShortTitle,
+  roleTagline,
   chapterTitle,
   chapterDay,
   theme,
   onBack,
   onSaveTheory,
   isTheorySaved,
+  visualDiagramSlot,
+  questionCount,
   className,
   children,
 }) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const mcqSectionRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isQuizOpen, setIsQuizOpen] = useState(false);
+
   const DomainIcon = domainIconMap[roleDomain] || <BookOpen className="h-5 w-5" />;
   const domainLabel = domainLabelMap[roleDomain] || roleDomain;
+  const totalQuestions = questionCount ?? chapter?.interactive_questions?.length ?? 1;
+
+  // Reset button-gated MCQ state whenever the active chapter changes
+  useEffect(() => {
+    setIsQuizOpen(false);
+    setScrollProgress(0);
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [chapter?.labComponentId, chapterTitle]);
+
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const scrollable = el.scrollHeight - el.clientHeight;
+      const pct = scrollable > 0 ? Math.min(100, Math.max(0, (el.scrollTop / scrollable) * 100)) : 0;
+      setScrollProgress(pct);
+    };
+    onScroll();
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const handleOpenQuiz = () => {
+    setIsQuizOpen(true);
+    requestAnimationFrame(() => {
+      mcqSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
+
+  // Fallback synthetic chapter when ArticleLabLayout is used without full chapter prop
+  const resolvedChapter: AgenticRoleChapter = chapter || {
+    course: roleShortTitle,
+    roleDomain: roleDomain as AgenticRoleChapter['roleDomain'],
+    day: chapterDay,
+    day_title: chapterTitle,
+    chapter_title: chapterTitle,
+    labComponentId: `${roleDomain}-day${chapterDay}`,
+    difficulty: 'medium',
+    estimatedMinutes: 25,
+    tags: [],
+    critical_concepts: blocks.sections.map((s) => ({
+      concept: s.concept,
+      definition: s.definition,
+      elaboration: s.elaboration,
+      industry_application: s.industryApplication,
+    })),
+    interactive_questions: [],
+    theory_content: {
+      title: blocks.intro.title,
+      content: blocks.intro.content,
+      highlight: blocks.intro.highlight,
+      analogy: blocks.callouts.find((c) => c.type === 'analogy')?.content,
+      practical_takeaway: blocks.callouts.find((c) => c.type === 'takeaway')?.content,
+      industry_case_study: blocks.callouts.find((c) => c.type === 'caseStudy')?.content,
+      card_titles: blocks.cards.map((c) => c.heading),
+      card_a: blocks.cards[0]?.text,
+      card_b: blocks.cards[1]?.text,
+      card_c: blocks.cards[2]?.text,
+    },
+  };
 
   return (
-    <div className={cn('flex flex-col gap-6', className)}>
-      {/* Header / Icon Band */}
-      <header className="shrink-0 rounded-2xl border bg-white p-4 shadow-sm dark:bg-slate-900">
-        <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex min-w-0 items-start gap-3">
+    <div className={cn('relative flex h-full min-h-0 flex-col bg-white dark:bg-[#121212]', className)}>
+      {/* Top Scroll Reading Progress Bar */}
+      <div className="h-1 w-full shrink-0 bg-stone-100 dark:bg-stone-800" aria-hidden="true">
+        <div
+          className="h-full bg-emerald-600 transition-all duration-150 dark:bg-emerald-500"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
+      {/* Compact Sticky App Header */}
+      <header className="shrink-0 border-b border-stone-200/80 bg-white/95 backdrop-blur-md dark:border-stone-800/80 dark:bg-[#121212]/95">
+        <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-8 sm:py-4">
+          <div className="flex min-w-0 items-center gap-3">
             <button
               type="button"
               onClick={onBack}
               aria-label="Back to Agentic Role cases"
-              className="flex min-h-11 shrink-0 items-center gap-1.5 rounded-xl bg-slate-100 px-3 text-sm font-bold text-slate-800 transition-colors hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 sm:px-4"
+              className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full bg-stone-100 px-3.5 py-1.5 text-xs font-semibold text-stone-700 transition-colors hover:bg-stone-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 dark:bg-stone-800 dark:text-stone-200 dark:hover:bg-stone-700 sm:text-sm cursor-pointer"
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -85,209 +170,67 @@ export const ArticleLabLayout: React.FC<ArticleLabLayoutProps> = ({
               <span>Cases</span>
             </button>
             <div className="min-w-0">
-              <p className={`mb-1 flex flex-wrap items-center gap-1.5 text-xs font-semibold uppercase tracking-wider ${theme.text}`}>
-                <span className={`inline-flex h-7 w-7 items-center justify-center rounded-lg ${theme.bgSoft}`}>
-                  {DomainIcon}
-                </span>{' '}
-                {roleShortTitle} · case {String(chapterDay).padStart(2, '0')}
+              <p className={`flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider ${theme.text}`}>
+                {roleShortTitle} · Case {String(chapterDay).padStart(2, '0')}
               </p>
-              <h1 className="break-words font-heading text-lg font-bold leading-tight text-slate-900 dark:text-white sm:text-3xl">
+              <h1 className="role-editorial-serif truncate text-lg font-bold text-stone-900 dark:text-white sm:text-2xl">
                 {chapterTitle}
               </h1>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <span className={`inline-flex items-center gap-1.5 rounded-xl px-3 text-xs font-bold ${theme.bgSoft} ${theme.text} ${theme.borderSoft}`}>
-              {DomainIcon}
-              {domainLabel}
-            </span>
-            {onSaveTheory && (
-              <button
-                type="button"
-                onClick={onSaveTheory}
-                aria-pressed={isTheorySaved}
-                className={`flex min-h-10 items-center gap-1.5 rounded-lg border px-2.5 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
-                  isTheorySaved
-                    ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300'
-                    : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'
-                }`}
-              >
-                {isTheorySaved ? (
-                  <>
-                    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                      <polyline points="22 4 12 14.01 9 11.01" />
-                    </svg>
-                    Saved
-                  </>
-                ) : (
-                  <>
-                    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-                      <line x1="9" y1="9" x2="9.01" y2="9.01" />
-                      <line x1="15" y1="9" x2="15.01" y2="9.01" />
-                    </svg>
-                    Save
-                  </>
-                )}
-              </button>
-            )}
-          </div>
+          <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${theme.bgSoft} ${theme.text}`}>
+            {DomainIcon}
+            {domainLabel}
+          </span>
         </div>
       </header>
 
-      <main className="flex-1 overflow-y-auto">
-        <div className="mx-auto w-full max-w-[1440px] p-3 pb-8 sm:p-5 lg:p-7">
-          {/* Progress bar */}
-          <div className="mb-4 h-1.5 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+      <div ref={scrollContainerRef} className="min-h-0 flex-1 overflow-y-auto custom-scrollbar">
+        <div className="mx-auto w-full max-w-[960px] px-4 py-8 sm:px-10 sm:py-12 space-y-10">
+          <EditorialTheorySection
+            chapter={resolvedChapter}
+            roleShortTitle={roleShortTitle}
+            roleTagline={roleTagline}
+            scrollContainerRef={scrollContainerRef}
+            onSaveTheory={onSaveTheory}
+            isTheorySaved={isTheorySaved}
+            visualDiagramSlot={visualDiagramSlot}
+            theme={theme}
+            footerActionSlot={
+              children && !isQuizOpen ? (
+                <KnowledgeCheckPromptCard
+                  questionCount={totalQuestions}
+                  buttonLabel="Start Activity"
+                  onStart={handleOpenQuiz}
+                />
+              ) : null
+            }
+          />
+
+          {children && isQuizOpen && (
             <div
-              className={`h-full rounded-full bg-gradient-to-r ${theme.gradientFrom} ${theme.gradientTo}`}
-              style={{ width: '100%' }}
-              role="progressbar"
-              aria-valuenow={100}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-label="Article reading progress"
-            />
-          </div>
-
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-            {/* Prose Column */}
-            <article className="min-w-0 space-y-6" aria-label="Article content">
-              {/* Intro */}
-              <section aria-labelledby="article-intro-heading">
-                <h2 id="article-intro-heading" className="sr-only">
-                  Introduction
-                </h2>
-                <div className="article-prose max-w-3xl whitespace-pre-line text-base leading-8 text-slate-600 dark:text-slate-300">
-                  {blocks.intro.content || 'Article content will appear here.'}
-                </div>
-              </section>
-
-              {/* Callouts */}
-              {blocks.callouts.length > 0 && (
-                <div className="space-y-4" aria-label="Key insights">
-                  {blocks.callouts.map((callout, index) => (
-                    <div
-                      key={callout.type}
-                      className={cn('rounded-xl p-4', {
-                        'bg-slate-50 dark:bg-slate-950': callout.type === 'analogy',
-                        [theme.bgSoft]: callout.type === 'takeaway',
-                        'bg-white/5 dark:bg-white/5 border border-white/10': callout.type === 'caseStudy',
-                      })}
-                    >
-                      <p className="mb-1 text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                        {callout.label}
-                      </p>
-                      <p className="text-sm leading-7 text-slate-600 dark:text-slate-300">{callout.content}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Concepts Sections */}
-              {blocks.sections.length > 0 && (
-                <section aria-labelledby="concepts-heading" className="border-t border-slate-100 pt-6 dark:border-slate-800">
-                  <h2 id="concepts-heading" className="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                    Key concepts
-                  </h2>
-                  <div className="mt-4 space-y-4">
-                    {blocks.sections.map((section) => (
-                      <ConceptSection key={section.number} section={section} theme={theme} />
-                    ))}
-                  </div>
-                </section>
-              )}
-            </article>
-
-            {/* Sidebar - Table of Contents / Quick Actions */}
-            <aside className="h-fit min-w-0 space-y-4 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 lg:sticky lg:top-24" aria-label="Article navigation">
-              <nav aria-label="Article sections">
-                <h2 className="mb-3 text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                  In this article
-                </h2>
-                <ol className="space-y-2">
-                  <li>
-                    <a
-                      href="#article-intro-heading"
-                      className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
-                    >
-                      <BookOpen className="h-4 w-4" />
-                      Introduction
-                    </a>
-                  </li>
-                  {blocks.callouts.map((callout) => (
-                    <li key={callout.type}>
-                      <a
-                        href={`#callout-${callout.type}`}
-                        className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
-                      >
-                        <Sparkles className="h-4 w-4" />
-                        {callout.label}
-                      </a>
-                    </li>
-                  ))}
-                  {blocks.sections.length > 0 && (
-                    <li>
-                      <a
-                        href="#concepts-heading"
-                        className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
-                      >
-                        <Briefcase className="h-4 w-4" />
-                        Key concepts ({blocks.sections.length})
-                      </a>
-                    </li>
-                  )}
-                </ol>
-              </nav>
-
-              {onSaveTheory && (
-                <div className="border-t border-slate-100 pt-4 dark:border-slate-800">
-                  <button
-                    type="button"
-                    onClick={onSaveTheory}
-                    aria-pressed={isTheorySaved}
-                    className={`w-full flex min-h-11 items-center justify-center gap-2 rounded-xl border px-4 text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
-                      isTheorySaved
-                        ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300'
-                        : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'
-                    }`}
-                  >
-                    {isTheorySaved ? (
-                      <>
-                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                          <polyline points="22 4 12 14.01 9 11.01" />
-                        </svg>
-                        Saved to Study Notebook
-                      </>
-                    ) : (
-                      <>
-                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <circle cx="12" cy="12" r="10" />
-                          <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-                          <line x1="9" y1="9" x2="9.01" y2="9.01" />
-                          <line x1="15" y1="9" x2="15.01" y2="9.01" />
-                        </svg>
-                        Save to Study Notebook
-                      </>
-                    )}
-                  </button>
-                </div>
-              )}
-            </aside>
-          </div>
+              ref={mcqSectionRef}
+              id="knowledgeCheckSection"
+              className="role-fade-in pt-4 border-t border-stone-200 dark:border-stone-800"
+            >
+              {children}
+              <div className="mt-6 flex justify-start">
+                <button
+                  type="button"
+                  onClick={() => scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' })}
+                  className="inline-flex items-center gap-2 py-2 text-sm font-medium text-stone-500 hover:text-stone-900 dark:hover:text-white cursor-pointer"
+                >
+                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 19V5M5 12l7-7 7 7" />
+                  </svg>
+                  <span>Back to Lesson</span>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
-
-        {children && (
-          <div className="mx-auto w-full max-w-[1440px] px-3 pb-8 sm:px-5 lg:px-7">
-            {children}
-          </div>
-        )}
-
-      </main>
+      </div>
     </div>
   );
 };

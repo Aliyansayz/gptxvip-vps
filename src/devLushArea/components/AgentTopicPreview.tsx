@@ -33,55 +33,48 @@ export function AgentTopicPreview({ topic, compact = false, tone = 'light', acce
     ? 'border-white/10 bg-white/5 text-slate-200'
     : 'border-slate-200 bg-slate-50 text-slate-700'
 
-  // The dark variant sits on the glass hero panel, where the bright display
-  // stops clear 3:1. The light variant needs the deep AA step.
-  const accentOnDark = warm ? 'text-accent-400' : 'text-cyan-300'
-  const accentOnLight = warm ? 'text-accent-700' : 'text-cyan-700'
-  const accentRing = warm ? 'focus-visible:ring-accent-600' : 'focus-visible:ring-cyan-500'
-  const accentHover = warm ? 'hover:border-accent-300' : 'hover:border-cyan-400'
+  // The dark variant sits on the glass hero panel, where neon lemon clears
+  // WCAG easily. On light cards, dark ink paired with a #d8ff38 lemon fill keeps
+  // crisp readability while surfacing the lemon-yellow identity consistently.
+  const accentOnDark = warm ? 'text-[#d8ff38]' : 'text-cyan-300'
+  const accentOnLight = warm ? 'text-ink' : 'text-cyan-700'
+  const accentRing = warm ? 'focus-visible:ring-ink' : 'focus-visible:ring-cyan-500'
+  const accentHover = warm ? 'hover:border-[#a8d210] hover:shadow-[0_14px_32px_rgba(18,19,15,0.08)]' : 'hover:border-cyan-400'
   const accentText = dark ? accentOnDark : accentOnLight
 
   return (
     <a
       href={getAgentLabTopicHref(topic.slug)}
-      className={`group flex h-full flex-col rounded-2xl border p-5 transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 ${accentHover} ${accentRing} focus-visible:ring-offset-2 motion-reduce:transform-none ${cardTone} ${compact ? 'p-4' : 'sm:p-6'}`}
+      className={`group flex h-full flex-col rounded-2xl border p-4 transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 ${accentHover} ${accentRing} focus-visible:ring-offset-2 motion-reduce:transform-none ${cardTone} ${compact ? 'p-4' : 'sm:p-5'}`}
       aria-label={`Open ${topic.chapterTitle} interactive lesson`}
     >
-      <div className="flex items-center justify-between gap-3">
-        {/*
-          `min-w-0` + truncate on the label and `shrink-0` on the badge: without
-          both, the uppercase tracked eyebrow wraps to two lines and collides
-          with the family chip.
-        */}
-        <span className={`min-w-0 truncate text-[10px] font-bold uppercase tracking-[0.18em] ${accentText}`}>Interactive lesson</span>
-        <span className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-semibold ${dark ? 'bg-white/10 text-slate-200' : 'bg-slate-100 text-slate-600'}`}>
+      <div className="flex items-center justify-between gap-2.5">
+        <span className={`min-w-0 truncate text-[10px] font-bold uppercase tracking-[0.16em] ${dark ? accentText : warm ? 'inline-flex items-center gap-1.5 rounded-full bg-[#d8ff38] px-2.5 py-0.5 text-ink' : accentText}`}>
+          Interactive lesson
+        </span>
+        <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${dark ? 'bg-white/10 text-slate-200' : 'bg-slate-100 text-slate-600'}`}>
           {topic.family}
         </span>
       </div>
-      {/*
-        The heading carries an explicit ink. `index.css` applies `dark:text-zinc-100`
-        to every `h1`-`h6` in the base layer, and an element-level utility beats an
-        inherited color — so without this the title renders near-white on a light card.
-      */}
-      <h3 className={`mt-4 font-bold tracking-tight ${compact ? 'text-lg' : 'text-xl'} ${dark ? 'text-white' : 'text-slate-950'}`}>{topic.title}</h3>
-      <p className={`mt-1 text-xs font-semibold ${mutedTone}`}>{topic.chapterTitle}</p>
-      <p className={`mt-3 text-sm leading-6 max-w-[65ch] ${mutedTone}`}>{topic.outcome}</p>
+      <h3 className={`mt-3 font-bold tracking-tight ${compact ? 'text-lg' : 'text-xl'} ${dark ? 'text-white' : 'text-slate-950'}`}>{topic.title}</h3>
+      <p className={`mt-0.5 text-xs font-semibold ${mutedTone}`}>{topic.chapterTitle}</p>
+      <p className={`mt-2 text-sm leading-5 max-w-[65ch] ${mutedTone}`}>{topic.outcome}</p>
 
-      <div className="mt-5">
-        <p className={`mb-2 text-[9px] font-bold uppercase tracking-[0.16em] ${dark ? 'text-slate-400' : 'text-slate-500'}`}>Concept flow</p>
-        <div className="grid grid-cols-3 gap-2" aria-label={`Concept flow: ${topic.previewSteps.join(', ')}`}>
+      <div className="mt-3.5">
+        <p className={`mb-1.5 text-[9px] font-bold uppercase tracking-[0.16em] ${dark ? 'text-slate-400' : 'text-slate-500'}`}>Concept flow</p>
+        <div className="grid grid-cols-3 gap-1.5" aria-label={`Concept flow: ${topic.previewSteps.join(', ')}`}>
           {topic.previewSteps.map((step, index) => (
-            <div key={step} className={`flex min-h-14 flex-col justify-center rounded-xl border px-2 py-2 text-center ${stepTone}`}>
-              <span className="text-[9px] font-bold opacity-60">0{index + 1}</span>
-              <span className="mt-1 text-[10px] font-semibold leading-4">{step}</span>
+            <div key={step} className={`flex min-h-11 flex-col justify-center rounded-xl border px-2 py-1.5 text-center ${stepTone}`}>
+              <span className={`text-[9px] font-bold ${dark && warm ? 'text-[#d8ff38]' : 'opacity-60'}`}>0{index + 1}</span>
+              <span className="mt-0.5 text-[10px] font-semibold leading-3.5">{step}</span>
             </div>
           ))}
         </div>
       </div>
 
-      <span className={`mt-auto inline-flex min-h-[44px] items-center gap-2 pt-6 text-sm font-bold ${accentText}`}>
-        Open interactive lesson
-        <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none" aria-hidden="true" />
+      <span className={`mt-auto inline-flex min-h-[38px] items-center gap-2 pt-3.5 text-sm font-bold ${accentText}`}>
+        <span className={warm && !dark ? 'underline decoration-[#c6f028] decoration-2 underline-offset-4' : ''}>Open interactive lesson</span>
+        <ArrowRight className={`h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none ${warm && !dark ? 'rounded-full bg-[#d8ff38] p-0.5 text-ink' : ''}`} aria-hidden="true" />
       </span>
       <span className="sr-only"> The lesson opens at {topic.chapterTitle}.</span>
     </a>

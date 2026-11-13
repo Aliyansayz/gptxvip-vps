@@ -36,7 +36,7 @@ export const Blockquote: React.FC<{ block: BlockquoteBlock }> = ({ block }) => {
         <blockquote className="my-10 relative">
             <Quote className="w-16 h-16 text-indigo-100 absolute -top-4 -left-6 -z-10" />
             <div className="pl-6 border-l-4 border-indigo-500 py-2">
-                <p className="text-xl md:text-2xl font-serif italic text-slate-700 leading-relaxed mb-4">
+                <p className="text-xl md:text-2xl font-serif italic text-slate-700 leading-relaxed mb-4 max-w-[65ch] text-pretty">
                     {renderTextSegments(block.elements || block.text)}
                 </p>
                 {block.cite && (
@@ -190,11 +190,11 @@ export const ConclusionCard: React.FC<{ block: any }> = ({ block }) => {
                 </span>
             </div>
 
-            <h3 className="text-2xl md:text-3xl font-extrabold text-slate-100 mb-4 leading-tight">
+            <h3 className="text-2xl md:text-3xl font-extrabold text-slate-100 mb-4 leading-tight text-balance">
                 {block.title}
             </h3>
 
-            <p className="text-slate-300 text-base leading-relaxed mb-6">
+            <p className="text-slate-300 text-base leading-relaxed mb-6 max-w-[65ch] text-pretty">
                 {block.summary}
             </p>
 
@@ -232,14 +232,14 @@ export const StatGrid: React.FC<{ block: any }> = ({ block }) => {
         <div className="my-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {block.stats.map((stat: any, idx: number) => (
                 <div key={idx} className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-xl shadow-lg relative overflow-hidden group hover:border-indigo-500/40 transition-colors">
-                    <div className="text-3xl md:text-4xl font-extrabold text-slate-100 group-hover:text-indigo-300 transition-colors tracking-tight">
+                    <div className="text-3xl md:text-4xl font-extrabold text-slate-100 group-hover:text-indigo-300 transition-colors tracking-tight font-mono tabular-nums">
                         {stat.value}
                     </div>
                     <div className="text-xs font-semibold text-slate-400 mt-1 uppercase tracking-wider">
                         {stat.label}
                     </div>
                     {stat.change && (
-                        <div className="text-xs font-bold text-emerald-400 mt-3 flex items-center gap-1">
+                        <div className="text-xs font-bold text-emerald-400 mt-3 flex items-center gap-1 tabular-nums">
                             <span>▲</span> {stat.change}
                         </div>
                     )}
@@ -258,7 +258,7 @@ export const TLDRBanner: React.FC<{ block: any }> = ({ block }) => {
                 <div className="text-xs font-bold uppercase tracking-widest text-indigo-400 mb-1">
                     {block.title || 'TL;DR Executive Summary'}
                 </div>
-                <p className="text-sm md:text-base text-slate-200 leading-relaxed font-medium m-0">
+                <p className="text-sm md:text-base text-slate-200 leading-relaxed font-medium m-0 max-w-[65ch] text-pretty">
                     {block.text}
                 </p>
                 {block.highlights && (

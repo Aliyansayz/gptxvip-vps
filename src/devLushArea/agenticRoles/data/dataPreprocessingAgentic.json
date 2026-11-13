@@ -9,8 +9,18 @@
     "labComponentId": "preprocessing-day1-missing-values",
     "difficulty": "easy",
     "estimatedMinutes": 25,
-    "prerequisites": ["Data Cleaning Foundations", "MCAR vs MAR vs MNAR Mechanisms"],
-    "tags": ["preprocessing", "missing-values", "imputation", "knn", "mice", "agentic-data"],
+    "prerequisites": [
+      "Data Cleaning Foundations",
+      "MCAR vs MAR vs MNAR Mechanisms"
+    ],
+    "tags": [
+      "preprocessing",
+      "missing-values",
+      "imputation",
+      "knn",
+      "mice",
+      "agentic-data"
+    ],
     "critical_concepts": [
       {
         "concept": "Missing Data Taxonomy (MCAR vs MAR vs MNAR)",
@@ -30,7 +40,20 @@
       "content": "Blindly dropping rows with missing values shrinks training datasets and introduces severe selection bias. An Agentic Data Preprocessing Specialist implements statistical tests to classify missingness mechanisms and deploy multivariate imputation strategies.",
       "practical_takeaway": "Never use mean imputation on skewed or high-variance distributions; use KNN or MICE.",
       "analogy": "Like restoring a missing piece of a torn historical painting by analyzing the colors and brush strokes of all surrounding areas rather than slapping a patch of grey paint over the hole.",
-      "industry_case_study": "In a clinical sepsis prediction study, naive mean imputation underestimated patient mortality risk by 18% because severely ill patients had more frequent missing lab tests due to transfer delays. Switching to MICE restored predictive accuracy."
+      "industry_case_study": "In a clinical sepsis prediction study, naive mean imputation underestimated patient mortality risk by 18% because severely ill patients had more frequent missing lab tests due to transfer delays. Switching to MICE restored predictive accuracy.",
+      "card_titles": [
+        "1. Missingness Diagnostics",
+        "2. Multivariate Imputation",
+        "3. Bias Prevention"
+      ],
+      "card_a": "Distinguishing MCAR, MAR, and MNAR patterns determines whether gaps carry predictive signal.",
+      "card_b": "KNN and MICE preserve feature correlations far better than naive global mean or median fills.",
+      "card_c": "Avoiding indiscriminate row deletion preserves minority cohorts and model calibration.",
+      "highlight": [
+        "selection bias",
+        "missingness mechanisms",
+        "multivariate imputation strategies"
+      ]
     },
     "interactive_questions": [
       {
@@ -51,18 +74,51 @@
         "correctAnswerIndex": 1,
         "explanation": "Because Creatinine is strongly correlated with Age and BUN (Missing at Random), MICE accurately predicts missing values using the joint distribution. The missingness indicator captures any residual diagnostic signal.",
         "wrong_answer_feedback": [
-          { "option": "Delete all rows containing any missing Creatinine values", "feedback": "Dropping rows shrinks the dataset by 800 critical patient cases and introduces severe survival selection bias." },
-          { "option": "Fill all missing Creatinine values with 0.0", "feedback": "Zero creatinine is physiologically impossible in living humans and corrupts downstream regression weights." }
+          {
+            "option": "Delete all rows containing any missing Creatinine values",
+            "feedback": "Dropping rows shrinks the dataset by 800 critical patient cases and introduces severe survival selection bias."
+          },
+          {
+            "option": "Fill all missing Creatinine values with 0.0",
+            "feedback": "Zero creatinine is physiologically impossible in living humans and corrupts downstream regression weights."
+          }
         ],
-        "tags": ["mice", "mar", "clinical-data-imputation"],
+        "tags": [
+          "mice",
+          "mar",
+          "clinical-data-imputation"
+        ],
         "nature": "technical_execution",
         "logs": [
-          { "timestamp": "13:00:00", "level": "info", "message": "IMPUTE_AGENT: Scanning dataset for missing values (total rows: 10,000)..." },
-          { "timestamp": "13:00:01", "level": "info", "message": "MISSINGNESS_TEST: Little's MCAR test p-value < 0.001 (Data is MAR). High correlation with BUN (r=0.78)." },
-          { "timestamp": "13:00:02", "level": "success", "message": "IMPUTE_AGENT: Ran 5 MICE iterations. Imputed 800 missing Creatinine values while preserving standard deviation." }
+          {
+            "timestamp": "13:00:00",
+            "level": "info",
+            "message": "IMPUTE_AGENT: Scanning dataset for missing values (total rows: 10,000)..."
+          },
+          {
+            "timestamp": "13:00:01",
+            "level": "info",
+            "message": "MISSINGNESS_TEST: Little's MCAR test p-value < 0.001 (Data is MAR). High correlation with BUN (r=0.78)."
+          },
+          {
+            "timestamp": "13:00:02",
+            "level": "success",
+            "message": "IMPUTE_AGENT: Ran 5 MICE iterations. Imputed 800 missing Creatinine values while preserving standard deviation."
+          }
         ],
         "expectedToolCalls": [
-          { "toolName": "run_mice_imputation", "args": { "targetColumn": "serum_creatinine", "covariates": ["patient_age", "blood_urea_nitrogen"], "iterations": 5 }, "purpose": "Impute MAR clinical features" }
+          {
+            "toolName": "run_mice_imputation",
+            "args": {
+              "targetColumn": "serum_creatinine",
+              "covariates": [
+                "patient_age",
+                "blood_urea_nitrogen"
+              ],
+              "iterations": 5
+            },
+            "purpose": "Impute MAR clinical features"
+          }
         ],
         "roleSpecificData": {
           "type": "preprocessing",
@@ -70,9 +126,24 @@
             "datasetName": "hospital_clinical_labs.parquet",
             "totalRows": 10000,
             "missingValuesSummary": [
-              { "column": "serum_creatinine", "nullCount": 800, "nullPercentage": 8.0, "recommendedImputation": "MICE" },
-              { "column": "blood_urea_nitrogen", "nullCount": 120, "nullPercentage": 1.2, "recommendedImputation": "KNN" },
-              { "column": "patient_age", "nullCount": 0, "nullPercentage": 0.0, "recommendedImputation": "Median" }
+              {
+                "column": "serum_creatinine",
+                "nullCount": 800,
+                "nullPercentage": 8,
+                "recommendedImputation": "MICE"
+              },
+              {
+                "column": "blood_urea_nitrogen",
+                "nullCount": 120,
+                "nullPercentage": 1.2,
+                "recommendedImputation": "KNN"
+              },
+              {
+                "column": "patient_age",
+                "nullCount": 0,
+                "nullPercentage": 0,
+                "recommendedImputation": "Median"
+              }
             ]
           }
         }
@@ -89,8 +160,17 @@
     "labComponentId": "preprocessing-day2-schema-drift",
     "difficulty": "medium",
     "estimatedMinutes": 35,
-    "prerequisites": ["Day 01: Missing Values", "Data Contracts & Schema Validation"],
-    "tags": ["preprocessing", "schema-drift", "data-contracts", "type-coercion", "guardrails"],
+    "prerequisites": [
+      "Day 01: Missing Values",
+      "Data Contracts & Schema Validation"
+    ],
+    "tags": [
+      "preprocessing",
+      "schema-drift",
+      "data-contracts",
+      "type-coercion",
+      "guardrails"
+    ],
     "critical_concepts": [
       {
         "concept": "Runtime Schema Contract Validation",
@@ -104,7 +184,20 @@
       "content": "Upstream microservices frequently change payload formats without notifying downstream analytics teams. An Agentic Data Preprocessing Specialist enforces strict schema contracts (Pydantic/Zod/Great Expectations), detects drift, and quarantines anomalous batches automatically.",
       "practical_takeaway": "Never allow unvalidated raw JSON to hit downstream analytics tables without schema contract validation.",
       "analogy": "Like an automated customs border checkpoint that checks passport formats and stamps before letting cargo enter the country.",
-      "industry_case_study": "When an international airline upstream ticketing service changed flight confirmation codes from alphanumeric strings to integers, downstream analytics pipelines crashed for 14 hours until automated schema contracts were introduced."
+      "industry_case_study": "When an international airline upstream ticketing service changed flight confirmation codes from alphanumeric strings to integers, downstream analytics pipelines crashed for 14 hours until automated schema contracts were introduced.",
+      "card_titles": [
+        "1. Runtime Data Contracts",
+        "2. Drift Detection",
+        "3. Safe Quarantine"
+      ],
+      "card_a": "Typed Pydantic or Zod contracts catch silent upstream field renames and type shifts at ingestion.",
+      "card_b": "Automated schema diffing flags breaking payloads before corrupted rows poison feature stores.",
+      "card_c": "Dead-letter quarantine queues isolate bad batches for replay while keeping healthy streams flowing.",
+      "highlight": [
+        "schema contracts",
+        "detects drift",
+        "quarantines anomalous batches"
+      ]
     },
     "interactive_questions": [
       {
@@ -125,18 +218,47 @@
         "correctAnswerIndex": 1,
         "explanation": "Postal codes are categorical strings worldwide. Updating the contract schema to string with regex validation accommodates extended ZIP+4 and international postal codes without dropping valid customer data.",
         "wrong_answer_feedback": [
-          { "option": "Force cast all strings to integer, converting Canadian postal codes to `NULL`", "feedback": "Casting alphanumeric postal codes to integer corrupts all non-US and hyphenated postal records." },
-          { "option": "Delete the postal code column from all historical databases", "feedback": "Deleting the column destroys geographic analytics and logistics routing." }
+          {
+            "option": "Force cast all strings to integer, converting Canadian postal codes to `NULL`",
+            "feedback": "Casting alphanumeric postal codes to integer corrupts all non-US and hyphenated postal records."
+          },
+          {
+            "option": "Delete the postal code column from all historical databases",
+            "feedback": "Deleting the column destroys geographic analytics and logistics routing."
+          }
         ],
-        "tags": ["schema-drift", "type-coercion", "dead-letter-queue"],
+        "tags": [
+          "schema-drift",
+          "type-coercion",
+          "dead-letter-queue"
+        ],
         "nature": "pipeline_optimization",
         "logs": [
-          { "timestamp": "14:10:00", "level": "info", "message": "SCHEMA_CONTRACT: Validating incoming batch `orders_2026_08_15.json`..." },
-          { "timestamp": "14:10:01", "level": "error", "message": "DRIFT_DETECTED: Field `postal_code` received string values ('M5V 2T6', '90210-4412') violating INT32 contract." },
-          { "timestamp": "14:10:02", "level": "success", "message": "TYPE_EVOLUTION: Applied safe VARCHAR(16) coercion and regex normalization. 0 records lost." }
+          {
+            "timestamp": "14:10:00",
+            "level": "info",
+            "message": "SCHEMA_CONTRACT: Validating incoming batch `orders_2026_08_15.json`..."
+          },
+          {
+            "timestamp": "14:10:01",
+            "level": "error",
+            "message": "DRIFT_DETECTED: Field `postal_code` received string values ('M5V 2T6', '90210-4412') violating INT32 contract."
+          },
+          {
+            "timestamp": "14:10:02",
+            "level": "success",
+            "message": "TYPE_EVOLUTION: Applied safe VARCHAR(16) coercion and regex normalization. 0 records lost."
+          }
         ],
         "expectedToolCalls": [
-          { "toolName": "validate_data_contract", "args": { "contractSchema": "order_contract_v2.json", "incomingBatch": "orders_2026_08_15.json" }, "purpose": "Audit runtime type drift" }
+          {
+            "toolName": "validate_data_contract",
+            "args": {
+              "contractSchema": "order_contract_v2.json",
+              "incomingBatch": "orders_2026_08_15.json"
+            },
+            "purpose": "Audit runtime type drift"
+          }
         ],
         "roleSpecificData": {
           "type": "preprocessing",
@@ -145,8 +267,18 @@
             "totalRows": 250000,
             "missingValuesSummary": [],
             "schemaDriftRules": [
-              { "field": "postal_code", "expectedType": "int32", "actualDetectedType": "string", "coercionSafe": true },
-              { "field": "user_age", "expectedType": "int32", "actualDetectedType": "int32", "coercionSafe": true }
+              {
+                "field": "postal_code",
+                "expectedType": "int32",
+                "actualDetectedType": "string",
+                "coercionSafe": true
+              },
+              {
+                "field": "user_age",
+                "expectedType": "int32",
+                "actualDetectedType": "int32",
+                "coercionSafe": true
+              }
             ]
           }
         }
@@ -163,8 +295,17 @@
     "labComponentId": "preprocessing-day3-outlier-scrubbing",
     "difficulty": "medium",
     "estimatedMinutes": 40,
-    "prerequisites": ["Day 02: Schema Drift", "Statistical Outlier Detection (Z-Score, IQR, Isolation Forest)"],
-    "tags": ["preprocessing", "outliers", "iqr", "isolation-forest", "anomaly-detection"],
+    "prerequisites": [
+      "Day 02: Schema Drift",
+      "Statistical Outlier Detection (Z-Score, IQR, Isolation Forest)"
+    ],
+    "tags": [
+      "preprocessing",
+      "outliers",
+      "iqr",
+      "isolation-forest",
+      "anomaly-detection"
+    ],
     "critical_concepts": [
       {
         "concept": "Isolation Forest Multidimensional Anomaly Isolation",
@@ -178,7 +319,20 @@
       "content": "Real-world datasets contain typographical errors, sensor glitches, and malicious data injections. An Agentic Data Preprocessing Specialist deploys robust statistical boundaries (Tukey IQR fences) and Isolation Forests to differentiate genuine extreme events from corrupt noise.",
       "practical_takeaway": "Winsorize or cap extreme values rather than blindly deleting rows when sample size is limited.",
       "analogy": "Like an automated quality scanner on an apple packing line that discards rotten or plastic imitation apples while keeping unusually large but healthy apples.",
-      "industry_case_study": "When an autonomous vehicle training pipeline failed to scrub corrupted LiDAR sensor reflections, self-driving models hallucinated phantom obstacles on sunny days. Isolation Forest preprocessing eliminated 99.8% of sensor noise artifacts."
+      "industry_case_study": "When an autonomous vehicle training pipeline failed to scrub corrupted LiDAR sensor reflections, self-driving models hallucinated phantom obstacles on sunny days. Isolation Forest preprocessing eliminated 99.8% of sensor noise artifacts.",
+      "card_titles": [
+        "1. Univariate IQR Fences",
+        "2. Isolation Forests",
+        "3. Signal vs. Noise"
+      ],
+      "card_a": "Tukey IQR bounds flag extreme single-column spikes without being skewed by the outliers themselves.",
+      "card_b": "Isolation Forests uncover anomalous combinations across multiple features that pass single-column checks.",
+      "card_c": "Separating sensor glitches from genuine high-value events avoids clipping real fraud or surge signals.",
+      "highlight": [
+        "Tukey IQR fences",
+        "Isolation Forests",
+        "genuine extreme events from corrupt noise"
+      ]
     },
     "interactive_questions": [
       {
@@ -199,18 +353,51 @@
         "correctAnswerIndex": 1,
         "explanation": "Multivariate anomalies occur when individual features look normal in isolation, but their joint co-occurrence is statistically improbable. Isolation Forest detects this high-dimensional interaction.",
         "wrong_answer_feedback": [
-          { "option": "Multiply the applicant's income by 10 to make it match the credit line", "feedback": "Fabricating applicant data is fraud and destroys training integrity." },
-          { "option": "Delete both income and credit line columns from the dataset", "feedback": "Deleting primary financial features renders the credit scoring model useless." }
+          {
+            "option": "Multiply the applicant's income by 10 to make it match the credit line",
+            "feedback": "Fabricating applicant data is fraud and destroys training integrity."
+          },
+          {
+            "option": "Delete both income and credit line columns from the dataset",
+            "feedback": "Deleting primary financial features renders the credit scoring model useless."
+          }
         ],
-        "tags": ["isolation-forest", "multivariate-outliers", "credit-risk"],
+        "tags": [
+          "isolation-forest",
+          "multivariate-outliers",
+          "credit-risk"
+        ],
         "nature": "technical_execution",
         "logs": [
-          { "timestamp": "15:30:00", "level": "info", "message": "OUTLIER_ENGINE: Fitting Isolation Forest (n_estimators=200, contamination=0.01)..." },
-          { "timestamp": "15:30:02", "level": "warn", "message": "ANOMALY_ISOLATION: 42 records flagged with anomaly score > 0.85 (Multi-feature mismatch)." },
-          { "timestamp": "15:30:03", "level": "success", "message": "QUARANTINE_QUEUE: Routed 42 anomalous rows to underwriting audit partition." }
+          {
+            "timestamp": "15:30:00",
+            "level": "info",
+            "message": "OUTLIER_ENGINE: Fitting Isolation Forest (n_estimators=200, contamination=0.01)..."
+          },
+          {
+            "timestamp": "15:30:02",
+            "level": "warn",
+            "message": "ANOMALY_ISOLATION: 42 records flagged with anomaly score > 0.85 (Multi-feature mismatch)."
+          },
+          {
+            "timestamp": "15:30:03",
+            "level": "success",
+            "message": "QUARANTINE_QUEUE: Routed 42 anomalous rows to underwriting audit partition."
+          }
         ],
         "expectedToolCalls": [
-          { "toolName": "fit_isolation_forest", "args": { "features": ["income", "credit_line", "dti"], "contamination": 0.01 }, "purpose": "Isolate multidimensional feature outliers" }
+          {
+            "toolName": "fit_isolation_forest",
+            "args": {
+              "features": [
+                "income",
+                "credit_line",
+                "dti"
+              ],
+              "contamination": 0.01
+            },
+            "purpose": "Isolate multidimensional feature outliers"
+          }
         ],
         "roleSpecificData": {
           "type": "preprocessing",
@@ -219,8 +406,24 @@
             "totalRows": 50000,
             "missingValuesSummary": [],
             "outlierProfiles": [
-              { "column": "income", "q1": 45000, "q3": 95000, "iqr": 50000, "lowerBound": 0, "upperBound": 170000, "detectedAnomalies": 14 },
-              { "column": "credit_line", "q1": 5000, "q3": 25000, "iqr": 20000, "lowerBound": 0, "upperBound": 55000, "detectedAnomalies": 28 }
+              {
+                "column": "income",
+                "q1": 45000,
+                "q3": 95000,
+                "iqr": 50000,
+                "lowerBound": 0,
+                "upperBound": 170000,
+                "detectedAnomalies": 14
+              },
+              {
+                "column": "credit_line",
+                "q1": 5000,
+                "q3": 25000,
+                "iqr": 20000,
+                "lowerBound": 0,
+                "upperBound": 55000,
+                "detectedAnomalies": 28
+              }
             ]
           }
         }
@@ -237,8 +440,17 @@
     "labComponentId": "preprocessing-day4-target-encoding",
     "difficulty": "hard",
     "estimatedMinutes": 45,
-    "prerequisites": ["Day 03: Outliers", "Target Encoding & Cross-Validation Folds"],
-    "tags": ["preprocessing", "target-encoding", "data-leakage", "high-cardinality", "k-fold"],
+    "prerequisites": [
+      "Day 03: Outliers",
+      "Target Encoding & Cross-Validation Folds"
+    ],
+    "tags": [
+      "preprocessing",
+      "target-encoding",
+      "data-leakage",
+      "high-cardinality",
+      "k-fold"
+    ],
     "critical_concepts": [
       {
         "concept": "Out-of-Fold (OOF) Target Encoding with Smoothing",
@@ -252,7 +464,20 @@
       "content": "Target encoding categorical features with thousands of levels creates massive risk of data leakage and severe overfitting if calculated across the entire dataset. An Agentic Data Preprocessing Specialist enforces strict Out-of-Fold partitioning with m-estimate smoothing.",
       "practical_takeaway": "Never fit encoders or scalers on the entire dataset; fit exclusively on training folds and transform test folds.",
       "analogy": "Like a teacher who accidentally puts the final exam answer key in the study guide before the test, causing students to get 100% in practice but fail the actual test.",
-      "industry_case_study": "In a Kaggle fraud detection competition, multiple top teams scored 0.99 AUC in local validation but collapsed to 0.60 on the private leaderboard because they calculated target encodings before splitting training folds."
+      "industry_case_study": "In a Kaggle fraud detection competition, multiple top teams scored 0.99 AUC in local validation but collapsed to 0.60 on the private leaderboard because they calculated target encodings before splitting training folds.",
+      "card_titles": [
+        "1. Target Leakage Risk",
+        "2. Out-of-Fold Encoding",
+        "3. M-Estimate Smoothing"
+      ],
+      "card_a": "Computing category target means on the full dataset leaks validation labels into training features.",
+      "card_b": "Strict Out-of-Fold encoding computes statistics solely from out-of-split training rows.",
+      "card_c": "M-estimate smoothing shrinks rare categories toward the global prior to stop overfitting.",
+      "highlight": [
+        "data leakage",
+        "Out-of-Fold partitioning",
+        "m-estimate smoothing"
+      ]
     },
     "interactive_questions": [
       {
@@ -273,18 +498,49 @@
         "correctAnswerIndex": 1,
         "explanation": "Calculating target means across the entire dataset leaked target labels directly into feature values. Implementing K-Fold Out-of-Fold encoding with smoothing eliminates leakage and restores real test generalization.",
         "wrong_answer_feedback": [
-          { "option": "One-hot encode all 40,000 merchant IDs into 40,000 sparse columns", "feedback": "One-hot encoding 40k categories creates massive sparse dimensionality, causing tree models to split inefficiently." },
-          { "option": "Train the model for 10,000 more epochs to fix the test score", "feedback": "More epochs on leaked features will only amplify overfitting." }
+          {
+            "option": "One-hot encode all 40,000 merchant IDs into 40,000 sparse columns",
+            "feedback": "One-hot encoding 40k categories creates massive sparse dimensionality, causing tree models to split inefficiently."
+          },
+          {
+            "option": "Train the model for 10,000 more epochs to fix the test score",
+            "feedback": "More epochs on leaked features will only amplify overfitting."
+          }
         ],
-        "tags": ["target-encoding", "data-leakage", "cross-validation"],
+        "tags": [
+          "target-encoding",
+          "data-leakage",
+          "cross-validation"
+        ],
         "nature": "pipeline_optimization",
         "logs": [
-          { "timestamp": "16:45:00", "level": "info", "message": "LEAKAGE_AUDITOR: Detected target correlation with feature `merchant_id_encoded` before K-Fold split." },
-          { "timestamp": "16:45:01", "level": "warn", "message": "OVERFIT_FLAG: Train AUC (0.99) vs Val AUC (0.58) shows 41% generalization gap." },
-          { "timestamp": "16:45:02", "level": "success", "message": "OOF_ENCODER: Refactored to 5-Fold OOF Target Encoder with smoothing m=10.0. Val AUC restored to 0.884." }
+          {
+            "timestamp": "16:45:00",
+            "level": "info",
+            "message": "LEAKAGE_AUDITOR: Detected target correlation with feature `merchant_id_encoded` before K-Fold split."
+          },
+          {
+            "timestamp": "16:45:01",
+            "level": "warn",
+            "message": "OVERFIT_FLAG: Train AUC (0.99) vs Val AUC (0.58) shows 41% generalization gap."
+          },
+          {
+            "timestamp": "16:45:02",
+            "level": "success",
+            "message": "OOF_ENCODER: Refactored to 5-Fold OOF Target Encoder with smoothing m=10.0. Val AUC restored to 0.884."
+          }
         ],
         "expectedToolCalls": [
-          { "toolName": "apply_oof_target_encoding", "args": { "categoricalColumn": "merchant_id", "targetColumn": "is_fraud", "nFolds": 5, "smoothingWeight": 10.0 }, "purpose": "Prevent target leakage during feature encoding" }
+          {
+            "toolName": "apply_oof_target_encoding",
+            "args": {
+              "categoricalColumn": "merchant_id",
+              "targetColumn": "is_fraud",
+              "nFolds": 5,
+              "smoothingWeight": 10
+            },
+            "purpose": "Prevent target leakage during feature encoding"
+          }
         ],
         "roleSpecificData": {
           "type": "preprocessing",
@@ -307,8 +563,18 @@
     "labComponentId": "preprocessing-day5-polars-arrow-dag",
     "difficulty": "hard",
     "estimatedMinutes": 50,
-    "prerequisites": ["Day 01 - Day 04 Preprocessing Milestones", "Apache Arrow & Zero-Copy Execution"],
-    "tags": ["preprocessing", "polars", "apache-arrow", "memory-optimization", "dag", "zero-copy"],
+    "prerequisites": [
+      "Day 01 - Day 04 Preprocessing Milestones",
+      "Apache Arrow & Zero-Copy Execution"
+    ],
+    "tags": [
+      "preprocessing",
+      "polars",
+      "apache-arrow",
+      "memory-optimization",
+      "dag",
+      "zero-copy"
+    ],
     "critical_concepts": [
       {
         "concept": "Zero-Copy Arrow Memory Layout & Lazy Execution",
@@ -322,7 +588,20 @@
       "content": "Pandas creates multiple redundant in-memory data copies, crashing on datasets exceeding available RAM. An Agentic Data Preprocessing Specialist architects streaming DAG pipelines using Polars and Apache Arrow with lazy predicate pushdown and chunked memory processing.",
       "practical_takeaway": "Always write lazy query expressions (`pl.scan_parquet()`) so the optimizer can fuse filters and eliminate unnecessary column reads.",
       "analogy": "Like planning your grocery store route before you enter the store so you pick up all items in one single lap without walking back and forth 20 times.",
-      "industry_case_study": "By migrating a financial tick data pipeline from Pandas to Polars with Arrow streaming, a quantitative fund reduced memory consumption from 128GB to 8GB and reduced daily batch processing runtime from 3.5 hours to 11 minutes."
+      "industry_case_study": "By migrating a financial tick data pipeline from Pandas to Polars with Arrow streaming, a quantitative fund reduced memory consumption from 128GB to 8GB and reduced daily batch processing runtime from 3.5 hours to 11 minutes.",
+      "card_titles": [
+        "1. Zero-Copy Arrow Buffers",
+        "2. Lazy Predicate Pushdown",
+        "3. Streaming Execution"
+      ],
+      "card_a": "Columnar Arrow memory layouts share buffers across transformations without duplicating gigabytes in RAM.",
+      "card_b": "Polars query optimizers push filters and projections down to Parquet scans before loading data.",
+      "card_c": "Chunked streaming DAGs process out-of-core datasets reliably inside tight container memory limits.",
+      "highlight": [
+        "Polars and Apache Arrow",
+        "lazy predicate pushdown",
+        "chunked memory processing"
+      ]
     },
     "interactive_questions": [
       {
@@ -343,18 +622,49 @@
         "correctAnswerIndex": 1,
         "explanation": "Lazy query optimization pushes filters down to the Parquet reader level, scanning only matching row groups and columns in streaming memory chunks, reducing memory footprint from 50GB to under 500MB.",
         "wrong_answer_feedback": [
-          { "option": "Rent a $5,000/month 1TB RAM cloud server and continue using eager pandas", "feedback": "Throwing expensive cloud RAM at unoptimized code wastes budget and does not solve O(N) memory copy scaling issues." },
-          { "option": "Convert the Parquet files into 50,000 uncompressed CSV files", "feedback": "CSV is uncompressed and row-based, which multiplies disk I/O and makes memory consumption much worse." }
+          {
+            "option": "Rent a $5,000/month 1TB RAM cloud server and continue using eager pandas",
+            "feedback": "Throwing expensive cloud RAM at unoptimized code wastes budget and does not solve O(N) memory copy scaling issues."
+          },
+          {
+            "option": "Convert the Parquet files into 50,000 uncompressed CSV files",
+            "feedback": "CSV is uncompressed and row-based, which multiplies disk I/O and makes memory consumption much worse."
+          }
         ],
-        "tags": ["polars", "arrow", "streaming", "memory-optimization"],
+        "tags": [
+          "polars",
+          "arrow",
+          "streaming",
+          "memory-optimization"
+        ],
         "nature": "pipeline_optimization",
         "logs": [
-          { "timestamp": "18:00:00", "level": "info", "message": "DAG_OPTIMIZER: Constructed Polars LazyFrame query plan." },
-          { "timestamp": "18:00:01", "level": "info", "message": "PUSHDOWN_OPTIMIZE: Pushed predicate [col('country') == 'US'] and projection [7/45 cols] into Parquet scanner." },
-          { "timestamp": "18:00:02", "level": "success", "message": "STREAMING_EXEC: Processed 50GB dataset across 8 streaming chunks. Peak RAM: 420MB. Runtime: 14.2s." }
+          {
+            "timestamp": "18:00:00",
+            "level": "info",
+            "message": "DAG_OPTIMIZER: Constructed Polars LazyFrame query plan."
+          },
+          {
+            "timestamp": "18:00:01",
+            "level": "info",
+            "message": "PUSHDOWN_OPTIMIZE: Pushed predicate [col('country') == 'US'] and projection [7/45 cols] into Parquet scanner."
+          },
+          {
+            "timestamp": "18:00:02",
+            "level": "success",
+            "message": "STREAMING_EXEC: Processed 50GB dataset across 8 streaming chunks. Peak RAM: 420MB. Runtime: 14.2s."
+          }
         ],
         "expectedToolCalls": [
-          { "toolName": "profile_polars_dag", "args": { "inputPath": "s3://warehouse/events_50gb.parquet", "predicate": "country == 'US'", "streaming": true }, "purpose": "Compile and profile memory DAG" }
+          {
+            "toolName": "profile_polars_dag",
+            "args": {
+              "inputPath": "s3://warehouse/events_50gb.parquet",
+              "predicate": "country == 'US'",
+              "streaming": true
+            },
+            "purpose": "Compile and profile memory DAG"
+          }
         ],
         "roleSpecificData": {
           "type": "preprocessing",
@@ -363,9 +673,27 @@
             "totalRows": 140000000,
             "missingValuesSummary": [],
             "pipelineDagNodes": [
-              { "stepId": "scan", "name": "Parquet Lazy Scan (Predicate Pushdown)", "engine": "polars", "memoryUsageMb": 120, "zeroCopy": true },
-              { "stepId": "filter", "name": "Streaming Chunk Filter", "engine": "arrow", "memoryUsageMb": 180, "zeroCopy": true },
-              { "stepId": "sink", "name": "Parquet Streaming Sink", "engine": "polars", "memoryUsageMb": 120, "zeroCopy": true }
+              {
+                "stepId": "scan",
+                "name": "Parquet Lazy Scan (Predicate Pushdown)",
+                "engine": "polars",
+                "memoryUsageMb": 120,
+                "zeroCopy": true
+              },
+              {
+                "stepId": "filter",
+                "name": "Streaming Chunk Filter",
+                "engine": "arrow",
+                "memoryUsageMb": 180,
+                "zeroCopy": true
+              },
+              {
+                "stepId": "sink",
+                "name": "Parquet Streaming Sink",
+                "engine": "polars",
+                "memoryUsageMb": 120,
+                "zeroCopy": true
+              }
             ]
           }
         }

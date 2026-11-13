@@ -53,7 +53,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigateFinhub, onNa
                 <header className="max-w-2xl">
                     <Reveal from="none" duration={0.5}>
                         <div className="glass-panel-light mb-6 inline-flex items-center gap-2 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-600">
-                            <span className="accent-fill-gradient h-1.5 w-1.5 rounded-full" />
+                            <span className="h-2 w-2 rounded-full bg-[#d8ff38] ring-1 ring-ink/20" />
                             Contact
                         </div>
                     </Reveal>

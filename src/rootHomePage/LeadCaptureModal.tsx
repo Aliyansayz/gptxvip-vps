@@ -119,7 +119,7 @@ export const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({
                                             value={fullName}
                                             onChange={(e) => setFullName(e.target.value)}
                                             placeholder="Sarah Jenkins"
-                                            className="w-full pl-9 pr-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-cyan-500"
+                                            className="w-full pl-9 pr-3 py-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-base sm:text-sm min-h-[44px] text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-cyan-500 focus-visible:ring-2 focus-visible:ring-cyan-500/25"
                                         />
                                     </div>
                                 </div>
@@ -136,7 +136,7 @@ export const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({
                                             value={workEmail}
                                             onChange={(e) => setWorkEmail(e.target.value)}
                                             placeholder="sarah@acme-corp.com"
-                                            className="w-full pl-9 pr-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-cyan-500"
+                                            className="w-full pl-9 pr-3 py-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-base sm:text-sm min-h-[44px] text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-cyan-500 focus-visible:ring-2 focus-visible:ring-cyan-500/25"
                                         />
                                     </div>
                                 </div>
@@ -154,7 +154,7 @@ export const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({
                                             value={companyName}
                                             onChange={(e) => setCompanyName(e.target.value)}
                                             placeholder="Acme Global Inc."
-                                            className="w-full pl-9 pr-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-cyan-500"
+                                            className="w-full pl-9 pr-3 py-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-base sm:text-sm min-h-[44px] text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-cyan-500 focus-visible:ring-2 focus-visible:ring-cyan-500/25"
                                         />
                                     </div>
                                 </div>
@@ -166,7 +166,7 @@ export const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({
                                     <select
                                         value={companySize}
                                         onChange={(e) => setCompanySize(e.target.value)}
-                                        className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-cyan-500"
+                                        className="w-full px-3 py-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-base sm:text-sm min-h-[44px] text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-cyan-500 focus-visible:ring-2 focus-visible:ring-cyan-500/25"
                                     >
                                         <option value="10-50">10 - 50 Employees</option>
                                         <option value="50-250">50 - 250 Employees</option>
@@ -183,7 +183,7 @@ export const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({
                                 <select
                                     value={useCase}
                                     onChange={(e) => setUseCase(e.target.value)}
-                                    className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-cyan-500"
+                                    className="w-full px-3 py-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-base sm:text-sm min-h-[44px] text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-cyan-500 focus-visible:ring-2 focus-visible:ring-cyan-500/25"
                                 >
                                     <option value="Autonomous Agent Fleet (devLush)">devLush Autonomous Swarm Fleet</option>
                                     <option value="Finhub Valuation & Fundamentals">Finhub Equity Valuation & Fundamental Accounting</option>
@@ -202,7 +202,7 @@ export const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({
                                         rows={2}
                                         value={customNote}
                                         onChange={(e) => setCustomNote(e.target.value)}
-                                        className="w-full p-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs text-zinc-900 dark:text-zinc-100 font-mono focus:outline-none focus:border-cyan-500"
+                                        className="w-full p-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-base sm:text-sm min-h-[70px] resize-y text-zinc-900 dark:text-zinc-100 font-mono focus:outline-none focus:border-cyan-500 focus-visible:ring-2 focus-visible:ring-cyan-500/25"
                                     />
                                 </div>
                             )}
@@ -211,7 +211,7 @@ export const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full py-3 bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-zinc-950 font-bold rounded-xl text-xs sm:text-sm transition-all shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                                    className="w-full py-3 bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-zinc-950 font-bold rounded-xl text-xs sm:text-sm transition-all shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.97] disabled:opacity-50"
                                 >
                                     {isSubmitting ? (
                                         <span>Confirming Tenant Allocation...</span>

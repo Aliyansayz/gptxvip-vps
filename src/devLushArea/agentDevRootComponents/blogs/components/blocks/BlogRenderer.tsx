@@ -91,7 +91,7 @@ export const BlogRenderer: React.FC<BlogRendererProps> = ({ blogId, blocks }) =>
                             </div>
                         );
                     case 'paragraph':
-                        return <p key={idx} className="mb-4 leading-relaxed text-slate-700 dark:text-slate-300">{renderTextSegments(block.elements)}</p>;
+                        return <p key={idx} className="mb-4 leading-relaxed text-slate-700 dark:text-slate-300 max-w-[65ch] text-pretty">{renderTextSegments(block.elements)}</p>;
                     case 'tldr_banner':
                         return <TLDRBanner key={idx} block={block} />;
                     case 'highlight_box':

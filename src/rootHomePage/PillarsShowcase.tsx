@@ -80,10 +80,10 @@ export const PillarsShowcase: React.FC<PillarsShowcaseProps> = ({
                     <Sparkles className="w-3.5 h-3.5 text-cyan-500" />
                     Complete AI &amp; Financial Ecosystem
                 </span>
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight">
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight text-balance">
                     Three Integrated Powerhouses in One Unified Platform
                 </h2>
-                <p className="text-zinc-600 dark:text-zinc-400 text-base leading-relaxed">
+                <p className="text-zinc-600 dark:text-zinc-400 text-base leading-relaxed max-w-[65ch] mx-auto text-pretty">
                     Seamlessly switch between fundamental equity valuation &amp; accounting intelligence, autonomous enterprise agent fleets, and cutting-edge deep learning research.
                 </p>
             </div>
@@ -110,12 +110,12 @@ export const PillarsShowcase: React.FC<PillarsShowcaseProps> = ({
                                 <p className="text-[11px] font-mono font-bold text-zinc-400 uppercase tracking-wider">
                                     {pillar.subtitle}
                                 </p>
-                                <h3 className="text-xl sm:text-2xl font-extrabold text-zinc-900 dark:text-zinc-100">
+                                <h3 className="text-xl sm:text-2xl font-extrabold text-zinc-900 dark:text-zinc-100 text-balance">
                                     {pillar.title}
                                 </h3>
                             </div>
 
-                            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-[65ch] text-pretty">
                                 {pillar.description}
                             </p>
 

@@ -52,13 +52,13 @@ export function QuotePanel({
   className = '',
 }: QuotePanelProps) {
   return (
-    <section className={`border-b border-ink/10 bg-white/65 py-16 sm:py-20 ${className}`} aria-label={eyebrow}>
+    <section className={`border-b border-ink/10 bg-white/65 py-10 sm:py-12 ${className}`} aria-label={eyebrow}>
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal>
           <div className="overflow-hidden rounded-2xl border border-slate-800 bg-[#0c0d12] text-white shadow-xl shadow-slate-900/10">
             <div className="grid lg:grid-cols-2">
               {/* -------------------------------------------------- offer */}
-              <div className="p-6 sm:p-8 lg:p-10">
+              <div className="p-6 sm:p-8">
                 <RevealGroup stagger={0.07}>
                   <RevealItem>
                     <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#d8ff38]">{eyebrow}</p>
@@ -108,7 +108,7 @@ export function QuotePanel({
               </div>
 
               {/* -------------------------------------------------- quote */}
-              <div className="flex flex-col justify-center border-t border-dashed border-white/15 p-6 sm:p-8 lg:border-l lg:border-t-0 lg:p-10">
+              <div className="flex flex-col justify-center border-t border-dashed border-white/15 p-6 sm:p-8 lg:border-l lg:border-t-0">
                 <Reveal from="right" distance={24}>
                   <Quote className="h-6 w-6 text-[#d8ff38]/80" aria-hidden="true" />
                   <blockquote className="mt-4 text-balance text-lg sm:text-xl font-medium leading-relaxed tracking-[-0.01em] text-slate-100">

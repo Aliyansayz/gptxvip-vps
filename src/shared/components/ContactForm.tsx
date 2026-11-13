@@ -75,9 +75,9 @@ type Status = { state: 'success' | 'error'; message: string } | null;
  * shape in one constant is what stops the light and dark forms from drifting
  * apart when one of them is restyled.
  */
-const FIELD = 'w-full rounded-xl border px-4 py-3 text-sm transition-[border-color,box-shadow,background-color] duration-200 focus:outline-none focus-visible:outline-none';
+const FIELD = 'w-full rounded-xl border px-4 py-3 text-base sm:text-sm min-h-[44px] transition-[border-color,box-shadow,background-color] duration-200 focus:outline-none focus-visible:outline-none';
 const LABEL = 'mb-2 block text-[0.6875rem] font-bold uppercase tracking-[0.14em]';
-const SUBMIT_BASE = 'group flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold transition-[transform,box-shadow,background-color,filter] duration-200 focus:outline-none focus-visible:outline-none active:scale-[0.985] disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transform-none';
+const SUBMIT_BASE = 'group flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold transition-[transform,box-shadow,background-color,filter] duration-200 focus:outline-none focus-visible:outline-none active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transform-none';
 
 type Surface = {
   label: string;
@@ -93,7 +93,7 @@ type Surface = {
 
 /** Focus/hover ink per accent ramp, split by ground so the ring stays visible. */
 const accents: Record<ContactFormAccent, { light: string; dark: string }> = {
-  warm: { light: 'focus:border-accent-500 focus:shadow-[0_0_0_4px_var(--color-accent-500,0.14)]', dark: 'focus:border-accent-400 focus:shadow-[0_0_0_4px_rgba(245,118,79,0.22)]' },
+  warm: { light: 'focus:border-accent-600 focus:shadow-[0_0_0_4px_rgba(216,255,56,0.35)]', dark: 'focus:border-[#d8ff38] focus:shadow-[0_0_0_4px_rgba(216,255,56,0.22)]' },
   emerald: { light: 'focus:border-emerald-500 focus:shadow-[0_0_0_4px_rgba(16,185,129,0.16)]', dark: 'focus:border-emerald-400 focus:shadow-[0_0_0_4px_rgba(52,211,153,0.2)]' },
   cyan: { light: 'focus:border-cyan-500 focus:shadow-[0_0_0_4px_rgba(6,182,212,0.16)]', dark: 'focus:border-cyan-400 focus:shadow-[0_0_0_4px_rgba(34,211,238,0.2)]' },
   indigo: { light: 'focus:border-indigo-500 focus:shadow-[0_0_0_4px_rgba(99,102,241,0.16)]', dark: 'focus:border-indigo-400 focus:shadow-[0_0_0_4px_rgba(129,140,248,0.2)]' },
@@ -101,8 +101,8 @@ const accents: Record<ContactFormAccent, { light: string; dark: string }> = {
 
 const buttons: Record<ContactFormAccent, { light: string; dark: string }> = {
   warm: {
-    light: 'accent-fill-gradient text-white shadow-lg shadow-accent-600/25 hover:brightness-110 focus-visible:ring-2 focus-visible:ring-accent-600 focus-visible:ring-offset-2',
-    dark: 'bg-accent-600 text-white hover:bg-accent-500 focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900',
+    light: 'accent-fill-gradient text-[#101014] border border-ink/15 shadow-lg shadow-[#d8ff38]/35 hover:brightness-95 focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2',
+    dark: 'bg-[#d8ff38] text-[#101014] hover:bg-[#c6f028] focus-visible:ring-2 focus-visible:ring-[#d8ff38] focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900',
   },
   emerald: {
     light: 'bg-emerald-600 text-white hover:bg-emerald-700 focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2',
@@ -459,7 +459,10 @@ export const ContactForm: React.FC<ContactFormProps> = ({
         </div>
 
         <div>
-          <label htmlFor="cf-compact-message" className={skin.label}>Message</label>
+          <div className="flex items-center justify-between mb-2">
+            <label htmlFor="cf-compact-message" className={skin.label}>Message</label>
+            <span className="text-[10px] font-mono text-slate-400 tabular-nums">{formData.message.length} chars</span>
+          </div>
           <textarea
             name="message"
             id="cf-compact-message"
@@ -468,7 +471,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
             onChange={handleChange}
             placeholder="Brief message..."
             rows={3}
-            className={`${fieldClass} min-h-[96px] resize-none`}
+            className={`${fieldClass} min-h-[96px] resize-y`}
             disabled={isSubmitting}
           />
         </div>
@@ -548,16 +551,20 @@ export const ContactForm: React.FC<ContactFormProps> = ({
         </div>
 
         <div>
-          <label htmlFor="cf-message" className={skin.label}>Message</label>
+          <div className="flex items-center justify-between mb-2">
+            <label htmlFor="cf-message" className={skin.label}>Message</label>
+            <span className="text-[10px] font-mono text-slate-400 tabular-nums">{formData.message.length} / 2000 chars</span>
+          </div>
           <textarea
             name="message"
             id="cf-message"
             required
+            maxLength={2000}
             value={formData.message}
             onChange={handleChange}
             placeholder="How can we help your team?"
             rows={4}
-            className={`${fieldClass} min-h-[110px] resize-none`}
+            className={`${fieldClass} min-h-[110px] resize-y`}
             disabled={isSubmitting}
           />
         </div>

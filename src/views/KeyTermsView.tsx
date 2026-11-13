@@ -153,17 +153,17 @@ export const KeyTermsView: React.FC = () => {
             )}
           </div>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 m-0 transition-opacity duration-300">
+            <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 m-0 transition-opacity duration-300 text-balance">
               {activeData.header.title || "Key Terms"}
             </h1>
-            <p className="text-zinc-500 dark:text-zinc-400 mt-1 transition-opacity duration-300">
+            <p className="text-zinc-500 dark:text-zinc-400 mt-1 transition-opacity duration-300 max-w-[65ch] text-pretty">
               {activeData.header.description}
             </p>
           </div>
         </div>
 
         {activeData.terms.length > 0 && (
-          <div className="mx-auto flex w-full max-w-2xl items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 focus-within:ring-2 focus-within:ring-emerald-500 dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="mx-auto flex w-full max-w-2xl min-h-[44px] items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 focus-within:ring-2 focus-within:ring-emerald-500 dark:border-zinc-800 dark:bg-zinc-900">
             <Search aria-hidden="true" className="h-4 w-4 shrink-0 text-zinc-400" />
             <label htmlFor="key-terms-search" className="sr-only">Find a term in {activeData.header.title || "Key Terms"}</label>
             <input
@@ -174,7 +174,7 @@ export const KeyTermsView: React.FC = () => {
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search terms, definitions, and examples"
               aria-controls="terms-list"
-              className="min-w-0 flex-1 bg-transparent text-sm text-zinc-800 outline-none placeholder:text-zinc-400 dark:text-zinc-100"
+              className="min-w-0 flex-1 bg-transparent text-base sm:text-sm text-zinc-800 outline-none placeholder:text-zinc-400 dark:text-zinc-100"
             />
             {query && (
               <button type="button" onClick={() => setQuery("")} className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-zinc-500 hover:bg-zinc-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 dark:hover:bg-zinc-800" aria-label="Clear term search">
@@ -192,7 +192,7 @@ export const KeyTermsView: React.FC = () => {
             <button type="button" onClick={() => setQuery("")} className="mt-3 rounded-lg px-3 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 dark:text-emerald-300 dark:hover:bg-emerald-950/30">Clear search</button>
           </div>
         ) : <div className="space-y-12">
-          <p role="status" aria-live="polite" className="text-xs text-zinc-500 dark:text-zinc-400">
+          <p role="status" aria-live="polite" className="text-xs text-zinc-500 dark:text-zinc-400 font-mono tabular-nums">
             Showing {filteredTerms.length} of {activeData.terms.length} terms
           </p>
           {filteredTerms.map((term) => (

@@ -124,3 +124,91 @@
 .role-stage > :nth-child(3) { animation-delay: 120ms; }
 .role-stage > :nth-child(4) { animation-delay: 180ms; }
 @media (prefers-reduced-motion: reduce) { .role-stage > * { animation: none; } }
+
+/* ── Medium-style Editorial Theory System (Principia reference) ── */
+.role-editorial-serif {
+  font-family: 'Newsreader', 'Playfair Display', 'Lora', Georgia, serif;
+}
+
+.role-editorial-sans {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.role-article-paragraph {
+  font-family: 'Newsreader', 'Playfair Display', 'Lora', Georgia, serif;
+  font-size: clamp(1.18rem, 2.3vw, 1.5rem);
+  line-height: 1.85;
+  letter-spacing: -0.003em;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.role-article-paragraph--compact {
+  font-size: clamp(1.02rem, 1.5vw, 1.15rem);
+  line-height: 1.75;
+}
+
+/* Sequential scroll-driven marker highlighter */
+.scroll-key-term {
+  --hl-progress: 0%;
+  background-color: transparent;
+  background-image: linear-gradient(
+    100deg,
+    rgba(253, 224, 71, 0.65) 0%,
+    rgba(250, 204, 21, 0.75) 100%
+  );
+  background-repeat: no-repeat;
+  background-position: 0 88%;
+  background-size: var(--hl-progress) 85%;
+  color: inherit;
+  padding: 0 3px;
+  border-radius: 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.dark .scroll-key-term {
+  background-color: transparent;
+  background-image: linear-gradient(
+    100deg,
+    rgba(234, 179, 8, 0.42) 0%,
+    rgba(202, 138, 4, 0.48) 100%
+  );
+}
+
+/* Smooth accordion animation for Analogy / Takeaway / Case Study / Concepts */
+.hidden-section-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+}
+
+.hidden-section-content.open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.hidden-section-inner {
+  overflow: hidden;
+}
+
+@keyframes role-editorial-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.role-fade-in {
+  animation: role-editorial-fade-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-key-term {
+    --hl-progress: 100%;
+  }
+  .hidden-section-content,
+  .role-fade-in {
+    animation: none;
+    transition: none;
+  }
+}

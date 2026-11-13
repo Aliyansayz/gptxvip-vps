@@ -61,7 +61,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                         </div>
 
                         {/* Main Title */}
-                        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-[1.15] sm:leading-[1.1]">
+                        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-[1.15] sm:leading-[1.1] text-balance">
                             Deploy Autonomous <br className="hidden sm:inline" />
                             <span className="bg-gradient-to-r from-cyan-500 via-blue-500 to-emerald-400 bg-clip-text text-transparent">
                                 Enterprise AI Swarms
@@ -72,7 +72,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                             </span>
                         </h1>
 
-                        <p className="text-sm sm:text-base lg:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-2xl">
+                        <p className="text-sm sm:text-base lg:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-[65ch] text-pretty">
                             Eliminate enterprise friction with zero-trust autonomous agent fleets and fundamental valuation models engineered for <strong>Equity Valuation &amp; Accounting</strong>, <strong>Legal &amp; IP</strong>, <strong>Ecommerce</strong>, and <strong>Continuous SOC 2 Compliance</strong>.
                         </p>
 
@@ -108,15 +108,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                         {/* Stats Row */}
                         <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-4 sm:pt-6 border-t border-zinc-200/80 dark:border-zinc-800/80 text-xs sm:text-sm">
                             <div className="space-y-0.5">
-                                <p className="text-lg sm:text-2xl font-black text-zinc-900 dark:text-zinc-100 font-mono">14,200+</p>
+                                <p className="text-lg sm:text-2xl font-black text-zinc-900 dark:text-zinc-100 font-mono tabular-nums">14,200+</p>
                                 <p className="text-[10px] sm:text-xs text-zinc-500 font-medium">Workflows</p>
                             </div>
                             <div className="space-y-0.5">
-                                <p className="text-lg sm:text-2xl font-black text-emerald-500 font-mono">&lt; 400ms</p>
+                                <p className="text-lg sm:text-2xl font-black text-emerald-500 font-mono tabular-nums">&lt; 400ms</p>
                                 <p className="text-[10px] sm:text-xs text-zinc-500 font-medium">Latency</p>
                             </div>
                             <div className="space-y-0.5">
-                                <p className="text-lg sm:text-2xl font-black text-cyan-500 font-mono">100%</p>
+                                <p className="text-lg sm:text-2xl font-black text-cyan-500 font-mono tabular-nums">100%</p>
                                 <p className="text-[10px] sm:text-xs text-zinc-500 font-medium">Zero-Retention</p>
                             </div>
                         </div>
@@ -193,7 +193,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                             <div className="pt-2.5 sm:pt-3 border-t border-zinc-800 flex items-center justify-between text-[10px] sm:text-[11px] text-zinc-400 font-mono">
                                 <span className="flex items-center gap-1.5 text-zinc-400">
                                     <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-                                    <span>Stream: 142 ops/m</span>
+                                    <span className="tabular-nums">Stream: 142 ops/m</span>
                                 </span>
                                 <button 
                                     onClick={simulateLog} 

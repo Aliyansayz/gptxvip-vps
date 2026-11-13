@@ -65,11 +65,11 @@ export const LeadMagnetSection: React.FC = () => {
                             <span>Free 2026 Enterprise Whitepaper</span>
                         </div>
 
-                        <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-zinc-50 leading-tight">
+                        <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-zinc-50 leading-tight text-balance">
                             The 2026 Enterprise Multi-Agent Benchmark &amp; Security Blueprint
                         </h2>
 
-                        <p className="text-xs sm:text-base text-zinc-400 leading-relaxed max-w-xl">
+                        <p className="text-xs sm:text-base text-zinc-400 leading-relaxed max-w-[65ch] text-pretty">
                             A comprehensive 54-page guide detailing multi-stage DCF intrinsic valuation models, SEC 10-K/10-Q accounting forensic benchmarks, ReAct loop execution, and SOC 2 continuous audit automation.
                         </p>
 
@@ -128,7 +128,7 @@ export const LeadMagnetSection: React.FC = () => {
                                                 value={workEmail}
                                                 onChange={(e) => setWorkEmail(e.target.value)}
                                                 placeholder="you@enterprise.com"
-                                                className="w-full pl-9 pr-3 py-2 bg-zinc-950 border border-zinc-800 rounded-xl text-xs sm:text-sm text-zinc-100 focus:outline-none focus:border-cyan-500 transition-colors"
+                                                className="w-full pl-9 pr-3 py-2.5 bg-zinc-950 border border-zinc-800 rounded-xl text-base sm:text-sm min-h-[44px] text-zinc-100 focus:outline-none focus:border-cyan-500 focus-visible:ring-2 focus-visible:ring-cyan-500/25 transition-colors"
                                             />
                                         </div>
                                     </div>
@@ -140,7 +140,7 @@ export const LeadMagnetSection: React.FC = () => {
                                         <select
                                             value={industry}
                                             onChange={(e) => setIndustry(e.target.value)}
-                                            className="w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-xl text-xs sm:text-sm text-zinc-100 focus:outline-none focus:border-cyan-500"
+                                            className="w-full px-3 py-2.5 bg-zinc-950 border border-zinc-800 rounded-xl text-base sm:text-sm min-h-[44px] text-zinc-100 focus:outline-none focus:border-cyan-500 focus-visible:ring-2 focus-visible:ring-cyan-500/25"
                                         >
                                             <option value="Equity Valuation & Accounting">Equity Valuation &amp; Accounting</option>
                                             <option value="Ecommerce & Retail">Ecommerce &amp; DTC Brands</option>
@@ -153,7 +153,7 @@ export const LeadMagnetSection: React.FC = () => {
                                     <button
                                         type="submit"
                                         disabled={isSubmitting}
-                                        className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-zinc-950 font-bold rounded-xl text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                                        className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-zinc-950 font-bold rounded-xl text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-[0.97] disabled:opacity-50"
                                     >
                                         {isSubmitting ? (
                                             <>

@@ -149,6 +149,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             isExternal: false,
             action: navigateUseCases,
         },
+        {
+            id: 'ui-ux',
+            label: 'Typography & UI Lab',
+            hint: 'Design System & Cheatsheet',
+            icon: Sparkles,
+            prefix: '/ui-ux',
+            isExternal: false,
+            action: () => window.location.assign('/ui-ux'),
+        },
     ];
 
     const skin = glass
@@ -161,7 +170,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             navIdle: 'text-slate-600 hover:bg-white/60 hover:text-ink',
             navActive: 'bg-white/70 text-ink',
             ring: 'focus-visible:ring-accent-600',
-            cta: 'bg-ink text-white hover:bg-ink/85',
+            cta: 'bg-ink text-white hover:bg-[#d8ff38] hover:text-ink active:scale-[0.97] transition-all',
             search: 'border-ink/10 bg-white/80 text-slate-700 placeholder:text-slate-400 focus:border-accent-300 focus:ring-accent-100',
             menu: 'border-ink/10 bg-paper/95 backdrop-blur-2xl',
             menuLink: 'text-slate-700 hover:bg-ink/5 hover:text-ink',
@@ -176,7 +185,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             navIdle: 'text-slate-600 hover:bg-white hover:text-slate-950',
             navActive: 'bg-cyan-50 text-cyan-900',
             ring: 'focus-visible:ring-cyan-500',
-            cta: 'bg-slate-950 text-white hover:bg-slate-800',
+            cta: 'bg-slate-950 text-white hover:bg-slate-800 active:scale-[0.97] transition-transform',
             search: 'border-slate-900/10 bg-white text-slate-700 placeholder:text-slate-400 focus:border-cyan-300 focus:ring-cyan-100',
             menu: 'border-slate-900/10 bg-white',
             menuLink: 'text-slate-700 hover:bg-slate-50',
@@ -233,7 +242,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
     return (
         <header className={`sticky top-0 z-40 border-b ${skin.header}`}>
-            <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
+            <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5 sm:px-8">
                 <button type="button" onClick={() => window.location.assign('/')} className={`flex items-center gap-3 text-left focus-visible:outline-none focus-visible:ring-2 ${skin.ring} ${glass ? 'focus-visible:ring-offset-0' : 'focus-visible:ring-offset-2'}`} aria-label="GPTX.VIP home">
                     <Logo size="md" variant="default" />
                 </button>
@@ -355,9 +364,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                     {onNavigateProjectSurfaces && <button type="button" onClick={onNavigateProjectSurfaces} aria-current={currentArea === 'Project surfaces' ? 'page' : undefined} className={navClass(currentArea === 'Project surfaces')}>Project surfaces</button>}
                 </nav>
                 <div className="flex items-center gap-2">
-                    {onSearch && <form onSubmit={submitSearch} role="search" className="hidden lg:block"><label className="sr-only" htmlFor="root-site-search">Search project surfaces</label><input id="root-site-search" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder={searchPlaceholder} className={`h-9 w-44 rounded border px-4 text-sm outline-none xl:w-52 ${skin.search} ${skin.ring}`} /></form>}
+                    {onSearch && <form onSubmit={submitSearch} role="search" className="hidden lg:block"><label className="sr-only" htmlFor="root-site-search">Search project surfaces</label><input id="root-site-search" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder={searchPlaceholder} className={`h-11 w-44 min-h-[44px] rounded border px-4 text-base sm:text-sm outline-none xl:w-52 ${skin.search} ${skin.ring}`} /></form>}
                     {onBookDemo && <button type="button" onClick={onBookDemo} aria-current={currentArea === 'Contact' ? 'page' : undefined} className={`group hidden items-center gap-2 rounded-full px-4 py-2 text-xs font-bold transition-[transform,background-color] duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 motion-reduce:transform-none xl:inline-flex ${skin.cta} ${skin.ring} ${glass ? 'focus-visible:ring-offset-0' : 'focus-visible:ring-offset-2'}`}>Start a conversation <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transform-none" /></button>}
-                    <button ref={mobileTriggerRef} type="button" onClick={() => setOpen((value) => !value)} className={`inline-flex h-10 w-10 items-center justify-center rounded-xl border transition-colors focus-visible:outline-none focus-visible:ring-2 xl:hidden ${skin.trigger} ${skin.ring} ${glass ? 'focus-visible:ring-offset-0' : 'focus-visible:ring-offset-2'}`} aria-expanded={open} aria-controls="root-mobile-navigation" aria-label={open ? 'Close navigation' : 'Open navigation'}>{open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button>
+                    <button ref={mobileTriggerRef} type="button" onClick={() => setOpen((value) => !value)} className={`inline-flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center active:scale-[0.95] rounded-xl border transition-colors focus-visible:outline-none focus-visible:ring-2 xl:hidden ${skin.trigger} ${skin.ring} ${glass ? 'focus-visible:ring-offset-0' : 'focus-visible:ring-offset-2'}`} aria-expanded={open} aria-controls="root-mobile-navigation" aria-label={open ? 'Close navigation' : 'Open navigation'}>{open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button>
                 </div>
             </div>
 
@@ -366,7 +375,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <nav aria-label="Inbuilt prototypes" className={`border-t ${glass ? 'border-ink/10 bg-white/75 backdrop-blur-xl' : 'border-slate-900/10 bg-white/95 backdrop-blur-xl'}`}>
                     <div className="mx-auto flex max-w-6xl items-center gap-3 overflow-x-auto no-scrollbar px-5 py-2 sm:px-8 sm:gap-4">
                         <p className="flex shrink-0 items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                            <Layers className="h-3.5 w-3.5 text-accent-600" aria-hidden="true" />
+                            <span className="flex h-5 w-5 items-center justify-center rounded-md bg-[#d8ff38] text-ink"><Layers className="h-3 w-3" aria-hidden="true" /></span>
                             <span className="whitespace-nowrap">Prototypes</span>
                         </p>
                         <ul className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
@@ -381,7 +390,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                                                 rel="noopener noreferrer"
                                                 className={`flex min-h-8 items-center justify-center gap-1.5 rounded-full px-3 text-xs font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 ${skin.ring} text-slate-600 hover:bg-white/80 hover:text-ink sm:px-3.5`}
                                             >
-                                                <ProtoIcon className="h-3.5 w-3.5 shrink-0 text-accent-600" aria-hidden="true" />
+                                                <ProtoIcon className="h-3.5 w-3.5 shrink-0 text-accent-700" aria-hidden="true" />
                                                 <span className="truncate">{proto.label}</span>
                                                 <span className="hidden text-[11px] font-medium text-slate-400 lg:inline">{proto.hint}</span>
                                                 <ArrowUpRight className="h-3 w-3 opacity-60 ml-0.5 shrink-0" aria-hidden="true" />
@@ -400,7 +409,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                                                 isSelected ? 'bg-white text-ink shadow-xs font-bold' : 'text-slate-600 hover:bg-white/80 hover:text-ink'
                                             }`}
                                         >
-                                            <ProtoIcon className="h-3.5 w-3.5 shrink-0 text-accent-600" aria-hidden="true" />
+                                            <ProtoIcon className="h-3.5 w-3.5 shrink-0 text-accent-700" aria-hidden="true" />
                                             <span className="truncate">{proto.label}</span>
                                             <span className="hidden text-[11px] font-medium text-slate-400 lg:inline">{proto.hint}</span>
                                         </button>

@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import {
     ArrowRight,
     Bot,
+    CheckCircle2,
     ChevronLeft,
     ChevronRight,
-    FlaskConical,
+    Cpu,
     Layers,
     Network,
     Pause,
     Play,
+    ShieldCheck,
+    Sparkles,
 } from 'lucide-react';
 import { agentLabTopics, getAgentLabTopic } from '../devLushArea/agentLabsData';
 import AgentTopicPreview from '../devLushArea/components/AgentTopicPreview';
@@ -146,10 +149,10 @@ const intentBlocks: Array<{
 ];
 
 const toneStyles: Record<Tone, { soft: string; text: string; border: string; solid: string; onGlass: string }> = {
-    amber: { soft: 'bg-accent-50', text: 'text-accent-700', border: 'border-accent-200', solid: 'bg-accent-400', onGlass: 'text-accent-400' },
-    orange: { soft: 'bg-accent-50', text: 'text-accent-600', border: 'border-accent-200', solid: 'bg-accent-500', onGlass: 'text-accent-400' },
-    red: { soft: 'bg-accent-50', text: 'text-accent-800', border: 'border-accent-300', solid: 'bg-accent-600', onGlass: 'text-accent-300' },
-    deep: { soft: 'bg-ink/[0.04]', text: 'text-ink', border: 'border-ink/15', solid: 'bg-ink', onGlass: 'text-white' },
+    amber: { soft: 'bg-[#d8ff38]', text: 'text-ink', border: 'border-[#c6f028]', solid: 'bg-[#d8ff38]', onGlass: 'text-[#d8ff38]' },
+    orange: { soft: 'bg-[#e7ff6d]', text: 'text-ink', border: 'border-[#c6f028]', solid: 'bg-[#c6f028]', onGlass: 'text-[#e7ff6d]' },
+    red: { soft: 'bg-[#f3ffa3]', text: 'text-ink', border: 'border-[#a8d210]', solid: 'bg-[#d8ff38]', onGlass: 'text-[#d8ff38]' },
+    deep: { soft: 'bg-ink/[0.06]', text: 'text-ink', border: 'border-ink/15', solid: 'bg-ink', onGlass: 'text-white' },
 };
 
 export const RootHomePage: React.FC<RootHomePageProps> = ({
@@ -268,74 +271,80 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                      * dark glass carousel sits and the red reads most strongly —
                      * fully saturated.
                      */}
-                    <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(115%_95%_at_24%_58%,rgba(247,248,245,0.94)_0%,rgba(247,248,245,0.78)_40%,rgba(247,248,245,0)_74%)]" />
+                    <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(110%_95%_at_22%_54%,rgba(247,248,245,0.92)_0%,rgba(247,248,245,0.72)_40%,rgba(247,248,245,0)_76%)]" />
 
-                    <div className="relative mx-auto max-w-6xl px-5 pb-20 pt-12 sm:px-8 sm:pt-20 lg:pb-28">
-                        <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_.95fr]">
+                    <div className="relative mx-auto max-w-6xl px-5 pb-10 pt-5 sm:px-8 sm:pt-8 lg:pb-12 lg:pt-10">
+                        <div className="grid items-center gap-7 lg:grid-cols-[0.94fr_1.06fr] lg:gap-9">
                             <div>
                                 <Reveal from="none" duration={0.5}>
-                                    <div className="glass-panel-light mb-5 inline-flex items-center gap-2 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-600">
-                                        <span className="accent-fill-gradient h-1.5 w-1.5 rounded-full" />
+                                    <div className="glass-panel-light mb-3 inline-flex items-center gap-2 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-700">
+                                        <span className="h-2 w-2 shrink-0 rounded-full bg-[#d8ff38] ring-1 ring-ink/25" />
                                         Zero-Setup In-Browser Workspaces · Interactive Systems
                                     </div>
                                 </Reveal>
 
                                 <Reveal from="up" duration={0.7} delay={0.06}>
-                                    <p className="mb-2.5 text-xs font-bold uppercase tracking-[0.2em] text-accent-700 sm:text-sm">
+                                    <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-slate-700 sm:text-sm">
                                         Autonomous Systems &amp; Applied Architecture
                                     </p>
-                                    <h1 id="hero-heading" className="max-w-3xl text-balance font-display text-[clamp(2.25rem,5.2vw,4.25rem)] font-extrabold leading-[1.02] tracking-[-0.045em] text-slate-950">
-                                        See how agent systems and roles <span className="accent-text-gradient-ink">actually work.</span>
+                                    <h1 id="hero-heading" className="max-w-2xl text-balance font-display text-[clamp(2.2rem,4.7vw,3.95rem)] font-extrabold leading-[1.03] tracking-[-0.045em] text-slate-950">
+                                        See how agent systems and roles{' '}
+                                        <span className="inline-block rounded-xl bg-[#d8ff38] px-2.5 py-0.5 text-slate-950 shadow-[0_8px_24px_rgba(216,255,56,0.48)]">
+                                            actually work.
+                                        </span>
                                     </h1>
                                 </Reveal>
 
                                 <Reveal from="up" duration={0.65} delay={0.14}>
-                                    <p className="mt-7 max-w-xl text-[clamp(1.0625rem,1.4vw,1.1875rem)] leading-8 text-slate-600">
-                                        Run the autonomous agent, role, and system models inside the page with no setup. Open an agent prototype above, change one input, and watch the model respond.
+                                    <p className="mt-4 max-w-xl text-[clamp(1rem,1.35vw,1.125rem)] leading-7 text-slate-600">
+                                        Run autonomous agent, role, and system models right inside the page with no setup. Open a prototype above, change one input, and watch the model respond.
                                     </p>
                                 </Reveal>
 
                                 <Reveal from="up" duration={0.6} delay={0.22}>
-                                    <div className="mt-9 flex flex-wrap gap-3">
+                                    <div className="mt-5 flex flex-wrap gap-3">
                                         <button
                                             type="button"
                                             onClick={() => window.location.assign('/agents/lab')}
-                                            className="group accent-fill-gradient inline-flex min-h-11 items-center gap-2 rounded-full px-5 py-3 text-sm font-bold text-white shadow-lg shadow-accent-600/25 transition-[transform,filter] duration-200 hover:-translate-y-0.5 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600 focus-visible:ring-offset-2 motion-reduce:transform-none"
+                                            className="group inline-flex min-h-11 items-center gap-2 rounded-full border border-ink/15 bg-[#d8ff38] px-5 py-2.5 text-sm font-bold text-[#101014] shadow-[0_10px_28px_rgba(216,255,56,0.45)] transition-[transform,background-color] duration-200 hover:-translate-y-0.5 hover:bg-[#c6f028] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 motion-reduce:transform-none"
                                         >
                                             Start an Agent Lab <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transform-none" />
                                         </button>
                                         <button
                                             type="button"
                                             onClick={navigateUseCases}
-                                            className="glass-panel-light inline-flex min-h-11 items-center gap-2 rounded-full px-5 py-3 text-sm font-bold text-slate-700 transition-[filter] duration-200 hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600 focus-visible:ring-offset-2"
+                                            className="glass-panel-light inline-flex min-h-11 items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold text-slate-800 transition-[filter,border-color] duration-200 hover:border-ink/25 hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2"
                                         >
-                                            Explore Case Studies <ArrowRight className="h-4 w-4 text-accent-600" />
+                                            Explore Case Studies{' '}
+                                            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#d8ff38] text-[#101014]">
+                                                <ArrowRight className="h-3.5 w-3.5" />
+                                            </span>
                                         </button>
                                     </div>
                                 </Reveal>
 
                                 <Reveal from="up" duration={0.6} delay={0.3}>
-                                    <dl className="mt-10 flex max-w-xl flex-wrap items-center gap-x-8 gap-y-2 border-t border-ink/10 pt-5 text-sm text-slate-600">
+                                    <dl className="mt-6 flex max-w-xl flex-wrap items-center gap-x-7 gap-y-2 border-t border-ink/10 pt-4 text-sm text-slate-600">
                                         <div className="flex items-baseline gap-2">
                                             <dt className="sr-only">Inbuilt prototypes</dt>
-                                            <dd className="font-display text-xl font-extrabold text-ink">5</dd>
+                                            <dd className="rounded-md bg-[#d8ff38]/75 px-1.5 font-display text-lg font-extrabold text-ink">5</dd>
                                             <span>inbuilt prototypes</span>
                                         </div>
                                         <div className="flex items-baseline gap-2">
                                             <dt className="sr-only">Agent lab topics</dt>
-                                            <dd className="font-display text-xl font-extrabold text-ink">{agentLabTopics.length}</dd>
+                                            <dd className="rounded-md bg-[#d8ff38]/75 px-1.5 font-display text-lg font-extrabold text-ink">{agentLabTopics.length}</dd>
                                             <span>agent lab topics</span>
                                         </div>
                                         <div className="flex items-baseline gap-2">
                                             <dt className="sr-only">Applied agent roles</dt>
-                                            <dd className="font-display text-xl font-extrabold text-ink">{agenticRoleDefinitions.length}</dd>
+                                            <dd className="rounded-md bg-[#d8ff38]/75 px-1.5 font-display text-lg font-extrabold text-ink">{agenticRoleDefinitions.length}</dd>
                                             <span>agent roles</span>
                                         </div>
                                     </dl>
                                 </Reveal>
                             </div>
 
-                            {/* ------------------------------------------------------ carousel */}
+                            {/* ------------------------------------------------------ prominent hero visual */}
                             <Reveal from="left" duration={0.75} delay={0.18}>
                                 <div
                                     className="relative"
@@ -356,20 +365,46 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                     onMouseEnter={() => setIsCarouselHovered(true)}
                                     onMouseLeave={() => setIsCarouselHovered(false)}
                                 >
-                                    <GlassPanel className="overflow-hidden rounded-none p-5 transition-colors sm:p-7">
-                                        <div className="flex items-center justify-between border-b border-white/10 pb-5 text-xs font-semibold text-slate-300">
-                                            <span className="flex items-center gap-2">
-                                                <Bot className={`h-4 w-4 ${slideTone.onGlass}`} /> {slide.eyebrow}
-                                            </span>
-                                            <span className="text-[10px] uppercase tracking-wider text-muted-on-dark">
-                                                {slideIndex + 1} / {slides.length}
+                                    <div aria-hidden="true" className="pointer-events-none absolute -inset-2 rounded-[1.75rem] bg-[radial-gradient(circle_at_80%_20%,rgba(216,255,56,0.48),transparent_62%)] blur-xl" />
+
+                                    <GlassPanel className="relative overflow-hidden rounded-2xl border border-white/15 bg-[#0c0e13]/95 p-4 shadow-[0_28px_72px_rgba(12,13,18,0.28)] transition-colors sm:p-6">
+                                        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#d8ff38] to-transparent opacity-90" />
+
+                                        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3 text-xs font-semibold text-slate-300">
+                                            <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Featured system views">
+                                                {slides.map((item, idx) => {
+                                                    const active = idx === slideIndex;
+                                                    const shortTabLabel = idx === 0 ? 'Roles' : idx === 1 ? 'Sandboxes' : 'Agent Labs';
+                                                    return (
+                                                        <button
+                                                            key={item.eyebrow}
+                                                            type="button"
+                                                            role="tab"
+                                                            aria-selected={active}
+                                                            aria-label={item.label}
+                                                            onClick={() => setSlideIndex(idx)}
+                                                            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d8ff38] ${
+                                                                active
+                                                                    ? 'bg-[#d8ff38] text-[#101014]'
+                                                                    : 'bg-white/[0.06] text-slate-300 hover:bg-white/10 hover:text-white'
+                                                            }`}
+                                                        >
+                                                            <span className="font-mono text-[10px]">0{idx + 1}</span>
+                                                            <span>{shortTabLabel}</span>
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                            <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-[#d8ff38]/35 bg-[#d8ff38]/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-[#d8ff38]">
+                                                <span className="h-1.5 w-1.5 rounded-full bg-[#d8ff38]" />
+                                                Interactive · {slideIndex + 1}/{slides.length}
                                             </span>
                                         </div>
 
                                         <AnimatePresence mode="wait" initial={false}>
                                             <motion.div
                                                 key={slideIndex}
-                                                className="mt-8 min-h-[290px]"
+                                                className="mt-5 min-h-[325px]"
                                                 aria-live={isCarouselPaused || isCarouselInteracting ? 'polite' : 'off'}
                                                 initial={{ opacity: 0, y: reducedMotion ? 0 : 10 }}
                                                 animate={{ opacity: 1, y: 0 }}
@@ -378,37 +413,149 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                             >
                                                 {slideTopic ? (
                                                     <AgentTopicPreview topic={slideTopic} tone="dark" compact accent="warm" />
+                                                ) : slideIndex === 0 ? (
+                                                    <div className="flex h-full flex-col justify-between gap-4">
+                                                        <div>
+                                                            <div className="flex items-start justify-between gap-3">
+                                                                <div>
+                                                                    <p className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[#d8ff38]">
+                                                                        <Sparkles className="h-3.5 w-3.5" /> {slide.eyebrow}
+                                                                    </p>
+                                                                    <h2 className="mt-1.5 font-display text-2xl font-bold leading-tight tracking-[-0.03em] text-white sm:text-[1.7rem]">
+                                                                        {slide.title}
+                                                                    </h2>
+                                                                </div>
+                                                                <span className="shrink-0 rounded-lg bg-[#d8ff38] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#101014]">
+                                                                    {agenticRoleDefinitions.length} Roles
+                                                                </span>
+                                                            </div>
+                                                            <p className="mt-2 max-w-lg text-xs leading-relaxed text-slate-300 sm:text-sm">
+                                                                {slide.body}
+                                                            </p>
+
+                                                            {/* Visual Architecture Pipeline */}
+                                                            <div className="mt-4 grid grid-cols-3 gap-2">
+                                                                <div className="rounded-xl border border-white/10 bg-white/[0.04] p-2.5">
+                                                                    <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
+                                                                        <span>01</span>
+                                                                        <Bot className="h-3.5 w-3.5 text-slate-300" />
+                                                                    </div>
+                                                                    <p className="mt-1.5 text-xs font-bold text-white">Role Intake</p>
+                                                                    <p className="mt-0.5 text-[11px] text-slate-400">Live signals &amp; constraints</p>
+                                                                </div>
+                                                                <div className="rounded-xl border border-[#d8ff38]/55 bg-[#d8ff38]/12 p-2.5 shadow-[0_0_24px_rgba(216,255,56,0.12)]">
+                                                                    <div className="flex items-center justify-between text-[10px] font-mono text-[#d8ff38]">
+                                                                        <span>02 · LOOP</span>
+                                                                        <Cpu className="h-3.5 w-3.5 text-[#d8ff38]" />
+                                                                    </div>
+                                                                    <p className="mt-1.5 text-xs font-bold text-white">Agent Decision</p>
+                                                                    <p className="mt-0.5 text-[11px] text-[#f3ffa3]">Trace &amp; verify choices</p>
+                                                                </div>
+                                                                <div className="rounded-xl border border-white/10 bg-white/[0.04] p-2.5">
+                                                                    <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
+                                                                        <span>03</span>
+                                                                        <CheckCircle2 className="h-3.5 w-3.5 text-[#d8ff38]" />
+                                                                    </div>
+                                                                    <p className="mt-1.5 text-xs font-bold text-white">Proof Output</p>
+                                                                    <p className="mt-0.5 text-[11px] text-slate-400">Auditable artifacts</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Clickable Quick-Launch Role Strip */}
+                                                        <div className="border-t border-white/10 pt-3.5">
+                                                            <div className="mb-2 flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
+                                                                <span>Jump straight into a live role</span>
+                                                                <span className="text-[#d8ff38]">{slide.detail}</span>
+                                                            </div>
+                                                            <div className="flex flex-wrap items-center gap-1.5">
+                                                                {agenticRoleDefinitions.slice(0, 4).map((role) => (
+                                                                    <button
+                                                                        key={role.id}
+                                                                        type="button"
+                                                                        onClick={() => window.location.assign(getAgenticRoleHref(role.id))}
+                                                                        className="rounded-lg border border-white/15 bg-white/[0.05] px-2.5 py-1 text-[11px] font-semibold text-slate-200 transition-colors hover:border-[#d8ff38]/60 hover:bg-[#d8ff38]/15 hover:text-[#d8ff38]"
+                                                                    >
+                                                                        {role.shortTitle}
+                                                                    </button>
+                                                                ))}
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={scrollToAgentRoles}
+                                                                    className="ml-auto inline-flex items-center gap-1 rounded-full bg-[#d8ff38] px-3 py-1 text-[11px] font-bold text-[#101014] transition-colors hover:bg-[#c6f028]"
+                                                                >
+                                                                    All roles <ArrowRight className="h-3 w-3" />
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 ) : (
-                                                    <>
-                                                        <div className={`mb-5 flex h-12 w-12 items-center justify-center rounded bg-white/10 ${slideTone.onGlass}`}>
-                                                            <FlaskConical className="h-6 w-6" />
+                                                    <div className="flex h-full flex-col justify-between gap-4">
+                                                        <div>
+                                                            <div className="flex items-start justify-between gap-3">
+                                                                <div>
+                                                                    <p className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[#d8ff38]">
+                                                                        <ShieldCheck className="h-3.5 w-3.5" /> {slide.eyebrow}
+                                                                    </p>
+                                                                    <h2 className="mt-1.5 font-display text-2xl font-bold leading-tight tracking-[-0.03em] text-white sm:text-[1.7rem]">
+                                                                        {slide.title}
+                                                                    </h2>
+                                                                </div>
+                                                                <span className="shrink-0 rounded-lg bg-[#d8ff38] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#101014]">
+                                                                    Live Blueprints
+                                                                </span>
+                                                            </div>
+                                                            <p className="mt-2 max-w-lg text-xs leading-relaxed text-slate-300 sm:text-sm">
+                                                                {slide.body}
+                                                            </p>
+
+                                                            <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                                                                {[
+                                                                    ['Threat Detection', 'Anomaly 0.94', 'Real-time triage'],
+                                                                    ['Tokenization', 'Liquidity Pool', 'Stress simulation'],
+                                                                    ['Compliance', '100% Traced', 'Policy verifier'],
+                                                                ].map(([name, stat, sub]) => (
+                                                                    <div key={name} className="rounded-xl border border-white/10 bg-white/[0.04] p-2.5">
+                                                                        <p className="font-mono text-[10px] font-bold text-[#d8ff38]">{stat}</p>
+                                                                        <p className="mt-1 text-xs font-bold text-white">{name}</p>
+                                                                        <p className="mt-0.5 text-[11px] text-slate-400">{sub}</p>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
                                                         </div>
-                                                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-on-dark">{slide.label}</p>
-                                                        <p className="mt-3 max-w-md font-display text-3xl font-bold leading-tight tracking-[-0.03em] text-white">{slide.title}</p>
-                                                        <p className="mt-4 max-w-md text-sm leading-6 text-slate-300">{slide.body}</p>
-                                                        <div className="mt-7 flex items-center gap-3 text-xs font-semibold text-muted-on-dark">
-                                                            <span className={`h-2 w-2 rounded-full ${slideTone.solid}`} /> {slide.detail}
+
+                                                        <div className="flex items-center justify-between border-t border-white/10 pt-3.5">
+                                                            <span className="flex items-center gap-2 text-xs font-semibold text-slate-300">
+                                                                <span className={`h-2 w-2 rounded-full ${slideTone.solid}`} /> {slide.detail}
+                                                            </span>
+                                                            <button
+                                                                type="button"
+                                                                onClick={navigateUseCases}
+                                                                className="inline-flex items-center gap-1 rounded-full bg-[#d8ff38] px-3 py-1 text-[11px] font-bold text-[#101014] transition-colors hover:bg-[#c6f028]"
+                                                            >
+                                                                Open Sandboxes <ArrowRight className="h-3 w-3" />
+                                                            </button>
                                                         </div>
-                                                    </>
+                                                    </div>
                                                 )}
                                             </motion.div>
                                         </AnimatePresence>
                                     </GlassPanel>
 
-                                    <div className="mt-4 flex items-center justify-between">
-                                        <div className="flex items-center gap-1.5" aria-label={`Slide ${slideIndex + 1} of ${slides.length}`}>
+                                    <div className="mt-3 flex items-center justify-between">
+                                        <div className="flex items-center gap-1" aria-label={`Slide ${slideIndex + 1} of ${slides.length}`}>
                                             {slides.map((item, index) => (
                                                 <button
                                                     key={item.eyebrow}
                                                     type="button"
                                                     onClick={() => setSlideIndex(index)}
-                                                    className="flex h-9 w-9 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
+                                                    className="flex h-8 w-8 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
                                                     aria-label={`Show slide ${index + 1}`}
                                                     aria-current={index === slideIndex ? 'true' : undefined}
                                                 >
                                                     <span
                                                         aria-hidden="true"
-                                                        className={`h-2 rounded-full transition-all duration-300 ${index === slideIndex ? `w-7 ${toneStyles[item.tone].solid}` : 'w-2 bg-ink/20 hover:bg-ink/35'}`}
+                                                        className={`h-2 rounded-full transition-all duration-300 ${index === slideIndex ? 'w-7 border border-ink/25 bg-[#d8ff38]' : 'w-2 bg-ink/20 hover:bg-ink/35'}`}
                                                     />
                                                 </button>
                                             ))}
@@ -417,7 +564,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                             <button
                                                 type="button"
                                                 onClick={() => setIsCarouselPaused((paused) => !paused)}
-                                                className="glass-panel-light flex h-9 items-center gap-2 px-3 text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
+                                                className="glass-panel-light flex h-8 items-center gap-1.5 px-3 text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
                                                 aria-label={isCarouselPaused ? 'Resume automatic slides' : 'Pause automatic slides'}
                                                 aria-pressed={isCarouselPaused}
                                             >
@@ -427,7 +574,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                             <button
                                                 type="button"
                                                 onClick={() => moveSlide(-1)}
-                                                className="glass-panel-light flex h-9 w-9 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
+                                                className="glass-panel-light flex h-8 w-8 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
                                                 aria-label="Previous slide"
                                             >
                                                 <ChevronLeft className="h-4 w-4" />
@@ -435,7 +582,7 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                             <button
                                                 type="button"
                                                 onClick={() => moveSlide(1)}
-                                                className="glass-panel-light flex h-9 w-9 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
+                                                className="glass-panel-light flex h-8 w-8 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
                                                 aria-label="Next slide"
                                             >
                                                 <ChevronRight className="h-4 w-4" />
@@ -450,16 +597,18 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
 
                 {/* ------------------------------------------------------ intent blocks */}
                 <section className="border-y border-ink/10 bg-white/65" aria-labelledby="intent-heading">
-                    <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+                    <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-12">
                         <Reveal>
-                            <div className="max-w-xl">
-                                <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent-700">Choose a starting point</p>
-                                <h2 id="intent-heading" className="mt-3 font-display text-[clamp(1.75rem,3vw,2.5rem)] font-extrabold tracking-[-0.035em] text-slate-950">What would you like to explore?</h2>
-                                <p className="mt-4 text-slate-600 leading-relaxed">Compare the format and outcome before opening an autonomous role, agent lab, research article, or sandbox.</p>
+                            <div className="flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
+                                <div className="max-w-xl">
+                                    <p className="inline-flex items-center rounded-full bg-[#d8ff38] px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.18em] text-ink">Choose a starting point</p>
+                                    <h2 id="intent-heading" className="mt-2 font-display text-[clamp(1.6rem,2.8vw,2.25rem)] font-extrabold tracking-[-0.035em] text-slate-950">What would you like to explore?</h2>
+                                </div>
+                                <p className="max-w-md text-sm leading-relaxed text-slate-600">Compare the format and outcome before opening an autonomous role, agent lab, research article, or sandbox.</p>
                             </div>
                         </Reveal>
 
-                        <RevealGroup className="mt-10 grid gap-5 md:grid-cols-2" stagger={0.09}>
+                        <RevealGroup className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4" stagger={0.08}>
                             {intentBlocks.map((block, index) => {
                                 const style = toneStyles[block.tone];
                                 const action = actions[block.handlerIndex];
@@ -469,15 +618,17 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                         <button
                                             type="button"
                                             onClick={action}
-                                            className="group flex h-full w-full flex-col rounded-none border border-ink/10 bg-paper p-6 text-left transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:border-ink/25 hover:shadow-lg hover:shadow-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600 focus-visible:ring-offset-2 motion-reduce:transform-none sm:p-7"
+                                            className="group flex h-full w-full flex-col rounded-xl border border-ink/10 bg-paper p-5 text-left transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:border-[#a8d210] hover:shadow-lg hover:shadow-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 motion-reduce:transform-none"
                                         >
-                                            <div className={`flex h-12 w-12 items-center justify-center rounded ${style.soft} ${style.text} transition-transform duration-300 group-hover:scale-105 motion-reduce:transform-none`}>
-                                                <Icon className="h-6 w-6" />
+                                            <div className="flex items-center gap-2.5">
+                                                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${style.border} ${style.soft} ${style.text} transition-transform duration-300 group-hover:scale-105 motion-reduce:transform-none`}>
+                                                    <Icon className="h-4 w-4" />
+                                                </div>
+                                                <span className="text-[10px] font-bold uppercase leading-tight tracking-[0.11em] text-slate-500">{block.audience}</span>
                                             </div>
-                                            <p className="mt-6 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">{block.audience}</p>
-                                            <h3 className="mt-2 font-display text-2xl font-bold tracking-[-0.03em] text-slate-950">{block.title}</h3>
-                                            <p className="mt-3 leading-7 text-slate-600">{block.body}</p>
-                                            <dl className="mt-5 grid gap-2 border-t border-ink/10 pt-4 text-sm">
+                                            <h3 className="mt-3.5 font-display text-lg font-bold leading-snug tracking-[-0.025em] text-slate-950">{block.title}</h3>
+                                            <p className="mt-1.5 text-sm leading-6 text-slate-600">{block.body}</p>
+                                            <dl className="mt-3.5 grid gap-1.5 border-t border-ink/10 pt-3 text-xs">
                                                 <div>
                                                     <dt className="font-bold text-ink">What you get</dt>
                                                     <dd className="text-slate-600">{block.result}</dd>
@@ -487,9 +638,11 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                                     <dd className="text-slate-600">{block.effort}</dd>
                                                 </div>
                                             </dl>
-                                            <span className={`mt-auto inline-flex items-center gap-2 pt-6 text-sm font-bold ${style.text}`}>
-                                                {block.action}
-                                                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none" />
+                                            <span className="mt-auto inline-flex items-center gap-2 pt-4 text-sm font-bold text-ink">
+                                                <span className="underline decoration-[#c6f028] decoration-2 underline-offset-4">{block.action}</span>
+                                                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#d8ff38] text-ink transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none">
+                                                    <ArrowRight className="h-3.5 w-3.5" />
+                                                </span>
                                             </span>
                                         </button>
                                     </RevealItem>
@@ -523,22 +676,34 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                 />
 
                 {/* ------------------------------------------------------- Contact Section */}
-                <section className="bg-paper py-16 sm:py-20" aria-labelledby="contact-heading">
-                    <div className="mx-auto max-w-6xl px-5 sm:px-8">
-                        <Reveal className="mx-auto max-w-2xl text-center">
-                            <div className="glass-panel-light mb-6 inline-flex items-center gap-2 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-600">
-                                <span className="accent-fill-gradient h-1.5 w-1.5 rounded-full" />
+                <section className="bg-paper py-10 sm:py-12" aria-labelledby="contact-heading">
+                    <div className="mx-auto grid max-w-6xl gap-8 px-5 sm:px-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+                        <Reveal>
+                            <div className="glass-panel-light mb-3 inline-flex items-center gap-2 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-700">
+                                <span className="h-2 w-2 rounded-full bg-[#d8ff38] ring-1 ring-ink/25" />
                                 Say hello
                             </div>
-                            <h2 id="contact-heading" className="font-display text-[clamp(1.75rem,3vw,2.5rem)] font-extrabold tracking-[-0.035em] text-slate-950">
+                            <h2 id="contact-heading" className="font-display text-[clamp(1.6rem,2.8vw,2.25rem)] font-extrabold tracking-[-0.035em] text-slate-950">
                                 Get in touch
                             </h2>
-                            <p className="mt-4 text-slate-600 leading-relaxed">
+                            <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
                                 Questions about an agent system, interactive sandbox, or want to share feedback? Send a message and it lands in the owner's inbox.
                             </p>
+                            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+                                <button
+                                    type="button"
+                                    onClick={() => (onNavigateContact ? onNavigateContact() : window.location.assign('/contact'))}
+                                    className="inline-flex min-h-[40px] items-center gap-1.5 font-bold text-slate-800 underline decoration-[#c6f028] decoration-2 underline-offset-4 transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+                                >
+                                    Open the full contact page
+                                </button>
+                                <span className="inline-flex min-h-[40px] items-center text-slate-500">
+                                    or email&nbsp;<a href="mailto:hello@gptx.vip" className="font-mono text-slate-800 underline decoration-[#c6f028] decoration-2 underline-offset-4 transition-colors hover:text-ink">hello@gptx.vip</a>
+                                </span>
+                            </div>
                         </Reveal>
-                        <Reveal className="mx-auto mt-10 max-w-2xl" from="up" distance={24} duration={0.7}>
-                            <div className="group rounded-2xl border border-ink/10 bg-white p-6 shadow-sm transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink/[0.07] motion-reduce:transform-none sm:p-9">
+                        <Reveal from="up" distance={20} duration={0.65}>
+                            <div className="group rounded-2xl border border-ink/10 bg-white p-5 shadow-sm transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink/[0.07] motion-reduce:transform-none sm:p-6">
                                 <ContactForm
                                     variant="full"
                                     tone="light"
@@ -546,18 +711,6 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                     subject="Contact from GPTX.VIP Landing Page"
                                 />
                             </div>
-                        </Reveal>
-                        <Reveal className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm" delay={0.12}>
-                            <button
-                                type="button"
-                                onClick={() => (onNavigateContact ? onNavigateContact() : window.location.assign('/contact'))}
-                                className="inline-flex min-h-[44px] items-center gap-1.5 font-bold text-slate-700 underline decoration-accent-400 decoration-2 underline-offset-4 transition-colors hover:text-accent-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600"
-                            >
-                                Open the full contact page
-                            </button>
-                            <span className="inline-flex min-h-[44px] items-center text-slate-500">
-                                or email&nbsp;<a href="mailto:hello@gptx.vip" className="font-mono text-slate-800 underline decoration-ink/20 underline-offset-4 transition-colors hover:text-accent-700">hello@gptx.vip</a>
-                            </span>
                         </Reveal>
                     </div>
                 </section>

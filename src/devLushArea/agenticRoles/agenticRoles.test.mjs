@@ -5,6 +5,11 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 import { industryRoleChapters } from './data/industryRoleChapters.ts';
+import {
+  extractTheoryCards,
+  splitHighlightSegments,
+  verifyPreviousIndexCompleted,
+} from '../../shared/components/article-lab/conceptText.ts';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.join(HERE, 'data');
@@ -185,4 +190,65 @@ test('case learning flows cover every registered chapter', () => {
   const flowsSource = read(path.join('data', 'caseLearningFlows.ts'));
   const missing = [...registryIds].filter((id) => !flowsSource.includes(`'${id}'`));
   assert.deepEqual(missing, [], `chapters with no reading flow:\n  ${missing.join('\n  ')}`);
+});
+
+test('every role chapter declares theory cards (card_a, card_b, card_c, card_titles) and matching highlights', () => {
+  const jsonChapters = readdirSync(DATA_DIR)
+    .filter((name) => name.startsWith('agentic') || name.includes('Analytic') || name.startsWith('data') || name.startsWith('seo'))
+    .filter((name) => name.endsWith('.json'))
+    .flatMap((name) => JSON.parse(readFileSync(path.join(DATA_DIR, name), 'utf8')));
+
+  const allChapters = [...jsonChapters, ...Object.values(industryRoleChapters).flat()];
+  const problems = [];
+
+  for (const chapter of allChapters) {
+    const t = chapter.theory_content;
+    if (!t) {
+      problems.push(`${chapter.labComponentId}: missing theory_content`);
+      continue;
+    }
+    if (!t.card_a?.trim()) problems.push(`${chapter.labComponentId}: missing card_a`);
+    if (!t.card_b?.trim()) problems.push(`${chapter.labComponentId}: missing card_b`);
+    if (!t.card_c?.trim()) problems.push(`${chapter.labComponentId}: missing card_c`);
+    if (!Array.isArray(t.card_titles) || t.card_titles.length < 3 || t.card_titles.some((title) => !title?.trim())) {
+      problems.push(`${chapter.labComponentId}: card_titles must have 3 non-empty headings`);
+    }
+    if (!Array.isArray(t.highlight) || t.highlight.length === 0) {
+      problems.push(`${chapter.labComponentId}: highlight must be a non-empty array`);
+    } else {
+      const contentLower = (t.content || '').toLowerCase();
+      for (const phrase of t.highlight) {
+        if (!contentLower.includes(phrase.toLowerCase())) {
+          problems.push(`${chapter.labComponentId}: highlight "${phrase}" not found in theory_content.content`);
+        }
+      }
+    }
+  }
+
+  assert.deepEqual(problems, [], problems.join('\n'));
+});
+
+test('theory highlight splitting and sequential verification helpers behave deterministically', () => {
+  const cards = extractTheoryCards({
+    title: 'Test',
+    content: 'Body',
+    card_titles: ['1. First', '2. Second', '3. Third'],
+    card_a: 'Alpha',
+    card_b: 'Beta',
+    card_c: 'Gamma',
+  });
+  assert.equal(cards.length, 3);
+  assert.deepEqual(cards.map((c) => c.heading), ['1. First', '2. Second', '3. Third']);
+
+  const { segments, nextIndex } = splitHighlightSegments(
+    'Agents track query intent shifts and semantic entity gaps.',
+    ['query intent shifts', 'semantic entity gaps'],
+    0,
+  );
+  assert.equal(nextIndex, 2);
+  assert.equal(segments.filter((s) => s.highlightIndex !== null).length, 2);
+
+  assert.equal(verifyPreviousIndexCompleted(0, 0, 3), true);
+  assert.equal(verifyPreviousIndexCompleted(1, 0.2, 3), false);
+  assert.equal(verifyPreviousIndexCompleted(1, 0.34, 3), true);
 });

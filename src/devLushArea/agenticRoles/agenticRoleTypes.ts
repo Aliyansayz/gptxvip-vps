@@ -305,6 +305,12 @@ export interface AgenticRoleChapter {
     content: string;
     practical_takeaway?: string;
     analogy?: string;
+    industry_case_study?: string;
+    card_a?: string;
+    card_b?: string;
+    card_c?: string;
+    card_titles?: string[] | { card_a?: string; card_b?: string; card_c?: string };
+    highlight?: string[];
   };
 }
 

@@ -102,7 +102,7 @@ export const OverviewView: React.FC = () => {
       <div role="alert" className="mx-auto flex max-w-xl flex-col items-center gap-3 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-8 text-center">
         <p className="font-semibold text-zinc-800 dark:text-zinc-100">Strategy overview is unavailable.</p>
         <p className="text-sm text-zinc-600 dark:text-zinc-400">The page could not load its content. Try again in a moment.</p>
-        <button type="button" onClick={() => setReloadKey((key) => key + 1)} className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white">Retry</button>
+        <button type="button" onClick={() => setReloadKey((key) => key + 1)} className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white min-h-[44px] active:scale-[0.97] transition-transform">Retry</button>
       </div>
     );
   }
@@ -117,10 +117,10 @@ export const OverviewView: React.FC = () => {
     >
       {/* Header Section */}
       <div className="max-w-3xl">
-        <h1 className="text-4xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-500">
+        <h1 className="text-4xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-500 text-balance">
           {header.title}
         </h1>
-        <p className="text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed">
+        <p className="text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-[65ch] text-pretty">
           {header.description}
         </p>
       </div>

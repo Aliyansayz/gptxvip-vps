@@ -90,10 +90,10 @@ export const BlockGallery: React.FC = () => {
                     <LayoutGrid className="w-3.5 h-3.5 text-cyan-500" />
                     Interactive Visual Architecture
                 </span>
-                <h2 className="text-2xl sm:text-4xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight">
+                <h2 className="text-2xl sm:text-4xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight text-balance">
                     Interactive Agent &amp; Model Visualizer Gallery
                 </h2>
-                <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-base leading-relaxed">
+                <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-base leading-relaxed max-w-[65ch] mx-auto text-pretty">
                     Explore live, fully interactive visualizers of autonomous agent execution patterns, threat hunting simulators, and neural model architectures.
                 </p>
 
@@ -107,7 +107,7 @@ export const BlockGallery: React.FC = () => {
                                 : 'bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400'
                         }`}
                     >
-                        All Blocks ({blocks.length})
+                        All Blocks <span className="tabular-nums">({blocks.length})</span>
                     </button>
                     <button
                         onClick={() => setSelectedCategory('agents')}

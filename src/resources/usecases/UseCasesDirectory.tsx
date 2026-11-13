@@ -63,19 +63,19 @@ export const UseCasesDirectory: React.FC<UseCasesDirectoryProps> = ({
               <span className="h-2 w-2 rounded-full bg-[#d8ff38]" />
               Real Business Solutions • Live Interactive Demos
             </span>
-            <span className="font-mono text-[11px] text-[#d8ff38]">
+            <span className="font-mono text-[11px] text-[#d8ff38] tabular-nums">
               03 LIVE USE CASES
             </span>
           </div>
 
           <div className="max-w-xl pt-4 pb-8">
             <h1
-              className="text-3xl sm:text-5xl font-normal leading-[1.04] tracking-[-0.05em] text-white"
+              className="text-3xl sm:text-5xl font-normal leading-[1.04] tracking-[-0.05em] text-white text-balance"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               See How Teams Save Hours Every Week with <span className="hl-circle-sketch">Simple</span>, <span className="hl-brutalist">Smart AI Workspaces.</span>
             </h1>
-            <p className="mt-4 text-sm sm:text-base text-white/80 leading-relaxed">
+            <p className="mt-4 text-sm sm:text-base text-white/80 leading-relaxed max-w-[65ch] text-pretty">
               Explore real-world examples: review contracts in under 4 minutes, protect company systems around the clock, and make property investing accessible starting at $50. All explained in plain business language with zero confusing jargon.
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-3">
