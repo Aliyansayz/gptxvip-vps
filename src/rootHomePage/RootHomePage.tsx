@@ -28,6 +28,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { Reveal, RevealGroup, RevealItem } from '../shared/components/Reveal';
+import DiagonalExpandingBackground from '../shared/components/atmosphere/DiagonalExpandingBackground';
 import QuotePanel from '../shared/components/QuotePanel';
 
 export interface RootHomePageProps {
@@ -257,16 +258,17 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
             />
 
             <main>
-                {/* ---------------------------------------------------------------- hero (Blue + Yellow Boulevard palette, quiet right preview) */}
+                {/* ---------------------------------------------------------------- hero (Blue + Yellow Boulevard palette with diagonal expanding shine visual) */}
                 <section
                     className="relative overflow-hidden text-white"
                     style={{
                         background:
-                            'radial-gradient(ellipse at 78% 25%, #6f78ff 0, transparent 38%), radial-gradient(ellipse at 63% 76%, #1528b7 0, transparent 42%), linear-gradient(115deg, #11121c 5%, #272bc3 58%, #7f8cff 100%)',
+                            'radial-gradient(ellipse at 78% 25%, rgba(111, 120, 255, 0.26) 0, transparent 44%), radial-gradient(ellipse at 63% 76%, rgba(21, 40, 183, 0.45) 0, transparent 48%), linear-gradient(115deg, #0b1024 6%, #11121c 48%, #1528b7 100%)',
                     }}
                     aria-labelledby="hero-heading"
                 >
-                    <div className="mx-auto max-w-6xl px-5 pb-10 pt-8 sm:px-8 sm:pt-10 lg:pb-12">
+                    <DiagonalExpandingBackground />
+                    <div className="relative z-10 mx-auto max-w-6xl px-5 pb-10 pt-8 sm:px-8 sm:pt-10 lg:pb-12">
                         <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
                             <div>
                                 <Reveal from="none" duration={0.45}>

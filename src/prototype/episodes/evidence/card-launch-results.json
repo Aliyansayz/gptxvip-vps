@@ -1,13 +1,13 @@
 {
-  "base": "http://127.0.0.1:3002",
-  "count": 13,
+  "base": "http://localhost:3001",
+  "count": 14,
   "results": [
     {
       "name": "Pulse Analytics",
       "id": "pulse-analytics",
       "label": "Open Prototype",
       "visible": true,
-      "route": "http://127.0.0.1:3002/agents/prototypes/pulse-analytics",
+      "route": "http://localhost:3001/agents/prototypes/pulse-analytics",
       "opened": true
     },
     {
@@ -15,7 +15,7 @@
       "id": "storefront-pro",
       "label": "Open Prototype",
       "visible": true,
-      "route": "http://127.0.0.1:3002/agents/prototypes/storefront-pro",
+      "route": "http://localhost:3001/agents/prototypes/storefront-pro",
       "opened": true
     },
     {
@@ -23,7 +23,7 @@
       "id": "ledgerline",
       "label": "Open Prototype",
       "visible": true,
-      "route": "http://127.0.0.1:3002/agents/prototypes/ledgerline",
+      "route": "http://localhost:3001/agents/prototypes/ledgerline",
       "opened": true
     },
     {
@@ -31,7 +31,7 @@
       "id": "orbit-crm",
       "label": "Open Prototype",
       "visible": true,
-      "route": "http://127.0.0.1:3002/agents/prototypes/orbit-crm",
+      "route": "http://localhost:3001/agents/prototypes/orbit-crm",
       "opened": true
     },
     {
@@ -39,7 +39,7 @@
       "id": "saas-metrics-kit",
       "label": "Open Prototype",
       "visible": true,
-      "route": "http://127.0.0.1:3002/agents/prototypes/saas-metrics-kit",
+      "route": "http://localhost:3001/agents/prototypes/saas-metrics-kit",
       "opened": true
     },
     {
@@ -47,7 +47,7 @@
       "id": "adsphere",
       "label": "Open Prototype",
       "visible": true,
-      "route": "http://127.0.0.1:3002/agents/prototypes/adsphere",
+      "route": "http://localhost:3001/agents/prototypes/adsphere",
       "opened": true
     },
     {
@@ -55,7 +55,7 @@
       "id": "clinicare",
       "label": "Open Prototype",
       "visible": true,
-      "route": "http://127.0.0.1:3002/agents/prototypes/clinicare",
+      "route": "http://localhost:3001/agents/prototypes/clinicare",
       "opened": true
     },
     {
@@ -63,7 +63,7 @@
       "id": "chainpulse",
       "label": "Open Prototype",
       "visible": true,
-      "route": "http://127.0.0.1:3002/agents/prototypes/chainpulse",
+      "route": "http://localhost:3001/agents/prototypes/chainpulse",
       "opened": true
     },
     {
@@ -71,7 +71,7 @@
       "id": "hq-admin",
       "label": "Open Prototype",
       "visible": true,
-      "route": "http://127.0.0.1:3002/agents/prototypes/hq-admin",
+      "route": "http://localhost:3001/agents/prototypes/hq-admin",
       "opened": true
     },
     {
@@ -79,7 +79,7 @@
       "id": "insight-boards",
       "label": "Open Prototype",
       "visible": true,
-      "route": "http://127.0.0.1:3002/agents/prototypes/insight-boards",
+      "route": "http://localhost:3001/agents/prototypes/insight-boards",
       "opened": true
     },
     {
@@ -87,7 +87,7 @@
       "id": "logistics",
       "label": "Open Prototype",
       "visible": true,
-      "route": "http://127.0.0.1:3002/agents/prototypes/logistics",
+      "route": "http://localhost:3001/agents/prototypes/logistics",
       "opened": true
     },
     {
@@ -95,7 +95,7 @@
       "id": "fundview",
       "label": "Open Prototype",
       "visible": true,
-      "route": "http://127.0.0.1:3002/agents/prototypes/fundview",
+      "route": "http://localhost:3001/agents/prototypes/fundview",
       "opened": true
     },
     {
@@ -103,7 +103,15 @@
       "id": "project-management",
       "label": "Open Prototype",
       "visible": true,
-      "route": "http://127.0.0.1:3002/agents/prototypes/project-management",
+      "route": "http://localhost:3001/agents/prototypes/project-management",
+      "opened": true
+    },
+    {
+      "name": "Taxi Demand EDA Agent",
+      "id": "taxi-demand-eda-agent",
+      "label": "Open Prototype",
+      "visible": true,
+      "route": "http://localhost:3001/agents/prototypes/taxi-demand-eda-agent",
       "opened": true
     }
   ]

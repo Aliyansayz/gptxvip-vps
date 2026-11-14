@@ -1,0 +1,132 @@
+/* Scoped styles & dark-mode overrides for Taxi Demand EDA Agent prototype */
+
+[data-prototype="taxi-demand-eda-agent"] .product-header {
+  padding-right: 96px;
+}
+
+[data-prototype="taxi-demand-eda-agent"] input.taxi-search-input {
+  padding-left: 2.25rem;
+}
+
+[data-prototype="taxi-demand-eda-agent"] input[type="file"].taxi-file-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .taxi-card,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .bg-white {
+  background-color: #172235 !important;
+  border-color: #2c3a52 !important;
+  color: #f1f5fc !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .bg-slate-50,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .bg-slate-50\/70,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .bg-slate-100 {
+  background-color: #101929 !important;
+  border-color: #2c3a52 !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .text-slate-900,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .text-slate-800 {
+  color: #f1f5fc !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .text-slate-700,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .text-slate-500,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .border-slate-200,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .border-slate-100,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .divide-slate-100 > :not(:first-child) {
+  border-color: #2c3a52 !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .prose,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .prose p,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .prose strong,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .prose li {
+  color: #e2e8f0 !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .bg-rose-50\/60,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .bg-rose-50\/65 {
+  background-color: rgba(159, 18, 57, 0.22) !important;
+  border-color: rgba(244, 63, 94, 0.35) !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .bg-amber-50\/65 {
+  background-color: rgba(146, 64, 14, 0.22) !important;
+  border-color: rgba(245, 158, 11, 0.35) !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .bg-indigo-50,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .bg-indigo-50\/60 {
+  background-color: rgba(79, 70, 229, 0.18) !important;
+  border-color: rgba(129, 140, 248, 0.35) !important;
+  color: #c7d2fe !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .text-indigo-700,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .text-indigo-800 {
+  color: #a5b4fc !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .bg-emerald-50 {
+  background-color: rgba(16, 185, 129, 0.16) !important;
+  border-color: rgba(52, 211, 153, 0.32) !important;
+  color: #6ee7b7 !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .text-emerald-700 {
+  color: #6ee7b7 !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .bg-amber-50 {
+  background-color: rgba(245, 158, 11, 0.16) !important;
+  border-color: rgba(251, 191, 36, 0.32) !important;
+  color: #fcd34d !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .text-amber-700,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .text-amber-800 {
+  color: #fcd34d !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .bg-blue-50,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .bg-sky-50,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .bg-cyan-50 {
+  background-color: rgba(14, 165, 233, 0.16) !important;
+  border-color: rgba(56, 189, 248, 0.32) !important;
+  color: #7dd3fc !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .text-blue-700,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .text-sky-700,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .text-cyan-700 {
+  color: #7dd3fc !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .bg-rose-50 {
+  background-color: rgba(244, 63, 94, 0.16) !important;
+  border-color: rgba(251, 113, 133, 0.32) !important;
+  color: #fda4af !important;
+}
+
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .text-rose-700,
+[data-prototype="taxi-demand-eda-agent"][data-theme="dark"] .text-rose-600 {
+  color: #fda4af !important;
+}

@@ -1,0 +1,92 @@
+/* Root Atmosphere: Diagonal Expanding Blue Background + Specular Shine Glare */
+
+.diagonal-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.diagonal-bg-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Specular diagonal shine glare sweeping across the electric blue band */
+.diagonal-shine-glare {
+  position: absolute;
+  inset: -45%;
+  width: 190%;
+  height: 190%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(111, 120, 255, 0.16) 41%,
+    rgba(255, 255, 255, 0.32) 48.5%,
+    rgba(255, 255, 255, 0.52) 50%,
+    rgba(127, 140, 255, 0.22) 52%,
+    transparent 64%
+  );
+  transform: translate3d(-16%, 12%, 0) rotate(-14deg);
+  animation: diagonal-glare-sweep 7.5s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* Subtle secondary specular edge highlight along the upper-right light source */
+.diagonal-glare-halo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 46% 34% at 72% 24%,
+      rgba(255, 255, 255, 0.18) 0%,
+      rgba(127, 140, 255, 0.1) 42%,
+      transparent 76%
+    ),
+    radial-gradient(
+      ellipse 36% 28% at 32% 78%,
+      rgba(111, 120, 255, 0.2) 0%,
+      transparent 72%
+    );
+  mix-blend-mode: screen;
+}
+
+/* Gentle contrast protection on the text column without muting the blue glare */
+.diagonal-contrast-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(17, 18, 28, 0.28) 0%,
+    rgba(17, 18, 28, 0.08) 54%,
+    transparent 100%
+  );
+}
+
+@keyframes diagonal-glare-sweep {
+  0%,
+  100% {
+    transform: translate3d(-18%, 14%, 0) rotate(-14deg);
+    opacity: 0.72;
+  }
+  50% {
+    transform: translate3d(12%, -10%, 0) rotate(-14deg);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .diagonal-shine-glare {
+    animation: none;
+    transform: translate3d(-4%, 2%, 0) rotate(-14deg);
+    opacity: 0.85;
+  }
+}

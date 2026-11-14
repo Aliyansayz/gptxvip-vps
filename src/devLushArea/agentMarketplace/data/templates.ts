@@ -37,6 +37,7 @@ export const CATEGORIES = [
   "Healthcare",
   "Crypto",
   "Project Management",
+  "Agent And System",
 ] as const;
 
 export const FRAMEWORKS = ["React", "Tailwind CSS"] as const;
@@ -407,6 +408,34 @@ export const templates: Template[] = [
       "Setup guide",
     ],
     tags: ["projects", "tasks", "kanban", "team"],
+  },
+  {
+    id: "t14",
+    slug: "taxi-demand-eda-agent",
+    name: "Taxi Demand EDA Agent",
+    prototype: "taxi-demand-eda-agent",
+    tagline: "Multi-agent operational intelligence, CSV EDA copilot & logicflow dashboard",
+    description:
+      "An interactive Agent & System workbench pairing urban taxi demand time-series analytics, climate friction regressions, and deterministic EDA copilot insights with multi-agent recon, scanner, and analyzer sandboxes.",
+    category: "Agent And System",
+    frameworks: ["React", "Tailwind CSS"],
+    version: "1.0.0",
+    updated: "Nov 2026",
+    features: [
+      "Platform telemetry & thought stream",
+      "4-agent archetype directory & simulators",
+      "Interactive CSV EDA filters & Recharts suite",
+      "Deterministic Agent Copilot & reasoning log",
+      "6-stage workflow & logicflow pipeline",
+      "Sanctioned dataset catalog switcher",
+    ],
+    includes: [
+      "Interactive prototype",
+      "TypeScript source",
+      "Sample mobility dataset",
+      "Workflow engine",
+    ],
+    tags: ["agent", "system", "eda", "telemetry", "logicflow"],
   },
 ];
 

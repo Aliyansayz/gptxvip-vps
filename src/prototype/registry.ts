@@ -67,6 +67,11 @@ export const prototypes = {
     screenshot: "/prototype-previews/fundview.png",
     component: lazy(() => import("./fundview/App")),
   },
+  "taxi-demand-eda-agent": {
+    title: "Taxi Demand EDA Agent",
+    screenshot: "/prototype-previews/taxi-demand-eda-agent.png",
+    component: lazy(() => import("./taxi-demand-eda-agent/App")),
+  },
 };
 export type PrototypeId = keyof typeof prototypes;
 export const getPrototypePath = (id: PrototypeId) => `/prototypes/${id}`;
