@@ -1,4 +1,6 @@
 import seoData from './seoAgenticAnalyst.json';
+import smmData from './smmAgenticAnalyst.json';
+import securityData from './llmWebSecurityEngineer.json';
 import accountantData from './agenticAccountant.json';
 import commerceData from './agenticCommerceAnalyst.json';
 import recommendationData from './agenticRecommendationAnalyst.json';
@@ -9,6 +11,8 @@ import { industryRoleChapters } from './industryRoleChapters';
 import { AgenticRoleChapter, AgenticRoleDefinition } from '../agenticRoleTypes';
 
 export const seoAgenticChapters = [...seoData, ...industryRoleChapters.seo] as AgenticRoleChapter[];
+export const smmAgenticChapters = smmData as AgenticRoleChapter[];
+export const securityAgenticChapters = securityData as AgenticRoleChapter[];
 export const accountantAgenticChapters = [...accountantData, ...industryRoleChapters.accountant] as AgenticRoleChapter[];
 export const commerceAgenticChapters = [...commerceData, ...industryRoleChapters.commerce] as AgenticRoleChapter[];
 export const recommendationAgenticChapters = [...recommendationData, ...industryRoleChapters.recommendation] as AgenticRoleChapter[];
@@ -26,6 +30,8 @@ export const uiuxAgenticChapters = industryRoleChapters.uiux;
  */
 export const agenticRolesChaptersRaw: AgenticRoleChapter[] = [
   ...seoAgenticChapters,
+  ...smmAgenticChapters,
+  ...securityAgenticChapters,
   ...accountantAgenticChapters,
   ...commerceAgenticChapters,
   ...recommendationAgenticChapters,
@@ -56,6 +62,36 @@ export const agenticRoleDefinitions: AgenticRoleDefinition[] = [
     careerLevel: 'Junior AI Analyst',
     requiredSkills: ['SERP Scraping', 'Knowledge Graph Schema', 'PageRank Topology', 'Core Web Vitals', 'Canonical Governance'],
     chapters: seoAgenticChapters,
+  },
+  {
+    id: 'smm-agentic-analyst',
+    title: 'SMM (Social Media Marketing) Analyst',
+    shortTitle: 'SMM Analyst',
+    roleDomain: 'smm',
+    tagline: 'Autonomous hook retention audits, creative fatigue rotation, and incrementality modeling.',
+    description: 'Master short-form retention diagnostics, frequency-driven fatigue guardrails, audience overlap consolidation, and geo-holdout attribution.',
+    longDescription: 'Operate as an AI Social Media Marketing Analyst. Diagnose 3-second thumb-stop drops, rotate fatigued ad creatives without resetting learning, eliminate self-bidding audience overlap, triage real-time crisis sentiment, and reconcile platform ROAS against geo-holdout lift.',
+    iconName: 'Megaphone',
+    accentColor: 'blue',
+    totalDays: smmAgenticChapters.length,
+    careerLevel: 'Junior AI Analyst',
+    requiredSkills: ['Hook Retention Audits', 'Creative Fatigue Capping', 'Audience Overlap Graphs', 'Crisis Sentiment Triage', 'Geo-Holdout Lift'],
+    chapters: smmAgenticChapters,
+  },
+  {
+    id: 'llm-web-security-engineer',
+    title: 'LLM/Web Security Engineer',
+    shortTitle: 'LLM/Web Security',
+    roleDomain: 'security',
+    tagline: 'Indirect prompt injection defense, tool SSRF firewalls, DOM XSS/CSP hardening, and OBO identity gates.',
+    description: 'Master untrusted RAG taint isolation, socket-level SSRF egress proxies, DOMPurify + CSP nonces, OAuth OBO propagation, and Denial-of-Wallet guardrails.',
+    longDescription: 'Operate as an AI & Web Application Security Engineer. Neutralize indirect prompt injections and Markdown exfiltration beacons, harden autonomous URL-fetching tools against SSRF and cloud IMDS theft, sanitize untrusted LLM output against DOM XSS, eliminate Confused Deputy flaws in MCP servers, and enforce token-bucket circuit breakers.',
+    iconName: 'Shield',
+    accentColor: 'red',
+    totalDays: securityAgenticChapters.length,
+    careerLevel: 'Senior Agentic Architect',
+    requiredSkills: ['Prompt Injection Isolation', 'SSRF Egress Firewalls', 'DOMPurify & CSP Nonces', 'OAuth OBO & RLS', 'Denial-of-Wallet Caps'],
+    chapters: securityAgenticChapters,
   },
   {
     id: 'agentic-accountant',

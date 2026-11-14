@@ -14,28 +14,39 @@ interface AgenticArticlePreviewProps {
 export function AgenticArticlePreview({ onOpenArticle, accent = 'cyan', className = '' }: AgenticArticlePreviewProps) {
   const warm = accent === 'warm';
   const accentOnDark = warm ? 'text-[#d8ff38]' : 'text-cyan-300';
-  const accentRing = warm ? 'focus-visible:ring-[#d8ff38]' : 'focus-visible:ring-cyan-300';
+  const accentRing = warm ? 'focus-visible:ring-[#343edb]' : 'focus-visible:ring-cyan-300';
   const accentCta = warm ? 'bg-[#d8ff38] text-[#101014] hover:bg-[#c6f028]' : 'bg-cyan-300 hover:bg-cyan-200 text-slate-950';
-  const accentGlow = warm ? 'rgba(216,255,56,0.16)' : 'rgba(34,211,238,0.15)';
+  const accentGlow = warm ? 'rgba(52,62,219,0.28)' : 'rgba(34,211,238,0.15)';
 
   return (
-    <section aria-labelledby="agentic-article-preview-heading" className={`border-b border-ink/10 bg-white/65 py-10 sm:py-12 ${className}`}>
+    <section aria-labelledby="agentic-article-preview-heading" className={`border-b border-[#e9e9ec] bg-white py-10 sm:py-12 ${className}`}>
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="mb-5 flex flex-col gap-2 sm:mb-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
-            <span className={`mb-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.18em] ${warm ? 'bg-[#d8ff38] text-ink' : 'bg-cyan-50 text-cyan-700'}`}>
+            <span className={`mb-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.18em] ${warm ? 'bg-[#343edb]/10 text-[#343edb]' : 'bg-cyan-50 text-cyan-700'}`}>
               03 / DEEP TECHNICAL READING
             </span>
-            <h2 id="agentic-article-preview-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 font-display">
-              Prefer reading? Get the short article + quiz version.
+            <h2
+              id="agentic-article-preview-heading"
+              className="text-2xl sm:text-4xl font-medium tracking-[-0.04em] text-[#101014]"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              Prefer reading? Get the <span className={warm ? 'text-[#343edb]' : ''}>short article + quiz</span> version.
             </h2>
           </div>
-          <p className="max-w-md text-sm leading-relaxed text-slate-600">
+          <p className="max-w-md text-sm leading-relaxed text-[#555560]">
             Every case has a concise article with key concepts, mental models, and a built-in quiz — read, highlight, and test yourself.
           </p>
         </div>
 
-        <div className="relative overflow-hidden rounded-[1.5rem] border border-slate-700/80 bg-[#0d1824] text-white shadow-[0_20px_56px_rgba(15,23,42,0.16)]">
+        <div
+          className="relative overflow-hidden rounded-[1.5rem] border border-[#2a3166]/70 text-white shadow-[0_20px_56px_rgba(17,18,28,0.18)]"
+          style={{
+            background: warm
+              ? 'radial-gradient(ellipse at 12% 8%, rgba(52,62,219,0.34) 0, transparent 44%), linear-gradient(135deg, #0b0e1a 0%, #101633 65%, #16205a 100%)'
+              : '#0d1824',
+          }}
+        >
           <div aria-hidden="true" className={`pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_100%_0%,${accentGlow},transparent_42%),linear-gradient(to_right,rgba(148,163,184,0.04)_1px,transparent_1px)] bg-[size:auto,44px_44px]`} />
           
           <div className="relative border-b border-white/10 px-5 py-3.5 sm:px-6">

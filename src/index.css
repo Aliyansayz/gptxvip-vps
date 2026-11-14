@@ -37,16 +37,16 @@
    * paper ground (#f7f8f5); 500 and below are display-only (large or bold
    * text). Never use 300/400 as body copy colour on light.
    */
-  --color-accent-50: #faffd6;
-  --color-accent-100: #f3ffa3;
-  --color-accent-200: #e7ff6d;
-  --color-accent-300: #d8ff38;
-  --color-accent-400: #c6f028;
-  --color-accent-500: #a8d210;
-  --color-accent-600: #6e8e00;
-  --color-accent-700: #4d6300;
-  --color-accent-800: #364700;
-  --color-accent-900: #222e00;
+  --color-accent-50: #f3f5ff;
+  --color-accent-100: #e5e9ff;
+  --color-accent-200: #c7d1ff;
+  --color-accent-300: #8d9dff;
+  --color-accent-400: #6f78ff;
+  --color-accent-500: #343edb;
+  --color-accent-600: #2534bf;
+  --color-accent-700: #1e28a1;
+  --color-accent-800: #151d78;
+  --color-accent-900: #0f144f;
 
   /* Near-black ground for glass surfaces. */
   --color-ink: #12130f;

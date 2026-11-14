@@ -116,9 +116,9 @@
 .accent-text-gradient-ink {
   background-image: linear-gradient(
     104deg,
-    #4d6300 0%,
-    #364700 52%,
-    #12130f 100%
+    #8d9dff 0%,
+    #343edb 52%,
+    #2534bf 100%
   );
   -webkit-background-clip: text;
   background-clip: text;

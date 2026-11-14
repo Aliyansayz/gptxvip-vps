@@ -1,0 +1,706 @@
+[
+  {
+    "id": "smm-day1",
+    "course": "SMM (Social Media Marketing) Analyst",
+    "roleDomain": "smm",
+    "day": 1,
+    "day_title": "Day 01: Short-Form Hook & Retention Curve Auditing",
+    "chapter_title": "Short-Form Hook & Retention Curve Auditing",
+    "labComponentId": "smm-day1-hook-retention",
+    "difficulty": "easy",
+    "estimatedMinutes": 25,
+    "prerequisites": [
+      "Foundations of Social Feed Algorithms",
+      "Video Engagement Funnel Metrics"
+    ],
+    "tags": [
+      "smm",
+      "social-media-marketing",
+      "short-form-video",
+      "hook-rate",
+      "retention-curve",
+      "agentic-analyst"
+    ],
+    "critical_concepts": [
+      {
+        "concept": "3-Second Thumb-Stop Rate",
+        "definition": "The percentage of impressions that remain watching past the first 3 seconds of a short-form social video.",
+        "elaboration": "Autonomous SMM agents segment frame-by-frame drop-off logs across TikTok, Instagram Reels, and YouTube Shorts to separate weak opening hooks from mid-video pacing collapses.",
+        "industry_application": "Prevents creative teams from rewriting an entire 45-second script when only the first 2.5 seconds failed to stop the feed scroll."
+      },
+      {
+        "concept": "30-Second Hold & Inflection Diagnosis",
+        "definition": "Measuring sustained watch-time retention after the opening hook and isolating exact timestamp cliffs where viewers swipe away.",
+        "elaboration": "When thumb-stop rate is healthy (>35%) but 30-second hold rate collapses (<15%), the agent flags mid-roll pacing stalls, slow transitions, or premature brand logos.",
+        "industry_application": "Guides automated creative remixing by pinning B-roll cuts and pattern interrupts right before historical drop-off cliffs."
+      }
+    ],
+    "theory_content": {
+      "title": "Autonomous Feed Signal Decomposition & Hook Retention Modeling",
+      "content": "Short-form distribution engines rank content primarily on early watch-time velocity and completion ratios rather than follower count. An SMM Agentic Analyst audits frame-level retention curves, isolates 3-second thumb-stop failures from mid-roll pacing cliffs, and triggers targeted creative hook remixes.",
+      "practical_takeaway": "Always diagnose the 3-second thumb-stop rate before editing the middle or call-to-action of a video.",
+      "analogy": "Like a bookstore window display: if pedestrians never pause at the glass (thumb-stop), rearranging chapter 4 inside the store will never lift sales.",
+      "industry_case_study": "A DTC skincare brand had 18% thumb-stop rates on Reels despite strong product demos at second 12. An automated frame-retention audit swapped the slow logo intro for a visual problem-first opening frame, lifting thumb-stop rate to 41% and cutting customer acquisition cost by 34%.",
+      "card_titles": [
+        "1. Thumb-Stop Signal",
+        "2. Retention Cliffs",
+        "3. Targeted Remixes"
+      ],
+      "card_a": "Algorithms sample viewer watch behavior in the first 3 seconds to decide whether to expand organic feed distribution.",
+      "card_b": "Separating hook drop-off from mid-video swipe cliffs prevents teams from discarding strong core storytelling.",
+      "card_c": "Pattern interrupts, visual captions, and faster scene cuts placed ahead of drop-off spikes lift completion rates.",
+      "highlight": [
+        "early watch-time velocity",
+        "frame-level retention curves",
+        "3-second thumb-stop failures"
+      ]
+    },
+    "interactive_questions": [
+      {
+        "id": "smm-ex-101",
+        "componentId": "smm-day1-hook-retention",
+        "dayNumber": 1,
+        "difficulty": "easy",
+        "title": "Diagnose 3-Second Thumb-Stop Collapse vs Mid-Roll Drop",
+        "prompt": "An autonomous SMM analytics agent audited 48 hours of Instagram Reels telemetry for a product launch clip. Thumb-stop rate at 3s is 16.4% (benchmark: 35%), while viewers who stay past second 5 average an 84% completion rate.",
+        "question": "What does the retention curve indicate, and what creative revision should the agent recommend?",
+        "options": [
+          "The entire product story is boring; delete the campaign and move budget to static display banners",
+          "Opening hook failure: viewers who get past second 5 love the core video, so replace the first 3 seconds with a visual pattern-interrupt hook while keeping the body intact",
+          "Mid-roll pacing failure: keep the 3-second intro identical and cut the final 10 seconds of the video",
+          "Algorithm shadowban: repost the exact same video file 12 times in one hour"
+        ],
+        "answer": "Opening hook failure: viewers who get past second 5 love the core video, so replace the first 3 seconds with a visual pattern-interrupt hook while keeping the body intact",
+        "correctAnswerIndex": 1,
+        "explanation": "A 16.4% thumb-stop paired with an 84% conditional completion rate proves the body content resonates once viewers commit. The bottleneck is strictly the opening 3 seconds, so only the hook needs replacement.",
+        "wrong_answer_feedback": [
+          {
+            "option": "The entire product story is boring; delete the campaign and move budget to static display banners",
+            "feedback": "An 84% completion rate among viewers who pass second 5 shows the core narrative is actually high-performing."
+          },
+          {
+            "option": "Mid-roll pacing failure: keep the 3-second intro identical and cut the final 10 seconds of the video",
+            "feedback": "Cutting the ending will not fix a failure where 83.6% of viewers swipe away before second 3."
+          },
+          {
+            "option": "Algorithm shadowban: repost the exact same video file 12 times in one hour",
+            "feedback": "Spamming identical video hashes triggers duplicate-content suppression on social platforms and ignores the clear telemetry."
+          }
+        ],
+        "tags": [
+          "hook-rate",
+          "retention-curve",
+          "reels"
+        ],
+        "nature": "technical_execution",
+        "perspective": "candidate_perspective",
+        "logs": [
+          {
+            "timestamp": "09:12:01",
+            "level": "info",
+            "message": "SMM_TELEMETRY: Pulled frame-by-frame retention array for Reel #launch-v1 (142,000 impressions)."
+          },
+          {
+            "timestamp": "09:12:02",
+            "level": "warn",
+            "message": "HOOK_AUDIT: 3s thumb-stop=16.4% (below 35% floor). 83.6% exit during 0.0s-2.8s brand slate."
+          },
+          {
+            "timestamp": "09:12:03",
+            "level": "success",
+            "message": "HOLD_DIAGNOSIS: Conditional completion after 5s is 84.0%. Recommending Hook-Only Remix."
+          }
+        ],
+        "expectedToolCalls": [
+          {
+            "toolName": "audit_video_retention_curve",
+            "args": {
+              "creativeId": "launch-v1",
+              "platform": "Instagram Reels",
+              "hookWindowSec": 3
+            },
+            "purpose": "Separate opening hook attrition from mid-roll retention"
+          }
+        ],
+        "roleSpecificData": {
+          "type": "smm",
+          "data": {
+            "primaryChannel": "Instagram Reels",
+            "campaignObjective": "retention",
+            "hookAudit": {
+              "thumbStopRatePct": 16.4,
+              "holdRate30sPct": 13.8,
+              "avgWatchTimeSec": 6.2,
+              "dropOffSecond": 2.4,
+              "variants": [
+                { "id": "baseline", "label": "Logo Intro (Current)", "thumbStopPct": 16.4, "hold30sPct": 13.8, "completionPct": 11.2 },
+                { "id": "pattern-interrupt", "label": "Problem-First Visual Hook", "thumbStopPct": 41.8, "hold30sPct": 34.6, "completionPct": 28.9 }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "smm-ex-102",
+        "componentId": "smm-day1-hook-retention",
+        "dayNumber": 1,
+        "difficulty": "easy",
+        "title": "Remediate Mid-Video Retention Cliff on High-Hook Creative",
+        "prompt": "A second TikTok variant achieves a 44% 3-second thumb-stop rate, but retention plunges from 39% at second 8 down to 9% at second 11 when a static 6-second pricing slide appears without voiceover pacing.",
+        "question": "How should the agent configure the automated editing brief for Variant C?",
+        "options": [
+          "Replace the opening 3-second hook because it is clearly broken",
+          "Preserve the 44% opening hook and insert dynamic B-roll, kinetic captions, and a tighter value transition at seconds 7-11",
+          "Turn off audio and captions across the entire clip",
+          "Increase daily ad spend 5x to force the algorithm past second 11"
+        ],
+        "answer": "Preserve the 44% opening hook and insert dynamic B-roll, kinetic captions, and a tighter value transition at seconds 7-11",
+        "correctAnswerIndex": 1,
+        "explanation": "Because the 44% thumb-stop already clears the top quartile, changing the opening risks losing an effective scroll-stopper. Fixing the visual stall at seconds 7-11 directly addresses the measured inflection cliff.",
+        "wrong_answer_feedback": [
+          {
+            "option": "Replace the opening 3-second hook because it is clearly broken",
+            "feedback": "A 44% 3-second thumb-stop is strong; replacing it sacrifices what is already working."
+          },
+          {
+            "option": "Increase daily ad spend 5x to force the algorithm past second 11",
+            "feedback": "Higher spend cannot repair viewer drop-off; poor mid-video retention raises CPM and wastes budget."
+          }
+        ],
+        "tags": [
+          "retention-cliff",
+          "tiktok",
+          "creative-iteration"
+        ],
+        "nature": "technical_execution"
+      }
+    ]
+  },
+  {
+    "id": "smm-day2",
+    "course": "SMM (Social Media Marketing) Analyst",
+    "roleDomain": "smm",
+    "day": 2,
+    "day_title": "Day 02: Paid Social Creative Fatigue & Frequency Capping",
+    "chapter_title": "Paid Social Creative Fatigue & Frequency Capping",
+    "labComponentId": "smm-day2-creative-fatigue",
+    "difficulty": "medium",
+    "estimatedMinutes": 35,
+    "prerequisites": [
+      "Day 01: Short-Form Hook & Retention Curve Auditing",
+      "Ad Auction CPM & CTR Mechanics"
+    ],
+    "tags": [
+      "smm",
+      "creative-fatigue",
+      "frequency-cap",
+      "paid-social",
+      "meta-ads"
+    ],
+    "critical_concepts": [
+      {
+        "concept": "Frequency-Driven CTR Decay",
+        "definition": "The progressive drop in click-through rate and rise in CPA as average ad impressions per reached user cross saturation thresholds.",
+        "elaboration": "Agents track 7-day rolling frequency alongside link-CTR and negative feedback signals to catch fatigue days before CPA breaches target profitability.",
+        "industry_application": "Prevents burning prospecting budgets on saturated creatives while maintaining campaign learning stability."
+      }
+    ],
+    "theory_content": {
+      "title": "Autonomous Creative Saturation Detection & Learning-Safe Rotation",
+      "content": "Paid social algorithms penalize stale ads with rising CPMs and falling engagement quality scores. An SMM Agentic Analyst monitors rolling frequency versus CTR decay curves and stages fresh creative variants without resetting ad-set optimization learning.",
+      "practical_takeaway": "Rotate fatigued creatives into a dedicated challenger test slot or incremental creative batch rather than deleting and recreating the entire campaign.",
+      "analogy": "Like swapping worn tires during a pit stop while the race car keeps its momentum, instead of restarting the race from the grid.",
+      "industry_case_study": "An apparel retailer's top prospecting ad set hit 4.6 weekly frequency and saw CPA double in 6 days. By automating a rule that introduced 2 net-new creative hooks whenever 7-day frequency crossed 3.2 and CTR fell 20% from peak, they stabilized blended CPA within 8% for an entire quarter.",
+      "card_titles": [
+        "1. Saturation Signals",
+        "2. Frequency Thresholds",
+        "3. Learning-Safe Swaps"
+      ],
+      "card_a": "Rising frequency paired with declining CTR and negative hide-ad feedback signals early creative exhaustion.",
+      "card_b": "Prospecting audiences typically fatigue faster than retargeting pools, requiring tighter rolling frequency thresholds.",
+      "card_c": "Introducing fresh creatives inside structured testing slots preserves historical conversion signal in the parent campaign.",
+      "highlight": [
+        "rising CPMs",
+        "rolling frequency versus CTR decay curves",
+        "resetting ad-set optimization learning"
+      ]
+    },
+    "interactive_questions": [
+      {
+        "id": "smm-ex-201",
+        "componentId": "smm-day2-creative-fatigue",
+        "dayNumber": 2,
+        "difficulty": "medium",
+        "title": "Respond to Prospecting Creative Fatigue Without Destroying Learning",
+        "prompt": "Over the past 10 days, prospecting creative `ad_hero_ugc_04` saw 7-day frequency climb from 1.4 to 4.3, outbound CTR drop from 2.15% to 0.92%, and CPA rise from $24 to $49 against a $30 target.",
+        "question": "Which autonomous action should the SMM agent take to restore CPA while protecting auction learning?",
+        "options": [
+          "Delete the entire ad account pixel and rebuild all campaigns from scratch",
+          "Leave the fatigued ad at 100% spend because its lifetime ROAS from month one still looks good",
+          "Introduce fresh creative hook variants into a challenger slot, gradually shift budget from `ad_hero_ugc_04`, and enforce a prospecting frequency guardrail",
+          "Shrink the target audience radius to 1 mile so the same users see the ad even more often"
+        ],
+        "answer": "Introduce fresh creative hook variants into a challenger slot, gradually shift budget from `ad_hero_ugc_04`, and enforce a prospecting frequency guardrail",
+        "correctAnswerIndex": 2,
+        "explanation": "Frequency 4.3 with a >57% CTR collapse indicates classic prospecting fatigue. Introducing new creative variants while shifting delivery away from the saturated unit restores engagement without wiping conversion history.",
+        "wrong_answer_feedback": [
+          {
+            "option": "Delete the entire ad account pixel and rebuild all campaigns from scratch",
+            "feedback": "Resetting pixels and campaigns destroys valuable optimization history and spikes acquisition costs."
+          },
+          {
+            "option": "Leave the fatigued ad at 100% spend because its lifetime ROAS from month one still looks good",
+            "feedback": "Lifetime averages mask current marginal CPA degradation ($49 vs $30 target)."
+          },
+          {
+            "option": "Shrink the target audience radius to 1 mile so the same users see the ad even more often",
+            "feedback": "Narrowing the pool accelerates frequency spikes and worsens creative fatigue."
+          }
+        ],
+        "tags": [
+          "creative-fatigue",
+          "frequency",
+          "cpa-protection"
+        ],
+        "nature": "pipeline_optimization",
+        "logs": [
+          {
+            "timestamp": "11:05:00",
+            "level": "info",
+            "message": "FATIGUE_WATCHER: Evaluated 10-day rolling window for ad_hero_ugc_04."
+          },
+          {
+            "timestamp": "11:05:01",
+            "level": "error",
+            "message": "SATURATION_ALERT: Freq=4.3 (threshold 3.0), CTR=-57.2% from peak, CPA=$49.00 vs $30.00 ceiling."
+          },
+          {
+            "timestamp": "11:05:02",
+            "level": "success",
+            "message": "ROTATION_PLAN: Staged 2 challenger hooks; queued gradual spend cap on ad_hero_ugc_04."
+          }
+        ],
+        "expectedToolCalls": [
+          {
+            "toolName": "detect_creative_fatigue",
+            "args": {
+              "adId": "ad_hero_ugc_04",
+              "lookbackDays": 10,
+              "maxFrequency": 3.0
+            },
+            "purpose": "Identify frequency-driven CTR decay and queue creative rotation"
+          }
+        ],
+        "roleSpecificData": {
+          "type": "smm",
+          "data": {
+            "primaryChannel": "Meta Ads",
+            "campaignObjective": "acquisition",
+            "creativeFatigue": {
+              "frequency": 4.3,
+              "ctrPct": 0.92,
+              "cpaUsd": 49,
+              "baselineCpaUsd": 24,
+              "dailyTrends": [
+                { "day": "D1", "frequency": 1.4, "ctrPct": 2.15, "cpaUsd": 24 },
+                { "day": "D4", "frequency": 2.2, "ctrPct": 1.88, "cpaUsd": 27 },
+                { "day": "D7", "frequency": 3.3, "ctrPct": 1.34, "cpaUsd": 35 },
+                { "day": "D10", "frequency": 4.3, "ctrPct": 0.92, "cpaUsd": 49 }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "smm-day3",
+    "course": "SMM (Social Media Marketing) Analyst",
+    "roleDomain": "smm",
+    "day": 3,
+    "day_title": "Day 03: Audience Overlap & Auction Cannibalization",
+    "chapter_title": "Audience Overlap & Auction Cannibalization",
+    "labComponentId": "smm-day3-audience-overlap",
+    "difficulty": "medium",
+    "estimatedMinutes": 35,
+    "prerequisites": [
+      "Day 02: Creative Fatigue",
+      "Ad Auction Bidding Basics"
+    ],
+    "tags": [
+      "smm",
+      "audience-overlap",
+      "auction-cannibalization",
+      "budget-consolidation",
+      "exclusions"
+    ],
+    "critical_concepts": [
+      {
+        "concept": "Self-Bidding Auction Overlap",
+        "definition": "When multiple active ad sets target the same users, causing the brand's own campaigns to inflate auction clearing prices or starve delivery.",
+        "elaboration": "Agents compute pairwise overlap matrices across lookalike, interest, and retargeting ad sets and recommend consolidation or negative audience exclusions.",
+        "industry_application": "Unlocks lower CPMs and allows automated bidding algorithms to exit the learning phase faster with consolidated conversion volume."
+      }
+    ],
+    "theory_content": {
+      "title": "Eliminating Audience Fragmentation & Self-Competition",
+      "content": "Running dozens of hyper-segmented ad sets forces campaigns to compete against one another in the same social ad auction. An SMM Agentic Analyst computes pairwise audience overlap graphs, flags cannibalized segments, and consolidates fragmented budgets with explicit exclusion guardrails.",
+      "practical_takeaway": "Consolidate overlapping prospecting segments and always exclude recent purchasers and active retargeting pools from cold acquisition ad sets.",
+      "analogy": "Like sending three buyers from the same company to bid against each other on the same house, driving up the price you pay yourself.",
+      "industry_case_study": "A B2B SaaS growth team discovered 68% overlap across four separate interest and 1% lookalike ad sets, keeping all four stuck in 'Learning Limited'. Consolidating them into one broad-plus-advantage ad set with customer exclusions cut CPM by 27% and doubled weekly conversions.",
+      "card_titles": [
+        "1. Overlap Matrix",
+        "2. Learning Volume",
+        "3. Exclusion Rules"
+      ],
+      "card_a": "Pairwise overlap above 30% between active ad sets signals auction cannibalization and inflated CPMs.",
+      "card_b": "Consolidating fragmented budgets pools conversion events so ad-delivery models exit learning faster.",
+      "card_c": "Negative exclusions keep recent buyers and warm retargeting cohorts out of cold prospecting spend.",
+      "highlight": [
+        "compete against one another",
+        "pairwise audience overlap graphs",
+        "explicit exclusion guardrails"
+      ]
+    },
+    "interactive_questions": [
+      {
+        "id": "smm-ex-301",
+        "componentId": "smm-day3-audience-overlap",
+        "dayNumber": 3,
+        "difficulty": "medium",
+        "title": "Consolidate Overlapping Ad Sets & Apply Exclusion Guardrails",
+        "prompt": "The audience graph inspector detected 72% overlap between `AdSet-LAL-1%` and `AdSet-Interest-SaaS`, and 41% leakage of existing paying customers into cold prospecting.",
+        "question": "What structural consolidation should the SMM agent propose to eliminate auction cannibalization?",
+        "options": [
+          "Split the two ad sets into 10 smaller age-bracket ad sets to further isolate users",
+          "Merge the overlapping prospecting ad sets into a consolidated ad set and attach a negative custom audience exclusion for existing paying customers",
+          "Increase manual bids by 50% on both ad sets so they beat each other faster",
+          "Pause all retargeting and remove all customer exclusions"
+        ],
+        "answer": "Merge the overlapping prospecting ad sets into a consolidated ad set and attach a negative custom audience exclusion for existing paying customers",
+        "correctAnswerIndex": 1,
+        "explanation": "Merging ad sets with 72% overlap stops self-competition and pools conversion data for the algorithm, while excluding paying customers stops wasting cold prospecting budget on already converted accounts.",
+        "wrong_answer_feedback": [
+          {
+            "option": "Split the two ad sets into 10 smaller age-bracket ad sets to further isolate users",
+            "feedback": "Further fragmentation reduces conversions per ad set, worsening 'Learning Limited' delivery."
+          },
+          {
+            "option": "Increase manual bids by 50% on both ad sets so they beat each other faster",
+            "feedback": "Raising bids on overlapping ad sets directly increases your own CPM without solving overlap."
+          }
+        ],
+        "tags": [
+          "audience-overlap",
+          "consolidation",
+          "exclusions"
+        ],
+        "nature": "pipeline_optimization",
+        "logs": [
+          {
+            "timestamp": "13:20:00",
+            "level": "info",
+            "message": "OVERLAP_SCANNER: Built pairwise audience intersection matrix across 4 active ad sets."
+          },
+          {
+            "timestamp": "13:20:01",
+            "level": "warn",
+            "message": "CANNIBALIZATION: AdSet-LAL-1% <-> AdSet-Interest-SaaS overlap = 72% (CPM +31%)."
+          },
+          {
+            "timestamp": "13:20:02",
+            "level": "success",
+            "message": "CONSOLIDATION_PLAN: Proposed unified prospecting pool + paying-customer exclusion list."
+          }
+        ],
+        "expectedToolCalls": [
+          {
+            "toolName": "compute_audience_overlap",
+            "args": {
+              "adSetIds": ["adset-lal-1", "adset-interest-saas", "adset-retarget-30d"],
+              "overlapThresholdPct": 30
+            },
+            "purpose": "Identify self-competing ad sets and missing customer exclusions"
+          }
+        ],
+        "roleSpecificData": {
+          "type": "smm",
+          "data": {
+            "primaryChannel": "Meta Ads",
+            "campaignObjective": "acquisition",
+            "audienceOverlap": {
+              "adSets": [
+                { "id": "lal-1", "name": "AdSet-LAL-1%", "audienceSize": 1800000, "dailySpendUsd": 450, "cpmUsd": 26.4 },
+                { "id": "interest-saas", "name": "AdSet-Interest-SaaS", "audienceSize": 2100000, "dailySpendUsd": 420, "cpmUsd": 28.1 },
+                { "id": "retarget-30d", "name": "AdSet-Retarget-30D", "audienceSize": 95000, "dailySpendUsd": 180, "cpmUsd": 34.5 }
+              ],
+              "overlapPairs": [
+                { "source": "lal-1", "target": "interest-saas", "overlapPct": 72 },
+                { "source": "lal-1", "target": "retarget-30d", "overlapPct": 41 },
+                { "source": "interest-saas", "target": "retarget-30d", "overlapPct": 38 }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "smm-day4",
+    "course": "SMM (Social Media Marketing) Analyst",
+    "roleDomain": "smm",
+    "day": 4,
+    "day_title": "Day 04: Real-Time Social Listening & Crisis Sentiment Triage",
+    "chapter_title": "Real-Time Social Listening & Crisis Sentiment Triage",
+    "labComponentId": "smm-day4-social-listening",
+    "difficulty": "hard",
+    "estimatedMinutes": 45,
+    "prerequisites": [
+      "Day 03: Audience Overlap",
+      "Sentiment Classification & Anomaly Detection"
+    ],
+    "tags": [
+      "smm",
+      "social-listening",
+      "crisis-triage",
+      "bot-detection",
+      "governance"
+    ],
+    "critical_concepts": [
+      {
+        "concept": "Velocity Z-Score & Bot vs Organic Triage",
+        "definition": "Using mention-rate anomalies and author-graph clustering to distinguish a real customer incident from coordinated bot spam or isolated sarcasm.",
+        "elaboration": "Autonomous social listening agents inspect account age, duplicate phrasing entropy, and verified customer handles before triggering PR escalation or pausing scheduled posts.",
+        "industry_application": "Prevents tone-deaf scheduled promotional tweets from firing during an active service outage while avoiding false panics from low-reach spam bots."
+      }
+    ],
+    "theory_content": {
+      "title": "High-Velocity Mention Triage & Autonomous Reply Guardrails",
+      "content": "Automated social publishing without real-time listening creates severe brand risk during outages or viral backlash. An SMM Agentic Analyst monitors mention velocity z-scores, separates authentic customer defect reports from coordinated bot clusters, and enforces human-in-the-loop escalation before publishing crisis responses.",
+      "practical_takeaway": "Auto-pause scheduled promotional queues immediately on verified sentiment spikes, but never let an LLM auto-reply during an active crisis without human sign-off.",
+      "analogy": "Like an airport tower that automatically holds departing flights during severe radar turbulence, while requiring a human pilot and controller to handle emergency communications.",
+      "industry_case_study": "During a payment gateway outage, a fintech brand's social listening agent detected a +5.4 sigma negative mention spike from verified customer handles within 4 minutes. It automatically paused 11 scheduled promo posts across X and LinkedIn and routed a drafted status statement to the incident lead, preventing widespread brand backlash.",
+      "card_titles": [
+        "1. Velocity Anomalies",
+        "2. Authenticity Filtering",
+        "3. Approval Guardrails"
+      ],
+      "card_a": "Mention velocity z-scores detect sudden surges in negative chatter minutes before traditional support ticket dashboards.",
+      "card_b": "Clustering account age and phrasing repetition separates genuine customer issues from coordinated spam bot waves.",
+      "card_c": "Pausing scheduled promos can be automated safely, whereas public crisis statements require human-in-the-loop review.",
+      "highlight": [
+        "mention velocity z-scores",
+        "authentic customer defect reports",
+        "human-in-the-loop escalation"
+      ]
+    },
+    "interactive_questions": [
+      {
+        "id": "smm-ex-401",
+        "componentId": "smm-day4-social-listening",
+        "dayNumber": 4,
+        "difficulty": "hard",
+        "title": "Triage Negative Mention Spike & Enforce Crisis Guardrails",
+        "prompt": "The social listening stream flagged a +4.9 sigma spike in negative mentions (`78%` negative sentiment, only `12%` bot probability) complaining of failed checkout charges, while 6 upbeat promotional posts are queued to publish in 20 minutes.",
+        "question": "What is the safest and highest-leverage autonomous action sequence?",
+        "options": [
+          "Allow the 6 promotional posts to publish as scheduled and block all complaining users",
+          "Let an LLM immediately auto-reply to all 400 mentions offering unapproved $100 refunds",
+          "Automatically pause scheduled promotional queues, tag the cluster as an authentic customer incident, and escalate a drafted holding response for human approval",
+          "Ignore the spike because negative mentions happen every day on social media"
+        ],
+        "answer": "Automatically pause scheduled promotional queues, tag the cluster as an authentic customer incident, and escalate a drafted holding response for human approval",
+        "correctAnswerIndex": 2,
+        "explanation": "A +4.9 sigma spike with only 12% bot probability is an authentic operational incident. Pausing scheduled promos prevents tone-deaf posts immediately, while requiring human approval for public replies and refunds prevents unverified LLM commitments.",
+        "wrong_answer_feedback": [
+          {
+            "option": "Allow the 6 promotional posts to publish as scheduled and block all complaining users",
+            "feedback": "Posting upbeat promos and blocking customers during a checkout failure severely compounds reputational damage."
+          },
+          {
+            "option": "Let an LLM immediately auto-reply to all 400 mentions offering unapproved $100 refunds",
+            "feedback": "Unconstrained autonomous LLM replies during an incident risk hallucinated promises and unauthorized financial liability."
+          }
+        ],
+        "tags": [
+          "social-listening",
+          "crisis-management",
+          "human-in-the-loop"
+        ],
+        "nature": "business_governance",
+        "logs": [
+          {
+            "timestamp": "15:40:00",
+            "level": "info",
+            "message": "LISTENING_STREAM: Processed 1,480 brand mentions in trailing 15-minute window."
+          },
+          {
+            "timestamp": "15:40:01",
+            "level": "error",
+            "message": "VELOCITY_SPIKE: Z-score=+4.9, Negative=78%, BotClusterRatio=0.12 (Authentic Incident)."
+          },
+          {
+            "timestamp": "15:40:02",
+            "level": "success",
+            "message": "GUARDRAIL_TRIGGERED: Paused 6 queued promos; escalated incident brief to Comms Lead."
+          }
+        ],
+        "expectedToolCalls": [
+          {
+            "toolName": "triage_social_sentiment_spike",
+            "args": {
+              "windowMinutes": 15,
+              "zScoreThreshold": 3.0,
+              "autoPauseScheduled": true
+            },
+            "purpose": "Classify mention spike authenticity and pause promotional queues"
+          }
+        ],
+        "roleSpecificData": {
+          "type": "smm",
+          "data": {
+            "primaryChannel": "Cross-Channel",
+            "campaignObjective": "crisis_triage",
+            "listeningTriage": {
+              "mentionVelocityZScore": 4.9,
+              "negativeSentimentPct": 78,
+              "botClusterRatio": 0.12,
+              "mentions": [
+                { "id": "m1", "handle": "@claire_ops", "sentiment": "negative", "botProbability": 0.06, "snippet": "Checkout charged my card twice and threw a 502 error." },
+                { "id": "m2", "handle": "@dev_marcus", "sentiment": "negative", "botProbability": 0.09, "snippet": "Anyone else unable to complete orders right now? Support queue stuck." },
+                { "id": "m3", "handle": "@promo_dealz_99", "sentiment": "neutral", "botProbability": 0.89, "snippet": "Check bio for free crypto airdrop!!!" }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "smm-day5",
+    "course": "SMM (Social Media Marketing) Analyst",
+    "roleDomain": "smm",
+    "day": 5,
+    "day_title": "Day 05: Cross-Channel Attribution & Geo-Holdout Incrementality",
+    "chapter_title": "Cross-Channel Attribution & Geo-Holdout Incrementality",
+    "labComponentId": "smm-day5-attribution-lift",
+    "difficulty": "hard",
+    "estimatedMinutes": 50,
+    "prerequisites": [
+      "Day 01 - Day 04 SMM Milestones",
+      "Conversions API (CAPI) & Causal Lift Testing"
+    ],
+    "tags": [
+      "smm",
+      "attribution",
+      "incrementality",
+      "geo-holdout",
+      "mer",
+      "capi"
+    ],
+    "critical_concepts": [
+      {
+        "concept": "View-Through Overclaim vs Geo-Holdout Lift",
+        "definition": "Measuring true causal sales generated by social ads by comparing exposed markets against matched unexposed control regions.",
+        "elaboration": "Ad platforms often claim 1-day view-through credit for organic and email buyers; agents reconcile platform ROAS against server-side CAPI deduplication, blended MER, and geo-holdout lift.",
+        "industry_application": "Prevents over-allocating budget to retargeting campaigns that merely harvest customers who were already going to buy organically."
+      }
+    ],
+    "theory_content": {
+      "title": "Reconciling Platform ROAS with Causal Incrementality & Blended MER",
+      "content": "Every ad platform grades its own homework, frequently double-counting conversions through overlapping view-through attribution windows. An SMM Agentic Analyst reconciles platform-reported ROAS with server-side CAPI deduplication, blended Marketing Efficiency Ratio, and matched-market geo-holdout incrementality experiments.",
+      "practical_takeaway": "Validate high platform-reported ROAS with a geo-holdout or conversion lift test before scaling retargeting spend.",
+      "analogy": "Like handing out umbrellas inside a mall food court and claiming credit for every customer who walked in during a rainstorm.",
+      "industry_case_study": "A consumer electronics brand's Meta retargeting ad set reported 9.4x ROAS, while blended store revenue stayed flat. A 3-week matched-market geo-holdout test run by their marketing analytics agent proved true incremental ROAS was 1.1x, allowing them to reallocate $45k/month into upper-funnel video prospecting with 3.2x incremental lift.",
+      "card_titles": [
+        "1. Double Counting",
+        "2. Blended MER",
+        "3. Geo-Holdout Lift"
+      ],
+      "card_a": "Overlapping 7-day click and 1-day view windows cause multiple channels to claim credit for the exact same order.",
+      "card_b": "Tracking total revenue divided by total ad spend (MER) anchors channel claims to real finance-ledger cash flow.",
+      "card_c": "Matched-market geo-holdout tests measure causal incremental lift rather than correlation with organic buyers.",
+      "highlight": [
+        "view-through attribution windows",
+        "blended Marketing Efficiency Ratio",
+        "geo-holdout incrementality experiments"
+      ]
+    },
+    "interactive_questions": [
+      {
+        "id": "smm-ex-501",
+        "componentId": "smm-day5-attribution-lift",
+        "dayNumber": 5,
+        "difficulty": "hard",
+        "title": "Audit Inflated Platform ROAS Using Geo-Holdout Incrementality",
+        "prompt": "A retargeting campaign reports 8.6x ROAS in the ad manager (heavily driven by 1-day view-through conversions), but a 21-day matched-market geo-holdout test shows only 1.15x incremental ROAS while Prospecting Video shows 3.10x incremental ROAS.",
+        "question": "How should the SMM agent reallocate next month's budget and update attribution governance?",
+        "options": [
+          "Shift 80% of budget into the retargeting campaign because 8.6x beats 3.10x in the ad manager",
+          "Disable server-side CAPI event_id deduplication so more view-through events are recorded",
+          "Reallocate marginal spend from low-incrementality retargeting into upper-funnel prospecting video and enforce CAPI deduplication plus blended MER guardrails",
+          "Turn off all analytics tracking and judge performance solely by post likes"
+        ],
+        "answer": "Reallocate marginal spend from low-incrementality retargeting into upper-funnel prospecting video and enforce CAPI deduplication plus blended MER guardrails",
+        "correctAnswerIndex": 2,
+        "explanation": "A 1.15x geo-holdout ROAS proves the 8.6x platform figure is mostly harvesting existing organic or email demand via view-through credit. Shifting spend to the 3.10x incremental prospecting channel grows true net revenue.",
+        "wrong_answer_feedback": [
+          {
+            "option": "Shift 80% of budget into the retargeting campaign because 8.6x beats 3.10x in the ad manager",
+            "feedback": "Scaling a campaign with 1.15x causal lift wastes budget on users who would have converted anyway."
+          },
+          {
+            "option": "Disable server-side CAPI event_id deduplication so more view-through events are recorded",
+            "feedback": "Disabling deduplication inflates conversion counts via double-firing browser and server events."
+          }
+        ],
+        "tags": [
+          "incrementality",
+          "geo-holdout",
+          "roas-audit"
+        ],
+        "nature": "business_governance",
+        "logs": [
+          {
+            "timestamp": "16:45:00",
+            "level": "info",
+            "message": "ATTRIBUTION_AUDITOR: Reconciling Platform Ads Manager vs Shopify Revenue Ledger."
+          },
+          {
+            "timestamp": "16:45:01",
+            "level": "warn",
+            "message": "OVERCLAIM_DETECTED: Retargeting Platform ROAS=8.60x (74% 1-day view-through) vs Geo-Holdout Lift=1.15x."
+          },
+          {
+            "timestamp": "16:45:02",
+            "level": "success",
+            "message": "BUDGET_REBALANCE: Recommended shifting 35% of retargeting spend to Prospecting Video (3.10x lift)."
+          }
+        ],
+        "expectedToolCalls": [
+          {
+            "toolName": "evaluate_geo_holdout_lift",
+            "args": {
+              "testWindowDays": 21,
+              "confidenceLevel": 0.95
+            },
+            "purpose": "Compare causal geo-holdout ROAS against platform-reported ROAS"
+          }
+        ],
+        "roleSpecificData": {
+          "type": "smm",
+          "data": {
+            "primaryChannel": "Cross-Channel",
+            "campaignObjective": "incrementality",
+            "attributionLift": {
+              "platformReportedRoas": 8.6,
+              "capiDeduplicatedRoas": 5.2,
+              "geoHoldoutIncrementalRoas": 1.15,
+              "blendedMer": 3.45
+            }
+          }
+        }
+      }
+    ]
+  }
+]

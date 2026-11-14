@@ -37,7 +37,7 @@ const declaredDomains = [...definitionsSource.matchAll(/roleDomain:\s*'([a-z0-9]
 
 /** Chapter ids from the JSON role datasets, which node can read natively. */
 const jsonChapterIds = readdirSync(DATA_DIR)
-  .filter((name) => name.startsWith('agentic') || name.includes('Analytic') || name.startsWith('data') || name.startsWith('seo'))
+  .filter((name) => name.startsWith('agentic') || name.includes('Analytic') || name.startsWith('data') || name.startsWith('seo') || name.startsWith('smm') || name.startsWith('llm'))
   .filter((name) => name.endsWith('.json'))
   .flatMap((name) => JSON.parse(readFileSync(path.join(DATA_DIR, name), 'utf8')).map((chapter) => chapter.labComponentId));
 
@@ -194,7 +194,7 @@ test('case learning flows cover every registered chapter', () => {
 
 test('every role chapter declares theory cards (card_a, card_b, card_c, card_titles) and matching highlights', () => {
   const jsonChapters = readdirSync(DATA_DIR)
-    .filter((name) => name.startsWith('agentic') || name.includes('Analytic') || name.startsWith('data') || name.startsWith('seo'))
+    .filter((name) => name.startsWith('agentic') || name.includes('Analytic') || name.startsWith('data') || name.startsWith('seo') || name.startsWith('smm') || name.startsWith('llm'))
     .filter((name) => name.endsWith('.json'))
     .flatMap((name) => JSON.parse(readFileSync(path.join(DATA_DIR, name), 'utf8')));
 

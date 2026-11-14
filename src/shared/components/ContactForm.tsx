@@ -93,7 +93,7 @@ type Surface = {
 
 /** Focus/hover ink per accent ramp, split by ground so the ring stays visible. */
 const accents: Record<ContactFormAccent, { light: string; dark: string }> = {
-  warm: { light: 'focus:border-accent-600 focus:shadow-[0_0_0_4px_rgba(216,255,56,0.35)]', dark: 'focus:border-[#d8ff38] focus:shadow-[0_0_0_4px_rgba(216,255,56,0.22)]' },
+  warm: { light: 'focus:border-[#343edb] focus:shadow-[0_0_0_4px_rgba(52,62,219,0.14)]', dark: 'focus:border-[#d8ff38] focus:shadow-[0_0_0_4px_rgba(216,255,56,0.22)]' },
   emerald: { light: 'focus:border-emerald-500 focus:shadow-[0_0_0_4px_rgba(16,185,129,0.16)]', dark: 'focus:border-emerald-400 focus:shadow-[0_0_0_4px_rgba(52,211,153,0.2)]' },
   cyan: { light: 'focus:border-cyan-500 focus:shadow-[0_0_0_4px_rgba(6,182,212,0.16)]', dark: 'focus:border-cyan-400 focus:shadow-[0_0_0_4px_rgba(34,211,238,0.2)]' },
   indigo: { light: 'focus:border-indigo-500 focus:shadow-[0_0_0_4px_rgba(99,102,241,0.16)]', dark: 'focus:border-indigo-400 focus:shadow-[0_0_0_4px_rgba(129,140,248,0.2)]' },
@@ -101,7 +101,7 @@ const accents: Record<ContactFormAccent, { light: string; dark: string }> = {
 
 const buttons: Record<ContactFormAccent, { light: string; dark: string }> = {
   warm: {
-    light: 'accent-fill-gradient text-[#101014] border border-ink/15 shadow-lg shadow-[#d8ff38]/35 hover:brightness-95 focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2',
+    light: 'bg-[#d8ff38] text-[#101014] hover:bg-[#c6f028] shadow-sm focus-visible:ring-2 focus-visible:ring-[#343edb] focus-visible:ring-offset-2',
     dark: 'bg-[#d8ff38] text-[#101014] hover:bg-[#c6f028] focus-visible:ring-2 focus-visible:ring-[#d8ff38] focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900',
   },
   emerald: {

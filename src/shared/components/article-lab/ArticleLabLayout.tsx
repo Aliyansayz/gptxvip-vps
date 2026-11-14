@@ -32,6 +32,8 @@ interface ArticleLabLayoutProps {
 
 const domainIconMap: Record<string, React.ReactNode> = {
   seo: <Sparkles className="h-5 w-5" />,
+  smm: <Sparkles className="h-5 w-5" />,
+  security: <Sparkles className="h-5 w-5" />,
   accountant: <Briefcase className="h-5 w-5" />,
   commerce: <Sparkles className="h-5 w-5" />,
   recommendation: <Sparkles className="h-5 w-5" />,
@@ -45,6 +47,8 @@ const domainIconMap: Record<string, React.ReactNode> = {
 
 const domainLabelMap: Record<string, string> = {
   seo: 'SEO',
+  smm: 'SMM',
+  security: 'LLM/Web Security',
   accountant: 'Accounting',
   commerce: 'Commerce',
   recommendation: 'Recommendations',

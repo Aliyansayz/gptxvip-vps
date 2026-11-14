@@ -8,9 +8,11 @@ import {
   Database,
   FileText,
   Layers,
+  Megaphone,
   PackageSearch,
   Palette,
   Search,
+  Shield,
   ShoppingBag,
 } from 'lucide-react';
 
@@ -26,7 +28,9 @@ export const agenticRoleIconMap: Record<string, ComponentType<{ className?: stri
   PackageSearch,
   ClipboardList,
   FileText,
+  Megaphone,
   Palette,
+  Shield,
 };
 
 export const getAgenticRoleIcon = (iconName: string) => agenticRoleIconMap[iconName] || Layers;
@@ -45,6 +49,8 @@ export const getAgenticRoleIcon = (iconName: string) => agenticRoleIconMap[iconN
  */
 const DOMAIN_ICONS: Record<string, string> = {
   seo: 'search-from-code',
+  smm: 'telescope',
+  security: 'shield',
   accountant: 'tax-calculator',
   commerce: 'add-to-basket',
   recommendation: 'robot',

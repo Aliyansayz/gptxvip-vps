@@ -13,6 +13,16 @@ const useCases: Record<RoleDomain, AgenticRoleUseCase> = {
     decision: 'Inspect intent, structured data, internal links, and performance before choosing a fix.',
     evidence: 'Explain which signal supports the next optimization step.',
   },
+  smm: {
+    situation: 'A social campaign loses reach or ROAS as hooks, frequency, audience overlap, or attribution drift.',
+    decision: 'Audit retention curves, fatigue signals, auction overlap, sentiment velocity, and geo-holdout lift.',
+    evidence: 'Cite the retention cliff, frequency threshold, overlap pair, or causal lift behind the change.',
+  },
+  security: {
+    situation: 'An LLM agent ingests untrusted web content, invokes network tools, or renders model output into a browser.',
+    decision: 'Enforce context taint gates, socket-level SSRF egress rules, DOMPurify + CSP nonces, OBO tokens, and token-bucket caps.',
+    evidence: 'Cite the blocked payload, resolved CIDR, sanitized sink, tenant RLS policy, or token-spend ceiling.',
+  },
   accountant: {
     situation: 'A sample ledger has transactions that need reconciliation and review.',
     decision: 'Check double-entry balance, trace anomalies, and keep the original records visible.',

@@ -170,7 +170,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             navIdle: 'text-slate-600 hover:bg-white/60 hover:text-ink',
             navActive: 'bg-white/70 text-ink',
             ring: 'focus-visible:ring-accent-600',
-            cta: 'bg-ink text-white hover:bg-[#d8ff38] hover:text-ink active:scale-[0.97] transition-all',
+            cta: 'bg-ink text-white hover:bg-[#343edb] hover:text-white active:scale-[0.97] transition-all',
             search: 'border-ink/10 bg-white/80 text-slate-700 placeholder:text-slate-400 focus:border-accent-300 focus:ring-accent-100',
             menu: 'border-ink/10 bg-paper/95 backdrop-blur-2xl',
             menuLink: 'text-slate-700 hover:bg-ink/5 hover:text-ink',
@@ -375,7 +375,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <nav aria-label="Inbuilt prototypes" className={`border-t ${glass ? 'border-ink/10 bg-white/75 backdrop-blur-xl' : 'border-slate-900/10 bg-white/95 backdrop-blur-xl'}`}>
                     <div className="mx-auto flex max-w-6xl items-center gap-3 overflow-x-auto no-scrollbar px-5 py-2 sm:px-8 sm:gap-4">
                         <p className="flex shrink-0 items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                            <span className="flex h-5 w-5 items-center justify-center rounded-md bg-[#d8ff38] text-ink"><Layers className="h-3 w-3" aria-hidden="true" /></span>
+                            <span className="flex h-5 w-5 items-center justify-center rounded-md bg-[#343edb]/10 text-[#343edb]"><Layers className="h-3 w-3" aria-hidden="true" /></span>
                             <span className="whitespace-nowrap">Prototypes</span>
                         </p>
                         <ul className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
@@ -390,7 +390,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                                                 rel="noopener noreferrer"
                                                 className={`flex min-h-8 items-center justify-center gap-1.5 rounded-full px-3 text-xs font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 ${skin.ring} text-slate-600 hover:bg-white/80 hover:text-ink sm:px-3.5`}
                                             >
-                                                <ProtoIcon className="h-3.5 w-3.5 shrink-0 text-accent-700" aria-hidden="true" />
+                                                <ProtoIcon className="h-3.5 w-3.5 shrink-0 text-[#343edb]" aria-hidden="true" />
                                                 <span className="truncate">{proto.label}</span>
                                                 <span className="hidden text-[11px] font-medium text-slate-400 lg:inline">{proto.hint}</span>
                                                 <ArrowUpRight className="h-3 w-3 opacity-60 ml-0.5 shrink-0" aria-hidden="true" />
@@ -409,7 +409,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                                                 isSelected ? 'bg-white text-ink shadow-xs font-bold' : 'text-slate-600 hover:bg-white/80 hover:text-ink'
                                             }`}
                                         >
-                                            <ProtoIcon className="h-3.5 w-3.5 shrink-0 text-accent-700" aria-hidden="true" />
+                                            <ProtoIcon className="h-3.5 w-3.5 shrink-0 text-[#343edb]" aria-hidden="true" />
                                             <span className="truncate">{proto.label}</span>
                                             <span className="hidden text-[11px] font-medium text-slate-400 lg:inline">{proto.hint}</span>
                                         </button>

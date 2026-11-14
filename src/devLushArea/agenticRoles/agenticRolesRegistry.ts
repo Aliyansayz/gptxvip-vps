@@ -8,6 +8,20 @@ import InternalLinkPageRankActivity from './activities/seo/InternalLinkPageRankA
 import CoreWebVitalsHydrationActivity from './activities/seo/CoreWebVitalsHydrationActivity';
 import ContentOptimizationAgentActivity from './activities/seo/ContentOptimizationAgentActivity';
 
+// 1b. SMM (Social Media Marketing) Analyst (Days 1..5)
+import HookRetentionAuditActivity from './activities/smm/HookRetentionAuditActivity';
+import CreativeFatigueMonitorActivity from './activities/smm/CreativeFatigueMonitorActivity';
+import AudienceOverlapGraphActivity from './activities/smm/AudienceOverlapGraphActivity';
+import SocialListeningTriageActivity from './activities/smm/SocialListeningTriageActivity';
+import AttributionIncrementalityActivity from './activities/smm/AttributionIncrementalityActivity';
+
+// 1c. LLM/Web Security Engineer (Days 1..5)
+import IndirectPromptInjectionActivity from './activities/security/IndirectPromptInjectionActivity';
+import SsrfToolEgressActivity from './activities/security/SsrfToolEgressActivity';
+import LlmOutputXssCspActivity from './activities/security/LlmOutputXssCspActivity';
+import ConfusedDeputyAuthActivity from './activities/security/ConfusedDeputyAuthActivity';
+import TokenSpongeRateLimitActivity from './activities/security/TokenSpongeRateLimitActivity';
+
 // 2. Agentic Accountant (Days 1..5)
 import DoubleEntryReconciliationActivity from './activities/accountant/DoubleEntryReconciliationActivity';
 import BenfordFraudScanActivity from './activities/accountant/BenfordFraudScanActivity';
@@ -69,6 +83,20 @@ export const agenticRolesRegistry: Record<string, React.ComponentType<ActivityCo
   'seo-day3-link-graph': InternalLinkPageRankActivity,
   'seo-day4-web-vitals': CoreWebVitalsHydrationActivity,
   'seo-day5-content-optimizer': ContentOptimizationAgentActivity,
+
+  // 1b. SMM (Social Media Marketing) Analyst (Days 1..5)
+  'smm-day1-hook-retention': HookRetentionAuditActivity,
+  'smm-day2-creative-fatigue': CreativeFatigueMonitorActivity,
+  'smm-day3-audience-overlap': AudienceOverlapGraphActivity,
+  'smm-day4-social-listening': SocialListeningTriageActivity,
+  'smm-day5-attribution-lift': AttributionIncrementalityActivity,
+
+  // 1c. LLM/Web Security Engineer (Days 1..5)
+  'security-day1-indirect-prompt-injection': IndirectPromptInjectionActivity,
+  'security-day2-ssrf-tool-egress': SsrfToolEgressActivity,
+  'security-day3-llm-output-xss-csp': LlmOutputXssCspActivity,
+  'security-day4-mcp-oauth-confused-deputy': ConfusedDeputyAuthActivity,
+  'security-day5-dos-token-sponge-rate-limiting': TokenSpongeRateLimitActivity,
 
   // 2. Agentic Accountant (Days 1..5)
   'accountant-day1-ledger-reconciliation': DoubleEntryReconciliationActivity,

@@ -52,10 +52,16 @@ export function QuotePanel({
   className = '',
 }: QuotePanelProps) {
   return (
-    <section className={`border-b border-ink/10 bg-white/65 py-10 sm:py-12 ${className}`} aria-label={eyebrow}>
+    <section className={`border-b border-[#e9e9ec] bg-white py-10 sm:py-12 ${className}`} aria-label={eyebrow}>
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal>
-          <div className="overflow-hidden rounded-2xl border border-slate-800 bg-[#0c0d12] text-white shadow-xl shadow-slate-900/10">
+          <div
+            className="overflow-hidden rounded-2xl border border-[#2a3166]/60 text-white shadow-xl shadow-[#11121c]/15"
+            style={{
+              background:
+                'radial-gradient(ellipse at 90% 10%, rgba(111,120,255,0.28) 0, transparent 42%), linear-gradient(125deg, #0b0d17 10%, #14193d 70%, #2534bf 100%)',
+            }}
+          >
             <div className="grid lg:grid-cols-2">
               {/* -------------------------------------------------- offer */}
               <div className="p-6 sm:p-8">

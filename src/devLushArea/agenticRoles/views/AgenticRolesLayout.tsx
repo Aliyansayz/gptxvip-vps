@@ -24,6 +24,8 @@ interface AgenticRolesLayoutProps {
 
 const MOBILE_ROLE_LABELS: Record<string, string> = {
   'seo-agentic-analyst': 'SEO Analyst',
+  'smm-agentic-analyst': 'SMM Analyst',
+  'llm-web-security-engineer': 'LLM/Web Security',
   'agentic-accountant': 'Accounting',
   'agentic-commerce-analyst': 'Commerce',
   'agentic-recommendation-analyst': 'Recommendations',

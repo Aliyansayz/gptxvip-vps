@@ -11,6 +11,8 @@ export type NormalizedDifficulty = 'Easy' | 'Medium' | 'Hard' | 'easy' | 'medium
  */
 export type RoleDomain = 
   | 'seo' 
+  | 'smm'
+  | 'security'
   | 'accountant' 
   | 'commerce' 
   | 'recommendation' 
@@ -99,6 +101,77 @@ export interface SeoDomainData {
     inpMs: number;
     ttfbMs: number;
     payloadKb: number;
+  };
+}
+
+export interface SmmDomainData {
+  primaryChannel: 'TikTok' | 'Instagram Reels' | 'Meta Ads' | 'LinkedIn' | 'YouTube Shorts' | 'Cross-Channel';
+  campaignObjective: 'retention' | 'acquisition' | 'awareness' | 'crisis_triage' | 'incrementality';
+  hookAudit?: {
+    thumbStopRatePct: number;
+    holdRate30sPct: number;
+    avgWatchTimeSec: number;
+    dropOffSecond: number;
+    variants: Array<{ id: string; label: string; thumbStopPct: number; hold30sPct: number; completionPct: number }>;
+  };
+  creativeFatigue?: {
+    frequency: number;
+    ctrPct: number;
+    cpaUsd: number;
+    baselineCpaUsd: number;
+    dailyTrends: Array<{ day: string; frequency: number; ctrPct: number; cpaUsd: number }>;
+  };
+  audienceOverlap?: {
+    adSets: Array<{ id: string; name: string; audienceSize: number; dailySpendUsd: number; cpmUsd: number }>;
+    overlapPairs: Array<{ source: string; target: string; overlapPct: number }>;
+  };
+  listeningTriage?: {
+    mentionVelocityZScore: number;
+    negativeSentimentPct: number;
+    botClusterRatio: number;
+    mentions: Array<{ id: string; handle: string; sentiment: 'negative' | 'neutral' | 'positive'; botProbability: number; snippet: string }>;
+  };
+  attributionLift?: {
+    platformReportedRoas: number;
+    capiDeduplicatedRoas: number;
+    geoHoldoutIncrementalRoas: number;
+    blendedMer: number;
+  };
+}
+
+export interface SecurityDomainData {
+  threatVector: 'indirect_prompt_injection' | 'ssrf_egress' | 'dom_xss_csp' | 'confused_deputy_auth' | 'denial_of_wallet';
+  severity: 'critical' | 'high' | 'medium';
+  promptInjectionAudit?: {
+    untrustedSource: string;
+    detectedPayload: string;
+    exfiltrationChannel: string;
+    taintBlocked: boolean;
+  };
+  ssrfEgressAudit?: {
+    requestedUrl: string;
+    resolvedIp: string;
+    redirectTarget?: string;
+    blockedByCidrPolicy: boolean;
+  };
+  outputSanitizationAudit?: {
+    rawModelOutput: string;
+    dangerousSinks: string[];
+    cspPolicy: string;
+    sanitizedSafe: boolean;
+  };
+  confusedDeputyAudit?: {
+    principalUser: string;
+    requestedResourceTenant: string;
+    tokenMode: 'shared_service_account' | 'user_obo_scoped_jwt';
+    rlsEnforced: boolean;
+  };
+  tokenSpongeAudit?: {
+    requestsPerMinute: number;
+    avgOutputTokens: number;
+    toolLoopDepth: number;
+    projectedHourlyCostUsd: number;
+    budgetCapUsd: number;
   };
 }
 
@@ -242,6 +315,8 @@ export interface VisualizationDomainData {
 
 export type RoleSpecificData = 
   | { type: 'seo'; data: SeoDomainData }
+  | { type: 'smm'; data: SmmDomainData }
+  | { type: 'security'; data: SecurityDomainData }
   | { type: 'accountant'; data: AccountantDomainData }
   | { type: 'commerce'; data: CommerceDomainData }
   | { type: 'recommendation'; data: RecommendationDomainData }

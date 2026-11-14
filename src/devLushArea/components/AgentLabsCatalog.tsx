@@ -77,19 +77,23 @@ export function AgentLabsCatalog({
   const warm = accent === 'warm';
 
   return (
-    <section className={`border-b border-ink/10 bg-paper py-10 sm:py-12 ${className}`} aria-labelledby={headingId}>
+    <section className={`border-b border-[#e9e9ec] bg-[#f8f9fc] py-10 sm:py-12 ${className}`} aria-labelledby={headingId}>
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <Reveal>
             <div className="max-w-xl">
-              <span className={`mb-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.18em] ${warm ? 'bg-[#d8ff38] text-ink' : 'bg-cyan-50 text-cyan-700'}`}>
+              <span className={`mb-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.18em] ${warm ? 'bg-[#343edb]/10 text-[#343edb]' : 'bg-cyan-50 text-cyan-700'}`}>
                 05 / {eyebrow.toUpperCase()}
               </span>
-              <h2 id={headingId} className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 font-display">
+              <h2
+                id={headingId}
+                className="text-2xl sm:text-4xl font-medium tracking-[-0.04em] text-[#101014]"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
                 {heading}
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">{description}</p>
-              {meta && <div className="mt-1.5 text-xs text-slate-500">{meta}</div>}
+              <p className="mt-2 text-sm leading-relaxed text-[#555560] sm:text-base">{description}</p>
+              {meta && <div className="mt-1.5 text-xs text-[#777780]">{meta}</div>}
             </div>
           </Reveal>
 
@@ -103,16 +107,16 @@ export function AgentLabsCatalog({
                     type="button"
                     onClick={() => toggleGroup(group)}
                     aria-pressed={selected}
-                    className={`inline-flex min-h-9 items-center gap-2 rounded-full border px-3.5 py-1 text-xs font-medium transition-[color,background-color,border-color] duration-150 focus-visible:outline-none focus-visible:ring-2 ${warm ? 'focus-visible:ring-ink' : 'focus-visible:ring-cyan-500'} focus-visible:ring-offset-2 active:scale-[0.96] motion-reduce:transform-none ${
+                    className={`inline-flex min-h-9 items-center gap-2 rounded-full border px-3.5 py-1 text-xs font-semibold transition-[color,background-color,border-color] duration-150 focus-visible:outline-none focus-visible:ring-2 ${warm ? 'focus-visible:ring-[#343edb]' : 'focus-visible:ring-cyan-500'} focus-visible:ring-offset-2 active:scale-[0.96] motion-reduce:transform-none ${
                       selected
                         ? warm
-                          ? 'border-ink/25 bg-[#d8ff38] text-ink font-bold shadow-sm'
+                          ? 'border-[#343edb] bg-[#343edb] text-white font-bold shadow-xs'
                           : 'border-cyan-500 bg-cyan-50 text-cyan-900 font-bold'
-                        : 'border-ink/10 bg-white text-slate-600 hover:border-ink/25 hover:bg-white hover:text-slate-950'
+                        : 'border-[#e9e9ec] bg-white text-[#555560] hover:border-[#343edb] hover:text-[#101014]'
                     }`}
                   >
                     {group}
-                    <span className={`font-mono text-[10px] tabular-nums ${selected ? (warm ? 'text-ink' : 'text-cyan-800') : 'text-slate-400'}`}>
+                    <span className={`font-mono text-[10px] tabular-nums ${selected ? (warm ? 'text-[#d8ff38]' : 'text-cyan-800') : 'text-[#777780]'}`}>
                       {counts.get(group) ?? 0}
                     </span>
                   </button>
@@ -122,7 +126,7 @@ export function AgentLabsCatalog({
                 <button
                   type="button"
                   onClick={() => setActiveGroup(null)}
-                  className="inline-flex min-h-9 items-center rounded-full px-3 text-xs font-semibold text-slate-600 underline decoration-[#c6f028] decoration-2 underline-offset-4 transition-colors duration-150 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+                  className="inline-flex min-h-9 items-center rounded-full px-3 text-xs font-bold text-[#343edb] underline decoration-[#d8ff38] decoration-2 underline-offset-4 transition-colors duration-150 hover:text-[#2534bf] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb]"
                 >
                   Show all {agentLabTopics.length}
                 </button>

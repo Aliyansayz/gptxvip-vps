@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import {
     ArrowRight,
     Bot,
-    CheckCircle2,
     ChevronLeft,
     ChevronRight,
-    Cpu,
+    Clock,
+    FlaskConical,
     Layers,
     Network,
     Pause,
@@ -25,8 +25,6 @@ import { agenticRoleDefinitions } from '../devLushArea/agenticRoles/data';
 import { ContactForm } from '../shared/components/ContactForm';
 import { getAgenticRoleHref } from '../devLushArea/agenticRoles/roleRoutes';
 import { AnimatePresence, motion } from 'motion/react';
-import { AuroraBackground } from '../shared/components/atmosphere/AuroraBackground';
-import GlassPanel from '../shared/components/GlassPanel';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { Reveal, RevealGroup, RevealItem } from '../shared/components/Reveal';
@@ -240,9 +238,12 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
     ];
 
     return (
-        <div className="premium-surface min-h-screen overflow-x-hidden bg-paper text-ink selection:bg-accent-200 selection:text-ink">
+        <div
+            className="min-h-screen overflow-x-hidden bg-white text-[#101014] selection:bg-[#d8ff38] selection:text-[#101014]"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+        >
             <Navbar
-                variant="glass"
+                variant="default"
                 showPrototypesSubnav={true}
                 onNavigateFinhub={onNavigateFinhub}
                 onNavigateCodeConcepts={onNavigateCodeConcepts}
@@ -256,96 +257,93 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
             />
 
             <main>
-                {/* ---------------------------------------------------------------- hero */}
-                <section className="relative isolate" aria-labelledby="hero-heading">
-                    {/* Scoped to the hero rather than `fixed`, so the four blurred
-                        blades never become a permanent compositing layer. */}
-                    <AuroraBackground theme="light" variant="hero" />
-
-                    {/*
-                     * Legibility scrim. The blades drift, so the saturated core
-                     * periodically passes under the text column; composited over
-                     * paper it reaches roughly rgb(202,82,88), which drops
-                     * slate-600 body copy to about 1.75:1. This holds the copy
-                     * column near paper while leaving the right side — where the
-                     * dark glass carousel sits and the red reads most strongly —
-                     * fully saturated.
-                     */}
-                    <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(110%_95%_at_22%_54%,rgba(247,248,245,0.92)_0%,rgba(247,248,245,0.72)_40%,rgba(247,248,245,0)_76%)]" />
-
-                    <div className="relative mx-auto max-w-6xl px-5 pb-10 pt-5 sm:px-8 sm:pt-8 lg:pb-12 lg:pt-10">
-                        <div className="grid items-center gap-7 lg:grid-cols-[0.94fr_1.06fr] lg:gap-9">
+                {/* ---------------------------------------------------------------- hero (Blue + Yellow Boulevard palette, quiet right preview) */}
+                <section
+                    className="relative overflow-hidden text-white"
+                    style={{
+                        background:
+                            'radial-gradient(ellipse at 78% 25%, #6f78ff 0, transparent 38%), radial-gradient(ellipse at 63% 76%, #1528b7 0, transparent 42%), linear-gradient(115deg, #11121c 5%, #272bc3 58%, #7f8cff 100%)',
+                    }}
+                    aria-labelledby="hero-heading"
+                >
+                    <div className="mx-auto max-w-6xl px-5 pb-10 pt-8 sm:px-8 sm:pt-10 lg:pb-12">
+                        <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
                             <div>
-                                <Reveal from="none" duration={0.5}>
-                                    <div className="glass-panel-light mb-3 inline-flex items-center gap-2 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-700">
-                                        <span className="h-2 w-2 shrink-0 rounded-full bg-[#d8ff38] ring-1 ring-ink/25" />
-                                        Zero-Setup In-Browser Workspaces · Interactive Systems
+                                <Reveal from="none" duration={0.45}>
+                                    <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-white">
+                                        <span className="h-2 w-2 shrink-0 rounded-full bg-[#d8ff38]" />
+                                        Zero-Setup In-Browser Workspaces · Live Systems
                                     </div>
                                 </Reveal>
 
-                                <Reveal from="up" duration={0.7} delay={0.06}>
-                                    <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-slate-700 sm:text-sm">
+                                <Reveal from="up" duration={0.65} delay={0.05}>
+                                    <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-white/75">
                                         Autonomous Systems &amp; Applied Architecture
                                     </p>
-                                    <h1 id="hero-heading" className="max-w-2xl text-balance font-display text-[clamp(2.2rem,4.7vw,3.95rem)] font-extrabold leading-[1.03] tracking-[-0.045em] text-slate-950">
+                                    <h1
+                                        id="hero-heading"
+                                        className="max-w-2xl text-balance text-3xl font-medium leading-[1.04] tracking-[-0.045em] text-white sm:text-5xl"
+                                        style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                                    >
                                         See how agent systems and roles{' '}
-                                        <span className="inline-block rounded-xl bg-[#d8ff38] px-2.5 py-0.5 text-slate-950 shadow-[0_8px_24px_rgba(216,255,56,0.48)]">
+                                        <span className="underline decoration-[#d8ff38] decoration-[3px] underline-offset-[6px]">
                                             actually work.
                                         </span>
                                     </h1>
                                 </Reveal>
 
-                                <Reveal from="up" duration={0.65} delay={0.14}>
-                                    <p className="mt-4 max-w-xl text-[clamp(1rem,1.35vw,1.125rem)] leading-7 text-slate-600">
+                                <Reveal from="up" duration={0.6} delay={0.12}>
+                                    <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
                                         Run autonomous agent, role, and system models right inside the page with no setup. Open a prototype above, change one input, and watch the model respond.
                                     </p>
                                 </Reveal>
 
-                                <Reveal from="up" duration={0.6} delay={0.22}>
-                                    <div className="mt-5 flex flex-wrap gap-3">
+                                <Reveal from="up" duration={0.55} delay={0.18}>
+                                    <div className="mt-6 flex flex-wrap items-center gap-3">
                                         <button
                                             type="button"
                                             onClick={() => window.location.assign('/agents/lab')}
-                                            className="group inline-flex min-h-11 items-center gap-2 rounded-full border border-ink/15 bg-[#d8ff38] px-5 py-2.5 text-sm font-bold text-[#101014] shadow-[0_10px_28px_rgba(216,255,56,0.45)] transition-[transform,background-color] duration-200 hover:-translate-y-0.5 hover:bg-[#c6f028] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 motion-reduce:transform-none"
+                                            className="inline-flex min-h-11 items-center gap-3 rounded-[30px] bg-[#d8ff38] px-4 py-2.5 text-xs font-bold text-[#101014] transition hover:-translate-y-0.5 hover:bg-[#c6f028] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#272bc3] motion-reduce:transform-none cursor-pointer"
                                         >
-                                            Start an Agent Lab <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transform-none" />
+                                            <span>Start an Agent Lab</span>
+                                            <span className="grid h-5 w-5 place-items-center rounded-full bg-[#101014] text-[10px] text-white">
+                                                ↗
+                                            </span>
                                         </button>
                                         <button
                                             type="button"
                                             onClick={navigateUseCases}
-                                            className="glass-panel-light inline-flex min-h-11 items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold text-slate-800 transition-[filter,border-color] duration-200 hover:border-ink/25 hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2"
+                                            className="inline-flex min-h-11 items-center gap-2 rounded-[30px] border border-white/25 bg-white/10 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d8ff38]"
                                         >
-                                            Explore Case Studies{' '}
-                                            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#d8ff38] text-[#101014]">
-                                                <ArrowRight className="h-3.5 w-3.5" />
-                                            </span>
+                                            <span>Explore Case Studies</span>
+                                            <ArrowRight className="h-3.5 w-3.5 text-[#d8ff38]" />
                                         </button>
                                     </div>
                                 </Reveal>
 
-                                <Reveal from="up" duration={0.6} delay={0.3}>
-                                    <dl className="mt-6 flex max-w-xl flex-wrap items-center gap-x-7 gap-y-2 border-t border-ink/10 pt-4 text-sm text-slate-600">
+                                <Reveal from="up" duration={0.55} delay={0.24}>
+                                    <dl className="mt-7 flex max-w-xl flex-wrap items-center gap-x-7 gap-y-2 border-t border-white/15 pt-4 text-xs text-white/75">
                                         <div className="flex items-baseline gap-2">
                                             <dt className="sr-only">Inbuilt prototypes</dt>
-                                            <dd className="rounded-md bg-[#d8ff38]/75 px-1.5 font-display text-lg font-extrabold text-ink">5</dd>
+                                            <dd className="text-lg font-bold tabular-nums text-[#d8ff38]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>5</dd>
                                             <span>inbuilt prototypes</span>
                                         </div>
                                         <div className="flex items-baseline gap-2">
                                             <dt className="sr-only">Agent lab topics</dt>
-                                            <dd className="rounded-md bg-[#d8ff38]/75 px-1.5 font-display text-lg font-extrabold text-ink">{agentLabTopics.length}</dd>
+                                            <dd className="text-lg font-bold tabular-nums text-[#d8ff38]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{agentLabTopics.length}</dd>
                                             <span>agent lab topics</span>
                                         </div>
                                         <div className="flex items-baseline gap-2">
                                             <dt className="sr-only">Applied agent roles</dt>
-                                            <dd className="rounded-md bg-[#d8ff38]/75 px-1.5 font-display text-lg font-extrabold text-ink">{agenticRoleDefinitions.length}</dd>
+                                            <dd className="text-lg font-bold tabular-nums text-[#d8ff38]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{agenticRoleDefinitions.length}</dd>
                                             <span>agent roles</span>
                                         </div>
                                     </dl>
                                 </Reveal>
                             </div>
 
-                            {/* ------------------------------------------------------ prominent hero visual */}
-                            <Reveal from="left" duration={0.75} delay={0.18}>
+                            {/* ------------------------------------------------------ quiet preview panel */}
+                            <Reveal from="left" duration={0.65} delay={0.14}>
                                 <div
                                     className="relative"
                                     role="region"
@@ -365,228 +363,112 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                                     onMouseEnter={() => setIsCarouselHovered(true)}
                                     onMouseLeave={() => setIsCarouselHovered(false)}
                                 >
-                                    <div aria-hidden="true" className="pointer-events-none absolute -inset-2 rounded-[1.75rem] bg-[radial-gradient(circle_at_80%_20%,rgba(216,255,56,0.48),transparent_62%)] blur-xl" />
-
-                                    <GlassPanel className="relative overflow-hidden rounded-2xl border border-white/15 bg-[#0c0e13]/95 p-4 shadow-[0_28px_72px_rgba(12,13,18,0.28)] transition-colors sm:p-6">
-                                        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#d8ff38] to-transparent opacity-90" />
-
-                                        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3 text-xs font-semibold text-slate-300">
-                                            <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Featured system views">
-                                                {slides.map((item, idx) => {
-                                                    const active = idx === slideIndex;
-                                                    const shortTabLabel = idx === 0 ? 'Roles' : idx === 1 ? 'Sandboxes' : 'Agent Labs';
-                                                    return (
-                                                        <button
-                                                            key={item.eyebrow}
-                                                            type="button"
-                                                            role="tab"
-                                                            aria-selected={active}
-                                                            aria-label={item.label}
-                                                            onClick={() => setSlideIndex(idx)}
-                                                            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d8ff38] ${
-                                                                active
-                                                                    ? 'bg-[#d8ff38] text-[#101014]'
-                                                                    : 'bg-white/[0.06] text-slate-300 hover:bg-white/10 hover:text-white'
-                                                            }`}
-                                                        >
-                                                            <span className="font-mono text-[10px]">0{idx + 1}</span>
-                                                            <span>{shortTabLabel}</span>
-                                                        </button>
-                                                    );
-                                                })}
-                                            </div>
-                                            <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-[#d8ff38]/35 bg-[#d8ff38]/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-[#d8ff38]">
-                                                <span className="h-1.5 w-1.5 rounded-full bg-[#d8ff38]" />
-                                                Interactive · {slideIndex + 1}/{slides.length}
+                                    <div className="rounded-xl border border-white/15 bg-[#0b1024]/55 p-4 backdrop-blur-md sm:p-5">
+                                        <div className="flex items-center justify-between border-b border-white/10 pb-3 text-xs text-white/75">
+                                            <span className="flex items-center gap-2 font-semibold">
+                                                <Bot className="h-3.5 w-3.5 text-[#d8ff38]" /> {slide.eyebrow}
+                                            </span>
+                                            <span className="font-mono text-[10px] text-white/55">
+                                                {slideIndex + 1} / {slides.length}
                                             </span>
                                         </div>
 
                                         <AnimatePresence mode="wait" initial={false}>
                                             <motion.div
                                                 key={slideIndex}
-                                                className="mt-5 min-h-[325px]"
+                                                className="mt-4 min-h-[215px]"
                                                 aria-live={isCarouselPaused || isCarouselInteracting ? 'polite' : 'off'}
-                                                initial={{ opacity: 0, y: reducedMotion ? 0 : 10 }}
+                                                initial={{ opacity: 0, y: reducedMotion ? 0 : 8 }}
                                                 animate={{ opacity: 1, y: 0 }}
-                                                exit={{ opacity: 0, y: reducedMotion ? 0 : -10 }}
-                                                transition={{ duration: reducedMotion ? 0.01 : 0.35, ease: [0.22, 1, 0.36, 1] }}
+                                                exit={{ opacity: 0, y: reducedMotion ? 0 : -8 }}
+                                                transition={{ duration: reducedMotion ? 0.01 : 0.3, ease: [0.22, 1, 0.36, 1] }}
                                             >
                                                 {slideTopic ? (
                                                     <AgentTopicPreview topic={slideTopic} tone="dark" compact accent="warm" />
-                                                ) : slideIndex === 0 ? (
-                                                    <div className="flex h-full flex-col justify-between gap-4">
-                                                        <div>
-                                                            <div className="flex items-start justify-between gap-3">
-                                                                <div>
-                                                                    <p className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[#d8ff38]">
-                                                                        <Sparkles className="h-3.5 w-3.5" /> {slide.eyebrow}
-                                                                    </p>
-                                                                    <h2 className="mt-1.5 font-display text-2xl font-bold leading-tight tracking-[-0.03em] text-white sm:text-[1.7rem]">
-                                                                        {slide.title}
-                                                                    </h2>
-                                                                </div>
-                                                                <span className="shrink-0 rounded-lg bg-[#d8ff38] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#101014]">
-                                                                    {agenticRoleDefinitions.length} Roles
-                                                                </span>
-                                                            </div>
-                                                            <p className="mt-2 max-w-lg text-xs leading-relaxed text-slate-300 sm:text-sm">
-                                                                {slide.body}
-                                                            </p>
-
-                                                            {/* Visual Architecture Pipeline */}
-                                                            <div className="mt-4 grid grid-cols-3 gap-2">
-                                                                <div className="rounded-xl border border-white/10 bg-white/[0.04] p-2.5">
-                                                                    <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
-                                                                        <span>01</span>
-                                                                        <Bot className="h-3.5 w-3.5 text-slate-300" />
-                                                                    </div>
-                                                                    <p className="mt-1.5 text-xs font-bold text-white">Role Intake</p>
-                                                                    <p className="mt-0.5 text-[11px] text-slate-400">Live signals &amp; constraints</p>
-                                                                </div>
-                                                                <div className="rounded-xl border border-[#d8ff38]/55 bg-[#d8ff38]/12 p-2.5 shadow-[0_0_24px_rgba(216,255,56,0.12)]">
-                                                                    <div className="flex items-center justify-between text-[10px] font-mono text-[#d8ff38]">
-                                                                        <span>02 · LOOP</span>
-                                                                        <Cpu className="h-3.5 w-3.5 text-[#d8ff38]" />
-                                                                    </div>
-                                                                    <p className="mt-1.5 text-xs font-bold text-white">Agent Decision</p>
-                                                                    <p className="mt-0.5 text-[11px] text-[#f3ffa3]">Trace &amp; verify choices</p>
-                                                                </div>
-                                                                <div className="rounded-xl border border-white/10 bg-white/[0.04] p-2.5">
-                                                                    <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
-                                                                        <span>03</span>
-                                                                        <CheckCircle2 className="h-3.5 w-3.5 text-[#d8ff38]" />
-                                                                    </div>
-                                                                    <p className="mt-1.5 text-xs font-bold text-white">Proof Output</p>
-                                                                    <p className="mt-0.5 text-[11px] text-slate-400">Auditable artifacts</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        {/* Clickable Quick-Launch Role Strip */}
-                                                        <div className="border-t border-white/10 pt-3.5">
-                                                            <div className="mb-2 flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
-                                                                <span>Jump straight into a live role</span>
-                                                                <span className="text-[#d8ff38]">{slide.detail}</span>
-                                                            </div>
-                                                            <div className="flex flex-wrap items-center gap-1.5">
-                                                                {agenticRoleDefinitions.slice(0, 4).map((role) => (
-                                                                    <button
-                                                                        key={role.id}
-                                                                        type="button"
-                                                                        onClick={() => window.location.assign(getAgenticRoleHref(role.id))}
-                                                                        className="rounded-lg border border-white/15 bg-white/[0.05] px-2.5 py-1 text-[11px] font-semibold text-slate-200 transition-colors hover:border-[#d8ff38]/60 hover:bg-[#d8ff38]/15 hover:text-[#d8ff38]"
-                                                                    >
-                                                                        {role.shortTitle}
-                                                                    </button>
-                                                                ))}
-                                                                <button
-                                                                    type="button"
-                                                                    onClick={scrollToAgentRoles}
-                                                                    className="ml-auto inline-flex items-center gap-1 rounded-full bg-[#d8ff38] px-3 py-1 text-[11px] font-bold text-[#101014] transition-colors hover:bg-[#c6f028]"
-                                                                >
-                                                                    All roles <ArrowRight className="h-3 w-3" />
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 ) : (
                                                     <div className="flex h-full flex-col justify-between gap-4">
                                                         <div>
-                                                            <div className="flex items-start justify-between gap-3">
-                                                                <div>
-                                                                    <p className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[#d8ff38]">
-                                                                        <ShieldCheck className="h-3.5 w-3.5" /> {slide.eyebrow}
-                                                                    </p>
-                                                                    <h2 className="mt-1.5 font-display text-2xl font-bold leading-tight tracking-[-0.03em] text-white sm:text-[1.7rem]">
-                                                                        {slide.title}
-                                                                    </h2>
-                                                                </div>
-                                                                <span className="shrink-0 rounded-lg bg-[#d8ff38] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#101014]">
-                                                                    Live Blueprints
-                                                                </span>
+                                                            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 text-[#d8ff38]">
+                                                                <FlaskConical className="h-4 w-4" />
                                                             </div>
-                                                            <p className="mt-2 max-w-lg text-xs leading-relaxed text-slate-300 sm:text-sm">
+                                                            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/60">
+                                                                {slide.label}
+                                                            </p>
+                                                            <h2
+                                                                className="mt-1.5 text-xl font-medium leading-snug tracking-[-0.03em] text-white"
+                                                                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                                                            >
+                                                                {slide.title}
+                                                            </h2>
+                                                            <p className="mt-2 text-xs leading-relaxed text-white/75">
                                                                 {slide.body}
                                                             </p>
-
-                                                            <div className="mt-4 grid gap-2 sm:grid-cols-3">
-                                                                {[
-                                                                    ['Threat Detection', 'Anomaly 0.94', 'Real-time triage'],
-                                                                    ['Tokenization', 'Liquidity Pool', 'Stress simulation'],
-                                                                    ['Compliance', '100% Traced', 'Policy verifier'],
-                                                                ].map(([name, stat, sub]) => (
-                                                                    <div key={name} className="rounded-xl border border-white/10 bg-white/[0.04] p-2.5">
-                                                                        <p className="font-mono text-[10px] font-bold text-[#d8ff38]">{stat}</p>
-                                                                        <p className="mt-1 text-xs font-bold text-white">{name}</p>
-                                                                        <p className="mt-0.5 text-[11px] text-slate-400">{sub}</p>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
                                                         </div>
 
-                                                        <div className="flex items-center justify-between border-t border-white/10 pt-3.5">
-                                                            <span className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-                                                                <span className={`h-2 w-2 rounded-full ${slideTone.solid}`} /> {slide.detail}
+                                                        <div className="flex items-center justify-between border-t border-white/10 pt-3 text-xs">
+                                                            <span className="flex items-center gap-2 text-white/65">
+                                                                <span className={`h-1.5 w-1.5 rounded-full ${slideTone.solid}`} />
+                                                                {slide.detail}
                                                             </span>
                                                             <button
                                                                 type="button"
-                                                                onClick={navigateUseCases}
-                                                                className="inline-flex items-center gap-1 rounded-full bg-[#d8ff38] px-3 py-1 text-[11px] font-bold text-[#101014] transition-colors hover:bg-[#c6f028]"
+                                                                onClick={slideIndex === 0 ? scrollToAgentRoles : navigateUseCases}
+                                                                className="inline-flex items-center gap-1 font-semibold text-[#d8ff38] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d8ff38]"
                                                             >
-                                                                Open Sandboxes <ArrowRight className="h-3 w-3" />
+                                                                Open <ArrowRight className="h-3 w-3" />
                                                             </button>
                                                         </div>
                                                     </div>
                                                 )}
                                             </motion.div>
                                         </AnimatePresence>
-                                    </GlassPanel>
 
-                                    <div className="mt-3 flex items-center justify-between">
-                                        <div className="flex items-center gap-1" aria-label={`Slide ${slideIndex + 1} of ${slides.length}`}>
-                                            {slides.map((item, index) => (
+                                        <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
+                                            <div className="flex items-center gap-1" aria-label={`Slide ${slideIndex + 1} of ${slides.length}`}>
+                                                {slides.map((item, index) => (
+                                                    <button
+                                                        key={item.eyebrow}
+                                                        type="button"
+                                                        onClick={() => setSlideIndex(index)}
+                                                        className="flex h-7 w-7 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d8ff38]"
+                                                        aria-label={`Show slide ${index + 1}`}
+                                                        aria-current={index === slideIndex ? 'true' : undefined}
+                                                    >
+                                                        <span
+                                                            aria-hidden="true"
+                                                            className={`h-1.5 rounded-full transition-all duration-300 ${index === slideIndex ? 'w-5 bg-[#d8ff38]' : 'w-1.5 bg-white/30 hover:bg-white/50'}`}
+                                                        />
+                                                    </button>
+                                                ))}
+                                            </div>
+                                            <div className="flex gap-1.5">
                                                 <button
-                                                    key={item.eyebrow}
                                                     type="button"
-                                                    onClick={() => setSlideIndex(index)}
-                                                    className="flex h-8 w-8 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
-                                                    aria-label={`Show slide ${index + 1}`}
-                                                    aria-current={index === slideIndex ? 'true' : undefined}
+                                                    onClick={() => setIsCarouselPaused((paused) => !paused)}
+                                                    className="flex h-7 items-center gap-1 rounded-full border border-white/15 bg-white/5 px-2.5 text-[11px] font-medium text-white/80 transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d8ff38]"
+                                                    aria-label={isCarouselPaused ? 'Resume automatic slides' : 'Pause automatic slides'}
+                                                    aria-pressed={isCarouselPaused}
                                                 >
-                                                    <span
-                                                        aria-hidden="true"
-                                                        className={`h-2 rounded-full transition-all duration-300 ${index === slideIndex ? 'w-7 border border-ink/25 bg-[#d8ff38]' : 'w-2 bg-ink/20 hover:bg-ink/35'}`}
-                                                    />
+                                                    {isCarouselPaused ? <Play className="h-3 w-3" /> : <Pause className="h-3 w-3" />}
+                                                    <span>{isCarouselPaused ? 'Play' : 'Pause'}</span>
                                                 </button>
-                                            ))}
-                                        </div>
-                                        <div className="flex gap-2">
-                                            <button
-                                                type="button"
-                                                onClick={() => setIsCarouselPaused((paused) => !paused)}
-                                                className="glass-panel-light flex h-8 items-center gap-1.5 px-3 text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
-                                                aria-label={isCarouselPaused ? 'Resume automatic slides' : 'Pause automatic slides'}
-                                                aria-pressed={isCarouselPaused}
-                                            >
-                                                {isCarouselPaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
-                                                <span>{isCarouselPaused ? 'Play' : 'Pause'}</span>
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={() => moveSlide(-1)}
-                                                className="glass-panel-light flex h-8 w-8 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
-                                                aria-label="Previous slide"
-                                            >
-                                                <ChevronLeft className="h-4 w-4" />
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={() => moveSlide(1)}
-                                                className="glass-panel-light flex h-8 w-8 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
-                                                aria-label="Next slide"
-                                            >
-                                                <ChevronRight className="h-4 w-4" />
-                                            </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => moveSlide(-1)}
+                                                    className="flex h-7 w-7 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/80 transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d8ff38]"
+                                                    aria-label="Previous slide"
+                                                >
+                                                    <ChevronLeft className="h-3.5 w-3.5" />
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => moveSlide(1)}
+                                                    className="flex h-7 w-7 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/80 transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d8ff38]"
+                                                    aria-label="Next slide"
+                                                >
+                                                    <ChevronRight className="h-3.5 w-3.5" />
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -595,52 +477,114 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                     </div>
                 </section>
 
-                {/* ------------------------------------------------------ intent blocks */}
-                <section className="border-y border-ink/10 bg-white/65" aria-labelledby="intent-heading">
+                {/* ------------------------------------------------------ intent blocks (Boulevard yellow + blue card system) */}
+                <section className="border-b border-[#e9e9ec] bg-white" aria-labelledby="intent-heading">
                     <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-12">
                         <Reveal>
                             <div className="flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
                                 <div className="max-w-xl">
-                                    <p className="inline-flex items-center rounded-full bg-[#d8ff38] px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.18em] text-ink">Choose a starting point</p>
-                                    <h2 id="intent-heading" className="mt-2 font-display text-[clamp(1.6rem,2.8vw,2.25rem)] font-extrabold tracking-[-0.035em] text-slate-950">What would you like to explore?</h2>
+                                    <span className="mb-2 block text-xs font-bold uppercase tracking-widest text-[#343edb]">
+                                        01 / CHOOSE A STARTING POINT
+                                    </span>
+                                    <h2
+                                        id="intent-heading"
+                                        className="bg-clip-text text-3xl font-medium leading-[0.98] tracking-[-0.055em] text-transparent sm:text-4xl"
+                                        style={{
+                                            fontFamily: "'Space Grotesk', sans-serif",
+                                            backgroundImage: 'linear-gradient(100deg, #2534bf, #7f8cff)',
+                                        }}
+                                    >
+                                        What would you like to explore?
+                                    </h2>
                                 </div>
-                                <p className="max-w-md text-sm leading-relaxed text-slate-600">Compare the format and outcome before opening an autonomous role, agent lab, research article, or sandbox.</p>
+                                <p className="max-w-md text-xs leading-relaxed text-[#777780] sm:text-sm">
+                                    Compare the format and outcome before opening an autonomous role, agent lab, research article, or sandbox.
+                                </p>
                             </div>
                         </Reveal>
 
-                        <RevealGroup className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4" stagger={0.08}>
+                        <RevealGroup className="mt-7 grid gap-4 md:grid-cols-2 lg:grid-cols-4" stagger={0.07}>
                             {intentBlocks.map((block, index) => {
-                                const style = toneStyles[block.tone];
                                 const action = actions[block.handlerIndex];
                                 const Icon = block.icon;
+                                const isBlue = index === 0;
+                                const isDark = index === 2;
+                                const isLightAlt = index === 1;
+                                const cardSurfaceStyle = isBlue
+                                    ? {
+                                          background:
+                                              'radial-gradient(circle at 80% 20%, #818bff, transparent 50%), linear-gradient(135deg, #1821b5, #343ce8)',
+                                      }
+                                    : isDark
+                                    ? {
+                                          background:
+                                              'radial-gradient(circle at 80% 110%, #4739ff, transparent 42%), linear-gradient(145deg, #06070d, #16182c)',
+                                      }
+                                    : undefined;
+                                const onDarkCard = isBlue || isDark;
                                 return (
                                     <RevealItem key={block.title} index={index} className="h-full">
                                         <button
                                             type="button"
                                             onClick={action}
-                                            className="group flex h-full w-full flex-col rounded-xl border border-ink/10 bg-paper p-5 text-left transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:border-[#a8d210] hover:shadow-lg hover:shadow-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 motion-reduce:transform-none"
+                                            style={cardSurfaceStyle}
+                                            className={`group flex h-full w-full flex-col rounded-xl p-5 text-left transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#343edb] focus-visible:ring-offset-2 motion-reduce:transform-none cursor-pointer ${
+                                                onDarkCard
+                                                    ? 'border border-transparent text-white shadow-lg'
+                                                    : isLightAlt
+                                                    ? 'border border-[#e9e9ec] bg-[#f5f5f7] text-[#101014] hover:border-[#343edb]'
+                                                    : 'border border-[#e9e9ec] bg-white text-[#101014] hover:border-[#343edb]'
+                                            }`}
                                         >
-                                            <div className="flex items-center gap-2.5">
-                                                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${style.border} ${style.soft} ${style.text} transition-transform duration-300 group-hover:scale-105 motion-reduce:transform-none`}>
+                                            <div className="flex items-center justify-between gap-2">
+                                                <div
+                                                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-105 motion-reduce:transform-none ${
+                                                        onDarkCard
+                                                            ? 'bg-[#d8ff38] text-[#101014]'
+                                                            : 'bg-[#343edb]/10 text-[#343edb]'
+                                                    }`}
+                                                >
                                                     <Icon className="h-4 w-4" />
                                                 </div>
-                                                <span className="text-[10px] font-bold uppercase leading-tight tracking-[0.11em] text-slate-500">{block.audience}</span>
+                                                <span
+                                                    className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                                                        onDarkCard
+                                                            ? 'bg-white/15 text-white/90'
+                                                            : 'bg-white text-[#555560] border border-[#e9e9ec]'
+                                                    }`}
+                                                >
+                                                    0{index + 1}
+                                                </span>
                                             </div>
-                                            <h3 className="mt-3.5 font-display text-lg font-bold leading-snug tracking-[-0.025em] text-slate-950">{block.title}</h3>
-                                            <p className="mt-1.5 text-sm leading-6 text-slate-600">{block.body}</p>
-                                            <dl className="mt-3.5 grid gap-1.5 border-t border-ink/10 pt-3 text-xs">
+                                            <p className={`mt-3 text-[10px] font-bold uppercase tracking-[0.12em] ${onDarkCard ? 'text-white/70' : 'text-[#777780]'}`}>
+                                                {block.audience}
+                                            </p>
+                                            <h3
+                                                className={`mt-1 text-lg font-medium leading-snug tracking-[-0.03em] ${onDarkCard ? 'text-white' : 'text-[#101014] group-hover:text-[#343edb] transition-colors'}`}
+                                                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                                            >
+                                                {block.title}
+                                            </h3>
+                                            <p className={`mt-1.5 text-xs leading-relaxed ${onDarkCard ? 'text-white/80' : 'text-[#555560]'}`}>
+                                                {block.body}
+                                            </p>
+                                            <dl className={`mt-3.5 grid gap-1.5 border-t pt-3 text-xs ${onDarkCard ? 'border-white/15' : 'border-[#e9e9ec]'}`}>
                                                 <div>
-                                                    <dt className="font-bold text-ink">What you get</dt>
-                                                    <dd className="text-slate-600">{block.result}</dd>
+                                                    <dt className={`font-bold ${onDarkCard ? 'text-[#d8ff38]' : 'text-[#343edb]'}`}>What you get</dt>
+                                                    <dd className={onDarkCard ? 'text-white/80' : 'text-[#555560]'}>{block.result}</dd>
                                                 </div>
                                                 <div>
-                                                    <dt className="font-bold text-ink">How it works</dt>
-                                                    <dd className="text-slate-600">{block.effort}</dd>
+                                                    <dt className={`font-bold ${onDarkCard ? 'text-white' : 'text-[#101014]'}`}>How it works</dt>
+                                                    <dd className={onDarkCard ? 'text-white/75' : 'text-[#666670]'}>{block.effort}</dd>
                                                 </div>
                                             </dl>
-                                            <span className="mt-auto inline-flex items-center gap-2 pt-4 text-sm font-bold text-ink">
-                                                <span className="underline decoration-[#c6f028] decoration-2 underline-offset-4">{block.action}</span>
-                                                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#d8ff38] text-ink transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none">
+                                            <span
+                                                className={`mt-auto inline-flex items-center justify-between gap-2 pt-4 text-xs font-bold ${
+                                                    onDarkCard ? 'text-white' : 'text-[#101014] group-hover:text-[#343edb]'
+                                                }`}
+                                            >
+                                                <span>{block.action}</span>
+                                                <span className="grid h-7 w-7 place-items-center rounded-full bg-[#d8ff38] text-[#101014] transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transform-none">
                                                     <ArrowRight className="h-3.5 w-3.5" />
                                                 </span>
                                             </span>
@@ -675,43 +619,96 @@ export const RootHomePage: React.FC<RootHomePageProps> = ({
                     attributionDetail="Beta reader"
                 />
 
-                {/* ------------------------------------------------------- Contact Section */}
-                <section className="bg-paper py-10 sm:py-12" aria-labelledby="contact-heading">
-                    <div className="mx-auto grid max-w-6xl gap-8 px-5 sm:px-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
-                        <Reveal>
-                            <div className="glass-panel-light mb-3 inline-flex items-center gap-2 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-700">
-                                <span className="h-2 w-2 rounded-full bg-[#d8ff38] ring-1 ring-ink/25" />
-                                Say hello
+                {/* ------------------------------------------------------- Contact Section (LeadGenerationSection Boulevard style) */}
+                <section className="bg-white py-10 sm:py-12" aria-labelledby="contact-heading">
+                    <div className="mx-auto max-w-6xl px-5 sm:px-8">
+                        <div
+                            className="relative overflow-hidden rounded-2xl p-6 text-white sm:p-10"
+                            style={{
+                                background:
+                                    'radial-gradient(ellipse at 78% 25%, #6f78ff 0, transparent 38%), radial-gradient(ellipse at 63% 76%, #1528b7 0, transparent 42%), linear-gradient(115deg, #11121c 5%, #272bc3 58%, #7f8cff 100%)',
+                            }}
+                        >
+                            <div className="relative z-10 grid items-center gap-8 lg:grid-cols-12">
+                                <Reveal className="space-y-5 lg:col-span-6">
+                                    <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-bold text-[#d8ff38]">
+                                        <span>✳</span>
+                                        Custom AI Agents &amp; Interactive Workspaces
+                                    </div>
+                                    <h2
+                                        id="contact-heading"
+                                        className="text-3xl font-normal leading-[1.05] tracking-[-0.05em] text-white sm:text-4xl"
+                                        style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                                    >
+                                        Get in touch about your <span className="underline decoration-[#d8ff38] decoration-[3px] underline-offset-4">agent workflow.</span>
+                                    </h2>
+                                    <p className="text-sm leading-relaxed text-white/85 sm:text-base">
+                                        Questions about an agent system, interactive sandbox, or custom adaptation? Send a message directly to the owner's inbox.
+                                    </p>
+
+                                    <div className="space-y-3 pt-1">
+                                        <div className="flex items-start gap-3">
+                                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#d8ff38] text-[#101014]">
+                                                <Sparkles className="h-4 w-4" />
+                                            </div>
+                                            <div>
+                                                <h3 className="text-sm font-bold text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                                                    In-Browser Prototypes Ready to Test
+                                                </h3>
+                                                <p className="mt-0.5 text-xs text-white/75">
+                                                    Try any role, sandbox, or lab live before requesting a tailored build.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-start gap-3">
+                                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#d8ff38] text-[#101014]">
+                                                <Clock className="h-4 w-4" />
+                                            </div>
+                                            <div>
+                                                <h3 className="text-sm font-bold text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                                                    Direct Reply from hello@gptx.vip
+                                                </h3>
+                                                <p className="mt-0.5 text-xs text-white/75">
+                                                    No intermediary intake queue — your note reaches the builder directly.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-start gap-3">
+                                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#d8ff38] text-[#101014]">
+                                                <ShieldCheck className="h-4 w-4" />
+                                            </div>
+                                            <div>
+                                                <h3 className="text-sm font-bold text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                                                    Full Case Walkthroughs Available
+                                                </h3>
+                                                <p className="mt-0.5 text-xs text-white/75">
+                                                    Switch to the{' '}
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => (onNavigateContact ? onNavigateContact() : window.location.assign('/contact'))}
+                                                        className="font-bold text-[#d8ff38] underline underline-offset-4 hover:text-white cursor-pointer"
+                                                    >
+                                                        full contact page
+                                                    </button>{' '}
+                                                    or email <a href="mailto:hello@gptx.vip" className="font-mono text-[#d8ff38] underline underline-offset-4 hover:text-white">hello@gptx.vip</a>.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Reveal>
+
+                                <Reveal className="rounded-2xl bg-white p-5 text-[#101014] shadow-xl sm:p-7 lg:col-span-6" from="up" distance={20} duration={0.65}>
+                                    <ContactForm
+                                        variant="full"
+                                        tone="light"
+                                        accent="warm"
+                                        title="Send a Message"
+                                        description="Share what you're exploring or email hello@gptx.vip directly."
+                                        subject="Contact from GPTX.VIP Landing Page"
+                                    />
+                                </Reveal>
                             </div>
-                            <h2 id="contact-heading" className="font-display text-[clamp(1.6rem,2.8vw,2.25rem)] font-extrabold tracking-[-0.035em] text-slate-950">
-                                Get in touch
-                            </h2>
-                            <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
-                                Questions about an agent system, interactive sandbox, or want to share feedback? Send a message and it lands in the owner's inbox.
-                            </p>
-                            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-                                <button
-                                    type="button"
-                                    onClick={() => (onNavigateContact ? onNavigateContact() : window.location.assign('/contact'))}
-                                    className="inline-flex min-h-[40px] items-center gap-1.5 font-bold text-slate-800 underline decoration-[#c6f028] decoration-2 underline-offset-4 transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
-                                >
-                                    Open the full contact page
-                                </button>
-                                <span className="inline-flex min-h-[40px] items-center text-slate-500">
-                                    or email&nbsp;<a href="mailto:hello@gptx.vip" className="font-mono text-slate-800 underline decoration-[#c6f028] decoration-2 underline-offset-4 transition-colors hover:text-ink">hello@gptx.vip</a>
-                                </span>
-                            </div>
-                        </Reveal>
-                        <Reveal from="up" distance={20} duration={0.65}>
-                            <div className="group rounded-2xl border border-ink/10 bg-white p-5 shadow-sm transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink/[0.07] motion-reduce:transform-none sm:p-6">
-                                <ContactForm
-                                    variant="full"
-                                    tone="light"
-                                    accent="warm"
-                                    subject="Contact from GPTX.VIP Landing Page"
-                                />
-                            </div>
-                        </Reveal>
+                        </div>
                     </div>
                 </section>
             </main>

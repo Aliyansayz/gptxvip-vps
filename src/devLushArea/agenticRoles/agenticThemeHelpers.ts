@@ -53,6 +53,56 @@ const baseRoleThemes: Record<ExistingRoleDomain, RoleThemeTokens> = {
     badgeText: 'text-emerald-600 dark:text-emerald-400',
     badgeBorder: 'border-emerald-500/30',
   },
+  smm: {
+    domain: 'smm',
+    title: 'SMM (Social Media Marketing) Analyst',
+    text: 'text-blue-700 dark:text-blue-400',
+    textMuted: 'text-blue-600/80 dark:text-blue-300/80',
+    bg: 'bg-blue-600 hover:bg-blue-500',
+    hoverBg: 'hover:bg-blue-500',
+    bgSoft: 'bg-blue-50 dark:bg-blue-950/30',
+    bgSoftGlow: 'bg-blue-500/10',
+    border: 'border-blue-500',
+    borderSoft: 'border-blue-200 dark:border-blue-800/40',
+    hoverBorder: 'hover:border-blue-500/60',
+    shadow: 'shadow-blue-500/10',
+    shadowMd: 'shadow-blue-500/20',
+    spotlightRgb: '59, 130, 246', // blue-500
+    accentHex: '#3B82F6',
+    gradientFrom: 'from-blue-500',
+    gradientVia: 'via-sky-500',
+    gradientTo: 'to-indigo-500',
+    groupHoverText: 'group-hover:text-blue-500 dark:group-hover:text-blue-400',
+    ring: 'focus:ring-blue-500/50',
+    badgeBg: 'bg-blue-500/15',
+    badgeText: 'text-blue-600 dark:text-blue-400',
+    badgeBorder: 'border-blue-500/30',
+  },
+  security: {
+    domain: 'security',
+    title: 'LLM/Web Security Engineer',
+    text: 'text-red-700 dark:text-red-400',
+    textMuted: 'text-red-600/80 dark:text-red-300/80',
+    bg: 'bg-red-600 hover:bg-red-500',
+    hoverBg: 'hover:bg-red-500',
+    bgSoft: 'bg-red-50 dark:bg-red-950/30',
+    bgSoftGlow: 'bg-red-500/10',
+    border: 'border-red-500',
+    borderSoft: 'border-red-200 dark:border-red-800/40',
+    hoverBorder: 'hover:border-red-500/60',
+    shadow: 'shadow-red-500/10',
+    shadowMd: 'shadow-red-500/20',
+    spotlightRgb: '239, 68, 68', // red-500
+    accentHex: '#EF4444',
+    gradientFrom: 'from-red-500',
+    gradientVia: 'via-orange-500',
+    gradientTo: 'to-amber-500',
+    groupHoverText: 'group-hover:text-red-500 dark:group-hover:text-red-400',
+    ring: 'focus:ring-red-500/50',
+    badgeBg: 'bg-red-500/15',
+    badgeText: 'text-red-600 dark:text-red-400',
+    badgeBorder: 'border-red-500/30',
+  },
   accountant: {
     domain: 'accountant',
     title: 'Agentic Accountant',
@@ -236,6 +286,12 @@ export function getRoleTheme(domainOrName: string): RoleThemeTokens {
 
   if (normalized.includes('seo') || normalized === 'seo') {
     return roleThemes.seo;
+  }
+  if (normalized === 'smm' || normalized.includes('social media') || normalized.includes('smm')) {
+    return roleThemes.smm;
+  }
+  if (normalized === 'security' || normalized.includes('security') || normalized.includes('llm/web')) {
+    return roleThemes.security;
   }
   if (normalized.includes('accountant') || normalized.includes('accounting') || normalized === 'accountant') {
     return roleThemes.accountant;

@@ -23,10 +23,10 @@ export function AgenticRoleUseCases({ onOpenRole, accent = 'cyan', className = '
 
   const warm = accent === 'warm';
   const accentOnDark = warm ? 'text-[#d8ff38]' : 'text-cyan-300';
-  const accentRing = warm ? 'focus-visible:ring-[#d8ff38]' : 'focus-visible:ring-cyan-300';
+  const accentRing = warm ? 'focus-visible:ring-[#343edb]' : 'focus-visible:ring-cyan-300';
   const accentCta = warm ? 'bg-[#d8ff38] text-[#101014] hover:bg-[#c6f028]' : 'bg-cyan-300 hover:bg-cyan-200 text-slate-950';
-  const accentGlow = warm ? 'rgba(216,255,56,0.16)' : 'rgba(34,211,238,0.15)';
-  const accentRail = warm ? 'border-[#d8ff38]/55 bg-[#d8ff38]/12' : 'border-cyan-400/50 bg-cyan-300/10';
+  const accentGlow = warm ? 'rgba(52,62,219,0.28)' : 'rgba(34,211,238,0.15)';
+  const accentRail = warm ? 'border-[#343edb] bg-[#343edb]/25' : 'border-cyan-400/50 bg-cyan-300/10';
   const accentRailIcon = warm ? 'bg-[#d8ff38] text-[#101014]' : 'bg-cyan-300 text-slate-950';
 
   useEffect(() => {
@@ -49,23 +49,35 @@ export function AgenticRoleUseCases({ onOpenRole, accent = 'cyan', className = '
   const currentUseCase = getAgenticRoleUseCase(activeRole);
 
   return (
-    <section aria-labelledby="agentic-role-use-cases-heading" className={`border-b border-ink/10 bg-paper py-10 sm:py-12 ${className}`}>
+    <section aria-labelledby="agentic-role-use-cases-heading" className={`border-b border-[#e9e9ec] bg-[#f8f9fc] py-10 sm:py-12 ${className}`}>
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="mb-5 flex flex-col gap-2 sm:mb-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
-            <span className={`mb-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.18em] ${warm ? 'bg-[#d8ff38] text-ink' : 'bg-cyan-50 text-cyan-700'}`}>
+            <span className={`mb-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.18em] ${warm ? 'bg-[#343edb]/10 text-[#343edb]' : 'bg-cyan-50 text-cyan-700'}`}>
               02 / APPLIED AGENT ROLES
             </span>
-            <h2 id="agentic-role-use-cases-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 font-display">
-              See where an agent role earns its place.
+            <h2
+              id="agentic-role-use-cases-heading"
+              className="text-2xl sm:text-4xl font-medium tracking-[-0.04em] text-[#101014]"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              See where an agent role <span className={warm ? 'text-[#343edb]' : ''}>earns its place.</span>
             </h2>
           </div>
-          <p className="max-w-md text-sm leading-relaxed text-slate-600">
+          <p className="max-w-md text-sm leading-relaxed text-[#555560]">
             Move through {agenticRoleDefinitions.length} role-based use cases. Each opens a real case path with sample inputs, a decision, and evidence.
           </p>
         </div>
 
-        <div ref={revealRef} className={`relative overflow-hidden rounded-[1.5rem] border border-slate-700/80 bg-[#0d1824] text-white shadow-[0_20px_56px_rgba(15,23,42,0.16)] transition-[opacity,transform] duration-700 ease-out motion-reduce:transition-none ${revealed ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-6 scale-[0.98] opacity-0'}`}>
+        <div
+          ref={revealRef}
+          className={`relative overflow-hidden rounded-[1.5rem] border border-[#2a3166]/70 text-white shadow-[0_20px_56px_rgba(17,18,28,0.18)] transition-[opacity,transform] duration-700 ease-out motion-reduce:transition-none ${revealed ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-6 scale-[0.98] opacity-0'}`}
+          style={{
+            background: warm
+              ? 'radial-gradient(ellipse at 92% 8%, rgba(111,120,255,0.28) 0, transparent 42%), linear-gradient(145deg, #0b0e1a 0%, #101633 65%, #16205a 100%)'
+              : '#0d1824',
+          }}
+        >
           <div aria-hidden="true" className={`pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_100%_0%,${accentGlow},transparent_42%),linear-gradient(to_right,rgba(148,163,184,0.04)_1px,transparent_1px)] bg-[size:auto,44px_44px]`} />
           <div className="relative border-b border-white/10 px-5 py-3.5 sm:px-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
