@@ -42,9 +42,9 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
   }`;
 
   const pillBtn = (active: boolean) =>
-    `cursor-pointer rounded-md px-2 py-0.5 font-mono text-[10px] font-bold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#5EEAD4] ${
+    `inline-flex min-h-9 cursor-pointer items-center rounded-lg px-2.5 py-1 font-mono text-[11px] font-bold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5EEAD4] ${
       active
-        ? 'bg-gradient-to-r from-[#5EEAD4] to-[#38BDF8] text-[#0B131E]'
+        ? 'bg-[#2DD4BF] text-[#0B131E]'
         : 'bg-white/10 text-slate-300 hover:bg-white/20 hover:text-white'
     }`;
 
@@ -69,25 +69,20 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
     }));
     const topUsers = Math.max(1, counts[0]?.users || 1);
     const convRate = Math.round(((counts[3]?.users || 0) / topUsers) * 100);
-    const stepGradients = [
-      'from-[#38BDF8] to-[#0EA5E9]',
-      'from-[#2DD4BF] to-[#38BDF8]',
-      'from-[#10B981] to-[#2DD4BF]',
-      'from-[#A78BFA] to-[#38BDF8]',
-    ];
+    const targetConvRate = 30;
 
     return (
       <div className={frameClass} aria-label="Pulse Analytics activation funnel widget">
         <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2.5">
           <div>
             <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#5EEAD4]">
-              Activation Funnel
+              Staged Bar Funnel · Target {targetConvRate}%
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
               {convRate}% Visit → Purchase ({topUsers} users)
             </p>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             {(['All', 'Organic', 'Paid'] as const).map((ch) => (
               <button
                 key={ch}
@@ -102,23 +97,34 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
           </div>
         </div>
 
-        <div className="my-auto space-y-2 pt-3">
+        {/* Tufte Staged Bar Funnel: zero baseline, uniform series hue, direct delta labels */}
+        <div className="my-auto space-y-2.5 pt-3">
           {counts.map((row, idx) => {
             const pct = Math.round((row.users / topUsers) * 100);
+            const prevUsers = idx > 0 ? counts[idx - 1].users : row.users;
+            const dropPct = idx > 0 && prevUsers > 0 ? Math.round(((row.users - prevUsers) / prevUsers) * 100) : 0;
+            const ratio = row.users / topUsers;
             return (
               <div key={row.step} className="space-y-1">
                 <div className="flex items-center justify-between text-[11px]">
                   <span className="font-medium text-slate-200">
                     0{idx + 1}. {row.step}
+                    {dropPct < 0 && (
+                      <span className="ml-1.5 font-mono text-[10px] text-[#F43F5E]">
+                        {dropPct}%
+                      </span>
+                    )}
                   </span>
-                  <span className="font-mono font-bold tabular-nums text-[#5EEAD4]">
+                  <span className="font-mono font-bold tabular-nums text-white">
                     {row.users} <span className="text-slate-400">({pct}%)</span>
                   </span>
                 </div>
-                <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
+                <div className="h-2 w-full overflow-hidden rounded-full bg-white/[0.07]">
                   <div
-                    className={`h-full origin-left rounded-full bg-gradient-to-r ${stepGradients[idx]} transition-transform duration-200 ease-out`}
-                    style={{ transform: `scaleX(${Math.max(0.06, pct / 100)})` }}
+                    className={`h-full origin-left rounded-full transition-transform duration-200 ease-out ${
+                      idx === counts.length - 1 && convRate >= targetConvRate ? 'bg-[#10B981]' : 'bg-[#38BDF8]'
+                    }`}
+                    style={{ transform: `scaleX(${ratio})` }}
                   />
                 </div>
               </div>
@@ -138,10 +144,10 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
     const sym = account.currency === 'EUR' ? '€' : '$';
     const fmt = (c: number) => `${sym}${Math.round(c / 100).toLocaleString()}`;
     const bars = [
-      { label: 'Opening', val: account.openingBalanceCents, color: 'bg-[#38BDF8]' },
-      { label: 'Credits', val: credits, color: 'bg-[#10B981]' },
-      { label: 'Debits', val: debits, color: 'bg-[#FB7185]' },
-      { label: 'Closing', val: closingCents, color: 'bg-[#2DD4BF]' },
+      { label: 'Opening', val: account.openingBalanceCents, display: fmt(account.openingBalanceCents), color: 'bg-[#64748B]' },
+      { label: 'Credits', val: credits, display: `+${fmt(credits)}`, color: 'bg-[#10B981]' },
+      { label: 'Debits', val: debits, display: `-${fmt(debits)}`, color: 'bg-[#F43F5E]' },
+      { label: 'Closing', val: closingCents, display: fmt(closingCents), color: 'bg-[#38BDF8]' },
     ];
     const maxVal = Math.max(1, ...bars.map((b) => Math.abs(b.val)));
 
@@ -156,7 +162,7 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
               Closing: {fmt(closingCents)}
             </p>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             {(['usd', 'eur'] as const).map((id) => (
               <button
                 key={id}
@@ -171,17 +177,18 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
           </div>
         </div>
 
-        <div className="mt-3 grid h-28 grid-cols-4 items-end gap-3 pt-2">
+        {/* Zero-baseline semantic bridge pillars (no box gridlines, direct tabular labels) */}
+        <div className="mt-3 grid h-28 grid-cols-4 items-end gap-3 border-b border-[#64748B]/40 pb-1 pt-2">
           {bars.map((bar) => {
-            const scale = Math.max(0.12, Math.abs(bar.val) / maxVal);
+            const scale = Math.abs(bar.val) / maxVal;
             return (
               <div key={bar.label} className="flex h-full flex-col items-center justify-end gap-1">
                 <span className="font-mono text-[10px] font-bold tabular-nums text-slate-200">
-                  {fmt(bar.val)}
+                  {bar.display}
                 </span>
-                <div className="flex h-full w-full flex-1 items-end overflow-hidden rounded-t-md bg-white/[0.06]">
+                <div className="flex h-full w-full flex-1 items-end overflow-hidden rounded-t-sm">
                   <div
-                    className={`h-full w-full origin-bottom rounded-t-md transition-transform duration-200 ease-out ${bar.color}`}
+                    className={`h-full w-full origin-bottom rounded-t-sm transition-transform duration-200 ease-out ${bar.color}`}
                     style={{ transform: `scaleY(${scale})` }}
                   />
                 </div>
@@ -190,9 +197,9 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
             );
           })}
         </div>
-        <div className="mt-2 flex items-center justify-between border-t border-white/10 pt-2 font-mono text-[10px] text-slate-400">
-          <span>{acctEntries.length} ledger postings</span>
-          <span className="text-[#5EEAD4]">Net delta: {fmt(acctEntries.reduce((s, e) => s + ledgerSigned(e), 0))}</span>
+        <div className="mt-2 flex items-center justify-between pt-1 font-mono text-[10px] text-slate-400">
+          <span>{acctEntries.length} postings · zero-base</span>
+          <span className="text-[#10B981]">Net delta: {fmt(acctEntries.reduce((s, e) => s + ledgerSigned(e), 0))}</span>
         </div>
       </div>
     );
@@ -209,7 +216,8 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
         .filter((m) => m.kind === kind)
         .reduce((n, m) => n + m.deltaCents, 0),
     }));
-    const startCents = 89800;
+    const netDelta = deltas.reduce((s, d) => s + d.val, 0);
+    const startCents = Math.max(0, activeMrr - netDelta);
     let running = startCents;
     const waterfall = [
       { label: 'Start', from: 0, to: startCents, val: startCents },
@@ -239,24 +247,38 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
         </div>
 
         <svg viewBox="0 0 420 120" className="mt-2 h-32 w-full" role="img" aria-label="MRR movement bridge chart">
-          <line x1="12" x2="408" y1="98" y2="98" stroke="rgba(255,255,255,0.12)" />
+          {/* Mandatory zero baseline + benchmark line */}
+          <line x1="12" x2="408" y1="98" y2="98" stroke="#64748B" strokeOpacity="0.45" />
+          <line
+            x1="12"
+            x2="408"
+            y1={98 - (startCents / maxV) * 76}
+            y2={98 - (startCents / maxV) * 76}
+            stroke="#64748B"
+            strokeDasharray="3 3"
+            strokeOpacity="0.55"
+          />
           {waterfall.map((b, i) => {
             const top = 98 - (Math.max(b.from, b.to) / maxV) * 76;
-            const h = Math.max(4, (Math.abs(b.to - b.from) / maxV) * 76);
+            const h = Math.max(2, (Math.abs(b.to - b.from) / maxV) * 76);
             const x = 18 + i * 65;
             const fill =
               b.val < 0
-                ? '#FB7185'
+                ? '#F43F5E'
                 : i === 0
-                  ? '#38BDF8'
+                  ? '#64748B'
                   : i === waterfall.length - 1
-                    ? '#2DD4BF'
-                    : '#A78BFA';
+                    ? '#38BDF8'
+                    : '#10B981';
             return (
               <g key={b.label}>
-                <rect x={x} y={top} width="46" height={h} rx="4" fill={fill} opacity={0.92} />
+                <rect x={x} y={top} width="46" height={h} rx="3" fill={fill} opacity={0.94} />
                 <text x={x + 23} y={Math.max(12, top - 4)} textAnchor="middle" fontSize="9" fill="#e2e8f0" fontFamily="monospace">
-                  {b.val < 0 ? `-${fmtDollars(Math.abs(b.val))}` : fmtDollars(b.val)}
+                  {b.val < 0
+                    ? `-${fmtDollars(Math.abs(b.val))}`
+                    : i > 0 && i < waterfall.length - 1
+                      ? `+${fmtDollars(b.val)}`
+                      : fmtDollars(b.val)}
                 </text>
                 <text x={x + 23} y="112" textAnchor="middle" fontSize="9" fill="#94a3b8" fontFamily="monospace">
                   {b.label}
@@ -280,40 +302,37 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
       };
     });
     const maxStage = Math.max(1, ...stageCounts.map((s) => s.cents));
-    const stageColors: Record<string, string> = {
-      qualify: 'bg-[#A78BFA]',
-      discovery: 'bg-[#38BDF8]',
-      proposal: 'bg-[#0EA5E9]',
-      won: 'bg-[#2DD4BF]',
-    };
 
     return (
       <div className={frameClass} aria-label="Orbit CRM weighted revenue forecast chart">
         <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
           <div>
             <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#38BDF8]">
-              Weighted Pipeline Forecast
+              Weighted Pipeline Funnel
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
               {fmtDollars(totals.weighted)} weighted · {fmtDollars(totals.raw)} open
             </p>
           </div>
-          <span className="rounded-full border border-violet-400/30 bg-violet-500/15 px-2 py-0.5 font-mono text-[10px] font-bold text-violet-300">
+          <span className="rounded-full border border-slate-500/40 bg-white/5 px-2 py-0.5 font-mono text-[10px] font-bold text-slate-300">
             {crmSeed.deals.length} deals
           </span>
         </div>
 
-        <div className="my-auto space-y-2 pt-3">
+        {/* Uniform primary stage fill, semantic #10B981 strictly on Won, zero baseline */}
+        <div className="my-auto space-y-2.5 pt-3">
           {stageCounts.map((item) => {
-            const ratio = Math.max(0.1, item.cents / maxStage);
+            const ratio = item.cents / maxStage;
             return (
-              <div key={item.stage} className="grid grid-cols-[76px_1fr_64px] items-center gap-2 text-[11px]">
+              <div key={item.stage} className="grid grid-cols-[78px_1fr_64px] items-center gap-2 text-[11px]">
                 <span className="font-mono capitalize text-slate-200">
                   {item.stage} ({item.count})
                 </span>
-                <div className="h-2.5 overflow-hidden rounded-full bg-white/10">
+                <div className="h-2.5 overflow-hidden rounded-full bg-white/[0.07]">
                   <div
-                    className={`h-full origin-left rounded-full ${stageColors[item.stage] || 'bg-[#38BDF8]'}`}
+                    className={`h-full origin-left rounded-full ${
+                      item.stage === 'won' ? 'bg-[#10B981]' : 'bg-[#38BDF8]'
+                    }`}
                     style={{ transform: `scaleX(${ratio})` }}
                   />
                 </div>
@@ -340,19 +359,24 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
     const max = Math.max(110, ...rows.flatMap((r) => [r.nav, r.bench]));
     const x = (i: number) => 22 + (i * 356) / Math.max(1, rows.length - 1);
     const y = (v: number) => 96 - ((v - min) / Math.max(1, max - min)) * 74;
+    const latest = rows.at(-1);
+    const delta = latest ? latest.nav - latest.bench : 0;
 
     return (
       <div className={frameClass} aria-label="Fundview NAV versus benchmark chart">
         <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2.5">
           <div>
             <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#5EEAD4]">
-              NAV vs Benchmark (Rebased 100)
+              NAV vs Dashed Benchmark (Base 100)
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
-              Latest Index: {rows.at(-1)?.nav.toFixed(1)}
+              {latest?.nav.toFixed(1)}{' '}
+              <span className={delta >= 0 ? 'text-[#10B981]' : 'text-[#F43F5E]'}>
+                ({delta >= 0 ? '+' : ''}{delta.toFixed(1)} vs bench)
+              </span>
             </p>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             {(['atlas', 'cedar'] as const).map((id) => (
               <button
                 key={id}
@@ -368,9 +392,10 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
         </div>
 
         <svg viewBox="0 0 400 116" className="mt-2 h-32 w-full" role="img" aria-label="Fund NAV performance line chart">
+          <line x1="20" x2="380" y1={y(100)} y2={y(100)} stroke="#64748B" strokeOpacity="0.35" strokeDasharray="2 3" />
           <polyline
             fill="none"
-            stroke="#38BDF8"
+            stroke="#64748B"
             strokeDasharray="4 4"
             strokeWidth="2"
             points={rows.map((r, i) => `${x(i)},${y(r.bench)}`).join(' ')}
@@ -378,15 +403,17 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
           <polyline
             fill="none"
             stroke="#2DD4BF"
-            strokeWidth="3"
+            strokeWidth="2.5"
             points={rows.map((r, i) => `${x(i)},${y(r.nav)}`).join(' ')}
           />
           {rows.map((r, i) => (
             <g key={r.period}>
-              <circle cx={x(i)} cy={y(r.nav)} r="4" fill="#5EEAD4" />
-              <text x={x(i)} y="112" textAnchor="middle" fontSize="9" fill="#94a3b8" fontFamily="monospace">
-                {r.period}
-              </text>
+              <circle cx={x(i)} cy={y(r.nav)} r="3.5" fill="#2DD4BF" />
+              {(i === 0 || i === Math.floor(rows.length / 2) || i === rows.length - 1) && (
+                <text x={x(i)} y="112" textAnchor="middle" fontSize="9" fill="#94a3b8" fontFamily="monospace">
+                  {r.period}
+                </text>
+              )}
             </g>
           ))}
         </svg>
@@ -413,7 +440,7 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
               {chainAsset} ${last?.close.toLocaleString()}
             </p>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             {(['ETH', 'BTC'] as const).map((asset) => (
               <button
                 key={asset}
@@ -429,19 +456,21 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
         </div>
 
         <svg viewBox="0 0 380 112" className="mt-2 h-32 w-full" role="img" aria-label={`${chainAsset} candlestick chart`}>
-          {[0.25, 0.5, 0.75].map((pct) => (
+          {/* Single reference close benchmark (stripped box gridlines per Data-Ink ratio) */}
+          {last && (
             <line
-              key={pct}
               x1="10"
               x2="370"
-              y1={12 + pct * 78}
-              y2={12 + pct * 78}
-              stroke="rgba(255,255,255,0.08)"
+              y1={y(last.close)}
+              y2={y(last.close)}
+              stroke="#64748B"
+              strokeDasharray="3 3"
+              strokeOpacity="0.45"
             />
-          ))}
+          )}
           {candles.map((c, i) => {
             const up = c.close >= c.open;
-            const color = up ? '#2DD4BF' : '#FB7185';
+            const color = up ? '#10B981' : '#F43F5E';
             const cx = 14 + step * (i + 0.5);
             return (
               <g key={c.time}>
@@ -476,47 +505,56 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
       const roas = spend > 0 ? rev / spend : 0;
       return { name: camp.channel, roas, rev, spend, status: camp.status };
     });
-    const maxRoas = Math.max(1, ...channels.map((c) => c.roas));
-    const barColors = ['bg-[#2DD4BF]', 'bg-[#38BDF8]', 'bg-[#A78BFA]'];
+    const targetRoas = 2.5;
+    const maxRoas = Math.max(targetRoas, ...channels.map((c) => c.roas));
 
     return (
       <div className={frameClass} aria-label="AdSphere channel ROAS comparison widget">
         <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
           <div>
-            <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-violet-300">
-              Channel Pacing &amp; ROAS
+            <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#38BDF8]">
+              Channel ROAS vs {targetRoas.toFixed(1)}x Target
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
               {adSeed.campaigns.length} active channels tracked
             </p>
           </div>
-          <span className="rounded-full border border-sky-400/30 bg-sky-500/15 px-2 py-0.5 font-mono text-[10px] text-sky-300">
-            Attribution
+          <span className="rounded-full border border-slate-500/40 bg-white/5 px-2 py-0.5 font-mono text-[10px] text-slate-300">
+            Bullet Benchmark
           </span>
         </div>
 
+        {/* Horizontal bullet bars: zero baseline, benchmark line, semantic beat/below coloring */}
         <div className="my-auto space-y-2.5 pt-3">
-          {channels.map((ch, idx) => (
-            <div key={ch.name} className="space-y-1">
-              <div className="flex items-center justify-between text-[11px]">
-                <span className="font-semibold text-white">
-                  {ch.name}{' '}
-                  <span className="font-mono text-[10px] text-slate-400">
-                    ({fmtDollars(ch.rev)} rev)
+          {channels.map((ch) => {
+            const beat = ch.roas >= targetRoas;
+            return (
+              <div key={ch.name} className="space-y-1">
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="font-semibold text-white">
+                    {ch.name}{' '}
+                    <span className="font-mono text-[10px] text-slate-400">
+                      ({fmtDollars(ch.rev)} rev)
+                    </span>
                   </span>
-                </span>
-                <span className="font-mono font-bold tabular-nums text-[#5EEAD4]">
-                  {ch.roas.toFixed(2)}x ROAS
-                </span>
+                  <span className={`font-mono font-bold tabular-nums ${beat ? 'text-[#10B981]' : 'text-[#38BDF8]'}`}>
+                    {ch.roas.toFixed(2)}x ROAS
+                  </span>
+                </div>
+                <div className="relative h-2.5 overflow-hidden rounded-full bg-white/[0.07]">
+                  <div
+                    className={`h-full origin-left rounded-full ${beat ? 'bg-[#10B981]' : 'bg-[#38BDF8]'}`}
+                    style={{ transform: `scaleX(${ch.roas / maxRoas})` }}
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-y-0 w-0.5 bg-[#64748B]"
+                    style={{ left: `${(targetRoas / maxRoas) * 100}%` }}
+                  />
+                </div>
               </div>
-              <div className="h-2.5 overflow-hidden rounded-full bg-white/10">
-                <div
-                  className={`h-full origin-left rounded-full ${barColors[idx % barColors.length]}`}
-                  style={{ transform: `scaleX(${Math.max(0.1, ch.roas / maxRoas)})` }}
-                />
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     );
@@ -529,29 +567,36 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
         <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
           <div>
             <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#5EEAD4]">
-              Inventory &amp; Reorder Thresholds
+              Inventory vs Reorder Target
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
               {storeSeed.products.filter((p) => p.stock <= p.reorderPoint).length} SKUs below reorder floor
             </p>
           </div>
-          <span className="rounded-full border border-rose-400/35 bg-rose-500/15 px-2 py-0.5 font-mono text-[10px] font-bold text-rose-300">
+          <span className="rounded-full border border-[#F43F5E]/35 bg-[#F43F5E]/15 px-2 py-0.5 font-mono text-[10px] font-bold text-[#F43F5E]">
             Stock Alert
           </span>
         </div>
 
-        <div className="my-auto space-y-2 pt-3">
+        {/* Bullet bars with explicit reorder threshold tick (#64748B) & zero baseline */}
+        <div className="my-auto space-y-2.5 pt-3">
           {storeSeed.products.map((prod) => {
             const low = prod.stock <= prod.reorderPoint;
+            const thresholdLeft = Math.min(96, (prod.reorderPoint / maxStock) * 100);
             return (
               <div key={prod.id} className="grid grid-cols-[110px_1fr_54px] items-center gap-2 text-[11px]">
                 <span className="truncate text-slate-200">{prod.name}</span>
-                <div className="h-2.5 overflow-hidden rounded-full bg-white/10">
+                <div className="relative h-2.5 overflow-hidden rounded-full bg-white/[0.07]">
                   <div
                     className={`h-full origin-left rounded-full ${
-                      prod.stock === 0 ? 'bg-rose-400' : low ? 'bg-[#38BDF8]' : 'bg-[#2DD4BF]'
+                      low ? 'bg-[#F43F5E]' : 'bg-[#10B981]'
                     }`}
-                    style={{ transform: `scaleX(${Math.max(0.05, prod.stock / maxStock)})` }}
+                    style={{ transform: `scaleX(${prod.stock / maxStock})` }}
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-y-0 w-0.5 bg-[#64748B]"
+                    style={{ left: `${thresholdLeft}%` }}
                   />
                 </div>
                 <span className="text-right font-mono text-[10px] font-bold tabular-nums text-white">
@@ -576,10 +621,10 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
               {pmView === 'velocity' ? 'Sprint Throughput' : 'Delivery Gauge'}
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
-              {pmView === 'velocity' ? '5-Week Task Velocity' : '60% Milestone Progress'}
+              {pmView === 'velocity' ? '5-Week Task Velocity · zero-base' : '60% Milestone Progress'}
             </p>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             <button type="button" onClick={() => setPmView('velocity')} className={pillBtn(pmView === 'velocity')}>
               Velocity
             </button>
@@ -590,14 +635,14 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
         </div>
 
         {pmView === 'velocity' ? (
-          <div className="mt-3 grid h-28 grid-cols-5 items-end gap-2.5 pt-2">
+          <div className="mt-3 grid h-28 grid-cols-5 items-end gap-2.5 border-b border-[#64748B]/40 pb-1 pt-2">
             {bars.map((b) => (
               <div key={b.name} className="flex h-full flex-col items-center justify-end gap-1">
                 <span className="font-mono text-[9px] text-slate-200 tabular-nums">{b.a + b.b}</span>
-                <div className="flex h-full w-full flex-1 items-end overflow-hidden rounded-t-md bg-white/[0.06]">
+                <div className="flex h-full w-full flex-1 items-end overflow-hidden rounded-t-sm">
                   <div
-                    className="h-full w-full origin-bottom rounded-t-md bg-gradient-to-t from-[#0EA5E9] to-[#2DD4BF]"
-                    style={{ transform: `scaleY(${Math.max(0.15, (b.a + b.b) / maxVal)})` }}
+                    className="h-full w-full origin-bottom rounded-t-sm bg-[#38BDF8]"
+                    style={{ transform: `scaleY(${(b.a + b.b) / maxVal})` }}
                   />
                 </div>
                 <span className="font-mono text-[9px] text-slate-400">{b.name.replace('Week ', 'W')}</span>
@@ -643,7 +688,7 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
               ${totalRev.toLocaleString()} sample revenue
             </p>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             {(['north', 'grove', 'ember'] as const).map((tid) => (
               <button
                 key={tid}
@@ -658,14 +703,14 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
           </div>
         </div>
 
-        <div className="mt-3 grid h-28 grid-cols-5 items-end gap-2.5 pt-2">
+        <div className="mt-3 grid h-28 grid-cols-5 items-end gap-2.5 border-b border-[#64748B]/40 pb-1 pt-2">
           {rows.map((r) => (
             <div key={r.id} className="flex h-full flex-col items-center justify-end gap-1">
               <span className="font-mono text-[9px] text-slate-200 tabular-nums">{r.value}</span>
-              <div className="flex h-full w-full flex-1 items-end overflow-hidden rounded-t-md bg-white/[0.06]">
+              <div className="flex h-full w-full flex-1 items-end overflow-hidden rounded-t-sm">
                 <div
-                  className="h-full w-full origin-bottom rounded-t-md bg-gradient-to-t from-[#0EA5E9] to-[#5EEAD4] transition-transform duration-200 ease-out"
-                  style={{ transform: `scaleY(${Math.max(0.15, r.value / maxS)})` }}
+                  className="h-full w-full origin-bottom rounded-t-sm bg-[#2DD4BF] transition-transform duration-200 ease-out"
+                  style={{ transform: `scaleY(${r.value / maxS})` }}
                 />
               </div>
               <span className="font-mono text-[9px] text-slate-400">{r.date.slice(5)}</span>
@@ -679,33 +724,34 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
   if (prototype === 'clinicare') {
     const statuses = ['scheduled', 'checked-in', 'in-room', 'completed'] as const;
     const total = Math.max(1, clinicSeed.appointments.length);
-    const barPalette = ['bg-[#38BDF8]', 'bg-[#A78BFA]', 'bg-[#2DD4BF]', 'bg-[#10B981]'];
     return (
       <div className={frameClass} aria-label="CliniCare patient flow distribution">
         <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
           <div>
             <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#5EEAD4]">
-              Patient Flow &amp; Room Telemetry
+              Patient Flow · Zero-Base
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
               {total} active visits · {clinicSeed.clinicians.length} clinicians
             </p>
           </div>
-          <span className="rounded-full border border-[#2DD4BF]/35 bg-[#2DD4BF]/15 px-2 py-0.5 font-mono text-[10px] font-bold text-[#5EEAD4]">
+          <span className="rounded-full border border-[#10B981]/35 bg-[#10B981]/15 px-2 py-0.5 font-mono text-[10px] font-bold text-[#10B981]">
             Masked PII
           </span>
         </div>
 
-        <div className="my-auto space-y-2 pt-3">
-          {statuses.map((st, idx) => {
+        <div className="my-auto space-y-2.5 pt-3">
+          {statuses.map((st) => {
             const count = clinicSeed.appointments.filter((a) => a.status === st).length;
-            const ratio = Math.max(0.08, count / total);
+            const ratio = count / total;
             return (
               <div key={st} className="grid grid-cols-[88px_1fr_36px] items-center gap-2 text-[11px]">
                 <span className="font-mono capitalize text-slate-200">{st}</span>
-                <div className="h-2.5 overflow-hidden rounded-full bg-white/10">
+                <div className="h-2.5 overflow-hidden rounded-full bg-white/[0.07]">
                   <div
-                    className={`h-full origin-left rounded-full ${barPalette[idx]}`}
+                    className={`h-full origin-left rounded-full ${
+                      st === 'completed' ? 'bg-[#10B981]' : 'bg-[#38BDF8]'
+                    }`}
                     style={{ transform: `scaleX(${ratio})` }}
                   />
                 </div>
@@ -721,20 +767,19 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
   if (prototype === 'hq-admin') {
     const roles = ['admin', 'editor', 'viewer'] as const;
     const total = Math.max(1, hqSeed.members.length);
-    const roleColors = { admin: 'bg-[#2DD4BF]', editor: 'bg-[#38BDF8]', viewer: 'bg-[#A78BFA]' };
     return (
       <div className={frameClass} aria-label="HQ Admin workspace seat distribution">
         <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
           <div>
-            <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-violet-300">
-              Workspace Access Matrix
+            <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#38BDF8]">
+              Workspace Access · RBAC Share
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
               {hqSeed.workspaces.length} spaces · {total} members
             </p>
           </div>
           <span className="rounded-full border border-[#38BDF8]/30 bg-[#0EA5E9]/15 px-2 py-0.5 font-mono text-[10px] text-[#38BDF8]">
-            RBAC Guard
+            Zero-Base
           </span>
         </div>
 
@@ -744,10 +789,10 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
             return (
               <div key={role} className="grid grid-cols-[72px_1fr_44px] items-center gap-2 text-[11px]">
                 <span className="font-mono capitalize text-slate-200">{role}</span>
-                <div className="h-2.5 overflow-hidden rounded-full bg-white/10">
+                <div className="h-2.5 overflow-hidden rounded-full bg-white/[0.07]">
                   <div
-                    className={`h-full origin-left rounded-full ${roleColors[role]}`}
-                    style={{ transform: `scaleX(${Math.max(0.12, count / total)})` }}
+                    className="h-full origin-left rounded-full bg-[#38BDF8]"
+                    style={{ transform: `scaleX(${count / total})` }}
                   />
                 </div>
                 <span className="text-right font-mono font-bold tabular-nums text-white">
@@ -762,45 +807,55 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
   }
 
   if (prototype === 'logistics') {
+    const slaTarget = 95;
     const corridors = [
-      { region: 'North Hub', sla: 97.4, capacity: 82 },
-      { region: 'Central Express', sla: 91.2, capacity: 91 },
-      { region: 'East Depot', sla: 96.8, capacity: 46 },
-      { region: 'South Loop', sla: 95.5, capacity: 62 },
+      { region: 'North Hub', sla: 97.4 },
+      { region: 'Central Express', sla: 91.2 },
+      { region: 'East Depot', sla: 96.8 },
+      { region: 'South Loop', sla: 95.5 },
     ];
     return (
-      <div className={frameClass} aria-label="Fulfillr fleet readiness and SLA telemetry">
+      <div className={frameClass} aria-label="Fulfillr fleet readiness and SLA bullet telemetry">
         <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
           <div>
             <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#5EEAD4]">
-              Fleet Readiness &amp; Route SLA
+              Route SLA vs {slaTarget}% Benchmark
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
-              97.4% On-Time · 3 Active Corridors
+              97.4% Top Hub · 3 Corridors On-Target
             </p>
           </div>
-          <span className="rounded-full border border-[#2DD4BF]/35 bg-[#2DD4BF]/15 px-2 py-0.5 font-mono text-[10px] font-bold text-[#5EEAD4]">
+          <span className="rounded-full border border-[#10B981]/35 bg-[#10B981]/15 px-2 py-0.5 font-mono text-[10px] font-bold text-[#10B981]">
             HITL Ready
           </span>
         </div>
 
-        <div className="my-auto space-y-2 pt-3">
-          {corridors.map((c) => (
-            <div key={c.region} className="grid grid-cols-[106px_1fr_54px] items-center gap-2 text-[11px]">
-              <span className="truncate text-slate-200">{c.region}</span>
-              <div className="h-2.5 overflow-hidden rounded-full bg-white/10">
-                <div
-                  className={`h-full origin-left rounded-full ${
-                    c.capacity > 88 ? 'bg-rose-400' : c.capacity > 70 ? 'bg-[#38BDF8]' : 'bg-[#2DD4BF]'
-                  }`}
-                  style={{ transform: `scaleX(${c.capacity / 100})` }}
-                />
+        {/* Horizontal Bullet Bars: zero baseline 0..100% + explicit 95% target tick (#64748B) */}
+        <div className="my-auto space-y-2.5 pt-3">
+          {corridors.map((c) => {
+            const onTarget = c.sla >= slaTarget;
+            return (
+              <div key={c.region} className="grid grid-cols-[106px_1fr_54px] items-center gap-2 text-[11px]">
+                <span className="truncate text-slate-200">{c.region}</span>
+                <div className="relative h-2.5 overflow-hidden rounded-full bg-white/[0.07]">
+                  <div
+                    className={`h-full origin-left rounded-full ${
+                      onTarget ? 'bg-[#10B981]' : 'bg-[#F43F5E]'
+                    }`}
+                    style={{ transform: `scaleX(${c.sla / 100})` }}
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-y-0 w-0.5 bg-[#64748B]"
+                    style={{ left: `${slaTarget}%` }}
+                  />
+                </div>
+                <span className={`text-right font-mono text-[10px] font-bold tabular-nums ${onTarget ? 'text-white' : 'text-[#F43F5E]'}`}>
+                  {c.sla}%
+                </span>
               </div>
-              <span className="text-right font-mono text-[10px] font-bold tabular-nums text-white">
-                {c.sla}% SLA
-              </span>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     );
@@ -815,13 +870,13 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
       <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2.5">
         <div>
           <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#5EEAD4]">
-            Hourly Demand &amp; Weather Friction
+            Hourly Demand · Zero-Base
           </span>
           <p className="font-mono text-xs font-bold text-white tabular-nums">
             17:00 Peak: {hourly.find((h) => h.hour === '17:00')?.['Overall Average'] ?? 0} rides/hr
           </p>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           {(['All', 'Snowy', 'Clear'] as const).map((w) => (
             <button
               key={w}
@@ -836,20 +891,20 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
         </div>
       </div>
 
-      <div className="mt-3 grid h-28 grid-cols-5 items-end gap-2.5 pt-2">
+      <div className="mt-3 grid h-28 grid-cols-5 items-end gap-2.5 border-b border-[#64748B]/40 pb-1 pt-2">
         {hourly.map((row) => {
           const val = Number(row['Overall Average'] || 0);
-          const scale = Math.max(0.1, val / maxHourly);
+          const scale = val / maxHourly;
           const isPeak = val === maxHourly && val > 0;
           return (
             <div key={row.hour} className="flex h-full flex-col items-center justify-end gap-1">
               <span className="font-mono text-[10px] font-bold tabular-nums text-slate-200">
                 {val}
               </span>
-              <div className="flex h-full w-full flex-1 items-end overflow-hidden rounded-t-md bg-white/[0.06]">
+              <div className="flex h-full w-full flex-1 items-end overflow-hidden rounded-t-sm">
                 <div
-                  className={`h-full w-full origin-bottom rounded-t-md transition-transform duration-200 ease-out ${
-                    isPeak ? 'bg-[#2DD4BF]' : 'bg-[#38BDF8]/80'
+                  className={`h-full w-full origin-bottom rounded-t-sm transition-transform duration-200 ease-out ${
+                    isPeak ? 'bg-[#10B981]' : 'bg-[#38BDF8]'
                   }`}
                   style={{ transform: `scaleY(${scale})` }}
                 />

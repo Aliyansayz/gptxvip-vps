@@ -396,34 +396,40 @@ export const SystemLogicflowWidget: React.FC<SystemLogicflowWidgetProps> = ({
                     </div>
                   </div>
 
-                  {/* Account Breakdown Mini Bars */}
+                  {/* Account Breakdown Horizontal Bullet Bars (Zero Baseline + Quota Target) */}
                   <div className="mt-4 rounded-xl border border-slate-200 bg-[#F8FAFC] p-4">
                     <div className="flex items-center justify-between text-[11px]">
                       <span className="font-semibold text-[#0F172A]">
-                        Scoped Account Monthly Value (SaaS Metrics Kit)
+                        Account Monthly Value vs $500 Target
                       </span>
                       <span className="font-mono text-[10px] text-slate-500">
-                        Plan filter: {planFilter}
+                        Zero-base · Plan: {planFilter}
                       </span>
                     </div>
-                    <div className="mt-3 space-y-2">
+                    <div className="mt-3 space-y-2.5">
                       {scopedSubs.map((sub) => {
-                        const pct = Math.max(0.06, sub.monthlyCents / 79900);
+                        const pct = sub.monthlyCents / 79900;
+                        const targetLeft = (50000 / 79900) * 100;
                         return (
                           <div key={sub.id} className="grid grid-cols-[110px_1fr_72px] items-center gap-2 text-xs">
                             <span className="truncate font-medium text-[#0F172A]">
                               {sub.account} <span className="text-[10px] text-slate-500">({sub.plan})</span>
                             </span>
-                            <div className="h-2.5 overflow-hidden rounded-full bg-slate-200">
+                            <div className="relative h-2.5 overflow-hidden rounded-full bg-slate-200">
                               <div
                                 className={`h-full origin-left rounded-full ${
                                   sub.status === 'churned'
-                                    ? 'bg-rose-400'
+                                    ? 'bg-[#F43F5E]'
                                     : sub.status === 'past_due'
                                       ? 'bg-[#38BDF8]'
-                                      : 'bg-gradient-to-r from-[#14B8A6] to-[#0EA5E9]'
+                                      : 'bg-[#10B981]'
                                 }`}
                                 style={{ transform: `scaleX(${pct})` }}
+                              />
+                              <span
+                                aria-hidden="true"
+                                className="absolute inset-y-0 w-0.5 bg-[#64748B]"
+                                style={{ left: `${targetLeft}%` }}
                               />
                             </div>
                             <span className="text-right font-mono text-[11px] font-bold tabular-nums text-[#0F172A]">
@@ -530,22 +536,20 @@ export const SystemLogicflowWidget: React.FC<SystemLogicflowWidgetProps> = ({
                         No snowy intervals occur in Summer — switch to Winter or Any Weather.
                       </div>
                     ) : (
-                      <div className="mt-3 grid h-28 grid-cols-5 items-end gap-3 pt-4">
+                      <div className="mt-3 grid h-28 grid-cols-5 items-end gap-3 border-b border-[#64748B]/40 pb-1 pt-4">
                         {series.hourlyData.map((row) => {
                           const val = Number(row['Overall Average'] || 0);
-                          const scaleY = Math.max(0.08, val / maxHourly);
+                          const scaleY = val / maxHourly;
                           const isPeak = val === maxHourly && val > 0;
                           return (
                             <div key={row.hour} className="flex h-full flex-col items-center justify-end gap-1.5">
                               <span className="font-mono text-[10px] font-bold tabular-nums text-slate-600">
                                 {val}
                               </span>
-                              <div className="flex h-full w-full flex-1 items-end overflow-hidden rounded-t-lg bg-slate-200/70">
+                              <div className="flex h-full w-full flex-1 items-end overflow-hidden rounded-t-sm">
                                 <div
-                                  className={`h-full w-full origin-bottom rounded-t-lg transition-[transform,background-color] duration-200 ease-out ${
-                                    isPeak
-                                      ? 'bg-gradient-to-t from-[#0D9488] to-[#2DD4BF]'
-                                      : 'bg-[#38BDF8]'
+                                  className={`h-full w-full origin-bottom rounded-t-sm transition-[transform,background-color] duration-200 ease-out ${
+                                    isPeak ? 'bg-[#10B981]' : 'bg-[#38BDF8]'
                                   }`}
                                   style={{ transform: `scaleY(${scaleY})` }}
                                   title={`${row.hour}: ${val} avg rides`}
