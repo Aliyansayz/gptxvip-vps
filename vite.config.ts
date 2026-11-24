@@ -27,6 +27,12 @@ export default defineConfig(({ mode }) => {
       allowedHosts: ['gptx.vip'],
       proxy: {
         '/ws': { target: 'ws://127.0.0.1:8000', ws: true },
+        '/api/health': { target: 'http://127.0.0.1:8787', changeOrigin: false },
+        '/api/auth': { target: 'http://127.0.0.1:8787', changeOrigin: false },
+        '/api/admin': { target: 'http://127.0.0.1:8787', changeOrigin: false },
+        '/api/blog': { target: 'http://127.0.0.1:8787', changeOrigin: false },
+        '/api/leads': { target: 'http://127.0.0.1:8787', changeOrigin: false },
+        '/media': { target: 'http://127.0.0.1:8787', changeOrigin: false },
         '/api': { target: 'http://127.0.0.1:8000' },
       },
     },

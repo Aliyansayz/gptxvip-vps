@@ -97,9 +97,11 @@ export const Navbar: React.FC<NavbarProps> = ({
         ? 'Code Concepts'
         : pathname.startsWith('/blogs')
         ? 'Notes'
+        : pathname === '/blog' || pathname.startsWith('/blog/')
+        ? 'Blog'
         : 'Home';
 
-    const isResourcesActive = currentArea === 'Use Cases' || currentArea === 'Guide' || currentArea === 'Agent catalog';
+    const isResourcesActive = currentArea === 'Use Cases' || currentArea === 'Guide' || currentArea === 'Agent catalog' || currentArea === 'Blog';
     const isPrototypesActive = currentArea === 'Finhub' || currentArea === 'Code Concepts';
     const glass = variant === 'glass';
 
@@ -290,6 +292,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                                 <button
                                     type="button"
                                     role="menuitem"
+                                    onClick={() => { setResourcesOpen(false); window.location.assign('/blog'); }}
+                                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 ${currentArea === 'Blog' ? (glass ? 'bg-ink/10 text-ink' : 'bg-cyan-50 text-cyan-900') : 'hover:bg-slate-100 text-slate-700 hover:text-slate-950'}`}
+                                >
+                                    <span>Blog</span>
+                                    {currentArea === 'Blog' && <span className="h-1.5 w-1.5 rounded-full bg-cyan-600" />}
+                                </button>
+                                <button
+                                    type="button"
+                                    role="menuitem"
                                     onClick={() => { setResourcesOpen(false); navigateAgents(); }}
                                     className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 ${currentArea === 'Agent catalog' ? (glass ? 'bg-ink/10 text-ink' : 'bg-cyan-50 text-cyan-900') : 'hover:bg-slate-100 text-slate-700 hover:text-slate-950'}`}
                                 >
@@ -429,6 +440,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <p className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Resources</p>
                 <button type="button" onClick={() => navigate(navigateUseCases)} aria-current={currentArea === 'Use Cases' ? 'page' : undefined} className={menuLinkClass}>Use Cases</button>
                 <button type="button" onClick={() => navigate(navigateGuide)} aria-current={currentArea === 'Guide' ? 'page' : undefined} className={menuLinkClass}>Guide</button>
+                <button type="button" onClick={() => navigate(() => window.location.assign('/blog'))} aria-current={currentArea === 'Blog' ? 'page' : undefined} className={menuLinkClass}>Blog</button>
                 <button type="button" onClick={() => navigate(navigateAgents)} aria-current={currentArea === 'Agent catalog' ? 'page' : undefined} className={menuLinkClass}>Agent Catalog</button>
                 <p className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Prototypes</p>
                 {prototypeItems.map((proto) => {

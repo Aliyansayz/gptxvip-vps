@@ -1,0 +1,27 @@
+{
+  "name": "gptxvip-cms",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --local --port 8787",
+    "deploy": "wrangler deploy",
+    "deploy:dry-run": "wrangler deploy --dry-run --outdir .wrangler/dry-run",
+    "db:migrate:local": "wrangler d1 migrations apply gptxvip --local",
+    "db:migrate:remote": "wrangler d1 migrations apply gptxvip --remote",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test src/**/*.test.ts"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.2",
+    "hono": "^4.12.1",
+    "react-example": "file:../..",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261123.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.8.3",
+    "wrangler": "^4.167.0"
+  }
+}

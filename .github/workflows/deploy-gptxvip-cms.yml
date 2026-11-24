@@ -1,0 +1,102 @@
+name: Deploy gptxvip-vps (Cloudflare Worker + D1 + R2)
+
+on:
+  push:
+    branches:
+      - main
+      - gptxvip-v2
+  workflow_dispatch:
+    inputs:
+      migrate_d1:
+        description: Run D1 schema migrations (wrangler d1 migrations apply --remote)
+        type: boolean
+        default: true
+
+concurrency:
+  group: deploy-gptxvip-vps
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build Frontend, Test Worker, Migrate D1 & Deploy
+    runs-on: ubuntu-latest
+
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID || vars.CLOUDFLARE_ACCOUNT_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: |
+            package-lock.json
+            src/cms/package-lock.json
+
+      - name: Detect D1 migration changes
+        id: changes
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "run_migrations=${{ inputs.migrate_d1 }}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          BEFORE="${{ github.event.before }}"
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            echo "run_migrations=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          CHANGED_FILES=$(git diff --name-only "$BEFORE" "${{ github.sha }}")
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          if echo "$CHANGED_FILES" | grep -qE '^src/cms/migrations/'; then
+            echo "run_migrations=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run_migrations=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install root dependencies, typecheck & build frontend (dist/)
+        run: |
+          npm ci
+          npm run lint
+          npm run build
+
+      - name: Install CMS Worker dependencies, typecheck & run tests
+        working-directory: src/cms
+        run: |
+          npm ci
+          npm run typecheck
+          npm test
+
+      - name: Verify Cloudflare credentials & permissions
+        working-directory: src/cms
+        shell: bash
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::error::CLOUDFLARE_API_TOKEN secret is not set in GitHub Actions."
+            exit 1
+          fi
+          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::error::CLOUDFLARE_ACCOUNT_ID secret (or variable) is not set in GitHub Actions."
+            exit 1
+          fi
+          npx wrangler whoami
+
+      - name: Apply remote D1 schema migrations (when migrations/ changed)
+        if: steps.changes.outputs.run_migrations == 'true'
+        working-directory: src/cms
+        run: npx wrangler d1 migrations apply gptxvip --remote
+
+      - name: Deploy gptxvip-vps Worker & Static Assets
+        working-directory: src/cms
+        run: npx wrangler deploy --keep-vars

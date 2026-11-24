@@ -24,5 +24,5 @@
     "noEmit": true
   },
   "include": ["src", "vite.config.ts"],
-  "exclude": ["archive", "dist", "node_modules"]
+  "exclude": ["archive", "dist", "node_modules", "src/cms"]
 }

@@ -5,6 +5,16 @@ import "./index.css";
 import { BrowserRouter } from "react-router";
 
 const App = lazy(() => import("./App.tsx"));
+const AdminDashboardApp = lazy(() =>
+  import("./admin/AdminDashboardApp").then((module) => ({
+    default: module.AdminDashboardApp,
+  })),
+);
+const BlogApp = lazy(() =>
+  import("./blog/BlogApp").then((module) => ({
+    default: module.BlogApp,
+  })),
+);
 const BlogsView = lazy(() =>
   import("./devLushArea/agentDevRootComponents/BlogsView").then((module) => ({
     default: module.BlogsView,
@@ -52,7 +62,23 @@ if (path === "/agent" || path.startsWith("/agent/")) {
 
 const appRoot = getAppRoot(path);
 
-if (appRoot === "/guide") {
+if (appRoot === "/admin") {
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <Suspense fallback={<RouteLoading dark />}>
+        <AdminDashboardApp />
+      </Suspense>
+    </StrictMode>,
+  );
+} else if (appRoot === "/blog") {
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <Suspense fallback={<RouteLoading />}>
+        <BlogApp />
+      </Suspense>
+    </StrictMode>,
+  );
+} else if (appRoot === "/guide") {
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
       <Suspense fallback={<RouteLoading />}>

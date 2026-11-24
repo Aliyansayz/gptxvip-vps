@@ -1,0 +1,21 @@
+# Local Wrangler Worker secrets (copy to src/cms/.dev.vars — NEVER commit .dev.vars!)
+# Production values should be set via:
+#   npx wrangler secret put ADMIN_LOGIN_EMAIL
+#   npx wrangler secret put ADMIN_ACCESS_KEY
+#   npx wrangler secret put SESSION_SECRET
+
+# Primary admin email allowed to log into /admin (you can also set comma-separated ADMIN_BOOTSTRAP_EMAILS)
+ADMIN_LOGIN_EMAIL="you@gptx.vip"
+ADMIN_BOOTSTRAP_EMAILS="you@gptx.vip"
+
+# Strong passkey required alongside your admin email on /admin
+ADMIN_ACCESS_KEY="change-me-to-a-long-random-passkey"
+
+# 32+ character random secret for cryptographic signing
+SESSION_SECRET="change-me-to-a-32-plus-char-random-session-secret"
+
+# Optional: override origin for cookie security flags (leave empty for automatic detection)
+APP_ORIGIN="http://localhost:3000"
+
+# Optional: forward new contact leads to Web3Forms email inbox in addition to saving in D1
+# WEB3FORMS_ACCESS_KEY=""

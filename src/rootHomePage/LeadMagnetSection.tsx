@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Download, FileText, CheckCircle2, Shield, ArrowRight, Sparkles, Mail, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { cmsApiClient } from '../services/cmsApiClient';
 
 const ACCESS_KEY = 'dcc5f92a-158b-4cf1-b828-49514f651a6f';
 const API_URL = 'https://api.web3forms.com/submit';
@@ -20,14 +21,36 @@ export const LeadMagnetSection: React.FC = () => {
 
         setIsSubmitting(true);
 
-        const formData = new FormData();
-        formData.append('access_key', ACCESS_KEY);
-        formData.append('subject', 'Whitepaper Download Request - 2026 Enterprise Benchmark Report');
-        formData.append('email', workEmail);
-        formData.append('industry', industry);
-        formData.append('from_name', 'Whitepaper Request');
-
         try {
+            // Primary: persist lead to Cloudflare D1 so it appears in /admin
+            try {
+                const cmsRes = await cmsApiClient.submitLead({
+                    name: 'Whitepaper Request',
+                    email: workEmail.trim(),
+                    subject: 'Whitepaper Download Request - 2026 Enterprise Benchmark Report',
+                    message: `Requested the 2026 Enterprise Multi-Agent Benchmark & Security Blueprint (${industry}).`,
+                    industry,
+                    sourcePage: typeof window !== 'undefined' ? window.location.pathname : '/',
+                    sourceVariant: 'lead-magnet',
+                    referrer: typeof document !== 'undefined' ? document.referrer || null : null,
+                });
+                if (cmsRes.ok) {
+                    setIsSubmitting(false);
+                    setIsSubmitted(true);
+                    toast.success('Your 2026 Enterprise Benchmark Report has been dispatched to ' + workEmail + '!');
+                    return;
+                }
+            } catch {
+                // Fall back to Web3Forms if Worker is unavailable in static-only preview
+            }
+
+            const formData = new FormData();
+            formData.append('access_key', ACCESS_KEY);
+            formData.append('subject', 'Whitepaper Download Request - 2026 Enterprise Benchmark Report');
+            formData.append('email', workEmail);
+            formData.append('industry', industry);
+            formData.append('from_name', 'Whitepaper Request');
+
             const response = await fetch(API_URL, {
                 method: 'POST',
                 body: formData,

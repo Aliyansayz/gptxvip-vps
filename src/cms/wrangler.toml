@@ -1,0 +1,35 @@
+name = "gptxvip-vps"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Same-origin delivery: serves Vite build (../../dist) and routes dynamic API & media traffic to this Worker first.
+# Static generated assets such as /api/code-concepts/topics/*.json fall through cleanly to ASSETS.
+[assets]
+directory = "../../dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+run_worker_first = [
+  "/api/health",
+  "/api/auth/*",
+  "/api/admin/*",
+  "/api/blog",
+  "/api/blog/*",
+  "/api/leads",
+  "/api/leads/*",
+  "/media/*"
+]
+
+[vars]
+APP_ORIGIN = ""
+ENVIRONMENT = "production"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "gptxvip"
+database_id = "235c89d6-9e22-4eda-a97b-6dfdad2376cd"
+migrations_dir = "migrations"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "gptxvip-media"

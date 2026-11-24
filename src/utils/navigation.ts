@@ -2,7 +2,9 @@
  * Utility script to handle cross-root and intra-root navigation.
  *
  * The application has separate entry surfaces selected by main.tsx:
- * - /blogs -> BlogsView
+ * - /admin -> AdminDashboardApp (CMS Studio & Lead Generation Inbox)
+ * - /blog -> BlogApp (Cloudflare D1 backed Medium-style publication)
+ * - /blogs -> BlogsView (legacy static engineering deep dives)
  * - /agents (including /agents/lab) -> Agent catalog
  * - /alternate-landing -> AlternateLandingPage
  * - /guide -> Guide catalog & handbooks
@@ -33,6 +35,8 @@ export function getAppRoot(path: string): string {
   const isWithin = (root: string) =>
     pathname === root || pathname.startsWith(`${root}/`);
 
+  if (isWithin("/admin")) return "/admin";
+  if (isWithin("/blog")) return "/blog";
   if (isWithin("/guide")) return "/guide";
   if (isWithin("/alternate-landing")) return "/alternate-landing";
   // Named so `smartNavigate` can soft-navigate between /contact and the other

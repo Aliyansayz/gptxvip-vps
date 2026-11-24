@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, Send, Loader2, FileText, Download, ArrowRight, CheckCircle2, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { cmsApiClient } from '../../services/cmsApiClient';
 
 export type ContactFormVariant = 'full' | 'compact' | 'lead-magnet';
 
@@ -279,38 +280,89 @@ export const ContactForm: React.FC<ContactFormProps> = ({
     e.preventDefault();
     if (isSubmitting || honeypot) return;
 
+    const trimmedEmail = formData.email.trim();
+    if (!trimmedEmail || !trimmedEmail.includes('@')) {
+      const msg = 'Please enter a valid email address.';
+      setStatus({ state: 'error', message: msg });
+      toast.error(msg);
+      return;
+    }
+
+    if (variant !== 'lead-magnet' && !formData.message.trim()) {
+      const msg = 'Please enter a short message before sending.';
+      setStatus({ state: 'error', message: msg });
+      toast.error(msg);
+      return;
+    }
+
     setIsSubmitting(true);
     setStatus(null);
 
-    const submitData = new FormData();
-    submitData.append('access_key', ACCESS_KEY);
-    submitData.append('subject', formData.subject || defaultSubject);
-    submitData.append('from_name', formData.name || 'GPTX.VIP visitor');
-    submitData.append('email', formData.email);
-    submitData.append('message', formData.message);
-    if (variant === 'lead-magnet' && formData.industry) {
-      submitData.append('industry', formData.industry);
-    }
+    const resolvedSubject = formData.subject || defaultSubject;
+    const resolvedName = formData.name.trim() || 'GPTX.VIP visitor';
+    const resolvedIndustry = variant === 'lead-magnet' ? formData.industry : null;
+
+    const resetOnSuccess = (successMsg?: string) => {
+      setStatus({
+        state: 'success',
+        message: successMsg || 'Thanks — your message is on its way. We usually reply within a day.',
+      });
+      toast.success('Message sent successfully!');
+      setFormData(prev => ({
+        ...prev,
+        name: '',
+        email: variant === 'lead-magnet' ? defaultEmail : '',
+        message: '',
+        subject: defaultSubject,
+      }));
+      onSuccess?.();
+    };
 
     try {
-      const response = await fetch(API_URL, { method: 'POST', body: submitData });
-      const data = await response.json().catch(() => ({}));
+      // Primary: save lead directly to Cloudflare D1 via same-origin Worker so it appears in /admin
+      let storedInCms = false;
+      try {
+        const cmsResult = await cmsApiClient.submitLead({
+          name: resolvedName,
+          email: trimmedEmail,
+          subject: resolvedSubject,
+          message: formData.message.trim(),
+          industry: resolvedIndustry,
+          sourcePage: typeof window !== 'undefined' ? window.location.pathname : null,
+          sourceVariant: variant,
+          referrer: typeof document !== 'undefined' ? document.referrer || null : null,
+          company: honeypot,
+        });
+        if (cmsResult.ok) {
+          storedInCms = true;
+          resetOnSuccess(cmsResult.message);
+          return;
+        }
+      } catch {
+        // Worker unavailable (e.g., static-only dev preview); fall back to Web3Forms below.
+      }
 
-      if (data.success) {
-        setStatus({ state: 'success', message: 'Thanks — your message is on its way. We usually reply within a day.' });
-        toast.success('Message sent successfully!');
-        setFormData(prev => ({
-          ...prev,
-          name: '',
-          email: variant === 'lead-magnet' ? defaultEmail : '',
-          message: '',
-          subject: defaultSubject,
-        }));
-        onSuccess?.();
-      } else {
-        const message = data.message || 'We could not send your message. Please try again or email us directly.';
-        setStatus({ state: 'error', message });
-        toast.error(message);
+      if (!storedInCms) {
+        const submitData = new FormData();
+        submitData.append('access_key', ACCESS_KEY);
+        submitData.append('subject', resolvedSubject);
+        submitData.append('from_name', resolvedName);
+        submitData.append('email', trimmedEmail);
+        submitData.append('message', formData.message);
+        if (resolvedIndustry) {
+          submitData.append('industry', resolvedIndustry);
+        }
+
+        const response = await fetch(API_URL, { method: 'POST', body: submitData });
+        const data = await response.json().catch(() => ({}));
+
+        if (data.success) {
+          resetOnSuccess();
+        } else {
+          const message = data.message || 'We could not send your message. Please try again or email us directly.';
+          setStatus({ state: 'error', message });
+          toast.error(message);
+        }
       }
     } catch {
       setStatus({ state: 'error', message: 'Network error. Check your connection and try again.' });

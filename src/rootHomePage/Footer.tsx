@@ -222,6 +222,7 @@ export const Footer: React.FC<FooterProps> = ({
                         <button type="button" onClick={onNavigateUseCases}>Use Cases</button>
                         <button type="button" onClick={onNavigateGuide}>Guide</button>
                         <button type="button" onClick={onNavigateAgentWorkspace}>Workspace</button>
+                        <a href="/blog">Blog</a>
                         <a href="/contact">Contact</a>
                     </div>
                     <div>
