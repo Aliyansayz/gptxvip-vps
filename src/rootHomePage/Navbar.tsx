@@ -14,6 +14,7 @@ interface NavbarProps {
     onNavigateSoftware?: () => void;
     onNavigateBlogs?: () => void;
     onBookDemo?: () => void;
+    ctaLabel?: string;
     onSearch?: (query: string) => void;
     searchPlaceholder?: string;
     /**
@@ -26,6 +27,10 @@ interface NavbarProps {
      * Whether to show the subnavbar row of prototypes directly under the main bar.
      */
     showPrototypesSubnav?: boolean;
+    /**
+     * Whether to display the current area badge next to the brand mark.
+     */
+    showAreaBadge?: boolean;
 }
 
 /**
@@ -43,10 +48,12 @@ export const Navbar: React.FC<NavbarProps> = ({
     onNavigateSoftware,
     onNavigateBlogs,
     onBookDemo,
+    ctaLabel = 'Start a conversation',
     onSearch,
     searchPlaceholder = 'Search',
     variant = 'default',
     showPrototypesSubnav = false,
+    showAreaBadge = true,
 }) => {
     const [open, setOpen] = useState(false);
     const [resourcesOpen, setResourcesOpen] = useState(false);
@@ -185,17 +192,17 @@ export const Navbar: React.FC<NavbarProps> = ({
             wordmarkAccent: 'text-cyan-600',
             pill: 'border-slate-900/10 bg-white/80 text-slate-600',
             navIdle: 'text-slate-600 hover:bg-white hover:text-slate-950',
-            navActive: 'bg-cyan-50 text-cyan-900',
-            ring: 'focus-visible:ring-cyan-500',
-            cta: 'bg-slate-950 text-white hover:bg-slate-800 active:scale-[0.97] transition-transform',
-            search: 'border-slate-900/10 bg-white text-slate-700 placeholder:text-slate-400 focus:border-cyan-300 focus:ring-cyan-100',
+            navActive: 'bg-teal-50 text-[#0F766E]',
+            ring: 'focus-visible:ring-[#0D9488]',
+            cta: 'bg-gradient-to-r from-[#0F172A] to-[#0284C7] text-white hover:from-[#0D9488] hover:to-[#0EA5E9] active:scale-[0.97] transition-[background-color,transform,filter] shadow-xs',
+            search: 'border-slate-900/10 bg-white text-slate-700 placeholder:text-slate-400 focus:border-[#0D9488] focus:ring-[#CCFBF1]',
             menu: 'border-slate-900/10 bg-white',
             menuLink: 'text-slate-700 hover:bg-slate-50',
             trigger: 'border-slate-900/10 bg-white text-slate-700',
         };
 
-    const navClass = (selected: boolean) => `rounded-lg px-2 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 ${selected ? skin.navActive : skin.navIdle}`;
-    const menuLinkClass = `rounded-xl px-3 py-3 text-left text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 ${skin.menuLink} ${skin.ring}`;
+    const navClass = (selected: boolean) => `inline-flex min-h-[44px] items-center rounded-lg px-3 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 ${selected ? skin.navActive : skin.navIdle}`;
+    const menuLinkClass = `flex w-full min-h-[44px] items-center rounded-xl px-3 py-2.5 text-left text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 ${skin.menuLink} ${skin.ring}`;
     const navigate = (action: () => void) => {
         setOpen(false);
         action();
@@ -245,11 +252,14 @@ export const Navbar: React.FC<NavbarProps> = ({
     return (
         <header className={`sticky top-0 z-40 border-b ${skin.header}`}>
             <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5 sm:px-8">
-                <button type="button" onClick={() => window.location.assign('/')} className={`flex items-center gap-3 text-left focus-visible:outline-none focus-visible:ring-2 ${skin.ring} ${glass ? 'focus-visible:ring-offset-0' : 'focus-visible:ring-offset-2'}`} aria-label="GPTX.VIP home">
+                <button type="button" onClick={() => window.location.assign('/')} className={`flex min-h-[44px] items-center gap-3 text-left focus-visible:outline-none focus-visible:ring-2 ${skin.ring} ${glass ? 'focus-visible:ring-offset-0' : 'focus-visible:ring-offset-2'}`} aria-label="GPTX.VIP home">
                     <Logo size="md" variant="default" />
                 </button>
-                <span className={`max-w-24 truncate rounded-full border px-2 py-1 text-[10px] font-bold uppercase tracking-wide sm:max-w-none ${skin.pill}`} aria-label={`Current area: ${currentArea}`}>{currentArea}</span>
+                {showAreaBadge && (
+                    <span className={`max-w-24 truncate rounded-full border px-2 py-1 text-[10px] font-bold uppercase tracking-wide sm:max-w-none ${skin.pill}`} aria-label={`Current area: ${currentArea}`}>{currentArea}</span>
+                )}
                 <nav className={`hidden items-center gap-1 text-sm font-semibold xl:flex ${glass ? 'text-slate-600' : 'text-slate-600'}`} aria-label="Primary navigation">
+                    {onNavigateProjectSurfaces && <button type="button" onClick={onNavigateProjectSurfaces} aria-current={currentArea === 'Project surfaces' ? 'page' : undefined} className={navClass(currentArea === 'Project surfaces')}>Project surfaces</button>}
                     <button type="button" onClick={navigateAgentWorkspace} aria-current={currentArea === 'Agent Workspace' ? 'page' : undefined} className={navClass(currentArea === 'Agent Workspace')}>Agent Workspace</button>
                     
                     {/* Resources Dropdown */}
@@ -371,12 +381,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                             </div>
                         )}
                     </div>
-
-                    {onNavigateProjectSurfaces && <button type="button" onClick={onNavigateProjectSurfaces} aria-current={currentArea === 'Project surfaces' ? 'page' : undefined} className={navClass(currentArea === 'Project surfaces')}>Project surfaces</button>}
                 </nav>
                 <div className="flex items-center gap-2">
                     {onSearch && <form onSubmit={submitSearch} role="search" className="hidden lg:block"><label className="sr-only" htmlFor="root-site-search">Search project surfaces</label><input id="root-site-search" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder={searchPlaceholder} className={`h-11 w-44 min-h-[44px] rounded border px-4 text-base sm:text-sm outline-none xl:w-52 ${skin.search} ${skin.ring}`} /></form>}
-                    {onBookDemo && <button type="button" onClick={onBookDemo} aria-current={currentArea === 'Contact' ? 'page' : undefined} className={`group hidden items-center gap-2 rounded-full px-4 py-2 text-xs font-bold transition-[transform,background-color] duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 motion-reduce:transform-none xl:inline-flex ${skin.cta} ${skin.ring} ${glass ? 'focus-visible:ring-offset-0' : 'focus-visible:ring-offset-2'}`}>Start a conversation <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transform-none" /></button>}
+                    {onBookDemo && <button type="button" onClick={onBookDemo} aria-current={currentArea === 'Contact' ? 'page' : undefined} className={`group hidden min-h-[44px] cursor-pointer items-center gap-2 rounded-full px-4 py-2.5 text-xs font-bold transition-[transform,background-color] duration-150 ease-out hover:-translate-y-0.5 active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 motion-reduce:transform-none xl:inline-flex ${skin.cta} ${skin.ring} ${glass ? 'focus-visible:ring-offset-0' : 'focus-visible:ring-offset-2'}`}>{ctaLabel} <ArrowRight className="h-3.5 w-3.5 transition-transform duration-150 ease-out group-hover:translate-x-0.5 motion-reduce:transform-none" /></button>}
                     <button ref={mobileTriggerRef} type="button" onClick={() => setOpen((value) => !value)} className={`inline-flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center active:scale-[0.95] rounded-xl border transition-colors focus-visible:outline-none focus-visible:ring-2 xl:hidden ${skin.trigger} ${skin.ring} ${glass ? 'focus-visible:ring-offset-0' : 'focus-visible:ring-offset-2'}`} aria-expanded={open} aria-controls="root-mobile-navigation" aria-label={open ? 'Close navigation' : 'Open navigation'}>{open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button>
                 </div>
             </div>

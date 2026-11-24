@@ -1,22 +1,9 @@
 import { RootHomePage } from './RootHomePage';
 export { RootHomePage } from './RootHomePage';
 export { Navbar } from './Navbar';
-export { HeroSection } from './HeroSection';
-export { HeroBannerSvg } from './HeroBannerSvg';
-export { TrustedConnectors } from './TrustedConnectors';
-export { PillarsShowcase } from './PillarsShowcase';
-export { BlockGallery } from './BlockGallery';
-export { VerticalSolutions } from './VerticalSolutions';
-export { FleetCatalog } from './FleetCatalog';
-export { GovernanceFramework } from './GovernanceFramework';
-export { RoiCalculator } from './RoiCalculator';
-export { LeadMagnetSection } from './LeadMagnetSection';
-export { TestimonialsSection } from './TestimonialsSection';
-export { FaqSection } from './FaqSection';
-export { LeadCaptureModal } from './LeadCaptureModal';
-export { StickyConversionBar } from './StickyConversionBar';
 export { Footer } from './Footer';
+export { ContactPage } from './ContactPage';
 export { AgentWorkspacePage } from './AgentWorkspacePage';
-export * from './archive';
+export * from './widgets';
 
 export default RootHomePage;

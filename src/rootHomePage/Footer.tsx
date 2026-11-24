@@ -11,7 +11,7 @@ export interface FooterProps {
     onNavigateProjectSurfaces?: () => void;
     onNavigateAnalyticsSurfaces?: () => void;
     theme?: 'light' | 'dark';
-    accent?: 'cyan' | 'warm';
+    accent?: 'cyan' | 'warm' | 'soc';
     caption?: string;
     wordmark?: string;
 }
@@ -25,9 +25,12 @@ export const Footer: React.FC<FooterProps> = ({
     onNavigateBlogs = () => window.location.assign('/blogs'),
     onNavigateCodeConcepts = () => window.location.assign('/code_concepts/general'),
     onNavigateProjectSurfaces = () => window.location.assign('/agents/templates'),
+    accent = 'warm',
     caption,
     wordmark = 'GPTX.VIP™',
 }) => {
+    const accentHex = accent === 'soc' || accent === 'cyan' ? '#5EEAD4' : '#d8ff38';
+    const accentHoverHex = accent === 'soc' || accent === 'cyan' ? '#38BDF8' : '#d8ff38';
     const scrollToTop = (e: React.MouseEvent) => {
         e.preventDefault();
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -38,7 +41,7 @@ export const Footer: React.FC<FooterProps> = ({
             id="footer"
             className="blvd-footer"
             style={{
-                background: '#111114',
+                background: accent === 'soc' ? '#0B131E' : '#111114',
                 color: '#fff',
                 padding: '36px 1.25rem 20px',
                 position: 'relative',
@@ -64,18 +67,21 @@ export const Footer: React.FC<FooterProps> = ({
                     color: #a1a1aa;
                 }
                 .blvd-footer .blvd-footer-pill {
+                    display: inline-flex;
+                    align-items: center;
+                    min-height: 44px;
                     border: 1px solid #77777e;
                     border-radius: 30px;
-                    padding: 8px 16px;
-                    font-size: 11px;
+                    padding: 10px 18px;
+                    font-size: 12px;
                     color: #fff;
                     text-decoration: none;
                     white-space: nowrap;
                     transition: border-color 0.2s, color 0.2s;
                 }
                 .blvd-footer .blvd-footer-pill:hover {
-                    border-color: #d8ff38;
-                    color: #d8ff38;
+                    border-color: ${accentHex};
+                    color: ${accentHex};
                 }
                 .blvd-footer .blvd-email {
                     display: block;
@@ -83,7 +89,7 @@ export const Footer: React.FC<FooterProps> = ({
                     font-size: clamp(28px, 7.2vw, 80px);
                     letter-spacing: -.075em;
                     line-height: 1.05;
-                    color: #d8ff38;
+                    color: ${accentHex};
                     text-decoration: none;
                     white-space: nowrap;
                     margin: 12px auto 22px;
@@ -91,7 +97,7 @@ export const Footer: React.FC<FooterProps> = ({
                     transition: color 0.2s;
                 }
                 .blvd-footer .blvd-email:hover {
-                    color: #d8ff38;
+                    color: ${accentHoverHex};
                 }
                 .blvd-footer .blvd-footer-rule {
                     height: 1px;
@@ -128,14 +134,17 @@ export const Footer: React.FC<FooterProps> = ({
                 }
                 .blvd-footer .blvd-footer-links a,
                 .blvd-footer .blvd-footer-links button {
-                    display: block;
+                    display: flex;
+                    align-items: center;
+                    width: 100%;
+                    min-height: 40px;
                     text-decoration: none;
                     color: #e9e9ec;
-                    font-size: 12px;
-                    margin: 8px 0;
+                    font-size: 13px;
+                    margin: 0;
                     background: none;
                     border: 0;
-                    padding: 0;
+                    padding: 6px 0;
                     font-family: inherit;
                     cursor: pointer;
                     text-align: left;
@@ -143,7 +152,7 @@ export const Footer: React.FC<FooterProps> = ({
                 }
                 .blvd-footer .blvd-footer-links a:hover,
                 .blvd-footer .blvd-footer-links button:hover {
-                    color: #d8ff38;
+                    color: ${accentHex};
                 }
                 .blvd-footer .blvd-footer-wordmark {
                     font-family: 'Space Grotesk', sans-serif;
@@ -177,7 +186,7 @@ export const Footer: React.FC<FooterProps> = ({
                 }
                 .blvd-footer .blvd-footer-legal a:hover,
                 .blvd-footer .blvd-footer-legal button:hover {
-                    color: #d8ff38;
+                    color: ${accentHex};
                 }
                 @media (min-width: 640px) {
                     .blvd-footer { padding: 40px 2rem 20px !important; }
@@ -185,6 +194,10 @@ export const Footer: React.FC<FooterProps> = ({
                 @media (max-width: 650px) {
                     .blvd-footer { padding: 36px 1.25rem 20px !important; }
                     .blvd-footer .blvd-footer-top { align-items: flex-start; }
+                    .blvd-footer .blvd-footer-links a,
+                    .blvd-footer .blvd-footer-links button,
+                    .blvd-footer .blvd-footer-legal a,
+                    .blvd-footer .blvd-footer-legal button { min-height: 44px; display: inline-flex; align-items: center; }
                     .blvd-footer .blvd-email { font-size: 7.3vw; letter-spacing: -.07em; margin: 22px auto 28px; }
                     .blvd-footer .blvd-footer-bottom { grid-template-columns: 1fr; gap: 25px; }
                     .blvd-footer .blvd-footer-wordmark { margin-top: 38px; }
@@ -194,7 +207,7 @@ export const Footer: React.FC<FooterProps> = ({
                     .blvd-footer .blvd-email { font-size: 7vw; }
                     .blvd-footer .blvd-footer-links { gap: 10px; }
                     .blvd-footer .blvd-footer-links a,
-                    .blvd-footer .blvd-footer-links button { font-size: 10px; }
+                    .blvd-footer .blvd-footer-links button { font-size: 12px; }
                 }
             `}</style>
 
