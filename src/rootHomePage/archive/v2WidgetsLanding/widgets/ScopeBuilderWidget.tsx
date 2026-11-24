@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { ArrowRight, CheckCircle2, Clock, Code2, Layers, ShieldCheck } from 'lucide-react';
-import { templates } from '../../devLushArea/agentMarketplace/data/templates';
+import { templates } from '../../../../devLushArea/agentMarketplace/data/templates';
 
 export interface ScopeSelection {
   surface: string;
@@ -201,7 +201,7 @@ export const ScopeBuilderWidget: React.FC<ScopeBuilderWidgetProps> = ({
             Direct Builder Reply
           </p>
           <p className="mt-0.5 text-[11px] text-slate-300">
-            Answered directly within 1 business day — no sales queue.
+            Answered directly within 1 business day â€” no sales queue.
           </p>
         </div>
       </div>

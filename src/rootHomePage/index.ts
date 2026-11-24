@@ -4,6 +4,6 @@ export { Navbar } from './Navbar';
 export { Footer } from './Footer';
 export { ContactPage } from './ContactPage';
 export { AgentWorkspacePage } from './AgentWorkspacePage';
-export * from './widgets';
+export * from './archive';
 
 export default RootHomePage;

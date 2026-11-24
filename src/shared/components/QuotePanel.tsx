@@ -36,6 +36,7 @@ export interface QuotePanelProps {
   attribution: string;
   /** e.g. "Beta reader" — rendered after the attribution. */
   attributionDetail?: string;
+  accent?: 'warm' | 'soc';
   className?: string;
 }
 
@@ -49,17 +50,20 @@ export function QuotePanel({
   quote,
   attribution,
   attributionDetail,
+  accent = 'warm',
   className = '',
 }: QuotePanelProps) {
+  const soc = accent === 'soc';
   return (
-    <section className={`border-b border-[#e9e9ec] bg-white py-10 sm:py-12 ${className}`} aria-label={eyebrow}>
+    <section className={`border-b ${soc ? 'border-slate-200' : 'border-[#e9e9ec]'} bg-white py-10 sm:py-12 ${className}`} aria-label={eyebrow}>
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal>
           <div
-            className="overflow-hidden rounded-2xl border border-[#2a3166]/60 text-white shadow-xl shadow-[#11121c]/15"
+            className={`overflow-hidden rounded-2xl border ${soc ? 'border-slate-700/60 shadow-xl shadow-[#0B131E]/20' : 'border-[#2a3166]/60 shadow-xl shadow-[#11121c]/15'} text-white`}
             style={{
-              background:
-                'radial-gradient(ellipse at 90% 10%, rgba(111,120,255,0.28) 0, transparent 42%), linear-gradient(125deg, #0b0d17 10%, #14193d 70%, #2534bf 100%)',
+              background: soc
+                ? 'radial-gradient(ellipse at 90% 10%, rgba(45,212,191,0.22) 0, transparent 42%), radial-gradient(ellipse at 12% 92%, rgba(14,165,233,0.18) 0, transparent 45%), linear-gradient(125deg, #070d17 10%, #0B131E 65%, #0d2b45 100%)'
+                : 'radial-gradient(ellipse at 90% 10%, rgba(111,120,255,0.28) 0, transparent 42%), linear-gradient(125deg, #0b0d17 10%, #14193d 70%, #2534bf 100%)',
             }}
           >
             <div className="grid lg:grid-cols-2">
@@ -67,7 +71,7 @@ export function QuotePanel({
               <div className="p-6 sm:p-8">
                 <RevealGroup stagger={0.07}>
                   <RevealItem>
-                    <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#d8ff38]">{eyebrow}</p>
+                    <p className={`font-mono text-[10px] font-bold uppercase tracking-[0.18em] ${soc ? 'text-[#5EEAD4]' : 'text-[#d8ff38]'}`}>{eyebrow}</p>
                   </RevealItem>
                   <RevealItem>
                     <h2 className="mt-3 text-2xl sm:text-3xl font-bold leading-[1.1] tracking-tight font-display" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
@@ -82,7 +86,7 @@ export function QuotePanel({
                       <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
                         {highlights.map((item) => (
                           <li key={item} className="flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-slate-400">
-                            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#d8ff38]" />
+                            <span aria-hidden="true" className={`h-1.5 w-1.5 rounded-full ${soc ? 'bg-[#2DD4BF]' : 'bg-[#d8ff38]'}`} />
                             {item}
                           </li>
                         ))}
@@ -94,7 +98,11 @@ export function QuotePanel({
                       <button
                         type="button"
                         onClick={primaryAction.onSelect}
-                        className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-[#d8ff38] px-5 py-2.5 text-xs font-bold text-[#101014] transition-[transform,background-color] duration-200 hover:-translate-y-0.5 hover:bg-[#c6f028] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 active:scale-[0.96] motion-reduce:transform-none"
+                        className={`group inline-flex min-h-11 items-center gap-2 rounded-full px-5 py-2.5 text-xs font-bold transition-[transform,background-color,filter] duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 active:scale-[0.96] motion-reduce:transform-none ${
+                          soc
+                            ? 'bg-gradient-to-r from-[#5EEAD4] via-[#2DD4BF] to-[#38BDF8] text-[#0B131E] hover:brightness-105'
+                            : 'bg-[#d8ff38] text-[#101014] hover:bg-[#c6f028]'
+                        }`}
                       >
                         {primaryAction.label}
                         <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transform-none" aria-hidden="true" />
@@ -116,7 +124,7 @@ export function QuotePanel({
               {/* -------------------------------------------------- quote */}
               <div className="flex flex-col justify-center border-t border-dashed border-white/15 p-6 sm:p-8 lg:border-l lg:border-t-0">
                 <Reveal from="right" distance={24}>
-                  <Quote className="h-6 w-6 text-[#d8ff38]/80" aria-hidden="true" />
+                  <Quote className={`h-6 w-6 ${soc ? 'text-[#5EEAD4]/80' : 'text-[#d8ff38]/80'}`} aria-hidden="true" />
                   <blockquote className="mt-4 text-balance text-lg sm:text-xl font-medium leading-relaxed tracking-[-0.01em] text-slate-100">
                     {quote}
                   </blockquote>

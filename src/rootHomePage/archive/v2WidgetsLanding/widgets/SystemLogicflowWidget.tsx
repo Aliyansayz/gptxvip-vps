@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+﻿import React, { useMemo, useState } from 'react';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -6,19 +6,19 @@ import {
   GitBranch,
   SlidersHorizontal,
 } from 'lucide-react';
-import { seed as taxiSeed } from '../../prototype/taxi-demand-eda-agent/data/sampleTaxiData';
+import { seed as taxiSeed } from '../../../../prototype/taxi-demand-eda-agent/data/sampleTaxiData';
 import {
   computeChartSeries,
   computeKpiStats,
   filterRideRecords,
-} from '../../prototype/taxi-demand-eda-agent/workflow/edaEngine';
-import { seed as saasSeed } from '../../prototype/saas-metrics-kit/data';
-import { seed as ledgerSeed } from '../../prototype/ledgerline/data';
-import { closing as ledgerClosing } from '../../prototype/ledgerline/formulas';
-import { seed as crmSeed } from '../../prototype/orbit-crm/data';
-import { forecast as crmForecast } from '../../prototype/orbit-crm/formulas';
-import { getPrototypeUrl } from '../../prototype/registry';
-import { Reveal } from '../../shared/components/Reveal';
+} from '../../../../prototype/taxi-demand-eda-agent/workflow/edaEngine';
+import { seed as saasSeed } from '../../../../prototype/saas-metrics-kit/data';
+import { seed as ledgerSeed } from '../../../../prototype/ledgerline/data';
+import { closing as ledgerClosing } from '../../../../prototype/ledgerline/formulas';
+import { seed as crmSeed } from '../../../../prototype/orbit-crm/data';
+import { forecast as crmForecast } from '../../../../prototype/orbit-crm/formulas';
+import { getPrototypeUrl } from '../../../../prototype/registry';
+import { Reveal } from '../../../../shared/components/Reveal';
 
 export interface SystemLogicflowWidgetProps {
   onRequestAdaptation: (surfaceName: string, note?: string) => void;
@@ -403,7 +403,7 @@ export const SystemLogicflowWidget: React.FC<SystemLogicflowWidgetProps> = ({
                         Account Monthly Value vs $500 Target
                       </span>
                       <span className="font-mono text-[10px] text-slate-500">
-                        Zero-base · Plan: {planFilter}
+                        Zero-base Â· Plan: {planFilter}
                       </span>
                     </div>
                     <div className="mt-3 space-y-2.5">
@@ -527,13 +527,13 @@ export const SystemLogicflowWidget: React.FC<SystemLogicflowWidgetProps> = ({
                         Hourly Demand Distribution (Avg Rides / Slot)
                       </span>
                       <span className="font-mono text-[10px] text-slate-500">
-                        {filtered.length === 0 ? 'No matching slice' : `${season} · ${weather}`}
+                        {filtered.length === 0 ? 'No matching slice' : `${season} Â· ${weather}`}
                       </span>
                     </div>
 
                     {filtered.length === 0 ? (
                       <div className="flex h-28 items-center justify-center text-xs text-slate-500">
-                        No snowy intervals occur in Summer — switch to Winter or Any Weather.
+                        No snowy intervals occur in Summer â€” switch to Winter or Any Weather.
                       </div>
                     ) : (
                       <div className="mt-3 grid h-28 grid-cols-5 items-end gap-3 border-b border-[#64748B]/40 pb-1 pt-4">

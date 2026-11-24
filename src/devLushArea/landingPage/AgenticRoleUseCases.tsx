@@ -8,9 +8,10 @@ interface AgenticRoleUseCasesProps {
   onOpenRole: (roleId: string) => void;
   /**
    * `warm` matches the landing page's orange-red accent ramp.
+   * `soc` matches the Vireon SOC teal + sky-blue landing palette.
    * Defaults to `cyan` so the Agent Labs landing keeps its existing palette.
    */
-  accent?: 'cyan' | 'warm';
+  accent?: 'cyan' | 'warm' | 'soc';
   className?: string;
 }
 
@@ -22,12 +23,17 @@ export function AgenticRoleUseCases({ onOpenRole, accent = 'cyan', className = '
   const activeIndex = agenticRoleDefinitions.findIndex((role) => role.id === activeRole?.id);
 
   const warm = accent === 'warm';
-  const accentOnDark = warm ? 'text-[#d8ff38]' : 'text-cyan-300';
-  const accentRing = warm ? 'focus-visible:ring-[#343edb]' : 'focus-visible:ring-cyan-300';
-  const accentCta = warm ? 'bg-[#d8ff38] text-[#101014] hover:bg-[#c6f028]' : 'bg-cyan-300 hover:bg-cyan-200 text-slate-950';
-  const accentGlow = warm ? 'rgba(52,62,219,0.28)' : 'rgba(34,211,238,0.15)';
-  const accentRail = warm ? 'border-[#343edb] bg-[#343edb]/25' : 'border-cyan-400/50 bg-cyan-300/10';
-  const accentRailIcon = warm ? 'bg-[#d8ff38] text-[#101014]' : 'bg-cyan-300 text-slate-950';
+  const soc = accent === 'soc';
+  const accentOnDark = soc ? 'text-[#5EEAD4]' : warm ? 'text-[#d8ff38]' : 'text-cyan-300';
+  const accentRing = soc ? 'focus-visible:ring-[#5EEAD4]' : warm ? 'focus-visible:ring-[#343edb]' : 'focus-visible:ring-cyan-300';
+  const accentCta = soc
+    ? 'bg-gradient-to-r from-[#5EEAD4] to-[#38BDF8] text-[#0B131E] hover:brightness-105'
+    : warm
+      ? 'bg-[#d8ff38] text-[#101014] hover:bg-[#c6f028]'
+      : 'bg-cyan-300 hover:bg-cyan-200 text-slate-950';
+  const accentGlow = soc ? 'rgba(45,212,191,0.22)' : warm ? 'rgba(52,62,219,0.28)' : 'rgba(34,211,238,0.15)';
+  const accentRail = soc ? 'border-[#2DD4BF]/60 bg-[#0D9488]/25' : warm ? 'border-[#343edb] bg-[#343edb]/25' : 'border-cyan-400/50 bg-cyan-300/10';
+  const accentRailIcon = soc ? 'bg-gradient-to-br from-[#5EEAD4] to-[#38BDF8] text-[#0B131E]' : warm ? 'bg-[#d8ff38] text-[#101014]' : 'bg-cyan-300 text-slate-950';
 
   useEffect(() => {
     const element = revealRef.current;
@@ -49,33 +55,35 @@ export function AgenticRoleUseCases({ onOpenRole, accent = 'cyan', className = '
   const currentUseCase = getAgenticRoleUseCase(activeRole);
 
   return (
-    <section aria-labelledby="agentic-role-use-cases-heading" className={`border-b border-[#e9e9ec] bg-[#f8f9fc] py-10 sm:py-12 ${className}`}>
+    <section aria-labelledby="agentic-role-use-cases-heading" className={`border-b ${soc ? 'border-slate-200 bg-[#F8FAFC]' : 'border-[#e9e9ec] bg-[#f8f9fc]'} py-10 sm:py-12 ${className}`}>
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="mb-5 flex flex-col gap-2 sm:mb-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
-            <span className={`mb-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.18em] ${warm ? 'bg-[#343edb]/10 text-[#343edb]' : 'bg-cyan-50 text-cyan-700'}`}>
+            <span className={`mb-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.18em] ${soc ? 'bg-[#CCFBF1] text-[#0F766E]' : warm ? 'bg-[#343edb]/10 text-[#343edb]' : 'bg-cyan-50 text-cyan-700'}`}>
               02 / APPLIED AGENT ROLES
             </span>
             <h2
               id="agentic-role-use-cases-heading"
-              className="text-2xl sm:text-4xl font-medium tracking-[-0.04em] text-[#101014]"
+              className={`text-2xl sm:text-4xl font-medium tracking-[-0.04em] ${soc ? 'text-[#0F172A]' : 'text-[#101014]'}`}
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
-              See where an agent role <span className={warm ? 'text-[#343edb]' : ''}>earns its place.</span>
+              See where an agent role <span className={soc ? 'text-[#0D9488]' : warm ? 'text-[#343edb]' : ''}>earns its place.</span>
             </h2>
           </div>
-          <p className="max-w-md text-sm leading-relaxed text-[#555560]">
+          <p className={`max-w-md text-sm leading-relaxed ${soc ? 'text-slate-600' : 'text-[#555560]'}`}>
             Move through {agenticRoleDefinitions.length} role-based use cases. Each opens a real case path with sample inputs, a decision, and evidence.
           </p>
         </div>
 
         <div
           ref={revealRef}
-          className={`relative overflow-hidden rounded-[1.5rem] border border-[#2a3166]/70 text-white shadow-[0_20px_56px_rgba(17,18,28,0.18)] transition-[opacity,transform] duration-700 ease-out motion-reduce:transition-none ${revealed ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-6 scale-[0.98] opacity-0'}`}
+          className={`relative overflow-hidden rounded-[1.5rem] border ${soc ? 'border-slate-700/60 shadow-[0_20px_56px_rgba(11,19,30,0.2)]' : 'border-[#2a3166]/70 shadow-[0_20px_56px_rgba(17,18,28,0.18)]'} text-white transition-[opacity,transform] duration-700 ease-out motion-reduce:transition-none ${revealed ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-6 scale-[0.98] opacity-0'}`}
           style={{
-            background: warm
-              ? 'radial-gradient(ellipse at 92% 8%, rgba(111,120,255,0.28) 0, transparent 42%), linear-gradient(145deg, #0b0e1a 0%, #101633 65%, #16205a 100%)'
-              : '#0d1824',
+            background: soc
+              ? 'radial-gradient(ellipse at 92% 8%, rgba(45,212,191,0.22) 0, transparent 42%), radial-gradient(ellipse at 12% 92%, rgba(14,165,233,0.22) 0, transparent 45%), linear-gradient(145deg, #070d17 0%, #0B131E 60%, #0d2b45 100%)'
+              : warm
+                ? 'radial-gradient(ellipse at 92% 8%, rgba(111,120,255,0.28) 0, transparent 42%), linear-gradient(145deg, #0b0e1a 0%, #101633 65%, #16205a 100%)'
+                : '#0d1824',
           }}
         >
           <div aria-hidden="true" className={`pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_100%_0%,${accentGlow},transparent_42%),linear-gradient(to_right,rgba(148,163,184,0.04)_1px,transparent_1px)] bg-[size:auto,44px_44px]`} />

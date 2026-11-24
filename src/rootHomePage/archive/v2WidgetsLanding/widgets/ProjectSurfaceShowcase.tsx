@@ -1,8 +1,8 @@
-import React, { useMemo, useState } from 'react';
+﻿import React, { useMemo, useState } from 'react';
 import { ArrowRight, ArrowUpRight, BarChart3, Bot, CheckCircle2 } from 'lucide-react';
-import { templates, type Template } from '../../devLushArea/agentMarketplace/data/templates';
-import { getPrototypeUrl } from '../../prototype/registry';
-import { Reveal, RevealGroup, RevealItem } from '../../shared/components/Reveal';
+import { templates, type Template } from '../../../../devLushArea/agentMarketplace/data/templates';
+import { getPrototypeUrl } from '../../../../prototype/registry';
+import { Reveal, RevealGroup, RevealItem } from '../../../../shared/components/Reveal';
 import { SurfaceChartWidget } from './SurfaceChartWidget';
 
 export interface ProjectSurfaceShowcaseProps {
@@ -100,7 +100,7 @@ export const ProjectSurfaceShowcase: React.FC<ProjectSurfaceShowcaseProps> = ({
             <div className="max-w-2xl">
               <span className="mb-2.5 inline-flex items-center gap-1.5 rounded-full bg-[#CCFBF1] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-[#0F766E]">
                 <BarChart3 className="h-3.5 w-3.5" aria-hidden="true" />
-                01 / Surface Chart Widgets · Systems &amp; Agents
+                01 / Surface Chart Widgets Â· Systems &amp; Agents
               </span>
               <h2
                 id="project-surfaces-heading"
@@ -113,7 +113,7 @@ export const ProjectSurfaceShowcase: React.FC<ProjectSurfaceShowcaseProps> = ({
                 </span>
               </h2>
               <p className="mt-2.5 max-w-[56ch] text-base leading-relaxed text-slate-600">
-                Interact directly with each surface’s live chart and telemetry widget instead of static screenshots — then open the system or request a custom build.
+                Interact directly with each surfaceâ€™s live chart and telemetry widget instead of static screenshots â€” then open the system or request a custom build.
               </p>
             </div>
           </Reveal>
@@ -244,7 +244,7 @@ export const ProjectSurfaceShowcase: React.FC<ProjectSurfaceShowcaseProps> = ({
             <strong className="font-semibold text-[#0F172A]">
               {templates.length} working systems &amp; agent surfaces
             </strong>{' '}
-            available to inspect side by side — clean React + TypeScript source included on custom engagements.
+            available to inspect side by side â€” clean React + TypeScript source included on custom engagements.
           </div>
           <button
             type="button"

@@ -1,21 +1,21 @@
-import React, { useMemo, useState } from 'react';
-import type { PrototypeId } from '../../prototype/registry';
-import { events as pulseEvents } from '../../prototype/pulse-analytics/data';
-import { seed as ledgerSeed } from '../../prototype/ledgerline/data';
-import { closing as ledgerClosing, signed as ledgerSigned } from '../../prototype/ledgerline/formulas';
-import { seed as saasSeed } from '../../prototype/saas-metrics-kit/data';
-import { seed as crmSeed, stages as crmStages } from '../../prototype/orbit-crm/data';
-import { forecast as crmForecast } from '../../prototype/orbit-crm/formulas';
-import { seed as fundSeed } from '../../prototype/fundview/data';
-import { seed as chainSeed } from '../../prototype/chainpulse/data';
-import { seed as adSeed } from '../../prototype/adsphere/data';
-import { seed as storeSeed } from '../../prototype/storefront-pro/data';
-import { seed as clinicSeed } from '../../prototype/clinicare/data';
-import { seed as hqSeed } from '../../prototype/hq-admin/data';
-import { seed as insightSeed } from '../../prototype/insight-boards/data';
-import { analyticsData as pmAnalytics } from '../../prototype/project-management/data';
-import { seed as taxiSeed } from '../../prototype/taxi-demand-eda-agent/data/sampleTaxiData';
-import { computeChartSeries, filterRideRecords } from '../../prototype/taxi-demand-eda-agent/workflow/edaEngine';
+﻿import React, { useMemo, useState } from 'react';
+import type { PrototypeId } from '../../../../prototype/registry';
+import { events as pulseEvents } from '../../../../prototype/pulse-analytics/data';
+import { seed as ledgerSeed } from '../../../../prototype/ledgerline/data';
+import { closing as ledgerClosing, signed as ledgerSigned } from '../../../../prototype/ledgerline/formulas';
+import { seed as saasSeed } from '../../../../prototype/saas-metrics-kit/data';
+import { seed as crmSeed, stages as crmStages } from '../../../../prototype/orbit-crm/data';
+import { forecast as crmForecast } from '../../../../prototype/orbit-crm/formulas';
+import { seed as fundSeed } from '../../../../prototype/fundview/data';
+import { seed as chainSeed } from '../../../../prototype/chainpulse/data';
+import { seed as adSeed } from '../../../../prototype/adsphere/data';
+import { seed as storeSeed } from '../../../../prototype/storefront-pro/data';
+import { seed as clinicSeed } from '../../../../prototype/clinicare/data';
+import { seed as hqSeed } from '../../../../prototype/hq-admin/data';
+import { seed as insightSeed } from '../../../../prototype/insight-boards/data';
+import { analyticsData as pmAnalytics } from '../../../../prototype/project-management/data';
+import { seed as taxiSeed } from '../../../../prototype/taxi-demand-eda-agent/data/sampleTaxiData';
+import { computeChartSeries, filterRideRecords } from '../../../../prototype/taxi-demand-eda-agent/workflow/edaEngine';
 
 export interface SurfaceChartWidgetProps {
   prototype: PrototypeId;
@@ -76,10 +76,10 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
         <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2.5">
           <div>
             <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#5EEAD4]">
-              Staged Bar Funnel · Target {targetConvRate}%
+              Staged Bar Funnel Â· Target {targetConvRate}%
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
-              {convRate}% Visit → Purchase ({topUsers} users)
+              {convRate}% Visit â†’ Purchase ({topUsers} users)
             </p>
           </div>
           <div className="flex items-center gap-1.5">
@@ -141,7 +141,7 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
     const closingCents = ledgerClosing(account, ledgerSeed.entries);
     const credits = acctEntries.filter((e) => e.direction === 'credit').reduce((s, e) => s + e.amountCents, 0);
     const debits = acctEntries.filter((e) => e.direction === 'debit').reduce((s, e) => s + e.amountCents, 0);
-    const sym = account.currency === 'EUR' ? '€' : '$';
+    const sym = account.currency === 'EUR' ? 'â‚¬' : '$';
     const fmt = (c: number) => `${sym}${Math.round(c / 100).toLocaleString()}`;
     const bars = [
       { label: 'Opening', val: account.openingBalanceCents, display: fmt(account.openingBalanceCents), color: 'bg-[#64748B]' },
@@ -156,7 +156,7 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
         <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2.5">
           <div>
             <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#38BDF8]">
-              Cash-Flow Bridge · {account.currency}
+              Cash-Flow Bridge Â· {account.currency}
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
               Closing: {fmt(closingCents)}
@@ -198,7 +198,7 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
           })}
         </div>
         <div className="mt-2 flex items-center justify-between pt-1 font-mono text-[10px] text-slate-400">
-          <span>{acctEntries.length} postings · zero-base</span>
+          <span>{acctEntries.length} postings Â· zero-base</span>
           <span className="text-[#10B981]">Net delta: {fmt(acctEntries.reduce((s, e) => s + ledgerSigned(e), 0))}</span>
         </div>
       </div>
@@ -311,7 +311,7 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
               Weighted Pipeline Funnel
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
-              {fmtDollars(totals.weighted)} weighted · {fmtDollars(totals.raw)} open
+              {fmtDollars(totals.weighted)} weighted Â· {fmtDollars(totals.raw)} open
             </p>
           </div>
           <span className="rounded-full border border-slate-500/40 bg-white/5 px-2 py-0.5 font-mono text-[10px] font-bold text-slate-300">
@@ -490,7 +490,7 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
             {candles[0]?.time.slice(5, 10)}
           </text>
           <text x="366" y="106" textAnchor="end" fontSize="9" fill="#94a3b8" fontFamily="monospace">
-            {last?.time.slice(5, 10)} · {candles.length} bars
+            {last?.time.slice(5, 10)} Â· {candles.length} bars
           </text>
         </svg>
       </div>
@@ -621,7 +621,7 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
               {pmView === 'velocity' ? 'Sprint Throughput' : 'Delivery Gauge'}
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
-              {pmView === 'velocity' ? '5-Week Task Velocity · zero-base' : '60% Milestone Progress'}
+              {pmView === 'velocity' ? '5-Week Task Velocity Â· zero-base' : '60% Milestone Progress'}
             </p>
           </div>
           <div className="flex items-center gap-1.5">
@@ -682,7 +682,7 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
         <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2.5">
           <div>
             <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#38BDF8]">
-              Tenant Sessions · {tenant.name}
+              Tenant Sessions Â· {tenant.name}
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
               ${totalRev.toLocaleString()} sample revenue
@@ -729,10 +729,10 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
         <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
           <div>
             <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#5EEAD4]">
-              Patient Flow · Zero-Base
+              Patient Flow Â· Zero-Base
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
-              {total} active visits · {clinicSeed.clinicians.length} clinicians
+              {total} active visits Â· {clinicSeed.clinicians.length} clinicians
             </p>
           </div>
           <span className="rounded-full border border-[#10B981]/35 bg-[#10B981]/15 px-2 py-0.5 font-mono text-[10px] font-bold text-[#10B981]">
@@ -772,10 +772,10 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
         <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
           <div>
             <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#38BDF8]">
-              Workspace Access · RBAC Share
+              Workspace Access Â· RBAC Share
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
-              {hqSeed.workspaces.length} spaces · {total} members
+              {hqSeed.workspaces.length} spaces Â· {total} members
             </p>
           </div>
           <span className="rounded-full border border-[#38BDF8]/30 bg-[#0EA5E9]/15 px-2 py-0.5 font-mono text-[10px] text-[#38BDF8]">
@@ -822,7 +822,7 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
               Route SLA vs {slaTarget}% Benchmark
             </span>
             <p className="font-mono text-xs font-bold text-white tabular-nums">
-              97.4% Top Hub · 3 Corridors On-Target
+              97.4% Top Hub Â· 3 Corridors On-Target
             </p>
           </div>
           <span className="rounded-full border border-[#10B981]/35 bg-[#10B981]/15 px-2 py-0.5 font-mono text-[10px] font-bold text-[#10B981]">
@@ -870,7 +870,7 @@ export const SurfaceChartWidget: React.FC<SurfaceChartWidgetProps> = ({
       <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2.5">
         <div>
           <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#5EEAD4]">
-            Hourly Demand · Zero-Base
+            Hourly Demand Â· Zero-Base
           </span>
           <p className="font-mono text-xs font-bold text-white tabular-nums">
             17:00 Peak: {hourly.find((h) => h.hour === '17:00')?.['Overall Average'] ?? 0} rides/hr

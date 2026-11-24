@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { ArrowRight, Layers, X } from 'lucide-react';
-import { ContactForm } from '../../shared/components/ContactForm';
+import { ContactForm } from '../../../../shared/components/ContactForm';
 
 export interface StickyWalkthroughBarProps {
   activeSurface: string | null;
@@ -77,7 +77,7 @@ export const StickyWalkthroughBar: React.FC<StickyWalkthroughBarProps> = ({
               )}
             </p>
             <p className="hidden truncate text-[11px] text-slate-300 sm:block">
-              Direct builder reply · 15-min walkthrough
+              Direct builder reply Â· 15-min walkthrough
             </p>
           </div>
         </div>

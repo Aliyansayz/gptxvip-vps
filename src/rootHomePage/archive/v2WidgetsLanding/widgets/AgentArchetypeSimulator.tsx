@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+﻿import React, { useMemo, useState } from 'react';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -17,14 +17,14 @@ import {
   Truck,
   XCircle,
 } from 'lucide-react';
-import { AGENT_PROTOTYPES, seed } from '../../prototype/taxi-demand-eda-agent/data/sampleTaxiData';
+import { AGENT_PROTOTYPES, seed } from '../../../../prototype/taxi-demand-eda-agent/data/sampleTaxiData';
 import {
   computeAggregatedStats,
   runComputationalAnalysis,
-} from '../../prototype/taxi-demand-eda-agent/workflow/edaEngine';
-import { agenticRoleDefinitions } from '../../devLushArea/agenticRoles/data';
-import { getPrototypeUrl, type PrototypeId } from '../../prototype/registry';
-import { Reveal } from '../../shared/components/Reveal';
+} from '../../../../prototype/taxi-demand-eda-agent/workflow/edaEngine';
+import { agenticRoleDefinitions } from '../../../../devLushArea/agenticRoles/data';
+import { getPrototypeUrl, type PrototypeId } from '../../../../prototype/registry';
+import { Reveal } from '../../../../shared/components/Reveal';
 import { SurfaceChartWidget } from './SurfaceChartWidget';
 
 export interface AgentArchetypeSimulatorProps {
@@ -324,7 +324,7 @@ export const AgentArchetypeSimulator: React.FC<AgentArchetypeSimulatorProps> = (
                         </span>
                         <span className="min-w-0 flex-1">
                           <span className="block font-mono text-[9px] font-bold uppercase tracking-wider text-[#38BDF8]">
-                            0{index + 1} · {sys.category}
+                            0{index + 1} Â· {sys.category}
                           </span>
                           <span className="mt-0.5 block truncate text-xs font-bold text-white sm:text-sm">
                             {sys.name}
@@ -362,7 +362,7 @@ export const AgentArchetypeSimulator: React.FC<AgentArchetypeSimulatorProps> = (
                         </span>
                         <span className="min-w-0 flex-1">
                           <span className="block font-mono text-[9px] font-bold uppercase tracking-wider text-[#38BDF8]">
-                            0{index + 1} · {agent.category}
+                            0{index + 1} Â· {agent.category}
                           </span>
                           <span className="mt-0.5 block truncate text-xs font-bold text-white sm:text-sm">
                             {agent.name}
@@ -407,7 +407,7 @@ export const AgentArchetypeSimulator: React.FC<AgentArchetypeSimulatorProps> = (
                           className="mt-1 text-xl font-medium tracking-[-0.02em] text-white sm:text-2xl"
                           style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                         >
-                          {activeSystem.name} — {activeSystem.role}
+                          {activeSystem.name} â€” {activeSystem.role}
                         </h3>
                       </div>
                       <a
@@ -503,7 +503,7 @@ export const AgentArchetypeSimulator: React.FC<AgentArchetypeSimulatorProps> = (
                           className="mt-1 text-xl font-medium tracking-[-0.02em] text-white sm:text-2xl"
                           style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                         >
-                          {activeAgent.name} — {activeAgent.role}
+                          {activeAgent.name} â€” {activeAgent.role}
                         </h3>
                       </div>
                       <span className="rounded-full border border-[#2DD4BF]/35 bg-[#2DD4BF]/15 px-2.5 py-1 font-mono text-[10px] font-bold text-[#5EEAD4]">
@@ -600,7 +600,7 @@ export const AgentArchetypeSimulator: React.FC<AgentArchetypeSimulatorProps> = (
                           <div className="space-y-3">
                             <div className="flex flex-wrap items-center justify-between gap-2">
                               <span className="font-mono text-[11px] text-slate-300">
-                                Scope: <strong className="text-white">*.target.io · ASN-3912</strong>
+                                Scope: <strong className="text-white">*.target.io Â· ASN-3912</strong>
                               </span>
                               <button
                                 type="button"
@@ -684,21 +684,21 @@ export const AgentArchetypeSimulator: React.FC<AgentArchetypeSimulatorProps> = (
                               {bundleChoice === 'main' ? (
                                 <>
                                   <p className="text-[10px] font-bold uppercase text-rose-300">
-                                    Secret Pattern Hit · Line 1402
+                                    Secret Pattern Hit Â· Line 1402
                                   </p>
                                   <p className="mt-1 text-white">
                                     const AWS_KEY = &quot;
-                                    {unmaskedSecret ? 'AKIA_DEMO_98F2A10C4E' : 'AKIA••••••••••••C4E'}
+                                    {unmaskedSecret ? 'AKIA_DEMO_98F2A10C4E' : 'AKIAâ€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢C4E'}
                                     &quot;;
                                   </p>
                                   <p className="mt-1 text-[11px] text-slate-300">
-                                    Severity: High · Demo fixture string (no live credentials)
+                                    Severity: High Â· Demo fixture string (no live credentials)
                                   </p>
                                 </>
                               ) : (
                                 <>
                                   <p className="text-[10px] font-bold uppercase text-rose-300">
-                                    AST Sink Detection · Line 412
+                                    AST Sink Detection Â· Line 412
                                   </p>
                                   <p className="mt-1 text-white">
                                     return eval(decodeURIComponent(params.get(&apos;next&apos;)));
@@ -737,7 +737,7 @@ export const AgentArchetypeSimulator: React.FC<AgentArchetypeSimulatorProps> = (
                                       {finding.title}
                                     </p>
                                     <p className="font-mono text-[10px] text-slate-400">
-                                      {finding.endpoint} · Confidence {finding.confidence}
+                                      {finding.endpoint} Â· Confidence {finding.confidence}
                                     </p>
                                   </div>
                                   {decision ? (

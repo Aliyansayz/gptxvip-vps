@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   Activity,
   ArrowRight,
@@ -8,8 +8,8 @@ import {
   Terminal,
   Wallet,
 } from 'lucide-react';
-import { seed } from '../../prototype/taxi-demand-eda-agent/data/sampleTaxiData';
-import { getPrototypeUrl, type PrototypeId } from '../../prototype/registry';
+import { seed } from '../../../../prototype/taxi-demand-eda-agent/data/sampleTaxiData';
+import { getPrototypeUrl, type PrototypeId } from '../../../../prototype/registry';
 import { SurfaceChartWidget } from './SurfaceChartWidget';
 
 export interface HeroAgentSurfaceWidgetProps {
@@ -176,7 +176,7 @@ export const HeroAgentSurfaceWidget: React.FC<HeroAgentSurfaceWidgetProps> = ({
             <div className="flex items-center justify-between gap-3 text-xs text-slate-300">
               <span className="inline-flex items-center gap-2 font-mono">
                 <Activity className="h-3.5 w-3.5 text-[#2DD4BF]" aria-hidden="true" />
-                <span>4 archetypes · {seed.records.length} intervals</span>
+                <span>4 archetypes Â· {seed.records.length} intervals</span>
               </span>
               <button
                 type="button"
